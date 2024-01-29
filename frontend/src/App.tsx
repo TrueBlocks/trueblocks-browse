@@ -1,25 +1,37 @@
-import React, { useState } from "react";
-import { Greet } from "../wailsjs/go/app/App";
+import React, { useState, useEffect } from "react";
+import { GetBlock } from "../wailsjs/go/app/App";
+import { app } from "../wailsjs/go/models";
 import "./App.css";
 
 function App() {
-  const [resultText, setResultText] = useState(
-    "Please enter your name below 👇"
-  );
-  const [name] = useState("Thomas");
-  const updateResultText = (result: string) => setResultText(result);
-  function greet() {
-    Greet(name).then(updateResultText);
-  }
+  const [block, setBlock] = useState<app.Block>();
+  const [curBlock, setCurBlock] = useState<number>(1000);
+
+  useEffect(() => {
+    GetBlock(curBlock).then((val: app.Block) => setBlock(val));
+  }, [curBlock]);
 
   return (
     <div id="App">
-      <div id="result" className="result">
-        {resultText}
-      </div>
-      <button className="btn" onClick={greet}>
-        Greet
+      <button
+        className="btn"
+        onClick={() => {
+          setCurBlock(curBlock - 1);
+        }}
+      >
+        {"< prev"}
       </button>
+      <button
+        className="btn"
+        onClick={() => {
+          setCurBlock(curBlock + 1);
+        }}
+      >
+        {"next >"}
+      </button>
+      <div id="result" className="result">
+        <pre>{JSON.stringify(block, null, 4)}</pre>
+      </div>
     </div>
   );
 }

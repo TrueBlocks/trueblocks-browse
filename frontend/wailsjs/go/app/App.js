@@ -9,7 +9,3 @@ export function GetBlock(arg1) {
 export function GetSession() {
   return window['go']['app']['App']['GetSession']();
 }
-
-export function Greet(arg1) {
-  return window['go']['app']['App']['Greet'](arg1);
-}
