@@ -1,3 +1,22 @@
+export namespace app {
+	
+	export class Block {
+	    blockNumber: string;
+	    hash: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Block(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.blockNumber = source["blockNumber"];
+	        this.hash = source["hash"];
+	    }
+	}
+
+}
+
 export namespace config {
 	
 	export class Session {
