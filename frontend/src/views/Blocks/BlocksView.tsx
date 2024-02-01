@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { GetBlock } from "@gocode/app/App";
 import { app } from "@gocode/models";
 import { useHotkeys } from "react-hotkeys-hook";
-import classes from "./BlockView.module.css";
+import classes from "./BlocksView.module.css";
 import View from "@/components/view/View";
 
-function BlockView() {
+function BlocksView() {
   const [block, setBlock] = useState<app.Block>();
   const [curBlock, setCurBlock] = useState<number>(1000);
 
@@ -23,11 +23,11 @@ function BlockView() {
   });
   useHotkeys("right", (event) => {
     event.preventDefault();
-    setCurBlock(curBlock + 1 > 19100000 ? 0 : curBlock + 1);
+    setCurBlock(curBlock + 1 > 19100000 ? 19100000 : curBlock + 1);
   });
   useHotkeys("down", (event) => {
     event.preventDefault();
-    setCurBlock(curBlock + 1000 > 19100000 ? 0 : curBlock + 1000);
+    setCurBlock(curBlock + 1000 > 19100000 ? 19100000 : curBlock + 1000);
   });
   useHotkeys("end", (event) => {
     event.preventDefault();
@@ -39,8 +39,8 @@ function BlockView() {
   }, [curBlock]);
 
   return (
-    <View title="BlockView">
-      <div>
+    <View title="BlocksView">
+      <section>
         <button
           className={classes.btn}
           onClick={() => {
@@ -60,9 +60,9 @@ function BlockView() {
         <div id="result" className={classes.result}>
           <pre>{JSON.stringify(block, null, 4)}</pre>
         </div>
-      </div>
+      </section>
     </View>
   );
 }
 
-export default BlockView;
+export default BlocksView;

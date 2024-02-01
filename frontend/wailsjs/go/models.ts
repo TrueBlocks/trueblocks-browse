@@ -3,6 +3,7 @@ export namespace app {
 	export class Block {
 	    blockNumber: string;
 	    hash: string;
+	    transactions: string[];
 	
 	    static createFrom(source: any = {}) {
 	        return new Block(source);
@@ -12,6 +13,7 @@ export namespace app {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.blockNumber = source["blockNumber"];
 	        this.hash = source["hash"];
+	        this.transactions = source["transactions"];
 	    }
 	}
 
