@@ -1,6 +1,7 @@
 .DS_Store
 shit*
 .env
+package.json.md5
 
 build/bin
 node_modules
