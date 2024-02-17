@@ -34,8 +34,9 @@ function NamesView() {
     setCurBlock(19000000);
   });
 
+  const page = 0;
   useEffect(() => {
-    GetNames().then((val: string[]) => setBlock(val));
+    GetNames(page).then((val: string[]) => setBlock(val));
   }, [curBlock]);
 
   return (

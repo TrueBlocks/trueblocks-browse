@@ -37,12 +37,12 @@ func shrink(s string) string {
 }
 
 func (a *App) GetNames(page int) []string {
+	first := page * 200
+	last := first + 200
+	n := a.namesArray[first:last]
 	var ret []string
-	for k, v := range a.names {
-		if len(ret) > 100 {
-			break
-		}
-		ret = append(ret, fmt.Sprintf("%s: %s", k.Hex(), v.Name))
+	for _, name := range n {
+		ret = append(ret, fmt.Sprintf("%s: %s", name.Address.Hex(), name.Name))
 	}
 	return ret
 }
