@@ -4,9 +4,8 @@ import (
 	"context"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
+	"github.com/TrueBlocks/trueblocks-core/sdk"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/rpc"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -14,8 +13,7 @@ import (
 type App struct {
 	ctx        context.Context
 	session    config.Session
-	conn       *rpc.Connection
-	namesArray []types.SimpleName
+	namesArray []types.Name
 }
 
 func NewApp() *App {
@@ -25,22 +23,10 @@ func NewApp() *App {
 
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
-	if a.conn = rpc.NewConnection("mainnet", true, map[string]bool{
-		"blocks":       true,
-		"receipts":     true,
-		"transactions": true,
-		"traces":       true,
-		"logs":         true,
-		"statements":   true,
-		"state":        true,
-		"tokens":       true,
-		"results":      true,
-	}); a.conn == nil {
-		logger.Error("Could not find rpc server.")
-	}
-	var err error
-	if a.namesArray, err = names.LoadNamesArray("mainnet", names.Regular|names.Custom|names.Prefund|names.Baddress, names.SortByName, []string{}); err != nil {
-		logger.Error("Could not load names.")
+	if names, err := a.loadNames(); err != nil {
+		logger.Error("could not load names array")
+	} else {
+		a.namesArray = names
 	}
 }
 
@@ -61,4 +47,15 @@ func (a *App) Shutdown(ctx context.Context) {
 
 func (a *App) GetSession() *config.Session {
 	return &a.session
+}
+
+func (a *App) loadNames() ([]types.Name, error) {
+	opts := sdk.NamesOptions{
+		Prefund: true,
+		Globals: sdk.Globals{
+			Chain: "mainnet",
+		},
+	}
+	names, _, err := opts.Names()
+	return names, err
 }

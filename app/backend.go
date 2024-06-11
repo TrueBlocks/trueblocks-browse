@@ -37,8 +37,11 @@ func shrink(s string) string {
 }
 
 func (a *App) GetNames(page int) []string {
-	first := page * 200
-	last := first + 200
+	first := page
+	last := first + 20
+	if len(a.namesArray) < last {
+		return []string{"No names loaded"}
+	}
 	n := a.namesArray[first:last]
 	var ret []string
 	for _, name := range n {
