@@ -6,8 +6,8 @@ export function GetBlock(arg1) {
   return window['go']['app']['App']['GetBlock'](arg1);
 }
 
-export function GetNames(arg1) {
-  return window['go']['app']['App']['GetNames'](arg1);
+export function GetNames(arg1, arg2) {
+  return window['go']['app']['App']['GetNames'](arg1, arg2);
 }
 
 export function GetSession() {

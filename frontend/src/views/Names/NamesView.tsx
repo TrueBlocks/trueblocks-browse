@@ -11,28 +11,31 @@ function NamesView() {
   useHotkeys("left", (event) => {
     event.preventDefault();
     setCurName(curName - 1 < 0 ? 0 : curName - 1);
-    console.log("left");
-    console.log("left", curName);
   });
   useHotkeys("up", (event) => {
     event.preventDefault();
     setCurName(curName - 20 < 0 ? 0 : curName - 20);
-    console.log("up", curName);
   });
   useHotkeys("right", (event) => {
     event.preventDefault();
     setCurName(curName + 1 > 19100000 ? 19100000 : curName + 1);
-    console.log("right", curName);
   });
   useHotkeys("down", (event) => {
     event.preventDefault();
     setCurName(curName + 20 > 19100000 ? 19100000 : curName + 20);
-    console.log("down", curName);
+  });
+  useHotkeys("home", (event) => {
+    event.preventDefault();
+    setCurName(0);
+  });
+  useHotkeys("end", (event) => {
+    event.preventDefault();
+    setCurName(5000);
   });
 
   useEffect(() => {
     console.log("useEffect", curName);
-    GetNames(curName).then((names: string[]) => setName(names));
+    GetNames(curName, 20).then((names: string[]) => setName(names));
   }, [curName]);
 
   return (

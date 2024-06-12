@@ -5,6 +5,6 @@ import {config} from '../models';
 
 export function GetBlock(arg1:number):Promise<app.Block>;
 
-export function GetNames(arg1:number):Promise<Array<string>>;
+export function GetNames(arg1:number,arg2:number):Promise<Array<string>>;
 
 export function GetSession():Promise<config.Session>;

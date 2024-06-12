@@ -6,3 +6,8 @@ package.json.md5
 build/bin
 node_modules
 frontend/dist
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json

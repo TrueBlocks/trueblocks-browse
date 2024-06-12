@@ -7,9 +7,8 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-func (a *App) GetNames(page int) []string {
-	first := page
-	last := first + 20
+func (a *App) GetNames(first, pageSize int) []string {
+	last := first + pageSize
 	if len(a.names) < last {
 		return []string{"No names loaded"}
 	}
@@ -23,6 +22,7 @@ func (a *App) GetNames(page int) []string {
 
 func (a *App) loadNames() ([]types.Name, error) {
 	opts := sdk.NamesOptions{
+		Custom:  true,
 		Prefund: true,
 		Globals: sdk.Globals{
 			Chain: "mainnet",

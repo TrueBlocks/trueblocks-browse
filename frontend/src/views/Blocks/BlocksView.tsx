@@ -25,6 +25,14 @@ function BlocksView() {
     event.preventDefault();
     setCurBlock(curBlock + 1000 > 19100000 ? 19100000 : curBlock + 1000);
   });
+  useHotkeys("home", (event) => {
+    event.preventDefault();
+    setCurBlock(0);
+  });
+  useHotkeys("end", (event) => {
+    event.preventDefault();
+    setCurBlock(19100000);
+  });
 
   useEffect(() => {
     GetBlock(curBlock).then((val: app.Block) => setBlock(val));
