@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GetBlock } from "@gocode/app/App";
 import { app } from "@gocode/models";
-import classes from "./BlocksView.module.css";
+import classes from "../View.module.css";
 import View from "@/components/view/View";
 
 function BlocksView() {

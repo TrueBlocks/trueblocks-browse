@@ -3,6 +3,7 @@ import { Route, Switch } from "wouter";
 import classes from "./Routes.module.css";
 import BlocksView from "@/views/Blocks/BlocksView";
 import HomeView from "@/views/Home/HomeView";
+import NamesView from "@/views/Names/NamesView";
 import SettingsView from "@/views/Settings/SettingsView";
 
 function Routes() {
@@ -12,6 +13,9 @@ function Routes() {
         {/* Settings */}
         <Route path="/blocks">
           <BlocksView />
+        </Route>
+        <Route path="/names">
+          <NamesView />
         </Route>
         <Route path="/settings">
           <SettingsView />
