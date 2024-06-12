@@ -17,11 +17,13 @@ type Block struct {
 func (a *App) GetBlock(bn uint64) Block {
 	opts := sdk.BlocksOptions{
 		BlockIds: []string{fmt.Sprintf("%d", bn)},
+		CacheTxs: true,
 		Globals: sdk.Globals{
 			Chain: "mainnet",
 			Cache: true,
 		},
 	}
+
 	blocks, _, err := opts.Blocks()
 	if err != nil {
 		runtime.EventsEmit(a.ctx, "error", err.Error())
@@ -40,10 +42,13 @@ func (a *App) GetBlock(bn uint64) Block {
 	line := []string{}
 	for i := 0; i < len(blocks[0].Transactions); i++ {
 		line = append(line, shrink(blocks[0].Transactions[i].Hash.Hex()))
-		if (i+1)%8 == 0 {
+		if (i+1)%6 == 0 {
 			ret.Transactions = append(ret.Transactions, strings.Join(line, ", "))
 			line = []string{}
 		}
+	}
+	if len(line) > 0 {
+		ret.Transactions = append(ret.Transactions, strings.Join(line, ", "))
 	}
 
 	return ret

@@ -22,6 +22,7 @@ func NewApp() *App {
 
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
+	logger.SetLoggerWriter(nil)
 	if names, err := a.loadNames(); err != nil {
 		logger.Error("could not load names array")
 	} else {
