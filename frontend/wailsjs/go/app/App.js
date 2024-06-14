@@ -13,3 +13,7 @@ export function GetNames(arg1, arg2) {
 export function GetSession() {
   return window['go']['app']['App']['GetSession']();
 }
+
+export function MaxNames() {
+  return window['go']['app']['App']['MaxNames']();
+}

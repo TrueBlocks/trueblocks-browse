@@ -8,6 +8,7 @@ import View from "@/components/view/View";
 function BlocksView() {
   const [block, setBlock] = useState<app.Block>();
   const [curBlock, setCurBlock] = useState<number>(181000);
+  const [latest, setLatest] = useState<number>(0);
 
   useHotkeys("left", (event) => {
     event.preventDefault();
@@ -19,11 +20,11 @@ function BlocksView() {
   });
   useHotkeys("right", (event) => {
     event.preventDefault();
-    setCurBlock(curBlock + 1 > 19100000 ? 19100000 : curBlock + 1);
+    setCurBlock(curBlock + 1 > latest ? latest : curBlock + 1);
   });
   useHotkeys("down", (event) => {
     event.preventDefault();
-    setCurBlock(curBlock + 1000 > 19100000 ? 19100000 : curBlock + 1000);
+    setCurBlock(curBlock + 1000 > latest ? latest : curBlock + 1000);
   });
   useHotkeys("home", (event) => {
     event.preventDefault();
@@ -31,11 +32,14 @@ function BlocksView() {
   });
   useHotkeys("end", (event) => {
     event.preventDefault();
-    setCurBlock(19100000);
+    setCurBlock(latest);
   });
 
   useEffect(() => {
-    GetBlock(curBlock).then((val: app.Block) => setBlock(val));
+    GetBlock(curBlock.toString()).then((val: app.Block) => {
+      setBlock(val);
+      setLatest(+val.latest);
+    });
   }, [curBlock]);
 
   return (

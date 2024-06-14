@@ -11,12 +11,14 @@ import (
 type Block struct {
 	BlockNumber  string   `json:"blockNumber"`
 	Hash         string   `json:"hash"`
+	Date         string   `json:"date"`
 	Transactions []string `json:"transactions"`
+	Latest       string   `json:"latest"`
 }
 
-func (a *App) GetBlock(bn uint64) Block {
+func (a *App) GetBlock(bn string) Block {
 	opts := sdk.BlocksOptions{
-		BlockIds: []string{fmt.Sprintf("%d", bn)},
+		BlockIds: []string{bn, "latest"},
 		CacheTxs: true,
 		Globals: sdk.Globals{
 			Chain: "mainnet",
@@ -37,6 +39,8 @@ func (a *App) GetBlock(bn uint64) Block {
 	ret := Block{
 		BlockNumber: fmt.Sprintf("%d", blocks[0].BlockNumber),
 		Hash:        shrink(blocks[0].Hash.Hex()),
+		Date:        blocks[0].Date(),
+		Latest:      fmt.Sprintf("%d", blocks[1].BlockNumber),
 	}
 
 	line := []string{}
