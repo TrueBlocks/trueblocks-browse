@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GetNames } from "@gocode/app/App";
+import { GetNames, MaxNames } from "@gocode/app/App";
 import { useHotkeys } from "react-hotkeys-hook";
 import classes from "../View.module.css";
 import View from "@/components/view/View";
@@ -7,6 +7,7 @@ import View from "@/components/view/View";
 function NamesView() {
   const [names, setName] = useState<string[]>();
   const [curName, setCurName] = useState<number>(0);
+  const [maxNames, setMaxNames] = useState<number>(0);
 
   useHotkeys("left", (event) => {
     event.preventDefault();
@@ -18,11 +19,11 @@ function NamesView() {
   });
   useHotkeys("right", (event) => {
     event.preventDefault();
-    setCurName(curName + 1 > 19100000 ? 19100000 : curName + 1);
+    setCurName(curName + 1 > maxNames ? maxNames : curName + 1);
   });
   useHotkeys("down", (event) => {
     event.preventDefault();
-    setCurName(curName + 20 > 19100000 ? 19100000 : curName + 20);
+    setCurName(curName + 20 > maxNames ? maxNames - 20 : curName + 20);
   });
   useHotkeys("home", (event) => {
     event.preventDefault();
@@ -30,18 +31,20 @@ function NamesView() {
   });
   useHotkeys("end", (event) => {
     event.preventDefault();
-    setCurName(5000);
+    setCurName(maxNames - 20);
   });
 
   useEffect(() => {
     console.log("useEffect", curName);
     GetNames(curName, 20).then((names: string[]) => setName(names));
+    MaxNames().then((maxNames: number) => setMaxNames(maxNames));
   }, [curName]);
 
   return (
     <View title="Names View">
       <section>
         <div id="result" className={classes.result}>
+          <pre>Number of records: {maxNames}</pre>
           <pre>{JSON.stringify(names, null, 4)}</pre>
         </div>
       </section>
