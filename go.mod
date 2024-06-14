@@ -6,6 +6,8 @@ toolchain go1.22.0
 
 replace github.com/TrueBlocks/trueblocks-core/sdk => ../trueblocks-core/sdk
 
+replace github.com/TrueBlocks/trueblocks-core/src/apps/chifra => ../trueblocks-core/src/apps/chifra
+
 require (
 	github.com/TrueBlocks/trueblocks-core/sdk v0.0.0-20240605222744-1cbeec2938e0
 	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20240606085217-aac29013bb53
@@ -34,7 +36,6 @@ require (
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/gocarina/gocsv v0.0.0-20230123225133-763e25b40669 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
-	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
@@ -107,8 +108,6 @@ require (
 	golang.org/x/text v0.15.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/tools v0.17.0 // indirect
-	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
-	google.golang.org/grpc v1.56.3 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
