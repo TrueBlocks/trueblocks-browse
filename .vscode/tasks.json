@@ -5,16 +5,12 @@
             "label": "build",
             "type": "shell",
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "${workspaceFolder}",
+                "shell": {
+                    "executable": "/bin/bash"
+                }
             },
-            "command": "go",
-            "args": [
-                "build",
-                "-tags",
-                "dev",
-                "-gcflags",
-                "-l -v",
-            ]
+            "command": "./scripts/debug.sh"
         }
     ]
 }

@@ -5,15 +5,11 @@
             "name": "Launch Wails App",
             "type": "go",
             "request": "launch",
-            "mode": "auto",
-            "program": "${workspaceFolder}/trueblocks-browse",
+            "mode": "exec",
+            "program": "${workspaceFolder}/build/bin/out",
             "preLaunchTask": "build",
             "cwd": "${workspaceFolder}",
-            "env": {
-                "GO111MODULE": "on",
-                "CGO_ENABLED": "1",
-                "CGO_LDFLAGS": "-framework CoreServices",
-            },
+            "env": {},
             "args": [],
             "showLog": true
         }
