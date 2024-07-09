@@ -15,7 +15,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hotkeys-hook": "^4.4.4",
-    "wouter": "^2.12.1"
+    "wouter": "^3.3.0"
   },
   "devDependencies": {
     "@mantine/core": "^7.5.0",

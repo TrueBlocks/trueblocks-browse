@@ -4,12 +4,15 @@ import (
 	"context"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type App struct {
 	ctx     context.Context
 	session config.Session
+	names   []types.Name
 }
 
 func NewApp() *App {
@@ -19,6 +22,9 @@ func NewApp() *App {
 
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
+	if err := a.loadNames(); err != nil {
+		logger.Panic(err)
+	}
 }
 
 func (a *App) DomReady(ctx context.Context) {
