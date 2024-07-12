@@ -11,5 +11,10 @@ export default defineConfig({
       "@components": path.resolve(__dirname, "./src/components/index"),
       "@gocode": path.resolve(__dirname, "./wailsjs/go")
     }
-  }
+  },
+  server: {
+    watch: {
+      usePolling: true,
+    },
+  },
 });

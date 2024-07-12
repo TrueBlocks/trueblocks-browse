@@ -9,4 +9,10 @@ export function GetNames(arg1:number,arg2:number):Promise<Array<string>>;
 
 export function GetSession():Promise<config.Session>;
 
+<<<<<<< HEAD
 export function MaxNames():Promise<number>;
+=======
+export function Greet(arg1:string):Promise<string>;
+
+export function String():Promise<string>;
+>>>>>>> fix/better-backend-1

@@ -2,9 +2,8 @@ import React from "react";
 import { Flex, Space, Text } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 
-function GlobalFooter() {
+function ServerStatus() {
   return (
-    // Status indicators mock
     <Flex justify="center" align="center">
       <IconCheck />
       <Text size="xs">Node</Text>
@@ -15,4 +14,4 @@ function GlobalFooter() {
   );
 }
 
-export default GlobalFooter;
+export default ServerStatus;

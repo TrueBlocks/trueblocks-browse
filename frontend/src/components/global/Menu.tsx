@@ -3,8 +3,17 @@ import { NavLink } from "@mantine/core";
 import { IconHome, IconSettings, IconTag, IconList } from "@tabler/icons-react";
 import { Link, useRoute } from "wouter";
 
-// StyledNavLink is a helper component that renders navigation link
-// and sets its `active` prop (makes active link more visible)
+function Menu() {
+  return (
+    <div style={{ flexGrow: 1 }}>
+      <StyledNavLink label="Home" icon={<IconHome />} href="/" />
+      <StyledNavLink label="Settings" icon={<IconSettings />} href="/settings" />
+    </div>
+  );
+}
+
+export default Menu;
+
 type StyledNavLinkParams = {
   label: string;
   href: string;
@@ -22,20 +31,3 @@ function StyledNavLink(params: StyledNavLinkParams) {
     </Link>
   );
 }
-
-function GlobalMenu() {
-  return (
-    <>
-      <StyledNavLink label="Home" icon={<IconHome />} href="/" />
-      <StyledNavLink label="Blocks" icon={<IconList />} href="/blocks" />
-      <StyledNavLink label="Names" icon={<IconTag />} href="/names" />
-      <StyledNavLink
-        label="Settings"
-        icon={<IconSettings />}
-        href="/settings"
-      />
-    </>
-  );
-}
-
-export default GlobalMenu;

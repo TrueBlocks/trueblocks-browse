@@ -4,22 +4,24 @@ import (
 	"encoding/json"
 	"path/filepath"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/paths"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 // Session stores ephemeral things such as last window position, last view, and recent file
 type Session struct {
-	X      int `json:"x"`
-	Y      int `json:"y"`
-	Width  int `json:"width"`
-	Height int `json:"height"`
+	X      int    `json:"x"`
+	Y      int    `json:"y"`
+	Width  int    `json:"width"`
+	Height int    `json:"height"`
+	Title  string `json:"title"`
 }
 
 var defaultSession = Session{
 	Width:  1024,
 	Height: 768,
+	Title:  "ApplicationTitle",
 }
 
 func NewSession() Session {
@@ -50,8 +52,8 @@ func (s *Session) Save() {
 
 // getSessionFn returns the session file name.
 func getSessionFn() string {
-	if configDir, err := paths.GetConfigDir("TrueBlocks/browse"); err != nil {
-		logger.Error("paths.GetConfigDir returned an error", err)
+	if configDir, err := utils.GetConfigDir("TrueBlocks/browse"); err != nil {
+		logger.Error("utils.GetConfigDir returned an error", err)
 		return "./session.json"
 	} else {
 		return filepath.Join(configDir, "session.json")

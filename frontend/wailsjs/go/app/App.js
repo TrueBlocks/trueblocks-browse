@@ -17,3 +17,7 @@ export function GetSession() {
 export function MaxNames() {
   return window['go']['app']['App']['MaxNames']();
 }
+
+export function String() {
+  return window['go']['app']['App']['String']();
+}

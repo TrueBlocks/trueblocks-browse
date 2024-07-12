@@ -30,6 +30,7 @@ export namespace config {
 	    y: number;
 	    width: number;
 	    height: number;
+	    title: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new Session(source);
@@ -41,6 +42,7 @@ export namespace config {
 	        this.y = source["y"];
 	        this.width = source["width"];
 	        this.height = source["height"];
+	        this.title = source["title"];
 	    }
 	}
 

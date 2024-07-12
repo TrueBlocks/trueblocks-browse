@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"fmt"
 
 	"github.com/TrueBlocks/trueblocks-browse/app"
 	"github.com/wailsapp/wails/v2"
@@ -15,12 +16,13 @@ var assets embed.FS
 func main() {
 	a := app.NewApp()
 	opts := options.App{
-		Title:      "TrueBlocks Browse",
-		Width:      a.GetSession().Width,
-		Height:     a.GetSession().Height,
-		OnStartup:  a.Startup,
-		OnDomReady: a.DomReady,
-		OnShutdown: a.Shutdown,
+		Title:            "ApplicationTitle",
+		Width:            a.GetSession().Width,
+		Height:           a.GetSession().Height,
+		OnStartup:        a.Startup,
+		OnDomReady:       a.DomReady,
+		OnShutdown:       a.Shutdown,
+		BackgroundColour: nil,
 		Bind: []interface{}{
 			a,
 		},
@@ -31,6 +33,6 @@ func main() {
 	}
 
 	if err := wails.Run(&opts); err != nil {
-		println("Error:", err.Error())
+		fmt.Println("Error:", err.Error())
 	}
 }

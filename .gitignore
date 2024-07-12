@@ -1,5 +1,8 @@
+build
+backup_other
 .DS_Store
 shit*
+x
 .env
 package.json.md5
 

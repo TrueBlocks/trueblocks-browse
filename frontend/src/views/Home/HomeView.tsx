@@ -1,10 +1,18 @@
 import React from "react";
-import View from "@/components/view/View";
+import { Stack, Text, Title } from "@mantine/core";
+import classes from "@/App.module.css";
+import { View, ViewStatus } from "@/components/view";
 
-// HomeView is a temporary default view that we will probably
-// remove when the app is more complete
 function HomeView() {
-  return <View title="Welcome">Welcome to TrueBlocks Browse 🔥🚀</View>;
+  return (
+    <View>
+      <Title order={3}>Home View Title</Title>
+      <Stack className={classes.mainContent}>
+        <Text>Home View Content</Text>
+      </Stack>
+      <ViewStatus>Status / Progress</ViewStatus>
+    </View>
+  );
 }
 
 export default HomeView;

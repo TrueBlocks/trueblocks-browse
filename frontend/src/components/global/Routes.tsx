@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch } from "wouter";
-import classes from "./Routes.module.css";
+import classes from "@/App.module.css";
 import BlocksView from "@/views/Blocks/BlocksView";
 import HomeView from "@/views/Home/HomeView";
 import NamesView from "@/views/Names/NamesView";
@@ -8,9 +8,8 @@ import SettingsView from "@/views/Settings/SettingsView";
 
 function Routes() {
   return (
-    <div className={classes.container}>
+    <div className={classes.mainContent}>
       <Switch>
-        {/* Settings */}
         <Route path="/blocks">
           <BlocksView />
         </Route>
@@ -20,8 +19,6 @@ function Routes() {
         <Route path="/settings">
           <SettingsView />
         </Route>
-
-        {/* Default route */}
         <Route>
           <HomeView />
         </Route>

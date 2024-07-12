@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -17,7 +18,16 @@ type App struct {
 
 func NewApp() *App {
 	var a App
+
+	// it's okay if it's not found
+	_ = a.session.Load()
+
 	return &a
+}
+
+func (a App) String() string {
+	bytes, _ := json.MarshalIndent(a, "", "  ")
+	return string(bytes)
 }
 
 func (a *App) Startup(ctx context.Context) {
@@ -28,10 +38,8 @@ func (a *App) Startup(ctx context.Context) {
 }
 
 func (a *App) DomReady(ctx context.Context) {
-	if a.session.Load() {
-		runtime.WindowSetPosition(a.ctx, a.session.X, a.session.Y)
-		runtime.WindowSetSize(a.ctx, a.session.Width, a.session.Height)
-	}
+	runtime.WindowSetPosition(a.ctx, a.session.X, a.session.Y)
+	runtime.WindowSetSize(a.ctx, a.session.Width, a.session.Height)
 	runtime.WindowShow(a.ctx)
 }
 
