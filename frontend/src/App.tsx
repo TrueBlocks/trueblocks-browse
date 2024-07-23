@@ -1,21 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AppShell, Text } from "@mantine/core";
-import Aside from "./components/global/Aside";
-import Header from "./components/global/Header";
-import Navbar from "./components/global/Navbar";
-import Routes from "./components/global/Routes";
+import { Aside, Header, Navbar, Routes } from "@components";
 import classes from "@/App.module.css";
 
 function App() {
+  const [showHelp, setShowHelp] = React.useState(true);
+
+  const toggleHelp = () => {
+    setShowHelp(!showHelp);
+  };
+
   return (
     <AppShell
       header={{ height: "3rem" }}
       navbar={{ collapsed: { desktop: false }, width: "10rem", breakpoint: 0 }}
-      aside={{ collapsed: { desktop: false }, width: "10rem", breakpoint: 0 }}
+      aside={{ collapsed: { desktop: showHelp }, width: "10rem", breakpoint: 0 }}
       footer={{ height: "2rem" }}
     >
       <AppShell.Header>
         <Header title="ApplicationTitle" />
+        <button onClick={toggleHelp}>Toggle Help</button>{" "}
       </AppShell.Header>
       <AppShell.Navbar>
         <Navbar />

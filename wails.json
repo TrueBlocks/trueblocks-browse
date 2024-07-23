@@ -1,6 +1,6 @@
 {
   "$schema": "https://wails.io/schemas/config.v2.json",
-  "name": "ApplicationTitle",
+  "name": "TrueBlocks Browse",
   "outputfilename": "trueblocks-browse",
   "assetdir": "./frontend/dist",
   "frontend:dir": "./frontend",

@@ -2,7 +2,7 @@ import React from "react";
 import { Flex, Space, Text } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 
-function ServerStatus() {
+export function ServerStatus() {
   return (
     <Flex justify="center" align="center">
       <IconCheck />
@@ -13,5 +13,3 @@ function ServerStatus() {
     </Flex>
   );
 }
-
-export default ServerStatus;

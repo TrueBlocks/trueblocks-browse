@@ -1,9 +1,8 @@
 import React from "react";
 import { Stack } from "@mantine/core";
-import Menu from "./Menu";
-import ServerStatus from "./ServerStatus";
+import { Menu, ServerStatus } from "./";
 
-function Navbar() {
+export function Navbar() {
   return (
     <Stack h={"100%"} justify="space-between">
       <Menu />
@@ -11,5 +10,3 @@ function Navbar() {
     </Stack>
   );
 }
-
-export default Navbar;

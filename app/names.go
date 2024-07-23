@@ -1,46 +1,66 @@
 package app
 
 import (
-	"fmt"
+	"sort"
 
-	"github.com/TrueBlocks/trueblocks-core/sdk"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 )
 
-func (a *App) GetNames(first, pageSize int) []string {
-	var ret []string
+func (a *App) GetNamesPage(first, pageSize int) []NameEx {
 	if len(a.names) == 0 {
-		return ret
+		return a.names
 	}
+
 	first = base.Max(0, base.Min(first, len(a.names)-1))
 	last := base.Min(len(a.names), first+pageSize)
-	n := a.names[first:last]
-	for _, name := range n {
-		ret = append(ret, fmt.Sprintf("%s %s %s", name.Address.Hex(), name.Tags, name.Name))
-	}
-	return ret
+	return a.names[first:last]
 }
 
-func (a *App) MaxNames() int {
+func (a *App) GetNamesCnt() int {
 	return len(a.names)
 }
 
 func (a *App) loadNames() error {
-	opts := sdk.NamesOptions{
-		Regular: true,
-		// Custom:  true,
-		Globals: sdk.Globals{
-			Chain: "mainnet",
-		},
-	}
-	
-	if names, _, err := opts.Names(); err != nil {
-		return err
-	} else {
-		for i := range names {
-			names[i].Name = fmt.Sprintf("%d: %s", i, names[i].Name)
+	types := []names.Parts{names.Regular, names.Custom, names.Prefund, names.Baddress}
+	for _, t := range types {
+		if m, err := names.LoadNamesMap("mainnet", t, nil); err != nil {
+			return err
+		} else {
+			for addr, name := range m {
+				namex := NameEx{
+					Name: name,
+					Type: t,
+				}
+				vv := a.namesMap[addr]
+				namex.Type |= vv.Type
+				a.namesMap[addr] = namex
+			}
 		}
-		a.names = names
-		return nil
 	}
+	for _, name := range a.namesMap {
+		a.names = append(a.names, name)
+	}
+	sort.Slice(a.names, func(i, j int) bool {
+		ti := a.names[i].Type
+		tj := a.names[j].Type
+		if ti == tj {
+			if a.names[i].Tags == a.names[j].Tags {
+				return a.names[i].Address.Hex() < a.names[j].Address.Hex()
+			}
+			return a.names[i].Tags < a.names[j].Tags
+		}
+		if ti == 4 || ti == 18 {
+			return true
+		}
+		if tj == 4 || tj == 18 {
+			return false
+		}
+		return ti < tj
+	})
+	return nil
+}
+
+func (a *App) GetNameTypes() []string {
+	return []string{"Regular", "Custom", "Prefund", "Baddress"}
 }
