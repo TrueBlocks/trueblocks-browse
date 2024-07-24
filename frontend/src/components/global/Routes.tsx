@@ -1,25 +1,34 @@
-import React from "react";
-import { Route, Switch } from "wouter";
-import classes from "./Routes.module.css";
-import HomeView from "@/views/Home/HomeView";
-import SettingsView from "@/views/Settings/SettingsView";
+import React, { useEffect } from "react";
+import { Route, Switch, useLocation } from "wouter";
+import classes from "@/App.module.css";
+import { HomeView, NamesView, SettingsView } from "@views";
+import { GetLast } from "@gocode/app/App";
 
-function Routes() {
+export const Routes = () => {
+  const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    const lastRoute = (GetLast("route") || "/").then((route) => {
+      setLocation(route);
+    });
+  }, [setLocation]);
+
+  var menuItems = [
+    { route: "/names", component: NamesView },
+    { route: "/settings", component: SettingsView },
+    { route: "/", component: HomeView },
+  ];
+
   return (
-    <div className={classes.container}>
+    <div className={classes.mainContent}>
       <Switch>
-        {/* Settings */}
-        <Route path="/settings">
-          <SettingsView />
-        </Route>
-
-        {/* Default route */}
-        <Route>
-          <HomeView />
-        </Route>
+        {menuItems.map((item) => (
+          <Route key={item.route} path={item.route}>
+            <item.component />
+          </Route>
+        ))}
       </Switch>
     </div>
   );
-}
+};
 
-export default Routes;

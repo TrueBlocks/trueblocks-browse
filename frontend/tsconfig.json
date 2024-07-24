@@ -21,17 +21,26 @@
     "jsx": "react-jsx",
     "baseUrl": "./src",
     "paths": {
-      "@/*": [
-        "*"
-      ],
       "@assets/*": [
-        "assets/*"
+        "./assets/*"
       ],
       "@components": [
-        "components/index"
+        "./components/index"
+      ],
+      "@views": [
+        "./views/index"
+      ],
+      "@hooks": [
+        "./hooks/index"
       ],
       "@gocode/*": [
         "../wailsjs/go/*"
+      ],
+      "@runtime": [
+        "../wailsjs/runtime/runtime"
+      ],
+      "@/*": [
+        "./*"
       ]
     }
   },

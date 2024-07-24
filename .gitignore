@@ -1,8 +1,17 @@
+build
+backup_other
 .DS_Store
 shit*
+x
 .env
 package.json.md5
 
 build/bin
 node_modules
 frontend/dist
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json

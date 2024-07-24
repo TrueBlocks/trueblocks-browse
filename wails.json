@@ -1,7 +1,9 @@
 {
   "$schema": "https://wails.io/schemas/config.v2.json",
-  "name": "TrueBlocks Account Browse",
+  "name": "TrueBlocks Browse",
   "outputfilename": "trueblocks-browse",
+  "assetdir": "./frontend/dist",
+  "frontend:dir": "./frontend",
   "frontend:install": "yarn install",
   "frontend:build": "yarn run build",
   "frontend:dev:watcher": "yarn run dev",
@@ -9,5 +11,15 @@
   "author": {
     "name": "TrueBlocks, LLC",
     "email": "info@quickblocks.io"
+  },
+  "dev": {
+    "watch": {
+      "patterns": [
+        "frontend/**/*.{js,jsx,ts,tsx,css,scss,html}"
+      ],
+      "ignore": [
+        "frontend/dist/**"
+      ]
+    }
   }
 }

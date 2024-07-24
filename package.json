@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "dev": "wails dev --debounce 500 2>&1 | grep -v AssetHandler"
+        "dev": "wails dev --debounce 2000"
     },
     "name": "trueblocks-browse",
     "version": "1.0.0",

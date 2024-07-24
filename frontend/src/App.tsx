@@ -1,19 +1,38 @@
-import React from "react";
-import { AppShell } from "@mantine/core";
-import GlobalNavbar from "./components/global/GlobalNavbar";
-import Routes from "./components/global/Routes";
+import React, { useEffect } from "react";
+import { AppShell, Text } from "@mantine/core";
+import { Aside, Header, Navbar, Routes } from "@components";
+import classes from "@/App.module.css";
 
 function App() {
+  const [showHelp, setShowHelp] = React.useState(true);
+
+  const toggleHelp = () => {
+    setShowHelp(!showHelp);
+  };
+
   return (
-    <AppShell navbar={{ width: "15rem", breakpoint: 0 }}>
+    <AppShell
+      header={{ height: "3rem" }}
+      navbar={{ collapsed: { desktop: false }, width: "10rem", breakpoint: 0 }}
+      aside={{ collapsed: { desktop: showHelp }, width: "10rem", breakpoint: 0 }}
+      footer={{ height: "2rem" }}
+    >
+      <AppShell.Header>
+        <Header title="ApplicationTitle" />
+        <button onClick={toggleHelp}>Toggle Help</button>{" "}
+      </AppShell.Header>
       <AppShell.Navbar>
-        {/* To change menu items, go to 'GlobalMenu' component */}
-        <GlobalNavbar />
+        <Navbar />
       </AppShell.Navbar>
-      <AppShell.Main>
-        {/* To add new views, go to 'Routes' component */}
+      <AppShell.Main className={classes.mainContent}>
         <Routes />
       </AppShell.Main>
+      <AppShell.Aside>
+        <Aside />
+      </AppShell.Aside>
+      <AppShell.Footer>
+        <Text size={"sm"}>time / date / currently opened file</Text>
+      </AppShell.Footer>
     </AppShell>
   );
 }

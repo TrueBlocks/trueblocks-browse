@@ -1,15 +1,18 @@
-import path from "path";
 import react from "@vitejs/plugin-react";
+import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "@assets": path.resolve(__dirname, "./src/assets"),
-      "@components": path.resolve(__dirname, "./src/components/index"),
-      "@gocode": path.resolve(__dirname, "./wailsjs/go")
-    }
-  }
+  plugins: [react(), tsconfigPaths()],
+  server: {
+    host: 'localhost',
+    port: 5173,
+    watch: {
+      usePolling: true,
+    },
+    hmr: {
+      host: 'localhost',
+      port: 5173,
+    },
+  },
 });
