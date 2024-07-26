@@ -20,6 +20,10 @@ export function GetHistoryPage(arg1:string,arg2:number,arg3:number):Promise<Arra
 
 export function GetLast(arg1:string):Promise<string>;
 
+export function GetMonitorsCnt():Promise<number>;
+
+export function GetMonitorsPage(arg1:number,arg2:number):Promise<Array<app.MonitorEx>>;
+
 export function GetNameTypes():Promise<Array<string>>;
 
 export function GetNamesCnt():Promise<number>;

@@ -37,12 +37,14 @@ func main() {
 			OnShutdown:       a.Shutdown,
 			BackgroundColour: nil,
 			LogLevel:         wLogger.ERROR,
+			// Find: NewViews
 			Bind: []interface{}{
 				a,
 				&messages.ProgressMsg{},
 				&app.NameEx{},
 				&app.TransactionEx{},
 				&servers.Server{},
+				&app.MonitorEx{},
 			},
 			EnumBind: []interface{}{
 				app.NameDbParts,

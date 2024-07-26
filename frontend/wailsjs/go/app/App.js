@@ -30,6 +30,14 @@ export function GetLast(arg1) {
   return window['go']['app']['App']['GetLast'](arg1);
 }
 
+export function GetMonitorsCnt() {
+  return window['go']['app']['App']['GetMonitorsCnt']();
+}
+
+export function GetMonitorsPage(arg1, arg2) {
+  return window['go']['app']['App']['GetMonitorsPage'](arg1, arg2);
+}
+
 export function GetNameTypes() {
   return window['go']['app']['App']['GetNameTypes']();
 }
