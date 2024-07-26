@@ -47,13 +47,10 @@ export function HistoryView() {
   }, [address]);
 
   useEffect(() => {
-    if (addr) {
+    if (addr && addr !== "" && addr !== ":address") {
       setAddress(addr);
-      if (!options.includes(addr)) {
-        setOptions((prevOptions) => [...prevOptions, addr]);
-      }
     } else {
-      setAddress("trueblocks.eth);
+      setAddress("trueblocks.eth");
     }
   }, [addr]);
 
