@@ -22,12 +22,12 @@ func (a *App) GetNamesCnt() int {
 }
 
 func (a *App) loadNames() error {
-	types := []names.Parts{names.Regular, names.Custom, names.Prefund, names.Baddress}
+	types := []names.Parts{names.Regular | names.Baddress, names.Custom, names.Prefund}
 	for _, t := range types {
-		if m, err := names.LoadNamesMap("mainnet", t, nil); err != nil {
+		if namesMap, err := names.LoadNamesMap("mainnet", t, nil); err != nil {
 			return err
 		} else {
-			for addr, name := range m {
+			for addr, name := range namesMap {
 				namex := NameEx{
 					Name: name,
 					Type: t,
