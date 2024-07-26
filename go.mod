@@ -10,7 +10,6 @@ replace (
 require (
 	github.com/TrueBlocks/trueblocks-core/sdk/v3 v3.0.0-20240718213142-3cffd1bf17f0
 	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20240718213142-3cffd1bf17f0
-	github.com/TrueBlocks/trueblocks-dalledress v0.0.0-20240725221625-5f2fc5469bb1
 	github.com/joho/godotenv v1.5.1
 	github.com/wailsapp/wails/v2 v2.8.2
 )
@@ -36,6 +35,7 @@ require (
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/gocarina/gocsv v0.0.0-20230123225133-763e25b40669 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
+	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect

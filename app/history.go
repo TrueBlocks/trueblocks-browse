@@ -1,13 +1,14 @@
 package app
 
+// Find: NewViews
 import (
 	"strings"
 	"sync"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	"github.com/TrueBlocks/trueblocks-dalledress/pkg/messages"
 )
 
 // TODO: This should be on the App and it should be a sync.Map because it

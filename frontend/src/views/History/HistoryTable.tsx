@@ -4,6 +4,7 @@ import { app } from "@gocode/models";
 import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
 import { CustomMeta } from "@components";
 
+// Find: NewViews
 type CustomColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {
   meta?: CustomMeta;
 };

@@ -1,6 +1,6 @@
 import React from "react";
 
-// Find: Routes
+// Find: NewViews
 import { IconHome, IconArticle, IconTag, IconServer, IconSettings, } from "@tabler/icons-react";
 import { HomeView, HistoryView, NamesView, ServersView, SettingsView } from "@views";
 
@@ -10,7 +10,7 @@ import { HomeView, HistoryView, NamesView, ServersView, SettingsView } from "@vi
 export const routeItems = [
   {
     order: 4,
-    route: "/history",
+    route: "/history/:address",
     label: "History",
     icon: <IconArticle />,
     component: HistoryView,

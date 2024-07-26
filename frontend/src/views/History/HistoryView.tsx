@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "wouter";
 import classes from "@/App.module.css";
 import { GetHistoryPage, GetHistoryCnt } from "@gocode/app/App";
 import { app } from "@gocode/models";
@@ -9,6 +10,7 @@ import { EditableSelect, View, ViewStatus } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { DataTable } from "@components";
 
+// Find: NewViews
 export function HistoryView() {
   const [address, setAddress] = useState<string>("trueblocks.eth");
   const [count, setCount] = useState<number>(0);
@@ -16,6 +18,9 @@ export function HistoryView() {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [items, setItems] = useState<app.TransactionEx[]>([]);
   const { curItem, perPage } = useKeyboardPaging<app.TransactionEx>(items, count, [address]);
+
+  const params = useParams();
+  const addr = params.address;
 
   useEffect(() => {
     if (loaded && !loading) {
@@ -25,7 +30,7 @@ export function HistoryView() {
       };
       fetch(address, curItem, perPage);
     }
-  }, [count, curItem, perPage]);
+  }, [count, curItem, perPage, address, loaded, loading]);
 
   useEffect(() => {
     setLoading(true);
@@ -40,6 +45,17 @@ export function HistoryView() {
       setLoading(false);
     }
   }, [address]);
+
+  useEffect(() => {
+    if (addr) {
+      setAddress(addr);
+      if (!options.includes(addr)) {
+        setOptions((prevOptions) => [...prevOptions, addr]);
+      }
+    } else {
+      setAddress("trueblocks.eth);
+    }
+  }, [addr]);
 
   const table = useReactTable({
     data: items,
