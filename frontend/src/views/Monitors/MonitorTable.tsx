@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "wouter";
-import { app } from "@gocode/models";
+import { types } from "@gocode/models";
 import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
 import { CustomMeta } from "@components";
 
@@ -9,9 +9,9 @@ type CustomColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {
   meta?: CustomMeta;
 };
 
-const monitorColumnHelper = createColumnHelper<app.MonitorEx>();
+const monitorColumnHelper = createColumnHelper<types.MonitorEx>();
 
-export const monitorColumns: CustomColumnDef<app.MonitorEx, any>[] = [
+export const monitorColumns: CustomColumnDef<types.MonitorEx, any>[] = [
   monitorColumnHelper.accessor("address", {
     header: () => "Address",
     cell: ({ getValue }) => {

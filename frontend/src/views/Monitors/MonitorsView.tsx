@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import classes from "@/App.module.css";
 import { GetMonitorsPage, GetMonitorsCnt } from "@gocode/app/App";
-import { app } from "@gocode/models";
+import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { Stack, Title } from "@mantine/core";
 import { monitorColumns } from "./MonitorTable";
@@ -14,8 +14,8 @@ export function MonitorsView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<app.MonitorEx[]>([]);
-  const { curItem, perPage } = useKeyboardPaging<app.MonitorEx>(items, count);
+  const [items, setItems] = useState<types.MonitorEx[]>([]);
+  const { curItem, perPage } = useKeyboardPaging<types.MonitorEx>(items, count);
 
   useEffect(() => {
     if (loaded && !loading) {
@@ -49,7 +49,7 @@ export function MonitorsView() {
         <Title order={3}>
           Monitors: showing record {curItem + 1}-{curItem + 1 + perPage - 1} of {count}
         </Title>
-        <DataTable<app.MonitorEx> table={table} loading={loading} />
+        <DataTable<types.MonitorEx> table={table} loading={loading} />
       </Stack>
       <ViewStatus />
     </View>

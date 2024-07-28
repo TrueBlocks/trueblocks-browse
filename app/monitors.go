@@ -2,11 +2,12 @@ package app
 
 // Find: NewViews
 import (
+	"github.com/TrueBlocks/trueblocks-browse/types"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
-func (a *App) GetMonitorsPage(first, pageSize int) []MonitorEx {
+func (a *App) GetMonitorsPage(first, pageSize int) []types.MonitorEx {
 	if len(a.monitors) == 0 {
 		return a.monitors
 	}
@@ -26,7 +27,7 @@ func (a *App) loadMonitors() error {
 		return err
 	} else {
 		for _, monitor := range monitors {
-			monitorEx := NewMonitorEx(a, &monitor)
+			monitorEx := types.NewMonitorEx(a.namesMap, &monitor)
 			a.monitors = append(a.monitors, monitorEx)
 			a.monitorsMap[monitorEx.Address] = monitorEx
 		}

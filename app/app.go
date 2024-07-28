@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-browse/servers"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -20,15 +21,15 @@ import (
 // is executed, we keep track of the first fatal error that has happened before Startup
 var startupError error
 
+// Find: NewViews
 type App struct {
 	ctx         context.Context
 	session     config.Session
 	apiKeys     map[string]string
-	// Find: NewViews
-	namesMap    map[base.Address]NameEx
-	names       []NameEx // We keep both for performance reasons
-	monitorsMap map[base.Address]MonitorEx
-	monitors    []MonitorEx // We keep both for performance reasons
+	namesMap    map[base.Address]types.NameEx
+	names       []types.NameEx // We keep both for performance reasons
+	monitorsMap map[base.Address]types.MonitorEx
+	monitors    []types.MonitorEx // We keep both for performance reasons
 	ensMap      map[string]base.Address
 	renderCtxs  map[base.Address][]*output.RenderCtx
 	// Add your application's data here
@@ -38,12 +39,12 @@ type App struct {
 	Ipfs       *servers.Ipfs
 }
 
+// Find: NewViews
 func NewApp() *App {
 	a := App{
 		apiKeys:     make(map[string]string),
-		// Find: NewViews
-		namesMap:    make(map[base.Address]NameEx),
-		monitorsMap: make(map[base.Address]MonitorEx),
+		namesMap:    make(map[base.Address]types.NameEx),
+		monitorsMap: make(map[base.Address]types.MonitorEx),
 		renderCtxs:  make(map[base.Address][]*output.RenderCtx),
 		ensMap:      make(map[string]base.Address),
 		// Initialize maps here

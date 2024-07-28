@@ -1,6 +1,6 @@
 import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
-import { app } from "@gocode/models";
+import { types } from "@gocode/models";
 import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
 import { CustomMeta } from "@components";
 
@@ -9,9 +9,9 @@ type CustomColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {
   meta?: CustomMeta;
 };
 
-const txColumnHelper = createColumnHelper<app.TransactionEx>();
+const txColumnHelper = createColumnHelper<types.TransactionEx>();
 
-export const txColumns: CustomColumnDef<app.TransactionEx, any>[] = [
+export const txColumns: CustomColumnDef<types.TransactionEx, any>[] = [
   txColumnHelper.accessor((row) => `${row.blockNumber}.${row.transactionIndex}`, {
     id: "blockTx",
     header: () => "Id",
@@ -35,7 +35,7 @@ export const txColumns: CustomColumnDef<app.TransactionEx, any>[] = [
   }),
   txColumnHelper.accessor("logCount", {
     header: () => "nEvents",
-    cell: (info) => info.renderValue(),
+    cell: (info) => (info.renderValue() === 0 ? "-" : info.renderValue()),
     meta: { className: "medium cell" },
   }),
   txColumnHelper.accessor("ether", {

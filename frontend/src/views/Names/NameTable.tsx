@@ -1,6 +1,6 @@
 import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
-import { app } from "@gocode/models";
+import { types } from "@gocode/models";
 import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
 import { CustomMeta } from "@components";
 import { NameTags } from "./NameTag";
@@ -9,9 +9,9 @@ type CustomColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {
   meta?: CustomMeta;
 };
 
-const nameColumnHelper = createColumnHelper<app.NameEx>();
+const nameColumnHelper = createColumnHelper<types.NameEx>();
 
-export const nameColumns: CustomColumnDef<app.NameEx, any>[] = [
+export const nameColumns: CustomColumnDef<types.NameEx, any>[] = [
   nameColumnHelper.accessor("type", {
     header: () => "Type",
     cell: (row) => <NameTags name={row.row.original} />,
