@@ -1,3 +1,8 @@
+code_gen
+databases
+inputs
+outputs
+makefile
 build
 backup_other
 .DS_Store
