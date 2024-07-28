@@ -4,6 +4,7 @@ import (
 	"time"
 
 	// "github.com/TrueBlocks/trueblocks-core/sdk/v3"
+	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
@@ -28,11 +29,19 @@ func (s *Scraper) Run() {
 
 	for {
 		if s.Server.State == Running {
-			// opts := sdk.ScrapeOptions{
-			// 	RunCount: 1,
-			// }
-			// _ = opts.Scrape()
-			s.Server.Notify()
+			opts := sdk.ScrapeOptions{
+				BlockCnt: 500,
+			}
+			msg, meta, err := opts.ScrapeRunCount(1)
+			if err != nil {
+				// TODO: handle error with message to front end
+				logger.Error(err)
+			}
+			notify := meta.String()
+			if len(msg) > 0 {
+				notify += " " + msg[0].Msg
+			}
+			s.Server.Notify(notify)
 		}
 		time.Sleep(s.Sleep * time.Millisecond)
 	}

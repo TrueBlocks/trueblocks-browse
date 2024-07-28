@@ -194,20 +194,19 @@ export namespace types {
 	}
 	export class TransactionEx {
 	    blockNumber: number;
-	    transactionIndex: number;
-	    timestamp: number;
 	    date: string;
+	    ether: string;
 	    from: base.Address;
 	    fromName: string;
-	    to: base.Address;
-	    toName: string;
-	    // Go type: base
-	    wei: any;
-	    ether: string;
 	    function: string;
 	    hasToken: boolean;
 	    isError: boolean;
 	    logCount: number;
+	    to: base.Address;
+	    toName: string;
+	    transactionIndex: number;
+	    // Go type: base
+	    wei: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new TransactionEx(source);
@@ -216,19 +215,18 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.blockNumber = source["blockNumber"];
-	        this.transactionIndex = source["transactionIndex"];
-	        this.timestamp = source["timestamp"];
 	        this.date = source["date"];
+	        this.ether = source["ether"];
 	        this.from = this.convertValues(source["from"], base.Address);
 	        this.fromName = source["fromName"];
-	        this.to = this.convertValues(source["to"], base.Address);
-	        this.toName = source["toName"];
-	        this.wei = this.convertValues(source["wei"], null);
-	        this.ether = source["ether"];
 	        this.function = source["function"];
 	        this.hasToken = source["hasToken"];
 	        this.isError = source["isError"];
 	        this.logCount = source["logCount"];
+	        this.to = this.convertValues(source["to"], base.Address);
+	        this.toName = source["toName"];
+	        this.transactionIndex = source["transactionIndex"];
+	        this.wei = this.convertValues(source["wei"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
