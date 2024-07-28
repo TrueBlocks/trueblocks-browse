@@ -39,6 +39,7 @@ func main() {
 			BackgroundColour: nil,
 			LogLevel:         wLogger.ERROR,
 			Bind: []interface{}{
+				// Find: NewViews
 				a,
 				&messages.ProgressMsg{},
 				&types.NameEx{},

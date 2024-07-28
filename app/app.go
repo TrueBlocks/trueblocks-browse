@@ -21,6 +21,7 @@ import (
 // is executed, we keep track of the first fatal error that has happened before Startup
 var startupError error
 
+// Find: NewViews
 type App struct {
 	ctx        context.Context
 	session    config.Session
@@ -36,6 +37,7 @@ type App struct {
 	Ipfs       *servers.Ipfs
 }
 
+// Find: NewViews
 func NewApp() *App {
 	a := App{
 		apiKeys:    make(map[string]string),
@@ -73,6 +75,7 @@ func (a *App) Startup(ctx context.Context) {
 	if startupError != nil {
 		a.Fatal(startupError.Error())
 	}
+	// Find: NewViews
 	if err := a.loadNames(); err != nil {
 		logger.Panic(err)
 	}
