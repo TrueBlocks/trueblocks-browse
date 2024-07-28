@@ -10,7 +10,6 @@ import { EditableSelect, View, ViewStatus } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { DataTable } from "@components";
 
-// Find: NewViews
 export function HistoryView() {
   const [address, setAddress] = useState<string>("trueblocks.eth");
   const [count, setCount] = useState<number>(0);

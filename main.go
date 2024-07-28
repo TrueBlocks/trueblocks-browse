@@ -38,10 +38,9 @@ func main() {
 			OnShutdown:       a.Shutdown,
 			BackgroundColour: nil,
 			LogLevel:         wLogger.ERROR,
-			// Find: NewViews
 			Menu:             a.GetMenus(),
+			// Find: NewViews
 			Bind: []interface{}{
-				// Find: NewViews
 				a,
 				&messages.ProgressMsg{},
 				&types.NameEx{},
