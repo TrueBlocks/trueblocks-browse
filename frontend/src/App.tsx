@@ -1,14 +1,30 @@
 import React, { useEffect } from "react";
 import { AppShell, Text } from "@mantine/core";
 import { Aside, Header, Navbar, Routes } from "@components";
+import { EventsOn, EventsOff } from "@runtime";
+import { useLocation } from "wouter";
 import classes from "@/App.module.css";
 
 function App() {
   const [showHelp, setShowHelp] = React.useState(true);
+  const [, setLocation] = useLocation();
 
   const toggleHelp = () => {
     setShowHelp(!showHelp);
   };
+
+  useEffect(() => {
+    const handleNavigation = (route: string) => {
+      console.log(`Navigating to ${route}`);
+      setLocation(route);
+    };
+
+    EventsOn("navigate", handleNavigation);
+
+    return () => {
+      EventsOff("navigate");
+    };
+  }, [setLocation]);
 
   return (
     <AppShell

@@ -14,6 +14,22 @@ export function Fatal(arg1) {
   return window['go']['app']['App']['Fatal'](arg1);
 }
 
+export function FileNew(arg1) {
+  return window['go']['app']['App']['FileNew'](arg1);
+}
+
+export function FileOpen(arg1) {
+  return window['go']['app']['App']['FileOpen'](arg1);
+}
+
+export function FileSave(arg1) {
+  return window['go']['app']['App']['FileSave'](arg1);
+}
+
+export function FileSaveAs(arg1) {
+  return window['go']['app']['App']['FileSaveAs'](arg1);
+}
+
 export function GetExistingAddrs() {
   return window['go']['app']['App']['GetExistingAddrs']();
 }
@@ -28,6 +44,10 @@ export function GetHistoryPage(arg1, arg2, arg3) {
 
 export function GetLast(arg1) {
   return window['go']['app']['App']['GetLast'](arg1);
+}
+
+export function GetMenus() {
+  return window['go']['app']['App']['GetMenus']();
 }
 
 export function GetNameTypes() {
@@ -70,6 +90,42 @@ export function String() {
   return window['go']['app']['App']['String']();
 }
 
+export function SystemAbout(arg1) {
+  return window['go']['app']['App']['SystemAbout'](arg1);
+}
+
+export function SystemQuit(arg1) {
+  return window['go']['app']['App']['SystemQuit'](arg1);
+}
+
 export function ToggleServer(arg1) {
   return window['go']['app']['App']['ToggleServer'](arg1);
+}
+
+export function ViewDalle(arg1) {
+  return window['go']['app']['App']['ViewDalle'](arg1);
+}
+
+export function ViewHistory(arg1) {
+  return window['go']['app']['App']['ViewHistory'](arg1);
+}
+
+export function ViewHome(arg1) {
+  return window['go']['app']['App']['ViewHome'](arg1);
+}
+
+export function ViewNames(arg1) {
+  return window['go']['app']['App']['ViewNames'](arg1);
+}
+
+export function ViewSeries(arg1) {
+  return window['go']['app']['App']['ViewSeries'](arg1);
+}
+
+export function ViewServers(arg1) {
+  return window['go']['app']['App']['ViewServers'](arg1);
+}
+
+export function ViewSettings(arg1) {
+  return window['go']['app']['App']['ViewSettings'](arg1);
 }
