@@ -21,15 +21,12 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-// Find: NewViews
-
 // EXISTING_CODE
 
 type MonitorEx struct {
 	Address      base.Address `json:"address"`
 	EnsName      string       `json:"ensName"`
 	Label        string       `json:"label"`
-	Stats        *Stats       `json:"stats"`
 	Transactions []string     `json:"transactions"`
 	Name         string       `json:"name"`
 	Deleted      bool         `json:"deleted"`
@@ -96,14 +93,6 @@ func (s *MonitorEx) MarshalCache(writer io.Writer) (err error) {
 		return err
 	}
 
-	// Stats
-	optStats := &cache.Optional[Stats]{
-		Value: s.Stats,
-	}
-	if err = cache.WriteValue(writer, optStats); err != nil {
-		return err
-	}
-
 	// Transactions
 	if err = cache.WriteValue(writer, s.Transactions); err != nil {
 		return err
@@ -131,15 +120,6 @@ func (s *MonitorEx) UnmarshalCache(vers uint64, reader io.Reader) (err error) {
 	if err = cache.ReadValue(reader, &s.Label, vers); err != nil {
 		return err
 	}
-
-	// Stats
-	optStats := &cache.Optional[Stats]{
-		Value: s.Stats,
-	}
-	if err = cache.ReadValue(reader, optStats, vers); err != nil {
-		return err
-	}
-	s.Stats = optStats.Get()
 
 	// Transactions
 	s.Transactions = make([]string, 0)

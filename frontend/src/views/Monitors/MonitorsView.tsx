@@ -9,7 +9,6 @@ import { DataTable } from "@components";
 import { View, ViewStatus } from "@components";
 import { useKeyboardPaging } from "@hooks";
 
-// Find: NewViews
 export function MonitorsView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);

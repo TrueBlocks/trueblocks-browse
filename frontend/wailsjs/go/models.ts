@@ -135,6 +135,52 @@ export namespace servers {
 export namespace types {
 	
 	
+	export class MonitorEx {
+	    address: base.Address;
+	    ensName: string;
+	    label: string;
+	    transactions: string[];
+	    name: string;
+	    deleted: boolean;
+	    fileSize: number;
+	    lastScanned: number;
+	    nRecords: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new MonitorEx(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.ensName = source["ensName"];
+	        this.label = source["label"];
+	        this.transactions = source["transactions"];
+	        this.name = source["name"];
+	        this.deleted = source["deleted"];
+	        this.fileSize = source["fileSize"];
+	        this.lastScanned = source["lastScanned"];
+	        this.nRecords = source["nRecords"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class NameEx {
 	    address: base.Address;
 	    decimals: number;

@@ -6,19 +6,10 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+// Find: NewViews
 func (a *App) ViewHome(cd *menu.CallbackData) {
 	logger.Info("View Home")
 	runtime.EventsEmit(a.ctx, "navigate", "/")
-}
-
-func (a *App) ViewDalle(cd *menu.CallbackData) {
-	logger.Info("View Dalle")
-	runtime.EventsEmit(a.ctx, "navigate", "/dalle")
-}
-
-func (a *App) ViewSeries(cd *menu.CallbackData) {
-	logger.Info("View Series")
-	runtime.EventsEmit(a.ctx, "navigate", "/series")
 }
 
 func (a *App) ViewHistory(cd *menu.CallbackData) {
@@ -28,6 +19,11 @@ func (a *App) ViewHistory(cd *menu.CallbackData) {
 		last = "trueblocks.eth"
 	}
 	runtime.EventsEmit(a.ctx, "navigate", "/history/"+last)
+}
+
+func (a *App) ViewMonitors(cd *menu.CallbackData) {
+	logger.Info("View Monitors")
+	runtime.EventsEmit(a.ctx, "navigate", "/monitors")
 }
 
 func (a *App) ViewNames(cd *menu.CallbackData) {
