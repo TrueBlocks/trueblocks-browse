@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-browse/servers"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -24,8 +25,8 @@ type App struct {
 	ctx        context.Context
 	session    config.Session
 	apiKeys    map[string]string
-	namesMap   map[base.Address]NameEx
-	names      []NameEx // We keep both for performance reasons
+	namesMap   map[base.Address]types.NameEx
+	names      []types.NameEx // We keep both for performance reasons
 	ensMap     map[string]base.Address
 	renderCtxs map[base.Address][]*output.RenderCtx
 	// Add your application's data here
@@ -38,7 +39,7 @@ type App struct {
 func NewApp() *App {
 	a := App{
 		apiKeys:    make(map[string]string),
-		namesMap:   make(map[base.Address]NameEx),
+		namesMap:   make(map[base.Address]types.NameEx),
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 		ensMap:     make(map[string]base.Address),
 		// Initialize maps here

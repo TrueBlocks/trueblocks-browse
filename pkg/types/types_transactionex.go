@@ -1,4 +1,4 @@
-package app
+package types
 
 // Find: NewViews
 import (
@@ -25,14 +25,14 @@ type TransactionEx struct {
 	LogCount         uint64         `json:"logCount"`
 }
 
-func NewTransactionEx(a *App, tx *types.Transaction) *TransactionEx {
-	fromName := a.namesMap[tx.From].Name.Name
+func NewTransactionEx(namesMap map[base.Address]NameEx, tx *types.Transaction) *TransactionEx {
+	fromName := namesMap[tx.From].Name.Name
 	if len(fromName) == 0 {
 		fromName = tx.From.String()
 	} else if len(fromName) > 39 {
 		fromName = fromName[:39] + "..."
 	}
-	toName := a.namesMap[tx.To].Name.Name
+	toName := namesMap[tx.To].Name.Name
 	if len(toName) == 0 {
 		toName = tx.To.String()
 	} else if len(toName) > 39 {

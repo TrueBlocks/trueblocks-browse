@@ -3,11 +3,12 @@ package app
 import (
 	"sort"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 )
 
-func (a *App) GetNamesPage(first, pageSize int) []NameEx {
+func (a *App) GetNamesPage(first, pageSize int) []types.NameEx {
 	if len(a.names) == 0 {
 		return a.names
 	}
@@ -22,16 +23,13 @@ func (a *App) GetNamesCnt() int {
 }
 
 func (a *App) loadNames() error {
-	types := []names.Parts{names.Regular | names.Baddress, names.Custom, names.Prefund}
-	for _, t := range types {
+	nameTypes := []names.Parts{names.Regular | names.Baddress, names.Custom, names.Prefund}
+	for _, t := range nameTypes {
 		if namesMap, err := names.LoadNamesMap("mainnet", t, nil); err != nil {
 			return err
 		} else {
 			for addr, name := range namesMap {
-				namex := NameEx{
-					Name: name,
-					Type: t,
-				}
+				namex := types.NewNameEx(name, t)
 				vv := a.namesMap[addr]
 				namex.Type |= vv.Type
 				a.namesMap[addr] = namex

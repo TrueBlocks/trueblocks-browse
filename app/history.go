@@ -6,21 +6,22 @@ import (
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 // TODO: This should be on the App and it should be a sync.Map because it
 // TODO: has the attributes described in the library's comments.
-var addrToHistoryMap = map[base.Address][]TransactionEx{}
+var addrToHistoryMap = map[base.Address][]types.TransactionEx{}
 var m = sync.Mutex{}
 
-func (a *App) GetHistoryPage(addr string, first, pageSize int) []TransactionEx {
+func (a *App) GetHistoryPage(addr string, first, pageSize int) []types.TransactionEx {
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
 		messages.SendMessage(a.ctx, base.ZeroAddr, messages.Error, "Invalid address")
-		return []TransactionEx{}
+		return []types.TransactionEx{}
 	}
 
 	m.Lock()
@@ -43,11 +44,11 @@ func (a *App) GetHistoryPage(addr string, first, pageSize int) []TransactionEx {
 			for {
 				select {
 				case model := <-opts.RenderCtx.ModelChan:
-					tx, ok := model.(*types.Transaction)
+					tx, ok := model.(*coreTypes.Transaction)
 					if !ok {
 						continue
 					}
-					txEx := NewTransactionEx(a, tx)
+					txEx := types.NewTransactionEx(a.namesMap, tx)
 					m.Lock()
 					addrToHistoryMap[address] = append(addrToHistoryMap[address], *txEx)
 					if len(addrToHistoryMap[address])%pageSize == 0 {
@@ -71,7 +72,7 @@ func (a *App) GetHistoryPage(addr string, first, pageSize int) []TransactionEx {
 		_, _, err := opts.Export()
 		if err != nil {
 			messages.SendMessage(a.ctx, address, messages.Error, err.Error())
-			return []TransactionEx{}
+			return []types.TransactionEx{}
 		}
 
 		messages.SendMessage(a.ctx, address, messages.Completed, "")
