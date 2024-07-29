@@ -25,14 +25,12 @@ import (
 
 type MonitorEx struct {
 	Address      base.Address `json:"address"`
+	Deleted      bool         `json:"deleted"`
 	EnsName      string       `json:"ensName"`
 	Label        string       `json:"label"`
-	Transactions []string     `json:"transactions"`
 	Name         string       `json:"name"`
-	Deleted      bool         `json:"deleted"`
-	FileSize     int64        `json:"fileSize"`
-	LastScanned  uint32       `json:"lastScanned"`
-	NRecords     int64        `json:"nRecords"`
+	Stats        *Stats       `json:"stats"`
+	Transactions []string     `json:"transactions"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -60,7 +58,7 @@ func (s *MonitorEx) CacheName() string {
 }
 
 func (s *MonitorEx) CacheId() string {
-	return fmt.Sprintf("%0s", "JUNK") // s.GetCacheName())
+	return fmt.Sprintf("%0s", s.GetCacheName())
 }
 
 func (s *MonitorEx) CacheLocation() (directory string, extension string) {
@@ -83,6 +81,11 @@ func (s *MonitorEx) MarshalCache(writer io.Writer) (err error) {
 		return err
 	}
 
+	// Deleted
+	if err = cache.WriteValue(writer, s.Deleted); err != nil {
+		return err
+	}
+
 	// EnsName
 	if err = cache.WriteValue(writer, s.EnsName); err != nil {
 		return err
@@ -90,6 +93,19 @@ func (s *MonitorEx) MarshalCache(writer io.Writer) (err error) {
 
 	// Label
 	if err = cache.WriteValue(writer, s.Label); err != nil {
+		return err
+	}
+
+	// Name
+	if err = cache.WriteValue(writer, s.Name); err != nil {
+		return err
+	}
+
+	// Stats
+	optStats := &cache.Optional[Stats]{
+		Value: s.Stats,
+	}
+	if err = cache.WriteValue(writer, optStats); err != nil {
 		return err
 	}
 
@@ -111,6 +127,11 @@ func (s *MonitorEx) UnmarshalCache(vers uint64, reader io.Reader) (err error) {
 		return err
 	}
 
+	// Deleted
+	if err = cache.ReadValue(reader, &s.Deleted, vers); err != nil {
+		return err
+	}
+
 	// EnsName
 	if err = cache.ReadValue(reader, &s.EnsName, vers); err != nil {
 		return err
@@ -120,6 +141,20 @@ func (s *MonitorEx) UnmarshalCache(vers uint64, reader io.Reader) (err error) {
 	if err = cache.ReadValue(reader, &s.Label, vers); err != nil {
 		return err
 	}
+
+	// Name
+	if err = cache.ReadValue(reader, &s.Name, vers); err != nil {
+		return err
+	}
+
+	// Stats
+	optStats := &cache.Optional[Stats]{
+		Value: s.Stats,
+	}
+	if err = cache.ReadValue(reader, optStats, vers); err != nil {
+		return err
+	}
+	s.Stats = optStats.Get()
 
 	// Transactions
 	s.Transactions = make([]string, 0)
