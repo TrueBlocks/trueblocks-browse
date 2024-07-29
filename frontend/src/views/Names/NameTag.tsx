@@ -1,8 +1,8 @@
 import React, { ReactNode, useEffect } from "react";
 import { Badge } from "@mantine/core";
-import { app, names } from "@gocode/models";
+import { types, names } from "@gocode/models";
 
-export const NameTags = ({ name }: { name: app.NameEx }) => {
+export const NameTags = ({ name }: { name: types.NameEx }) => {
   const [tags, setTags] = React.useState<ReactNode>([]);
 
   useEffect(() => {

@@ -8,6 +8,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/app"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-browse/servers"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/wailsapp/wails/v2"
@@ -38,13 +39,15 @@ func main() {
 			BackgroundColour: nil,
 			LogLevel:         wLogger.ERROR,
 			Bind: []interface{}{
+				// Find: NewViews
 				a,
 				&messages.ProgressMsg{},
-				&app.NameEx{},
+				&types.NameEx{},
+				&types.TransactionEx{},
 				&servers.Server{},
 			},
 			EnumBind: []interface{}{
-				app.NameDbParts,
+				types.NameDbParts,
 				servers.Types,
 				servers.States,
 			},

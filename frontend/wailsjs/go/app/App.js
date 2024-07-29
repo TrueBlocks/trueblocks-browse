@@ -6,8 +6,24 @@ export function Cancel(arg1) {
   return window['go']['app']['App']['Cancel'](arg1);
 }
 
+export function ConvertToAddress(arg1) {
+  return window['go']['app']['App']['ConvertToAddress'](arg1);
+}
+
 export function Fatal(arg1) {
   return window['go']['app']['App']['Fatal'](arg1);
+}
+
+export function GetExistingAddrs() {
+  return window['go']['app']['App']['GetExistingAddrs']();
+}
+
+export function GetHistoryCnt(arg1) {
+  return window['go']['app']['App']['GetHistoryCnt'](arg1);
+}
+
+export function GetHistoryPage(arg1, arg2, arg3) {
+  return window['go']['app']['App']['GetHistoryPage'](arg1, arg2, arg3);
 }
 
 export function GetLast(arg1) {
