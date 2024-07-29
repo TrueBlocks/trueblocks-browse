@@ -39,13 +39,14 @@ func main() {
 			BackgroundColour: nil,
 			LogLevel:         wLogger.ERROR,
 			Menu:             a.GetMenus(),
+			// Find: NewViews
 			Bind: []interface{}{
-				// Find: NewViews
 				a,
 				&messages.ProgressMsg{},
 				&types.NameEx{},
 				&types.TransactionEx{},
 				&servers.Server{},
+				&types.MonitorEx{},
 			},
 			EnumBind: []interface{}{
 				types.NameDbParts,

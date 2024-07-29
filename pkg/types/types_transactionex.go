@@ -1,12 +1,9 @@
 package types
 
-// Find: NewViews
 import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
-
-// Find: NewViews
 
 type TransactionEx struct {
 	BlockNumber      base.Blknum  `json:"blockNumber"`

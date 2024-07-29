@@ -50,6 +50,14 @@ export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
 
+export function GetMonitorsCnt() {
+  return window['go']['app']['App']['GetMonitorsCnt']();
+}
+
+export function GetMonitorsPage(arg1, arg2) {
+  return window['go']['app']['App']['GetMonitorsPage'](arg1, arg2);
+}
+
 export function GetNameTypes() {
   return window['go']['app']['App']['GetNameTypes']();
 }
@@ -102,10 +110,6 @@ export function ToggleServer(arg1) {
   return window['go']['app']['App']['ToggleServer'](arg1);
 }
 
-export function ViewDalle(arg1) {
-  return window['go']['app']['App']['ViewDalle'](arg1);
-}
-
 export function ViewHistory(arg1) {
   return window['go']['app']['App']['ViewHistory'](arg1);
 }
@@ -114,12 +118,12 @@ export function ViewHome(arg1) {
   return window['go']['app']['App']['ViewHome'](arg1);
 }
 
-export function ViewNames(arg1) {
-  return window['go']['app']['App']['ViewNames'](arg1);
+export function ViewMonitors(arg1) {
+  return window['go']['app']['App']['ViewMonitors'](arg1);
 }
 
-export function ViewSeries(arg1) {
-  return window['go']['app']['App']['ViewSeries'](arg1);
+export function ViewNames(arg1) {
+  return window['go']['app']['App']['ViewNames'](arg1);
 }
 
 export function ViewServers(arg1) {

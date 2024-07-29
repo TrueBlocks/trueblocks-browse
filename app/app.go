@@ -23,13 +23,15 @@ var startupError error
 
 // Find: NewViews
 type App struct {
-	ctx        context.Context
-	session    config.Session
-	apiKeys    map[string]string
-	namesMap   map[base.Address]types.NameEx
-	names      []types.NameEx // We keep both for performance reasons
-	ensMap     map[string]base.Address
-	renderCtxs map[base.Address][]*output.RenderCtx
+	ctx         context.Context
+	session     config.Session
+	apiKeys     map[string]string
+	namesMap    map[base.Address]types.NameEx
+	names       []types.NameEx // We keep both for performance reasons
+	monitorsMap map[base.Address]types.MonitorEx
+	monitors    []types.MonitorEx // We keep both for performance reasons
+	ensMap      map[string]base.Address
+	renderCtxs  map[base.Address][]*output.RenderCtx
 	// Add your application's data here
 	Scraper    *servers.Scraper
 	FileServer *servers.FileServer
@@ -40,10 +42,11 @@ type App struct {
 // Find: NewViews
 func NewApp() *App {
 	a := App{
-		apiKeys:    make(map[string]string),
-		namesMap:   make(map[base.Address]types.NameEx),
-		renderCtxs: make(map[base.Address][]*output.RenderCtx),
-		ensMap:     make(map[string]base.Address),
+		apiKeys:     make(map[string]string),
+		namesMap:    make(map[base.Address]types.NameEx),
+		monitorsMap: make(map[base.Address]types.MonitorEx),
+		renderCtxs:  make(map[base.Address][]*output.RenderCtx),
+		ensMap:      make(map[string]base.Address),
 		// Initialize maps here
 		Scraper:    servers.NewScraper("scraper", 1000), // TODO: Should be seven seconds
 		FileServer: servers.NewFileServer("fileserver", 8080, 1000),
@@ -77,6 +80,9 @@ func (a *App) Startup(ctx context.Context) {
 	}
 	// Find: NewViews
 	if err := a.loadNames(); err != nil {
+		logger.Panic(err)
+	}
+	if err := a.loadMonitors(); err != nil {
 		logger.Panic(err)
 	}
 	a.Scraper.MsgCtx = ctx

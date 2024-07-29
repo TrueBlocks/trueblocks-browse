@@ -31,6 +31,10 @@ export function GetLast(arg1:string):Promise<string>;
 
 export function GetMenus():Promise<menu.Menu>;
 
+export function GetMonitorsCnt():Promise<number>;
+
+export function GetMonitorsPage(arg1:number,arg2:number):Promise<Array<types.MonitorEx>>;
+
 export function GetNameTypes():Promise<Array<string>>;
 
 export function GetNamesCnt():Promise<number>;
@@ -57,15 +61,13 @@ export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
 
 export function ToggleServer(arg1:string):Promise<void>;
 
-export function ViewDalle(arg1:menu.CallbackData):Promise<void>;
-
 export function ViewHistory(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewHome(arg1:menu.CallbackData):Promise<void>;
 
-export function ViewNames(arg1:menu.CallbackData):Promise<void>;
+export function ViewMonitors(arg1:menu.CallbackData):Promise<void>;
 
-export function ViewSeries(arg1:menu.CallbackData):Promise<void>;
+export function ViewNames(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewServers(arg1:menu.CallbackData):Promise<void>;
 

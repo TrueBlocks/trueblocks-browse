@@ -1,6 +1,5 @@
 package app
 
-// Find: NewViews
 import (
 	"strings"
 	"sync"
