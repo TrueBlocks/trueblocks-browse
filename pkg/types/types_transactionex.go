@@ -10,6 +10,12 @@ package types
 
 // EXISTING_CODE
 import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"path/filepath"
+	"strings"
+
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/cache"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -226,6 +232,10 @@ func (s *TransactionEx) FinishUnmarshal() {
 }
 
 // EXISTING_CODE
+func (s *TransactionEx) GetCacheName() string {
+	return "TransactionEx"
+}
+
 func NewTransactionEx(namesMap map[base.Address]NameEx, tx *coreTypes.Transaction) *TransactionEx {
 	fromName := namesMap[tx.From].Name.Name
 	if len(fromName) == 0 {

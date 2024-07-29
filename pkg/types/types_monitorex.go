@@ -27,7 +27,10 @@ type MonitorEx struct {
 	Address      base.Address `json:"address"`
 	Deleted      bool         `json:"deleted"`
 	EnsName      string       `json:"ensName"`
+	FileSize     int64        `json:"fileSize"`
 	Label        string       `json:"label"`
+	LastScanned  uint32       `json:"lastScanned"`
+	NRecords     int64        `json:"nRecords"`
 	Name         string       `json:"name"`
 	Stats        *Stats       `json:"stats"`
 	Transactions []string     `json:"transactions"`
@@ -91,8 +94,23 @@ func (s *MonitorEx) MarshalCache(writer io.Writer) (err error) {
 		return err
 	}
 
+	// FileSize
+	if err = cache.WriteValue(writer, s.FileSize); err != nil {
+		return err
+	}
+
 	// Label
 	if err = cache.WriteValue(writer, s.Label); err != nil {
+		return err
+	}
+
+	// LastScanned
+	if err = cache.WriteValue(writer, s.LastScanned); err != nil {
+		return err
+	}
+
+	// NRecords
+	if err = cache.WriteValue(writer, s.NRecords); err != nil {
 		return err
 	}
 
@@ -137,8 +155,23 @@ func (s *MonitorEx) UnmarshalCache(vers uint64, reader io.Reader) (err error) {
 		return err
 	}
 
+	// FileSize
+	if err = cache.ReadValue(reader, &s.FileSize, vers); err != nil {
+		return err
+	}
+
 	// Label
 	if err = cache.ReadValue(reader, &s.Label, vers); err != nil {
+		return err
+	}
+
+	// LastScanned
+	if err = cache.ReadValue(reader, &s.LastScanned, vers); err != nil {
+		return err
+	}
+
+	// NRecords
+	if err = cache.ReadValue(reader, &s.NRecords, vers); err != nil {
 		return err
 	}
 
@@ -174,6 +207,10 @@ func (s *MonitorEx) FinishUnmarshal() {
 }
 
 // EXISTING_CODE
+func (s *MonitorEx) GetCacheName() string {
+	return "MonitorEx"
+}
+
 func NewMonitorEx(namesMap map[base.Address]NameEx, m *coreTypes.Monitor) MonitorEx {
 	return MonitorEx{
 		Address:     m.Address,

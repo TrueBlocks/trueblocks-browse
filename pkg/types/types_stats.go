@@ -9,6 +9,16 @@
 package types
 
 // EXISTING_CODE
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"path/filepath"
+	"strings"
+
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/cache"
+)
+
 // EXISTING_CODE
 
 type Stats struct {
@@ -165,4 +175,8 @@ func (s *Stats) FinishUnmarshal() {
 }
 
 // EXISTING_CODE
+func (s *Stats) GetCacheName() string {
+	return "Stats"
+}
+
 // EXISTING_CODE

@@ -18,6 +18,10 @@ export function FinishUnmarshal() {
   return window['go']['types']['MonitorEx']['FinishUnmarshal']();
 }
 
+export function GetCacheName() {
+  return window['go']['types']['MonitorEx']['GetCacheName']();
+}
+
 export function MarshalCache(arg1) {
   return window['go']['types']['MonitorEx']['MarshalCache'](arg1);
 }
