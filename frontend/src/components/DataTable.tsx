@@ -1,26 +1,15 @@
-import { useRef, useState } from "react";
 import "./DataTable.css";
-import { Card, Table, Title } from "@mantine/core";
+import { Table, Title } from "@mantine/core";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
-import { PopupContext, usePopup } from "./DataTablePopup";
+import { DataPopover } from "./DataTablePopover";
 import { CustomMeta } from "./";
 
 export function DataTable<T>({ table, loading }: { table: ReactTable<T>; loading: boolean }) {
-  const popup = useRef<HTMLDivElement>(null);
-  const { floatingStyles, setTarget, triggerProps, opened } = usePopup(popup);
-  const [popupContent, setPopupContent] = useState<React.ReactNode>();
-
-  const value = {
-    opened,
-    setTarget,
-  }
-
   if (loading) {
     return <Title order={3}>Loading...</Title>;
   } else {
     return (
       <>
-        <PopupContext.Provider value={value}>
         <Table>
           <Table.Thead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -39,8 +28,10 @@ export function DataTable<T>({ table, loading }: { table: ReactTable<T>; loading
                 {row.getVisibleCells().map((cell) => {
                   const meta = cell.column.columnDef.meta as CustomMeta;
                   return (
-                    <Table.Td key={cell.id} className={meta?.className} onClick={(e) => { if (opened) { setTarget(undefined); return; } setPopupContent(meta.editor?.(cell.getValue)); setTarget(e.currentTarget); }} {...triggerProps}>
+                    <Table.Td key={cell.id} className={meta?.className}>
+                      <DataPopover editor={meta.editor?.(cell.getValue)}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </DataPopover>
                     </Table.Td>
                   );
                 })}
@@ -48,14 +39,6 @@ export function DataTable<T>({ table, loading }: { table: ReactTable<T>; loading
             ))}
           </Table.Tbody>
         </Table>
-
-
-        <div ref={popup} style={floatingStyles} data-popup>
-          <Card shadow="sm" padding="sm" withBorder>
-            {popupContent}
-          </Card>
-        </div>
-</PopupContext.Provider>
       </>
     );
   }

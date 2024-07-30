@@ -4,7 +4,7 @@ import { app } from "@gocode/models";
 import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
 import { CustomMeta } from "@components";
 import { NameTags } from "./NameTag";
-import { DataTableStringEditor } from "@/components/DataTablePopup";
+import { DataTableStringEditor } from "@/components/DataTablePopover";
 
 type CustomColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {
   meta?: CustomMeta;
@@ -31,7 +31,7 @@ export const nameColumns: CustomColumnDef<app.NameEx, any>[] = [
   nameColumnHelper.accessor("name", {
     header: () => "Name",
     cell: (info) => info.renderValue(),
-    meta: { className: "wide cell", editor: (getValue: () => any) => <DataTableStringEditor value={getValue} /> },
+    meta: { className: "wide cell", editor: (getValue: () => any) => <DataTableStringEditor value={getValue} onSubmit={(newValue) => console.log(newValue)} /> },
   }),
   nameColumnHelper.accessor("symbol", {
     header: () => "Symbol",
