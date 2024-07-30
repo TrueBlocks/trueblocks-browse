@@ -3,15 +3,7 @@
 import {io} from '../models';
 import {types} from '../models';
 
-export function CacheId():Promise<string>;
-
-export function CacheLocation():Promise<string|string>;
-
-export function CacheName():Promise<string>;
-
 export function FinishUnmarshal():Promise<void>;
-
-export function GetCacheName():Promise<string>;
 
 export function MarshalCache(arg1:io.Writer):Promise<void>;
 

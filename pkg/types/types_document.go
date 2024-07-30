@@ -11,19 +11,20 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"fmt"
 	"io"
-	"path/filepath"
-	"strings"
 
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/cache"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 )
 
 // EXISTING_CODE
 
 type Document struct {
-	Filename string      `json:"filename"`
-	Monitors []MonitorEx `json:"monitors"`
+	Dirty      bool        `json:"dirty"`
+	Filename   string      `json:"filename"`
+	LastUpdate base.Blknum `json:"lastUpdate"`
+	Monitors   []MonitorEx `json:"monitors"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -46,31 +47,23 @@ func (s *Document) Model(chain, format string, verbose bool, extraOpts map[strin
 	}
 }
 
-func (s *Document) CacheName() string {
-	return "Document"
-}
-
-func (s *Document) CacheId() string {
-	return fmt.Sprintf("%0s", s.GetCacheName())
-}
-
-func (s *Document) CacheLocation() (directory string, extension string) {
-	paddedId := s.CacheId()
-	parts := make([]string, 3)
-	parts[0] = paddedId[:2]
-	parts[1] = paddedId[2:4]
-	parts[2] = paddedId[4:6]
-
-	subFolder := strings.ToLower(s.CacheName()) + "s"
-	directory = filepath.Join(subFolder, filepath.Join(parts...))
-	extension = "bin"
-
-	return
+func (s *Document) CacheLocations() (string, string, string) {
+	return file.GetPathParts(s.Filename)
 }
 
 func (s *Document) MarshalCache(writer io.Writer) (err error) {
+	// Dirty
+	if err = cache.WriteValue(writer, s.Dirty); err != nil {
+		return err
+	}
+
 	// Filename
 	if err = cache.WriteValue(writer, s.Filename); err != nil {
+		return err
+	}
+
+	// LastUpdate
+	if err = cache.WriteValue(writer, s.LastUpdate); err != nil {
 		return err
 	}
 
@@ -91,8 +84,18 @@ func (s *Document) UnmarshalCache(vers uint64, reader io.Reader) (err error) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
+	// Dirty
+	if err = cache.ReadValue(reader, &s.Dirty, vers); err != nil {
+		return err
+	}
+
 	// Filename
 	if err = cache.ReadValue(reader, &s.Filename, vers); err != nil {
+		return err
+	}
+
+	// LastUpdate
+	if err = cache.ReadValue(reader, &s.LastUpdate, vers); err != nil {
 		return err
 	}
 
@@ -114,8 +117,15 @@ func (s *Document) FinishUnmarshal() {
 }
 
 // EXISTING_CODE
-func (s *Document) GetCacheName() string {
-	return s.Filename
+func (s *Document) Save() error {
+	if store, err := cache.NewStore(&cache.StoreOptions{
+		Location: cache.FsCache,
+		ReadOnly: false,
+	}); err != nil {
+		return err
+	} else {
+		return store.Write(s, nil)
+	}
 }
 
 // EXISTING_CODE

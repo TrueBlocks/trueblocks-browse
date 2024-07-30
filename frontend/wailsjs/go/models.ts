@@ -46,6 +46,19 @@ export namespace config {
 
 }
 
+export namespace messages {
+	
+	export enum Message {
+	    COMPLETED = 0,
+	    ERROR = 1,
+	    WARN = 2,
+	    PROGRESS = 3,
+	    SERVER = 4,
+	    DOCUMENT = 5,
+	}
+
+}
+
 export namespace names {
 	
 	export enum Parts {
@@ -76,17 +89,17 @@ export namespace output {
 
 export namespace servers {
 	
-	export enum State {
-	    STOPPED = 0,
-	    RUNNING = 1,
-	    PAUSED = 2,
-	}
 	export enum Type {
 	    FILESERVER = 0,
 	    SCRAPER = 1,
 	    MONITOR = 2,
 	    API = 3,
 	    IPFS = 4,
+	}
+	export enum State {
+	    STOPPED = 0,
+	    RUNNING = 1,
+	    PAUSED = 2,
 	}
 	export class Server {
 	    name: string;

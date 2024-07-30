@@ -11,10 +11,7 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"fmt"
 	"io"
-	"path/filepath"
-	"strings"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/cache"
@@ -54,28 +51,6 @@ func (s *MonitorEx) Model(chain, format string, verbose bool, extraOpts map[stri
 		Data:  model,
 		Order: order,
 	}
-}
-
-func (s *MonitorEx) CacheName() string {
-	return "MonitorEx"
-}
-
-func (s *MonitorEx) CacheId() string {
-	return fmt.Sprintf("%0s", s.GetCacheName())
-}
-
-func (s *MonitorEx) CacheLocation() (directory string, extension string) {
-	paddedId := s.CacheId()
-	parts := make([]string, 3)
-	parts[0] = paddedId[:2]
-	parts[1] = paddedId[2:4]
-	parts[2] = paddedId[4:6]
-
-	subFolder := strings.ToLower(s.CacheName()) + "s"
-	directory = filepath.Join(subFolder, filepath.Join(parts...))
-	extension = "bin"
-
-	return
 }
 
 func (s *MonitorEx) MarshalCache(writer io.Writer) (err error) {
@@ -207,10 +182,6 @@ func (s *MonitorEx) FinishUnmarshal() {
 }
 
 // EXISTING_CODE
-func (s *MonitorEx) GetCacheName() string {
-	return "MonitorEx"
-}
-
 func NewMonitorEx(namesMap map[base.Address]NameEx, m *coreTypes.Monitor) MonitorEx {
 	return MonitorEx{
 		Address:     m.Address,

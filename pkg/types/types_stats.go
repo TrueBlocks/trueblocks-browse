@@ -11,10 +11,7 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"fmt"
 	"io"
-	"path/filepath"
-	"strings"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/cache"
 )
@@ -50,28 +47,6 @@ func (s *Stats) Model(chain, format string, verbose bool, extraOpts map[string]a
 		Data:  model,
 		Order: order,
 	}
-}
-
-func (s *Stats) CacheName() string {
-	return "Stats"
-}
-
-func (s *Stats) CacheId() string {
-	return fmt.Sprintf("%0s", s.GetCacheName())
-}
-
-func (s *Stats) CacheLocation() (directory string, extension string) {
-	paddedId := s.CacheId()
-	parts := make([]string, 3)
-	parts[0] = paddedId[:2]
-	parts[1] = paddedId[2:4]
-	parts[2] = paddedId[4:6]
-
-	subFolder := strings.ToLower(s.CacheName()) + "s"
-	directory = filepath.Join(subFolder, filepath.Join(parts...))
-	extension = "bin"
-
-	return
 }
 
 func (s *Stats) MarshalCache(writer io.Writer) (err error) {
@@ -175,8 +150,4 @@ func (s *Stats) FinishUnmarshal() {
 }
 
 // EXISTING_CODE
-func (s *Stats) GetCacheName() string {
-	return "Stats"
-}
-
 // EXISTING_CODE
