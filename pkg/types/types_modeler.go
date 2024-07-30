@@ -10,6 +10,4 @@ type Model struct {
 }
 
 // EXISTING_CODE
-// Find: NewViews
-
 // EXISTING_CODE
