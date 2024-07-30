@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
 )
 
@@ -65,11 +64,11 @@ func (s *Server) Notify(msg ...string) {
 		msg,
 	)
 	// fmt.Printf("%sNotify: %s%s\n", color, msgOut, colors.Off)
-	messages.SendMessage(s.MsgCtx, base.ZeroAddr, messages.Server, messages.ServerMsg{
-		Name:    strings.ToLower(s.Name),
-		Message: msgOut,
-		Color:   s.Color,
-	})
+	messages.Send(s.MsgCtx, messages.Server, messages.NewServerMsg(
+		strings.ToLower(s.Name),
+		msgOut,
+		color,
+	))
 }
 
 type Serverer *interface {

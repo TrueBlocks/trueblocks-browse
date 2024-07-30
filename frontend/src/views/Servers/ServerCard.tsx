@@ -3,7 +3,7 @@ import { Card, Text, Group, Badge, Title } from "@mantine/core";
 import { StateToString } from "@gocode/app/App";
 import { servers } from "@gocode/models";
 
-export const ServerCard = ({ server, toggle }: { server: servers.Server; toggle: (name: string) => void }) => {
+export const ServerCard = ({ server, toggle }: { server: servers.Server; toggle: (name: servers.Type) => void }) => {
   const [stateStr, setStateStr] = useState<string>("");
   const { name, sleep, started, color, runs, state } = server;
 

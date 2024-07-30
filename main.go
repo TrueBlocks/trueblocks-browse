@@ -42,16 +42,20 @@ func main() {
 			// Find: NewViews
 			Bind: []interface{}{
 				a,
+				&messages.DocumentMsg{},
+				&messages.ServerMsg{},
 				&messages.ProgressMsg{},
+				&messages.ErrorMsg{},
 				&types.NameEx{},
 				&types.TransactionEx{},
 				&servers.Server{},
 				&types.MonitorEx{},
 			},
 			EnumBind: []interface{}{
-				types.NameDbParts,
+				types.NameParts,
 				servers.Types,
 				servers.States,
+				messages.Messages,
 			},
 			StartHidden: true,
 			AssetServer: &assetserver.Options{

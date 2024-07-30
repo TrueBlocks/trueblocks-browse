@@ -41,7 +41,7 @@ export function GetNamesCnt():Promise<number>;
 
 export function GetNamesPage(arg1:number,arg2:number):Promise<Array<types.NameEx>>;
 
-export function GetServer(arg1:string):Promise<servers.Server>;
+export function GetServer(arg1:servers.Type):Promise<servers.Server>;
 
 export function GetSession():Promise<config.Session>;
 
@@ -51,7 +51,7 @@ export function SetLast(arg1:string,arg2:string):Promise<void>;
 
 export function StartServers():Promise<void>;
 
-export function StateToString(arg1:string):Promise<string>;
+export function StateToString(arg1:servers.Type):Promise<string>;
 
 export function String():Promise<string>;
 
@@ -59,7 +59,7 @@ export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
 
-export function ToggleServer(arg1:string):Promise<void>;
+export function ToggleServer(arg1:servers.Type):Promise<void>;
 
 export function ViewHistory(arg1:menu.CallbackData):Promise<void>;
 

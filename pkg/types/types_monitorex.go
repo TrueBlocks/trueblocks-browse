@@ -11,10 +11,7 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"fmt"
 	"io"
-	"path/filepath"
-	"strings"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/cache"
@@ -25,14 +22,15 @@ import (
 
 type MonitorEx struct {
 	Address      base.Address `json:"address"`
-	EnsName      string       `json:"ensName"`
-	Label        string       `json:"label"`
-	Transactions []string     `json:"transactions"`
-	Name         string       `json:"name"`
 	Deleted      bool         `json:"deleted"`
+	EnsName      string       `json:"ensName"`
 	FileSize     int64        `json:"fileSize"`
+	Label        string       `json:"label"`
 	LastScanned  uint32       `json:"lastScanned"`
 	NRecords     int64        `json:"nRecords"`
+	Name         string       `json:"name"`
+	Stats        *Stats       `json:"stats"`
+	Transactions []string     `json:"transactions"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -55,31 +53,14 @@ func (s *MonitorEx) Model(chain, format string, verbose bool, extraOpts map[stri
 	}
 }
 
-func (s *MonitorEx) CacheName() string {
-	return "MonitorEx"
-}
-
-func (s *MonitorEx) CacheId() string {
-	return fmt.Sprintf("%0s", "JUNK") // s.GetCacheName())
-}
-
-func (s *MonitorEx) CacheLocation() (directory string, extension string) {
-	paddedId := s.CacheId()
-	parts := make([]string, 3)
-	parts[0] = paddedId[:2]
-	parts[1] = paddedId[2:4]
-	parts[2] = paddedId[4:6]
-
-	subFolder := strings.ToLower(s.CacheName()) + "s"
-	directory = filepath.Join(subFolder, filepath.Join(parts...))
-	extension = "bin"
-
-	return
-}
-
 func (s *MonitorEx) MarshalCache(writer io.Writer) (err error) {
 	// Address
 	if err = cache.WriteValue(writer, s.Address); err != nil {
+		return err
+	}
+
+	// Deleted
+	if err = cache.WriteValue(writer, s.Deleted); err != nil {
 		return err
 	}
 
@@ -88,8 +69,36 @@ func (s *MonitorEx) MarshalCache(writer io.Writer) (err error) {
 		return err
 	}
 
+	// FileSize
+	if err = cache.WriteValue(writer, s.FileSize); err != nil {
+		return err
+	}
+
 	// Label
 	if err = cache.WriteValue(writer, s.Label); err != nil {
+		return err
+	}
+
+	// LastScanned
+	if err = cache.WriteValue(writer, s.LastScanned); err != nil {
+		return err
+	}
+
+	// NRecords
+	if err = cache.WriteValue(writer, s.NRecords); err != nil {
+		return err
+	}
+
+	// Name
+	if err = cache.WriteValue(writer, s.Name); err != nil {
+		return err
+	}
+
+	// Stats
+	optStats := &cache.Optional[Stats]{
+		Value: s.Stats,
+	}
+	if err = cache.WriteValue(writer, optStats); err != nil {
 		return err
 	}
 
@@ -111,8 +120,18 @@ func (s *MonitorEx) UnmarshalCache(vers uint64, reader io.Reader) (err error) {
 		return err
 	}
 
+	// Deleted
+	if err = cache.ReadValue(reader, &s.Deleted, vers); err != nil {
+		return err
+	}
+
 	// EnsName
 	if err = cache.ReadValue(reader, &s.EnsName, vers); err != nil {
+		return err
+	}
+
+	// FileSize
+	if err = cache.ReadValue(reader, &s.FileSize, vers); err != nil {
 		return err
 	}
 
@@ -120,6 +139,30 @@ func (s *MonitorEx) UnmarshalCache(vers uint64, reader io.Reader) (err error) {
 	if err = cache.ReadValue(reader, &s.Label, vers); err != nil {
 		return err
 	}
+
+	// LastScanned
+	if err = cache.ReadValue(reader, &s.LastScanned, vers); err != nil {
+		return err
+	}
+
+	// NRecords
+	if err = cache.ReadValue(reader, &s.NRecords, vers); err != nil {
+		return err
+	}
+
+	// Name
+	if err = cache.ReadValue(reader, &s.Name, vers); err != nil {
+		return err
+	}
+
+	// Stats
+	optStats := &cache.Optional[Stats]{
+		Value: s.Stats,
+	}
+	if err = cache.ReadValue(reader, optStats, vers); err != nil {
+		return err
+	}
+	s.Stats = optStats.Get()
 
 	// Transactions
 	s.Transactions = make([]string, 0)

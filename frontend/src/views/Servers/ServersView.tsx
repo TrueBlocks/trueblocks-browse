@@ -1,58 +1,53 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { View, ViewStatus } from "@components";
 import { ServerCard, ServerLog } from "./";
-import { servers } from "@gocode/models";
+import { servers, messages } from "@gocode/models";
 import { GetServer, ToggleServer } from "@gocode/app/App";
 import { Stack, Title, SimpleGrid } from "@mantine/core";
 import { EventsOn, EventsOff } from "@runtime";
 import classes from "@/App.module.css";
 
-// TODO: This should be a type from GoLang
-type Progress = {
-  name: string;
-  message: string;
-  color: string;
-};
+var empty = {} as servers.Server;
 
 export function ServersView() {
-  const [scraper, setScraper] = useState<servers.Server>({} as servers.Server);
-  const [fileServer, setFileServer] = useState<servers.Server>({} as servers.Server);
-  const [monitor, setMonitor] = useState<servers.Server>({} as servers.Server);
-  const [ipfs, setIpfs] = useState<servers.Server>({} as servers.Server);
-  const [logMessages, setLogMessages] = useState<Progress[]>([]);
+  const [scraper, setScraper] = useState<servers.Server>(empty);
+  const [fileServer, setFileServer] = useState<servers.Server>(empty);
+  const [monitor, setMonitor] = useState<servers.Server>(empty);
+  const [ipfs, setIpfs] = useState<servers.Server>(empty);
+  const [logMessages, setLogMessages] = useState<messages.ServerMsg[]>([]);
 
-  const updateServer = (server: string, setStateFn: Dispatch<SetStateAction<servers.Server>>) => {
+  const updateServer = (server: servers.Type, setStateFn: Dispatch<SetStateAction<servers.Server>>) => {
     GetServer(server).then((s) => {
       setStateFn(s);
     });
   };
 
   useEffect(() => {
-    updateServer("scraper", setScraper);
-    updateServer("fileserver", setFileServer);
-    updateServer("monitor", setMonitor);
-    updateServer("ipfs", setIpfs);
+    updateServer(servers.Type.SCRAPER, setScraper);
+    updateServer(servers.Type.FILESERVER, setFileServer);
+    updateServer(servers.Type.MONITOR, setMonitor);
+    updateServer(servers.Type.IPFS, setIpfs);
   }, []);
 
-  const handleMessage = (p: Progress) => {
-    switch (p.name) {
+  const handleMessage = (sMsg: messages.ServerMsg) => {
+    switch (sMsg.name) {
       case "scraper":
-        updateServer("scraper", setScraper);
+        updateServer(servers.Type.SCRAPER, setScraper);
         break;
       case "fileserver":
-        updateServer("fileserver", setFileServer);
+        updateServer(servers.Type.FILESERVER, setFileServer);
         break;
       case "monitor":
-        updateServer("monitor", setMonitor);
+        updateServer(servers.Type.MONITOR, setMonitor);
         break;
       case "ipfs":
-        updateServer("ipfs", setIpfs);
+        updateServer(servers.Type.IPFS, setIpfs);
         break;
       default:
         break;
     }
     setLogMessages((prev) => {
-      const newLogs = [...prev, p];
+      const newLogs = [...prev, sMsg];
       return newLogs.length > 8 ? newLogs.slice(-8) : newLogs;
     });
   };
@@ -64,7 +59,7 @@ export function ServersView() {
     };
   }, []);
 
-  const toggleServer = (name: string) => {
+  const toggleServer = (name: servers.Type) => {
     ToggleServer(name);
   };
 
