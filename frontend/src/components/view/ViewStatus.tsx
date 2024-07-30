@@ -1,14 +1,8 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import classes from "./ViewStatus.module.css";
+import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import { Text } from "@mantine/core";
-
-// TODO: Why is this not availabe in the Wails folders?
-type Progress = {
-  address: string;
-  have: number;
-  want: number;
-};
 
 export function ViewStatus() {
   const [statusMessage, setStatusMessage] = useState<string>("");
@@ -20,7 +14,7 @@ export function ViewStatus() {
       setColor(classes.green);
     };
 
-    const handleProgress = (p: Progress) => {
+    const handleProgress = (p: messages.ProgressMsg) => {
       setStatusMessage(`Progress (${p.address}): ${p.have}/${p.want}`);
       setColor(classes.green);
     };

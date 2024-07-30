@@ -13,30 +13,30 @@ func (a *App) StartServers() {
 	go a.Ipfs.Run()
 }
 
-func (a *App) GetServer(name string) *servers.Server {
+func (a *App) GetServer(name servers.Type) *servers.Server {
 	switch name {
-	case "scraper":
+	case servers.ST_Scraper:
 		return &a.Scraper.Server
-	case "fileserver":
+	case servers.ST_FileServer:
 		return &a.FileServer.Server
-	case "monitor":
+	case servers.ST_Monitor:
 		return &a.Monitor.Server
-	case "ipfs":
+	case servers.ST_Ipfs:
 		return &a.Ipfs.Server
 	default:
 		return nil
 	}
 }
 
-func (a *App) ToggleServer(name string) error {
+func (a *App) ToggleServer(name servers.Type) error {
 	switch name {
-	case "scraper":
+	case servers.ST_Scraper:
 		return a.Scraper.Server.Toggle()
-	case "fileserver":
+	case servers.ST_FileServer:
 		return a.FileServer.Toggle()
-	case "monitor":
+	case servers.ST_Monitor:
 		return a.Monitor.Server.Toggle()
-	case "ipfs":
+	case servers.ST_Ipfs:
 		return a.Ipfs.Server.Toggle()
 	default:
 		return fmt.Errorf("server %s not found in ToggleServer", name)
