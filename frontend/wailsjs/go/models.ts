@@ -244,16 +244,43 @@ export namespace servers {
 export namespace types {
 	
 	
+	export class Stats {
+	    nAddresses: number;
+	    nCoins: number;
+	    nContracts: number;
+	    nTokenSeries: number;
+	    nTokenUtxo: number;
+	    nTokens: number;
+	    nTxns: number;
+	    nUtxo: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Stats(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.nAddresses = source["nAddresses"];
+	        this.nCoins = source["nCoins"];
+	        this.nContracts = source["nContracts"];
+	        this.nTokenSeries = source["nTokenSeries"];
+	        this.nTokenUtxo = source["nTokenUtxo"];
+	        this.nTokens = source["nTokens"];
+	        this.nTxns = source["nTxns"];
+	        this.nUtxo = source["nUtxo"];
+	    }
+	}
 	export class MonitorEx {
 	    address: base.Address;
-	    ensName: string;
-	    label: string;
-	    transactions: string[];
-	    name: string;
 	    deleted: boolean;
+	    ensName: string;
 	    fileSize: number;
+	    label: string;
 	    lastScanned: number;
 	    nRecords: number;
+	    name: string;
+	    stats?: Stats;
+	    transactions: string[];
 	
 	    static createFrom(source: any = {}) {
 	        return new MonitorEx(source);
@@ -262,14 +289,15 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.address = this.convertValues(source["address"], base.Address);
-	        this.ensName = source["ensName"];
-	        this.label = source["label"];
-	        this.transactions = source["transactions"];
-	        this.name = source["name"];
 	        this.deleted = source["deleted"];
+	        this.ensName = source["ensName"];
 	        this.fileSize = source["fileSize"];
+	        this.label = source["label"];
 	        this.lastScanned = source["lastScanned"];
 	        this.nRecords = source["nRecords"];
+	        this.name = source["name"];
+	        this.stats = this.convertValues(source["stats"], Stats);
+	        this.transactions = source["transactions"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -347,6 +375,7 @@ export namespace types {
 		    return a;
 		}
 	}
+	
 	export class TransactionEx {
 	    blockNumber: number;
 	    date: string;
