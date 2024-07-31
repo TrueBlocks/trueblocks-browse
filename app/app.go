@@ -37,6 +37,8 @@ type App struct {
 	FileServer *servers.FileServer
 	Monitor    *servers.Monitor
 	Ipfs       *servers.Ipfs
+	Documents  []types.Document
+	CurrentDoc *types.Document
 }
 
 // Find: NewViews
@@ -52,7 +54,10 @@ func NewApp() *App {
 		FileServer: servers.NewFileServer("fileserver", 8080, 1000),
 		Monitor:    servers.NewMonitor("monitor", 1000),
 		Ipfs:       servers.NewIpfs("ipfs", 1000),
+		Documents:  make([]types.Document, 10),
 	}
+	a.CurrentDoc = &a.Documents[0]
+	a.CurrentDoc.Filename = "Untitled"
 
 	// it's okay if it's not found
 	_ = a.session.Load()
