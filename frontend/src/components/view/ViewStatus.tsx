@@ -29,16 +29,16 @@ export function ViewStatus() {
       setColor(classes.red);
     };
 
-    EventsOn("Completed", handleDone);
-    EventsOn("Progress", handleProgress);
-    EventsOn("Warning", handleWarning);
-    EventsOn("Error", handleError);
+    EventsOn("COMPLETED", handleDone);
+    EventsOn("PROGRESS", handleProgress);
+    EventsOn("WARNING", handleWarning);
+    EventsOn("ERROR", handleError);
 
     return () => {
-      EventsOff("Completed");
-      EventsOff("Progress");
-      EventsOff("Warning");
-      EventsOff("Error");
+      EventsOff("COMPLETED");
+      EventsOff("PROGRESS");
+      EventsOff("WARNING");
+      EventsOff("ERROR");
     };
   }, []);
 

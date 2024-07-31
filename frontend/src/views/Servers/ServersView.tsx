@@ -16,32 +16,32 @@ export function ServersView() {
   const [ipfs, setIpfs] = useState<servers.Server>(empty);
   const [logMessages, setLogMessages] = useState<messages.ServerMsg[]>([]);
 
-  const updateServer = (server: servers.Type, setStateFn: Dispatch<SetStateAction<servers.Server>>) => {
+  const updateServer = (server: string, setStateFn: Dispatch<SetStateAction<servers.Server>>) => {
     GetServer(server).then((s) => {
       setStateFn(s);
     });
   };
 
   useEffect(() => {
-    updateServer(servers.Type.SCRAPER, setScraper);
-    updateServer(servers.Type.FILESERVER, setFileServer);
-    updateServer(servers.Type.MONITOR, setMonitor);
-    updateServer(servers.Type.IPFS, setIpfs);
+    updateServer("scraper", setScraper);
+    updateServer("fileserver", setFileServer);
+    updateServer("monitor", setMonitor);
+    updateServer("ipfs", setIpfs);
   }, []);
 
   const handleMessage = (sMsg: messages.ServerMsg) => {
     switch (sMsg.name) {
       case "scraper":
-        updateServer(servers.Type.SCRAPER, setScraper);
+        updateServer("scraper", setScraper);
         break;
       case "fileserver":
-        updateServer(servers.Type.FILESERVER, setFileServer);
+        updateServer("fileserver", setFileServer);
         break;
       case "monitor":
-        updateServer(servers.Type.MONITOR, setMonitor);
+        updateServer("monitor", setMonitor);
         break;
       case "ipfs":
-        updateServer(servers.Type.IPFS, setIpfs);
+        updateServer("ipfs", setIpfs);
         break;
       default:
         break;
@@ -53,13 +53,13 @@ export function ServersView() {
   };
 
   useEffect(() => {
-    EventsOn("Server", handleMessage);
+    EventsOn("SERVER", handleMessage);
     return () => {
-      EventsOff("Server");
+      EventsOff("SERVER");
     };
   }, []);
 
-  const toggleServer = (name: servers.Type) => {
+  const toggleServer = (name: string) => {
     ToggleServer(name);
   };
 

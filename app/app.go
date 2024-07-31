@@ -54,7 +54,7 @@ func NewApp() *App {
 		FileServer: servers.NewFileServer("fileserver", 8080, 1000),
 		Monitor:    servers.NewMonitor("monitor", 1000),
 		Ipfs:       servers.NewIpfs("ipfs", 1000),
-		Documents:  make([]types.Document, 10, 10),
+		Documents:  make([]types.Document, 10),
 	}
 	a.CurrentDoc = &a.Documents[0]
 	a.CurrentDoc.Filename = "Untitled"
