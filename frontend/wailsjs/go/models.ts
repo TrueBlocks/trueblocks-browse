@@ -46,6 +46,115 @@ export namespace config {
 
 }
 
+export namespace messages {
+	
+	export enum Message {
+	    COMPLETED = 0,
+	    ERROR = 1,
+	    WARN = 2,
+	    PROGRESS = 3,
+	    SERVER = 4,
+	    DOCUMENT = 5,
+	}
+	export class DocumentMsg {
+	    filename: string;
+	    msg: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new DocumentMsg(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.filename = source["filename"];
+	        this.msg = source["msg"];
+	    }
+	}
+	export class ErrorMsg {
+	    address: base.Address;
+	    error: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new ErrorMsg(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.error = source["error"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class ProgressMsg {
+	    address: base.Address;
+	    have: number;
+	    want: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ProgressMsg(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.have = source["have"];
+	        this.want = source["want"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class ServerMsg {
+	    name: string;
+	    message: string;
+	    color: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ServerMsg(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.message = source["message"];
+	        this.color = source["color"];
+	    }
+	}
+
+}
+
 export namespace names {
 	
 	export enum Parts {
@@ -135,16 +244,43 @@ export namespace servers {
 export namespace types {
 	
 	
+	export class Stats {
+	    nAddresses: number;
+	    nCoins: number;
+	    nContracts: number;
+	    nTokenSeries: number;
+	    nTokenUtxo: number;
+	    nTokens: number;
+	    nTxns: number;
+	    nUtxo: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Stats(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.nAddresses = source["nAddresses"];
+	        this.nCoins = source["nCoins"];
+	        this.nContracts = source["nContracts"];
+	        this.nTokenSeries = source["nTokenSeries"];
+	        this.nTokenUtxo = source["nTokenUtxo"];
+	        this.nTokens = source["nTokens"];
+	        this.nTxns = source["nTxns"];
+	        this.nUtxo = source["nUtxo"];
+	    }
+	}
 	export class MonitorEx {
 	    address: base.Address;
-	    ensName: string;
-	    label: string;
-	    transactions: string[];
-	    name: string;
 	    deleted: boolean;
+	    ensName: string;
 	    fileSize: number;
+	    label: string;
 	    lastScanned: number;
 	    nRecords: number;
+	    name: string;
+	    stats?: Stats;
+	    transactions: string[];
 	
 	    static createFrom(source: any = {}) {
 	        return new MonitorEx(source);
@@ -153,14 +289,15 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.address = this.convertValues(source["address"], base.Address);
-	        this.ensName = source["ensName"];
-	        this.label = source["label"];
-	        this.transactions = source["transactions"];
-	        this.name = source["name"];
 	        this.deleted = source["deleted"];
+	        this.ensName = source["ensName"];
 	        this.fileSize = source["fileSize"];
+	        this.label = source["label"];
 	        this.lastScanned = source["lastScanned"];
 	        this.nRecords = source["nRecords"];
+	        this.name = source["name"];
+	        this.stats = this.convertValues(source["stats"], Stats);
+	        this.transactions = source["transactions"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -238,6 +375,7 @@ export namespace types {
 		    return a;
 		}
 	}
+	
 	export class TransactionEx {
 	    blockNumber: number;
 	    date: string;
