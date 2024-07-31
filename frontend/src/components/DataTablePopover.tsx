@@ -71,7 +71,7 @@ export const DataTableViewInEtherscan = forwardRef<HTMLDivElement, DataTableView
     <div ref={ref}>
       <Group>
         <Button onClick={() => BrowserOpenURL(`https://etherscan.io/address/${address()}`)} leftSection={<IconExternalLink />}>
-          See in Etherscan
+          View on Etherscan
         </Button>
         <ActionIcon variant="outline" onClick={copy} title="Copy to clipboard">
           <IconCopy />
