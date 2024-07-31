@@ -19,7 +19,7 @@ func NewNameEx(name coreTypes.Name, tp names.Parts) NameEx {
 	}
 }
 
-var NameDbParts = []struct {
+var NameParts = []struct {
 	Value  names.Parts
 	TSName string
 }{

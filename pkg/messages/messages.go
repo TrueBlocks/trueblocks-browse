@@ -3,7 +3,6 @@ package messages
 import (
 	"context"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -15,31 +14,33 @@ const (
 	Warn
 	Progress
 	Server
+	Document
 )
 
-type ProgressMsg struct {
-	Address base.Address `json:"address"`
-	Have    int64        `json:"have"`
-	Want    int64        `json:"want"`
+type MessageData interface {
+	string | ProgressMsg | ServerMsg | ErrorMsg | DocumentMsg
 }
 
-type ServerMsg struct {
-	Name    string `json:"name"`
-	Message string `json:"message"`
-	Color   string `json:"color"`
+var Messages = []struct {
+	Value  Message
+	TSName string
+}{
+	{Completed, "COMPLETED"},
+	{Error, "ERROR"},
+	{Warn, "WARN"},
+	{Progress, "PROGRESS"},
+	{Server, "SERVER"},
+	{Document, "DOCUMENT"},
 }
 
 func MessageType(msg Message) string {
-	m := map[Message]string{
-		Completed: "Completed",
-		Error:     "Error",
-		Warn:      "Warn",
-		Progress:  "Progress",
-		Server:    "Server",
+	m := make(map[Message]string, len(Messages))
+	for _, message := range Messages {
+		m[message.Value] = message.TSName
 	}
 	return m[msg]
 }
 
-func SendMessage(ctx context.Context, addr base.Address, msg Message, data interface{}) {
+func Send[T MessageData](ctx context.Context, msg Message, data *T) {
 	runtime.EventsEmit(ctx, MessageType(msg), data)
 }
