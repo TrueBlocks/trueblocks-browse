@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Group, Popover, Stack, TextInput } from "@mantine/core";
-import { ClipboardSetText } from "@runtime";
-import { IconCopy, IconEdit } from "@tabler/icons-react";
+import { BrowserOpenURL, ClipboardSetText } from "@runtime";
+import { IconCopy, IconEdit, IconExternalLink } from "@tabler/icons-react";
 import React, { useState, forwardRef, useCallback } from "react";
 
 export function DataPopover({ children, editor }: { children: React.ReactNode, editor: React.ReactNode }) {
@@ -8,7 +8,7 @@ export function DataPopover({ children, editor }: { children: React.ReactNode, e
     <>
       {editor
         ?(
-          <Popover withArrow>
+          <Popover withArrow width="target">
             <Popover.Target>
               <div>
                 {children}
@@ -31,45 +31,52 @@ type DataTableEditor = {
 }
 export const DataTableStringEditor = forwardRef<HTMLDivElement, DataTableEditor>(({ value, onSubmit }, ref) => {
   const [inputValue, setInputValue] = useState(String(value?.() || ""));
-  const [edit, setEdit] = useState(false);
   const submitForm = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     onSubmit?.(inputValue);
-    setEdit(false);
-  }, [inputValue, setEdit]);
+  }, [inputValue]);
   const copy = useCallback(() => {
     ClipboardSetText(inputValue);
   }, []);
 
   return (
     <div ref={ref}>
-      {edit
-        ? (
-          <form onSubmit={submitForm}>
-            <Stack>
-              <TextInput
-                value={inputValue}
-                onChange={(event) => setInputValue(event.currentTarget.value)}
-              />
-              <Group>
-                <Button type="submit">Save</Button>
-                <Button type="button" variant="outline" onClick={() => setEdit(false)}>Cancel</Button>
-              </Group>
-            </Stack>
-          </form>
-        )
-        : (
+      <form onSubmit={submitForm}>
+        <Stack>
+          <TextInput
+            value={inputValue}
+            onChange={(event) => setInputValue(event.currentTarget.value)}
+            autoFocus
+          />
           <Group>
-            <div>{inputValue}</div>
-            <ActionIcon onClick={() => setEdit(true)}>
-              <IconEdit />
-            </ActionIcon>
-            <ActionIcon variant="outline" onClick={copy}>
+            <ActionIcon variant="outline" onClick={copy} title="Copy to clipboard">
               <IconCopy />
             </ActionIcon>
+            <Button type="submit">Save</Button>
           </Group>
-        )
-      }
+        </Stack>
+      </form>
+    </div>
+  );
+});
+
+type DataTableViewer = {
+  address: () => string
+};
+export const DataTableViewInEtherscan = forwardRef<HTMLDivElement, DataTableViewer>(({ address }, ref) => {
+  const copy = useCallback(() => {
+    ClipboardSetText(address());
+  }, []);
+  return (
+    <div ref={ref}>
+      <Group>
+        <Button onClick={() => BrowserOpenURL(`https://etherscan.io/address/${address()}`)} leftSection={<IconExternalLink />}>
+          See in Etherscan
+        </Button>
+        <ActionIcon variant="outline" onClick={copy} title="Copy to clipboard">
+          <IconCopy />
+        </ActionIcon>
+      </Group>
     </div>
   );
 });
