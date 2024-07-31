@@ -1,25 +1,20 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { View, ViewStatus } from "@components";
 import { ServerCard, ServerLog } from "./";
-import { servers } from "@gocode/models";
+import { servers, messages } from "@gocode/models";
 import { GetServer, ToggleServer } from "@gocode/app/App";
 import { Stack, Title, SimpleGrid } from "@mantine/core";
 import { EventsOn, EventsOff } from "@runtime";
 import classes from "@/App.module.css";
 
-// TODO: This should be a type from GoLang
-type Progress = {
-  name: string;
-  message: string;
-  color: string;
-};
+var empty = {} as servers.Server;
 
 export function ServersView() {
-  const [scraper, setScraper] = useState<servers.Server>({} as servers.Server);
-  const [fileServer, setFileServer] = useState<servers.Server>({} as servers.Server);
-  const [monitor, setMonitor] = useState<servers.Server>({} as servers.Server);
-  const [ipfs, setIpfs] = useState<servers.Server>({} as servers.Server);
-  const [logMessages, setLogMessages] = useState<Progress[]>([]);
+  const [scraper, setScraper] = useState<servers.Server>(empty);
+  const [fileServer, setFileServer] = useState<servers.Server>(empty);
+  const [monitor, setMonitor] = useState<servers.Server>(empty);
+  const [ipfs, setIpfs] = useState<servers.Server>(empty);
+  const [logMessages, setLogMessages] = useState<messages.ServerMsg[]>([]);
 
   const updateServer = (server: string, setStateFn: Dispatch<SetStateAction<servers.Server>>) => {
     GetServer(server).then((s) => {
@@ -34,8 +29,8 @@ export function ServersView() {
     updateServer("ipfs", setIpfs);
   }, []);
 
-  const handleMessage = (p: Progress) => {
-    switch (p.name) {
+  const handleMessage = (sMsg: messages.ServerMsg) => {
+    switch (sMsg.name) {
       case "scraper":
         updateServer("scraper", setScraper);
         break;
@@ -52,15 +47,15 @@ export function ServersView() {
         break;
     }
     setLogMessages((prev) => {
-      const newLogs = [...prev, p];
+      const newLogs = [...prev, sMsg];
       return newLogs.length > 8 ? newLogs.slice(-8) : newLogs;
     });
   };
 
   useEffect(() => {
-    EventsOn("Server", handleMessage);
+    EventsOn("SERVER", handleMessage);
     return () => {
-      EventsOff("Server");
+      EventsOff("SERVER");
     };
   }, []);
 

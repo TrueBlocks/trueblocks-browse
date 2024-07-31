@@ -42,10 +42,10 @@ func main() {
 			// Find: NewViews
 			Bind: []interface{}{
 				a,
-				messages.NewDocumentMsg("", ""),
-				messages.NewServerMsg("", "", ""),
-				messages.NewProgressMsg(0, 0),
-				messages.NewErrorMsg(nil),
+				&messages.DocumentMsg{},
+				&messages.ServerMsg{},
+				&messages.ProgressMsg{},
+				&messages.ErrorMsg{},
 				&types.NameEx{},
 				&types.TransactionEx{},
 				&servers.Server{},
