@@ -1,5 +1,6 @@
-import { ActionIcon, Button, Group, Popover, TextInput } from "@mantine/core";
-import { IconEdit } from "@tabler/icons-react";
+import { ActionIcon, Button, Group, Popover, Stack, TextInput } from "@mantine/core";
+import { ClipboardSetText } from "@runtime";
+import { IconCopy, IconEdit } from "@tabler/icons-react";
 import React, { useState, forwardRef, useCallback } from "react";
 
 export function DataPopover({ children, editor }: { children: React.ReactNode, editor: React.ReactNode }) {
@@ -7,7 +8,7 @@ export function DataPopover({ children, editor }: { children: React.ReactNode, e
     <>
       {editor
         ?(
-          <Popover withArrow width = "target" >
+          <Popover withArrow>
             <Popover.Target>
               <div>
                 {children}
@@ -18,9 +19,7 @@ export function DataPopover({ children, editor }: { children: React.ReactNode, e
             </Popover.Dropdown>
           </Popover>
         )
-        : (
-          { children }
-         )
+        : children
       }
     </>
   );
@@ -38,20 +37,25 @@ export const DataTableStringEditor = forwardRef<HTMLDivElement, DataTableEditor>
     onSubmit?.(inputValue);
     setEdit(false);
   }, [inputValue, setEdit]);
+  const copy = useCallback(() => {
+    ClipboardSetText(inputValue);
+  }, []);
 
   return (
     <div ref={ref}>
       {edit
         ? (
           <form onSubmit={submitForm}>
-            <Group>
+            <Stack>
               <TextInput
                 value={inputValue}
                 onChange={(event) => setInputValue(event.currentTarget.value)}
               />
-              <Button type="submit">Save</Button>
-              <Button type="button" variant="outline" onClick={() => setEdit(false)}>Cancel</Button>
-            </Group>
+              <Group>
+                <Button type="submit">Save</Button>
+                <Button type="button" variant="outline" onClick={() => setEdit(false)}>Cancel</Button>
+              </Group>
+            </Stack>
           </form>
         )
         : (
@@ -59,6 +63,9 @@ export const DataTableStringEditor = forwardRef<HTMLDivElement, DataTableEditor>
             <div>{inputValue}</div>
             <ActionIcon onClick={() => setEdit(true)}>
               <IconEdit />
+            </ActionIcon>
+            <ActionIcon variant="outline" onClick={copy}>
+              <IconCopy />
             </ActionIcon>
           </Group>
         )
