@@ -72,7 +72,7 @@ export namespace messages {
 	}
 	export class ErrorMsg {
 	    address: base.Address;
-	    error: any;
+	    errStr: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new ErrorMsg(source);
@@ -81,7 +81,7 @@ export namespace messages {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.address = this.convertValues(source["address"], base.Address);
-	        this.error = source["error"];
+	        this.errStr = source["errStr"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

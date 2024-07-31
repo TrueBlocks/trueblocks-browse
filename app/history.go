@@ -74,8 +74,10 @@ func (a *App) GetHistoryPage(addr string, first, pageSize int) []types.Transacti
 			return []types.TransactionEx{}
 		}
 
-		msg := address.Hex()
-		messages.Send(a.ctx, messages.Completed, &msg)
+		messages.Send(a.ctx,
+			messages.Completed,
+			messages.NewProgressMsg(int64(len(addrToHistoryMap[address])), int64(len(addrToHistoryMap[address])), address),
+		)
 	}
 
 	m.Lock()

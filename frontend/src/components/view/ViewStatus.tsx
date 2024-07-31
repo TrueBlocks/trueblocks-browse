@@ -9,35 +9,42 @@ export function ViewStatus() {
   const [color, setColor] = useState<string>(classes.green);
 
   useEffect(() => {
-    const handleDone = () => {
-      setStatusMessage("done");
+    const handleDocument = (msg: messages.DocumentMsg) => {
+      setStatusMessage(`${msg.msg} ${msg.filename}`);
       setColor(classes.green);
     };
 
-    const handleProgress = (p: messages.ProgressMsg) => {
-      setStatusMessage(`Progress (${p.address}): ${p.have}/${p.want}`);
+    const handleProgress = (msg: messages.ProgressMsg) => {
+      setStatusMessage(`Progress (${msg.address}): ${msg.have}/${msg.want}`);
       setColor(classes.green);
     };
 
-    const handleWarning = (warnStr: string) => {
-      setStatusMessage(`Warning: ${warnStr}`);
+    const handleCompleted = (msg: messages.ProgressMsg) => {
+      setStatusMessage(`Completed (${msg.address}): ${msg.have}/${msg.want}`);
+      setColor(classes.green);
+    };
+
+    const handleWarning = (msg: messages.ErrorMsg) => {
+      setStatusMessage(`Warning: ${msg.errStr} ${msg.address}`);
       setColor(classes.yellow);
     };
 
-    const handleError = (errorStr: string) => {
-      setStatusMessage(`Error: ${errorStr}`);
+    const handleError = (msg: messages.ErrorMsg) => {
+      setStatusMessage(`Error: ${msg.errStr} ${msg.address}`);
       setColor(classes.red);
     };
 
-    EventsOn("COMPLETED", handleDone);
+    EventsOn("DOCUMENT", handleDocument);
     EventsOn("PROGRESS", handleProgress);
-    EventsOn("WARNING", handleWarning);
+    EventsOn("COMPLETED", handleCompleted);
+    EventsOn("WARN", handleWarning);
     EventsOn("ERROR", handleError);
 
     return () => {
-      EventsOff("COMPLETED");
+      EventsOff("DOCUMENT");
       EventsOff("PROGRESS");
-      EventsOff("WARNING");
+      EventsOff("COMPLETED");
+      EventsOff("WARN");
       EventsOff("ERROR");
     };
   }, []);
