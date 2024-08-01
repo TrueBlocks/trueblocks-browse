@@ -46,6 +46,14 @@ export function GetLast(arg1) {
   return window['go']['app']['App']['GetLast'](arg1);
 }
 
+export function GetManifest(arg1, arg2) {
+  return window['go']['app']['App']['GetManifest'](arg1, arg2);
+}
+
+export function GetManifestCnt() {
+  return window['go']['app']['App']['GetManifestCnt']();
+}
+
 export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
@@ -116,6 +124,10 @@ export function ViewHistory(arg1) {
 
 export function ViewHome(arg1) {
   return window['go']['app']['App']['ViewHome'](arg1);
+}
+
+export function ViewManifest(arg1) {
+  return window['go']['app']['App']['ViewManifest'](arg1);
 }
 
 export function ViewMonitors(arg1) {

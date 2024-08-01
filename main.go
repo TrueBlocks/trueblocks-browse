@@ -47,6 +47,7 @@ func main() {
 				&messages.ProgressMsg{},
 				&messages.ServerMsg{},
 				&servers.Server{},
+				&types.ManifestEx{},
 				&types.MonitorEx{},
 				&types.NameEx{},
 				&types.TransactionEx{},
