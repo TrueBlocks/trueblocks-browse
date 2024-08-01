@@ -8,8 +8,8 @@ import (
 	"os"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/servers"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-browse/servers"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
@@ -27,9 +27,9 @@ type App struct {
 	session     config.Session
 	apiKeys     map[string]string
 	namesMap    map[base.Address]types.NameEx
-	names       []types.NameEx // We keep both for performance reasons
+	names       []types.NameEx
 	monitorsMap map[base.Address]types.MonitorEx
-	monitors    []types.MonitorEx // We keep both for performance reasons
+	monitors    []types.MonitorEx
 	ensMap      map[string]base.Address
 	renderCtxs  map[base.Address][]*output.RenderCtx
 	// Add your application's data here

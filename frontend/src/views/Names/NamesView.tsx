@@ -21,8 +21,9 @@ export function NamesView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        const newItems = await GetNamesPage(currentItem, itemsPerPage);
-        setItems(newItems);
+        GetNamesPage(currentItem, itemsPerPage).then((newItems) => {
+          setItems(newItems);
+        });
       };
       fetch(curItem, perPage);
     }
