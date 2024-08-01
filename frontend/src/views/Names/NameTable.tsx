@@ -4,6 +4,7 @@ import { types } from "@gocode/models";
 import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
 import { CustomMeta } from "@components";
 import { NameTags } from "./NameTag";
+import { DataTableStringEditor, DataTableViewInEtherscan } from "@/components/DataTablePopover";
 
 type CustomColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {
   meta?: CustomMeta;
@@ -25,12 +26,15 @@ export const nameColumns: CustomColumnDef<types.NameEx, any>[] = [
   nameColumnHelper.accessor("address", {
     header: () => "Address",
     cell: (info) => info.renderValue(),
-    meta: { className: "wide cell" },
+    meta: {
+      className: "wide cell",
+      editor: (getValue: () => any) => <DataTableViewInEtherscan address={getValue} />,
+    },
   }),
   nameColumnHelper.accessor("name", {
     header: () => "Name",
     cell: (info) => info.renderValue(),
-    meta: { className: "wide cell" },
+    meta: { className: "wide cell", editor: (getValue: () => any) => <DataTableStringEditor value={getValue} onSubmit={(newValue) => console.log(newValue)} /> },
   }),
   nameColumnHelper.accessor("symbol", {
     header: () => "Symbol",
