@@ -142,6 +142,10 @@ export function ViewHome(arg1) {
   return window['go']['app']['App']['ViewHome'](arg1);
 }
 
+export function ViewIndexes(arg1) {
+  return window['go']['app']['App']['ViewIndexes'](arg1);
+}
+
 export function ViewManifest(arg1) {
   return window['go']['app']['App']['ViewManifest'](arg1);
 }
