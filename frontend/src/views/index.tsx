@@ -5,4 +5,5 @@ export * from "./Monitors/MonitorsView";
 export * from "./Names/NamesView";
 export * from "./Servers/ServersView";
 export * from "./Manifests/ManifestView";
+export * from "./Status/StatusView";
 export * from "./Settings/SettingsView";
