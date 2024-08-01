@@ -2,7 +2,7 @@ import React from "react";
 
 // Find: NewViews
 import { IconHome, IconArticle, IconTag, IconDeviceDesktop, IconServer, IconSettings } from "@tabler/icons-react";
-import { HomeView, HistoryView, NamesView, MonitorsView, ServersView, SettingsView } from "@views";
+import { HomeView, HistoryView, NamesView, MonitorsView, ManifestView, ServersView, SettingsView } from "@views";
 
 // Note:
 //  Change with care. The order of the items in this list matters (the last one is the default).
@@ -30,14 +30,21 @@ export const routeItems = [
     component: NamesView,
   },
   {
-    order: 40,
+    order: 50,
+    route: "/manifest",
+    label: "Manifest",
+    icon: <IconTag />,
+    component: ManifestView,
+  },
+  {
+    order: 80,
     route: "/servers",
     label: "Servers",
     icon: <IconServer />,
     component: ServersView,
   },
   {
-    order: 50,
+    order: 90,
     route: "/settings",
     label: "Settings",
     icon: <IconSettings />,
