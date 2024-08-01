@@ -3,7 +3,7 @@ package app
 import (
 	"fmt"
 
-	"github.com/TrueBlocks/trueblocks-browse/servers"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/servers"
 )
 
 func (a *App) StartServers() {

@@ -5,6 +5,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 )
 
+// NewViews
 func (a *App) GetMenus() *menu.Menu {
 	appMenu := menu.NewMenu()
 
@@ -23,8 +24,8 @@ func (a *App) GetMenus() *menu.Menu {
 	viewMenu.AddText("History", keys.CmdOrCtrl("2"), a.ViewHistory)
 	viewMenu.AddText("Monitors", keys.CmdOrCtrl("3"), a.ViewMonitors)
 	viewMenu.AddText("Names", keys.CmdOrCtrl("4"), a.ViewNames)
-	viewMenu.AddText("Servers", keys.CmdOrCtrl("5"), a.ViewServers)
-	viewMenu.AddText("Settings", keys.CmdOrCtrl("6"), a.ViewSettings)
+	viewMenu.AddText("Servers", keys.CmdOrCtrl("9"), a.ViewServers)
+	viewMenu.AddText("Settings", keys.CmdOrCtrl("0"), a.ViewSettings)
 
 	return appMenu
 }

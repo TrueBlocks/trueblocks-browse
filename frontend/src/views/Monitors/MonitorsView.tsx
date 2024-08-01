@@ -19,8 +19,9 @@ export function MonitorsView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        const newItems = await GetMonitorsPage(currentItem, itemsPerPage);
-        setItems(newItems);
+        GetMonitorsPage(currentItem, itemsPerPage).then((newItems) => {
+          setItems(newItems);
+        });
       };
       fetch(curItem, perPage);
     }
