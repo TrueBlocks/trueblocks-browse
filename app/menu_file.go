@@ -19,13 +19,29 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 		ShowHiddenFiles:            false,
 		ResolvesAliases:            false,
 		TreatPackagesAsDirectories: false,
-		// Filters:                    []menu.FileFilter{},
+		Filters: []runtime.FileFilter{
+			{DisplayName: "Monitor Groups", Pattern: "*.tbx"},
+		},
 	})
-	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(file, "Opened"))
+	a.CurrentDoc.Filename = file
+	// a.CurrentDoc.Load()
+	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.CurrentDoc.Filename, "Opened"))
 }
 
 func (a *App) FileSave(cd *menu.CallbackData) {
-	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg("Unknown.tbx", "Saved"))
+	a.CurrentDoc.Filename, _ = runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
+		DefaultDirectory:           "/Users/jrush/Documents/",
+		DefaultFilename:            a.CurrentDoc.Filename,
+		Title:                      "Save File",
+		CanCreateDirectories:       true,
+		ShowHiddenFiles:            false,
+		TreatPackagesAsDirectories: false,
+		Filters: []runtime.FileFilter{
+			{DisplayName: "Monitor Groups", Pattern: "*.tbx"},
+		},
+	})
+	a.CurrentDoc.Save()
+	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.CurrentDoc.Filename, "Saved"))
 }
 
 func (a *App) FileSaveAs(cd *menu.CallbackData) {
