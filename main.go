@@ -50,6 +50,7 @@ func main() {
 				&types.ManifestEx{},
 				&types.MonitorEx{},
 				&types.NameEx{},
+				&types.StatusEx{},
 				&types.TransactionEx{},
 			},
 			EnumBind: []interface{}{

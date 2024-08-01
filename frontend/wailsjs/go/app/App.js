@@ -86,6 +86,14 @@ export function GetSession() {
   return window['go']['app']['App']['GetSession']();
 }
 
+export function GetStatus(arg1, arg2) {
+  return window['go']['app']['App']['GetStatus'](arg1, arg2);
+}
+
+export function GetStatusCnt() {
+  return window['go']['app']['App']['GetStatusCnt']();
+}
+
 export function RegisterCtx(arg1) {
   return window['go']['app']['App']['RegisterCtx'](arg1);
 }
@@ -144,4 +152,8 @@ export function ViewServers(arg1) {
 
 export function ViewSettings(arg1) {
   return window['go']['app']['App']['ViewSettings'](arg1);
+}
+
+export function ViewStatus(arg1) {
+  return window['go']['app']['App']['ViewStatus'](arg1);
 }

@@ -32,6 +32,7 @@ type App struct {
 	monitorsMap map[base.Address]types.MonitorEx
 	monitors    []types.MonitorEx
 	manifest    coreTypes.Manifest
+	status      coreTypes.Status
 	ensMap      map[string]base.Address
 	renderCtxs  map[base.Address][]*output.RenderCtx
 	// Add your application's data here
@@ -85,6 +86,9 @@ func (a *App) Startup(ctx context.Context) {
 		logger.Panic(err)
 	}
 	if err := a.loadMonitors(); err != nil {
+		logger.Panic(err)
+	}
+	if err := a.loadStatus(); err != nil {
 		logger.Panic(err)
 	}
 	if err := a.loadManifest(); err != nil {
