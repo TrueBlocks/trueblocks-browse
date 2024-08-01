@@ -185,17 +185,17 @@ export namespace output {
 
 export namespace servers {
 	
+	export enum State {
+	    STOPPED = 0,
+	    RUNNING = 1,
+	    PAUSED = 2,
+	}
 	export enum Type {
 	    FILESERVER = 0,
 	    SCRAPER = 1,
 	    MONITOR = 2,
 	    API = 3,
 	    IPFS = 4,
-	}
-	export enum State {
-	    STOPPED = 0,
-	    RUNNING = 1,
-	    PAUSED = 2,
 	}
 	export class Server {
 	    name: string;
@@ -243,6 +243,72 @@ export namespace servers {
 
 export namespace types {
 	
+	export class ChunkRecord {
+	    bloomHash: string;
+	    bloomSize: number;
+	    indexHash: string;
+	    indexSize: number;
+	    range: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ChunkRecord(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.bloomHash = source["bloomHash"];
+	        this.bloomSize = source["bloomSize"];
+	        this.indexHash = source["indexHash"];
+	        this.indexSize = source["indexSize"];
+	        this.range = source["range"];
+	    }
+	}
+	export class ManifestEx {
+	    chain: string;
+	    chunks: ChunkRecord[];
+	    specification: string;
+	    version: string;
+	    latestUpdate: string;
+	    nBlooms: number;
+	    bloomsSize: number;
+	    nIndexes: number;
+	    indexSize: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ManifestEx(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.chain = source["chain"];
+	        this.chunks = this.convertValues(source["chunks"], ChunkRecord);
+	        this.specification = source["specification"];
+	        this.version = source["version"];
+	        this.latestUpdate = source["latestUpdate"];
+	        this.nBlooms = source["nBlooms"];
+	        this.bloomsSize = source["bloomsSize"];
+	        this.nIndexes = source["nIndexes"];
+	        this.indexSize = source["indexSize"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	
 	export class Stats {
 	    nAddresses: number;
@@ -376,6 +442,162 @@ export namespace types {
 		}
 	}
 	
+	export class MetaData {
+	    client: number;
+	    finalized: number;
+	    staging: number;
+	    ripe: number;
+	    unripe: number;
+	    chainId?: number;
+	    networkId?: number;
+	    chain?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new MetaData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.client = source["client"];
+	        this.finalized = source["finalized"];
+	        this.staging = source["staging"];
+	        this.ripe = source["ripe"];
+	        this.unripe = source["unripe"];
+	        this.chainId = source["chainId"];
+	        this.networkId = source["networkId"];
+	        this.chain = source["chain"];
+	    }
+	}
+	export class Chain {
+	    chain: string;
+	    chainId: number;
+	    ipfsGateway: string;
+	    localExplorer: string;
+	    remoteExplorer: string;
+	    rpcProvider: string;
+	    symbol: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Chain(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.chain = source["chain"];
+	        this.chainId = source["chainId"];
+	        this.ipfsGateway = source["ipfsGateway"];
+	        this.localExplorer = source["localExplorer"];
+	        this.remoteExplorer = source["remoteExplorer"];
+	        this.rpcProvider = source["rpcProvider"];
+	        this.symbol = source["symbol"];
+	    }
+	}
+	export class CacheItem {
+	    items: any[];
+	    lastCached?: string;
+	    nFiles: number;
+	    nFolders: number;
+	    path: string;
+	    sizeInBytes: number;
+	    type: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new CacheItem(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.items = source["items"];
+	        this.lastCached = source["lastCached"];
+	        this.nFiles = source["nFiles"];
+	        this.nFolders = source["nFolders"];
+	        this.path = source["path"];
+	        this.sizeInBytes = source["sizeInBytes"];
+	        this.type = source["type"];
+	    }
+	}
+	export class StatusEx {
+	    cachePath?: string;
+	    caches: CacheItem[];
+	    chain?: string;
+	    chainConfig?: string;
+	    chainId?: string;
+	    chains: Chain[];
+	    clientVersion?: string;
+	    hasEsKey?: boolean;
+	    hasPinKey?: boolean;
+	    indexPath?: string;
+	    isApi?: boolean;
+	    isArchive?: boolean;
+	    isScraping?: boolean;
+	    isTesting?: boolean;
+	    isTracing?: boolean;
+	    networkId?: string;
+	    progress?: string;
+	    rootConfig?: string;
+	    rpcProvider?: string;
+	    version?: string;
+	    // Go type: MetaData
+	    meta?: any;
+	    // Go type: MetaData
+	    diffs?: any;
+	    latestUpdate: string;
+	    nFolders: number;
+	    nFiles: number;
+	    nBytes: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new StatusEx(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.cachePath = source["cachePath"];
+	        this.caches = this.convertValues(source["caches"], CacheItem);
+	        this.chain = source["chain"];
+	        this.chainConfig = source["chainConfig"];
+	        this.chainId = source["chainId"];
+	        this.chains = this.convertValues(source["chains"], Chain);
+	        this.clientVersion = source["clientVersion"];
+	        this.hasEsKey = source["hasEsKey"];
+	        this.hasPinKey = source["hasPinKey"];
+	        this.indexPath = source["indexPath"];
+	        this.isApi = source["isApi"];
+	        this.isArchive = source["isArchive"];
+	        this.isScraping = source["isScraping"];
+	        this.isTesting = source["isTesting"];
+	        this.isTracing = source["isTracing"];
+	        this.networkId = source["networkId"];
+	        this.progress = source["progress"];
+	        this.rootConfig = source["rootConfig"];
+	        this.rpcProvider = source["rpcProvider"];
+	        this.version = source["version"];
+	        this.meta = this.convertValues(source["meta"], null);
+	        this.diffs = this.convertValues(source["diffs"], null);
+	        this.latestUpdate = source["latestUpdate"];
+	        this.nFolders = source["nFolders"];
+	        this.nFiles = source["nFiles"];
+	        this.nBytes = source["nBytes"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class TransactionEx {
 	    blockNumber: number;
 	    date: string;

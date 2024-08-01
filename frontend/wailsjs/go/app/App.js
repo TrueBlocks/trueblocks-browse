@@ -46,6 +46,14 @@ export function GetLast(arg1) {
   return window['go']['app']['App']['GetLast'](arg1);
 }
 
+export function GetManifest(arg1, arg2) {
+  return window['go']['app']['App']['GetManifest'](arg1, arg2);
+}
+
+export function GetManifestCnt() {
+  return window['go']['app']['App']['GetManifestCnt']();
+}
+
 export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
@@ -76,6 +84,18 @@ export function GetServer(arg1) {
 
 export function GetSession() {
   return window['go']['app']['App']['GetSession']();
+}
+
+export function GetStatus(arg1, arg2) {
+  return window['go']['app']['App']['GetStatus'](arg1, arg2);
+}
+
+export function GetStatusCnt() {
+  return window['go']['app']['App']['GetStatusCnt']();
+}
+
+export function HelpToggle(arg1) {
+  return window['go']['app']['App']['HelpToggle'](arg1);
 }
 
 export function RegisterCtx(arg1) {
@@ -110,12 +130,24 @@ export function ToggleServer(arg1) {
   return window['go']['app']['App']['ToggleServer'](arg1);
 }
 
+export function ViewAbis(arg1) {
+  return window['go']['app']['App']['ViewAbis'](arg1);
+}
+
 export function ViewHistory(arg1) {
   return window['go']['app']['App']['ViewHistory'](arg1);
 }
 
 export function ViewHome(arg1) {
   return window['go']['app']['App']['ViewHome'](arg1);
+}
+
+export function ViewIndexes(arg1) {
+  return window['go']['app']['App']['ViewIndexes'](arg1);
+}
+
+export function ViewManifest(arg1) {
+  return window['go']['app']['App']['ViewManifest'](arg1);
 }
 
 export function ViewMonitors(arg1) {
@@ -132,4 +164,8 @@ export function ViewServers(arg1) {
 
 export function ViewSettings(arg1) {
   return window['go']['app']['App']['ViewSettings'](arg1);
+}
+
+export function ViewStatus(arg1) {
+  return window['go']['app']['App']['ViewStatus'](arg1);
 }

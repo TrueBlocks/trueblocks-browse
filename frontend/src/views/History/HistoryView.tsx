@@ -24,8 +24,9 @@ export function HistoryView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (addr: string, currentItem: number, itemsPerPage: number) => {
-        const newItems = await GetHistoryPage(addr, currentItem, itemsPerPage);
-        setItems(newItems);
+        GetHistoryPage(addr, currentItem, itemsPerPage).then((newItems) => {
+          setItems(newItems);
+        });
       };
       fetch(address, curItem, perPage);
     }

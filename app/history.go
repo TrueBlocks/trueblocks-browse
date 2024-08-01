@@ -97,14 +97,14 @@ func (a *App) GetHistoryCnt(addr string) int64 {
 	opts := sdk.ListOptions{
 		Addrs: []string{addr},
 	}
-	monitors, _, err := opts.ListCount()
+	appearances, _, err := opts.ListCount()
 	if err != nil {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
 		return 0
-	} else if len(monitors) == 0 {
+	} else if len(appearances) == 0 {
 		return 0
 	}
-	return monitors[0].NRecords
+	return appearances[0].NRecords
 }
 
 var e sync.Mutex

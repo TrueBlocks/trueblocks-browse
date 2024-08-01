@@ -10,7 +10,11 @@ function App() {
   const [, setLocation] = useLocation();
 
   const toggleHelp = () => {
-    setShowHelp(!showHelp);
+    setShowHelp((prevShowHelp) => {
+      const newShowHelp = !prevShowHelp;
+      console.log(`Help is now ${newShowHelp ? "visible" : "hidden"}`);
+      return newShowHelp;
+    });
   };
 
   useEffect(() => {
@@ -20,9 +24,11 @@ function App() {
     };
 
     EventsOn("navigate", handleNavigation);
+    EventsOn("helpToggle", toggleHelp);
 
     return () => {
       EventsOff("navigate");
+      EventsOff("helpToggle");
     };
   }, [setLocation]);
 
@@ -34,7 +40,7 @@ function App() {
       footer={{ height: "2rem" }}
     >
       <AppShell.Header>
-        <Header title="ApplicationTitle" />
+        {/* <Header title="ApplicationTitle" /> */}
         <button onClick={toggleHelp}>Toggle Help</button>
       </AppShell.Header>
       <AppShell.Navbar>
