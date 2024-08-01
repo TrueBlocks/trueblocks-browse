@@ -36,6 +36,11 @@ func (a *App) ViewManifest(cd *menu.CallbackData) {
 	runtime.EventsEmit(a.ctx, "navigate", "/manifest")
 }
 
+func (a *App) ViewAbis(cd *menu.CallbackData) {
+	logger.Info("ViewAbis")
+	runtime.EventsEmit(a.ctx, "navigate", "/abis")
+}
+
 func (a *App) ViewStatus(cd *menu.CallbackData) {
 	logger.Info("ViewStatus")
 	runtime.EventsEmit(a.ctx, "navigate", "/status")
