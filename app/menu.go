@@ -24,6 +24,7 @@ func (a *App) GetMenus() *menu.Menu {
 	viewMenu.AddText("History", keys.CmdOrCtrl("2"), a.ViewHistory)
 	viewMenu.AddText("Monitors", keys.CmdOrCtrl("3"), a.ViewMonitors)
 	viewMenu.AddText("Names", keys.CmdOrCtrl("4"), a.ViewNames)
+	viewMenu.AddText("Indexes", keys.CmdOrCtrl("5"), a.ViewIndexes)
 	viewMenu.AddText("Manifest", keys.CmdOrCtrl("6"), a.ViewManifest)
 	viewMenu.AddText("Abis", keys.CmdOrCtrl("7"), a.ViewAbis)
 	viewMenu.AddText("Status", keys.CmdOrCtrl("8"), a.ViewStatus)
