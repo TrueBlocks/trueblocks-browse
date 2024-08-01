@@ -16,8 +16,8 @@ import {
   // Views
   HomeView,
   HistoryView,
-  MonitorsView,
   NamesView,
+  MonitorsView,
   IndexView,
   ManifestView,
   AbisView,

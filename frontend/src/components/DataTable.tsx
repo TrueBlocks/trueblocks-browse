@@ -1,3 +1,4 @@
+import React from "react";
 import "./DataTable.css";
 import { Table, Title } from "@mantine/core";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";

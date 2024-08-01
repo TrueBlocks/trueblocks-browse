@@ -40,8 +40,7 @@ function App() {
       footer={{ height: "2rem" }}
     >
       <AppShell.Header>
-        {/* <Header title="ApplicationTitle" /> */}
-        <button onClick={toggleHelp}>Toggle Help</button>
+        <Header title="ApplicationTitle" />
       </AppShell.Header>
       <AppShell.Navbar>
         <Navbar />

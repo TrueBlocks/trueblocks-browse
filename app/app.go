@@ -42,7 +42,6 @@ type App struct {
 	Ipfs         *servers.Ipfs
 	Documents    []types.Document
 	CurrentDoc   *types.Document
-	devToolsOpen bool
 }
 
 // Find: NewViews
