@@ -4,7 +4,7 @@ import "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 
 type ErrorMsg struct {
 	Address base.Address `json:"address"`
-	Error   error        `json:"error"`
+	ErrStr  string       `json:"errStr"`
 }
 
 func NewErrorMsg(err error, addrs ...base.Address) *ErrorMsg {
@@ -15,6 +15,6 @@ func NewErrorMsg(err error, addrs ...base.Address) *ErrorMsg {
 
 	return &ErrorMsg{
 		Address: addr,
-		Error:   err,
+		ErrStr:  err.Error(),
 	}
 }
