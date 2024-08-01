@@ -71,6 +71,8 @@ export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
 
 export function ToggleServer(arg1:string):Promise<void>;
 
+export function ViewAbis(arg1:menu.CallbackData):Promise<void>;
+
 export function ViewHistory(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewHome(arg1:menu.CallbackData):Promise<void>;

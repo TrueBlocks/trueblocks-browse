@@ -1,8 +1,29 @@
 import React from "react";
 
 // Find: NewViews
-import { IconHome, IconArticle, IconTag, IconDeviceDesktop, IconServer, IconSettings } from "@tabler/icons-react";
-import { HomeView, HistoryView, NamesView, MonitorsView, ManifestView, StatusView, ServersView, SettingsView } from "@views";
+import {
+  // Icons
+  HomeIcon,
+  HistoryIcon,
+  MonitorIcon,
+  NamesIcon,
+  IndexesIcon,
+  ManifestIcon,
+  AbisIcon,
+  StatusIcon,
+  ServersIcon,
+  SettingsIcon,
+  // Views
+  HomeView,
+  HistoryView,
+  NamesView,
+  MonitorsView,
+  ManifestView,
+  AbisView,
+  ServersView,
+  StatusView,
+  SettingsView,
+} from "@views";
 
 // Note:
 //  Change with care. The order of the items in this list matters (the last one is the default).
@@ -12,56 +33,63 @@ export const routeItems = [
     order: 10,
     route: "/history/:address",
     label: "History",
-    icon: <IconArticle />,
+    icon: HistoryIcon,
     component: HistoryView,
   },
   {
     order: 20,
     route: "/monitors",
     label: "Monitors",
-    icon: <IconDeviceDesktop />,
+    icon: MonitorIcon,
     component: MonitorsView,
   },
   {
     order: 30,
     route: "/names",
     label: "Names",
-    icon: <IconTag />,
+    icon: NamesIcon,
     component: NamesView,
   },
   {
     order: 50,
     route: "/manifest",
     label: "Manifest",
-    icon: <IconTag />,
+    icon: ManifestIcon,
     component: ManifestView,
+  },
+  {
+    order: 60,
+    route: "/abis",
+    label: "Abis",
+    icon: AbisIcon,
+    component: AbisView,
   },
   {
     order: 70,
     route: "/status",
     label: "Status",
-    icon: <IconTag />,
+    icon: StatusIcon,
     component: StatusView,
   },
   {
     order: 80,
     route: "/servers",
     label: "Servers",
-    icon: <IconServer />,
+    icon: ServersIcon,
     component: ServersView,
   },
   {
     order: 90,
     route: "/settings",
     label: "Settings",
-    icon: <IconSettings />,
+    icon: SettingsIcon,
     component: SettingsView,
   },
   {
     order: 0,
     route: "/",
     label: "Home",
-    icon: <IconHome />,
+    icon: HomeIcon,
     component: HomeView,
   },
 ];

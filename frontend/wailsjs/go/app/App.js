@@ -130,6 +130,10 @@ export function ToggleServer(arg1) {
   return window['go']['app']['App']['ToggleServer'](arg1);
 }
 
+export function ViewAbis(arg1) {
+  return window['go']['app']['App']['ViewAbis'](arg1);
+}
+
 export function ViewHistory(arg1) {
   return window['go']['app']['App']['ViewHistory'](arg1);
 }
