@@ -72,7 +72,7 @@ export namespace messages {
 	}
 	export class ErrorMsg {
 	    address: base.Address;
-	    error: any;
+	    errStr: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new ErrorMsg(source);
@@ -81,7 +81,7 @@ export namespace messages {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.address = this.convertValues(source["address"], base.Address);
-	        this.error = source["error"];
+	        this.errStr = source["errStr"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -185,17 +185,17 @@ export namespace output {
 
 export namespace servers {
 	
-	export enum State {
-	    STOPPED = 0,
-	    RUNNING = 1,
-	    PAUSED = 2,
-	}
 	export enum Type {
 	    FILESERVER = 0,
 	    SCRAPER = 1,
 	    MONITOR = 2,
 	    API = 3,
 	    IPFS = 4,
+	}
+	export enum State {
+	    STOPPED = 0,
+	    RUNNING = 1,
+	    PAUSED = 2,
 	}
 	export class Server {
 	    name: string;
