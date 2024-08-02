@@ -31,17 +31,19 @@ type App struct {
 	names       []types.NameEx
 	monitorsMap map[base.Address]types.MonitorEx
 	monitors    []types.MonitorEx
+	abis        []coreTypes.AbiFile
+	indexes     []coreTypes.ChunkStats
 	manifest    coreTypes.Manifest
 	status      coreTypes.Status
 	ensMap      map[string]base.Address
 	renderCtxs  map[base.Address][]*output.RenderCtx
 	// Add your application's data here
-	Scraper      *servers.Scraper
-	FileServer   *servers.FileServer
-	Monitor      *servers.Monitor
-	Ipfs         *servers.Ipfs
-	Documents    []types.Document
-	CurrentDoc   *types.Document
+	Scraper    *servers.Scraper
+	FileServer *servers.FileServer
+	Monitor    *servers.Monitor
+	Ipfs       *servers.Ipfs
+	Documents  []types.Document
+	CurrentDoc *types.Document
 }
 
 // Find: NewViews
@@ -97,6 +99,12 @@ func (a *App) Startup(ctx context.Context) {
 		logger.Panic(err)
 	}
 	if err := a.loadManifest(); err != nil {
+		logger.Panic(err)
+	}
+	if err := a.loadAbis(); err != nil {
+		logger.Panic(err)
+	}
+	if err := a.loadIndexes(); err != nil {
 		logger.Panic(err)
 	}
 	a.Scraper.MsgCtx = ctx

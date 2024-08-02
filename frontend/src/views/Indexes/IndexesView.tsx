@@ -5,21 +5,21 @@ import { View, ViewStatus, DataTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { abiColumns } from "./AbisTable";
-import { GetAbisPage, GetAbisCnt } from "@gocode/app/App";
+import { indexColumns } from "./IndexesTable";
+import { GetIndexesPage, GetIndexesCnt } from "@gocode/app/App";
 
 // Find: NewViews
-export function AbisView() {
+export function IndexesView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.AbiFile[]>([]);
-  const { curItem, perPage } = useKeyboardPaging<types.AbiFile>(items, count);
+  const [items, setItems] = useState<types.ChunkStats[]>([]);
+  const { curItem, perPage } = useKeyboardPaging<types.ChunkStats>(items, count);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetAbisPage(currentItem, itemsPerPage).then((newItems) => {
+        GetIndexesPage(currentItem, itemsPerPage).then((newItems) => {
           setItems(newItems);
         });
       };
@@ -30,7 +30,7 @@ export function AbisView() {
   useEffect(() => {
     setLoading(true);
     const fetch = async () => {
-      const cnt = await GetAbisCnt();
+      const cnt = await GetIndexesCnt();
       setCount(cnt);
       setLoaded(true);
     };
@@ -39,7 +39,7 @@ export function AbisView() {
 
   const table = useReactTable({
     data: items,
-    columns: abiColumns,
+    columns: indexColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -47,9 +47,9 @@ export function AbisView() {
     <View>
       <Stack className={classes.mainContent}>
         <Title order={3}>
-          Abis: showing record {curItem + 1}-{curItem + 1 + perPage - 1} of {count}
+          Indexes: showing record {curItem + 1}-{curItem + 1 + perPage - 1} of {count}
         </Title>
-        <DataTable<types.AbiFile> table={table} loading={loading} />
+        <DataTable<types.ChunkStats> table={table} loading={loading} />
       </Stack>
       <ViewStatus />
     </View>

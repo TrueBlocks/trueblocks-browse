@@ -243,6 +243,60 @@ export namespace servers {
 
 export namespace types {
 	
+	export class AbiFile {
+	    fileSize: number;
+	    lastModDate: string;
+	    name: string;
+	    path: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new AbiFile(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.fileSize = source["fileSize"];
+	        this.lastModDate = source["lastModDate"];
+	        this.name = source["name"];
+	        this.path = source["path"];
+	    }
+	}
+	export class ChunkStats {
+	    addrsPerBlock: number;
+	    appsPerAddr: number;
+	    appsPerBlock: number;
+	    bloomSz: number;
+	    chunkSz: number;
+	    nAddrs: number;
+	    nApps: number;
+	    nBlocks: number;
+	    nBlooms: number;
+	    range: string;
+	    rangeEnd: string;
+	    ratio: number;
+	    recWid: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ChunkStats(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.addrsPerBlock = source["addrsPerBlock"];
+	        this.appsPerAddr = source["appsPerAddr"];
+	        this.appsPerBlock = source["appsPerBlock"];
+	        this.bloomSz = source["bloomSz"];
+	        this.chunkSz = source["chunkSz"];
+	        this.nAddrs = source["nAddrs"];
+	        this.nApps = source["nApps"];
+	        this.nBlocks = source["nBlocks"];
+	        this.nBlooms = source["nBlooms"];
+	        this.range = source["range"];
+	        this.rangeEnd = source["rangeEnd"];
+	        this.ratio = source["ratio"];
+	        this.recWid = source["recWid"];
+	    }
+	}
 	export class ChunkRecord {
 	    bloomHash: string;
 	    bloomSize: number;

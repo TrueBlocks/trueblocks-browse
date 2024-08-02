@@ -21,11 +21,19 @@ export function FileSave(arg1:menu.CallbackData):Promise<void>;
 
 export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
+export function GetAbisCnt():Promise<number>;
+
+export function GetAbisPage(arg1:number,arg2:number):Promise<Array<types.AbiFile>>;
+
 export function GetExistingAddrs():Promise<Array<string>>;
 
 export function GetHistoryCnt(arg1:string):Promise<number>;
 
 export function GetHistoryPage(arg1:string,arg2:number,arg3:number):Promise<Array<types.TransactionEx>>;
+
+export function GetIndexesCnt():Promise<number>;
+
+export function GetIndexesPage(arg1:number,arg2:number):Promise<Array<types.ChunkStats>>;
 
 export function GetLast(arg1:string):Promise<string>;
 

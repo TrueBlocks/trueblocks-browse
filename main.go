@@ -11,6 +11,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/servers"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/wailsapp/wails/v2"
 	wLogger "github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -52,6 +53,8 @@ func main() {
 				&types.NameEx{},
 				&types.StatusEx{},
 				&types.TransactionEx{},
+				&coreTypes.AbiFile{},
+				&coreTypes.ChunkStats{},
 			},
 			EnumBind: []interface{}{
 				types.NameParts,

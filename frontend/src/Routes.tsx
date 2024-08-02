@@ -18,7 +18,7 @@ import {
   HistoryView,
   NamesView,
   MonitorsView,
-  IndexView,
+  IndexesView,
   ManifestView,
   AbisView,
   ServersView,
@@ -56,7 +56,7 @@ export const routeItems = [
     route: "/indexes",
     label: "Indexes",
     icon: IndexesIcon,
-    component: IndexView,
+    component: IndexesView,
   },
   {
     order: 50,
