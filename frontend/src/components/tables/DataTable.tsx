@@ -2,7 +2,7 @@ import React from "react";
 import "./DataTable.css";
 import { Table, Title } from "@mantine/core";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
-import { DataPopover } from "./DataTablePopover";
+import { DataPopover } from "../popovers";
 import { CustomMeta } from "./";
 
 export function DataTable<T>({ table, loading }: { table: ReactTable<T>; loading: boolean }) {
