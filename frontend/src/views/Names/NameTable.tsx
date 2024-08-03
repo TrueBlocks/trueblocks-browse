@@ -1,14 +1,9 @@
 import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { types } from "@gocode/models";
-import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
-import { CustomMeta } from "@components";
+import { createColumnHelper } from "@tanstack/react-table";
+import { AddressNameEditor, AddressNameViewer, CustomColumnDef } from "@components";
 import { NameTags } from "./NameTag";
-import { DataTableStringEditor, DataTableViewInEtherscan } from "@/components/DataTablePopover";
-
-type CustomColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {
-  meta?: CustomMeta;
-};
 
 const nameColumnHelper = createColumnHelper<types.NameEx>();
 
@@ -28,13 +23,18 @@ export const nameColumns: CustomColumnDef<types.NameEx, any>[] = [
     cell: (info) => info.renderValue(),
     meta: {
       className: "wide cell",
-      editor: (getValue: () => any) => <DataTableViewInEtherscan address={getValue} />,
+      editor: (getValue: () => any) => <AddressNameViewer address={getValue} />,
     },
   }),
   nameColumnHelper.accessor("name", {
     header: () => "Name",
     cell: (info) => info.renderValue(),
-    meta: { className: "wide cell", editor: (getValue: () => any) => <DataTableStringEditor value={getValue} onSubmit={(newValue) => console.log(newValue)} /> },
+    meta: {
+      className: "wide cell",
+      editor: (getValue: () => any) => (
+        <AddressNameEditor value={getValue} onSubmit={(newValue) => console.log(newValue)} />
+      ),
+    },
   }),
   nameColumnHelper.accessor("symbol", {
     header: () => "Symbol",

@@ -1,7 +1,6 @@
 import React from "react";
 import { types } from "@gocode/models";
-import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
-import { CustomMeta, GroupDefinition, DataTable } from "@components";
+import { GroupDefinition, DataTable } from "@components";
 
 export type ManifestInstance = InstanceType<typeof types.ManifestEx>;
 
