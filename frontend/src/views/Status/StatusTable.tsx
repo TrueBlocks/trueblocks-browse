@@ -1,7 +1,7 @@
 import React from "react";
 import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef } from "@components";
+import { CustomColumnDef, Formatter } from "@components";
 
 const cacheColumnHelper = createColumnHelper<types.CacheItem>();
 
@@ -13,17 +13,17 @@ export const cacheColumns: CustomColumnDef<types.CacheItem, any>[] = [
   }),
   cacheColumnHelper.accessor("nFolders", {
     header: () => "nFolders",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="int" value={info.renderValue()} />,
     meta: { className: "small cell" },
   }),
   cacheColumnHelper.accessor("nFiles", {
     header: () => "nFiles",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="int" value={info.renderValue()} />,
     meta: { className: "small cell" },
   }),
   cacheColumnHelper.accessor("sizeInBytes", {
     header: () => "SizeInBytes",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="bytes" value={info.renderValue()} />,
     meta: { className: "small cell" },
   }),
   cacheColumnHelper.accessor("lastCached", {

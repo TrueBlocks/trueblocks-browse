@@ -21,16 +21,14 @@ import (
 // EXISTING_CODE
 
 type MonitorEx struct {
-	Address      base.Address `json:"address"`
-	Deleted      bool         `json:"deleted"`
-	EnsName      string       `json:"ensName"`
-	FileSize     int64        `json:"fileSize"`
-	Label        string       `json:"label"`
-	LastScanned  uint32       `json:"lastScanned"`
-	NRecords     int64        `json:"nRecords"`
-	Name         string       `json:"name"`
-	Stats        *Stats       `json:"stats"`
-	Transactions []string     `json:"transactions"`
+	Address     base.Address `json:"address"`
+	Name        string       `json:"name"`
+	EnsName     string       `json:"ensName"`
+	Label       string       `json:"label"`
+	LastScanned uint32       `json:"lastScanned"`
+	FileSize    int64        `json:"fileSize"`
+	NRecords    int64        `json:"nRecords"`
+	Deleted     bool         `json:"deleted"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -94,19 +92,6 @@ func (s *MonitorEx) MarshalCache(writer io.Writer) (err error) {
 		return err
 	}
 
-	// Stats
-	optStats := &cache.Optional[Stats]{
-		Value: s.Stats,
-	}
-	if err = cache.WriteValue(writer, optStats); err != nil {
-		return err
-	}
-
-	// Transactions
-	if err = cache.WriteValue(writer, s.Transactions); err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -152,21 +137,6 @@ func (s *MonitorEx) UnmarshalCache(vers uint64, reader io.Reader) (err error) {
 
 	// Name
 	if err = cache.ReadValue(reader, &s.Name, vers); err != nil {
-		return err
-	}
-
-	// Stats
-	optStats := &cache.Optional[Stats]{
-		Value: s.Stats,
-	}
-	if err = cache.ReadValue(reader, optStats, vers); err != nil {
-		return err
-	}
-	s.Stats = optStats.Get()
-
-	// Transactions
-	s.Transactions = make([]string, 0)
-	if err = cache.ReadValue(reader, &s.Transactions, vers); err != nil {
 		return err
 	}
 

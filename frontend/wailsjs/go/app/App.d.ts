@@ -23,7 +23,7 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
 export function GetAbisCnt():Promise<number>;
 
-export function GetAbisPage(arg1:number,arg2:number):Promise<Array<types.AbiFile>>;
+export function GetAbisPage(arg1:number,arg2:number):Promise<types.AbiSummary>;
 
 export function GetExistingAddrs():Promise<Array<string>>;
 
@@ -31,13 +31,13 @@ export function GetHistoryCnt(arg1:string):Promise<number>;
 
 export function GetHistoryPage(arg1:string,arg2:number,arg3:number):Promise<Array<types.TransactionEx>>;
 
-export function GetIndexesCnt():Promise<number>;
+export function GetIndex(arg1:number,arg2:number):Promise<types.IndexSummary>;
 
-export function GetIndexesPage(arg1:number,arg2:number):Promise<Array<types.ChunkStats>>;
+export function GetIndexCnt():Promise<number>;
 
 export function GetLast(arg1:string):Promise<string>;
 
-export function GetManifest(arg1:number,arg2:number):Promise<types.ManifestEx>;
+export function GetManifest(arg1:number,arg2:number):Promise<types.ManifestSummary>;
 
 export function GetManifestCnt():Promise<number>;
 

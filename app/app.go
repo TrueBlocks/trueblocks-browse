@@ -31,9 +31,9 @@ type App struct {
 	names       []types.NameEx
 	monitorsMap map[base.Address]types.MonitorEx
 	monitors    []types.MonitorEx
-	abis        []coreTypes.AbiFile
-	indexes     []coreTypes.ChunkStats
-	manifest    coreTypes.Manifest
+	abis        types.AbiSummary
+	index       types.IndexSummary
+	manifest    types.ManifestSummary
 	status      coreTypes.Status
 	ensMap      map[string]base.Address
 	renderCtxs  map[base.Address][]*output.RenderCtx
@@ -104,7 +104,7 @@ func (a *App) Startup(ctx context.Context) {
 	if err := a.loadAbis(); err != nil {
 		logger.Panic(err)
 	}
-	if err := a.loadIndexes(); err != nil {
+	if err := a.loadIndex(); err != nil {
 		logger.Panic(err)
 	}
 	a.Scraper.MsgCtx = ctx

@@ -14,7 +14,7 @@ export function StatusView() {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [items, setItems] = useState<types.StatusEx>({} as types.StatusEx);
   const [caches, setCaches] = useState<types.CacheItem[]>([]);
-  const { curItem, perPage } = useKeyboardPaging<types.CacheItem>(caches, count, [], 5);
+  const { curItem, perPage } = useKeyboardPaging<types.CacheItem>(caches, count, [], 8);
 
   useEffect(() => {
     if (loaded && !loading) {
