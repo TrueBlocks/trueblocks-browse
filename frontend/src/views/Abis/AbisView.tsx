@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from "react";
-import classes from "@/App.module.css";
-import { Stack, Title } from "@mantine/core";
-import { View, ViewStatus, DataTable } from "@components";
-import { useKeyboardPaging } from "@hooks";
+import React, { useState, useEffect, ReactNode } from "react";
 import { types } from "@gocode/models";
+import { Title, Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { abiColumns } from "./AbisTable";
+import { abiColumns, AbiInstance, createAbiForm } from ".";
+import classes from "@/App.module.css";
+import { View, ViewStatus, FormTable } from "@components";
+import { useKeyboardPaging } from "@hooks";
 import { GetAbisPage, GetAbisCnt } from "@gocode/app/App";
 
-// Find: NewViews
 export function AbisView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.AbiFile[]>([]);
-  const { curItem, perPage } = useKeyboardPaging<types.AbiFile>(items, count);
+  const [items, setItems] = useState<types.AbiSummary>({} as types.AbiSummary);
+  const [chunks, setChunks] = useState<types.Abi[]>([]);
+  const { curItem, perPage } = useKeyboardPaging<types.Abi>(chunks, count, [], 15);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetAbisPage(currentItem, itemsPerPage).then((newItems) => {
-          setItems(newItems);
+        GetAbisPage(currentItem, itemsPerPage).then((abis: types.AbiSummary) => {
+          setItems(abis);
+          setChunks(abis.chunks || []);
         });
       };
       fetch(curItem, perPage);
@@ -38,7 +39,7 @@ export function AbisView() {
   }, []);
 
   const table = useReactTable({
-    data: items,
+    data: items.chunks || [], // Pass the chunks array or an empty array if undefined
     columns: abiColumns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -46,10 +47,8 @@ export function AbisView() {
   return (
     <View>
       <Stack className={classes.mainContent}>
-        <Title order={3}>
-          Abis: showing record {curItem + 1}-{curItem + 1 + perPage - 1} of {count}
-        </Title>
-        <DataTable<types.AbiFile> table={table} loading={loading} />
+        <Title order={3}>Abis View</Title>
+        <FormTable data={items} definition={createAbiForm(table)} />;{" "}
       </Stack>
       <ViewStatus />
     </View>

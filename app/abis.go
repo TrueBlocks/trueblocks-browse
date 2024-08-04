@@ -3,30 +3,37 @@ package app
 import (
 	"fmt"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 // Find: NewViews
-func (a *App) GetAbisPage(first, pageSize int) []coreTypes.AbiFile {
-	first = base.Max(0, base.Min(first, len(a.abis)-1))
-	last := base.Min(len(a.abis), first+pageSize)
-	return a.abis[first:last]
+func (a *App) GetAbisPage(first, pageSize int) types.AbiSummary {
+	copy := a.abis
+	first = base.Max(0, base.Min(first, len(copy.Files)-1))
+	last := base.Min(len(copy.Files), first+pageSize)
+	copy.Files = copy.Files[first:last]
+	return copy
 }
 
 func (a *App) GetAbisCnt() int {
-	return len(a.abis)
+	return len(a.abis.Files)
 }
 
 func (a *App) loadAbis() error {
-	opts := sdk.AbisOptions{}
-	if abisArray, _, err := opts.AbisList(); err != nil {
+	opts := sdk.AbisOptions{
+		Globals: sdk.Globals{
+			Verbose: true,
+		},
+	}
+	if abis, _, err := opts.AbisList(); err != nil {
 		return err
-	} else if (abisArray == nil) || (len(abisArray) == 0) {
+	} else if (abis == nil) || (len(abis) == 0) {
 		return fmt.Errorf("no status found")
 	} else {
-		a.abis = abisArray
+		a.abis.Files = append(a.abis.Files, abis...)
+		a.abis.Summarize()
 	}
 	return nil
 }

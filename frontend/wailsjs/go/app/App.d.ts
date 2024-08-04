@@ -23,7 +23,7 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
 export function GetAbisCnt():Promise<number>;
 
-export function GetAbisPage(arg1:number,arg2:number):Promise<Array<types.AbiFile>>;
+export function GetAbisPage(arg1:number,arg2:number):Promise<types.AbiSummary>;
 
 export function GetExistingAddrs():Promise<Array<string>>;
 

@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
-import { Text } from "@mantine/core";
+import { IconCircleCheck } from "@tabler/icons-react";
 
-export type knownTypes = "text" | "float" | "int" | "bytes" | "date" | "boolean" | "address" | "hash";
+export type knownTypes = "text" | "float" | "int" | "bytes" | "date" | "boolean" | "check" | "address" | "hash";
 
 export const Formatter: React.FC<{ type: knownTypes; value: number }> = ({ type, value }) => {
   const formatInteger = (number: number): React.ReactNode => {
@@ -34,7 +34,10 @@ export const Formatter: React.FC<{ type: knownTypes; value: number }> = ({ type,
     case "int":
       return formatInteger(value);
     case "boolean":
-      return <>{value ? "true" : "false"}</>;
+      var fill = value ? "green" : "red";
+      return <IconCircleCheck size={20} color="white" fill={fill} />;
+    case "check":
+      return <>{value ? <IconCircleCheck size={20} color="white" fill="green" /> : <></>}</>;
     default:
       return value;
   }

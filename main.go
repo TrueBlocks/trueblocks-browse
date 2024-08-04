@@ -54,7 +54,7 @@ func main() {
 				&types.TransactionEx{},
 				&types.IndexSummary{},
 				&types.ManifestSummary{},
-				&coreTypes.AbiFile{},
+				&types.AbiSummary{},
 				&coreTypes.ChunkStats{},
 			},
 			EnumBind: []interface{}{

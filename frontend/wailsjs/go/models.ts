@@ -185,17 +185,17 @@ export namespace output {
 
 export namespace servers {
 	
-	export enum State {
-	    STOPPED = 0,
-	    RUNNING = 1,
-	    PAUSED = 2,
-	}
 	export enum Type {
 	    FILESERVER = 0,
 	    SCRAPER = 1,
 	    MONITOR = 2,
 	    API = 3,
 	    IPFS = 4,
+	}
+	export enum State {
+	    STOPPED = 0,
+	    RUNNING = 1,
+	    PAUSED = 2,
 	}
 	export class Server {
 	    name: string;
@@ -243,23 +243,189 @@ export namespace servers {
 
 export namespace types {
 	
-	export class AbiFile {
-	    fileSize: number;
-	    lastModDate: string;
+	export class Parameter {
+	    components?: Parameter[];
+	    indexed?: boolean;
+	    internalType?: string;
 	    name: string;
-	    path: string;
+	    strDefault?: string;
+	    type: string;
+	    value?: any;
 	
 	    static createFrom(source: any = {}) {
-	        return new AbiFile(source);
+	        return new Parameter(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.components = this.convertValues(source["components"], Parameter);
+	        this.indexed = source["indexed"];
+	        this.internalType = source["internalType"];
+	        this.name = source["name"];
+	        this.strDefault = source["strDefault"];
+	        this.type = source["type"];
+	        this.value = source["value"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class Function {
+	    anonymous?: boolean;
+	    constant?: boolean;
+	    encoding: string;
+	    inputs: Parameter[];
+	    message?: string;
+	    name: string;
+	    outputs: Parameter[];
+	    signature?: string;
+	    stateMutability?: string;
+	    type: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Function(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.anonymous = source["anonymous"];
+	        this.constant = source["constant"];
+	        this.encoding = source["encoding"];
+	        this.inputs = this.convertValues(source["inputs"], Parameter);
+	        this.message = source["message"];
+	        this.name = source["name"];
+	        this.outputs = this.convertValues(source["outputs"], Parameter);
+	        this.signature = source["signature"];
+	        this.stateMutability = source["stateMutability"];
+	        this.type = source["type"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class Abi {
+	    address: base.Address;
+	    fileSize: number;
+	    functions: Function[];
+	    isKnown: boolean;
+	    lastModDate: string;
+	    nEvents: number;
+	    nFunctions: number;
+	    name: string;
+	    path: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Abi(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = this.convertValues(source["address"], base.Address);
 	        this.fileSize = source["fileSize"];
+	        this.functions = this.convertValues(source["functions"], Function);
+	        this.isKnown = source["isKnown"];
 	        this.lastModDate = source["lastModDate"];
+	        this.nEvents = source["nEvents"];
+	        this.nFunctions = source["nFunctions"];
 	        this.name = source["name"];
 	        this.path = source["path"];
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class AbiSummary {
+	    address: base.Address;
+	    fileSize: number;
+	    functions: Function[];
+	    isKnown: boolean;
+	    lastModDate: string;
+	    nEvents: number;
+	    nFunctions: number;
+	    name: string;
+	    path: string;
+	    chunks: Abi[];
+	
+	    static createFrom(source: any = {}) {
+	        return new AbiSummary(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.fileSize = source["fileSize"];
+	        this.functions = this.convertValues(source["functions"], Function);
+	        this.isKnown = source["isKnown"];
+	        this.lastModDate = source["lastModDate"];
+	        this.nEvents = source["nEvents"];
+	        this.nFunctions = source["nFunctions"];
+	        this.name = source["name"];
+	        this.path = source["path"];
+	        this.chunks = this.convertValues(source["chunks"], Abi);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class ChunkStats {
 	    addrsPerBlock: number;
@@ -297,6 +463,7 @@ export namespace types {
 	        this.recWid = source["recWid"];
 	    }
 	}
+	
 	export class IndexSummary {
 	    addrsPerBlock: number;
 	    appsPerAddr: number;
@@ -521,6 +688,7 @@ export namespace types {
 		    return a;
 		}
 	}
+	
 	export class MetaData {
 	    client: number;
 	    finalized: number;

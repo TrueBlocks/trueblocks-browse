@@ -31,7 +31,7 @@ type App struct {
 	names       []types.NameEx
 	monitorsMap map[base.Address]types.MonitorEx
 	monitors    []types.MonitorEx
-	abis        []coreTypes.AbiFile
+	abis        types.AbiSummary
 	index       types.IndexSummary
 	manifest    types.ManifestSummary
 	status      coreTypes.Status
