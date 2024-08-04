@@ -3,7 +3,7 @@ import { View, ViewStatus } from "@components";
 import { ServerCard, ServerLog } from "./";
 import { servers, messages } from "@gocode/models";
 import { GetServer, ToggleServer } from "@gocode/app/App";
-import { Stack, Title, SimpleGrid } from "@mantine/core";
+import { Stack, Title, SimpleGrid, Fieldset } from "@mantine/core";
 import { EventsOn, EventsOff } from "@runtime";
 import classes from "@/App.module.css";
 
@@ -67,13 +67,15 @@ export function ServersView() {
     <View>
       <Title order={3}>Servers View</Title>
       <Stack className={classes.mainContent}>
-        <SimpleGrid cols={2} spacing="lg" style={{ padding: "lg" }}>
-          <ServerCard server={scraper} toggle={toggleServer} />
-          <ServerCard server={monitor} toggle={toggleServer} />
-          <ServerCard server={ipfs} toggle={toggleServer} />
-          <ServerCard server={fileServer} toggle={toggleServer} />
-        </SimpleGrid>
-        <ServerLog logMessages={logMessages} />
+        <Fieldset legend={"Servers"} bg={"white"} style={{ padding: "1rem", margin: "1rem" }}>
+          <SimpleGrid cols={2} spacing="lg" style={{ padding: "lg" }}>
+            <ServerCard server={scraper} toggle={toggleServer} />
+            <ServerCard server={monitor} toggle={toggleServer} />
+            <ServerCard server={ipfs} toggle={toggleServer} />
+            <ServerCard server={fileServer} toggle={toggleServer} />
+          </SimpleGrid>
+          <ServerLog logMessages={logMessages} />
+        </Fieldset>
       </Stack>
       <ViewStatus />
     </View>

@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
@@ -27,6 +28,9 @@ func (a *App) loadManifest() error {
 	} else if (manifestArray == nil) || (len(manifestArray) == 0) {
 		return fmt.Errorf("no manifest found")
 	} else {
+		sort.Slice(manifestArray[0].Chunks, func(i, j int) bool {
+			return manifestArray[0].Chunks[i].Range > manifestArray[0].Chunks[j].Range
+		})
 		a.manifest = manifestArray[0]
 	}
 	return nil
