@@ -9,7 +9,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
-func (a *App) GetManifest(first, pageSize int) types.ManifestEx {
+func (a *App) GetManifest(first, pageSize int) types.ManifestSummary {
 	manifest := types.NewManifestEx(a.manifest)
 	first = base.Max(0, base.Min(first, len(manifest.Chunks)-1))
 	last := base.Min(len(manifest.Chunks), first+pageSize)

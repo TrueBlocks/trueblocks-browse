@@ -2,7 +2,7 @@ import React from "react";
 import { types } from "@gocode/models";
 import { GroupDefinition, DataTable } from "@components";
 
-export type ManifestInstance = InstanceType<typeof types.ManifestEx>;
+export type ManifestInstance = InstanceType<typeof types.ManifestSummary>;
 
 export function createManifestForm(table: any): GroupDefinition<ManifestInstance>[] {
   return [

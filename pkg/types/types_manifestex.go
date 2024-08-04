@@ -6,7 +6,7 @@ import (
 
 // TODO: Eventually this will get put back into Core.
 
-type ManifestEx struct {
+type ManifestSummary struct {
 	coreTypes.Manifest `json:",inline"`
 	LatestUpdate       string `json:"latestUpdate"`
 	NBlooms            uint64 `json:"nBlooms"`
@@ -15,8 +15,8 @@ type ManifestEx struct {
 	IndexSize          int64  `json:"indexSize"`
 }
 
-func NewManifestEx(manifest coreTypes.Manifest) ManifestEx {
-	ret := ManifestEx{
+func NewManifestEx(manifest coreTypes.Manifest) ManifestSummary {
+	ret := ManifestSummary{
 		Manifest: manifest,
 	}
 

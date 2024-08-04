@@ -37,7 +37,7 @@ export function GetIndexCnt():Promise<number>;
 
 export function GetLast(arg1:string):Promise<string>;
 
-export function GetManifest(arg1:number,arg2:number):Promise<types.ManifestEx>;
+export function GetManifest(arg1:number,arg2:number):Promise<types.ManifestSummary>;
 
 export function GetManifestCnt():Promise<number>;
 

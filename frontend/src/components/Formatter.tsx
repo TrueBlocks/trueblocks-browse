@@ -19,7 +19,10 @@ export const Formatter: React.FC<{ type: knownTypes; value: number }> = ({ type,
     const k = 1024;
     const sizes = ["bytes", "Kb", "Mb", "Gb", "Tb", "Pb"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    const formattedValue = parseFloat((bytes / Math.pow(k, i)).toFixed(2));
+    const formattedValue = (bytes / Math.pow(k, i)).toLocaleString("en-US", {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    });
     return <>{`${formattedValue} ${sizes[i]}`}</>;
   };
 

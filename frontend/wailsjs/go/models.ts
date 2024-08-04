@@ -373,7 +373,7 @@ export namespace types {
 	        this.range = source["range"];
 	    }
 	}
-	export class ManifestEx {
+	export class ManifestSummary {
 	    chain: string;
 	    chunks: ChunkRecord[];
 	    specification: string;
@@ -385,7 +385,7 @@ export namespace types {
 	    indexSize: number;
 	
 	    static createFrom(source: any = {}) {
-	        return new ManifestEx(source);
+	        return new ManifestSummary(source);
 	    }
 	
 	    constructor(source: any = {}) {
