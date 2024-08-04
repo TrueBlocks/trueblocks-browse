@@ -185,17 +185,17 @@ export namespace output {
 
 export namespace servers {
 	
+	export enum State {
+	    STOPPED = 0,
+	    RUNNING = 1,
+	    PAUSED = 2,
+	}
 	export enum Type {
 	    FILESERVER = 0,
 	    SCRAPER = 1,
 	    MONITOR = 2,
 	    API = 3,
 	    IPFS = 4,
-	}
-	export enum State {
-	    STOPPED = 0,
-	    RUNNING = 1,
-	    PAUSED = 2,
 	}
 	export class Server {
 	    name: string;
@@ -422,14 +422,13 @@ export namespace types {
 	
 	export class MonitorEx {
 	    address: base.Address;
-	    deleted: boolean;
+	    name: string;
 	    ensName: string;
-	    fileSize: number;
 	    label: string;
 	    lastScanned: number;
+	    fileSize: number;
 	    nRecords: number;
-	    name: string;
-	    transactions: string[];
+	    deleted: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new MonitorEx(source);
@@ -438,14 +437,13 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.address = this.convertValues(source["address"], base.Address);
-	        this.deleted = source["deleted"];
+	        this.name = source["name"];
 	        this.ensName = source["ensName"];
-	        this.fileSize = source["fileSize"];
 	        this.label = source["label"];
 	        this.lastScanned = source["lastScanned"];
+	        this.fileSize = source["fileSize"];
 	        this.nRecords = source["nRecords"];
-	        this.name = source["name"];
-	        this.transactions = source["transactions"];
+	        this.deleted = source["deleted"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

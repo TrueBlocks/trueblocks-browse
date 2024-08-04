@@ -33,7 +33,7 @@ type App struct {
 	monitors    []types.MonitorEx
 	abis        []coreTypes.AbiFile
 	index       types.IndexSummary
-	manifest    coreTypes.Manifest
+	manifest    types.ManifestSummary
 	status      coreTypes.Status
 	ensMap      map[string]base.Address
 	renderCtxs  map[base.Address][]*output.RenderCtx
