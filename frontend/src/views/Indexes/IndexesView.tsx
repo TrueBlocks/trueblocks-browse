@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from "react";
-import classes from "@/App.module.css";
-import { Stack, Title } from "@mantine/core";
-import { View, ViewStatus, DataTable } from "@components";
-import { useKeyboardPaging } from "@hooks";
+import React, { useState, useEffect, ReactNode } from "react";
 import { types } from "@gocode/models";
+import { Title, Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { indexColumns } from "./IndexesTable";
-import { GetIndexesPage, GetIndexesCnt } from "@gocode/app/App";
+import { indexColumns, IndexInstance, createIndexForm } from ".";
+import classes from "@/App.module.css";
+import { View, ViewStatus, FormTable } from "@components";
+import { useKeyboardPaging } from "@hooks";
+import { GetIndex, GetIndexCnt } from "@gocode/app/App";
 
-// Find: NewViews
 export function IndexesView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.ChunkStats[]>([]);
-  const { curItem, perPage } = useKeyboardPaging<types.ChunkStats>(items, count);
+  const [items, setItems] = useState<types.IndexSummary>({} as types.IndexSummary);
+  const [chunks, setChunks] = useState<types.ChunkStats[]>([]);
+  const { curItem, perPage } = useKeyboardPaging<types.ChunkStats>(chunks, count, [], 15);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetIndexesPage(currentItem, itemsPerPage).then((newItems) => {
-          setItems(newItems);
+        GetIndex(currentItem, itemsPerPage).then((index: types.IndexSummary) => {
+          setItems(index);
+          setChunks(index.chunks || []);
         });
       };
       fetch(curItem, perPage);
@@ -30,7 +31,7 @@ export function IndexesView() {
   useEffect(() => {
     setLoading(true);
     const fetch = async () => {
-      const cnt = await GetIndexesCnt();
+      const cnt = await GetIndexCnt();
       setCount(cnt);
       setLoaded(true);
     };
@@ -38,7 +39,7 @@ export function IndexesView() {
   }, []);
 
   const table = useReactTable({
-    data: items,
+    data: items.chunks || [], // Pass the chunks array or an empty array if undefined
     columns: indexColumns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -46,10 +47,8 @@ export function IndexesView() {
   return (
     <View>
       <Stack className={classes.mainContent}>
-        <Title order={3}>
-          Indexes: showing record {curItem + 1}-{curItem + 1 + perPage - 1} of {count}
-        </Title>
-        <DataTable<types.ChunkStats> table={table} loading={loading} />
+        <Title order={3}>Index View</Title>
+        <FormTable data={items} definition={createIndexForm(table)} />;{" "}
       </Stack>
       <ViewStatus />
     </View>

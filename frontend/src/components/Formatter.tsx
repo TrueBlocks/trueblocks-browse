@@ -10,7 +10,7 @@ export const Formatter: React.FC<{ type: knownTypes; value: number }> = ({ type,
   };
 
   const formatFloat = (number: number): React.ReactNode => {
-    const n = number.toFixed(5);
+    const n = number.toFixed(4);
     return <>{n}</>;
   };
 

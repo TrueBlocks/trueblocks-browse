@@ -32,7 +32,7 @@ export function FormTable<T>({ data, definition }: FormTableProps<T>) {
           <Grid.Col span={group.colSpan || 12} key={index}>
             <Stack>
               <Fieldset legend={group.title} bg={"white"} style={{ marginBottom: "1rem" }}>
-               {group.fields?.map((field, fieldIndex) => {
+                {group.fields?.map((field, fieldIndex) => {
                   var value = <>{data[field.accessor]}</>;
                   if (field.type !== undefined) {
                     value = <Formatter type={field.type} value={Number(data[field.accessor])} />;
@@ -52,7 +52,6 @@ export function FormTable<T>({ data, definition }: FormTableProps<T>) {
           </Grid.Col>
         ))}
       </Grid>
-      <Divider my="lg" />
     </Container>
   );
 }

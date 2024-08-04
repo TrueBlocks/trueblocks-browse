@@ -53,6 +53,7 @@ func main() {
 				&types.NameEx{},
 				&types.StatusEx{},
 				&types.TransactionEx{},
+				&types.IndexSummary{},
 				&coreTypes.AbiFile{},
 				&coreTypes.ChunkStats{},
 			},
