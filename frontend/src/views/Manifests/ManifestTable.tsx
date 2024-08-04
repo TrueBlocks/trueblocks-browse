@@ -1,7 +1,7 @@
 import React from "react";
 import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef } from "@components";
+import { CustomColumnDef, Formatter } from "@components";
 
 const chunkColumnHelper = createColumnHelper<types.ChunkRecord>();
 
@@ -18,7 +18,7 @@ export const chunkColumns: CustomColumnDef<types.ChunkRecord, any>[] = [
   }),
   chunkColumnHelper.accessor("bloomSize", {
     header: () => "BloomSize",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="bytes" value={info.renderValue()} />,
     meta: { className: "small cell" },
   }),
   chunkColumnHelper.accessor("indexHash", {
@@ -28,7 +28,7 @@ export const chunkColumns: CustomColumnDef<types.ChunkRecord, any>[] = [
   }),
   chunkColumnHelper.accessor("indexSize", {
     header: () => "IndexSize",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="bytes" value={info.renderValue()} />,
     meta: { className: "wide cell" },
   }),
 ];

@@ -1,9 +1,11 @@
 import React, { ReactNode } from "react";
 import { Container, Grid, Flex, Text, Title, Divider, Stack } from "@mantine/core";
+import { Formatter, knownTypes } from "@components";
 
 type FieldDefinition<T> = {
   label: string;
   accessor: keyof T;
+  type?: knownTypes;
 };
 
 type CustomComponentDefinition = {
@@ -31,12 +33,18 @@ export function FormTable<T>({ data, definition }: FormTableProps<T>) {
             <Stack>
               <Title order={4}>{group.title}</Title>
               <Divider />
-              {group.fields?.map((field, fieldIndex) => (
-                <Flex key={fieldIndex} gap="md" align="center">
-                  <Text style={{ backgroundColor: "lightgrey", minWidth: "150px" }}>{field.label}</Text>{" "}
-                  <Text>{String(data[field.accessor])}</Text>
-                </Flex>
-              ))}
+              {group.fields?.map((field, fieldIndex) => {
+                var value = <>{data[field.accessor]}</>;
+                if (field.type !== undefined) {
+                  value = <Formatter type={field.type} value={Number(data[field.accessor])} />;
+                }
+                return (
+                  <Flex key={fieldIndex} gap="md" align="center">
+                    <Text style={{ minWidth: "150px" }}>{field.label}</Text>
+                    <Text>{value}</Text>
+                  </Flex>
+                );
+              })}
               {group.customComponents?.map((customComponent, componentIndex) => (
                 <div key={componentIndex}>{customComponent.component}</div>
               ))}

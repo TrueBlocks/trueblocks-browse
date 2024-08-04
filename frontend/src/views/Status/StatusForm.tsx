@@ -12,16 +12,16 @@ export function createStatusForm(table: any): GroupDefinition<StatusInstance>[] 
       fields: [
         { label: "trueblocks", accessor: "version" },
         { label: "client", accessor: "clientVersion" },
-        { label: "isArchive", accessor: "isArchive" },
-        { label: "isTracing", accessor: "isTracing" },
+        { label: "isArchive", type: "boolean", accessor: "isArchive" },
+        { label: "isTracing", type: "boolean", accessor: "isTracing" },
       ],
     },
     {
       title: "API Keys",
       colSpan: 5,
       fields: [
-        { label: "hasEsKey", accessor: "hasEsKey" },
-        { label: "hasPinKey", accessor: "hasPinKey" },
+        { label: "hasEsKey", type: "boolean", accessor: "hasEsKey" },
+        { label: "hasPinKey", type: "boolean", accessor: "hasPinKey" },
         { label: "rpcProvider", accessor: "rpcProvider" },
       ],
     },
@@ -40,9 +40,9 @@ export function createStatusForm(table: any): GroupDefinition<StatusInstance>[] 
       colSpan: 5,
       fields: [
         { label: "latestCached", accessor: "latestUpdate" },
-        { label: "nFolders", accessor: "nFolders" },
-        { label: "nFiles", accessor: "nFiles" },
-        { label: "sizeInBytes", accessor: "nBytes" },
+        { label: "nFiles", type: "int", accessor: "nFiles" },
+        { label: "nFolders", type: "int", accessor: "nFolders" },
+        { label: "sizeInBytes", type: "bytes", accessor: "nBytes" },
       ],
     },
     {

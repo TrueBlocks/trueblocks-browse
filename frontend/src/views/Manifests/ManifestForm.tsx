@@ -20,10 +20,10 @@ export function createManifestForm(table: any): GroupDefinition<ManifestInstance
       title: "Statistics",
       colSpan: 6,
       fields: [
-        { label: "nBlooms", accessor: "nBlooms" },
-        { label: "bloomsSize", accessor: "bloomsSize" },
-        { label: "nIndexes", accessor: "nIndexes" },
-        { label: "indexSize", accessor: "indexSize" },
+        { label: "nBlooms", type: "int", accessor: "nBlooms" },
+        { label: "bloomsSize", type: "bytes", accessor: "bloomsSize" },
+        { label: "nIndexes", type: "int", accessor: "nIndexes" },
+        { label: "indexSize", type: "bytes", accessor: "indexSize" },
       ],
     },
     {
