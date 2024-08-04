@@ -364,32 +364,6 @@ export namespace types {
 		}
 	}
 	
-	export class Stats {
-	    nAddresses: number;
-	    nCoins: number;
-	    nContracts: number;
-	    nTokenSeries: number;
-	    nTokenUtxo: number;
-	    nTokens: number;
-	    nTxns: number;
-	    nUtxo: number;
-	
-	    static createFrom(source: any = {}) {
-	        return new Stats(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.nAddresses = source["nAddresses"];
-	        this.nCoins = source["nCoins"];
-	        this.nContracts = source["nContracts"];
-	        this.nTokenSeries = source["nTokenSeries"];
-	        this.nTokenUtxo = source["nTokenUtxo"];
-	        this.nTokens = source["nTokens"];
-	        this.nTxns = source["nTxns"];
-	        this.nUtxo = source["nUtxo"];
-	    }
-	}
 	export class MonitorEx {
 	    address: base.Address;
 	    deleted: boolean;
@@ -399,7 +373,6 @@ export namespace types {
 	    lastScanned: number;
 	    nRecords: number;
 	    name: string;
-	    stats?: Stats;
 	    transactions: string[];
 	
 	    static createFrom(source: any = {}) {
@@ -416,7 +389,6 @@ export namespace types {
 	        this.lastScanned = source["lastScanned"];
 	        this.nRecords = source["nRecords"];
 	        this.name = source["name"];
-	        this.stats = this.convertValues(source["stats"], Stats);
 	        this.transactions = source["transactions"];
 	    }
 	
@@ -495,7 +467,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	
 	export class MetaData {
 	    client: number;
 	    finalized: number;

@@ -29,7 +29,6 @@ type MonitorEx struct {
 	LastScanned  uint32       `json:"lastScanned"`
 	NRecords     int64        `json:"nRecords"`
 	Name         string       `json:"name"`
-	Stats        *Stats       `json:"stats"`
 	Transactions []string     `json:"transactions"`
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -94,14 +93,6 @@ func (s *MonitorEx) MarshalCache(writer io.Writer) (err error) {
 		return err
 	}
 
-	// Stats
-	optStats := &cache.Optional[Stats]{
-		Value: s.Stats,
-	}
-	if err = cache.WriteValue(writer, optStats); err != nil {
-		return err
-	}
-
 	// Transactions
 	if err = cache.WriteValue(writer, s.Transactions); err != nil {
 		return err
@@ -154,15 +145,6 @@ func (s *MonitorEx) UnmarshalCache(vers uint64, reader io.Reader) (err error) {
 	if err = cache.ReadValue(reader, &s.Name, vers); err != nil {
 		return err
 	}
-
-	// Stats
-	optStats := &cache.Optional[Stats]{
-		Value: s.Stats,
-	}
-	if err = cache.ReadValue(reader, optStats, vers); err != nil {
-		return err
-	}
-	s.Stats = optStats.Get()
 
 	// Transactions
 	s.Transactions = make([]string, 0)
