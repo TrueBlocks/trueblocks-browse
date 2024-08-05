@@ -676,6 +676,9 @@ export namespace types {
 	    nFunctions: number;
 	    name: string;
 	    path: string;
+	    largestFile: string;
+	    mostFunctions: string;
+	    mostEvents: string;
 	    chunks: Abi[];
 	
 	    static createFrom(source: any = {}) {
@@ -693,6 +696,9 @@ export namespace types {
 	        this.nFunctions = source["nFunctions"];
 	        this.name = source["name"];
 	        this.path = source["path"];
+	        this.largestFile = source["largestFile"];
+	        this.mostFunctions = source["mostFunctions"];
+	        this.mostEvents = source["mostEvents"];
 	        this.chunks = this.convertValues(source["chunks"], Abi);
 	    }
 	

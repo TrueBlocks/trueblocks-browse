@@ -16,9 +16,13 @@ export function createAbiForm(table: any): GroupDefinition<AbiInstance>[] {
       ],
     },
     {
-      title: "Future Use",
+      title: "Bounds",
       colSpan: 6,
-      fields: [],
+      fields: [
+        { label: "largestFile", type: "text", accessor: "largestFile" },
+        { label: "mostFunctions", type: "text", accessor: "mostFunctions" },
+        { label: "mostEvents", type: "text", accessor: "mostEvents" },
+      ],
     },
     {
       title: "Files",

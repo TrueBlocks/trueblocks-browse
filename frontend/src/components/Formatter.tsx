@@ -3,7 +3,7 @@ import { IconCircleCheck } from "@tabler/icons-react";
 
 export type knownTypes = "text" | "float" | "int" | "bytes" | "date" | "boolean" | "check" | "address" | "hash";
 
-export const Formatter: React.FC<{ type: knownTypes; value: number }> = ({ type, value }) => {
+export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, value }) => {
   const formatInteger = (number: number): React.ReactNode => {
     const n = new Intl.NumberFormat(navigator.language).format(number);
     return <>{n}</>;
@@ -26,13 +26,14 @@ export const Formatter: React.FC<{ type: knownTypes; value: number }> = ({ type,
     return <>{`${formattedValue} ${sizes[i]}`}</>;
   };
 
+  var v = value as number;
   switch (type) {
     case "float":
-      return formatFloat(value);
+      return formatFloat(v);
     case "bytes":
-      return formatBytes(value);
+      return formatBytes(v);
     case "int":
-      return formatInteger(value);
+      return formatInteger(v);
     case "boolean":
       var fill = value ? "green" : "red";
       return <IconCircleCheck size={20} color="white" fill={fill} />;

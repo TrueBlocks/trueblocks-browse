@@ -35,7 +35,7 @@ export function FormTable<T>({ data, definition }: FormTableProps<T>) {
                 {group.fields?.map((field, fieldIndex) => {
                   var value = <>{data[field.accessor]}</>;
                   if (field.type !== undefined) {
-                    value = <Formatter type={field.type} value={Number(data[field.accessor])} />;
+                    value = <Formatter type={field.type} value={data[field.accessor]} />;
                   }
                   return (
                     <Flex key={fieldIndex} gap="md" align="center">
