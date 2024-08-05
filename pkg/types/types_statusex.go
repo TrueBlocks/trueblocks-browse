@@ -6,7 +6,7 @@ import (
 
 // TODO: Eventually this will get put back into Core.
 
-type StatusEx struct {
+type StatusSummary struct {
 	coreTypes.Status `json:",inline"`
 	LatestUpdate     string `json:"latestUpdate"`
 	NFolders         uint64 `json:"nFolders"`
@@ -14,16 +14,16 @@ type StatusEx struct {
 	NBytes           int64  `json:"nBytes"`
 }
 
-func NewStatusEx(status coreTypes.Status) StatusEx {
-	ret := StatusEx{
-		Status: status,
+func (s *StatusSummary) ShallowCopy() StatusSummary {
+	return StatusSummary{
+		Status: s.Status.ShallowCopy(),
 	}
+}
 
-	for _, cache := range status.Caches {
-		ret.NFolders += cache.NFolders
-		ret.NFiles += cache.NFiles
-		ret.NBytes += cache.SizeInBytes
+func (s *StatusSummary) Summarize() {
+	for _, cache := range s.Caches {
+		s.NFolders += cache.NFolders
+		s.NFiles += cache.NFiles
+		s.NBytes += cache.SizeInBytes
 	}
-
-	return ret
 }

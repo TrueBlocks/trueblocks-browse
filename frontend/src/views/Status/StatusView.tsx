@@ -12,14 +12,14 @@ export function StatusView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.StatusEx>({} as types.StatusEx);
+  const [items, setItems] = useState<types.StatusSummary>({} as types.StatusSummary);
   const [caches, setCaches] = useState<types.CacheItem[]>([]);
   const { curItem, perPage } = useKeyboardPaging<types.CacheItem>(caches, count, [], 8);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetStatus(currentItem, itemsPerPage).then((status: types.StatusEx) => {
+        GetStatus(currentItem, itemsPerPage).then((status: types.StatusSummary) => {
           setItems(status);
           setCaches(status.caches || []);
         });

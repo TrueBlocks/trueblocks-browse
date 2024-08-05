@@ -27,14 +27,15 @@ type App struct {
 	ctx        context.Context
 	session    config.Session
 	apiKeys    map[string]string
-	names      types.SummaryName
-	monitors   types.SummaryMonitor
-	index      types.SummaryIndex
-	manifest   types.SummaryManifest
-	abis       types.SummaryAbis
-	status     coreTypes.Status
 	ensMap     map[string]base.Address
 	renderCtxs map[base.Address][]*output.RenderCtx
+	// Summaries
+	names    types.SummaryName
+	monitors types.SummaryMonitor
+	index    types.SummaryIndex
+	manifest types.SummaryManifest
+	abis     types.SummaryAbis
+	status   types.StatusSummary
 	// Add your application's data here
 	ScraperController *daemons.DaemonScraper
 	FileController    *daemons.DaemonFile

@@ -9,12 +9,12 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/version"
 )
 
-func (a *App) GetStatus(first, pageSize int) types.StatusEx {
-	status := types.NewStatusEx(a.status)
-	first = base.Max(0, base.Min(first, len(status.Caches)-1))
-	last := base.Min(len(status.Caches), first+pageSize)
-	status.Caches = status.Caches[first:last]
-	return status
+func (a *App) GetStatus(first, pageSize int) types.StatusSummary {
+	first = base.Max(0, base.Min(first, len(a.status.Caches)-1))
+	last := base.Min(len(a.status.Caches), first+pageSize)
+	copy := a.status.ShallowCopy()
+	copy.Caches = a.status.Caches[first:last]
+	return copy
 }
 
 func (a *App) GetStatusCnt() int {
@@ -28,9 +28,10 @@ func (a *App) loadStatus() error {
 	} else if (statusArray == nil) || (len(statusArray) == 0) {
 		return fmt.Errorf("no status found")
 	} else {
-		a.status = statusArray[0]
+		a.status.Status = statusArray[0]
 		// TODO: This is a hack. We need to get the version from the core
 		a.status.Version = version.LibraryVersion
+		a.status.Summarize()
 	}
 	return nil
 }

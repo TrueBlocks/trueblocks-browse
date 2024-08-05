@@ -47,7 +47,7 @@ func main() {
 				&messages.ProgressMsg{},
 				&messages.DaemonMsg{},
 				&daemons.Daemon{},
-				&types.StatusEx{},
+				&types.StatusSummary{},
 				&types.TransactionEx{},
 				&types.SummaryMonitor{},
 				&types.SummaryIndex{},

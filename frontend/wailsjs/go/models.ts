@@ -584,7 +584,7 @@ export namespace types {
 	        this.type = source["type"];
 	    }
 	}
-	export class StatusEx {
+	export class StatusSummary {
 	    cachePath?: string;
 	    caches: CacheItem[];
 	    chain?: string;
@@ -615,7 +615,7 @@ export namespace types {
 	    nBytes: number;
 	
 	    static createFrom(source: any = {}) {
-	        return new StatusEx(source);
+	        return new StatusSummary(source);
 	    }
 	
 	    constructor(source: any = {}) {
