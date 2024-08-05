@@ -6,12 +6,12 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-type DaemonMonitor struct {
+type DaemonFreshen struct {
 	Server `json:"server"`
 }
 
-func NewMonitor(name string, sleep time.Duration) *DaemonMonitor {
-	return &DaemonMonitor{
+func NewFreshen(name string, sleep time.Duration) *DaemonFreshen {
+	return &DaemonFreshen{
 		Server: Server{
 			Name:    name,
 			Sleep:   sleep,
@@ -22,8 +22,8 @@ func NewMonitor(name string, sleep time.Duration) *DaemonMonitor {
 	}
 }
 
-func (s *DaemonMonitor) Run() {
-	logger.Info("Starting monitors...")
+func (s *DaemonFreshen) Run() {
+	logger.Info("Starting fresheners...")
 
 	for {
 		if s.Server.State == Running {
@@ -33,18 +33,18 @@ func (s *DaemonMonitor) Run() {
 	}
 }
 
-func (s *DaemonMonitor) Stop() error {
+func (s *DaemonFreshen) Stop() error {
 	return s.Server.Stop()
 }
 
-func (s *DaemonMonitor) Pause() error {
+func (s *DaemonFreshen) Pause() error {
 	return s.Server.Pause()
 }
 
-func (s *DaemonMonitor) Toggle() error {
+func (s *DaemonFreshen) Toggle() error {
 	return s.Server.Toggle()
 }
 
-func (s *DaemonMonitor) Tick() int {
+func (s *DaemonFreshen) Tick() int {
 	return s.Server.Tick()
 }

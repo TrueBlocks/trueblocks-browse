@@ -12,7 +12,7 @@ var empty = {} as servers.Server;
 export function ServersView() {
   const [scraper, setScraper] = useState<servers.Server>(empty);
   const [fileServer, setFileServer] = useState<servers.Server>(empty);
-  const [monitor, setMonitor] = useState<servers.Server>(empty);
+  const [freshen, setFreshen] = useState<servers.Server>(empty);
   const [ipfs, setIpfs] = useState<servers.Server>(empty);
   const [logMessages, setLogMessages] = useState<messages.ServerMsg[]>([]);
 
@@ -25,7 +25,7 @@ export function ServersView() {
   useEffect(() => {
     updateServer("scraper", setScraper);
     updateServer("fileserver", setFileServer);
-    updateServer("monitor", setMonitor);
+    updateServer("freshen", setFreshen);
     updateServer("ipfs", setIpfs);
   }, []);
 
@@ -37,8 +37,8 @@ export function ServersView() {
       case "fileserver":
         updateServer("fileserver", setFileServer);
         break;
-      case "monitor":
-        updateServer("monitor", setMonitor);
+      case "freshen":
+        updateServer("freshen", setFreshen);
         break;
       case "ipfs":
         updateServer("ipfs", setIpfs);
@@ -70,7 +70,7 @@ export function ServersView() {
         <Fieldset legend={"Servers"} bg={"white"} style={{ padding: "1rem", margin: "1rem" }}>
           <SimpleGrid cols={2} spacing="lg" style={{ padding: "lg" }}>
             <ServerCard server={scraper} toggle={toggleServer} />
-            <ServerCard server={monitor} toggle={toggleServer} />
+            <ServerCard server={freshen} toggle={toggleServer} />
             <ServerCard server={ipfs} toggle={toggleServer} />
             <ServerCard server={fileServer} toggle={toggleServer} />
           </SimpleGrid>

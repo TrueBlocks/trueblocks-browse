@@ -38,7 +38,7 @@ type App struct {
 	// Add your application's data here
 	ScraperController *servers.DaemonScraper
 	FileController    *servers.DaemonFile
-	MonitorController *servers.DaemonMonitor
+	FreshenController *servers.DaemonFreshen
 	IpfsController    *servers.DaemonIpfs
 	Documents         []types.Document
 	CurrentDoc        *types.Document
@@ -53,7 +53,7 @@ func NewApp() *App {
 		// Initialize maps here
 		ScraperController: servers.NewScraper("scraper", 1000), // TODO: Should be seven seconds
 		FileController:    servers.NewFileServer("fileserver", 8080, 1000),
-		MonitorController: servers.NewMonitor("monitor", 1000),
+		FreshenController: servers.NewFreshen("freshen", 1000),
 		IpfsController:    servers.NewIpfs("ipfs", 1000),
 		Documents:         make([]types.Document, 10),
 	}
@@ -86,7 +86,7 @@ func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 	a.ScraperController.MsgCtx = ctx
 	a.FileController.MsgCtx = ctx
-	a.MonitorController.MsgCtx = ctx
+	a.FreshenController.MsgCtx = ctx
 	a.IpfsController.MsgCtx = ctx
 	if startupError != nil {
 		a.Fatal(startupError.Error())

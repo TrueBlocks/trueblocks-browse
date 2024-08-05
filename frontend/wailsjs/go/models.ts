@@ -177,7 +177,7 @@ export namespace servers {
 	export enum Type {
 	    FILESERVER = 0,
 	    SCRAPER = 1,
-	    MONITOR = 2,
+	    FRESHEN = 2,
 	    API = 3,
 	    IPFS = 4,
 	}
