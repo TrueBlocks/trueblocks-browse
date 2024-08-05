@@ -17,19 +17,19 @@ import (
 
 // EXISTING_CODE
 
-type AbiSummary struct {
+type SummaryAbis struct {
 	coreTypes.Abi
 	Files []coreTypes.Abi `json:"chunks"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func (s AbiSummary) String() string {
+func (s SummaryAbis) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-func (s *AbiSummary) Model(chain, format string, verbose bool, extraOpts map[string]any) Model {
+func (s *SummaryAbis) Model(chain, format string, verbose bool, extraOpts map[string]any) Model {
 	var model = map[string]any{}
 	var order = []string{}
 
@@ -43,13 +43,13 @@ func (s *AbiSummary) Model(chain, format string, verbose bool, extraOpts map[str
 }
 
 // FinishUnmarshal is used by the cache. It may be unused depending on auto-code-gen
-func (s *AbiSummary) FinishUnmarshal() {
+func (s *SummaryAbis) FinishUnmarshal() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 // EXISTING_CODE
-func (s *AbiSummary) Summarize() {
+func (s *SummaryAbis) Summarize() {
 	for _, file := range s.Files {
 		s.NFunctions += file.NFunctions
 		s.NEvents += file.NEvents
@@ -57,8 +57,8 @@ func (s *AbiSummary) Summarize() {
 	}
 }
 
-func (s *AbiSummary) ShallowCopy() AbiSummary {
-	return AbiSummary{
+func (s *SummaryAbis) ShallowCopy() SummaryAbis {
+	return SummaryAbis{
 		Abi: s.Abi,
 	}
 }

@@ -48,17 +48,17 @@ export namespace config {
 
 export namespace daemons {
 	
-	export enum State {
-	    STOPPED = 0,
-	    RUNNING = 1,
-	    PAUSED = 2,
-	}
 	export enum Type {
 	    FILEDAEMON = 0,
 	    SCRAPER = 1,
 	    FRESHEN = 2,
 	    API = 3,
 	    IPFS = 4,
+	}
+	export enum State {
+	    STOPPED = 0,
+	    RUNNING = 1,
+	    PAUSED = 2,
 	}
 	export class Daemon {
 	    name: string;
@@ -374,54 +374,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class AbiSummary {
-	    address: base.Address;
-	    fileSize: number;
-	    functions: Function[];
-	    isKnown: boolean;
-	    lastModDate: string;
-	    nEvents: number;
-	    nFunctions: number;
-	    name: string;
-	    path: string;
-	    chunks: Abi[];
-	
-	    static createFrom(source: any = {}) {
-	        return new AbiSummary(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.address = this.convertValues(source["address"], base.Address);
-	        this.fileSize = source["fileSize"];
-	        this.functions = this.convertValues(source["functions"], Function);
-	        this.isKnown = source["isKnown"];
-	        this.lastModDate = source["lastModDate"];
-	        this.nEvents = source["nEvents"];
-	        this.nFunctions = source["nFunctions"];
-	        this.name = source["name"];
-	        this.path = source["path"];
-	        this.chunks = this.convertValues(source["chunks"], Abi);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
 	export class ChunkStats {
 	    addrsPerBlock: number;
 	    appsPerAddr: number;
@@ -459,128 +411,6 @@ export namespace types {
 	    }
 	}
 	
-	export class IndexSummary {
-	    addrsPerBlock: number;
-	    appsPerAddr: number;
-	    appsPerBlock: number;
-	    bloomSz: number;
-	    chunkSz: number;
-	    nAddrs: number;
-	    nApps: number;
-	    nBlocks: number;
-	    nBlooms: number;
-	    range: string;
-	    rangeEnd: string;
-	    ratio: number;
-	    recWid: number;
-	    chunks: ChunkStats[];
-	
-	    static createFrom(source: any = {}) {
-	        return new IndexSummary(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.addrsPerBlock = source["addrsPerBlock"];
-	        this.appsPerAddr = source["appsPerAddr"];
-	        this.appsPerBlock = source["appsPerBlock"];
-	        this.bloomSz = source["bloomSz"];
-	        this.chunkSz = source["chunkSz"];
-	        this.nAddrs = source["nAddrs"];
-	        this.nApps = source["nApps"];
-	        this.nBlocks = source["nBlocks"];
-	        this.nBlooms = source["nBlooms"];
-	        this.range = source["range"];
-	        this.rangeEnd = source["rangeEnd"];
-	        this.ratio = source["ratio"];
-	        this.recWid = source["recWid"];
-	        this.chunks = this.convertValues(source["chunks"], ChunkStats);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class ChunkRecord {
-	    bloomHash: string;
-	    bloomSize: number;
-	    indexHash: string;
-	    indexSize: number;
-	    range: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ChunkRecord(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.bloomHash = source["bloomHash"];
-	        this.bloomSize = source["bloomSize"];
-	        this.indexHash = source["indexHash"];
-	        this.indexSize = source["indexSize"];
-	        this.range = source["range"];
-	    }
-	}
-	export class ManifestSummary {
-	    chain: string;
-	    chunks: ChunkRecord[];
-	    specification: string;
-	    version: string;
-	    latestUpdate: string;
-	    nBlooms: number;
-	    bloomsSize: number;
-	    nIndexes: number;
-	    indexSize: number;
-	
-	    static createFrom(source: any = {}) {
-	        return new ManifestSummary(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.chain = source["chain"];
-	        this.chunks = this.convertValues(source["chunks"], ChunkRecord);
-	        this.specification = source["specification"];
-	        this.version = source["version"];
-	        this.latestUpdate = source["latestUpdate"];
-	        this.nBlooms = source["nBlooms"];
-	        this.bloomsSize = source["bloomsSize"];
-	        this.nIndexes = source["nIndexes"];
-	        this.indexSize = source["indexSize"];
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
 	
 	export class Monitor {
 	    address: base.Address;
@@ -602,56 +432,6 @@ export namespace types {
 	        this.lastScanned = source["lastScanned"];
 	        this.nRecords = source["nRecords"];
 	        this.name = source["name"];
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class MonitorSummary {
-	    address: base.Address;
-	    deleted: boolean;
-	    fileSize: number;
-	    lastScanned: number;
-	    nRecords: number;
-	    name: string;
-	    nMonitors: number;
-	    nNamed: number;
-	    nDeleted: number;
-	    monitorMap: {[key: string]: Monitor};
-	    monitors: Monitor[];
-	
-	    static createFrom(source: any = {}) {
-	        return new MonitorSummary(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.address = this.convertValues(source["address"], base.Address);
-	        this.deleted = source["deleted"];
-	        this.fileSize = source["fileSize"];
-	        this.lastScanned = source["lastScanned"];
-	        this.nRecords = source["nRecords"];
-	        this.name = source["name"];
-	        this.nMonitors = source["nMonitors"];
-	        this.nNamed = source["nNamed"];
-	        this.nDeleted = source["nDeleted"];
-	        this.monitorMap = this.convertValues(source["monitorMap"], Monitor, true);
-	        this.monitors = this.convertValues(source["monitors"], Monitor);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -709,56 +489,6 @@ export namespace types {
 	        this.tags = source["tags"];
 	        this.prefund = this.convertValues(source["prefund"], null);
 	        this.parts = source["parts"];
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class NameSummary {
-	    nNames: number;
-	    nContracts: number;
-	    nErc20s: number;
-	    nErc721s: number;
-	    nCustom: number;
-	    nRegular: number;
-	    nPrefund: number;
-	    nBaddress: number;
-	    nDeleted: number;
-	    namesMap: {[key: string]: Name};
-	    names: Name[];
-	
-	    static createFrom(source: any = {}) {
-	        return new NameSummary(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.nNames = source["nNames"];
-	        this.nContracts = source["nContracts"];
-	        this.nErc20s = source["nErc20s"];
-	        this.nErc721s = source["nErc721s"];
-	        this.nCustom = source["nCustom"];
-	        this.nRegular = source["nRegular"];
-	        this.nPrefund = source["nPrefund"];
-	        this.nBaddress = source["nBaddress"];
-	        this.nDeleted = source["nDeleted"];
-	        this.namesMap = this.convertValues(source["namesMap"], Name, true);
-	        this.names = this.convertValues(source["names"], Name);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -916,6 +646,276 @@ export namespace types {
 	        this.nFolders = source["nFolders"];
 	        this.nFiles = source["nFiles"];
 	        this.nBytes = source["nBytes"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class SummaryAbis {
+	    address: base.Address;
+	    fileSize: number;
+	    functions: Function[];
+	    isKnown: boolean;
+	    lastModDate: string;
+	    nEvents: number;
+	    nFunctions: number;
+	    name: string;
+	    path: string;
+	    chunks: Abi[];
+	
+	    static createFrom(source: any = {}) {
+	        return new SummaryAbis(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.fileSize = source["fileSize"];
+	        this.functions = this.convertValues(source["functions"], Function);
+	        this.isKnown = source["isKnown"];
+	        this.lastModDate = source["lastModDate"];
+	        this.nEvents = source["nEvents"];
+	        this.nFunctions = source["nFunctions"];
+	        this.name = source["name"];
+	        this.path = source["path"];
+	        this.chunks = this.convertValues(source["chunks"], Abi);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class SummaryIndex {
+	    addrsPerBlock: number;
+	    appsPerAddr: number;
+	    appsPerBlock: number;
+	    bloomSz: number;
+	    chunkSz: number;
+	    nAddrs: number;
+	    nApps: number;
+	    nBlocks: number;
+	    nBlooms: number;
+	    range: string;
+	    rangeEnd: string;
+	    ratio: number;
+	    recWid: number;
+	    chunks: ChunkStats[];
+	
+	    static createFrom(source: any = {}) {
+	        return new SummaryIndex(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.addrsPerBlock = source["addrsPerBlock"];
+	        this.appsPerAddr = source["appsPerAddr"];
+	        this.appsPerBlock = source["appsPerBlock"];
+	        this.bloomSz = source["bloomSz"];
+	        this.chunkSz = source["chunkSz"];
+	        this.nAddrs = source["nAddrs"];
+	        this.nApps = source["nApps"];
+	        this.nBlocks = source["nBlocks"];
+	        this.nBlooms = source["nBlooms"];
+	        this.range = source["range"];
+	        this.rangeEnd = source["rangeEnd"];
+	        this.ratio = source["ratio"];
+	        this.recWid = source["recWid"];
+	        this.chunks = this.convertValues(source["chunks"], ChunkStats);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class ChunkRecord {
+	    bloomHash: string;
+	    bloomSize: number;
+	    indexHash: string;
+	    indexSize: number;
+	    range: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ChunkRecord(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.bloomHash = source["bloomHash"];
+	        this.bloomSize = source["bloomSize"];
+	        this.indexHash = source["indexHash"];
+	        this.indexSize = source["indexSize"];
+	        this.range = source["range"];
+	    }
+	}
+	export class SummaryManifest {
+	    chain: string;
+	    chunks: ChunkRecord[];
+	    specification: string;
+	    version: string;
+	    latestUpdate: string;
+	    nBlooms: number;
+	    bloomsSize: number;
+	    nIndexes: number;
+	    indexSize: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new SummaryManifest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.chain = source["chain"];
+	        this.chunks = this.convertValues(source["chunks"], ChunkRecord);
+	        this.specification = source["specification"];
+	        this.version = source["version"];
+	        this.latestUpdate = source["latestUpdate"];
+	        this.nBlooms = source["nBlooms"];
+	        this.bloomsSize = source["bloomsSize"];
+	        this.nIndexes = source["nIndexes"];
+	        this.indexSize = source["indexSize"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class SummaryMonitor {
+	    address: base.Address;
+	    deleted: boolean;
+	    fileSize: number;
+	    lastScanned: number;
+	    nRecords: number;
+	    name: string;
+	    nMonitors: number;
+	    nNamed: number;
+	    nDeleted: number;
+	    monitorMap: {[key: string]: Monitor};
+	    monitors: Monitor[];
+	
+	    static createFrom(source: any = {}) {
+	        return new SummaryMonitor(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.deleted = source["deleted"];
+	        this.fileSize = source["fileSize"];
+	        this.lastScanned = source["lastScanned"];
+	        this.nRecords = source["nRecords"];
+	        this.name = source["name"];
+	        this.nMonitors = source["nMonitors"];
+	        this.nNamed = source["nNamed"];
+	        this.nDeleted = source["nDeleted"];
+	        this.monitorMap = this.convertValues(source["monitorMap"], Monitor, true);
+	        this.monitors = this.convertValues(source["monitors"], Monitor);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class SummaryName {
+	    nNames: number;
+	    nContracts: number;
+	    nErc20s: number;
+	    nErc721s: number;
+	    nCustom: number;
+	    nRegular: number;
+	    nPrefund: number;
+	    nBaddress: number;
+	    nDeleted: number;
+	    namesMap: {[key: string]: Name};
+	    names: Name[];
+	
+	    static createFrom(source: any = {}) {
+	        return new SummaryName(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.nNames = source["nNames"];
+	        this.nContracts = source["nContracts"];
+	        this.nErc20s = source["nErc20s"];
+	        this.nErc721s = source["nErc721s"];
+	        this.nCustom = source["nCustom"];
+	        this.nRegular = source["nRegular"];
+	        this.nPrefund = source["nPrefund"];
+	        this.nBaddress = source["nBaddress"];
+	        this.nDeleted = source["nDeleted"];
+	        this.namesMap = this.convertValues(source["namesMap"], Name, true);
+	        this.names = this.convertValues(source["names"], Name);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

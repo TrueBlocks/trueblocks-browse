@@ -9,7 +9,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
-func (a *App) GetManifest(first, pageSize int) types.ManifestSummary {
+func (a *App) GetManifest(first, pageSize int) types.SummaryManifest {
 	first = base.Max(0, base.Min(first, len(a.manifest.Chunks)-1))
 	last := base.Min(len(a.manifest.Chunks), first+pageSize)
 	copy := a.manifest.ShallowCopy()
@@ -28,7 +28,7 @@ func (a *App) loadManifest() error {
 	} else if (manifests == nil) || (len(manifests) == 0) {
 		return fmt.Errorf("no manifest found")
 	} else {
-		a.manifest = types.NewManifestEx(manifests[0])
+		a.manifest = types.NewSummaryManifest(manifests[0])
 		sort.Slice(a.manifest.Chunks, func(i, j int) bool {
 			return a.manifest.Chunks[i].Range > a.manifest.Chunks[j].Range
 		})

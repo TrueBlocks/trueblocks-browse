@@ -12,14 +12,14 @@ export function IndexesView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.IndexSummary>({} as types.IndexSummary);
+  const [items, setItems] = useState<types.SummaryIndex>({} as types.SummaryIndex);
   const [chunks, setChunks] = useState<types.ChunkStats[]>([]);
   const { curItem, perPage } = useKeyboardPaging<types.ChunkStats>(chunks, count, [], 15);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetIndex(currentItem, itemsPerPage).then((index: types.IndexSummary) => {
+        GetIndex(currentItem, itemsPerPage).then((index: types.SummaryIndex) => {
           setItems(index);
           setChunks(index.chunks || []);
         });

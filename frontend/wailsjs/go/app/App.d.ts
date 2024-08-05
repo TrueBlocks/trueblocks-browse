@@ -21,7 +21,7 @@ export function FileSave(arg1:menu.CallbackData):Promise<void>;
 
 export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
-export function GetAbis(arg1:number,arg2:number):Promise<types.AbiSummary>;
+export function GetAbis(arg1:number,arg2:number):Promise<types.SummaryAbis>;
 
 export function GetAbisCnt():Promise<number>;
 
@@ -33,23 +33,23 @@ export function GetHistory(arg1:string,arg2:number,arg3:number):Promise<Array<ty
 
 export function GetHistoryCnt(arg1:string):Promise<number>;
 
-export function GetIndex(arg1:number,arg2:number):Promise<types.IndexSummary>;
+export function GetIndex(arg1:number,arg2:number):Promise<types.SummaryIndex>;
 
 export function GetIndexCnt():Promise<number>;
 
 export function GetLast(arg1:string):Promise<string>;
 
-export function GetManifest(arg1:number,arg2:number):Promise<types.ManifestSummary>;
+export function GetManifest(arg1:number,arg2:number):Promise<types.SummaryManifest>;
 
 export function GetManifestCnt():Promise<number>;
 
 export function GetMenus():Promise<menu.Menu>;
 
-export function GetMonitors(arg1:number,arg2:number):Promise<types.MonitorSummary>;
+export function GetMonitors(arg1:number,arg2:number):Promise<types.SummaryMonitor>;
 
 export function GetMonitorsCnt():Promise<number>;
 
-export function GetNames(arg1:number,arg2:number):Promise<types.NameSummary>;
+export function GetNames(arg1:number,arg2:number):Promise<types.SummaryName>;
 
 export function GetNamesCnt():Promise<number>;
 

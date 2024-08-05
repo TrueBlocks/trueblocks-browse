@@ -12,14 +12,14 @@ export function AbisView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.AbiSummary>({} as types.AbiSummary);
+  const [items, setItems] = useState<types.SummaryAbis>({} as types.SummaryAbis);
   const [chunks, setChunks] = useState<types.Abi[]>([]);
   const { curItem, perPage } = useKeyboardPaging<types.Abi>(chunks, count, [], 15);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetAbis(currentItem, itemsPerPage).then((abis: types.AbiSummary) => {
+        GetAbis(currentItem, itemsPerPage).then((abis: types.SummaryAbis) => {
           setItems(abis);
           setChunks(abis.chunks || []);
         });

@@ -12,14 +12,14 @@ export function MonitorsView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.MonitorSummary>({} as types.MonitorSummary);
+  const [items, setItems] = useState<types.SummaryMonitor>({} as types.SummaryMonitor);
   const [monitors, setMonitors] = useState<types.Monitor[]>([]);
   const { curItem, perPage } = useKeyboardPaging<types.Monitor>(monitors, count, [], 15);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetMonitors(currentItem, itemsPerPage).then((monitors: types.MonitorSummary) => {
+        GetMonitors(currentItem, itemsPerPage).then((monitors: types.SummaryMonitor) => {
           setItems(monitors);
           setMonitors(monitors.monitors || []);
         });

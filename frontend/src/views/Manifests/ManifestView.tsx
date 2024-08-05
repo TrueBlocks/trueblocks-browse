@@ -12,14 +12,14 @@ export function ManifestView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.ManifestSummary>({} as types.ManifestSummary);
+  const [items, setItems] = useState<types.SummaryManifest>({} as types.SummaryManifest);
   const [chunks, setChunks] = useState<types.ChunkRecord[]>([]);
   const { curItem, perPage } = useKeyboardPaging<types.ChunkRecord>(chunks, count, [], 15);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetManifest(currentItem, itemsPerPage).then((manifest: types.ManifestSummary) => {
+        GetManifest(currentItem, itemsPerPage).then((manifest: types.SummaryManifest) => {
           setItems(manifest);
           setChunks(manifest.chunks || []);
         });

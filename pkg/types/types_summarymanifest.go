@@ -6,7 +6,7 @@ import (
 
 // TODO: Eventually this will get put back into Core.
 
-type ManifestSummary struct {
+type SummaryManifest struct {
 	coreTypes.Manifest `json:",inline"`
 	LatestUpdate       string `json:"latestUpdate"`
 	NBlooms            uint64 `json:"nBlooms"`
@@ -15,8 +15,8 @@ type ManifestSummary struct {
 	IndexSize          int64  `json:"indexSize"`
 }
 
-func NewManifestEx(manifest coreTypes.Manifest) ManifestSummary {
-	ret := ManifestSummary{
+func NewSummaryManifest(manifest coreTypes.Manifest) SummaryManifest {
+	ret := SummaryManifest{
 		Manifest: manifest,
 	}
 
@@ -30,8 +30,8 @@ func NewManifestEx(manifest coreTypes.Manifest) ManifestSummary {
 	return ret
 }
 
-func (s *ManifestSummary) ShallowCopy() ManifestSummary {
-	return ManifestSummary{
+func (s *SummaryManifest) ShallowCopy() SummaryManifest {
+	return SummaryManifest{
 		Manifest: coreTypes.Manifest{
 			Chain:         s.Manifest.Chain,
 			Specification: s.Manifest.Specification,

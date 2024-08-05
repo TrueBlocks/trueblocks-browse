@@ -82,7 +82,7 @@ export const routeItems = [
   {
     order: 80,
     route: "/daemons",
-    label: "Daemon",
+    label: "Daemons",
     icon: DaemonsIcon,
     component: DaemonsView,
   },

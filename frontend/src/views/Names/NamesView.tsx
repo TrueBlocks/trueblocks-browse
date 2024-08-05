@@ -12,14 +12,14 @@ export function NamesView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.NameSummary>({} as types.NameSummary);
+  const [items, setItems] = useState<types.SummaryName>({} as types.SummaryName);
   const [names, setNames] = useState<types.Name[]>([]);
   const { curItem, perPage } = useKeyboardPaging<types.Name>(names, count, [], 15);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetNames(currentItem, itemsPerPage).then((names: types.NameSummary) => {
+        GetNames(currentItem, itemsPerPage).then((names: types.SummaryName) => {
           setItems(names);
           setNames(names.names || []);
         });

@@ -15,7 +15,7 @@ var NameParts = []struct {
 	{coreTypes.Baddress, "BADDRESS"},
 }
 
-type NameSummary struct {
+type SummaryName struct {
 	NNames     int64                           `json:"nNames"`
 	NContracts int64                           `json:"nContracts"`
 	NErc20s    int64                           `json:"nErc20s"`
@@ -29,7 +29,7 @@ type NameSummary struct {
 	Names      []coreTypes.Name                `json:"names"`
 }
 
-func (s *NameSummary) Summarize() {
+func (s *SummaryName) Summarize() {
 	s.NNames = int64(len(s.Names))
 	for _, name := range s.Names {
 		if name.Parts&coreTypes.Regular > 0 {
@@ -59,8 +59,8 @@ func (s *NameSummary) Summarize() {
 	}
 }
 
-func (s *NameSummary) ShallowCopy() NameSummary {
-	return NameSummary{
+func (s *SummaryName) ShallowCopy() SummaryName {
+	return SummaryName{
 		NNames:     s.NNames,
 		NContracts: s.NContracts,
 		NErc20s:    s.NErc20s,

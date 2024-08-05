@@ -18,7 +18,7 @@ import (
 
 // EXISTING_CODE
 
-type MonitorSummary struct {
+type SummaryMonitor struct {
 	coreTypes.Monitor
 	NMonitors  int64                              `json:"nMonitors"`
 	NNamed     int64                              `json:"nNamed"`
@@ -29,12 +29,12 @@ type MonitorSummary struct {
 	// EXISTING_CODE
 }
 
-func (s MonitorSummary) String() string {
+func (s SummaryMonitor) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-func (s *MonitorSummary) Model(chain, format string, verbose bool, extraOpts map[string]any) Model {
+func (s *SummaryMonitor) Model(chain, format string, verbose bool, extraOpts map[string]any) Model {
 	var model = map[string]any{}
 	var order = []string{}
 
@@ -48,14 +48,14 @@ func (s *MonitorSummary) Model(chain, format string, verbose bool, extraOpts map
 }
 
 // FinishUnmarshal is used by the cache. It may be unused depending on auto-code-gen
-func (s *MonitorSummary) FinishUnmarshal() {
+func (s *SummaryMonitor) FinishUnmarshal() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 // EXISTING_CODE
-func (s *MonitorSummary) ShallowCopy() MonitorSummary {
-	return MonitorSummary{
+func (s *SummaryMonitor) ShallowCopy() SummaryMonitor {
+	return SummaryMonitor{
 		Monitor:   s.Monitor,
 		NNamed:    s.NNamed,
 		NDeleted:  s.NDeleted,
@@ -63,7 +63,7 @@ func (s *MonitorSummary) ShallowCopy() MonitorSummary {
 	}
 }
 
-func (s *MonitorSummary) Summarize() {
+func (s *SummaryMonitor) Summarize() {
 	for _, mon := range s.Monitors {
 		s.NMonitors++
 		if mon.Deleted {

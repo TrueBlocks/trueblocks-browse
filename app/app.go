@@ -27,11 +27,11 @@ type App struct {
 	ctx        context.Context
 	session    config.Session
 	apiKeys    map[string]string
-	names      types.NameSummary
-	monitors   types.MonitorSummary
-	index      types.IndexSummary
-	manifest   types.ManifestSummary
-	abis       types.AbiSummary
+	names      types.SummaryName
+	monitors   types.SummaryMonitor
+	index      types.SummaryIndex
+	manifest   types.SummaryManifest
+	abis       types.SummaryAbis
 	status     coreTypes.Status
 	ensMap     map[string]base.Address
 	renderCtxs map[base.Address][]*output.RenderCtx

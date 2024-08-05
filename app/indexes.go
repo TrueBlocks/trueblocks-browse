@@ -10,7 +10,7 @@ import (
 )
 
 // Find: NewViews
-func (a *App) GetIndex(first, pageSize int) types.IndexSummary {
+func (a *App) GetIndex(first, pageSize int) types.SummaryIndex {
 	first = base.Max(0, base.Min(first, len(a.index.Chunks)-1))
 	last := base.Min(len(a.index.Chunks), first+pageSize)
 	copy := a.index.ShallowCopy()
