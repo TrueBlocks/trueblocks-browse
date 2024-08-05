@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from "react";
-import classes from "@/App.module.css";
-import { GetMonitorsPage, GetMonitorsCnt } from "@gocode/app/App";
+import React, { useState, useEffect, ReactNode } from "react";
 import { types } from "@gocode/models";
-import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
-import { Stack, Title } from "@mantine/core";
-import { monitorColumns } from "./MonitorTable";
-import { DataTable } from "@components";
-import { View, ViewStatus } from "@components";
+import { Title, Stack } from "@mantine/core";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { monitorColumns, MonitorInstance, createMonitorForm } from ".";
+import classes from "@/App.module.css";
+import { View, ViewStatus, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
+import { GetMonitorsPage, GetMonitorsCnt } from "@gocode/app/App";
 
 export function MonitorsView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.MonitorEx[]>([]);
-  const { curItem, perPage } = useKeyboardPaging<types.MonitorEx>(items, count);
+  const [items, setItems] = useState<types.MonitorSummary>({} as types.MonitorSummary);
+  const [monitors, setMonitors] = useState<types.Monitor[]>([]);
+  const { curItem, perPage } = useKeyboardPaging<types.Monitor>(monitors, count, [], 15);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetMonitorsPage(currentItem, itemsPerPage).then((newItems) => {
-          setItems(newItems);
+        GetMonitorsPage(currentItem, itemsPerPage).then((monitors: types.MonitorSummary) => {
+          setItems(monitors);
+          setMonitors(monitors.monitors || []);
         });
       };
       fetch(curItem, perPage);
@@ -38,7 +39,7 @@ export function MonitorsView() {
   }, []);
 
   const table = useReactTable({
-    data: items,
+    data: items.monitors || [], // Pass the monitors array or an empty array if undefined
     columns: monitorColumns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -46,10 +47,8 @@ export function MonitorsView() {
   return (
     <View>
       <Stack className={classes.mainContent}>
-        <Title order={3}>
-          Monitors: showing record {curItem + 1}-{curItem + 1 + perPage - 1} of {count}
-        </Title>
-        <DataTable<types.MonitorEx> table={table} loading={loading} />
+        <Title order={3}>Monitors View</Title>
+        <FormTable data={items} definition={createMonitorForm(table)} />;{" "}
       </Stack>
       <ViewStatus />
     </View>

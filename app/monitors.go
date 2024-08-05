@@ -6,18 +6,16 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
-func (a *App) GetMonitorsPage(first, pageSize int) []types.MonitorEx {
-	if len(a.monitors) == 0 {
-		return a.monitors
-	}
-
-	first = base.Max(0, base.Min(first, len(a.monitors)-1))
-	last := base.Min(len(a.monitors), first+pageSize)
-	return a.monitors[first:last]
+func (a *App) GetMonitorsPage(first, pageSize int) types.MonitorSummary {
+	first = base.Max(0, base.Min(first, len(a.monitorsSum.Monitors)-1))
+	last := base.Min(len(a.monitorsSum.Monitors), first+pageSize)
+	copy := a.monitorsSum.ShallowCopy()
+	copy.Monitors = a.monitorsSum.Monitors[first:last]
+	return copy
 }
 
 func (a *App) GetMonitorsCnt() int {
-	return len(a.monitors)
+	return len(a.monitorsSum.Monitors)
 }
 
 func (a *App) loadMonitors() error {
@@ -25,12 +23,12 @@ func (a *App) loadMonitors() error {
 	if monitors, _, err := opts.MonitorsList(); err != nil {
 		return err
 	} else {
-		for _, monitor := range monitors {
-			monitorEx := types.NewMonitorEx(&monitor)
-			monitorEx.Name = a.names.NamesMap[monitorEx.Address].Name
-			a.monitors = append(a.monitors, monitorEx)
-			a.monitorsMap[monitorEx.Address] = monitorEx
+		for _, mon := range monitors {
+			mon.Name = a.names.NamesMap[mon.Address].Name
+			a.monitorsSum.Monitors = append(a.monitorsSum.Monitors, mon)
+			a.monitorsSum.MonitorMap[mon.Address] = mon
 		}
+		a.monitorsSum.Summarize()
 	}
 	return nil
 }

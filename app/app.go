@@ -27,8 +27,7 @@ type App struct {
 	ctx         context.Context
 	session     config.Session
 	apiKeys     map[string]string
-	monitorsMap map[base.Address]types.MonitorEx
-	monitors    []types.MonitorEx
+	monitorsSum types.MonitorSummary
 	names       types.NameSummary
 	abis        types.AbiSummary
 	index       types.IndexSummary
@@ -48,10 +47,9 @@ type App struct {
 // Find: NewViews
 func NewApp() *App {
 	a := App{
-		apiKeys:     make(map[string]string),
-		monitorsMap: make(map[base.Address]types.MonitorEx),
-		renderCtxs:  make(map[base.Address][]*output.RenderCtx),
-		ensMap:      make(map[string]base.Address),
+		apiKeys:    make(map[string]string),
+		renderCtxs: make(map[base.Address][]*output.RenderCtx),
+		ensMap:     make(map[string]base.Address),
 		// Initialize maps here
 		Scraper:    servers.NewScraper("scraper", 1000), // TODO: Should be seven seconds
 		FileServer: servers.NewFileServer("fileserver", 8080, 1000),
@@ -59,6 +57,7 @@ func NewApp() *App {
 		Ipfs:       servers.NewIpfs("ipfs", 1000),
 		Documents:  make([]types.Document, 10),
 	}
+	a.monitorsSum.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
 	a.CurrentDoc = &a.Documents[0]
 	a.CurrentDoc.Filename = "Untitled"

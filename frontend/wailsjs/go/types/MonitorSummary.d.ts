@@ -9,6 +9,10 @@ export function MarshalCache(arg1:io.Writer):Promise<void>;
 
 export function Model(arg1:string,arg2:string,arg3:boolean,arg4:{[key: string]: any}):Promise<types.Model>;
 
+export function ShallowCopy():Promise<types.MonitorSummary>;
+
 export function String():Promise<string>;
+
+export function Summarize():Promise<void>;
 
 export function UnmarshalCache(arg1:number,arg2:io.Reader):Promise<void>;

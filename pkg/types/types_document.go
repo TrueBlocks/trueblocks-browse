@@ -16,15 +16,16 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/cache"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 // EXISTING_CODE
 
 type Document struct {
-	Dirty      bool        `json:"dirty"`
-	Filename   string      `json:"filename"`
-	LastUpdate base.Blknum `json:"lastUpdate"`
-	Monitors   []MonitorEx `json:"monitors"`
+	Dirty      bool                `json:"dirty"`
+	Filename   string              `json:"filename"`
+	LastUpdate base.Blknum         `json:"lastUpdate"`
+	Monitors   []coreTypes.Monitor `json:"monitors"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -100,7 +101,7 @@ func (s *Document) UnmarshalCache(vers uint64, reader io.Reader) (err error) {
 	}
 
 	// Monitors
-	s.Monitors = make([]MonitorEx, 0)
+	s.Monitors = make([]coreTypes.Monitor, 0)
 	if err = cache.ReadValue(reader, &s.Monitors, vers); err != nil {
 		return err
 	}

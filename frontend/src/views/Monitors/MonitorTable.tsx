@@ -4,9 +4,9 @@ import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter } from "@components";
 
-const monitorColumnHelper = createColumnHelper<types.MonitorEx>();
+const monitorColumnHelper = createColumnHelper<types.Monitor>();
 
-export const monitorColumns: CustomColumnDef<types.MonitorEx, any>[] = [
+export const monitorColumns: CustomColumnDef<types.Monitor, any>[] = [
   monitorColumnHelper.accessor("address", {
     header: () => "Address",
     cell: ({ getValue }) => {

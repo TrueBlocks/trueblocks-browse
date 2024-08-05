@@ -45,7 +45,7 @@ export function GetMenus():Promise<menu.Menu>;
 
 export function GetMonitorsCnt():Promise<number>;
 
-export function GetMonitorsPage(arg1:number,arg2:number):Promise<Array<types.MonitorEx>>;
+export function GetMonitorsPage(arg1:number,arg2:number):Promise<types.MonitorSummary>;
 
 export function GetNamesCnt():Promise<number>;
 
