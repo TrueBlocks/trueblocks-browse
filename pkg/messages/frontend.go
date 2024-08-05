@@ -17,6 +17,6 @@ func (m *ProgressMsg) Instance() ProgressMsg {
 	return ProgressMsg{}
 }
 
-func (m *ServerMsg) Instance() ServerMsg {
-	return ServerMsg{}
+func (m *DaemonMsg) Instance() DaemonMsg {
+	return DaemonMsg{}
 }

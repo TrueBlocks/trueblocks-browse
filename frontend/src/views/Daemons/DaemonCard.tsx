@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Card, Text, Group, Badge, Title } from "@mantine/core";
 import { StateToString } from "@gocode/app/App";
-import { servers } from "@gocode/models";
+import { daemons } from "@gocode/models";
 
-export const ServerCard = ({ server, toggle }: { server: servers.Server; toggle: (name: string) => void }) => {
+export const DaemonCard = ({ daemon, toggle }: { daemon: daemons.Daemon; toggle: (name: string) => void }) => {
   const [stateStr, setStateStr] = useState<string>("");
-  const { name, sleep, started, color, runs, state } = server;
+  const { name, sleep, started, color, runs, state } = daemon;
 
   useEffect(() => {
     StateToString(name).then((s) => {
@@ -24,7 +24,7 @@ export const ServerCard = ({ server, toggle }: { server: servers.Server; toggle:
           {name}
         </Title>
         <div onClick={handleToggle} style={{ cursor: "pointer" }}>
-          <Badge bg={state === servers.State.RUNNING ? "green" : "red"}>{stateStr}</Badge>
+          <Badge bg={state === daemons.State.RUNNING ? "green" : "red"}>{stateStr}</Badge>
         </div>
       </Group>
       <Text size="sm" style={{ lineHeight: 1.5 }}>

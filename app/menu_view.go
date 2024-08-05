@@ -51,9 +51,9 @@ func (a *App) ViewStatus(cd *menu.CallbackData) {
 	runtime.EventsEmit(a.ctx, "navigate", "/status")
 }
 
-func (a *App) ViewServers(cd *menu.CallbackData) {
-	logger.Info("ViewServers")
-	runtime.EventsEmit(a.ctx, "navigate", "/servers")
+func (a *App) ViewDaemons(cd *menu.CallbackData) {
+	logger.Info("ViewDaemons")
+	runtime.EventsEmit(a.ctx, "navigate", "/daemons")
 }
 
 func (a *App) ViewSettings(cd *menu.CallbackData) {

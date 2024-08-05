@@ -1,13 +1,13 @@
 package messages
 
-type ServerMsg struct {
+type DaemonMsg struct {
 	Name    string `json:"name"`
 	Message string `json:"message"`
 	Color   string `json:"color"`
 }
 
-func NewServerMsg(name string, message string, color string) *ServerMsg {
-	return &ServerMsg{
+func NewDaemonMsg(name string, message string, color string) *DaemonMsg {
+	return &DaemonMsg{
 		Name:    name,
 		Message: message,
 		Color:   color,

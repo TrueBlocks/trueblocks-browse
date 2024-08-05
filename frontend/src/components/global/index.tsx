@@ -4,4 +4,4 @@ export * from "./Header";
 export * from "./Menu";
 export * from "./Navbar";
 export * from "./Routes";
-export * from "./ServerStatus";
+export * from "./DaemonStatus";

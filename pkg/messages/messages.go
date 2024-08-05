@@ -13,12 +13,12 @@ const (
 	Error
 	Warn
 	Progress
-	Server
+	Daemon
 	Document
 )
 
 type MessageData interface {
-	string | ProgressMsg | ServerMsg | ErrorMsg | DocumentMsg
+	string | ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg
 }
 
 var Messages = []struct {
@@ -29,7 +29,7 @@ var Messages = []struct {
 	{Error, "ERROR"},
 	{Warn, "WARN"},
 	{Progress, "PROGRESS"},
-	{Server, "SERVER"},
+	{Daemon, "DAEMON"},
 	{Document, "DOCUMENT"},
 }
 

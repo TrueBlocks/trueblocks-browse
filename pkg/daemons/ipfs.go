@@ -1,4 +1,4 @@
-package servers
+package daemons
 
 import (
 	"time"
@@ -7,12 +7,12 @@ import (
 )
 
 type DaemonIpfs struct {
-	Server `json:"server"`
+	Daemon `json:"daemon"`
 }
 
 func NewIpfs(name string, sleep time.Duration) *DaemonIpfs {
 	return &DaemonIpfs{
-		Server: Server{
+		Daemon: Daemon{
 			Name:    name,
 			Sleep:   sleep,
 			Color:   "red",
@@ -26,25 +26,25 @@ func (s *DaemonIpfs) Run() {
 	logger.Info("Starting ipfs...")
 
 	for {
-		if s.Server.State == Running {
-			s.Server.Notify()
+		if s.Daemon.State == Running {
+			s.Daemon.Notify()
 		}
 		time.Sleep(s.Sleep * time.Millisecond)
 	}
 }
 
 func (s *DaemonIpfs) Stop() error {
-	return s.Server.Stop()
+	return s.Daemon.Stop()
 }
 
 func (s *DaemonIpfs) Pause() error {
-	return s.Server.Pause()
+	return s.Daemon.Pause()
 }
 
 func (s *DaemonIpfs) Toggle() error {
-	return s.Server.Toggle()
+	return s.Daemon.Toggle()
 }
 
 func (s *DaemonIpfs) Tick() int {
-	return s.Server.Tick()
+	return s.Daemon.Tick()
 }

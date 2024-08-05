@@ -1,4 +1,4 @@
-package servers
+package daemons
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
 )
 
-type Server struct {
+type Daemon struct {
 	Name    string          `json:"name"`
 	Sleep   time.Duration   `json:"sleep"`
 	Color   string          `json:"color"`
@@ -20,37 +20,37 @@ type Server struct {
 	MsgCtx  context.Context `json:"-"`
 }
 
-func (s *Server) Run() error {
+func (s *Daemon) Run() error {
 	s.State = Running
 	s.Notify("Run")
 	return nil
 }
 
-func (s *Server) Stop() error {
+func (s *Daemon) Stop() error {
 	s.State = Stopped
 	s.Notify("Stopped")
 	return nil
 }
 
-func (s *Server) Pause() error {
+func (s *Daemon) Pause() error {
 	s.State = Paused
 	s.Notify("Paused")
 	return nil
 }
 
-func (s *Server) Toggle() error {
+func (s *Daemon) Toggle() error {
 	if s.State == Running {
 		return s.Pause()
 	}
 	return s.Run()
 }
 
-func (s *Server) Tick() int {
+func (s *Daemon) Tick() int {
 	s.Runs++
 	return s.Runs
 }
 
-func (s *Server) Notify(msg ...string) {
+func (s *Daemon) Notify(msg ...string) {
 	color := colors.ColorMap[s.Color]
 	if color == "" {
 		color = colors.White
@@ -64,14 +64,14 @@ func (s *Server) Notify(msg ...string) {
 		msg,
 	)
 	// fmt.Printf("%sNotify: %s%s\n", color, msgOut, colors.Off)
-	messages.Send(s.MsgCtx, messages.Server, messages.NewServerMsg(
+	messages.Send(s.MsgCtx, messages.Daemon, messages.NewDaemonMsg(
 		strings.ToLower(s.Name),
 		msgOut,
 		color,
 	))
 }
 
-type Serverer *interface {
+type Daemoner *interface {
 	Run() error
 	Stop() error
 	Pause() error

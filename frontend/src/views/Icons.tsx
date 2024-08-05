@@ -21,5 +21,5 @@ export const IndexesIcon = <IconArchive />;
 export const ManifestIcon = <IconCubeSend />;
 export const AbisIcon = <IconChartArrows />;
 export const StatusIcon = <IconMoustache />;
-export const ServersIcon = <IconServer />;
+export const DaemonsIcon = <IconServer />;
 export const SettingsIcon = <IconSettings />;

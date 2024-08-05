@@ -3,7 +3,7 @@ export * from "./Home/HomeView";
 export * from "./History/HistoryView";
 export * from "./Monitors/MonitorsView";
 export * from "./Names/NamesView";
-export * from "./Servers/ServersView";
+export * from "./Daemons/DaemonView";
 export * from "./Indexes/IndexesView";
 export * from "./Manifests/ManifestView";
 export * from "./Abis/AbisView";

@@ -1,4 +1,4 @@
-package servers
+package daemons
 
 import (
 	"fmt"
@@ -13,13 +13,13 @@ import (
 
 type DaemonFile struct {
 	Port   int `json:"port"`
-	Server `json:"server"`
+	Daemon `json:"daemon"`
 }
 
-func NewFileServer(name string, port int, sleep time.Duration) *DaemonFile {
+func NewFileDaemon(name string, port int, sleep time.Duration) *DaemonFile {
 	return &DaemonFile{
 		Port: port,
-		Server: Server{
+		Daemon: Daemon{
 			Name:    name,
 			Sleep:   sleep,
 			Color:   "green",
@@ -41,7 +41,7 @@ func (s *DaemonFile) Run() {
 			address = parts[1]
 		}
 		if series == "" || address == "" {
-			http.Error(w, "Series or address not provided to file server", http.StatusBadRequest)
+			http.Error(w, "Series or address not provided to file daemon", http.StatusBadRequest)
 			return
 		}
 		cwd, err := os.Getwd()
@@ -55,7 +55,7 @@ func (s *DaemonFile) Run() {
 			http.Error(w, msg, http.StatusNotFound)
 			return
 		}
-		s.Server.Notify(filePath)
+		s.Daemon.Notify(filePath)
 
 		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
 		w.Header().Set("Pragma", "no-cache")
@@ -64,22 +64,22 @@ func (s *DaemonFile) Run() {
 	})
 
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", s.Port), nil); err != nil {
-		logger.Error("File server error:", err)
+		logger.Error("File daemon error:", err)
 	}
 }
 
 func (s *DaemonFile) Stop() error {
-	return s.Server.Stop()
+	return s.Daemon.Stop()
 }
 
 func (s *DaemonFile) Pause() error {
-	return s.Server.Pause()
+	return s.Daemon.Pause()
 }
 
 func (s *DaemonFile) Toggle() error {
-	return s.Server.Toggle()
+	return s.Daemon.Toggle()
 }
 
 func (s *DaemonFile) Tick() int {
-	return s.Server.Tick()
+	return s.Daemon.Tick()
 }

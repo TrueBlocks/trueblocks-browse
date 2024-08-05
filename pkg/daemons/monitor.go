@@ -1,4 +1,4 @@
-package servers
+package daemons
 
 import (
 	"time"
@@ -7,12 +7,12 @@ import (
 )
 
 type DaemonFreshen struct {
-	Server `json:"server"`
+	Daemon `json:"daemon"`
 }
 
 func NewFreshen(name string, sleep time.Duration) *DaemonFreshen {
 	return &DaemonFreshen{
-		Server: Server{
+		Daemon: Daemon{
 			Name:    name,
 			Sleep:   sleep,
 			Color:   "blue",
@@ -26,25 +26,25 @@ func (s *DaemonFreshen) Run() {
 	logger.Info("Starting fresheners...")
 
 	for {
-		if s.Server.State == Running {
-			s.Server.Notify()
+		if s.Daemon.State == Running {
+			s.Daemon.Notify()
 		}
 		time.Sleep(s.Sleep * time.Millisecond)
 	}
 }
 
 func (s *DaemonFreshen) Stop() error {
-	return s.Server.Stop()
+	return s.Daemon.Stop()
 }
 
 func (s *DaemonFreshen) Pause() error {
-	return s.Server.Pause()
+	return s.Daemon.Pause()
 }
 
 func (s *DaemonFreshen) Toggle() error {
-	return s.Server.Toggle()
+	return s.Daemon.Toggle()
 }
 
 func (s *DaemonFreshen) Tick() int {
-	return s.Server.Tick()
+	return s.Daemon.Tick()
 }

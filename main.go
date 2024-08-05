@@ -7,8 +7,8 @@ import (
 	"os"
 
 	"github.com/TrueBlocks/trueblocks-browse/app"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/servers"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -46,8 +46,8 @@ func main() {
 				&messages.DocumentMsg{},
 				&messages.ErrorMsg{},
 				&messages.ProgressMsg{},
-				&messages.ServerMsg{},
-				&servers.Server{},
+				&messages.DaemonMsg{},
+				&daemons.Daemon{},
 				&types.StatusEx{},
 				&types.TransactionEx{},
 				&types.MonitorSummary{},
@@ -59,8 +59,8 @@ func main() {
 			},
 			EnumBind: []interface{}{
 				types.NameParts,
-				servers.Types,
-				servers.States,
+				daemons.Types,
+				daemons.States,
 				messages.Messages,
 			},
 			StartHidden: true,
@@ -69,7 +69,7 @@ func main() {
 			},
 		}
 
-		go a.StartServers()
+		go a.StartDaemons()
 
 		if err := wails.Run(&opts); err != nil {
 			fmt.Println("Error:", err.Error())

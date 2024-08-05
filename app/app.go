@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/servers"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -36,10 +36,10 @@ type App struct {
 	ensMap     map[string]base.Address
 	renderCtxs map[base.Address][]*output.RenderCtx
 	// Add your application's data here
-	ScraperController *servers.DaemonScraper
-	FileController    *servers.DaemonFile
-	FreshenController *servers.DaemonFreshen
-	IpfsController    *servers.DaemonIpfs
+	ScraperController *daemons.DaemonScraper
+	FileController    *daemons.DaemonFile
+	FreshenController *daemons.DaemonFreshen
+	IpfsController    *daemons.DaemonIpfs
 	Documents         []types.Document
 	CurrentDoc        *types.Document
 }
@@ -51,10 +51,10 @@ func NewApp() *App {
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 		ensMap:     make(map[string]base.Address),
 		// Initialize maps here
-		ScraperController: servers.NewScraper("scraper", 1000), // TODO: Should be seven seconds
-		FileController:    servers.NewFileServer("fileserver", 8080, 1000),
-		FreshenController: servers.NewFreshen("freshen", 1000),
-		IpfsController:    servers.NewIpfs("ipfs", 1000),
+		ScraperController: daemons.NewScraper("scraper", 1000), // TODO: Should be seven seconds
+		FileController:    daemons.NewFileDaemon("filedaemon", 8080, 1000),
+		FreshenController: daemons.NewFreshen("freshen", 1000),
+		IpfsController:    daemons.NewIpfs("ipfs", 1000),
 		Documents:         make([]types.Document, 10),
 	}
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)

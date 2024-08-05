@@ -11,7 +11,7 @@ import {
   ManifestIcon,
   AbisIcon,
   StatusIcon,
-  ServersIcon,
+  DaemonsIcon,
   SettingsIcon,
   // Views
   HomeView,
@@ -21,7 +21,7 @@ import {
   IndexesView,
   ManifestView,
   AbisView,
-  ServersView,
+  DaemonsView,
   StatusView,
   SettingsView,
 } from "@views";
@@ -81,10 +81,10 @@ export const routeItems = [
   },
   {
     order: 80,
-    route: "/servers",
-    label: "Servers",
-    icon: ServersIcon,
-    component: ServersView,
+    route: "/daemons",
+    label: "Daemon",
+    icon: DaemonsIcon,
+    component: DaemonsView,
   },
   {
     order: 90,

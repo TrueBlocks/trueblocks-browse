@@ -38,6 +38,10 @@ export function GetAbisCnt() {
   return window['go']['app']['App']['GetAbisCnt']();
 }
 
+export function GetDaemon(arg1) {
+  return window['go']['app']['App']['GetDaemon'](arg1);
+}
+
 export function GetExistingAddrs() {
   return window['go']['app']['App']['GetExistingAddrs']();
 }
@@ -90,10 +94,6 @@ export function GetNamesCnt() {
   return window['go']['app']['App']['GetNamesCnt']();
 }
 
-export function GetServer(arg1) {
-  return window['go']['app']['App']['GetServer'](arg1);
-}
-
 export function GetSession() {
   return window['go']['app']['App']['GetSession']();
 }
@@ -118,8 +118,8 @@ export function SetLast(arg1, arg2) {
   return window['go']['app']['App']['SetLast'](arg1, arg2);
 }
 
-export function StartServers() {
-  return window['go']['app']['App']['StartServers']();
+export function StartDaemons() {
+  return window['go']['app']['App']['StartDaemons']();
 }
 
 export function StateToString(arg1) {
@@ -138,12 +138,16 @@ export function SystemQuit(arg1) {
   return window['go']['app']['App']['SystemQuit'](arg1);
 }
 
-export function ToggleServer(arg1) {
-  return window['go']['app']['App']['ToggleServer'](arg1);
+export function ToggleDaemon(arg1) {
+  return window['go']['app']['App']['ToggleDaemon'](arg1);
 }
 
 export function ViewAbis(arg1) {
   return window['go']['app']['App']['ViewAbis'](arg1);
+}
+
+export function ViewDaemons(arg1) {
+  return window['go']['app']['App']['ViewDaemons'](arg1);
 }
 
 export function ViewHistory(arg1) {
@@ -168,10 +172,6 @@ export function ViewMonitors(arg1) {
 
 export function ViewNames(arg1) {
   return window['go']['app']['App']['ViewNames'](arg1);
-}
-
-export function ViewServers(arg1) {
-  return window['go']['app']['App']['ViewServers'](arg1);
 }
 
 export function ViewSettings(arg1) {

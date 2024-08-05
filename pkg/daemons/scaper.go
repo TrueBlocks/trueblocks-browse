@@ -1,4 +1,4 @@
-package servers
+package daemons
 
 import (
 	"time"
@@ -9,12 +9,12 @@ import (
 )
 
 type DaemonScraper struct {
-	Server `json:"server"`
+	Daemon `json:"daemon"`
 }
 
 func NewScraper(name string, sleep time.Duration) *DaemonScraper {
 	return &DaemonScraper{
-		Server: Server{
+		Daemon: Daemon{
 			Name:    name,
 			Sleep:   sleep,
 			Color:   "yellow",
@@ -28,7 +28,7 @@ func (s *DaemonScraper) Run() {
 	logger.Info("Starting scraper...")
 
 	for {
-		if s.Server.State == Running {
+		if s.Daemon.State == Running {
 			opts := sdk.ScrapeOptions{
 				BlockCnt: 500,
 			}
@@ -41,24 +41,24 @@ func (s *DaemonScraper) Run() {
 			if len(msg) > 0 {
 				notify += " " + msg[0].Msg
 			}
-			s.Server.Notify(notify)
+			s.Daemon.Notify(notify)
 		}
 		time.Sleep(s.Sleep * time.Millisecond)
 	}
 }
 
 func (s *DaemonScraper) Stop() error {
-	return s.Server.Stop()
+	return s.Daemon.Stop()
 }
 
 func (s *DaemonScraper) Pause() error {
-	return s.Server.Pause()
+	return s.Daemon.Pause()
 }
 
 func (s *DaemonScraper) Toggle() error {
-	return s.Server.Toggle()
+	return s.Daemon.Toggle()
 }
 
 func (s *DaemonScraper) Tick() int {
-	return s.Server.Tick()
+	return s.Daemon.Tick()
 }

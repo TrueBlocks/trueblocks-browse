@@ -1,4 +1,4 @@
-package servers
+package daemons
 
 type State int
 

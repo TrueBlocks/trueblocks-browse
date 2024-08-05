@@ -3,7 +3,7 @@
 import {base} from '../models';
 import {menu} from '../models';
 import {types} from '../models';
-import {servers} from '../models';
+import {daemons} from '../models';
 import {config} from '../models';
 import {output} from '../models';
 
@@ -24,6 +24,8 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 export function GetAbis(arg1:number,arg2:number):Promise<types.AbiSummary>;
 
 export function GetAbisCnt():Promise<number>;
+
+export function GetDaemon(arg1:string):Promise<daemons.Daemon>;
 
 export function GetExistingAddrs():Promise<Array<string>>;
 
@@ -51,8 +53,6 @@ export function GetNames(arg1:number,arg2:number):Promise<types.NameSummary>;
 
 export function GetNamesCnt():Promise<number>;
 
-export function GetServer(arg1:string):Promise<servers.Server>;
-
 export function GetSession():Promise<config.Session>;
 
 export function GetStatus(arg1:number,arg2:number):Promise<types.StatusEx>;
@@ -65,7 +65,7 @@ export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
 
 export function SetLast(arg1:string,arg2:string):Promise<void>;
 
-export function StartServers():Promise<void>;
+export function StartDaemons():Promise<void>;
 
 export function StateToString(arg1:string):Promise<string>;
 
@@ -75,9 +75,11 @@ export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
 
-export function ToggleServer(arg1:string):Promise<void>;
+export function ToggleDaemon(arg1:string):Promise<void>;
 
 export function ViewAbis(arg1:menu.CallbackData):Promise<void>;
+
+export function ViewDaemons(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewHistory(arg1:menu.CallbackData):Promise<void>;
 
@@ -90,8 +92,6 @@ export function ViewManifest(arg1:menu.CallbackData):Promise<void>;
 export function ViewMonitors(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewNames(arg1:menu.CallbackData):Promise<void>;
-
-export function ViewServers(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewSettings(arg1:menu.CallbackData):Promise<void>;
 

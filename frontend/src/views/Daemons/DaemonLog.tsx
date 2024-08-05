@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Text, Title } from "@mantine/core";
 import { messages } from "@gocode/models";
 
-export const ServerLog = ({ logMessages }: { logMessages: messages.ServerMsg[] }) => {
+export const DaemonLog = ({ logMessages }: { logMessages: messages.DaemonMsg[] }) => {
   return (
     <>
       <Title order={4}>Logs:</Title>

@@ -46,6 +46,64 @@ export namespace config {
 
 }
 
+export namespace daemons {
+	
+	export enum State {
+	    STOPPED = 0,
+	    RUNNING = 1,
+	    PAUSED = 2,
+	}
+	export enum Type {
+	    FILEDAEMON = 0,
+	    SCRAPER = 1,
+	    FRESHEN = 2,
+	    API = 3,
+	    IPFS = 4,
+	}
+	export class Daemon {
+	    name: string;
+	    sleep: number;
+	    color: string;
+	    // Go type: time
+	    started: any;
+	    runs: number;
+	    state: State;
+	
+	    static createFrom(source: any = {}) {
+	        return new Daemon(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.sleep = source["sleep"];
+	        this.color = source["color"];
+	        this.started = this.convertValues(source["started"], null);
+	        this.runs = source["runs"];
+	        this.state = source["state"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
 export namespace messages {
 	
 	export enum Message {
@@ -53,8 +111,24 @@ export namespace messages {
 	    ERROR = 1,
 	    WARN = 2,
 	    PROGRESS = 3,
-	    SERVER = 4,
+	    DAEMON = 4,
 	    DOCUMENT = 5,
+	}
+	export class DaemonMsg {
+	    name: string;
+	    message: string;
+	    color: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new DaemonMsg(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.message = source["message"];
+	        this.color = source["color"];
+	    }
 	}
 	export class DocumentMsg {
 	    filename: string;
@@ -136,22 +210,6 @@ export namespace messages {
 		    return a;
 		}
 	}
-	export class ServerMsg {
-	    name: string;
-	    message: string;
-	    color: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ServerMsg(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.name = source["name"];
-	        this.message = source["message"];
-	        this.color = source["color"];
-	    }
-	}
 
 }
 
@@ -168,64 +226,6 @@ export namespace output {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	
 	    }
-	}
-
-}
-
-export namespace servers {
-	
-	export enum Type {
-	    FILESERVER = 0,
-	    SCRAPER = 1,
-	    FRESHEN = 2,
-	    API = 3,
-	    IPFS = 4,
-	}
-	export enum State {
-	    STOPPED = 0,
-	    RUNNING = 1,
-	    PAUSED = 2,
-	}
-	export class Server {
-	    name: string;
-	    sleep: number;
-	    color: string;
-	    // Go type: time
-	    started: any;
-	    runs: number;
-	    state: State;
-	
-	    static createFrom(source: any = {}) {
-	        return new Server(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.name = source["name"];
-	        this.sleep = source["sleep"];
-	        this.color = source["color"];
-	        this.started = this.convertValues(source["started"], null);
-	        this.runs = source["runs"];
-	        this.state = source["state"];
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
 	}
 
 }
