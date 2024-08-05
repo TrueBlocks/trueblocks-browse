@@ -5,10 +5,10 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { AddressNameEditor, AddressNameViewer, CustomColumnDef } from "@components";
 import { NameTags } from "./NameTag";
 
-const nameColumnHelper = createColumnHelper<types.NameEx>();
+const nameColumnHelper = createColumnHelper<types.Name>();
 
-export const nameColumns: CustomColumnDef<types.NameEx, any>[] = [
-  nameColumnHelper.accessor("type", {
+export const nameColumns: CustomColumnDef<types.Name, any>[] = [
+  nameColumnHelper.accessor("parts", {
     header: () => "Type",
     cell: (row) => <NameTags name={row.row.original} />,
     meta: { className: "small cell" },

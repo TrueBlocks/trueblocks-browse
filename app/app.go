@@ -27,8 +27,8 @@ type App struct {
 	ctx         context.Context
 	session     config.Session
 	apiKeys     map[string]string
-	namesMap    map[base.Address]types.NameEx
-	names       []types.NameEx
+	namesMap    map[base.Address]coreTypes.Name
+	names       []coreTypes.Name
 	monitorsMap map[base.Address]types.MonitorEx
 	monitors    []types.MonitorEx
 	abis        types.AbiSummary
@@ -50,7 +50,7 @@ type App struct {
 func NewApp() *App {
 	a := App{
 		apiKeys:     make(map[string]string),
-		namesMap:    make(map[base.Address]types.NameEx),
+		namesMap:    make(map[base.Address]coreTypes.Name),
 		monitorsMap: make(map[base.Address]types.MonitorEx),
 		renderCtxs:  make(map[base.Address][]*output.RenderCtx),
 		ensMap:      make(map[string]base.Address),

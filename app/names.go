@@ -3,12 +3,12 @@ package app
 import (
 	"sort"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-func (a *App) GetNamesPage(first, pageSize int) []types.NameEx {
+func (a *App) GetNamesPage(first, pageSize int) []coreTypes.Name {
 	if len(a.names) == 0 {
 		return a.names
 	}
@@ -23,16 +23,18 @@ func (a *App) GetNamesCnt() int {
 }
 
 func (a *App) loadNames() error {
-	nameTypes := []names.Parts{names.Regular | names.Baddress, names.Custom, names.Prefund}
+	nameTypes := []coreTypes.Parts{coreTypes.Regular, coreTypes.Custom, coreTypes.Prefund, coreTypes.Baddress}
 	for _, t := range nameTypes {
 		if namesMap, err := names.LoadNamesMap("mainnet", t, nil); err != nil {
 			return err
 		} else {
 			for addr, name := range namesMap {
-				namex := types.NewNameEx(name, t)
-				vv := a.namesMap[addr]
-				namex.Type |= vv.Type
-				a.namesMap[addr] = namex
+				name.Parts |= t
+				if vv, ok := a.namesMap[addr]; ok {
+					name = vv
+					name.Parts |= t
+				}
+				a.namesMap[addr] = name
 			}
 		}
 	}
@@ -40,12 +42,12 @@ func (a *App) loadNames() error {
 		a.names = append(a.names, name)
 	}
 	sort.Slice(a.names, func(i, j int) bool {
-		ti := a.names[i].Type
-		if ti == names.Regular {
+		ti := a.names[i].Parts
+		if ti == coreTypes.Regular {
 			ti = 7
 		}
-		tj := a.names[j].Type
-		if tj == names.Regular {
+		tj := a.names[j].Parts
+		if tj == coreTypes.Regular {
 			tj = 7
 		}
 		if ti == tj {
@@ -57,8 +59,4 @@ func (a *App) loadNames() error {
 		return ti < tj
 	})
 	return nil
-}
-
-func (a *App) GetNameTypes() []string {
-	return []string{"Regular", "Custom", "Prefund", "Baddress"}
 }

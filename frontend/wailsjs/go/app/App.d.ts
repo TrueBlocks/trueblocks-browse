@@ -47,11 +47,9 @@ export function GetMonitorsCnt():Promise<number>;
 
 export function GetMonitorsPage(arg1:number,arg2:number):Promise<Array<types.MonitorEx>>;
 
-export function GetNameTypes():Promise<Array<string>>;
-
 export function GetNamesCnt():Promise<number>;
 
-export function GetNamesPage(arg1:number,arg2:number):Promise<Array<types.NameEx>>;
+export function GetNamesPage(arg1:number,arg2:number):Promise<Array<types.Name>>;
 
 export function GetServer(arg1:string):Promise<servers.Server>;
 

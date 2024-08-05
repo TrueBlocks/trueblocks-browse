@@ -207,19 +207,7 @@ func (s *TransactionEx) FinishUnmarshal() {
 }
 
 // EXISTING_CODE
-func NewTransactionEx(namesMap map[base.Address]NameEx, tx *coreTypes.Transaction) *TransactionEx {
-	fromName := namesMap[tx.From].Name.Name
-	if len(fromName) == 0 {
-		fromName = tx.From.String()
-	} else if len(fromName) > 39 {
-		fromName = fromName[:39] + "..."
-	}
-	toName := namesMap[tx.To].Name.Name
-	if len(toName) == 0 {
-		toName = tx.To.String()
-	} else if len(toName) > 39 {
-		toName = toName[:39] + "..."
-	}
+func NewTransactionEx(tx *coreTypes.Transaction) *TransactionEx {
 	ether := tx.Value.ToEtherStr(18)
 	if tx.Value.IsZero() {
 		ether = "-"
@@ -237,9 +225,9 @@ func NewTransactionEx(namesMap map[base.Address]NameEx, tx *coreTypes.Transactio
 		Date:             tx.Date(),
 		Ether:            ether,
 		From:             tx.From,
-		FromName:         fromName,
+		FromName:         tx.From.Hex(),
 		To:               tx.To,
-		ToName:           toName,
+		ToName:           tx.To.Hex(),
 		Wei:              tx.Value,
 		HasToken:         tx.HasToken,
 		IsError:          tx.IsError,

@@ -26,7 +26,8 @@ func (a *App) loadMonitors() error {
 		return err
 	} else {
 		for _, monitor := range monitors {
-			monitorEx := types.NewMonitorEx(a.namesMap, &monitor)
+			monitorEx := types.NewMonitorEx(&monitor)
+			monitorEx.Name = a.namesMap[monitorEx.Address].Name
 			a.monitors = append(a.monitors, monitorEx)
 			a.monitorsMap[monitorEx.Address] = monitorEx
 		}

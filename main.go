@@ -49,7 +49,7 @@ func main() {
 				&messages.ServerMsg{},
 				&servers.Server{},
 				&types.MonitorEx{},
-				&types.NameEx{},
+				&coreTypes.Name{},
 				&types.StatusEx{},
 				&types.TransactionEx{},
 				&types.IndexSummary{},

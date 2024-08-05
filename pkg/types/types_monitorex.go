@@ -152,10 +152,9 @@ func (s *MonitorEx) FinishUnmarshal() {
 }
 
 // EXISTING_CODE
-func NewMonitorEx(namesMap map[base.Address]NameEx, m *coreTypes.Monitor) MonitorEx {
+func NewMonitorEx(m *coreTypes.Monitor) MonitorEx {
 	return MonitorEx{
 		Address:     m.Address,
-		Name:        namesMap[m.Address].Name.Name,
 		Deleted:     m.Deleted,
 		FileSize:    m.FileSize,
 		LastScanned: m.LastScanned,

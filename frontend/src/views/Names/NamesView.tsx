@@ -15,8 +15,8 @@ export function NamesView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.NameEx[]>([]);
-  const { curItem, perPage } = useKeyboardPaging<types.NameEx>(items, count);
+  const [items, setItems] = useState<types.Name[]>([]);
+  const { curItem, perPage } = useKeyboardPaging<types.Name>(items, count);
 
   useEffect(() => {
     if (loaded && !loading) {
@@ -51,7 +51,7 @@ export function NamesView() {
         <Title order={3}>
           Names: showing record {curItem + 1}-{curItem + 1 + perPage - 1} of {count}
         </Title>
-        <DataTable<types.NameEx> table={table} loading={loading} />
+        <DataTable<types.Name> table={table} loading={loading} />
       </Stack>
       <ViewStatus />
     </View>

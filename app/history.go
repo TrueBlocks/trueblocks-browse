@@ -48,7 +48,13 @@ func (a *App) GetHistoryPage(addr string, first, pageSize int) []types.Transacti
 					if !ok {
 						continue
 					}
-					txEx := types.NewTransactionEx(a.namesMap, tx)
+					txEx := types.NewTransactionEx(tx)
+					if name, ok := a.namesMap[tx.From]; ok {
+						txEx.FromName = name.Name
+					}
+					if name, ok := a.namesMap[tx.To]; ok {
+						txEx.ToName = name.Name
+					}
 					m.Lock()
 					addrToHistoryMap[address] = append(addrToHistoryMap[address], *txEx)
 					if len(addrToHistoryMap[address])%pageSize == 0 {

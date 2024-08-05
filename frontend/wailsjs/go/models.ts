@@ -155,17 +155,6 @@ export namespace messages {
 
 }
 
-export namespace names {
-	
-	export enum Parts {
-	    REGULAR = 2,
-	    CUSTOM = 4,
-	    PREFUND = 8,
-	    BADDRESS = 16,
-	}
-
-}
-
 export namespace output {
 	
 	export class RenderCtx {
@@ -243,6 +232,12 @@ export namespace servers {
 
 export namespace types {
 	
+	export enum Parts {
+	    REGULAR = 2,
+	    CUSTOM = 4,
+	    PREFUND = 8,
+	    BADDRESS = 16,
+	}
 	export class Parameter {
 	    components?: Parameter[];
 	    indexed?: boolean;
@@ -631,7 +626,7 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class NameEx {
+	export class Name {
 	    address: base.Address;
 	    decimals: number;
 	    deleted?: boolean;
@@ -646,10 +641,10 @@ export namespace types {
 	    tags: string;
 	    // Go type: base
 	    prefund?: any;
-	    type: names.Parts;
+	    parts?: Parts;
 	
 	    static createFrom(source: any = {}) {
-	        return new NameEx(source);
+	        return new Name(source);
 	    }
 	
 	    constructor(source: any = {}) {
@@ -667,7 +662,7 @@ export namespace types {
 	        this.symbol = source["symbol"];
 	        this.tags = source["tags"];
 	        this.prefund = this.convertValues(source["prefund"], null);
-	        this.type = source["type"];
+	        this.parts = source["parts"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
