@@ -9,7 +9,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/version"
 )
 
-func (a *App) GetStatus(first, pageSize int) types.StatusSummary {
+func (a *App) GetStatus(first, pageSize int) types.SummaryStatus {
 	first = base.Max(0, base.Min(first, len(a.status.Caches)-1))
 	last := base.Min(len(a.status.Caches), first+pageSize)
 	copy := a.status.ShallowCopy()

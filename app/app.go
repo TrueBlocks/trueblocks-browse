@@ -30,12 +30,12 @@ type App struct {
 	ensMap     map[string]base.Address
 	renderCtxs map[base.Address][]*output.RenderCtx
 	// Summaries
-	names    types.SummaryName
-	monitors types.SummaryMonitor
+	abis     types.SummaryAbis
 	index    types.SummaryIndex
 	manifest types.SummaryManifest
-	abis     types.SummaryAbis
-	status   types.StatusSummary
+	monitors types.SummaryMonitor
+	names    types.SummaryName
+	status   types.SummaryStatus
 	// Add your application's data here
 	ScraperController *daemons.DaemonScraper
 	FileController    *daemons.DaemonFile

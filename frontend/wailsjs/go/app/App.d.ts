@@ -55,7 +55,7 @@ export function GetNamesCnt():Promise<number>;
 
 export function GetSession():Promise<config.Session>;
 
-export function GetStatus(arg1:number,arg2:number):Promise<types.StatusSummary>;
+export function GetStatus(arg1:number,arg2:number):Promise<types.SummaryStatus>;
 
 export function GetStatusCnt():Promise<number>;
 
