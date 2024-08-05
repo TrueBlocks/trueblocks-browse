@@ -34,8 +34,8 @@ export function GetAbisCnt() {
   return window['go']['app']['App']['GetAbisCnt']();
 }
 
-export function GetAbisPage(arg1, arg2) {
-  return window['go']['app']['App']['GetAbisPage'](arg1, arg2);
+export function GetAbis(arg1, arg2) {
+  return window['go']['app']['App']['GetAbis'](arg1, arg2);
 }
 
 export function GetExistingAddrs() {
@@ -46,8 +46,8 @@ export function GetHistoryCnt(arg1) {
   return window['go']['app']['App']['GetHistoryCnt'](arg1);
 }
 
-export function GetHistoryPage(arg1, arg2, arg3) {
-  return window['go']['app']['App']['GetHistoryPage'](arg1, arg2, arg3);
+export function GetHistory(arg1, arg2, arg3) {
+  return window['go']['app']['App']['GetHistory'](arg1, arg2, arg3);
 }
 
 export function GetIndex(arg1, arg2) {
@@ -78,16 +78,16 @@ export function GetMonitorsCnt() {
   return window['go']['app']['App']['GetMonitorsCnt']();
 }
 
-export function GetMonitorsPage(arg1, arg2) {
-  return window['go']['app']['App']['GetMonitorsPage'](arg1, arg2);
+export function GetMonitors(arg1, arg2) {
+  return window['go']['app']['App']['GetMonitors'](arg1, arg2);
 }
 
 export function GetNamesCnt() {
   return window['go']['app']['App']['GetNamesCnt']();
 }
 
-export function GetNamesPage(arg1, arg2) {
-  return window['go']['app']['App']['GetNamesPage'](arg1, arg2);
+export function GetNames(arg1, arg2) {
+  return window['go']['app']['App']['GetNames'](arg1, arg2);
 }
 
 export function GetServer(arg1) {

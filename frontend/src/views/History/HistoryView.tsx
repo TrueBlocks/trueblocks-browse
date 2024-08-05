@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "wouter";
 import classes from "@/App.module.css";
-import { GetHistoryPage, GetHistoryCnt } from "@gocode/app/App";
+import { GetHistory, GetHistoryCnt } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { Stack, Title } from "@mantine/core";
@@ -24,7 +24,7 @@ export function HistoryView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (addr: string, currentItem: number, itemsPerPage: number) => {
-        GetHistoryPage(addr, currentItem, itemsPerPage).then((newItems) => {
+        GetHistory(addr, currentItem, itemsPerPage).then((newItems) => {
           setItems(newItems);
         });
       };

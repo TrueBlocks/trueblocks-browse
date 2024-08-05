@@ -6,7 +6,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
-func (a *App) GetMonitorsPage(first, pageSize int) types.MonitorSummary {
+func (a *App) GetMonitors(first, pageSize int) types.MonitorSummary {
 	first = base.Max(0, base.Min(first, len(a.monitorsSum.Monitors)-1))
 	last := base.Min(len(a.monitorsSum.Monitors), first+pageSize)
 	copy := a.monitorsSum.ShallowCopy()

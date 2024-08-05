@@ -9,7 +9,7 @@ import (
 )
 
 // Find: NewViews
-func (a *App) GetAbisPage(first, pageSize int) types.AbiSummary {
+func (a *App) GetAbis(first, pageSize int) types.AbiSummary {
 	first = base.Max(0, base.Min(first, len(a.abis.Files)-1))
 	last := base.Min(len(a.abis.Files), first+pageSize)
 	copy := a.abis.ShallowCopy()

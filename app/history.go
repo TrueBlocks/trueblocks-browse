@@ -17,7 +17,7 @@ import (
 var addrToHistoryMap = map[base.Address][]types.TransactionEx{}
 var m = sync.Mutex{}
 
-func (a *App) GetHistoryPage(addr string, first, pageSize int) []types.TransactionEx {
+func (a *App) GetHistory(addr string, first, pageSize int) []types.TransactionEx {
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))

@@ -6,7 +6,7 @@ import { abiColumns, AbiInstance, createAbiForm } from ".";
 import classes from "@/App.module.css";
 import { View, ViewStatus, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { GetAbisPage, GetAbisCnt } from "@gocode/app/App";
+import { GetAbis, GetAbisCnt } from "@gocode/app/App";
 
 export function AbisView() {
   const [count, setCount] = useState<number>(0);
@@ -19,7 +19,7 @@ export function AbisView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetAbisPage(currentItem, itemsPerPage).then((abis: types.AbiSummary) => {
+        GetAbis(currentItem, itemsPerPage).then((abis: types.AbiSummary) => {
           setItems(abis);
           setChunks(abis.chunks || []);
         });

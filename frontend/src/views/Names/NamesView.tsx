@@ -6,7 +6,7 @@ import { nameColumns, NameInstance, createNameForm } from ".";
 import classes from "@/App.module.css";
 import { View, ViewStatus, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { GetNamesPage, GetNamesCnt } from "@gocode/app/App";
+import { GetNames, GetNamesCnt } from "@gocode/app/App";
 
 export function NamesView() {
   const [count, setCount] = useState<number>(0);
@@ -19,7 +19,7 @@ export function NamesView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetNamesPage(currentItem, itemsPerPage).then((names: types.NameSummary) => {
+        GetNames(currentItem, itemsPerPage).then((names: types.NameSummary) => {
           setItems(names);
           setNames(names.names || []);
         });

@@ -6,7 +6,7 @@ import { monitorColumns, MonitorInstance, createMonitorForm } from ".";
 import classes from "@/App.module.css";
 import { View, ViewStatus, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { GetMonitorsPage, GetMonitorsCnt } from "@gocode/app/App";
+import { GetMonitors, GetMonitorsCnt } from "@gocode/app/App";
 
 export function MonitorsView() {
   const [count, setCount] = useState<number>(0);
@@ -19,7 +19,7 @@ export function MonitorsView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetMonitorsPage(currentItem, itemsPerPage).then((monitors: types.MonitorSummary) => {
+        GetMonitors(currentItem, itemsPerPage).then((monitors: types.MonitorSummary) => {
           setItems(monitors);
           setMonitors(monitors.monitors || []);
         });
