@@ -18,8 +18,8 @@ export const DaemonCard = ({ daemon, toggle }: { daemon: daemons.Daemon; toggle:
   };
 
   return (
-    <Card shadow="xl">
-      <Group style={{ justifyContent: "space-between", marginBottom: 5 }}>
+    <Card>
+      <Group style={{ justifyContent: "space-between" }}>
         <Title order={4} c={color}>
           {name}
         </Title>
@@ -27,15 +27,9 @@ export const DaemonCard = ({ daemon, toggle }: { daemon: daemons.Daemon; toggle:
           <Badge bg={state === daemons.State.RUNNING ? "green" : "red"}>{stateStr}</Badge>
         </div>
       </Group>
-      <Text size="sm" style={{ lineHeight: 1.5 }}>
-        Sleep Duration: {sleep}
-      </Text>
-      <Text size="sm" style={{ lineHeight: 1.5 }}>
-        Started At: {new Date(started).toLocaleString()}
-      </Text>
-      <Text size="sm" style={{ lineHeight: 1.5 }}>
-        Runs: {runs}
-      </Text>
+      <Text size="sm">Sleep Duration: {sleep}</Text>
+      <Text size="sm">Started At: {new Date(started).toLocaleString()}</Text>
+      <Text size="sm">Runs: {runs}</Text>
     </Card>
   );
 };

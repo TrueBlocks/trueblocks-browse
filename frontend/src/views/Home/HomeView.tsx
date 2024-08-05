@@ -6,8 +6,8 @@ import { View, ViewStatus, ViewTitle } from "@components";
 export function HomeView() {
   return (
     <View>
-      <ViewTitle />
       <Stack className={classes.mainContent}>
+        <ViewTitle />
         <Text>Home View Content</Text>
       </Stack>
       <ViewStatus />

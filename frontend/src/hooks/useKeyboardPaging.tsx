@@ -1,4 +1,4 @@
-import { useEffect, useState, DependencyList } from "react";
+import React, { useEffect, useState, DependencyList } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export function useKeyboardPaging<T>(items: T[], nItems: number, deps: DependencyList = [], perPage: number = 20) {

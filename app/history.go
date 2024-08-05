@@ -12,10 +12,7 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-// TODO: This should be on the App and it should be a sync.Map because it
-// TODO: has the attributes described in the library's comments.
-var addrToHistoryMap = map[base.Address][]types.TransactionEx{}
-var m = sync.Mutex{}
+var historyMutex sync.Mutex
 
 func (a *App) GetHistory(addr string, first, pageSize int) []types.TransactionEx {
 	address, ok := a.ConvertToAddress(addr)
@@ -24,9 +21,9 @@ func (a *App) GetHistory(addr string, first, pageSize int) []types.TransactionEx
 		return []types.TransactionEx{}
 	}
 
-	m.Lock()
-	_, exists := addrToHistoryMap[address]
-	m.Unlock()
+	historyMutex.Lock()
+	_, exists := a.historyMap[address]
+	historyMutex.Unlock()
 
 	if !exists {
 		rCtx := a.RegisterCtx(address)
@@ -55,15 +52,15 @@ func (a *App) GetHistory(addr string, first, pageSize int) []types.TransactionEx
 					if name, ok := a.names.NamesMap[tx.To]; ok {
 						txEx.ToName = name.Name
 					}
-					m.Lock()
-					addrToHistoryMap[address] = append(addrToHistoryMap[address], *txEx)
-					if len(addrToHistoryMap[address])%pageSize == 0 {
+					historyMutex.Lock()
+					a.historyMap[address] = append(a.historyMap[address], *txEx)
+					if len(a.historyMap[address])%pageSize == 0 {
 						messages.Send(a.ctx,
 							messages.Progress,
-							messages.NewProgressMsg(int64(len(addrToHistoryMap[address])), nItems, address),
+							messages.NewProgressMsg(int64(len(a.historyMap[address])), nItems, address),
 						)
 					}
-					m.Unlock()
+					historyMutex.Unlock()
 				case err := <-opts.RenderCtx.ErrorChan:
 					messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
 				default:
@@ -82,15 +79,15 @@ func (a *App) GetHistory(addr string, first, pageSize int) []types.TransactionEx
 
 		messages.Send(a.ctx,
 			messages.Completed,
-			messages.NewProgressMsg(int64(len(addrToHistoryMap[address])), int64(len(addrToHistoryMap[address])), address),
+			messages.NewProgressMsg(int64(len(a.historyMap[address])), int64(len(a.historyMap[address])), address),
 		)
 	}
 
-	m.Lock()
-	defer m.Unlock()
-	first = base.Max(0, base.Min(first, len(addrToHistoryMap[address])-1))
-	last := base.Min(len(addrToHistoryMap[address]), first+pageSize)
-	return addrToHistoryMap[address][first:last]
+	historyMutex.Lock()
+	defer historyMutex.Unlock()
+	first = base.Max(0, base.Min(first, len(a.historyMap[address])-1))
+	last := base.Min(len(a.historyMap[address]), first+pageSize)
+	return a.historyMap[address][first:last]
 }
 
 func (a *App) GetHistoryCnt(addr string) int64 {

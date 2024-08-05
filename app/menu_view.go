@@ -10,6 +10,7 @@ import (
 func (a *App) ViewHome(cd *menu.CallbackData) {
 	logger.Info("ViewHome")
 	runtime.EventsEmit(a.ctx, "navigate", "/")
+	a.SetLast("route", "/")
 }
 
 func (a *App) ViewHistory(cd *menu.CallbackData) {
@@ -19,44 +20,53 @@ func (a *App) ViewHistory(cd *menu.CallbackData) {
 		last = "trueblocks.eth"
 	}
 	runtime.EventsEmit(a.ctx, "navigate", "/history/"+last)
+	a.SetLast("route", "/history/"+last)
 }
 
 func (a *App) ViewMonitors(cd *menu.CallbackData) {
 	logger.Info("ViewMonitors")
 	runtime.EventsEmit(a.ctx, "navigate", "/monitors")
+	a.SetLast("route", "/monitors")
 }
 
 func (a *App) ViewNames(cd *menu.CallbackData) {
 	logger.Info("ViewNames")
 	runtime.EventsEmit(a.ctx, "navigate", "/names")
+	a.SetLast("route", "/names")
 }
 
 func (a *App) ViewIndexes(cd *menu.CallbackData) {
 	logger.Info("ViewIndexes")
 	runtime.EventsEmit(a.ctx, "navigate", "/indexes")
+	a.SetLast("route", "/indexes")
 }
 
 func (a *App) ViewManifest(cd *menu.CallbackData) {
 	logger.Info("ViewManifest")
 	runtime.EventsEmit(a.ctx, "navigate", "/manifest")
+	a.SetLast("route", "/manifest")
 }
 
 func (a *App) ViewAbis(cd *menu.CallbackData) {
 	logger.Info("ViewAbis")
 	runtime.EventsEmit(a.ctx, "navigate", "/abis")
+	a.SetLast("route", "/abis")
 }
 
 func (a *App) ViewStatus(cd *menu.CallbackData) {
 	logger.Info("ViewStatus")
 	runtime.EventsEmit(a.ctx, "navigate", "/status")
+	a.SetLast("route", "/status")
 }
 
 func (a *App) ViewDaemons(cd *menu.CallbackData) {
 	logger.Info("ViewDaemons")
 	runtime.EventsEmit(a.ctx, "navigate", "/daemons")
+	a.SetLast("route", "/daemons")
 }
 
 func (a *App) ViewSettings(cd *menu.CallbackData) {
 	logger.Info("ViewSettings")
 	runtime.EventsEmit(a.ctx, "navigate", "/settings")
+	a.SetLast("route", "/settings")
 }

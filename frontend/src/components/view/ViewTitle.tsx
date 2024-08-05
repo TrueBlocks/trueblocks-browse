@@ -1,10 +1,7 @@
 import React from "react";
 import { Title } from "@mantine/core";
-import { useLocation } from "wouter";
+import { useViewName } from "@hooks";
 
 export function ViewTitle(): JSX.Element {
-  const [location] = useLocation();
-  const baseRoute = location.split("/")[1] || "";
-  const viewName = baseRoute === "" ? "Home View" : `${baseRoute.charAt(0).toUpperCase()}${baseRoute.slice(1)} View`;
-  return <Title order={3}>{viewName}</Title>;
+  return <Title order={3}>{useViewName()}</Title>;
 }

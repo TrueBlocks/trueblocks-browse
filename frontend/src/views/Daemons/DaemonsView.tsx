@@ -65,15 +65,17 @@ export function DaemonsView() {
 
   return (
     <View>
-      <ViewTitle />
       <Stack className={classes.mainContent}>
-        <Fieldset legend={"Daemons"} bg={"white"} style={{ padding: "1rem", margin: "1rem" }}>
-          <SimpleGrid cols={2} spacing="lg" style={{ padding: "lg" }}>
+        <ViewTitle />
+        <Fieldset legend={"Daemons"} bg={"white"}>
+          <SimpleGrid cols={2}>
             <DaemonCard daemon={scraper} toggle={toggleDaemon} />
             <DaemonCard daemon={freshen} toggle={toggleDaemon} />
             <DaemonCard daemon={ipfs} toggle={toggleDaemon} />
             <DaemonCard daemon={fileDaemon} toggle={toggleDaemon} />
           </SimpleGrid>
+        </Fieldset>
+        <Fieldset legend={"Logs"} bg={"white"}>
           <DaemonLog logMessages={logMessages} />
         </Fieldset>
       </Stack>

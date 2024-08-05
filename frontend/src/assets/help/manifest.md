@@ -1,7 +1,3 @@
-<!-- markdownlint-disable MD041 -->
-
-### Manifests View
-
 The Manifests view displays a list of all manifests in the system. The list can be filtered by name, and the manifests can be viewed, edited, or deleted.
 
 #### Sharing

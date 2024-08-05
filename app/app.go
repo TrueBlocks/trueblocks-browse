@@ -29,6 +29,8 @@ type App struct {
 	apiKeys    map[string]string
 	ensMap     map[string]base.Address
 	renderCtxs map[base.Address][]*output.RenderCtx
+	historyMap map[base.Address][]types.TransactionEx
+
 	// Summaries
 	abis     types.SummaryAbis
 	index    types.SummaryIndex
@@ -52,6 +54,7 @@ func NewApp() *App {
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 		ensMap:     make(map[string]base.Address),
 		// Initialize maps here
+		historyMap:        make(map[base.Address][]types.TransactionEx),
 		ScraperController: daemons.NewScraper("scraper", 1000), // TODO: Should be seven seconds
 		FileController:    daemons.NewFileDaemon("filedaemon", 8080, 1000),
 		FreshenController: daemons.NewFreshen("freshen", 1000),

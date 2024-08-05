@@ -6,8 +6,8 @@ import { View, ViewStatus, ViewTitle } from "@components";
 export function SettingsView() {
   return (
     <View>
-      <ViewTitle />
       <Stack className={classes.mainContent}>
+        <ViewTitle />
         <InputLabel>
           <Checkbox label={"A checkbox"} />
         </InputLabel>

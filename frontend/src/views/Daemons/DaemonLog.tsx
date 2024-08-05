@@ -4,15 +4,12 @@ import { messages } from "@gocode/models";
 
 export const DaemonLog = ({ logMessages }: { logMessages: messages.DaemonMsg[] }) => {
   return (
-    <>
-      <Title order={4}>Logs:</Title>
-      <Card shadow="xl" style={{ maxHeight: "16rem", overflowY: "auto" }}>
-        {logMessages.map((log, index) => (
-          <Text c={log.color} key={index}>
-            {log.message}
-          </Text>
-        ))}
-      </Card>
-    </>
+    <Card style={{ maxHeight: "16rem", overflowY: "auto" }}>
+      {logMessages.map((log, index) => (
+        <Text c={log.color} key={index}>
+          {log.message}
+        </Text>
+      ))}
+    </Card>
   );
 };

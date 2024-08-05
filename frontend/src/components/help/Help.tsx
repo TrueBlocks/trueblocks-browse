@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Text } from "@mantine/core";
+import classes from "./Help.module.css";
+import { Title } from "@mantine/core";
 import { useLocation } from "wouter";
+import { useViewName } from "@hooks";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -11,6 +13,7 @@ export function Help(): JSX.Element {
   const [location] = useLocation();
   const [markdown, setMarkdown] = useState<string>("Loading...");
   const [error, setError] = useState<boolean>(false);
+  const viewName = useViewName();
 
   useEffect(() => {
     const baseRoute = location.split("/")[1];
@@ -37,6 +40,9 @@ export function Help(): JSX.Element {
 
   return (
     <div>
+      <Title order={4} className={classes.header}>
+        {viewName}
+      </Title>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdown}</ReactMarkdown>
     </div>
   );
