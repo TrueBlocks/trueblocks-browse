@@ -24,24 +24,24 @@ var startupError error
 
 // Find: NewViews
 type App struct {
-	ctx         context.Context
-	session     config.Session
-	apiKeys     map[string]string
-	monitorsSum types.MonitorSummary
-	names       types.NameSummary
-	abis        types.AbiSummary
-	index       types.IndexSummary
-	manifest    types.ManifestSummary
-	status      coreTypes.Status
-	ensMap      map[string]base.Address
-	renderCtxs  map[base.Address][]*output.RenderCtx
+	ctx        context.Context
+	session    config.Session
+	apiKeys    map[string]string
+	names      types.NameSummary
+	monitors   types.MonitorSummary
+	index      types.IndexSummary
+	manifest   types.ManifestSummary
+	abis       types.AbiSummary
+	status     coreTypes.Status
+	ensMap     map[string]base.Address
+	renderCtxs map[base.Address][]*output.RenderCtx
 	// Add your application's data here
-	Scraper    *servers.Scraper
-	FileServer *servers.FileServer
-	Monitor    *servers.Monitor
-	Ipfs       *servers.Ipfs
-	Documents  []types.Document
-	CurrentDoc *types.Document
+	ScraperController *servers.DaemonScraper
+	FileController    *servers.DaemonFile
+	MonitorController *servers.DaemonMonitor
+	IpfsController    *servers.DaemonIpfs
+	Documents         []types.Document
+	CurrentDoc        *types.Document
 }
 
 // Find: NewViews
@@ -51,13 +51,13 @@ func NewApp() *App {
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 		ensMap:     make(map[string]base.Address),
 		// Initialize maps here
-		Scraper:    servers.NewScraper("scraper", 1000), // TODO: Should be seven seconds
-		FileServer: servers.NewFileServer("fileserver", 8080, 1000),
-		Monitor:    servers.NewMonitor("monitor", 1000),
-		Ipfs:       servers.NewIpfs("ipfs", 1000),
-		Documents:  make([]types.Document, 10),
+		ScraperController: servers.NewScraper("scraper", 1000), // TODO: Should be seven seconds
+		FileController:    servers.NewFileServer("fileserver", 8080, 1000),
+		MonitorController: servers.NewMonitor("monitor", 1000),
+		IpfsController:    servers.NewIpfs("ipfs", 1000),
+		Documents:         make([]types.Document, 10),
 	}
-	a.monitorsSum.MonitorMap = make(map[base.Address]coreTypes.Monitor)
+	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
 	a.CurrentDoc = &a.Documents[0]
 	a.CurrentDoc.Filename = "Untitled"
@@ -81,12 +81,16 @@ func (a App) String() string {
 	return string(bytes)
 }
 
+// Find: NewViews
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
+	a.ScraperController.MsgCtx = ctx
+	a.FileController.MsgCtx = ctx
+	a.MonitorController.MsgCtx = ctx
+	a.IpfsController.MsgCtx = ctx
 	if startupError != nil {
 		a.Fatal(startupError.Error())
 	}
-	// Find: NewViews
 	if err := a.loadNames(); err != nil {
 		logger.Panic(err)
 	}
@@ -105,10 +109,6 @@ func (a *App) Startup(ctx context.Context) {
 	if err := a.loadIndex(); err != nil {
 		logger.Panic(err)
 	}
-	a.Scraper.MsgCtx = ctx
-	a.FileServer.MsgCtx = ctx
-	a.Monitor.MsgCtx = ctx
-	a.Ipfs.MsgCtx = ctx
 }
 
 func (a *App) DomReady(ctx context.Context) {

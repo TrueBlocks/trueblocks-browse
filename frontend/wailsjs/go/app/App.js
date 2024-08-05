@@ -30,24 +30,24 @@ export function FileSaveAs(arg1) {
   return window['go']['app']['App']['FileSaveAs'](arg1);
 }
 
-export function GetAbisCnt() {
-  return window['go']['app']['App']['GetAbisCnt']();
-}
-
 export function GetAbis(arg1, arg2) {
   return window['go']['app']['App']['GetAbis'](arg1, arg2);
+}
+
+export function GetAbisCnt() {
+  return window['go']['app']['App']['GetAbisCnt']();
 }
 
 export function GetExistingAddrs() {
   return window['go']['app']['App']['GetExistingAddrs']();
 }
 
-export function GetHistoryCnt(arg1) {
-  return window['go']['app']['App']['GetHistoryCnt'](arg1);
-}
-
 export function GetHistory(arg1, arg2, arg3) {
   return window['go']['app']['App']['GetHistory'](arg1, arg2, arg3);
+}
+
+export function GetHistoryCnt(arg1) {
+  return window['go']['app']['App']['GetHistoryCnt'](arg1);
 }
 
 export function GetIndex(arg1, arg2) {
@@ -74,20 +74,20 @@ export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
 
-export function GetMonitorsCnt() {
-  return window['go']['app']['App']['GetMonitorsCnt']();
-}
-
 export function GetMonitors(arg1, arg2) {
   return window['go']['app']['App']['GetMonitors'](arg1, arg2);
 }
 
-export function GetNamesCnt() {
-  return window['go']['app']['App']['GetNamesCnt']();
+export function GetMonitorsCnt() {
+  return window['go']['app']['App']['GetMonitorsCnt']();
 }
 
 export function GetNames(arg1, arg2) {
   return window['go']['app']['App']['GetNames'](arg1, arg2);
+}
+
+export function GetNamesCnt() {
+  return window['go']['app']['App']['GetNamesCnt']();
 }
 
 export function GetServer(arg1) {

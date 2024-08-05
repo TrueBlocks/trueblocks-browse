@@ -6,7 +6,7 @@ import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { Stack, Title } from "@mantine/core";
 import { txColumns } from "./HistoryTable";
-import { EditableSelect, View, ViewStatus } from "@components";
+import { EditableSelect, View, ViewStatus, ViewTitle } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { DataTable } from "@components";
 
@@ -63,9 +63,7 @@ export function HistoryView() {
   return (
     <View>
       <Stack className={classes.mainContent}>
-        <Title order={3}>
-          History of {address}: showing record {curItem + 1}-{curItem + 1 + perPage - 1} of {count}
-        </Title>
+        <ViewTitle />
         <EditableSelect
           value={address}
           onChange={(value) => setAddress(value)}

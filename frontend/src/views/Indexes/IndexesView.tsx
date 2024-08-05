@@ -2,9 +2,9 @@ import React, { useState, useEffect, ReactNode } from "react";
 import { types } from "@gocode/models";
 import { Title, Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { indexColumns, IndexInstance, createIndexForm } from ".";
+import { indexColumns, createIndexForm } from ".";
 import classes from "@/App.module.css";
-import { View, ViewStatus, FormTable } from "@components";
+import { View, ViewStatus, ViewTitle, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { GetIndex, GetIndexCnt } from "@gocode/app/App";
 
@@ -47,7 +47,7 @@ export function IndexesView() {
   return (
     <View>
       <Stack className={classes.mainContent}>
-        <Title order={3}>Index View</Title>
+        <ViewTitle />
         <FormTable data={items} definition={createIndexForm(table)} />;{" "}
       </Stack>
       <ViewStatus />

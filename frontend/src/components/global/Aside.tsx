@@ -1,6 +1,6 @@
 import React from "react";
-import { Text } from "@mantine/core";
+import { Help } from "@components";
 
 export function Aside() {
-  return <Text>Help file</Text>;
+  return <Help />;
 }

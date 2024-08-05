@@ -8,12 +8,12 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-type Scraper struct {
+type DaemonScraper struct {
 	Server `json:"server"`
 }
 
-func NewScraper(name string, sleep time.Duration) *Scraper {
-	return &Scraper{
+func NewScraper(name string, sleep time.Duration) *DaemonScraper {
+	return &DaemonScraper{
 		Server: Server{
 			Name:    name,
 			Sleep:   sleep,
@@ -24,7 +24,7 @@ func NewScraper(name string, sleep time.Duration) *Scraper {
 	}
 }
 
-func (s *Scraper) Run() {
+func (s *DaemonScraper) Run() {
 	logger.Info("Starting scraper...")
 
 	for {
@@ -47,18 +47,18 @@ func (s *Scraper) Run() {
 	}
 }
 
-func (s *Scraper) Stop() error {
+func (s *DaemonScraper) Stop() error {
 	return s.Server.Stop()
 }
 
-func (s *Scraper) Pause() error {
+func (s *DaemonScraper) Pause() error {
 	return s.Server.Pause()
 }
 
-func (s *Scraper) Toggle() error {
+func (s *DaemonScraper) Toggle() error {
 	return s.Server.Toggle()
 }
 
-func (s *Scraper) Tick() int {
+func (s *DaemonScraper) Tick() int {
 	return s.Server.Tick()
 }

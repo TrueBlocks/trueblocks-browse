@@ -6,12 +6,12 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-type Ipfs struct {
+type DaemonIpfs struct {
 	Server `json:"server"`
 }
 
-func NewIpfs(name string, sleep time.Duration) *Ipfs {
-	return &Ipfs{
+func NewIpfs(name string, sleep time.Duration) *DaemonIpfs {
+	return &DaemonIpfs{
 		Server: Server{
 			Name:    name,
 			Sleep:   sleep,
@@ -22,7 +22,7 @@ func NewIpfs(name string, sleep time.Duration) *Ipfs {
 	}
 }
 
-func (s *Ipfs) Run() {
+func (s *DaemonIpfs) Run() {
 	logger.Info("Starting ipfs...")
 
 	for {
@@ -33,18 +33,18 @@ func (s *Ipfs) Run() {
 	}
 }
 
-func (s *Ipfs) Stop() error {
+func (s *DaemonIpfs) Stop() error {
 	return s.Server.Stop()
 }
 
-func (s *Ipfs) Pause() error {
+func (s *DaemonIpfs) Pause() error {
 	return s.Server.Pause()
 }
 
-func (s *Ipfs) Toggle() error {
+func (s *DaemonIpfs) Toggle() error {
 	return s.Server.Toggle()
 }
 
-func (s *Ipfs) Tick() int {
+func (s *DaemonIpfs) Tick() int {
 	return s.Server.Tick()
 }

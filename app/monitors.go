@@ -7,15 +7,15 @@ import (
 )
 
 func (a *App) GetMonitors(first, pageSize int) types.MonitorSummary {
-	first = base.Max(0, base.Min(first, len(a.monitorsSum.Monitors)-1))
-	last := base.Min(len(a.monitorsSum.Monitors), first+pageSize)
-	copy := a.monitorsSum.ShallowCopy()
-	copy.Monitors = a.monitorsSum.Monitors[first:last]
+	first = base.Max(0, base.Min(first, len(a.monitors.Monitors)-1))
+	last := base.Min(len(a.monitors.Monitors), first+pageSize)
+	copy := a.monitors.ShallowCopy()
+	copy.Monitors = a.monitors.Monitors[first:last]
 	return copy
 }
 
 func (a *App) GetMonitorsCnt() int {
-	return len(a.monitorsSum.Monitors)
+	return len(a.monitors.Monitors)
 }
 
 func (a *App) loadMonitors() error {
@@ -25,10 +25,10 @@ func (a *App) loadMonitors() error {
 	} else {
 		for _, mon := range monitors {
 			mon.Name = a.names.NamesMap[mon.Address].Name
-			a.monitorsSum.Monitors = append(a.monitorsSum.Monitors, mon)
-			a.monitorsSum.MonitorMap[mon.Address] = mon
+			a.monitors.Monitors = append(a.monitors.Monitors, mon)
+			a.monitors.MonitorMap[mon.Address] = mon
 		}
-		a.monitorsSum.Summarize()
+		a.monitors.Summarize()
 	}
 	return nil
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { View, ViewStatus } from "@components";
+import { View, ViewStatus, ViewTitle } from "@components";
 import { ServerCard, ServerLog } from "./";
 import { servers, messages } from "@gocode/models";
 import { GetServer, ToggleServer } from "@gocode/app/App";
@@ -65,7 +65,7 @@ export function ServersView() {
 
   return (
     <View>
-      <Title order={3}>Servers View</Title>
+      <ViewTitle />
       <Stack className={classes.mainContent}>
         <Fieldset legend={"Servers"} bg={"white"} style={{ padding: "1rem", margin: "1rem" }}>
           <SimpleGrid cols={2} spacing="lg" style={{ padding: "lg" }}>

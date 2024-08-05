@@ -7,22 +7,22 @@ import (
 )
 
 func (a *App) StartServers() {
-	go a.Scraper.Run()
-	go a.FileServer.Run()
-	go a.Monitor.Run()
-	go a.Ipfs.Run()
+	go a.ScraperController.Run()
+	go a.FileController.Run()
+	go a.MonitorController.Run()
+	go a.IpfsController.Run()
 }
 
 func (a *App) GetServer(name string) *servers.Server {
 	switch name {
 	case "scraper":
-		return &a.Scraper.Server
+		return &a.ScraperController.Server
 	case "fileserver":
-		return &a.FileServer.Server
+		return &a.FileController.Server
 	case "monitor":
-		return &a.Monitor.Server
+		return &a.MonitorController.Server
 	case "ipfs":
-		return &a.Ipfs.Server
+		return &a.IpfsController.Server
 	default:
 		return nil
 	}
@@ -31,13 +31,13 @@ func (a *App) GetServer(name string) *servers.Server {
 func (a *App) ToggleServer(name string) error {
 	switch name {
 	case "scraper":
-		return a.Scraper.Server.Toggle()
+		return a.ScraperController.Toggle()
 	case "fileserver":
-		return a.FileServer.Toggle()
+		return a.FileController.Toggle()
 	case "monitor":
-		return a.Monitor.Server.Toggle()
+		return a.MonitorController.Toggle()
 	case "ipfs":
-		return a.Ipfs.Server.Toggle()
+		return a.IpfsController.Toggle()
 	default:
 		return fmt.Errorf("server %s not found in ToggleServer", name)
 	}

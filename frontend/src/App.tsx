@@ -36,7 +36,7 @@ function App() {
     <AppShell
       header={{ height: "3rem" }}
       navbar={{ collapsed: { desktop: false }, width: "10rem", breakpoint: 0 }}
-      aside={{ collapsed: { desktop: showHelp }, width: "10rem", breakpoint: 0 }}
+      aside={{ collapsed: { desktop: showHelp }, width: "20rem", breakpoint: 0 }}
       footer={{ height: "2rem" }}
     >
       <AppShell.Header>

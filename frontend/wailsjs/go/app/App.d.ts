@@ -21,15 +21,15 @@ export function FileSave(arg1:menu.CallbackData):Promise<void>;
 
 export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
-export function GetAbisCnt():Promise<number>;
-
 export function GetAbis(arg1:number,arg2:number):Promise<types.AbiSummary>;
+
+export function GetAbisCnt():Promise<number>;
 
 export function GetExistingAddrs():Promise<Array<string>>;
 
-export function GetHistoryCnt(arg1:string):Promise<number>;
-
 export function GetHistory(arg1:string,arg2:number,arg3:number):Promise<Array<types.TransactionEx>>;
+
+export function GetHistoryCnt(arg1:string):Promise<number>;
 
 export function GetIndex(arg1:number,arg2:number):Promise<types.IndexSummary>;
 
@@ -43,13 +43,13 @@ export function GetManifestCnt():Promise<number>;
 
 export function GetMenus():Promise<menu.Menu>;
 
-export function GetMonitorsCnt():Promise<number>;
-
 export function GetMonitors(arg1:number,arg2:number):Promise<types.MonitorSummary>;
 
-export function GetNamesCnt():Promise<number>;
+export function GetMonitorsCnt():Promise<number>;
 
 export function GetNames(arg1:number,arg2:number):Promise<types.NameSummary>;
+
+export function GetNamesCnt():Promise<number>;
 
 export function GetServer(arg1:string):Promise<servers.Server>;
 

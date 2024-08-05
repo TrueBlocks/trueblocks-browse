@@ -2,9 +2,9 @@ import React, { useState, useEffect, ReactNode } from "react";
 import { types } from "@gocode/models";
 import { Title, Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { abiColumns, AbiInstance, createAbiForm } from ".";
+import { abiColumns, createAbiForm } from ".";
 import classes from "@/App.module.css";
-import { View, ViewStatus, FormTable } from "@components";
+import { View, ViewStatus, ViewTitle, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { GetAbis, GetAbisCnt } from "@gocode/app/App";
 
@@ -47,7 +47,7 @@ export function AbisView() {
   return (
     <View>
       <Stack className={classes.mainContent}>
-        <Title order={3}>Abis View</Title>
+        <ViewTitle />
         <FormTable data={items} definition={createAbiForm(table)} />;{" "}
       </Stack>
       <ViewStatus />

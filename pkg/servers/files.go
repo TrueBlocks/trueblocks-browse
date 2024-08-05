@@ -11,13 +11,13 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-type FileServer struct {
+type DaemonFile struct {
 	Port   int `json:"port"`
 	Server `json:"server"`
 }
 
-func NewFileServer(name string, port int, sleep time.Duration) *FileServer {
-	return &FileServer{
+func NewFileServer(name string, port int, sleep time.Duration) *DaemonFile {
+	return &DaemonFile{
 		Port: port,
 		Server: Server{
 			Name:    name,
@@ -29,7 +29,7 @@ func NewFileServer(name string, port int, sleep time.Duration) *FileServer {
 	}
 }
 
-func (s *FileServer) Run() {
+func (s *DaemonFile) Run() {
 	logger.Info(fmt.Sprintf("Serving files from (%s): %d\n", s.Name, s.Port))
 
 	http.HandleFunc("/files/", func(w http.ResponseWriter, r *http.Request) {
@@ -68,18 +68,18 @@ func (s *FileServer) Run() {
 	}
 }
 
-func (s *FileServer) Stop() error {
+func (s *DaemonFile) Stop() error {
 	return s.Server.Stop()
 }
 
-func (s *FileServer) Pause() error {
+func (s *DaemonFile) Pause() error {
 	return s.Server.Pause()
 }
 
-func (s *FileServer) Toggle() error {
+func (s *DaemonFile) Toggle() error {
 	return s.Server.Toggle()
 }
 
-func (s *FileServer) Tick() int {
+func (s *DaemonFile) Tick() int {
 	return s.Server.Tick()
 }
