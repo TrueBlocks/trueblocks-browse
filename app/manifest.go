@@ -10,10 +10,10 @@ import (
 )
 
 func (a *App) GetManifest(first, pageSize int) types.ManifestSummary {
-	copy := a.manifest
-	first = base.Max(0, base.Min(first, len(copy.Chunks)-1))
-	last := base.Min(len(copy.Chunks), first+pageSize)
-	copy.Chunks = copy.Chunks[first:last]
+	first = base.Max(0, base.Min(first, len(a.manifest.Chunks)-1))
+	last := base.Min(len(a.manifest.Chunks), first+pageSize)
+	copy := a.manifest.ShallowCopy()
+	copy.Chunks = a.manifest.Chunks[first:last]
 	return copy
 }
 

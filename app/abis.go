@@ -10,10 +10,10 @@ import (
 
 // Find: NewViews
 func (a *App) GetAbisPage(first, pageSize int) types.AbiSummary {
-	copy := a.abis
-	first = base.Max(0, base.Min(first, len(copy.Files)-1))
-	last := base.Min(len(copy.Files), first+pageSize)
-	copy.Files = copy.Files[first:last]
+	first = base.Max(0, base.Min(first, len(a.abis.Files)-1))
+	last := base.Min(len(a.abis.Files), first+pageSize)
+	copy := a.abis.ShallowCopy()
+	copy.Files = a.abis.Files[first:last]
 	return copy
 }
 

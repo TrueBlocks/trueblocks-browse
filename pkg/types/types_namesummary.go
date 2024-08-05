@@ -58,3 +58,17 @@ func (s *NameSummary) Summarize() {
 		}
 	}
 }
+
+func (s *NameSummary) ShallowCopy() NameSummary {
+	return NameSummary{
+		NNames:     s.NNames,
+		NContracts: s.NContracts,
+		NErc20s:    s.NErc20s,
+		NErc721s:   s.NErc721s,
+		NCustom:    s.NCustom,
+		NRegular:   s.NRegular,
+		NPrefund:   s.NPrefund,
+		NBaddress:  s.NBaddress,
+		NDeleted:   s.NDeleted,
+	}
+}

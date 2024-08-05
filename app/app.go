@@ -29,7 +29,7 @@ type App struct {
 	apiKeys     map[string]string
 	monitorsMap map[base.Address]types.MonitorEx
 	monitors    []types.MonitorEx
-	namesSum    types.NameSummary
+	names       types.NameSummary
 	abis        types.AbiSummary
 	index       types.IndexSummary
 	manifest    types.ManifestSummary
@@ -59,7 +59,7 @@ func NewApp() *App {
 		Ipfs:       servers.NewIpfs("ipfs", 1000),
 		Documents:  make([]types.Document, 10),
 	}
-	a.namesSum.NamesMap = make(map[base.Address]coreTypes.Name)
+	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
 	a.CurrentDoc = &a.Documents[0]
 	a.CurrentDoc.Filename = "Untitled"
 

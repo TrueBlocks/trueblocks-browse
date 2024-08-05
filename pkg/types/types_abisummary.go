@@ -57,4 +57,10 @@ func (s *AbiSummary) Summarize() {
 	}
 }
 
+func (s *AbiSummary) ShallowCopy() AbiSummary {
+	return AbiSummary{
+		Abi: s.Abi,
+	}
+}
+
 // EXISTING_CODE

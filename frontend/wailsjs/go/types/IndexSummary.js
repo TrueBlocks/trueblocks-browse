@@ -10,6 +10,10 @@ export function Model(arg1, arg2, arg3, arg4) {
   return window['go']['types']['IndexSummary']['Model'](arg1, arg2, arg3, arg4);
 }
 
+export function ShallowCopy() {
+  return window['go']['types']['IndexSummary']['ShallowCopy']();
+}
+
 export function String() {
   return window['go']['types']['IndexSummary']['String']();
 }

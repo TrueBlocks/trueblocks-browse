@@ -69,4 +69,10 @@ func (s *IndexSummary) Summarize() {
 	}
 }
 
+func (s *IndexSummary) ShallowCopy() IndexSummary {
+	return IndexSummary{
+		ChunkStats: s.ChunkStats,
+	}
+}
+
 // EXISTING_CODE

@@ -1,6 +1,7 @@
 package types
 
 import (
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -28,4 +29,19 @@ func NewManifestEx(manifest coreTypes.Manifest) ManifestSummary {
 	}
 
 	return ret
+}
+
+func (s *ManifestSummary) ShallowCopy() ManifestSummary {
+	return ManifestSummary{
+		Manifest: types.Manifest{
+			Chain:         s.Manifest.Chain,
+			Specification: s.Manifest.Specification,
+			Version:       s.Manifest.Version,
+		},
+		LatestUpdate: s.LatestUpdate,
+		NBlooms:      s.NBlooms,
+		BloomsSize:   s.BloomsSize,
+		NIndexes:     s.NIndexes,
+		IndexSize:    s.IndexSize,
+	}
 }

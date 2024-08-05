@@ -11,10 +11,10 @@ import (
 
 // Find: NewViews
 func (a *App) GetIndex(first, pageSize int) types.IndexSummary {
-	copy := a.index
-	first = base.Max(0, base.Min(first, len(copy.Chunks)-1))
-	last := base.Min(len(copy.Chunks), first+pageSize)
-	copy.Chunks = copy.Chunks[first:last]
+	first = base.Max(0, base.Min(first, len(a.index.Chunks)-1))
+	last := base.Min(len(a.index.Chunks), first+pageSize)
+	copy := a.index.ShallowCopy()
+	copy.Chunks = a.index.Chunks[first:last]
 	return copy
 }
 
