@@ -1,28 +1,27 @@
-import React, { useState, useEffect } from "react";
-import classes from "@/App.module.css";
-import { GetNamesPage, GetNamesCnt } from "@gocode/app/App";
+import React, { useState, useEffect, ReactNode } from "react";
 import { types } from "@gocode/models";
-import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
-import { Stack, Title } from "@mantine/core";
-import { nameColumns } from "./NameTable";
-import { DataTable } from "@components";
-import { View, ViewStatus } from "@components";
+import { Title, Stack } from "@mantine/core";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { nameColumns, NameInstance, createNameForm } from ".";
+import classes from "@/App.module.css";
+import { View, ViewStatus, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
+import { GetNamesPage, GetNamesCnt } from "@gocode/app/App";
 
-// TODO: This should use tabs per type (Regular, Custom, Prefund, Baddress, etc.)
-// TODO: Or, at least have tags for each type.
 export function NamesView() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.Name[]>([]);
-  const { curItem, perPage } = useKeyboardPaging<types.Name>(items, count);
+  const [items, setItems] = useState<types.NameSummary>({} as types.NameSummary);
+  const [names, setNames] = useState<types.Name[]>([]);
+  const { curItem, perPage } = useKeyboardPaging<types.Name>(names, count, [], 15);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetNamesPage(currentItem, itemsPerPage).then((newItems) => {
-          setItems(newItems);
+        GetNamesPage(currentItem, itemsPerPage).then((names: types.NameSummary) => {
+          setItems(names);
+          setNames(names.names || []);
         });
       };
       fetch(curItem, perPage);
@@ -40,7 +39,7 @@ export function NamesView() {
   }, []);
 
   const table = useReactTable({
-    data: items,
+    data: items.names || [], // Pass the names array or an empty array if undefined
     columns: nameColumns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -48,10 +47,8 @@ export function NamesView() {
   return (
     <View>
       <Stack className={classes.mainContent}>
-        <Title order={3}>
-          Names: showing record {curItem + 1}-{curItem + 1 + perPage - 1} of {count}
-        </Title>
-        <DataTable<types.Name> table={table} loading={loading} />
+        <Title order={3}>Names View</Title>
+        <FormTable data={items} definition={createNameForm(table)} />;{" "}
       </Stack>
       <ViewStatus />
     </View>

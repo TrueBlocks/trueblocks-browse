@@ -683,6 +683,56 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class NameSummary {
+	    nNames: number;
+	    nContracts: number;
+	    nErc20s: number;
+	    nErc721s: number;
+	    nCustom: number;
+	    nRegular: number;
+	    nPrefund: number;
+	    nBaddress: number;
+	    nDeleted: number;
+	    namesMap: {[key: string]: Name};
+	    names: Name[];
+	
+	    static createFrom(source: any = {}) {
+	        return new NameSummary(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.nNames = source["nNames"];
+	        this.nContracts = source["nContracts"];
+	        this.nErc20s = source["nErc20s"];
+	        this.nErc721s = source["nErc721s"];
+	        this.nCustom = source["nCustom"];
+	        this.nRegular = source["nRegular"];
+	        this.nPrefund = source["nPrefund"];
+	        this.nBaddress = source["nBaddress"];
+	        this.nDeleted = source["nDeleted"];
+	        this.namesMap = this.convertValues(source["namesMap"], Name, true);
+	        this.names = this.convertValues(source["names"], Name);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	
 	export class MetaData {
 	    client: number;

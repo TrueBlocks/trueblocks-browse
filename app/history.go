@@ -49,10 +49,10 @@ func (a *App) GetHistoryPage(addr string, first, pageSize int) []types.Transacti
 						continue
 					}
 					txEx := types.NewTransactionEx(tx)
-					if name, ok := a.namesMap[tx.From]; ok {
+					if name, ok := a.namesSum.NamesMap[tx.From]; ok {
 						txEx.FromName = name.Name
 					}
-					if name, ok := a.namesMap[tx.To]; ok {
+					if name, ok := a.namesSum.NamesMap[tx.To]; ok {
 						txEx.ToName = name.Name
 					}
 					m.Lock()

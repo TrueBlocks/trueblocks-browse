@@ -49,12 +49,12 @@ func main() {
 				&messages.ServerMsg{},
 				&servers.Server{},
 				&types.MonitorEx{},
-				&coreTypes.Name{},
 				&types.StatusEx{},
 				&types.TransactionEx{},
 				&types.IndexSummary{},
 				&types.ManifestSummary{},
 				&types.AbiSummary{},
+				&types.NameSummary{},
 				&coreTypes.ChunkStats{},
 			},
 			EnumBind: []interface{}{

@@ -49,7 +49,7 @@ export function GetMonitorsPage(arg1:number,arg2:number):Promise<Array<types.Mon
 
 export function GetNamesCnt():Promise<number>;
 
-export function GetNamesPage(arg1:number,arg2:number):Promise<Array<types.Name>>;
+export function GetNamesPage(arg1:number,arg2:number):Promise<types.NameSummary>;
 
 export function GetServer(arg1:string):Promise<servers.Server>;
 

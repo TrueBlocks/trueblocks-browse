@@ -3,23 +3,22 @@ package app
 import (
 	"sort"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-func (a *App) GetNamesPage(first, pageSize int) []coreTypes.Name {
-	if len(a.names) == 0 {
-		return a.names
-	}
-
-	first = base.Max(0, base.Min(first, len(a.names)-1))
-	last := base.Min(len(a.names), first+pageSize)
-	return a.names[first:last]
+func (a *App) GetNamesPage(first, pageSize int) types.NameSummary {
+	copy := a.namesSum
+	first = base.Max(0, base.Min(first, len(copy.Names)-1))
+	last := base.Min(len(copy.Names), first+pageSize)
+	copy.Names = copy.Names[first:last]
+	return copy
 }
 
 func (a *App) GetNamesCnt() int {
-	return len(a.names)
+	return len(a.namesSum.Names)
 }
 
 func (a *App) loadNames() error {
@@ -30,33 +29,34 @@ func (a *App) loadNames() error {
 		} else {
 			for addr, name := range namesMap {
 				name.Parts |= t
-				if vv, ok := a.namesMap[addr]; ok {
+				if vv, ok := a.namesSum.NamesMap[addr]; ok {
 					name = vv
 					name.Parts |= t
 				}
-				a.namesMap[addr] = name
+				a.namesSum.NamesMap[addr] = name
 			}
 		}
 	}
-	for _, name := range a.namesMap {
-		a.names = append(a.names, name)
+	for _, name := range a.namesSum.NamesMap {
+		a.namesSum.Names = append(a.namesSum.Names, name)
 	}
-	sort.Slice(a.names, func(i, j int) bool {
-		ti := a.names[i].Parts
+	sort.Slice(a.namesSum.Names, func(i, j int) bool {
+		ti := a.namesSum.Names[i].Parts
 		if ti == coreTypes.Regular {
 			ti = 7
 		}
-		tj := a.names[j].Parts
+		tj := a.namesSum.Names[j].Parts
 		if tj == coreTypes.Regular {
 			tj = 7
 		}
 		if ti == tj {
-			if a.names[i].Tags == a.names[j].Tags {
-				return a.names[i].Address.Hex() < a.names[j].Address.Hex()
+			if a.namesSum.Names[i].Tags == a.namesSum.Names[j].Tags {
+				return a.namesSum.Names[i].Address.Hex() < a.namesSum.Names[j].Address.Hex()
 			}
-			return a.names[i].Tags < a.names[j].Tags
+			return a.namesSum.Names[i].Tags < a.namesSum.Names[j].Tags
 		}
 		return ti < tj
 	})
+	a.namesSum.Summarize()
 	return nil
 }

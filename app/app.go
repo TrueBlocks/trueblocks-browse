@@ -27,10 +27,9 @@ type App struct {
 	ctx         context.Context
 	session     config.Session
 	apiKeys     map[string]string
-	namesMap    map[base.Address]coreTypes.Name
-	names       []coreTypes.Name
 	monitorsMap map[base.Address]types.MonitorEx
 	monitors    []types.MonitorEx
+	namesSum    types.NameSummary
 	abis        types.AbiSummary
 	index       types.IndexSummary
 	manifest    types.ManifestSummary
@@ -50,7 +49,6 @@ type App struct {
 func NewApp() *App {
 	a := App{
 		apiKeys:     make(map[string]string),
-		namesMap:    make(map[base.Address]coreTypes.Name),
 		monitorsMap: make(map[base.Address]types.MonitorEx),
 		renderCtxs:  make(map[base.Address][]*output.RenderCtx),
 		ensMap:      make(map[string]base.Address),
@@ -61,6 +59,7 @@ func NewApp() *App {
 		Ipfs:       servers.NewIpfs("ipfs", 1000),
 		Documents:  make([]types.Document, 10),
 	}
+	a.namesSum.NamesMap = make(map[base.Address]coreTypes.Name)
 	a.CurrentDoc = &a.Documents[0]
 	a.CurrentDoc.Filename = "Untitled"
 
