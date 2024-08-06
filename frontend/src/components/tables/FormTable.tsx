@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
-import { Fieldset, Container, Grid, Flex, Text, Divider, Stack } from "@mantine/core";
+import { Fieldset, Container, Grid, Flex, Text, Stack } from "@mantine/core";
 import { Formatter, knownTypes } from "@components";
+import classes from "./FormTable.module.css";
 
 type FieldDefinition<T> = {
   label: string;
@@ -31,7 +32,7 @@ export function FormTable<T>({ data, definition }: FormTableProps<T>) {
         {definition.map((group, index) => (
           <Grid.Col span={group.colSpan || 12} key={index}>
             <Stack>
-              <Fieldset legend={group.title} bg={"white"} style={{ marginBottom: "1rem" }}>
+              <Fieldset legend={group.title} bg="white" className={classes.fieldSet}>
                 {group.fields?.map((field, fieldIndex) => {
                   var value = <>{data[field.accessor]}</>;
                   if (field.type !== undefined) {

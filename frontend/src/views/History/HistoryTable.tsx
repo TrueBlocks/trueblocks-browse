@@ -11,7 +11,7 @@ export const transactionColumns: CustomColumnDef<types.Transaction, any>[] = [
     id: "blockTx",
     header: () => "Id",
     cell: (info) => info.getValue(),
-    meta: { className: "small cell" },
+    meta: { className: "medium cell" },
   }),
   transactionColumnHelper.accessor("from", {
     header: () => "From",

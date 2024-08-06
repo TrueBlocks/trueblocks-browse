@@ -57,9 +57,9 @@ func NewApp() *App {
 		// Initialize maps here
 		historyMap:        make(map[base.Address]types.SummaryTransaction),
 		balanceMap:        make(map[base.Address]string),
-		ScraperController: daemons.NewScraper("scraper", 1000), // TODO: Should be seven seconds
+		ScraperController: daemons.NewScraper("scraper", 7000), // TODO: Should be seven seconds
 		FileController:    daemons.NewFileDaemon("filedaemon", 8080, 1000),
-		FreshenController: daemons.NewFreshen("freshen", 1000),
+		FreshenController: daemons.NewFreshen("freshen", 7000),
 		IpfsController:    daemons.NewIpfs("ipfs", 1000),
 		Documents:         make([]types.Document, 10),
 	}
@@ -113,6 +113,9 @@ func (a *App) Startup(ctx context.Context) {
 		logger.Panic(err)
 	}
 	if err := a.loadIndex(); err != nil {
+		logger.Panic(err)
+	}
+	if err := a.loadConfig(); err != nil {
 		logger.Panic(err)
 	}
 }

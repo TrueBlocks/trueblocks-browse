@@ -47,7 +47,7 @@ function App() {
       footer={{ height: "2rem" }}
     >
       <AppShell.Header>
-        <Header title="ApplicationTitle" />
+        <Header title="TrueBlocks Browse" />
       </AppShell.Header>
       <AppShell.Navbar>
         <Navbar />
