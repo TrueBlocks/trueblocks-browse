@@ -1,4 +1,3 @@
-export * from "./EditableSelect";
 export * from "./Formatter";
 export * from "./popovers";
 export * from "./tables";

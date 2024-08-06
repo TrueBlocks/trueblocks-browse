@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "wouter";
-import classes from "@/App.module.css";
-import { GetHistory, GetHistoryCnt } from "@gocode/app/App";
 import { types } from "@gocode/models";
+import { Title, Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { Stack, Title } from "@mantine/core";
-import { txColumns } from "./HistoryTable";
-import { EditableSelect, View, ViewStatus, ViewTitle } from "@components";
+import { transactionColumns, createTransactionForm } from ".";
+import classes from "@/App.module.css";
+import { View, ViewStatus, ViewTitle, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { DataTable } from "@components";
+import { GetHistory, GetHistoryCnt } from "@gocode/app/App";
 
 export function HistoryView() {
   const [address, setAddress] = useState<string>("trueblocks.eth");
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.TransactionEx[]>([]);
-  const { curItem, perPage } = useKeyboardPaging<types.TransactionEx>(items, count, [address]);
+  const [items, setItems] = useState<types.SummaryTransaction>({} as types.SummaryTransaction);
+  const [txs, setTxs] = useState<types.Transaction[]>([]);
+  const { curItem, perPage } = useKeyboardPaging<types.Transaction>(txs, count, [address], 15);
 
   const params = useParams();
   const addr = params.address;
@@ -24,8 +24,9 @@ export function HistoryView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (addr: string, currentItem: number, itemsPerPage: number) => {
-        GetHistory(addr, currentItem, itemsPerPage).then((newItems) => {
-          setItems(newItems);
+        GetHistory(addr, currentItem, itemsPerPage).then((txSummary: types.SummaryTransaction) => {
+          setItems(txSummary);
+          setTxs(txSummary.transactions || []);
         });
       };
       fetch(address, curItem, perPage);
@@ -38,6 +39,7 @@ export function HistoryView() {
       const fetch = async (addr: string) => {
         const cnt = await GetHistoryCnt(addr);
         setCount(cnt);
+        setLoaded(true);
       };
       fetch(address);
       setLoaded(true);
@@ -55,8 +57,8 @@ export function HistoryView() {
   }, [addr]);
 
   const table = useReactTable({
-    data: items,
-    columns: txColumns,
+    data: items.transactions || [], // Pass the chunks array or an empty array if undefined
+    columns: transactionColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -64,13 +66,7 @@ export function HistoryView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <EditableSelect
-          value={address}
-          onChange={(value) => setAddress(value)}
-          label="Select or enter an address or ENS name"
-          placeholder="Enter or select an address"
-        />
-        <DataTable<types.TransactionEx> table={table} loading={loading} />
+        <FormTable data={items} definition={createTransactionForm(table)} />;{" "}
       </Stack>
       <ViewStatus />
     </View>

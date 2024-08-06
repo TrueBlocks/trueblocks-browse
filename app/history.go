@@ -14,11 +14,11 @@ import (
 
 var historyMutex sync.Mutex
 
-func (a *App) GetHistory(addr string, first, pageSize int) []types.TransactionEx {
+func (a *App) GetHistory(addr string, first, pageSize int) types.SummaryTransaction {
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
-		return []types.TransactionEx{}
+		return types.SummaryTransaction{}
 	}
 
 	historyMutex.Lock()
@@ -45,19 +45,23 @@ func (a *App) GetHistory(addr string, first, pageSize int) []types.TransactionEx
 					if !ok {
 						continue
 					}
-					txEx := types.NewTransactionEx(tx)
-					if name, ok := a.names.NamesMap[tx.From]; ok {
-						txEx.FromName = name.Name
-					}
-					if name, ok := a.names.NamesMap[tx.To]; ok {
-						txEx.ToName = name.Name
-					}
+					txEx := tx //types.NewTransactionEx(tx)
+					// if name, ok := a.names.NamesMap[tx.From]; ok {
+					// 	txEx.FromName = name.Name
+					// }
+					// if name, ok := a.names.NamesMap[tx.To]; ok {
+					// 	txEx.ToName = name.Name
+					// }
 					historyMutex.Lock()
-					a.historyMap[address] = append(a.historyMap[address], *txEx)
-					if len(a.historyMap[address])%pageSize == 0 {
+					summary := a.historyMap[address]
+					summary.Address = address
+					summary.Name = a.names.NamesMap[address].Name
+					summary.Transactions = append(summary.Transactions, *txEx)
+					a.historyMap[address] = summary
+					if len(a.historyMap[address].Transactions)%pageSize == 0 {
 						messages.Send(a.ctx,
 							messages.Progress,
-							messages.NewProgressMsg(int64(len(a.historyMap[address])), nItems, address),
+							messages.NewProgressMsg(int64(len(a.historyMap[address].Transactions)), nItems, address),
 						)
 					}
 					historyMutex.Unlock()
@@ -74,20 +78,26 @@ func (a *App) GetHistory(addr string, first, pageSize int) []types.TransactionEx
 		_, _, err := opts.Export()
 		if err != nil {
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
-			return []types.TransactionEx{}
+			return types.SummaryTransaction{}
 		}
 
 		messages.Send(a.ctx,
 			messages.Completed,
-			messages.NewProgressMsg(int64(len(a.historyMap[address])), int64(len(a.historyMap[address])), address),
+			messages.NewProgressMsg(int64(len(a.historyMap[address].Transactions)), int64(len(a.historyMap[address].Transactions)), address),
 		)
 	}
 
 	historyMutex.Lock()
 	defer historyMutex.Unlock()
-	first = base.Max(0, base.Min(first, len(a.historyMap[address])-1))
-	last := base.Min(len(a.historyMap[address]), first+pageSize)
-	return a.historyMap[address][first:last]
+
+	first = base.Max(0, base.Min(first, len(a.historyMap[address].Transactions)-1))
+	last := base.Min(len(a.historyMap[address].Transactions), first+pageSize)
+	sum := a.historyMap[address]
+	sum.Summarize()
+	copy := sum.ShallowCopy()
+	copy.Balance = a.getBalance(address)
+	copy.Transactions = a.historyMap[address].Transactions[first:last]
+	return copy
 }
 
 func (a *App) GetHistoryCnt(addr string) int64 {
@@ -139,5 +149,35 @@ func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
 			ret := base.HexToAddress(addr)
 			return ret, ret != base.ZeroAddr
 		}
+	}
+}
+
+var bMutex sync.Mutex
+
+func (a *App) getBalance(address base.Address) string {
+	bMutex.Lock()
+	_, exists := a.balanceMap[address]
+	bMutex.Unlock()
+
+	if exists {
+		bMutex.Lock()
+		defer bMutex.Unlock()
+		return a.balanceMap[address]
+	}
+
+	opts := sdk.StateOptions{
+		Addrs: []string{address.Hex()},
+		Globals: sdk.Globals{
+			Ether: true,
+			Cache: true,
+		},
+	}
+	if balances, _, err := opts.State(); err != nil {
+		return "0"
+	} else {
+		bMutex.Lock()
+		defer bMutex.Unlock()
+		a.balanceMap[address] = balances[0].Balance.ToEtherStr(18)
+		return a.balanceMap[address]
 	}
 }

@@ -12,6 +12,18 @@ export namespace base {
 	        this.address = source["address"];
 	    }
 	}
+	export class Hash {
+	    hash: number[];
+	
+	    static createFrom(source: any = {}) {
+	        return new Hash(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.hash = source["hash"];
+	    }
+	}
 
 }
 
@@ -413,6 +425,54 @@ export namespace types {
 	    }
 	}
 	
+	export class Log {
+	    address: base.Address;
+	    articulatedLog?: Function;
+	    blockHash: base.Hash;
+	    blockNumber: number;
+	    data?: string;
+	    logIndex: number;
+	    timestamp?: number;
+	    topics?: base.Hash[];
+	    transactionHash: base.Hash;
+	    transactionIndex: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Log(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.articulatedLog = this.convertValues(source["articulatedLog"], Function);
+	        this.blockHash = this.convertValues(source["blockHash"], base.Hash);
+	        this.blockNumber = source["blockNumber"];
+	        this.data = source["data"];
+	        this.logIndex = source["logIndex"];
+	        this.timestamp = source["timestamp"];
+	        this.topics = this.convertValues(source["topics"], base.Hash);
+	        this.transactionHash = this.convertValues(source["transactionHash"], base.Hash);
+	        this.transactionIndex = source["transactionIndex"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	
 	export class Monitor {
 	    address: base.Address;
@@ -512,6 +572,100 @@ export namespace types {
 		}
 	}
 	
+	export class Receipt {
+	    blockHash?: base.Hash;
+	    blockNumber: number;
+	    contractAddress?: base.Address;
+	    cumulativeGasUsed?: number;
+	    effectiveGasPrice?: number;
+	    from?: base.Address;
+	    gasUsed: number;
+	    isError?: boolean;
+	    logs: Log[];
+	    status: number;
+	    to?: base.Address;
+	    transactionHash: base.Hash;
+	    transactionIndex: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Receipt(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.blockHash = this.convertValues(source["blockHash"], base.Hash);
+	        this.blockNumber = source["blockNumber"];
+	        this.contractAddress = this.convertValues(source["contractAddress"], base.Address);
+	        this.cumulativeGasUsed = source["cumulativeGasUsed"];
+	        this.effectiveGasPrice = source["effectiveGasPrice"];
+	        this.from = this.convertValues(source["from"], base.Address);
+	        this.gasUsed = source["gasUsed"];
+	        this.isError = source["isError"];
+	        this.logs = this.convertValues(source["logs"], Log);
+	        this.status = source["status"];
+	        this.to = this.convertValues(source["to"], base.Address);
+	        this.transactionHash = this.convertValues(source["transactionHash"], base.Hash);
+	        this.transactionIndex = source["transactionIndex"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class Rewards {
+	    // Go type: base
+	    block: any;
+	    // Go type: base
+	    nephew: any;
+	    // Go type: base
+	    txFee: any;
+	    // Go type: base
+	    uncle: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new Rewards(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.block = this.convertValues(source["block"], null);
+	        this.nephew = this.convertValues(source["nephew"], null);
+	        this.txFee = this.convertValues(source["txFee"], null);
+	        this.uncle = this.convertValues(source["uncle"], null);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class SummaryAbis {
 	    address: base.Address;
 	    fileSize: number;
@@ -944,41 +1098,93 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class TransactionEx {
-	    blockNumber: number;
-	    date: string;
-	    ether: string;
-	    from: base.Address;
-	    fromName: string;
-	    function: string;
-	    hasToken: boolean;
-	    isError: boolean;
-	    logCount: number;
-	    to: base.Address;
-	    toName: string;
-	    transactionIndex: number;
+	export class Statement {
+	    accountedFor: base.Address;
 	    // Go type: base
-	    wei: any;
+	    amountIn?: any;
+	    // Go type: base
+	    amountOut?: any;
+	    assetAddr: base.Address;
+	    assetSymbol: string;
+	    // Go type: base
+	    begBal: any;
+	    blockNumber: number;
+	    // Go type: base
+	    correctingIn?: any;
+	    // Go type: base
+	    correctingOut?: any;
+	    correctingReason?: string;
+	    decimals: number;
+	    // Go type: base
+	    endBal: any;
+	    // Go type: base
+	    gasOut?: any;
+	    // Go type: base
+	    internalIn?: any;
+	    // Go type: base
+	    internalOut?: any;
+	    logIndex: number;
+	    // Go type: base
+	    minerBaseRewardIn?: any;
+	    // Go type: base
+	    minerNephewRewardIn?: any;
+	    // Go type: base
+	    minerTxFeeIn?: any;
+	    // Go type: base
+	    minerUncleRewardIn?: any;
+	    // Go type: base
+	    prefundIn?: any;
+	    // Go type: base
+	    prevBal?: any;
+	    priceSource: string;
+	    recipient: base.Address;
+	    // Go type: base
+	    selfDestructIn?: any;
+	    // Go type: base
+	    selfDestructOut?: any;
+	    sender: base.Address;
+	    spotPrice: number;
+	    timestamp: number;
+	    transactionHash: base.Hash;
+	    transactionIndex: number;
 	
 	    static createFrom(source: any = {}) {
-	        return new TransactionEx(source);
+	        return new Statement(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.accountedFor = this.convertValues(source["accountedFor"], base.Address);
+	        this.amountIn = this.convertValues(source["amountIn"], null);
+	        this.amountOut = this.convertValues(source["amountOut"], null);
+	        this.assetAddr = this.convertValues(source["assetAddr"], base.Address);
+	        this.assetSymbol = source["assetSymbol"];
+	        this.begBal = this.convertValues(source["begBal"], null);
 	        this.blockNumber = source["blockNumber"];
-	        this.date = source["date"];
-	        this.ether = source["ether"];
-	        this.from = this.convertValues(source["from"], base.Address);
-	        this.fromName = source["fromName"];
-	        this.function = source["function"];
-	        this.hasToken = source["hasToken"];
-	        this.isError = source["isError"];
-	        this.logCount = source["logCount"];
-	        this.to = this.convertValues(source["to"], base.Address);
-	        this.toName = source["toName"];
+	        this.correctingIn = this.convertValues(source["correctingIn"], null);
+	        this.correctingOut = this.convertValues(source["correctingOut"], null);
+	        this.correctingReason = source["correctingReason"];
+	        this.decimals = source["decimals"];
+	        this.endBal = this.convertValues(source["endBal"], null);
+	        this.gasOut = this.convertValues(source["gasOut"], null);
+	        this.internalIn = this.convertValues(source["internalIn"], null);
+	        this.internalOut = this.convertValues(source["internalOut"], null);
+	        this.logIndex = source["logIndex"];
+	        this.minerBaseRewardIn = this.convertValues(source["minerBaseRewardIn"], null);
+	        this.minerNephewRewardIn = this.convertValues(source["minerNephewRewardIn"], null);
+	        this.minerTxFeeIn = this.convertValues(source["minerTxFeeIn"], null);
+	        this.minerUncleRewardIn = this.convertValues(source["minerUncleRewardIn"], null);
+	        this.prefundIn = this.convertValues(source["prefundIn"], null);
+	        this.prevBal = this.convertValues(source["prevBal"], null);
+	        this.priceSource = source["priceSource"];
+	        this.recipient = this.convertValues(source["recipient"], base.Address);
+	        this.selfDestructIn = this.convertValues(source["selfDestructIn"], null);
+	        this.selfDestructOut = this.convertValues(source["selfDestructOut"], null);
+	        this.sender = this.convertValues(source["sender"], base.Address);
+	        this.spotPrice = source["spotPrice"];
+	        this.timestamp = source["timestamp"];
+	        this.transactionHash = this.convertValues(source["transactionHash"], base.Hash);
 	        this.transactionIndex = source["transactionIndex"];
-	        this.wei = this.convertValues(source["wei"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -999,6 +1205,272 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class TraceResult {
+	    address?: base.Address;
+	    code?: string;
+	    gasUsed?: number;
+	    output?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new TraceResult(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.code = source["code"];
+	        this.gasUsed = source["gasUsed"];
+	        this.output = source["output"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class TraceAction {
+	    address?: base.Address;
+	    author?: base.Address;
+	    // Go type: base
+	    balance?: any;
+	    callType: string;
+	    from: base.Address;
+	    gas: number;
+	    init?: string;
+	    input?: string;
+	    refundAddress?: base.Address;
+	    rewardType?: string;
+	    selfDestructed?: base.Address;
+	    to: base.Address;
+	    // Go type: base
+	    value: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new TraceAction(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.author = this.convertValues(source["author"], base.Address);
+	        this.balance = this.convertValues(source["balance"], null);
+	        this.callType = source["callType"];
+	        this.from = this.convertValues(source["from"], base.Address);
+	        this.gas = source["gas"];
+	        this.init = source["init"];
+	        this.input = source["input"];
+	        this.refundAddress = this.convertValues(source["refundAddress"], base.Address);
+	        this.rewardType = source["rewardType"];
+	        this.selfDestructed = this.convertValues(source["selfDestructed"], base.Address);
+	        this.to = this.convertValues(source["to"], base.Address);
+	        this.value = this.convertValues(source["value"], null);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class Trace {
+	    action?: TraceAction;
+	    articulatedTrace?: Function;
+	    blockHash: base.Hash;
+	    blockNumber: number;
+	    error?: string;
+	    result?: TraceResult;
+	    subtraces: number;
+	    timestamp: number;
+	    traceAddress: number[];
+	    transactionHash: base.Hash;
+	    transactionIndex: number;
+	    type?: string;
+	    transactionPosition?: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Trace(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.action = this.convertValues(source["action"], TraceAction);
+	        this.articulatedTrace = this.convertValues(source["articulatedTrace"], Function);
+	        this.blockHash = this.convertValues(source["blockHash"], base.Hash);
+	        this.blockNumber = source["blockNumber"];
+	        this.error = source["error"];
+	        this.result = this.convertValues(source["result"], TraceResult);
+	        this.subtraces = source["subtraces"];
+	        this.timestamp = source["timestamp"];
+	        this.traceAddress = source["traceAddress"];
+	        this.transactionHash = this.convertValues(source["transactionHash"], base.Hash);
+	        this.transactionIndex = source["transactionIndex"];
+	        this.type = source["type"];
+	        this.transactionPosition = source["transactionPosition"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class Transaction {
+	    articulatedTx?: Function;
+	    blockHash: base.Hash;
+	    blockNumber: number;
+	    from: base.Address;
+	    gas: number;
+	    gasPrice: number;
+	    gasUsed: number;
+	    hasToken: boolean;
+	    hash: base.Hash;
+	    input: string;
+	    isError: boolean;
+	    maxFeePerGas: number;
+	    maxPriorityFeePerGas: number;
+	    nonce: number;
+	    receipt?: Receipt;
+	    timestamp: number;
+	    to: base.Address;
+	    traces: Trace[];
+	    transactionIndex: number;
+	    type: string;
+	    // Go type: base
+	    value: any;
+	    statements?: Statement[];
+	
+	    static createFrom(source: any = {}) {
+	        return new Transaction(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.articulatedTx = this.convertValues(source["articulatedTx"], Function);
+	        this.blockHash = this.convertValues(source["blockHash"], base.Hash);
+	        this.blockNumber = source["blockNumber"];
+	        this.from = this.convertValues(source["from"], base.Address);
+	        this.gas = source["gas"];
+	        this.gasPrice = source["gasPrice"];
+	        this.gasUsed = source["gasUsed"];
+	        this.hasToken = source["hasToken"];
+	        this.hash = this.convertValues(source["hash"], base.Hash);
+	        this.input = source["input"];
+	        this.isError = source["isError"];
+	        this.maxFeePerGas = source["maxFeePerGas"];
+	        this.maxPriorityFeePerGas = source["maxPriorityFeePerGas"];
+	        this.nonce = source["nonce"];
+	        this.receipt = this.convertValues(source["receipt"], Receipt);
+	        this.timestamp = source["timestamp"];
+	        this.to = this.convertValues(source["to"], base.Address);
+	        this.traces = this.convertValues(source["traces"], Trace);
+	        this.transactionIndex = source["transactionIndex"];
+	        this.type = source["type"];
+	        this.value = this.convertValues(source["value"], null);
+	        this.statements = this.convertValues(source["statements"], Statement);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class SummaryTransaction {
+	    address: base.Address;
+	    name: string;
+	    balance: string;
+	    nEvents: number;
+	    nTokens: number;
+	    nErrors: number;
+	    nTransactions: number;
+	    transactions: Transaction[];
+	
+	    static createFrom(source: any = {}) {
+	        return new SummaryTransaction(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.name = source["name"];
+	        this.balance = source["balance"];
+	        this.nEvents = source["nEvents"];
+	        this.nTokens = source["nTokens"];
+	        this.nErrors = source["nErrors"];
+	        this.nTransactions = source["nTransactions"];
+	        this.transactions = this.convertValues(source["transactions"], Transaction);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
+	
+	
 
 }
 
