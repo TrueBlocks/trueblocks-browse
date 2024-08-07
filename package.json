@@ -4,5 +4,9 @@
     },
     "name": "trueblocks-miniDapp",
     "version": "1.0.0",
-    "license": "GPL-3.0"
+    "license": "GPL-3.0",
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^8.0.1",
+        "@typescript-eslint/parser": "^8.0.1"
+    }
 }
