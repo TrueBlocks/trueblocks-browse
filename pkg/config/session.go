@@ -9,23 +9,31 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
+type Daemons struct {
+	Freshen bool `json:"freshen"`
+	Scraper bool `json:"scraper"`
+	Ipfs    bool `json:"ipfs"`
+}
+
 // Session stores ephemeral things such as last window position, last view, and recent file
 type Session struct {
-	X           int    `json:"x"`
-	Y           int    `json:"y"`
-	Width       int    `json:"width"`
-	Height      int    `json:"height"`
-	Title       string `json:"title"`
-	LastRoute   string `json:"lastRoute"`
-	LastTab     string `json:"lastTab"`
-	LastAddress string `json:"lastAddress"`
-	LastHelp    string `json:"lastHelp"`
+	X           int     `json:"x"`
+	Y           int     `json:"y"`
+	Width       int     `json:"width"`
+	Height      int     `json:"height"`
+	Title       string  `json:"title"`
+	LastRoute   string  `json:"lastRoute"`
+	LastTab     string  `json:"lastTab"`
+	LastAddress string  `json:"lastAddress"`
+	LastHelp    string  `json:"lastHelp"`
+	Daemons     Daemons `json:"daemons"`
 }
 
 var defaultSession = Session{
 	Width:  1024,
 	Height: 768,
 	Title:  "Browse by TrueBlocks",
+	Daemons: Daemons{},
 }
 
 func NewSession() Session {

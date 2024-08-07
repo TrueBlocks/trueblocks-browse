@@ -29,6 +29,22 @@ export namespace base {
 
 export namespace config {
 	
+	export class Daemons {
+	    freshen: boolean;
+	    scraper: boolean;
+	    ipfs: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Daemons(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.freshen = source["freshen"];
+	        this.scraper = source["scraper"];
+	        this.ipfs = source["ipfs"];
+	    }
+	}
 	export class Session {
 	    x: number;
 	    y: number;
@@ -39,6 +55,7 @@ export namespace config {
 	    lastTab: string;
 	    lastAddress: string;
 	    lastHelp: string;
+	    daemons: Daemons;
 	
 	    static createFrom(source: any = {}) {
 	        return new Session(source);
@@ -55,7 +72,26 @@ export namespace config {
 	        this.lastTab = source["lastTab"];
 	        this.lastAddress = source["lastAddress"];
 	        this.lastHelp = source["lastHelp"];
+	        this.daemons = this.convertValues(source["daemons"], Daemons);
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 
 }
@@ -676,6 +712,7 @@ export namespace types {
 	    nFunctions: number;
 	    name: string;
 	    path: string;
+	    nAbis: number;
 	    largestFile: string;
 	    mostFunctions: string;
 	    mostEvents: string;
@@ -696,6 +733,7 @@ export namespace types {
 	        this.nFunctions = source["nFunctions"];
 	        this.name = source["name"];
 	        this.path = source["path"];
+	        this.nAbis = source["nAbis"];
 	        this.largestFile = source["largestFile"];
 	        this.mostFunctions = source["mostFunctions"];
 	        this.mostEvents = source["mostEvents"];

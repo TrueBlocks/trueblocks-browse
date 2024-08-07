@@ -78,6 +78,10 @@ export function GetLast(arg1) {
   return window['go']['app']['App']['GetLast'](arg1);
 }
 
+export function GetLastDaemon(arg1) {
+  return window['go']['app']['App']['GetLastDaemon'](arg1);
+}
+
 export function GetManifest(arg1, arg2) {
   return window['go']['app']['App']['GetManifest'](arg1, arg2);
 }
@@ -128,6 +132,10 @@ export function RegisterCtx(arg1) {
 
 export function SetLast(arg1, arg2) {
   return window['go']['app']['App']['SetLast'](arg1, arg2);
+}
+
+export function SetLastDaemon(arg1, arg2) {
+  return window['go']['app']['App']['SetLastDaemon'](arg1, arg2);
 }
 
 export function StateToString(arg1) {

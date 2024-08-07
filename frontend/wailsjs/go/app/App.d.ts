@@ -46,6 +46,8 @@ export function GetIndexCnt():Promise<number>;
 
 export function GetLast(arg1:string):Promise<string>;
 
+export function GetLastDaemon(arg1:string):Promise<boolean>;
+
 export function GetManifest(arg1:number,arg2:number):Promise<types.SummaryManifest>;
 
 export function GetManifestCnt():Promise<number>;
@@ -71,6 +73,8 @@ export function HelpToggle(arg1:menu.CallbackData):Promise<void>;
 export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
 
 export function SetLast(arg1:string,arg2:string):Promise<void>;
+
+export function SetLastDaemon(arg1:string,arg2:boolean):Promise<void>;
 
 export function StateToString(arg1:string):Promise<string>;
 
