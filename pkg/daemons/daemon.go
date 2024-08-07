@@ -63,7 +63,6 @@ func (s *Daemon) Notify(msg ...string) {
 		float64(time.Since(s.Started))/float64(time.Second),
 		msg,
 	)
-	// fmt.Printf("%sNotify: %s%s\n", color, msgOut, colors.Off)
 	messages.Send(s.MsgCtx, messages.Daemon, messages.NewDaemonMsg(
 		strings.ToLower(s.Name),
 		msgOut,

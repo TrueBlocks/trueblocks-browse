@@ -68,8 +68,6 @@ func main() {
 			},
 		}
 
-		go a.StartDaemons()
-
 		if err := wails.Run(&opts); err != nil {
 			fmt.Println("Error:", err.Error())
 		}

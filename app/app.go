@@ -45,7 +45,6 @@ type App struct {
 
 	// Add your application's data here
 	ScraperController *daemons.DaemonScraper
-	FileController    *daemons.DaemonFile
 	FreshenController *daemons.DaemonFreshen
 	IpfsController    *daemons.DaemonIpfs
 }
@@ -60,7 +59,6 @@ func NewApp() *App {
 		historyMap:        make(map[base.Address]types.SummaryTransaction),
 		balanceMap:        make(map[base.Address]string),
 		ScraperController: daemons.NewScraper("scraper", 7000), // TODO: Should be seven seconds
-		FileController:    daemons.NewFileDaemon("filedaemon", 8080, 1000),
 		FreshenController: daemons.NewFreshen("freshen", 7000),
 		IpfsController:    daemons.NewIpfs("ipfs", 1000),
 		Documents:         make([]types.Document, 10),
@@ -92,10 +90,12 @@ func (a App) String() string {
 // Find: NewViews
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
+
 	a.ScraperController.MsgCtx = ctx
-	a.FileController.MsgCtx = ctx
 	a.FreshenController.MsgCtx = ctx
 	a.IpfsController.MsgCtx = ctx
+	go a.startDaemons()
+
 	if startupError != nil {
 		a.Fatal(startupError.Error())
 	}
@@ -104,31 +104,37 @@ func (a *App) Startup(ctx context.Context) {
 		logger.Panic(err)
 	}
 	// fmt.Println(colors.BrightYellow, "Startup time names:", time.Since(now), colors.Off)
+
 	// now = time.Now()
 	if err := a.loadMonitors(); err != nil {
 		logger.Panic(err)
 	}
 	// fmt.Println(colors.BrightYellow, "Startup time monitors:", time.Since(now), colors.Off)
+
 	// now = time.Now()
 	if err := a.loadStatus(); err != nil {
 		logger.Panic(err)
 	}
 	// fmt.Println(colors.BrightYellow, "Startup time status:", time.Since(now), colors.Off)
+
 	// now = time.Now()
 	if err := a.loadManifest(); err != nil {
 		logger.Panic(err)
 	}
 	// fmt.Println(colors.BrightYellow, "Startup time manifest:", time.Since(now), colors.Off)
+
 	// now = time.Now()
 	if err := a.loadAbis(); err != nil {
 		logger.Panic(err)
 	}
 	// fmt.Println(colors.BrightYellow, "Startup time abis:", time.Since(now), colors.Off)
+
 	// now = time.Now()
 	if err := a.loadIndex(); err != nil {
 		logger.Panic(err)
 	}
 	// fmt.Println(colors.BrightYellow, "Startup time index:", time.Since(now), colors.Off)
+
 	// now = time.Now()
 	if err := a.loadConfig(); err != nil {
 		logger.Panic(err)

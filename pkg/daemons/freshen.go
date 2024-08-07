@@ -24,10 +24,9 @@ func NewFreshen(name string, sleep time.Duration) *DaemonFreshen {
 
 func (s *DaemonFreshen) Run() {
 	logger.Info("Starting fresheners...")
-
 	for {
 		if s.Daemon.State == Running {
-			s.Daemon.Notify()
+			s.Daemon.Notify("Freshen")
 		}
 		time.Sleep(s.Sleep * time.Millisecond)
 	}

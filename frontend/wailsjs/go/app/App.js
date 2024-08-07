@@ -122,10 +122,6 @@ export function SetLast(arg1, arg2) {
   return window['go']['app']['App']['SetLast'](arg1, arg2);
 }
 
-export function StartDaemons() {
-  return window['go']['app']['App']['StartDaemons']();
-}
-
 export function StateToString(arg1) {
   return window['go']['app']['App']['StateToString'](arg1);
 }

@@ -11,7 +11,6 @@ var empty = {} as daemons.Daemon;
 
 export function DaemonsView() {
   const [scraper, setScraper] = useState<daemons.Daemon>(empty);
-  const [fileDaemon, setFileDaemon] = useState<daemons.Daemon>(empty);
   const [freshen, setFreshen] = useState<daemons.Daemon>(empty);
   const [ipfs, setIpfs] = useState<daemons.Daemon>(empty);
   const [logMessages, setLogMessages] = useState<messages.DaemonMsg[]>([]);
@@ -24,7 +23,6 @@ export function DaemonsView() {
 
   useEffect(() => {
     updateDaemon("scraper", setScraper);
-    updateDaemon("filedaemon", setFileDaemon);
     updateDaemon("freshen", setFreshen);
     updateDaemon("ipfs", setIpfs);
   }, []);
@@ -33,9 +31,6 @@ export function DaemonsView() {
     switch (sMsg.name) {
       case "scraper":
         updateDaemon("scraper", setScraper);
-        break;
-      case "filedaemon":
-        updateDaemon("filedaemon", setFileDaemon);
         break;
       case "freshen":
         updateDaemon("freshen", setFreshen);
@@ -72,7 +67,6 @@ export function DaemonsView() {
             <DaemonCard daemon={scraper} toggle={toggleDaemon} />
             <DaemonCard daemon={freshen} toggle={toggleDaemon} />
             <DaemonCard daemon={ipfs} toggle={toggleDaemon} />
-            <DaemonCard daemon={fileDaemon} toggle={toggleDaemon} />
           </SimpleGrid>
         </Fieldset>
         <Fieldset legend={"Logs"} bg={"white"}>

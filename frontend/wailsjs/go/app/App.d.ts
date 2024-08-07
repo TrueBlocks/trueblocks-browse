@@ -67,8 +67,6 @@ export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
 
 export function SetLast(arg1:string,arg2:string):Promise<void>;
 
-export function StartDaemons():Promise<void>;
-
 export function StateToString(arg1:string):Promise<string>;
 
 export function String():Promise<string>;
