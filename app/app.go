@@ -69,7 +69,8 @@ func NewApp() *App {
 	_ = a.session.Load()
 
 	if err := godotenv.Load(); err != nil {
-		a.Fatal("Error loading .env file")
+		// a.Fatal("Error loading .env file")
+		logger.Info("Could not load .env file") // we don't need it for this app
 		// } else if a.apiKeys["openAi"] = os.Getenv("OPENAI_API_KEY"); a.apiKeys["openAi"] == "" {
 		// 	log.Fatal("No OPENAI_API_KEY key found")
 	}
@@ -95,9 +96,9 @@ func (a *App) Freshen() {
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
-	a.FreshenController = daemons.NewFreshen(a, "freshen", 7000, false)
-	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, false)
-	a.IpfsController = daemons.NewIpfs(a, "ipfs", 1000, false)
+	a.FreshenController = daemons.NewFreshen(a, "freshen", 1000, a.GetLastDaemon("daemon-freshen"))
+	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetLastDaemon("daemon-scraper"))
+	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.GetLastDaemon("daemon-ipfs"))
 	go a.startDaemons()
 
 	if startupError != nil {
