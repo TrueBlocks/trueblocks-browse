@@ -30,7 +30,7 @@ export function createIndexForm(table: any): GroupDefinition<IndexInstance>[] {
     {
       title: "Chunks",
       fields: [],
-      customComponents: [
+      components: [
         {
           component: <DataTable<types.ChunkStats> table={table} loading={false} />,
         },

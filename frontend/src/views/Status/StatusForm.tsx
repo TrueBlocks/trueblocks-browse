@@ -48,7 +48,7 @@ export function createStatusForm(table: any): GroupDefinition<StatusInstance>[] 
     {
       title: "Caches",
       fields: [],
-      customComponents: [
+      components: [
         {
           component: <DataTable<types.CacheItem> table={table} loading={false} />,
         },

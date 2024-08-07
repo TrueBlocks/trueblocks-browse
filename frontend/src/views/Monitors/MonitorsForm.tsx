@@ -26,7 +26,7 @@ export function createMonitorForm(table: any): GroupDefinition<MonitorInstance>[
     {
       title: "Files",
       fields: [],
-      customComponents: [
+      components: [
         {
           component: <DataTable<types.Monitor> table={table} loading={false} />,
         },

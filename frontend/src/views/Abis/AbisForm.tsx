@@ -27,7 +27,7 @@ export function createAbiForm(table: any): GroupDefinition<AbiInstance>[] {
     {
       title: "Files",
       fields: [],
-      customComponents: [
+      components: [
         {
           component: <DataTable<types.ChunkRecord> table={table} loading={false} />,
         },

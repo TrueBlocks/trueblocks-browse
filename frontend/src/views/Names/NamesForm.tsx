@@ -30,7 +30,7 @@ export function createNameForm(table: any): GroupDefinition<NameInstance>[] {
     {
       title: "Names",
       fields: [],
-      customComponents: [
+      components: [
         {
           component: <DataTable<types.Name> table={table} loading={false} />,
         },

@@ -28,7 +28,7 @@ export function createTransactionForm(table: any): GroupDefinition<TransactionIn
     {
       title: "Files",
       fields: [],
-      customComponents: [
+      components: [
         {
           component: <DataTable<types.Transaction> table={table} loading={false} />,
         },

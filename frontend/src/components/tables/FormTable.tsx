@@ -17,7 +17,7 @@ export type GroupDefinition<T> = {
   title: string;
   fields?: FieldDefinition<T>[]; // Optional to allow custom components without fields
   colSpan?: number;
-  customComponents?: CustomComponentDefinition[]; // New field for custom components
+  components?: CustomComponentDefinition[]; // New field for custom components
 };
 
 type FormTableProps<T> = {
@@ -45,7 +45,7 @@ export function FormTable<T>({ data, definition }: FormTableProps<T>) {
                     </Flex>
                   );
                 })}
-                {group.customComponents?.map((customComponent, componentIndex) => (
+                {group.components?.map((customComponent, componentIndex) => (
                   <div key={componentIndex}>{customComponent.component}</div>
                 ))}
               </Fieldset>

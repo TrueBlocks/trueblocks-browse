@@ -29,7 +29,7 @@ export function createManifestForm(table: any): GroupDefinition<ManifestInstance
     {
       title: "Chunks",
       fields: [],
-      customComponents: [
+      components: [
         {
           component: <DataTable<types.ChunkRecord> table={table} loading={false} />,
         },

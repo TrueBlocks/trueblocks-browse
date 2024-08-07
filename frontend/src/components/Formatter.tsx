@@ -1,20 +1,23 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
+import { AddrToName } from "@gocode/app/App";
+import { base } from "@gocode/models";
+import { useDateTime } from "@hooks";
 
 export type knownTypes = "text" | "float" | "int" | "bytes" | "date" | "boolean" | "check" | "address" | "hash";
 
 export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, value }) => {
-  const formatInteger = (number: number): React.ReactNode => {
+  const formatInteger = (number: number): ReactNode => {
     const n = new Intl.NumberFormat(navigator.language).format(number);
     return <>{n}</>;
   };
 
-  const formatFloat = (number: number): React.ReactNode => {
+  const formatFloat = (number: number): ReactNode => {
     const n = number?.toFixed(4);
     return <>{n}</>;
   };
 
-  const formatBytes = (bytes: number): React.ReactNode => {
+  const formatBytes = (bytes: number): ReactNode => {
     if (bytes === 0) return <>0 Bytes</>;
     const k = 1024;
     const sizes = ["bytes", "Kb", "Mb", "Gb", "Tb", "Pb"];
@@ -34,6 +37,10 @@ export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, va
       return formatBytes(v);
     case "int":
       return formatInteger(v);
+    case "address":
+      return <FormatAddressComponent address={value} />;
+    case "date":
+      return useDateTime(v);
     case "boolean":
       var fill = value ? "green" : "red";
       return <IconCircleCheck size={20} color="white" fill={fill} />;
@@ -42,4 +49,22 @@ export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, va
     default:
       return value;
   }
+};
+
+const FormatAddressComponent = ({ address }: { address: base.Address }) => {
+  const [formattedAddress, setFormattedAddress] = useState<ReactNode>(<></>);
+  useEffect(() => {
+    const formatAddress = async () => {
+      const name = await AddrToName(address);
+      if (name && name.length > 0) {
+        setFormattedAddress(<>{name}</>);
+      } else {
+        setFormattedAddress(<>{address}</>);
+      }
+    };
+
+    formatAddress();
+  }, [address]);
+
+  return <>{formattedAddress}</>;
 };

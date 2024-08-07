@@ -2,7 +2,7 @@ package app
 
 import (
 	"fmt"
-	"strings"
+	"sort"
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
@@ -80,6 +80,14 @@ func (a *App) GetHistory(addr string, first, pageSize int) types.SummaryTransact
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
 			return types.SummaryTransaction{}
 		}
+		historyMutex.Lock()
+		sort.Slice(a.historyMap[address].Transactions, func(i, j int) bool {
+			if a.historyMap[address].Transactions[i].BlockNumber == a.historyMap[address].Transactions[j].BlockNumber {
+				return a.historyMap[address].Transactions[i].TransactionIndex > a.historyMap[address].Transactions[j].TransactionIndex
+			}
+			return a.historyMap[address].Transactions[i].BlockNumber > a.historyMap[address].Transactions[j].BlockNumber
+		})
+		historyMutex.Unlock()
 
 		messages.Send(a.ctx,
 			messages.Completed,
@@ -118,38 +126,6 @@ func (a *App) GetHistoryCnt(addr string) int64 {
 		return 0
 	}
 	return appearances[0].NRecords
-}
-
-var e sync.Mutex
-
-func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
-	if !strings.HasSuffix(addr, ".eth") {
-		ret := base.HexToAddress(addr)
-		return ret, ret != base.ZeroAddr
-	}
-
-	e.Lock()
-	defer e.Unlock()
-	if ensAddr, exists := a.ensMap[addr]; exists {
-		return ensAddr, true
-	}
-
-	// Try to get an ENS or return the same input
-	opts := sdk.NamesOptions{
-		Terms: []string{addr},
-	}
-	if names, _, err := opts.Names(); err != nil {
-		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err))
-		return base.ZeroAddr, false
-	} else {
-		if len(names) > 0 {
-			a.ensMap[addr] = names[0].Address
-			return names[0].Address, true
-		} else {
-			ret := base.HexToAddress(addr)
-			return ret, ret != base.ZeroAddr
-		}
-	}
 }
 
 var bMutex sync.Mutex

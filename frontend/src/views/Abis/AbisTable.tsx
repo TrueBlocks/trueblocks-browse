@@ -9,7 +9,10 @@ const abiColumnHelper = createColumnHelper<types.Abi>();
 export const abiColumns: CustomColumnDef<types.Abi, any>[] = [
   abiColumnHelper.accessor("name", {
     header: () => "Name",
-    cell: (info) => info.renderValue(),
+    cell: (info) => {
+      const { address, name } = info.row.original;
+      return address && address.toString() !== "0x0" ? <>{address}</> : name;
+    },
     meta: { className: "wide cell" },
   }),
   abiColumnHelper.accessor("lastModDate", {

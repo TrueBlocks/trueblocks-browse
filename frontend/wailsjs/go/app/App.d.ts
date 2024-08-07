@@ -7,6 +7,8 @@ import {daemons} from '../models';
 import {config} from '../models';
 import {output} from '../models';
 
+export function AddrToName(arg1:base.Address):Promise<string>;
+
 export function Cancel(arg1:base.Address):Promise<number|boolean>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
