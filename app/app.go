@@ -56,12 +56,9 @@ func NewApp() *App {
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 		ensMap:     make(map[string]base.Address),
 		// Initialize maps here
-		historyMap:        make(map[base.Address]types.SummaryTransaction),
-		balanceMap:        make(map[base.Address]string),
-		ScraperController: daemons.NewScraper("scraper", 7000), // TODO: Should be seven seconds
-		FreshenController: daemons.NewFreshen("freshen", 7000),
-		IpfsController:    daemons.NewIpfs("ipfs", 1000),
-		Documents:         make([]types.Document, 10),
+		historyMap: make(map[base.Address]types.SummaryTransaction),
+		balanceMap: make(map[base.Address]string),
+		Documents:  make([]types.Document, 10),
 	}
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
@@ -87,13 +84,17 @@ func (a App) String() string {
 	return string(bytes)
 }
 
+func (a *App) GetContext() context.Context {
+	return a.ctx
+}
+
 // Find: NewViews
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
-	a.ScraperController.MsgCtx = ctx
-	a.FreshenController.MsgCtx = ctx
-	a.IpfsController.MsgCtx = ctx
+	a.FreshenController = daemons.NewFreshen(a, "freshen", 7000)
+	a.ScraperController = daemons.NewScraper(a, "scraper", 7000)
+	a.IpfsController = daemons.NewIpfs(a, "ipfs", 1000)
 	go a.startDaemons()
 
 	if startupError != nil {

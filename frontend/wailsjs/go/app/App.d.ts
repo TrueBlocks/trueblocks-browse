@@ -3,6 +3,7 @@
 import {base} from '../models';
 import {menu} from '../models';
 import {types} from '../models';
+import {context} from '../models';
 import {daemons} from '../models';
 import {config} from '../models';
 import {output} from '../models';
@@ -26,6 +27,8 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 export function GetAbis(arg1:number,arg2:number):Promise<types.SummaryAbis>;
 
 export function GetAbisCnt():Promise<number>;
+
+export function GetContext():Promise<context.Context>;
 
 export function GetDaemon(arg1:string):Promise<daemons.Daemon>;
 

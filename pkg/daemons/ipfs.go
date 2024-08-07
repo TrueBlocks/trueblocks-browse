@@ -3,6 +3,7 @@ package daemons
 import (
 	"time"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
@@ -10,14 +11,15 @@ type DaemonIpfs struct {
 	Daemon `json:"daemon"`
 }
 
-func NewIpfs(name string, sleep time.Duration) *DaemonIpfs {
+func NewIpfs(messengerIn messages.Messenger, name string, sleep time.Duration) *DaemonIpfs {
 	return &DaemonIpfs{
 		Daemon: Daemon{
-			Name:    name,
-			Sleep:   sleep,
-			Color:   "red",
-			State:   Paused,
-			Started: time.Now(),
+			Name:      name,
+			Sleep:     sleep,
+			Color:     "red",
+			State:     Paused,
+			Started:   time.Now(),
+			messenger: messengerIn,
 		},
 	}
 }

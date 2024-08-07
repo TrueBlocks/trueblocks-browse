@@ -42,6 +42,10 @@ export function GetAbisCnt() {
   return window['go']['app']['App']['GetAbisCnt']();
 }
 
+export function GetContext() {
+  return window['go']['app']['App']['GetContext']();
+}
+
 export function GetDaemon(arg1) {
   return window['go']['app']['App']['GetDaemon'](arg1);
 }

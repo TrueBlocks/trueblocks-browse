@@ -7,7 +7,10 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 // Glob import for markdown files as raw content
-const helpFiles = import.meta.glob("/src/assets/help/*.md", { as: "raw" }) as Record<string, () => Promise<string>>;
+const helpFiles = import.meta.glob("/src/assets/help/*.md", { query: "?raw", import: "default" }) as Record<
+  string,
+  () => Promise<string>
+>;
 
 export function Help(): JSX.Element {
   const [location] = useLocation();

@@ -3,6 +3,7 @@ package daemons
 import (
 	"time"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
@@ -10,14 +11,15 @@ type DaemonFreshen struct {
 	Daemon `json:"daemon"`
 }
 
-func NewFreshen(name string, sleep time.Duration) *DaemonFreshen {
+func NewFreshen(messengerIn messages.Messenger, name string, sleep time.Duration) *DaemonFreshen {
 	return &DaemonFreshen{
 		Daemon: Daemon{
-			Name:    name,
-			Sleep:   sleep,
-			Color:   "blue",
-			State:   Paused,
-			Started: time.Now(),
+			Name:      name,
+			Sleep:     sleep,
+			Color:     "blue",
+			State:     Paused,
+			Started:   time.Now(),
+			messenger: messengerIn,
 		},
 	}
 }

@@ -1,7 +1,6 @@
 package daemons
 
 import (
-	"context"
 	"fmt"
 	"strings"
 	"time"
@@ -11,13 +10,13 @@ import (
 )
 
 type Daemon struct {
-	Name    string          `json:"name"`
-	Sleep   time.Duration   `json:"sleep"`
-	Color   string          `json:"color"`
-	Started time.Time       `json:"started"`
-	Runs    int             `json:"runs"`
-	State   State           `json:"state"`
-	MsgCtx  context.Context `json:"-"`
+	Name      string        `json:"name"`
+	Sleep     time.Duration `json:"sleep"`
+	Color     string        `json:"color"`
+	Started   time.Time     `json:"started"`
+	Runs      int           `json:"runs"`
+	State     State         `json:"state"`
+	messenger messages.Messenger
 }
 
 func (s *Daemon) Run() error {
@@ -63,7 +62,7 @@ func (s *Daemon) Notify(msg ...string) {
 		float64(time.Since(s.Started))/float64(time.Second),
 		msg,
 	)
-	messages.Send(s.MsgCtx, messages.Daemon, messages.NewDaemonMsg(
+	messages.Send(s.messenger.GetContext(), messages.Daemon, messages.NewDaemonMsg(
 		strings.ToLower(s.Name),
 		msgOut,
 		color,
