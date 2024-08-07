@@ -38,5 +38,6 @@ func (s *DaemonFreshen) Run() {
 }
 
 func (s *DaemonFreshen) Tick(msg ...string) int {
+	s.freshener.Freshen()
 	return s.Daemon.Tick(msg...)
 }

@@ -11,7 +11,7 @@ import (
 )
 
 type Freshener interface {
-	// DaemonMsg(msg *DaemonMsg)
+	Freshen()
 	GetContext() context.Context
 }
 
