@@ -10,6 +10,7 @@ export function createAbiForm(table: any): GroupDefinition<AbiInstance>[] {
       title: "Abi Data",
       colSpan: 6,
       fields: [
+        { label: "nAbis", type: "int", accessor: "nAbis" },
         { label: "nFunctions", type: "int", accessor: "nFunctions" },
         { label: "nEvents", type: "int", accessor: "nEvents" },
         { label: "fileSize", type: "bytes", accessor: "fileSize" },

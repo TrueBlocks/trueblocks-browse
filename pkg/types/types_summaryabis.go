@@ -20,6 +20,7 @@ import (
 
 type SummaryAbis struct {
 	coreTypes.Abi
+	NAbis         int64           `json:"nAbis"`
 	LargestFile   string          `json:"largestFile"`
 	MostFunctions string          `json:"mostFunctions"`
 	MostEvents    string          `json:"mostEvents"`
@@ -57,6 +58,7 @@ func (s *SummaryAbis) FinishUnmarshal() {
 
 // EXISTING_CODE
 func (s *SummaryAbis) Summarize() {
+	s.NAbis = int64(len(s.Files))
 	for _, file := range s.Files {
 		s.NFunctions += file.NFunctions
 		s.NEvents += file.NEvents
@@ -73,6 +75,7 @@ func (s *SummaryAbis) Summarize() {
 func (s *SummaryAbis) ShallowCopy() SummaryAbis {
 	return SummaryAbis{
 		Abi:           s.Abi,
+		NAbis:         s.NAbis,
 		LargestFile:   s.LargestFile,
 		MostFunctions: s.MostFunctions,
 		MostEvents:    s.MostEvents,
