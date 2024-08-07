@@ -13,7 +13,7 @@ type DaemonScraper struct {
 	Daemon `json:"daemon"`
 }
 
-func NewScraper(messengerIn Freshener, name string, sleep time.Duration) *DaemonScraper {
+func NewScraper(freshener Freshener, name string, sleep time.Duration) *DaemonScraper {
 	return &DaemonScraper{
 		Daemon: Daemon{
 			Name:      name,
@@ -21,7 +21,7 @@ func NewScraper(messengerIn Freshener, name string, sleep time.Duration) *Daemon
 			Color:     "yellow",
 			State:     Paused,
 			Started:   time.Now(),
-			freshener: messengerIn,
+			freshener: freshener,
 		},
 	}
 }

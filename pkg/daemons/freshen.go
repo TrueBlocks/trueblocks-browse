@@ -10,7 +10,7 @@ type DaemonFreshen struct {
 	Daemon `json:"daemon"`
 }
 
-func NewFreshen(messengerIn Freshener, name string, sleep time.Duration) *DaemonFreshen {
+func NewFreshen(freshener Freshener, name string, sleep time.Duration) *DaemonFreshen {
 	return &DaemonFreshen{
 		Daemon: Daemon{
 			Name:      name,
@@ -18,7 +18,7 @@ func NewFreshen(messengerIn Freshener, name string, sleep time.Duration) *Daemon
 			Color:     "blue",
 			State:     Paused,
 			Started:   time.Now(),
-			freshener: messengerIn,
+			freshener: freshener,
 		},
 	}
 }

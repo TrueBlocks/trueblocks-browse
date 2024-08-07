@@ -62,6 +62,11 @@ export namespace config {
 
 export namespace daemons {
 	
+	export enum State {
+	    STOPPED = 0,
+	    RUNNING = 1,
+	    PAUSED = 2,
+	}
 	export enum Type {
 	    FILEDAEMON = 0,
 	    SCRAPER = 1,
@@ -69,18 +74,13 @@ export namespace daemons {
 	    API = 3,
 	    IPFS = 4,
 	}
-	export enum State {
-	    STOPPED = 0,
-	    RUNNING = 1,
-	    PAUSED = 2,
-	}
 	export class Daemon {
 	    name: string;
 	    sleep: number;
 	    color: string;
 	    // Go type: time
 	    started: any;
-	    runs: number;
+	    ticks: number;
 	    state: State;
 	
 	    static createFrom(source: any = {}) {
@@ -93,7 +93,7 @@ export namespace daemons {
 	        this.sleep = source["sleep"];
 	        this.color = source["color"];
 	        this.started = this.convertValues(source["started"], null);
-	        this.runs = source["runs"];
+	        this.ticks = source["ticks"];
 	        this.state = source["state"];
 	    }
 	

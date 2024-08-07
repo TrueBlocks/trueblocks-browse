@@ -5,7 +5,7 @@ import { daemons } from "@gocode/models";
 
 export const DaemonCard = ({ daemon, toggle }: { daemon: daemons.Daemon; toggle: (name: string) => void }) => {
   const [stateStr, setStateStr] = useState<string>("");
-  const { name, sleep, started, color, runs, state } = daemon;
+  const { name, sleep, started, color, ticks, state } = daemon;
 
   useEffect(() => {
     StateToString(name).then((s) => {
@@ -29,7 +29,7 @@ export const DaemonCard = ({ daemon, toggle }: { daemon: daemons.Daemon; toggle:
       </Group>
       <Text size="sm">Sleep Duration: {sleep}</Text>
       <Text size="sm">Started At: {new Date(started).toLocaleString()}</Text>
-      <Text size="sm">Runs: {runs}</Text>
+      <Text size="sm">Ticks: {ticks}</Text>
     </Card>
   );
 };

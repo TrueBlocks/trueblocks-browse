@@ -20,7 +20,7 @@ type Daemon struct {
 	Sleep     time.Duration `json:"sleep"`
 	Color     string        `json:"color"`
 	Started   time.Time     `json:"started"`
-	Runs      int           `json:"runs"`
+	Ticks     int           `json:"ticks"`
 	State     State         `json:"state"`
 	freshener Freshener
 }
@@ -51,24 +51,24 @@ func (s *Daemon) Toggle() error {
 }
 
 func (s *Daemon) Tick() int {
-	s.Runs++
-	return s.Runs
+	s.Ticks++
+	return s.Ticks
 }
 
 func (s *Daemon) Notify(msg ...string) {
+	s.Tick()
 	color := colors.ColorMap[s.Color]
 	if color == "" {
 		color = colors.White
 	}
 
-	s.Tick()
 	msgOut := fmt.Sprintf("%-10.10s (% 5d-% 5.2f): %s",
 		s.Name,
-		s.Runs,
+		s.Ticks,
 		float64(time.Since(s.Started))/float64(time.Second),
 		msg,
 	)
-	messages.Send(s.messenger.GetContext(), messages.Daemon, messages.NewDaemonMsg(
+	messages.Send(s.freshener.GetContext(), messages.Daemon, messages.NewDaemonMsg(
 		strings.ToLower(s.Name),
 		msgOut,
 		color,

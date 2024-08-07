@@ -88,6 +88,9 @@ func (a *App) GetContext() context.Context {
 	return a.ctx
 }
 
+func (a *App) Freshen() {
+}
+
 // Find: NewViews
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
