@@ -38,7 +38,7 @@ export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, va
     case "int":
       return formatInteger(v);
     case "address":
-      return <FormatAddressComponent address={value} />;
+      return <FormatAddressComponent address={value as base.Address} />;
     case "date":
       return useDateTime(v);
     case "boolean":
@@ -52,19 +52,19 @@ export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, va
 };
 
 const FormatAddressComponent = ({ address }: { address: base.Address }) => {
-  const [formattedAddress, setFormattedAddress] = useState<ReactNode>(<></>);
+  const [formattedAddress, setFormattedAddress] = useState<string>("");
   useEffect(() => {
     const formatAddress = async () => {
       const name = await AddrToName(address);
       if (name && name.length > 0) {
-        setFormattedAddress(<>{name}</>);
+        setFormattedAddress(name);
       } else {
-        setFormattedAddress(<>{address}</>);
+        setFormattedAddress(address as unknown as string);
       }
     };
 
     formatAddress();
   }, [address]);
 
-  return <>{formattedAddress}</>;
+  return <Formatter type="text" value={formattedAddress} />;
 };

@@ -11,7 +11,7 @@ export const abiColumns: CustomColumnDef<types.Abi, any>[] = [
     header: () => "Name",
     cell: (info) => {
       const { address, name } = info.row.original;
-      return address && address.toString() !== "0x0" ? <>{address}</> : name;
+      return address && address.toString() !== "0x0" ? <Formatter type="address" value={address} /> : name;
     },
     meta: { className: "wide cell" },
   }),

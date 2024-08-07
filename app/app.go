@@ -25,6 +25,9 @@ var startupError error
 // Find: NewViews
 type App struct {
 	ctx        context.Context
+	Documents  []types.Document
+	CurrentDoc *types.Document
+
 	session    config.Session
 	apiKeys    map[string]string
 	ensMap     map[string]base.Address
@@ -39,13 +42,12 @@ type App struct {
 	monitors types.SummaryMonitor
 	names    types.SummaryName
 	status   types.SummaryStatus
+
 	// Add your application's data here
 	ScraperController *daemons.DaemonScraper
 	FileController    *daemons.DaemonFile
 	FreshenController *daemons.DaemonFreshen
 	IpfsController    *daemons.DaemonIpfs
-	Documents         []types.Document
-	CurrentDoc        *types.Document
 }
 
 // Find: NewViews
@@ -97,27 +99,41 @@ func (a *App) Startup(ctx context.Context) {
 	if startupError != nil {
 		a.Fatal(startupError.Error())
 	}
+	// now := time.Now()
 	if err := a.loadNames(); err != nil {
 		logger.Panic(err)
 	}
+	// fmt.Println(colors.BrightYellow, "Startup time names:", time.Since(now), colors.Off)
+	// now = time.Now()
 	if err := a.loadMonitors(); err != nil {
 		logger.Panic(err)
 	}
+	// fmt.Println(colors.BrightYellow, "Startup time monitors:", time.Since(now), colors.Off)
+	// now = time.Now()
 	if err := a.loadStatus(); err != nil {
 		logger.Panic(err)
 	}
+	// fmt.Println(colors.BrightYellow, "Startup time status:", time.Since(now), colors.Off)
+	// now = time.Now()
 	if err := a.loadManifest(); err != nil {
 		logger.Panic(err)
 	}
+	// fmt.Println(colors.BrightYellow, "Startup time manifest:", time.Since(now), colors.Off)
+	// now = time.Now()
 	if err := a.loadAbis(); err != nil {
 		logger.Panic(err)
 	}
+	// fmt.Println(colors.BrightYellow, "Startup time abis:", time.Since(now), colors.Off)
+	// now = time.Now()
 	if err := a.loadIndex(); err != nil {
 		logger.Panic(err)
 	}
+	// fmt.Println(colors.BrightYellow, "Startup time index:", time.Since(now), colors.Off)
+	// now = time.Now()
 	if err := a.loadConfig(); err != nil {
 		logger.Panic(err)
 	}
+	// fmt.Println(colors.BrightYellow, "Startup time config:", time.Since(now), colors.Off)
 }
 
 func (a *App) DomReady(ctx context.Context) {
