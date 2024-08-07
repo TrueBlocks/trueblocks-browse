@@ -4,7 +4,7 @@ import (
 	"time"
 
 	// "github.com/TrueBlocks/trueblocks-core/sdk/v3"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
@@ -13,7 +13,7 @@ type DaemonScraper struct {
 	Daemon `json:"daemon"`
 }
 
-func NewScraper(messengerIn messages.Messenger, name string, sleep time.Duration) *DaemonScraper {
+func NewScraper(messengerIn Freshener, name string, sleep time.Duration) *DaemonScraper {
 	return &DaemonScraper{
 		Daemon: Daemon{
 			Name:      name,
@@ -21,7 +21,7 @@ func NewScraper(messengerIn messages.Messenger, name string, sleep time.Duration
 			Color:     "yellow",
 			State:     Paused,
 			Started:   time.Now(),
-			messenger: messengerIn,
+			freshener: messengerIn,
 		},
 	}
 }

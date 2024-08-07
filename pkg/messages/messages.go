@@ -21,11 +21,6 @@ type MessageData interface {
 	string | ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg
 }
 
-type Messenger interface {
-	// DaemonMsg(msg *DaemonMsg)
-	GetContext() context.Context
-}
-
 var Messages = []struct {
 	Value  Message
 	TSName string

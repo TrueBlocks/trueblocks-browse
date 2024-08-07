@@ -1,6 +1,7 @@
 package daemons
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"time"
@@ -9,6 +10,11 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
 )
 
+type Freshener interface {
+	// DaemonMsg(msg *DaemonMsg)
+	GetContext() context.Context
+}
+
 type Daemon struct {
 	Name      string        `json:"name"`
 	Sleep     time.Duration `json:"sleep"`
@@ -16,7 +22,7 @@ type Daemon struct {
 	Started   time.Time     `json:"started"`
 	Runs      int           `json:"runs"`
 	State     State         `json:"state"`
-	messenger messages.Messenger
+	freshener Freshener
 }
 
 func (s *Daemon) Run() error {
