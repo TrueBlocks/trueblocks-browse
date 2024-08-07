@@ -39,28 +39,16 @@ func (s *DaemonScraper) Run() {
 				// TODO: handle error with message to front end
 				logger.Error(err)
 			}
-			notify := meta.String()
+			theMsg := meta.String()
 			if len(msg) > 0 {
-				notify += " " + msg[0].Msg
+				theMsg += " " + msg[0].Msg
 			}
-			s.Daemon.Notify(notify)
+			s.Tick(theMsg)
 		}
 		time.Sleep(s.Sleep * time.Millisecond)
 	}
 }
 
-func (s *DaemonScraper) Stop() error {
-	return s.Daemon.Stop()
-}
-
-func (s *DaemonScraper) Pause() error {
-	return s.Daemon.Pause()
-}
-
-func (s *DaemonScraper) Toggle() error {
-	return s.Daemon.Toggle()
-}
-
-func (s *DaemonScraper) Tick() int {
-	return s.Daemon.Tick()
+func (s *DaemonScraper) Tick(msg ...string) int {
+	return s.Daemon.Tick(msg...)
 }

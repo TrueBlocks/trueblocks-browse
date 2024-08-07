@@ -27,19 +27,19 @@ type Daemon struct {
 
 func (s *Daemon) Run() error {
 	s.State = Running
-	s.Notify("Run")
+	s.Tick("Run")
 	return nil
 }
 
 func (s *Daemon) Stop() error {
 	s.State = Stopped
-	s.Notify("Stopped")
+	s.Tick("Stopped")
 	return nil
 }
 
 func (s *Daemon) Pause() error {
 	s.State = Paused
-	s.Notify("Paused")
+	s.Tick("Paused")
 	return nil
 }
 
@@ -50,13 +50,8 @@ func (s *Daemon) Toggle() error {
 	return s.Run()
 }
 
-func (s *Daemon) Tick() int {
+func (s *Daemon) Tick(msg ...string) int {
 	s.Ticks++
-	return s.Ticks
-}
-
-func (s *Daemon) Notify(msg ...string) {
-	s.Tick()
 	color := colors.ColorMap[s.Color]
 	if color == "" {
 		color = colors.White
@@ -68,16 +63,19 @@ func (s *Daemon) Notify(msg ...string) {
 		float64(time.Since(s.Started))/float64(time.Second),
 		msg,
 	)
+
 	messages.Send(s.freshener.GetContext(), messages.Daemon, messages.NewDaemonMsg(
 		strings.ToLower(s.Name),
 		msgOut,
 		color,
 	))
+
+	return s.Ticks
 }
 
 type Daemoner *interface {
 	Run() error
 	Stop() error
 	Pause() error
-	Tick() int
+	Tick(msg ...string) int
 }

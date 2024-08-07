@@ -27,24 +27,12 @@ func (s *DaemonFreshen) Run() {
 	logger.Info("Starting fresheners...")
 	for {
 		if s.Daemon.State == Running {
-			s.Daemon.Notify("Freshen")
+			s.Tick("Freshen")
 		}
 		time.Sleep(s.Sleep * time.Millisecond)
 	}
 }
 
-func (s *DaemonFreshen) Stop() error {
-	return s.Daemon.Stop()
-}
-
-func (s *DaemonFreshen) Pause() error {
-	return s.Daemon.Pause()
-}
-
-func (s *DaemonFreshen) Toggle() error {
-	return s.Daemon.Toggle()
-}
-
-func (s *DaemonFreshen) Tick() int {
-	return s.Daemon.Tick()
+func (s *DaemonFreshen) Tick(msg ...string) int {
+	return s.Daemon.Tick(msg...)
 }

@@ -28,24 +28,12 @@ func (s *DaemonIpfs) Run() {
 
 	for {
 		if s.Daemon.State == Running {
-			s.Daemon.Notify()
+			s.Tick("Tick")
 		}
 		time.Sleep(s.Sleep * time.Millisecond)
 	}
 }
 
-func (s *DaemonIpfs) Stop() error {
-	return s.Daemon.Stop()
-}
-
-func (s *DaemonIpfs) Pause() error {
-	return s.Daemon.Pause()
-}
-
-func (s *DaemonIpfs) Toggle() error {
-	return s.Daemon.Toggle()
-}
-
-func (s *DaemonIpfs) Tick() int {
-	return s.Daemon.Tick()
+func (s *DaemonIpfs) Tick(msg ...string) int {
+	return s.Daemon.Tick(msg...)
 }
