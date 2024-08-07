@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
@@ -31,6 +32,9 @@ func (a *App) loadStatus() error {
 		a.status.Status = statusArray[0]
 		// TODO: This is a hack. We need to get the version from the core
 		a.status.Version = version.LibraryVersion
+		sort.Slice(a.status.Caches, func(i, j int) bool {
+			return a.status.Caches[i].SizeInBytes > a.status.Caches[j].SizeInBytes
+		})
 		a.status.Summarize()
 	}
 	return nil
