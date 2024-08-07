@@ -10,13 +10,17 @@ type DaemonFreshen struct {
 	Daemon `json:"daemon"`
 }
 
-func NewFreshen(freshener Freshener, name string, sleep time.Duration) *DaemonFreshen {
+func NewFreshen(freshener Freshener, name string, sleep time.Duration, start bool) *DaemonFreshen {
+	state := Paused
+	if start {
+		state = Running
+	}
 	return &DaemonFreshen{
 		Daemon: Daemon{
 			Name:      name,
 			Sleep:     sleep,
 			Color:     "blue",
-			State:     Paused,
+			State:     state,
 			Started:   time.Now(),
 			freshener: freshener,
 		},

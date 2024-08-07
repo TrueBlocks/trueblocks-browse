@@ -10,13 +10,17 @@ type DaemonIpfs struct {
 	Daemon `json:"daemon"`
 }
 
-func NewIpfs(freshener Freshener, name string, sleep time.Duration) *DaemonIpfs {
+func NewIpfs(freshener Freshener, name string, sleep time.Duration, start bool) *DaemonIpfs {
+	state := Paused
+	if start {
+		state = Running
+	}
 	return &DaemonIpfs{
 		Daemon: Daemon{
 			Name:      name,
 			Sleep:     sleep,
 			Color:     "red",
-			State:     Paused,
+			State:     state,
 			Started:   time.Now(),
 			freshener: freshener,
 		},

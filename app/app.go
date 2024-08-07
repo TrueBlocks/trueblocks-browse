@@ -95,9 +95,9 @@ func (a *App) Freshen() {
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
-	a.FreshenController = daemons.NewFreshen(a, "freshen", 7000)
-	a.ScraperController = daemons.NewScraper(a, "scraper", 7000)
-	a.IpfsController = daemons.NewIpfs(a, "ipfs", 1000)
+	a.FreshenController = daemons.NewFreshen(a, "freshen", 7000, false)
+	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, false)
+	a.IpfsController = daemons.NewIpfs(a, "ipfs", 1000, false)
 	go a.startDaemons()
 
 	if startupError != nil {
