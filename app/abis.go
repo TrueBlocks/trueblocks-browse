@@ -6,6 +6,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 // Find: NewViews
@@ -32,6 +33,10 @@ func (a *App) loadAbis() error {
 	} else if (abis == nil) || (len(abis) == 0) {
 		return fmt.Errorf("no status found")
 	} else {
+		if len(a.abis.Files) == len(abis) {
+			return nil
+		}
+		a.abis = types.SummaryAbis{}
 		a.abis.Files = append(a.abis.Files, abis...)
 		a.abis.Summarize()
 	}

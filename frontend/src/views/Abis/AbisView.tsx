@@ -7,6 +7,7 @@ import classes from "@/App.module.css";
 import { View, ViewStatus, ViewTitle, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { GetAbis, GetAbisCnt } from "@gocode/app/App";
+import { EventsOn, EventsOff } from "@runtime";
 
 export function AbisView() {
   const [count, setCount] = useState<number>(0);
@@ -14,6 +15,7 @@ export function AbisView() {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [items, setItems] = useState<types.SummaryAbis>({} as types.SummaryAbis);
   const [chunks, setChunks] = useState<types.Abi[]>([]);
+  const [refresh, setRefresh] = useState<boolean>(false);
   const { curItem, perPage } = useKeyboardPaging<types.Abi>(chunks, count, [], 15);
 
   useEffect(() => {
@@ -25,8 +27,20 @@ export function AbisView() {
         });
       };
       fetch(curItem, perPage);
+      setRefresh(false);
     }
-  }, [count, curItem, perPage, loaded, loading]);
+  }, [count, curItem, perPage, loaded, loading, refresh]);
+
+  useEffect(() => {
+    const handleRefresh = () => {
+      setRefresh(true);
+    };
+
+    EventsOn("DAEMON", handleRefresh);
+    return () => {
+      EventsOff("DAEMON");
+    };
+  }, []);
 
   useEffect(() => {
     setLoading(true);

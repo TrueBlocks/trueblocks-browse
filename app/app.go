@@ -9,6 +9,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -89,7 +90,16 @@ func (a *App) GetContext() context.Context {
 	return a.ctx
 }
 
+// Freshen gets called by the daemons to instruct first the backend, then the frontend to update
 func (a *App) Freshen() {
+	a.loadAbis()
+
+	// Let the front end know it needs to update
+	messages.Send(a.ctx, messages.Daemon, messages.NewDaemonMsg(
+		a.FreshenController.Color,
+		"Freshening...",
+		a.FreshenController.Color,
+	))
 }
 
 // Find: NewViews
