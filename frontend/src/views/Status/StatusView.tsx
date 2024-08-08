@@ -7,6 +7,7 @@ import classes from "@/App.module.css";
 import { View, ViewStatus, ViewTitle, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { GetStatus, GetStatusCnt } from "@gocode/app/App";
+import { EventsOn, EventsOff } from "@runtime";
 
 export function StatusView() {
   const [count, setCount] = useState<number>(0);
@@ -14,6 +15,7 @@ export function StatusView() {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [items, setItems] = useState<types.SummaryStatus>({} as types.SummaryStatus);
   const [caches, setCaches] = useState<types.CacheItem[]>([]);
+  const [refresh, setRefresh] = useState<boolean>(false);
   const { curItem, perPage } = useKeyboardPaging<types.CacheItem>(caches, count, [], 8);
 
   useEffect(() => {
@@ -25,8 +27,20 @@ export function StatusView() {
         });
       };
       fetch(curItem, perPage);
+      setRefresh(false);
     }
-  }, [count, curItem, perPage, loaded, loading]);
+  }, [count, curItem, perPage, loaded, loading, refresh]);
+
+  useEffect(() => {
+    const handleRefresh = () => {
+      setRefresh(true);
+    };
+
+    EventsOn("DAEMON", handleRefresh);
+    return () => {
+      EventsOff("DAEMON");
+    };
+  }, []);
 
   useEffect(() => {
     setLoading(true);

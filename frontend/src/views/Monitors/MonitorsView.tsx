@@ -7,6 +7,7 @@ import classes from "@/App.module.css";
 import { View, ViewStatus, ViewTitle, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { GetMonitors, GetMonitorsCnt } from "@gocode/app/App";
+import { EventsOn, EventsOff } from "@runtime";
 
 export function MonitorsView() {
   const [count, setCount] = useState<number>(0);
@@ -14,6 +15,7 @@ export function MonitorsView() {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [items, setItems] = useState<types.SummaryMonitor>({} as types.SummaryMonitor);
   const [monitors, setMonitors] = useState<types.Monitor[]>([]);
+  const [refresh, setRefresh] = useState<boolean>(false);
   const { curItem, perPage } = useKeyboardPaging<types.Monitor>(monitors, count, [], 15);
 
   useEffect(() => {
@@ -25,8 +27,20 @@ export function MonitorsView() {
         });
       };
       fetch(curItem, perPage);
+      setRefresh(false);
     }
-  }, [count, curItem, perPage, loaded, loading]);
+  }, [count, curItem, perPage, loaded, loading, refresh]);
+
+  useEffect(() => {
+    const handleRefresh = () => {
+      setRefresh(true);
+    };
+
+    EventsOn("DAEMON", handleRefresh);
+    return () => {
+      EventsOff("DAEMON");
+    };
+  }, []);
 
   useEffect(() => {
     setLoading(true);

@@ -7,6 +7,7 @@ import classes from "@/App.module.css";
 import { View, ViewStatus, ViewTitle, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { GetManifest, GetManifestCnt } from "@gocode/app/App";
+import { EventsOn, EventsOff } from "@runtime";
 
 export function ManifestView() {
   const [count, setCount] = useState<number>(0);
@@ -14,6 +15,7 @@ export function ManifestView() {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [items, setItems] = useState<types.SummaryManifest>({} as types.SummaryManifest);
   const [chunks, setChunks] = useState<types.ChunkRecord[]>([]);
+  const [refresh, setRefresh] = useState<boolean>(false);
   const { curItem, perPage } = useKeyboardPaging<types.ChunkRecord>(chunks, count, [], 15);
 
   useEffect(() => {
@@ -25,8 +27,20 @@ export function ManifestView() {
         });
       };
       fetch(curItem, perPage);
+      setRefresh(false);
     }
-  }, [count, curItem, perPage, loaded, loading]);
+  }, [count, curItem, perPage, loaded, loading, refresh]);
+
+  useEffect(() => {
+    const handleRefresh = () => {
+      setRefresh(true);
+    };
+
+    EventsOn("DAEMON", handleRefresh);
+    return () => {
+      EventsOff("DAEMON");
+    };
+  }, []);
 
   useEffect(() => {
     setLoading(true);
