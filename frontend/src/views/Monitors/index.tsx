@@ -1,2 +1,2 @@
 export * from "./MonitorsForm";
-export * from "./MonitorTable";
+export * from "./MonitorsTable";
