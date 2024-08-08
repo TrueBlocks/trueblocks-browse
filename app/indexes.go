@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"sort"
+	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
@@ -22,16 +23,25 @@ func (a *App) GetIndexCnt() int {
 	return len(a.index.Chunks)
 }
 
-func (a *App) loadIndex() error {
-	var err error
+func (a *App) loadIndex(wg *sync.WaitGroup) error {
+	defer func() {
+		if wg != nil {
+			wg.Done()
+		}
+	}()
+
 	opts := sdk.ChunksOptions{}
-	if a.index.Chunks, _, err = opts.ChunksStats(); err != nil {
+	if chunks, _, err := opts.ChunksStats(); err != nil {
 		return err
-	} else if (a.index.Chunks == nil) || (len(a.index.Chunks) == 0) {
+	} else if (chunks == nil) || (len(chunks) == 0) {
 		return fmt.Errorf("no index chunks found")
 	} else {
-		// reverse order
+		if len(a.index.Chunks) == len(chunks) {
+			return nil
+		}
+		a.index = types.SummaryIndex{Chunks: chunks}
 		sort.Slice(a.index.Chunks, func(i, j int) bool {
+			// reverse order
 			return a.index.Chunks[i].Range > a.index.Chunks[j].Range
 		})
 		a.index.Summarize()

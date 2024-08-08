@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
@@ -21,7 +22,13 @@ func (a *App) GetAbisCnt() int {
 	return len(a.abis.Files)
 }
 
-func (a *App) loadAbis() error {
+func (a *App) loadAbis(wg *sync.WaitGroup) error {
+	defer func() {
+		if wg != nil {
+			wg.Done()
+		}
+	}()
+
 	opts := sdk.AbisOptions{
 		Globals: sdk.Globals{
 			Verbose: true,

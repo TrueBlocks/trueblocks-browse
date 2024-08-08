@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"sort"
+	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
@@ -21,13 +22,22 @@ func (a *App) GetManifestCnt() int {
 	return len(a.manifest.Chunks)
 }
 
-func (a *App) loadManifest() error {
+func (a *App) loadManifest(wg *sync.WaitGroup) error {
+	defer func() {
+		if wg != nil {
+			wg.Done()
+		}
+	}()
+
 	opts := sdk.ChunksOptions{}
 	if manifests, _, err := opts.ChunksManifest(); err != nil {
 		return err
 	} else if (manifests == nil) || (len(manifests) == 0) {
 		return fmt.Errorf("no manifest found")
 	} else {
+		if len(a.manifest.Chunks) == len(manifests[0].Chunks) {
+			return nil
+		}
 		a.manifest = types.NewSummaryManifest(manifests[0])
 		sort.Slice(a.manifest.Chunks, func(i, j int) bool {
 			return a.manifest.Chunks[i].Range > a.manifest.Chunks[j].Range

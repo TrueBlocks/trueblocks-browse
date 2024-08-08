@@ -6,12 +6,15 @@ import (
 	"errors"
 	"log"
 	"os"
+	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -90,9 +93,27 @@ func (a *App) GetContext() context.Context {
 	return a.ctx
 }
 
-// Freshen gets called by the daemons to instruct first the backend, then the frontend to update
+var freshenLock atomic.Uint32
+
+// Freshen gets called by the daemons to instruct first the backend, then the frontend to update.
+// Protect against updating too fast... Note that this routine is called as a goroutine.
 func (a *App) Freshen() {
-	a.loadAbis()
+	// Skip this update we're actively upgrading
+	if !freshenLock.CompareAndSwap(0, 1) {
+		// logger.Info(colors.Red, "Skipping update", colors.Off)
+		return
+	}
+	logger.Info(colors.Green, "Freshening...", colors.Off)
+	defer freshenLock.CompareAndSwap(1, 0)
+
+	wg := sync.WaitGroup{}
+	wg.Add(5)
+	go a.loadAbis(&wg)
+	go a.loadManifest(&wg)
+	go a.loadMonitors(&wg)
+	go a.loadNames(&wg)
+	go a.loadIndex(&wg)
+	wg.Wait()
 
 	// Let the front end know it needs to update
 	messages.Send(a.ctx, messages.Daemon, messages.NewDaemonMsg(
@@ -106,7 +127,7 @@ func (a *App) Freshen() {
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
-	a.FreshenController = daemons.NewFreshen(a, "freshen", 1000, a.GetLastDaemon("daemon-freshen"))
+	a.FreshenController = daemons.NewFreshen(a, "freshen", 2000, a.GetLastDaemon("daemon-freshen"))
 	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetLastDaemon("daemon-scraper"))
 	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.GetLastDaemon("daemon-ipfs"))
 	go a.startDaemons()
@@ -114,41 +135,14 @@ func (a *App) Startup(ctx context.Context) {
 	if startupError != nil {
 		a.Fatal(startupError.Error())
 	}
-	// now := time.Now()
-	if err := a.loadNames(); err != nil {
-		logger.Panic(err)
-	}
-	// fmt.Println(colors.BrightYellow, "Startup time names:", time.Since(now), colors.Off)
 
-	// now = time.Now()
-	if err := a.loadMonitors(); err != nil {
-		logger.Panic(err)
-	}
-	// fmt.Println(colors.BrightYellow, "Startup time monitors:", time.Since(now), colors.Off)
+	go a.Freshen()
 
 	// now = time.Now()
 	if err := a.loadStatus(); err != nil {
 		logger.Panic(err)
 	}
 	// fmt.Println(colors.BrightYellow, "Startup time status:", time.Since(now), colors.Off)
-
-	// now = time.Now()
-	if err := a.loadManifest(); err != nil {
-		logger.Panic(err)
-	}
-	// fmt.Println(colors.BrightYellow, "Startup time manifest:", time.Since(now), colors.Off)
-
-	// now = time.Now()
-	if err := a.loadAbis(); err != nil {
-		logger.Panic(err)
-	}
-	// fmt.Println(colors.BrightYellow, "Startup time abis:", time.Since(now), colors.Off)
-
-	// now = time.Now()
-	if err := a.loadIndex(); err != nil {
-		logger.Panic(err)
-	}
-	// fmt.Println(colors.BrightYellow, "Startup time index:", time.Since(now), colors.Off)
 
 	// now = time.Now()
 	if err := a.loadConfig(); err != nil {

@@ -54,5 +54,7 @@ func (s *DaemonScraper) Run() {
 }
 
 func (s *DaemonScraper) Tick(msg ...string) int {
-	return s.Daemon.Tick(msg...)
+	go s.freshener.Freshen()
+	s.Ticks++
+	return s.Ticks // we don't use the Daemon's Tick since Freshen notifies if it runs
 }

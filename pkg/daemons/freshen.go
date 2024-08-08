@@ -38,6 +38,7 @@ func (s *DaemonFreshen) Run() {
 }
 
 func (s *DaemonFreshen) Tick(msg ...string) int {
-	s.freshener.Freshen()
-	return s.Daemon.Tick(msg...)
+	go s.freshener.Freshen()
+	s.Ticks++
+	return s.Ticks // we don't use the Daemon's Tick since Freshen notifies if it runs
 }
