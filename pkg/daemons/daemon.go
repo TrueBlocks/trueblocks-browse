@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
 )
 
 type Freshener interface {
@@ -51,12 +50,6 @@ func (s *Daemon) Toggle() error {
 }
 
 func (s *Daemon) Tick(msg ...string) int {
-	s.Ticks++
-	color := colors.ColorMap[s.Color]
-	if color == "" {
-		color = colors.White
-	}
-
 	msgOut := fmt.Sprintf("%-10.10s (% 5d-% 5.2f): %s",
 		s.Name,
 		s.Ticks,
@@ -67,9 +60,9 @@ func (s *Daemon) Tick(msg ...string) int {
 	messages.Send(s.freshener.GetContext(), messages.Daemon, messages.NewDaemonMsg(
 		strings.ToLower(s.Name),
 		msgOut,
-		color,
+		s.Color,
 	))
-
+	s.Ticks++
 	return s.Ticks
 }
 
