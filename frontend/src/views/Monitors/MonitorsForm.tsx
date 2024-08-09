@@ -2,9 +2,9 @@ import React from "react";
 import { types } from "@gocode/models";
 import { GroupDefinition, DataTable } from "@components";
 
-export type MonitorInstance = InstanceType<typeof types.SummaryMonitor>;
+export type theInstance = InstanceType<typeof types.SummaryMonitor>;
 
-export function createMonitorForm(table: any): GroupDefinition<MonitorInstance>[] {
+export function createForm(table: any): GroupDefinition<theInstance>[] {
   return [
     {
       title: "Monitor Data",

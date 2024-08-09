@@ -3,35 +3,36 @@ import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter } from "@components";
 
-const cacheColumnHelper = createColumnHelper<types.CacheItem>();
+const columnHelper = createColumnHelper<types.CacheItem>();
 
-export const cacheColumns: CustomColumnDef<types.CacheItem, any>[] = [
-  cacheColumnHelper.accessor("type", {
+// Find: NewViews
+export const tableColumns: CustomColumnDef<types.CacheItem, any>[] = [
+  columnHelper.accessor("type", {
     header: () => "Type",
     cell: (info) => info.renderValue(),
     meta: { className: "medium cell" },
   }),
-  cacheColumnHelper.accessor("nFolders", {
+  columnHelper.accessor("nFolders", {
     header: () => "nFolders",
     cell: (info) => <Formatter type="int" value={info.renderValue()} />,
     meta: { className: "small cell" },
   }),
-  cacheColumnHelper.accessor("nFiles", {
+  columnHelper.accessor("nFiles", {
     header: () => "nFiles",
     cell: (info) => <Formatter type="int" value={info.renderValue()} />,
     meta: { className: "small cell" },
   }),
-  cacheColumnHelper.accessor("sizeInBytes", {
+  columnHelper.accessor("sizeInBytes", {
     header: () => "SizeInBytes",
     cell: (info) => <Formatter type="bytes" value={info.renderValue()} />,
     meta: { className: "small cell" },
   }),
-  cacheColumnHelper.accessor("lastCached", {
+  columnHelper.accessor("lastCached", {
     header: () => "LastCached",
     cell: (info) => info.renderValue(),
     meta: { className: "medium cell" },
   }),
-  cacheColumnHelper.accessor("path", {
+  columnHelper.accessor("path", {
     header: () => "Path",
     cell: (info) => info.renderValue(),
     meta: { className: "wide cell" },

@@ -2,9 +2,9 @@ import React from "react";
 import { types } from "@gocode/models";
 import { GroupDefinition, DataTable } from "@components";
 
-export type TransactionInstance = InstanceType<typeof types.SummaryTransaction>;
+export type theInstance = InstanceType<typeof types.SummaryTransaction>;
 
-export function createTransactionForm(table: any): GroupDefinition<TransactionInstance>[] {
+export function createForm(table: any): GroupDefinition<theInstance>[] {
   return [
     {
       title: "Transaction Data",

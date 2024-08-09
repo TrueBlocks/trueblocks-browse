@@ -1,8 +1,8 @@
 import React, { useState, useEffect, ReactNode } from "react";
 import { types } from "@gocode/models";
-import { Title, Stack } from "@mantine/core";
+import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { indexColumns, createIndexForm } from ".";
+import { tableColumns, createForm } from ".";
 import classes from "@/App.module.css";
 import { View, ViewStatus, ViewTitle, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
@@ -21,9 +21,9 @@ export function IndexesView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetIndex(currentItem, itemsPerPage).then((index: types.SummaryIndex) => {
-          setItems(index);
-          setChunks(index.chunks || []);
+        GetIndex(currentItem, itemsPerPage).then((items: types.SummaryIndex) => {
+          setItems(items);
+          setChunks(items.chunks || []);
         });
       };
       fetch(curItem, perPage);
@@ -54,7 +54,7 @@ export function IndexesView() {
 
   const table = useReactTable({
     data: items.chunks || [], // Pass the chunks array or an empty array if undefined
-    columns: indexColumns,
+    columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -62,7 +62,7 @@ export function IndexesView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={items} definition={createIndexForm(table)} />;{" "}
+        <FormTable data={items} definition={createForm(table)} />;{" "}
       </Stack>
       <ViewStatus />
     </View>

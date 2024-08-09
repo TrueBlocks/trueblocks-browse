@@ -2,9 +2,9 @@ import React from "react";
 import { types } from "@gocode/models";
 import { GroupDefinition, DataTable } from "@components";
 
-export type IndexInstance = InstanceType<typeof types.SummaryIndex>;
+export type theInstance = InstanceType<typeof types.SummaryIndex>;
 
-export function createIndexForm(table: any): GroupDefinition<IndexInstance>[] {
+export function createForm(table: any): GroupDefinition<theInstance>[] {
   return [
     {
       title: "Summary Data",

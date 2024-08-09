@@ -2,9 +2,9 @@ import React from "react";
 import { types } from "@gocode/models";
 import { GroupDefinition, DataTable } from "@components";
 
-export type AbiInstance = InstanceType<typeof types.SummaryAbis>;
+export type theInstance = InstanceType<typeof types.SummaryAbis>;
 
-export function createAbiForm(table: any): GroupDefinition<AbiInstance>[] {
+export function createForm(table: any): GroupDefinition<theInstance>[] {
   return [
     {
       title: "Abi Data",

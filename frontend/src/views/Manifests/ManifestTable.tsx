@@ -3,30 +3,31 @@ import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter } from "@components";
 
-const chunkColumnHelper = createColumnHelper<types.ChunkRecord>();
+const columnHelper = createColumnHelper<types.ChunkRecord>();
 
-export const chunkColumns: CustomColumnDef<types.ChunkRecord, any>[] = [
-  chunkColumnHelper.accessor("range", {
+// Find: NewViews
+export const tableColumns: CustomColumnDef<types.ChunkRecord, any>[] = [
+  columnHelper.accessor("range", {
     header: () => "Range",
     cell: (info) => info.renderValue(),
     meta: { className: "medium cell" },
   }),
-  chunkColumnHelper.accessor("bloomHash", {
+  columnHelper.accessor("bloomHash", {
     header: () => "BloomHash",
     cell: (info) => <Formatter type="hash" value={info.renderValue()} />,
     meta: { className: "wide cell" },
   }),
-  chunkColumnHelper.accessor("indexHash", {
+  columnHelper.accessor("indexHash", {
     header: () => "IndexHash",
     cell: (info) => <Formatter type="hash" value={info.renderValue()} />,
     meta: { className: "wide cell" },
   }),
-  chunkColumnHelper.accessor("bloomSize", {
+  columnHelper.accessor("bloomSize", {
     header: () => "BloomSize",
     cell: (info) => <Formatter type="bytes" value={info.renderValue()} />,
     meta: { className: "small cell" },
   }),
-  chunkColumnHelper.accessor("indexSize", {
+  columnHelper.accessor("indexSize", {
     header: () => "IndexSize",
     cell: (info) => <Formatter type="bytes" value={info.renderValue()} />,
     meta: { className: "small cell" },

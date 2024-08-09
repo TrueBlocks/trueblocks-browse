@@ -2,9 +2,9 @@ import React from "react";
 import { types } from "@gocode/models";
 import { GroupDefinition, DataTable } from "@components";
 
-export type NameInstance = InstanceType<typeof types.SummaryName>;
+export type theInstance = InstanceType<typeof types.SummaryName>;
 
-export function createNameForm(table: any): GroupDefinition<NameInstance>[] {
+export function createForm(table: any): GroupDefinition<theInstance>[] {
   return [
     {
       title: "Name Data",

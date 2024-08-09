@@ -1,8 +1,8 @@
 import React, { useState, useEffect, ReactNode } from "react";
 import { types } from "@gocode/models";
-import { Title, Stack } from "@mantine/core";
+import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { monitorColumns, createMonitorForm } from ".";
+import { tableColumns, createForm } from ".";
 import classes from "@/App.module.css";
 import { View, ViewStatus, ViewTitle, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
@@ -21,9 +21,9 @@ export function MonitorsView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetMonitors(currentItem, itemsPerPage).then((monitors: types.SummaryMonitor) => {
-          setItems(monitors);
-          setMonitors(monitors.monitors || []);
+        GetMonitors(currentItem, itemsPerPage).then((items: types.SummaryMonitor) => {
+          setItems(items);
+          setMonitors(items.monitors || []);
         });
       };
       fetch(curItem, perPage);
@@ -54,7 +54,7 @@ export function MonitorsView() {
 
   const table = useReactTable({
     data: items.monitors || [], // Pass the monitors array or an empty array if undefined
-    columns: monitorColumns,
+    columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -62,7 +62,7 @@ export function MonitorsView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={items} definition={createMonitorForm(table)} />;{" "}
+        <FormTable data={items} definition={createForm(table)} />;{" "}
       </Stack>
       <ViewStatus />
     </View>

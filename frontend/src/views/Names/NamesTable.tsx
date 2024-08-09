@@ -2,23 +2,24 @@ import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
-import { AddressNameEditor, AddressNameViewer, CustomColumnDef } from "@components";
+import { CustomColumnDef, AddressNameEditor, AddressNameViewer } from "@components";
 import { NameTags } from "./NameTag";
 
-const nameColumnHelper = createColumnHelper<types.Name>();
+const columnHelper = createColumnHelper<types.Name>();
 
-export const nameColumns: CustomColumnDef<types.Name, any>[] = [
-  nameColumnHelper.accessor("parts", {
+// Find: NewViews
+export const tableColumns: CustomColumnDef<types.Name, any>[] = [
+  columnHelper.accessor("parts", {
     header: () => "Type",
     cell: (row) => <NameTags name={row.row.original} />,
     meta: { className: "small cell" },
   }),
-  nameColumnHelper.accessor("tags", {
+  columnHelper.accessor("tags", {
     header: () => "Tags",
     cell: (info) => info.renderValue(),
     meta: { className: "medium cell" },
   }),
-  nameColumnHelper.accessor("address", {
+  columnHelper.accessor("address", {
     header: () => "Address",
     cell: (info) => info.renderValue(),
     meta: {
@@ -26,7 +27,7 @@ export const nameColumns: CustomColumnDef<types.Name, any>[] = [
       editor: (getValue: () => any) => <AddressNameViewer address={getValue} />,
     },
   }),
-  nameColumnHelper.accessor("name", {
+  columnHelper.accessor("name", {
     header: () => "Name",
     cell: (info) => info.renderValue(),
     meta: {
@@ -36,27 +37,27 @@ export const nameColumns: CustomColumnDef<types.Name, any>[] = [
       ),
     },
   }),
-  nameColumnHelper.accessor("symbol", {
+  columnHelper.accessor("symbol", {
     header: () => "Symbol",
     cell: (info) => info.renderValue(),
     meta: { className: "small cell" },
   }),
-  nameColumnHelper.accessor("decimals", {
+  columnHelper.accessor("decimals", {
     header: () => "Decimals",
     cell: (info) => (info.getValue() === 0 ? "-" : info.getValue()),
     meta: { className: "small center cell" },
   }),
-  nameColumnHelper.accessor("isContract", {
+  columnHelper.accessor("isContract", {
     header: () => "isContract",
     cell: (info) => (info.getValue() ? <IconCircleCheck size={20} color="white" fill="green" /> : ""),
     meta: { className: "small center cell" },
   }),
-  nameColumnHelper.accessor("isErc20", {
+  columnHelper.accessor("isErc20", {
     header: () => "isErc20",
     cell: (info) => (info.getValue() ? <IconCircleCheck size={20} color="white" fill="green" /> : ""),
     meta: { className: "small center cell" },
   }),
-  nameColumnHelper.accessor("isErc721", {
+  columnHelper.accessor("isErc721", {
     header: () => "isErc721",
     cell: (info) => (info.getValue() ? <IconCircleCheck size={20} color="white" fill="green" /> : ""),
     meta: { className: "small center cell" },

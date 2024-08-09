@@ -3,11 +3,11 @@ import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter } from "@components";
 
-const abiColumnHelper = createColumnHelper<types.Abi>();
+const columnHelper = createColumnHelper<types.Abi>();
 
 // Find: NewViews
-export const abiColumns: CustomColumnDef<types.Abi, any>[] = [
-  abiColumnHelper.accessor("name", {
+export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
+  columnHelper.accessor("name", {
     header: () => "Name",
     cell: (info) => {
       const { address, name } = info.row.original;
@@ -15,27 +15,27 @@ export const abiColumns: CustomColumnDef<types.Abi, any>[] = [
     },
     meta: { className: "wide cell" },
   }),
-  abiColumnHelper.accessor("lastModDate", {
+  columnHelper.accessor("lastModDate", {
     header: () => "lastModDate",
     cell: (info) => info.renderValue(),
     meta: { className: "large cell" },
   }),
-  abiColumnHelper.accessor("fileSize", {
+  columnHelper.accessor("fileSize", {
     header: () => "fileSize",
     cell: (info) => <Formatter type="bytes" value={info.renderValue()} />,
     meta: { className: "small cell" },
   }),
-  abiColumnHelper.accessor("isKnown", {
+  columnHelper.accessor("isKnown", {
     header: () => "isKnown",
     cell: (info) => <Formatter type="check" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
-  abiColumnHelper.accessor("nFunctions", {
+  columnHelper.accessor("nFunctions", {
     header: () => "nFunctions",
     cell: (info) => <Formatter type="int" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
-  abiColumnHelper.accessor("nEvents", {
+  columnHelper.accessor("nEvents", {
     header: () => "nEvents",
     cell: (info) => <Formatter type="int" value={info.renderValue()} />,
     meta: { className: "medium cell" },

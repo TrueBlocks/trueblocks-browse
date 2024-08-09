@@ -1,8 +1,8 @@
 import React, { useState, useEffect, ReactNode } from "react";
 import { types } from "@gocode/models";
-import { Title, Stack } from "@mantine/core";
+import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { chunkColumns, createManifestForm } from ".";
+import { tableColumns, createForm } from ".";
 import classes from "@/App.module.css";
 import { View, ViewStatus, ViewTitle, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
@@ -21,9 +21,9 @@ export function ManifestView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetManifest(currentItem, itemsPerPage).then((manifest: types.SummaryManifest) => {
-          setItems(manifest);
-          setChunks(manifest.chunks || []);
+        GetManifest(currentItem, itemsPerPage).then((items: types.SummaryManifest) => {
+          setItems(items);
+          setChunks(items.chunks || []);
         });
       };
       fetch(curItem, perPage);
@@ -54,7 +54,7 @@ export function ManifestView() {
 
   const table = useReactTable({
     data: items.chunks || [], // Pass the chunks array or an empty array if undefined
-    columns: chunkColumns,
+    columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -62,7 +62,7 @@ export function ManifestView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={items} definition={createManifestForm(table)} />;{" "}
+        <FormTable data={items} definition={createForm(table)} />;{" "}
       </Stack>
       <ViewStatus />
     </View>

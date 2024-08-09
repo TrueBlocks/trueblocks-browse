@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "wouter";
 import { types } from "@gocode/models";
-import { Title, Stack } from "@mantine/core";
+import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { transactionColumns, createTransactionForm } from ".";
+import { tableColumns, createForm } from ".";
 import classes from "@/App.module.css";
 import { View, ViewStatus, ViewTitle, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { GetHistory, GetHistoryCnt } from "@gocode/app/App";
+import { EventsOn, EventsOff } from "@runtime";
 
 export function HistoryView() {
   const [address, setAddress] = useState<string>("trueblocks.eth");
@@ -24,9 +25,9 @@ export function HistoryView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (addr: string, currentItem: number, itemsPerPage: number) => {
-        GetHistory(addr, currentItem, itemsPerPage).then((txSummary: types.SummaryTransaction) => {
-          setItems(txSummary);
-          setTxs(txSummary.transactions || []);
+        GetHistory(addr, currentItem, itemsPerPage).then((items: types.SummaryTransaction) => {
+          setItems(items);
+          setTxs(items.transactions || []);
         });
       };
       fetch(address, curItem, perPage);
@@ -57,8 +58,8 @@ export function HistoryView() {
   }, [addr]);
 
   const table = useReactTable({
-    data: items.transactions || [], // Pass the chunks array or an empty array if undefined
-    columns: transactionColumns,
+    data: items.transactions || [], // Pass the transactions array or an empty array if undefined
+    columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -66,7 +67,7 @@ export function HistoryView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={items} definition={createTransactionForm(table)} />;{" "}
+        <FormTable data={items} definition={createForm(table)} />;{" "}
       </Stack>
       <ViewStatus />
     </View>
