@@ -97,7 +97,7 @@ var freshenLock atomic.Uint32
 
 // Freshen gets called by the daemons to instruct first the backend, then the frontend to update.
 // Protect against updating too fast... Note that this routine is called as a goroutine.
-func (a *App) Freshen() {
+func (a *App) Freshen(which ...string) {
 	// Skip this update we're actively upgrading
 	if !freshenLock.CompareAndSwap(0, 1) {
 		// logger.Info(colors.Red, "Skipping update", colors.Off)
@@ -106,6 +106,40 @@ func (a *App) Freshen() {
 	logger.Info(colors.Green, "Freshening...", colors.Off)
 	defer freshenLock.CompareAndSwap(1, 0)
 
+	notify :=
+		func() {
+			// Let the front end know it needs to update
+			messages.Send(a.ctx, messages.Daemon, messages.NewDaemonMsg(
+				a.FreshenController.Color,
+				"Freshening...",
+				a.FreshenController.Color,
+			))
+		}
+
+	// First, we want to update the current route if we're told to
+	route := ""
+	if len(which) > 0 {
+		route = which[0]
+	}
+	switch route {
+	case "/abis":
+		a.loadAbis(nil)
+		notify()
+	case "/manifest":
+		a.loadManifest(nil)
+		notify()
+	case "/monitors":
+		a.loadMonitors(nil)
+		notify()
+	case "/names":
+		a.loadNames(nil)
+		notify()
+	case "/index":
+		a.loadIndex(nil)
+		notify()
+	}
+
+	// Now update everything in the fullness of time
 	wg := sync.WaitGroup{}
 	wg.Add(5)
 	go a.loadAbis(&wg)
@@ -114,13 +148,7 @@ func (a *App) Freshen() {
 	go a.loadNames(&wg)
 	go a.loadIndex(&wg)
 	wg.Wait()
-
-	// Let the front end know it needs to update
-	messages.Send(a.ctx, messages.Daemon, messages.NewDaemonMsg(
-		a.FreshenController.Color,
-		"Freshening...",
-		a.FreshenController.Color,
-	))
+	notify()
 }
 
 // Find: NewViews
@@ -136,7 +164,8 @@ func (a *App) Startup(ctx context.Context) {
 		a.Fatal(startupError.Error())
 	}
 
-	go a.Freshen()
+	logger.Info("Starting freshen process...")
+	a.Freshen(a.GetSession().LastRoute)
 
 	// now = time.Now()
 	if err := a.loadStatus(); err != nil {

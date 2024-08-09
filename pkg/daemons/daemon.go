@@ -10,7 +10,7 @@ import (
 )
 
 type Freshener interface {
-	Freshen()
+	Freshen(which ...string)
 	GetContext() context.Context
 }
 

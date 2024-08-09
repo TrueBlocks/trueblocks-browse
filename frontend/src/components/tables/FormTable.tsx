@@ -3,6 +3,11 @@ import { Fieldset, Container, Grid, Flex, Text, Stack } from "@mantine/core";
 import { Formatter, knownTypes } from "@components";
 import classes from "./FormTable.module.css";
 
+export type Progress = {
+  have: number;
+  want: number;
+};
+
 type FieldDefinition<T> = {
   label: string;
   accessor: keyof T;
@@ -23,9 +28,10 @@ export type GroupDefinition<T> = {
 type FormTableProps<T> = {
   data: Partial<T>;
   definition: GroupDefinition<T>[];
+  progress?: Progress;
 };
 
-export function FormTable<T>({ data, definition }: FormTableProps<T>) {
+export function FormTable<T>({ data, definition, progress }: FormTableProps<T>) {
   return (
     <Container style={{ maxWidth: "95%", paddingRight: "5%" }}>
       <Grid>

@@ -34,8 +34,8 @@ export function FileSaveAs(arg1) {
   return window['go']['app']['App']['FileSaveAs'](arg1);
 }
 
-export function Freshen() {
-  return window['go']['app']['App']['Freshen']();
+export function Freshen(arg1) {
+  return window['go']['app']['App']['Freshen'](arg1);
 }
 
 export function GetAbis(arg1, arg2) {
