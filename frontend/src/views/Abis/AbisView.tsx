@@ -62,7 +62,7 @@ export function AbisView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={items} definition={createForm(table)} />;{" "}
+        <FormTable data={items} definition={createForm(table)} />
       </Stack>
       <ViewStatus />
     </View>
