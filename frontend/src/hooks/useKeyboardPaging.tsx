@@ -1,7 +1,12 @@
 import React, { useEffect, useState, DependencyList } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 
-export function useKeyboardPaging<T>(items: T[], nItems: number, deps: DependencyList = [], perPage: number = 20) {
+type kbdPager = {
+  curItem: number;
+  perPage: number;
+};
+
+export function useKeyboardPaging(nItems: number, deps: DependencyList = [], perPage: number = 20): kbdPager {
   const [curItem, setCurItem] = useState<number>(0);
 
   useHotkeys("left", (event) => {
@@ -37,5 +42,5 @@ export function useKeyboardPaging<T>(items: T[], nItems: number, deps: Dependenc
     setCurItem(0);
   }, deps);
 
-  return { curItem, perPage };
+  return { curItem: curItem, perPage: perPage };
 }

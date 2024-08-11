@@ -1,7 +1,6 @@
 import React from "react";
 import { types } from "@gocode/models";
-import { GroupDefinition, DataTable } from "@components";
-import { Pagination } from "@mantine/core";
+import { GroupDefinition, DataTable, Paginator } from "@components";
 
 export type theInstance = InstanceType<typeof types.SummaryAbis>;
 
@@ -42,9 +41,7 @@ export function createForm(
           component: (
             <>
               <DataTable<types.Abi> table={table} loading={false} />
-              <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1rem" }}>
-                <Pagination size="sm" value={pageNumber} total={totalPages} />
-              </div>
+              <Paginator pageNumber={pageNumber} totalPages={totalPages} />
             </>
           ),
         },

@@ -10,26 +10,24 @@ import { GetNames, GetNamesCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
 
 export function NamesView() {
-  const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.SummaryName>({} as types.SummaryName);
-  const [names, setNames] = useState<types.Name[]>([]);
+  const [summaryItem, setSummaryItem] = useState<types.SummaryName>({} as types.SummaryName);
   const [refresh, setRefresh] = useState<boolean>(false);
-  const { curItem, perPage } = useKeyboardPaging<types.Name>(names, count, [], 15);
+  const [count, setCount] = useState<number>(0);
+  const pager = useKeyboardPaging(count, [], 15);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetNames(currentItem, itemsPerPage).then((items: types.SummaryName) => {
-          setItems(items);
-          setNames(items.names || []);
+        GetNames(currentItem, itemsPerPage).then((item: types.SummaryName) => {
+          setSummaryItem(item);
         });
       };
-      fetch(curItem, perPage);
+      fetch(pager.curItem, pager.perPage);
       setRefresh(false);
     }
-  }, [count, curItem, perPage, loaded, loading, refresh]);
+  }, [count, pager, loaded, loading, refresh]);
 
   useEffect(() => {
     const handleRefresh = () => {
@@ -53,7 +51,7 @@ export function NamesView() {
   }, []);
 
   const table = useReactTable({
-    data: items.names || [], // Pass the names array or an empty array if undefined
+    data: summaryItem.names || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -62,7 +60,7 @@ export function NamesView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={items} definition={createForm(table, curItem, count, perPage)} />
+        <FormTable data={summaryItem} definition={createForm(table, pager.curItem, count, pager.perPage)} />
       </Stack>
       <ViewStatus />
     </View>

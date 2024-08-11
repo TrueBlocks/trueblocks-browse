@@ -10,26 +10,24 @@ import { GetAbis, GetAbisCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
 
 export function AbisView() {
-  const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.SummaryAbis>({} as types.SummaryAbis);
-  const [chunks, setChunks] = useState<types.Abi[]>([]);
+  const [summaryItem, setSummaryItem] = useState<types.SummaryAbis>({} as types.SummaryAbis);
   const [refresh, setRefresh] = useState<boolean>(false);
-  const { curItem, perPage } = useKeyboardPaging<types.Abi>(chunks, count, [], 15);
+  const [count, setCount] = useState<number>(0);
+  const pager = useKeyboardPaging(count, [], 15);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetAbis(currentItem, itemsPerPage).then((items: types.SummaryAbis) => {
-          setItems(items);
-          setChunks(items.chunks || []);
+        GetAbis(currentItem, itemsPerPage).then((item: types.SummaryAbis) => {
+          setSummaryItem(item);
         });
       };
-      fetch(curItem, perPage);
+      fetch(pager.curItem, pager.perPage);
       setRefresh(false);
     }
-  }, [count, curItem, perPage, loaded, loading, refresh]);
+  }, [count, pager, loaded, loading, refresh]);
 
   useEffect(() => {
     const handleRefresh = () => {
@@ -53,7 +51,7 @@ export function AbisView() {
   }, []);
 
   const table = useReactTable({
-    data: items.chunks || [], // Pass the chunks array or an empty array if undefined
+    data: summaryItem.chunks || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -62,7 +60,7 @@ export function AbisView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={items} definition={createForm(table, curItem, count, perPage)} />
+        <FormTable data={summaryItem} definition={createForm(table, pager.curItem, count, pager.perPage)} />
       </Stack>
       <ViewStatus />
     </View>

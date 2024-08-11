@@ -10,26 +10,24 @@ import { GetStatus, GetStatusCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
 
 export function StatusView() {
-  const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.SummaryStatus>({} as types.SummaryStatus);
-  const [caches, setCaches] = useState<types.CacheItem[]>([]);
+  const [summaryItem, setSummaryItem] = useState<types.SummaryStatus>({} as types.SummaryStatus);
   const [refresh, setRefresh] = useState<boolean>(false);
-  const { curItem, perPage } = useKeyboardPaging<types.CacheItem>(caches, count, [], 10);
+  const [count, setCount] = useState<number>(0);
+  const pager = useKeyboardPaging(count, [], 10);
 
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetStatus(currentItem, itemsPerPage).then((items: types.SummaryStatus) => {
-          setItems(items);
-          setCaches(items.caches || []);
+        GetStatus(currentItem, itemsPerPage).then((item: types.SummaryStatus) => {
+          setSummaryItem(item);
         });
       };
-      fetch(curItem, perPage);
+      fetch(pager.curItem, pager.perPage);
       setRefresh(false);
     }
-  }, [count, curItem, perPage, loaded, loading, refresh]);
+  }, [count, pager, loaded, loading, refresh]);
 
   useEffect(() => {
     const handleRefresh = () => {
@@ -53,7 +51,7 @@ export function StatusView() {
   }, []);
 
   const table = useReactTable({
-    data: items.caches || [], // Pass the caches array or an empty array if undefined
+    data: summaryItem.caches || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -62,7 +60,7 @@ export function StatusView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={items} definition={createForm(table, curItem, count, perPage)} />
+        <FormTable data={summaryItem} definition={createForm(table, pager.curItem, count, pager.perPage)} />
       </Stack>
       <ViewStatus />
     </View>

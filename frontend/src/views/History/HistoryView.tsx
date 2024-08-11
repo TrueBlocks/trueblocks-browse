@@ -12,12 +12,11 @@ import { EventsOn, EventsOff } from "@runtime";
 
 export function HistoryView() {
   const [address, setAddress] = useState<string>("trueblocks.eth");
-  const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<types.SummaryTransaction>({} as types.SummaryTransaction);
-  const [txs, setTxs] = useState<types.Transaction[]>([]);
-  const { curItem, perPage } = useKeyboardPaging<types.Transaction>(txs, count, [address], 15);
+  const [summaryItem, setSummaryItem] = useState<types.SummaryTransaction>({} as types.SummaryTransaction);
+  const [count, setCount] = useState<number>(0);
+  const pager = useKeyboardPaging(count, [address], 15);
 
   const params = useParams();
   const addr = params.address;
@@ -25,14 +24,13 @@ export function HistoryView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (addr: string, currentItem: number, itemsPerPage: number) => {
-        GetHistory(addr, currentItem, itemsPerPage).then((items: types.SummaryTransaction) => {
-          setItems(items);
-          setTxs(items.transactions || []);
+        GetHistory(addr, currentItem, itemsPerPage).then((item: types.SummaryTransaction) => {
+          setSummaryItem(item);
         });
       };
-      fetch(address, curItem, perPage);
+      fetch(address, pager.curItem, pager.perPage);
     }
-  }, [count, curItem, perPage, address, loaded, loading]);
+  }, [count, pager, loaded, loading, address]);
 
   useEffect(() => {
     setLoading(true);
@@ -58,7 +56,7 @@ export function HistoryView() {
   }, [addr]);
 
   const table = useReactTable({
-    data: items.transactions || [], // Pass the transactions array or an empty array if undefined
+    data: summaryItem.transactions || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -67,7 +65,7 @@ export function HistoryView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={items} definition={createForm(table, curItem, count, perPage)} />
+        <FormTable data={summaryItem} definition={createForm(table, pager.curItem, count, pager.perPage)} />
       </Stack>
       <ViewStatus />
     </View>

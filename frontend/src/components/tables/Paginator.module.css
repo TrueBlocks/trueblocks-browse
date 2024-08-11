@@ -1,0 +1,10 @@
+.paginator {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.red {
+  border: 10px solid black;
+  background-color: #ffffff00;
+}
