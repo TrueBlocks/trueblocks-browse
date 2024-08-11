@@ -1,5 +1,4 @@
 import React from "react";
-import { IconCircleCheck } from "@tabler/icons-react";
 import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter } from "@components";
@@ -47,12 +46,12 @@ export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
   }),
   columnHelper.accessor("hasToken", {
     header: () => "hasToken",
-    cell: (info) => (info.getValue() ? <IconCircleCheck size={20} color="white" fill="green" /> : ""),
+    cell: (info) => <Formatter type="check" value={info.renderValue()} />,
     meta: { className: "small center cell" },
   }),
   columnHelper.accessor("isError", {
     header: () => "isError",
-    cell: (info) => (info.getValue() ? <IconCircleCheck size={20} color="green" fill="red" /> : ""),
+    cell: (info) => <Formatter type="error" value={info.renderValue()} />,
     meta: { className: "small center cell" },
   }),
 ];

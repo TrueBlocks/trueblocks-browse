@@ -62,7 +62,7 @@ export function IndexesView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={items} definition={createForm(table)} />;{" "}
+        <FormTable data={items} definition={createForm(table, curItem, count, perPage)} />
       </Stack>
       <ViewStatus />
     </View>

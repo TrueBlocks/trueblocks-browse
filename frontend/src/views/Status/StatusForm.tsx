@@ -1,10 +1,19 @@
 import React from "react";
 import { types } from "@gocode/models";
 import { GroupDefinition, DataTable } from "@components";
+import { Pagination } from "@mantine/core";
 
 export type theInstance = InstanceType<typeof types.SummaryStatus>;
 
-export function createForm(table: any): GroupDefinition<theInstance>[] {
+export function createForm(
+  table: any,
+  firstRecord: number,
+  totalRecords: number,
+  perPage: number
+): GroupDefinition<theInstance>[] {
+  const pageNumber = firstRecord < perPage ? 1 : Math.ceil(firstRecord / perPage) + 1;
+  const totalPages = Math.ceil(totalRecords / perPage);
+
   return [
     {
       title: "System Data",
@@ -50,7 +59,14 @@ export function createForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.CacheItem> table={table} loading={false} />,
+          component: (
+            <>
+              <DataTable<types.CacheItem> table={table} loading={false} />
+              <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1rem" }}>
+                <Pagination size="sm" value={pageNumber} total={totalPages} />
+              </div>
+            </>
+          ),
         },
       ],
     },

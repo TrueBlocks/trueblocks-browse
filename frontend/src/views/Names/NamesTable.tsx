@@ -1,8 +1,7 @@
 import React from "react";
-import { IconCircleCheck } from "@tabler/icons-react";
 import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef, AddressNameEditor, AddressNameViewer } from "@components";
+import { CustomColumnDef, AddressNameEditor, AddressNameViewer, Formatter } from "@components";
 import { NameTags } from "./NameTag";
 
 const columnHelper = createColumnHelper<types.Name>();
@@ -49,17 +48,17 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
   }),
   columnHelper.accessor("isContract", {
     header: () => "isContract",
-    cell: (info) => (info.getValue() ? <IconCircleCheck size={20} color="white" fill="green" /> : ""),
+    cell: (info) => <Formatter type="check" value={info.renderValue()} />,
     meta: { className: "small center cell" },
   }),
   columnHelper.accessor("isErc20", {
     header: () => "isErc20",
-    cell: (info) => (info.getValue() ? <IconCircleCheck size={20} color="white" fill="green" /> : ""),
+    cell: (info) => <Formatter type="check" value={info.renderValue()} />,
     meta: { className: "small center cell" },
   }),
   columnHelper.accessor("isErc721", {
     header: () => "isErc721",
-    cell: (info) => (info.getValue() ? <IconCircleCheck size={20} color="white" fill="green" /> : ""),
+    cell: (info) => <Formatter type="check" value={info.renderValue()} />,
     meta: { className: "small center cell" },
   }),
 ];

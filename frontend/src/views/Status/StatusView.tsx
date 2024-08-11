@@ -16,7 +16,7 @@ export function StatusView() {
   const [items, setItems] = useState<types.SummaryStatus>({} as types.SummaryStatus);
   const [caches, setCaches] = useState<types.CacheItem[]>([]);
   const [refresh, setRefresh] = useState<boolean>(false);
-  const { curItem, perPage } = useKeyboardPaging<types.CacheItem>(caches, count, [], 8);
+  const { curItem, perPage } = useKeyboardPaging<types.CacheItem>(caches, count, [], 10);
 
   useEffect(() => {
     if (loaded && !loading) {
@@ -62,7 +62,7 @@ export function StatusView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={items} definition={createForm(table)} />;{" "}
+        <FormTable data={items} definition={createForm(table, curItem, count, perPage)} />
       </Stack>
       <ViewStatus />
     </View>

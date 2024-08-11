@@ -5,7 +5,12 @@ import { flexRender, Table as ReactTable } from "@tanstack/react-table";
 import { DataPopover } from "../popovers";
 import { CustomMeta } from "./";
 
-export function DataTable<T>({ table, loading }: { table: ReactTable<T>; loading: boolean }) {
+interface DataTableProps<T> {
+  table: ReactTable<T>;
+  loading: boolean;
+}
+
+export function DataTable<T>({ table, loading }: DataTableProps<T>) {
   if (loading) {
     return <Title order={3}>Loading...</Title>;
   } else {

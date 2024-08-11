@@ -4,7 +4,17 @@ import { AddrToName } from "@gocode/app/App";
 import { base } from "@gocode/models";
 import { useDateTime } from "@hooks";
 
-export type knownTypes = "text" | "float" | "int" | "bytes" | "date" | "boolean" | "check" | "address" | "hash";
+export type knownTypes =
+  | "text"
+  | "float"
+  | "int"
+  | "bytes"
+  | "date"
+  | "boolean"
+  | "check"
+  | "address"
+  | "hash"
+  | "error";
 
 export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, value }) => {
   const formatInteger = (number: number): ReactNode => {
@@ -43,9 +53,11 @@ export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, va
       return useDateTime(v);
     case "boolean":
       var fill = value ? "green" : "red";
-      return <IconCircleCheck size={20} color="white" fill={fill} />;
+      return <IconCircleCheck size={16} color="white" fill={fill} />;
     case "check":
-      return <>{value ? <IconCircleCheck size={20} color="white" fill="green" /> : <></>}</>;
+      return <>{value ? <IconCircleCheck size={16} color="white" fill="green" /> : <></>}</>;
+    case "error":
+      return <>{value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>}</>;
     default:
       return value;
   }
