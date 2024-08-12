@@ -38,5 +38,13 @@ export function useKeyboardPaging(nItems: number, deps: DependencyList = [], per
     setCurItem(0);
   }, deps);
 
-  return { curItem: curItem, perPage: perPage, count: nItems };
+  const pageNumber = curItem < perPage ? 1 : Math.ceil(curItem / perPage) + 1;
+  const totalPages = Math.ceil(nItems / perPage);
+  return {
+    curItem: curItem,
+    perPage: perPage,
+    count: nItems,
+    pageNumber: pageNumber,
+    totalPages: totalPages,
+  };
 }

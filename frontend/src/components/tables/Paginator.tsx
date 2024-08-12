@@ -7,20 +7,19 @@ export type Pager = {
   curItem: number;
   perPage: number;
   count: number;
+  pageNumber: number;
+  totalPages: number;
 };
 
 export const Paginator = ({ pager }: { pager: Pager }) => {
-  const pageNumber = pager.curItem < pager.perPage ? 1 : Math.ceil(pager.curItem / pager.perPage) + 1;
-  const totalPages = Math.ceil(pager.count / pager.perPage);
-
   return (
     <div className={classes.paginator}>
       <Pagination
         classNames={{ control: classes.red }}
         // siblings={1}
         size="sm"
-        value={pageNumber}
-        total={totalPages}
+        value={pager.pageNumber}
+        total={pager.totalPages}
         // withEdges
         styles={{ control: { border: "1px solid grey" } }}
       />
