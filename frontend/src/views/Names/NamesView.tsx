@@ -12,7 +12,7 @@ import { EventsOn, EventsOff } from "@runtime";
 export function NamesView() {
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [summaryItem, setSummaryItem] = useState<types.SummaryName>({} as types.SummaryName);
+  const [summaryItem, setSummaryItem] = useState<types.NameContainer>({} as types.NameContainer);
   const [refresh, setRefresh] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   const pager = useKeyboardPaging(count, [], 15);
@@ -20,7 +20,7 @@ export function NamesView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetNames(currentItem, itemsPerPage).then((item: types.SummaryName) => {
+        GetNames(currentItem, itemsPerPage).then((item: types.NameContainer) => {
           setSummaryItem(item);
         });
       };

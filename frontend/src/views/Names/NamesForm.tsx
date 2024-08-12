@@ -2,7 +2,7 @@ import React from "react";
 import { types } from "@gocode/models";
 import { GroupDefinition, DataTable, Pager } from "@components";
 
-export type theInstance = InstanceType<typeof types.SummaryName>;
+export type theInstance = InstanceType<typeof types.NameContainer>;
 
 export function createForm(table: any, pager: Pager): GroupDefinition<theInstance>[] {
   return [
@@ -32,11 +32,7 @@ export function createForm(table: any, pager: Pager): GroupDefinition<theInstanc
       fields: [],
       components: [
         {
-          component: (
-            <>
-              <DataTable<types.Name> table={table} loading={false} pager={pager} />
-            </>
-          ),
+          component: <DataTable<types.Name> table={table} loading={false} pager={pager} />,
         },
       ],
     },

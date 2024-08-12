@@ -30,11 +30,7 @@ export function createForm(table: any, pager: Pager): GroupDefinition<theInstanc
       fields: [],
       components: [
         {
-          component: (
-            <>
-              <DataTable<types.Transaction> table={table} loading={false} pager={pager} />
-            </>
-          ),
+          component: <DataTable<types.Transaction> table={table} loading={false} pager={pager} />,
         },
       ],
     },
