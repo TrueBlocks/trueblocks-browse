@@ -38,7 +38,7 @@ func (a *App) loadManifest(wg *sync.WaitGroup) error {
 		if len(a.manifest.Items) == len(manifests[0].Chunks) {
 			return nil
 		}
-		a.manifest = types.NewSummaryManifest(manifests[0])
+		a.manifest = types.NewManifestContainer(manifests[0])
 		sort.Slice(a.manifest.Items, func(i, j int) bool {
 			return a.manifest.Items[i].Range > a.manifest.Items[j].Range
 		})

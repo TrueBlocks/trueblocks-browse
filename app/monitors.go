@@ -10,7 +10,7 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-func (a *App) GetMonitors(first, pageSize int) types.SummaryMonitor {
+func (a *App) GetMonitors(first, pageSize int) types.MonitorContainer {
 	first = base.Max(0, base.Min(first, len(a.monitors.Items)-1))
 	last := base.Min(len(a.monitors.Items), first+pageSize)
 	copy := a.monitors.ShallowCopy()
@@ -36,7 +36,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup) error {
 		if len(a.monitors.Items) == len(monitors) {
 			return nil
 		}
-		a.monitors = types.SummaryMonitor{}
+		a.monitors = types.MonitorContainer{}
 		a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 		for _, mon := range monitors {
 			mon.Name = a.names.NamesMap[mon.Address].Name

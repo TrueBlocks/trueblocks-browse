@@ -2,7 +2,7 @@ import React from "react";
 import { types } from "@gocode/models";
 import { GroupDefinition, DataTable, Pager } from "@components";
 
-export type theInstance = InstanceType<typeof types.SummaryMonitor>;
+export type theInstance = InstanceType<typeof types.MonitorContainer>;
 
 export function createForm(table: any, pager: Pager): GroupDefinition<theInstance>[] {
   return [

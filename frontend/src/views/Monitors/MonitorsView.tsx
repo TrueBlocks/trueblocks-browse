@@ -12,7 +12,7 @@ import { EventsOn, EventsOff } from "@runtime";
 export function MonitorsView() {
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [summaryItem, setSummaryItem] = useState<types.SummaryMonitor>({} as types.SummaryMonitor);
+  const [summaryItem, setSummaryItem] = useState<types.MonitorContainer>({} as types.MonitorContainer);
   const [refresh, setRefresh] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   const pager = useKeyboardPaging(count, [], 15);
@@ -20,7 +20,7 @@ export function MonitorsView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetMonitors(currentItem, itemsPerPage).then((item: types.SummaryMonitor) => {
+        GetMonitors(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
           setSummaryItem(item);
         });
       };

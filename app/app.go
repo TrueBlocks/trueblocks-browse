@@ -43,7 +43,7 @@ type App struct {
 	abis     types.AbiContainer
 	index    types.IndexContainer
 	manifest types.ManifestContainer
-	monitors types.SummaryMonitor
+	monitors types.MonitorContainer
 	names    types.SummaryName
 	status   types.SummaryStatus
 

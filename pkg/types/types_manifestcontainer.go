@@ -16,7 +16,7 @@ type ManifestContainer struct {
 	IndexSize          int64                   `json:"indexSize"`
 }
 
-func NewSummaryManifest(manifest coreTypes.Manifest) ManifestContainer {
+func NewManifestContainer(manifest coreTypes.Manifest) ManifestContainer {
 	ret := ManifestContainer{
 		Manifest: manifest,
 		Items:    manifest.Chunks,

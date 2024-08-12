@@ -52,7 +52,7 @@ func main() {
 				&types.AbiContainer{},
 				&types.IndexContainer{},
 				&types.ManifestContainer{},
-				&types.SummaryMonitor{},
+				&types.MonitorContainer{},
 				&types.SummaryName{},
 				&types.SummaryStatus{},
 			},
