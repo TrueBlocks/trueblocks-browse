@@ -9,3 +9,5 @@ export function Model(arg1:string,arg2:string,arg3:boolean,arg4:{[key: string]: 
 export function ShallowCopy():Promise<types.ManifestContainer>;
 
 export function String():Promise<string>;
+
+export function Summarize():Promise<void>;

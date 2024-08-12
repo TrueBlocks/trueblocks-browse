@@ -54,7 +54,7 @@ func main() {
 				&types.ManifestContainer{},
 				&types.MonitorContainer{},
 				&types.NameContainer{},
-				&types.SummaryStatus{},
+				&types.StatusContainer{},
 			},
 			EnumBind: []interface{}{
 				types.NameParts,

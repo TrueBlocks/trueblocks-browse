@@ -98,17 +98,17 @@ export namespace config {
 
 export namespace daemons {
 	
+	export enum State {
+	    STOPPED = 0,
+	    RUNNING = 1,
+	    PAUSED = 2,
+	}
 	export enum Type {
 	    FILEDAEMON = 0,
 	    SCRAPER = 1,
 	    FRESHEN = 2,
 	    API = 3,
 	    IPFS = 4,
-	}
-	export enum State {
-	    STOPPED = 0,
-	    RUNNING = 1,
-	    PAUSED = 2,
 	}
 	export class Daemon {
 	    name: string;
@@ -1056,7 +1056,7 @@ export namespace types {
 	        this.symbol = source["symbol"];
 	    }
 	}
-	export class SummaryStatus {
+	export class StatusContainer {
 	    cachePath?: string;
 	    caches: CacheItem[];
 	    chain?: string;
@@ -1088,7 +1088,7 @@ export namespace types {
 	    nBytes: number;
 	
 	    static createFrom(source: any = {}) {
-	        return new SummaryStatus(source);
+	        return new StatusContainer(source);
 	    }
 	
 	    constructor(source: any = {}) {

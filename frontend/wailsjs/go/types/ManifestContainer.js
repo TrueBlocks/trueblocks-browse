@@ -17,3 +17,7 @@ export function ShallowCopy() {
 export function String() {
   return window['go']['types']['ManifestContainer']['String']();
 }
+
+export function Summarize() {
+  return window['go']['types']['ManifestContainer']['Summarize']();
+}

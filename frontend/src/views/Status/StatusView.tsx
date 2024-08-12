@@ -12,7 +12,7 @@ import { EventsOn, EventsOff } from "@runtime";
 export function StatusView() {
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [summaryItem, setSummaryItem] = useState<types.SummaryStatus>({} as types.SummaryStatus);
+  const [summaryItem, setSummaryItem] = useState<types.StatusContainer>({} as types.StatusContainer);
   const [refresh, setRefresh] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   const pager = useKeyboardPaging(count, [], 10);
@@ -20,7 +20,7 @@ export function StatusView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetStatus(currentItem, itemsPerPage).then((item: types.SummaryStatus) => {
+        GetStatus(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
           setSummaryItem(item);
         });
       };
