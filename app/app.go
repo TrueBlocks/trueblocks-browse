@@ -6,7 +6,6 @@ import (
 	"errors"
 	"log"
 	"os"
-	"sync"
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
@@ -14,7 +13,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -45,7 +43,7 @@ type App struct {
 	manifest types.ManifestContainer
 	monitors types.MonitorContainer
 	names    types.NameContainer
-	status   types.SummaryStatus
+	status   types.StatusContainer
 
 	// Add your application's data here
 	ScraperController *daemons.DaemonScraper
@@ -95,62 +93,6 @@ func (a *App) GetContext() context.Context {
 
 var freshenLock atomic.Uint32
 
-// Freshen gets called by the daemons to instruct first the backend, then the frontend to update.
-// Protect against updating too fast... Note that this routine is called as a goroutine.
-func (a *App) Freshen(which ...string) {
-	// Skip this update we're actively upgrading
-	if !freshenLock.CompareAndSwap(0, 1) {
-		// logger.Info(colors.Red, "Skipping update", colors.Off)
-		return
-	}
-	logger.Info(colors.Green, "Freshening...", colors.Off)
-	defer freshenLock.CompareAndSwap(1, 0)
-
-	notify :=
-		func() {
-			// Let the front end know it needs to update
-			messages.Send(a.ctx, messages.Daemon, messages.NewDaemonMsg(
-				a.FreshenController.Color,
-				"Freshening...",
-				a.FreshenController.Color,
-			))
-		}
-
-	// First, we want to update the current route if we're told to
-	route := ""
-	if len(which) > 0 {
-		route = which[0]
-	}
-	switch route {
-	case "/abis":
-		a.loadAbis(nil)
-		notify()
-	case "/manifest":
-		a.loadManifest(nil)
-		notify()
-	case "/monitors":
-		a.loadMonitors(nil)
-		notify()
-	case "/names":
-		a.loadNames(nil)
-		notify()
-	case "/index":
-		a.loadIndex(nil)
-		notify()
-	}
-
-	// Now update everything in the fullness of time
-	wg := sync.WaitGroup{}
-	wg.Add(5)
-	go a.loadAbis(&wg)
-	go a.loadManifest(&wg)
-	go a.loadMonitors(&wg)
-	go a.loadNames(&wg)
-	go a.loadIndex(&wg)
-	wg.Wait()
-	notify()
-}
-
 // Find: NewViews
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
@@ -166,18 +108,20 @@ func (a *App) Startup(ctx context.Context) {
 
 	logger.Info("Starting freshen process...")
 	a.Freshen(a.GetSession().LastRoute)
-
-	// now = time.Now()
-	if err := a.loadStatus(); err != nil {
-		logger.Panic(err)
+	if err := a.loadStatus(nil, nil); err != nil {
+		messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
+			a.FreshenController.Color,
+			err.Error(),
+			a.FreshenController.Color,
+		))
 	}
-	// fmt.Println(colors.BrightYellow, "Startup time status:", time.Since(now), colors.Off)
-
-	// now = time.Now()
-	if err := a.loadConfig(); err != nil {
-		logger.Panic(err)
+	if err := a.loadConfig(nil, nil); err != nil {
+		messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
+			a.FreshenController.Color,
+			err.Error(),
+			a.FreshenController.Color,
+		))
 	}
-	// fmt.Println(colors.BrightYellow, "Startup time config:", time.Since(now), colors.Off)
 }
 
 func (a *App) DomReady(ctx context.Context) {

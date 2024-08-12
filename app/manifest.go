@@ -22,7 +22,7 @@ func (a *App) GetManifestCnt() int {
 	return len(a.manifest.Items)
 }
 
-func (a *App) loadManifest(wg *sync.WaitGroup) error {
+func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -31,9 +31,16 @@ func (a *App) loadManifest(wg *sync.WaitGroup) error {
 
 	opts := sdk.ChunksOptions{}
 	if manifests, _, err := opts.ChunksManifest(); err != nil {
+		if errorChan != nil {
+			errorChan <- err
+		}
 		return err
 	} else if (manifests == nil) || (len(manifests) == 0) {
-		return fmt.Errorf("no manifest found")
+		err := fmt.Errorf("no manifest found")
+		if errorChan != nil {
+			errorChan <- err
+		}
+		return err
 	} else {
 		if len(a.manifest.Items) == len(manifests[0].Chunks) {
 			return nil

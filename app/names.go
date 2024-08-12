@@ -26,7 +26,7 @@ func (a *App) GetNamesCnt() int {
 	return len(a.names.Names)
 }
 
-func (a *App) loadNames(wg *sync.WaitGroup) error {
+func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -51,9 +51,16 @@ func (a *App) loadNames(wg *sync.WaitGroup) error {
 
 	parts := coreTypes.Regular | coreTypes.Custom | coreTypes.Prefund | coreTypes.Baddress
 	if namesMap, err := names.LoadNamesMap(chain, parts, nil); err != nil {
+		if errorChan != nil {
+			errorChan <- err
+		}
 		return err
 	} else if (namesMap == nil) || (len(namesMap) == 0) {
-		return fmt.Errorf("no names found")
+		err := fmt.Errorf("no names found")
+		if errorChan != nil {
+			errorChan <- err
+		}
+		return err
 	} else {
 		if len(a.names.Names) == len(namesMap) {
 			return nil

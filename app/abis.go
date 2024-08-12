@@ -22,7 +22,7 @@ func (a *App) GetAbisCnt() int {
 	return len(a.abis.Items)
 }
 
-func (a *App) loadAbis(wg *sync.WaitGroup) error {
+func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -35,9 +35,16 @@ func (a *App) loadAbis(wg *sync.WaitGroup) error {
 		},
 	}
 	if abis, _, err := opts.AbisList(); err != nil {
+		if errorChan != nil {
+			errorChan <- err
+		}
 		return err
 	} else if (abis == nil) || (len(abis) == 0) {
-		return fmt.Errorf("no status found")
+		err := fmt.Errorf("no status found")
+		if errorChan != nil {
+			errorChan <- err
+		}
+		return err
 	} else {
 		if len(a.abis.Items) == len(abis) {
 			return nil

@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"sort"
 	"sync"
 
@@ -22,7 +23,7 @@ func (a *App) GetMonitorsCnt() int {
 	return len(a.monitors.Items)
 }
 
-func (a *App) loadMonitors(wg *sync.WaitGroup) error {
+func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -31,6 +32,15 @@ func (a *App) loadMonitors(wg *sync.WaitGroup) error {
 
 	opts := sdk.MonitorsOptions{}
 	if monitors, _, err := opts.MonitorsList(); err != nil {
+		if errorChan != nil {
+			errorChan <- err
+		}
+		return err
+	} else if (monitors == nil) || (len(monitors) == 0) {
+		err := fmt.Errorf("no monitors found")
+		if errorChan != nil {
+			errorChan <- err
+		}
 		return err
 	} else {
 		if len(a.monitors.Items) == len(monitors) {

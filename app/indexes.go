@@ -23,7 +23,7 @@ func (a *App) GetIndexCnt() int {
 	return len(a.index.Items)
 }
 
-func (a *App) loadIndex(wg *sync.WaitGroup) error {
+func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -32,9 +32,16 @@ func (a *App) loadIndex(wg *sync.WaitGroup) error {
 
 	opts := sdk.ChunksOptions{}
 	if chunks, _, err := opts.ChunksStats(); err != nil {
+		if errorChan != nil {
+			errorChan <- err
+		}
 		return err
 	} else if (chunks == nil) || (len(chunks) == 0) {
-		return fmt.Errorf("no index chunks found")
+		err := fmt.Errorf("no index chunks found")
+		if errorChan != nil {
+			errorChan <- err
+		}
+		return err
 	} else {
 		if len(a.index.Items) == len(chunks) {
 			return nil
