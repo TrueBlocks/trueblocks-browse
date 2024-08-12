@@ -56,7 +56,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else if (namesMap == nil) || (len(namesMap) == 0) {
-		err := fmt.Errorf("no names found")
+		err = fmt.Errorf("no names found")
 		if errorChan != nil {
 			errorChan <- err
 		}

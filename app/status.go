@@ -37,7 +37,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else if (statusArray == nil) || (len(statusArray) == 0) {
-		err := fmt.Errorf("no status found")
+		err = fmt.Errorf("no status found")
 		if errorChan != nil {
 			errorChan <- err
 		}

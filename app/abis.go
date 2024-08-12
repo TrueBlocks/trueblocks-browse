@@ -40,7 +40,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else if (abis == nil) || (len(abis) == 0) {
-		err := fmt.Errorf("no status found")
+		err = fmt.Errorf("no status found")
 		if errorChan != nil {
 			errorChan <- err
 		}

@@ -36,7 +36,7 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else if (manifests == nil) || (len(manifests) == 0) {
-		err := fmt.Errorf("no manifest found")
+		err = fmt.Errorf("no manifest found")
 		if errorChan != nil {
 			errorChan <- err
 		}

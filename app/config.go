@@ -7,6 +7,9 @@ import (
 )
 
 func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
+	_ = wg
+	_ = errorChan
+
 	var cfg config.ConfigFile
 	_ = config.ReadToml("/Users/jrush/Library/Application Support/TrueBlocks/trueBlocks.toml", &cfg)
 	// _, _ = json.MarshalIndent(cfg, "", "  ")

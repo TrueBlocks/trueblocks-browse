@@ -37,7 +37,7 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else if (chunks == nil) || (len(chunks) == 0) {
-		err := fmt.Errorf("no index chunks found")
+		err = fmt.Errorf("no index chunks found")
 		if errorChan != nil {
 			errorChan <- err
 		}

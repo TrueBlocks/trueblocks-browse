@@ -37,7 +37,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else if (monitors == nil) || (len(monitors) == 0) {
-		err := fmt.Errorf("no monitors found")
+		err = fmt.Errorf("no monitors found")
 		if errorChan != nil {
 			errorChan <- err
 		}
