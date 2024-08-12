@@ -1,6 +1,8 @@
 package messages
 
-import "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+import (
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+)
 
 type ErrorMsg struct {
 	Address base.Address `json:"address"`

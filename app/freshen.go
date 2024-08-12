@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
@@ -21,6 +22,13 @@ func (a *App) Freshen(which ...string) {
 	defer freshenLock.CompareAndSwap(1, 0)
 
 	// Function to let the front end know that something freshened
+	errorNotify :=
+		func(err error) {
+			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(
+				err,
+				base.ZeroAddr,
+			))
+		}
 	notify :=
 		func(msg messages.Message, msgStr string) {
 			messages.Send(a.ctx, msg, messages.NewDaemonMsg(
@@ -34,7 +42,7 @@ func (a *App) Freshen(which ...string) {
 	err := a.loadNames(nil, nil)
 	if err != nil {
 		// note that we notify the error, but proceed anyway
-		notify(messages.Error, err.Error())
+		errorNotify(err)
 	}
 
 	// We want to update the route we last used first if there is one...
@@ -50,7 +58,7 @@ func (a *App) Freshen(which ...string) {
 			err = a.loadIndex(nil, nil)
 		}
 		if err != nil {
-			notify(messages.Error, err.Error())
+			errorNotify(err)
 		} else {
 			notify(messages.Daemon, "Freshing...")
 		}
@@ -80,7 +88,7 @@ func (a *App) Freshen(which ...string) {
 	if len(errors) > 0 {
 		// Handle errors, e.g., wait 1/2 second between each error message
 		for _, err := range errors {
-			notify(messages.Error, err.Error())
+			errorNotify(err)
 			time.Sleep(500 * time.Millisecond)
 		}
 	} else {
