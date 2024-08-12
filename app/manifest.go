@@ -10,16 +10,16 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
-func (a *App) GetManifest(first, pageSize int) types.SummaryManifest {
-	first = base.Max(0, base.Min(first, len(a.manifest.Chunks)-1))
-	last := base.Min(len(a.manifest.Chunks), first+pageSize)
+func (a *App) GetManifest(first, pageSize int) types.ManifestContainer {
+	first = base.Max(0, base.Min(first, len(a.manifest.Items)-1))
+	last := base.Min(len(a.manifest.Items), first+pageSize)
 	copy := a.manifest.ShallowCopy()
-	copy.Chunks = a.manifest.Chunks[first:last]
+	copy.Items = a.manifest.Items[first:last]
 	return copy
 }
 
 func (a *App) GetManifestCnt() int {
-	return len(a.manifest.Chunks)
+	return len(a.manifest.Items)
 }
 
 func (a *App) loadManifest(wg *sync.WaitGroup) error {
@@ -35,12 +35,12 @@ func (a *App) loadManifest(wg *sync.WaitGroup) error {
 	} else if (manifests == nil) || (len(manifests) == 0) {
 		return fmt.Errorf("no manifest found")
 	} else {
-		if len(a.manifest.Chunks) == len(manifests[0].Chunks) {
+		if len(a.manifest.Items) == len(manifests[0].Chunks) {
 			return nil
 		}
 		a.manifest = types.NewSummaryManifest(manifests[0])
-		sort.Slice(a.manifest.Chunks, func(i, j int) bool {
-			return a.manifest.Chunks[i].Range > a.manifest.Chunks[j].Range
+		sort.Slice(a.manifest.Items, func(i, j int) bool {
+			return a.manifest.Items[i].Range > a.manifest.Items[j].Range
 		})
 	}
 	return nil

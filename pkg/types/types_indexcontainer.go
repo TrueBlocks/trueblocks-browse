@@ -17,19 +17,19 @@ import (
 
 // EXISTING_CODE
 
-type SummaryIndex struct {
+type IndexContainer struct {
 	coreTypes.ChunkStats
 	Items []coreTypes.ChunkStats `json:"items"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func (s SummaryIndex) String() string {
+func (s IndexContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-func (s *SummaryIndex) Model(chain, format string, verbose bool, extraOpts map[string]any) Model {
+func (s *IndexContainer) Model(chain, format string, verbose bool, extraOpts map[string]any) Model {
 	var model = map[string]any{}
 	var order = []string{}
 
@@ -43,13 +43,13 @@ func (s *SummaryIndex) Model(chain, format string, verbose bool, extraOpts map[s
 }
 
 // FinishUnmarshal is used by the cache. It may be unused depending on auto-code-gen
-func (s *SummaryIndex) FinishUnmarshal() {
+func (s *IndexContainer) FinishUnmarshal() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 // EXISTING_CODE
-func (s *SummaryIndex) Summarize() {
+func (s *IndexContainer) Summarize() {
 	for _, chunk := range s.Items {
 		s.BloomSz += chunk.BloomSz
 		s.ChunkSz += chunk.ChunkSz
@@ -69,8 +69,8 @@ func (s *SummaryIndex) Summarize() {
 	}
 }
 
-func (s *SummaryIndex) ShallowCopy() SummaryIndex {
-	return SummaryIndex{
+func (s *IndexContainer) ShallowCopy() IndexContainer {
+	return IndexContainer{
 		ChunkStats: s.ChunkStats,
 	}
 }

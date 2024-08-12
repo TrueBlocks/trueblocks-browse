@@ -40,7 +40,7 @@ export function GetHistory(arg1:string,arg2:number,arg3:number):Promise<types.Su
 
 export function GetHistoryCnt(arg1:string):Promise<number>;
 
-export function GetIndex(arg1:number,arg2:number):Promise<types.SummaryIndex>;
+export function GetIndex(arg1:number,arg2:number):Promise<types.IndexContainer>;
 
 export function GetIndexCnt():Promise<number>;
 
@@ -48,7 +48,7 @@ export function GetLast(arg1:string):Promise<string>;
 
 export function GetLastDaemon(arg1:string):Promise<boolean>;
 
-export function GetManifest(arg1:number,arg2:number):Promise<types.SummaryManifest>;
+export function GetManifest(arg1:number,arg2:number):Promise<types.ManifestContainer>;
 
 export function GetManifestCnt():Promise<number>;
 

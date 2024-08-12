@@ -11,7 +11,7 @@ import (
 )
 
 // Find: NewViews
-func (a *App) GetIndex(first, pageSize int) types.SummaryIndex {
+func (a *App) GetIndex(first, pageSize int) types.IndexContainer {
 	first = base.Max(0, base.Min(first, len(a.index.Items)-1))
 	last := base.Min(len(a.index.Items), first+pageSize)
 	copy := a.index.ShallowCopy()
@@ -39,7 +39,7 @@ func (a *App) loadIndex(wg *sync.WaitGroup) error {
 		if len(a.index.Items) == len(chunks) {
 			return nil
 		}
-		a.index = types.SummaryIndex{Items: chunks}
+		a.index = types.IndexContainer{Items: chunks}
 		sort.Slice(a.index.Items, func(i, j int) bool {
 			// reverse order
 			return a.index.Items[i].Range > a.index.Items[j].Range

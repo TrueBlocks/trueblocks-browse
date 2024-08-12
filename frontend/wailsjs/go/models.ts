@@ -480,6 +480,26 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class ChunkRecord {
+	    bloomHash: string;
+	    bloomSize: number;
+	    indexHash: string;
+	    indexSize: number;
+	    range: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ChunkRecord(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.bloomHash = source["bloomHash"];
+	        this.bloomSize = source["bloomSize"];
+	        this.indexHash = source["indexHash"];
+	        this.indexSize = source["indexSize"];
+	        this.range = source["range"];
+	    }
+	}
 	export class ChunkStats {
 	    addrsPerBlock: number;
 	    appsPerAddr: number;
@@ -517,6 +537,62 @@ export namespace types {
 	    }
 	}
 	
+	export class IndexContainer {
+	    addrsPerBlock: number;
+	    appsPerAddr: number;
+	    appsPerBlock: number;
+	    bloomSz: number;
+	    chunkSz: number;
+	    nAddrs: number;
+	    nApps: number;
+	    nBlocks: number;
+	    nBlooms: number;
+	    range: string;
+	    rangeEnd: string;
+	    ratio: number;
+	    recWid: number;
+	    items: ChunkStats[];
+	
+	    static createFrom(source: any = {}) {
+	        return new IndexContainer(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.addrsPerBlock = source["addrsPerBlock"];
+	        this.appsPerAddr = source["appsPerAddr"];
+	        this.appsPerBlock = source["appsPerBlock"];
+	        this.bloomSz = source["bloomSz"];
+	        this.chunkSz = source["chunkSz"];
+	        this.nAddrs = source["nAddrs"];
+	        this.nApps = source["nApps"];
+	        this.nBlocks = source["nBlocks"];
+	        this.nBlooms = source["nBlooms"];
+	        this.range = source["range"];
+	        this.rangeEnd = source["rangeEnd"];
+	        this.ratio = source["ratio"];
+	        this.recWid = source["recWid"];
+	        this.items = this.convertValues(source["items"], ChunkStats);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class Log {
 	    address: base.Address;
 	    articulatedLog?: Function;
@@ -545,6 +621,54 @@ export namespace types {
 	        this.topics = this.convertValues(source["topics"], base.Hash);
 	        this.transactionHash = this.convertValues(source["transactionHash"], base.Hash);
 	        this.transactionIndex = source["transactionIndex"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class ManifestContainer {
+	    chain: string;
+	    chunks: ChunkRecord[];
+	    specification: string;
+	    version: string;
+	    items: ChunkRecord[];
+	    latestUpdate: string;
+	    nBlooms: number;
+	    bloomsSize: number;
+	    nIndexes: number;
+	    indexSize: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ManifestContainer(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.chain = source["chain"];
+	        this.chunks = this.convertValues(source["chunks"], ChunkRecord);
+	        this.specification = source["specification"];
+	        this.version = source["version"];
+	        this.items = this.convertValues(source["items"], ChunkRecord);
+	        this.latestUpdate = source["latestUpdate"];
+	        this.nBlooms = source["nBlooms"];
+	        this.bloomsSize = source["bloomsSize"];
+	        this.nIndexes = source["nIndexes"];
+	        this.indexSize = source["indexSize"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -738,128 +862,6 @@ export namespace types {
 	        this.nephew = this.convertValues(source["nephew"], null);
 	        this.txFee = this.convertValues(source["txFee"], null);
 	        this.uncle = this.convertValues(source["uncle"], null);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class SummaryIndex {
-	    addrsPerBlock: number;
-	    appsPerAddr: number;
-	    appsPerBlock: number;
-	    bloomSz: number;
-	    chunkSz: number;
-	    nAddrs: number;
-	    nApps: number;
-	    nBlocks: number;
-	    nBlooms: number;
-	    range: string;
-	    rangeEnd: string;
-	    ratio: number;
-	    recWid: number;
-	    items: ChunkStats[];
-	
-	    static createFrom(source: any = {}) {
-	        return new SummaryIndex(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.addrsPerBlock = source["addrsPerBlock"];
-	        this.appsPerAddr = source["appsPerAddr"];
-	        this.appsPerBlock = source["appsPerBlock"];
-	        this.bloomSz = source["bloomSz"];
-	        this.chunkSz = source["chunkSz"];
-	        this.nAddrs = source["nAddrs"];
-	        this.nApps = source["nApps"];
-	        this.nBlocks = source["nBlocks"];
-	        this.nBlooms = source["nBlooms"];
-	        this.range = source["range"];
-	        this.rangeEnd = source["rangeEnd"];
-	        this.ratio = source["ratio"];
-	        this.recWid = source["recWid"];
-	        this.items = this.convertValues(source["items"], ChunkStats);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class ChunkRecord {
-	    bloomHash: string;
-	    bloomSize: number;
-	    indexHash: string;
-	    indexSize: number;
-	    range: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ChunkRecord(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.bloomHash = source["bloomHash"];
-	        this.bloomSize = source["bloomSize"];
-	        this.indexHash = source["indexHash"];
-	        this.indexSize = source["indexSize"];
-	        this.range = source["range"];
-	    }
-	}
-	export class SummaryManifest {
-	    chain: string;
-	    chunks: ChunkRecord[];
-	    specification: string;
-	    version: string;
-	    latestUpdate: string;
-	    nBlooms: number;
-	    bloomsSize: number;
-	    nIndexes: number;
-	    indexSize: number;
-	
-	    static createFrom(source: any = {}) {
-	        return new SummaryManifest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.chain = source["chain"];
-	        this.chunks = this.convertValues(source["chunks"], ChunkRecord);
-	        this.specification = source["specification"];
-	        this.version = source["version"];
-	        this.latestUpdate = source["latestUpdate"];
-	        this.nBlooms = source["nBlooms"];
-	        this.bloomsSize = source["bloomsSize"];
-	        this.nIndexes = source["nIndexes"];
-	        this.indexSize = source["indexSize"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

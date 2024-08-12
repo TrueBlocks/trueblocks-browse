@@ -12,7 +12,7 @@ import { EventsOn, EventsOff } from "@runtime";
 export function ManifestView() {
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [summaryItem, setSummaryItem] = useState<types.SummaryManifest>({} as types.SummaryManifest);
+  const [summaryItem, setSummaryItem] = useState<types.ManifestContainer>({} as types.ManifestContainer);
   const [refresh, setRefresh] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   const pager = useKeyboardPaging(count, [], 15);
@@ -20,7 +20,7 @@ export function ManifestView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetManifest(currentItem, itemsPerPage).then((item: types.SummaryManifest) => {
+        GetManifest(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
           setSummaryItem(item);
         });
       };
@@ -51,7 +51,7 @@ export function ManifestView() {
   }, []);
 
   const table = useReactTable({
-    data: summaryItem.chunks || [],
+    data: summaryItem.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });

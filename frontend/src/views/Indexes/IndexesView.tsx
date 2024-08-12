@@ -12,7 +12,7 @@ import { EventsOn, EventsOff } from "@runtime";
 export function IndexesView() {
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [summaryItem, setSummaryItem] = useState<types.SummaryIndex>({} as types.SummaryIndex);
+  const [summaryItem, setSummaryItem] = useState<types.IndexContainer>({} as types.IndexContainer);
   const [refresh, setRefresh] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   const pager = useKeyboardPaging(count, [], 15);
@@ -20,7 +20,7 @@ export function IndexesView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetIndex(currentItem, itemsPerPage).then((item: types.SummaryIndex) => {
+        GetIndex(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
           setSummaryItem(item);
         });
       };

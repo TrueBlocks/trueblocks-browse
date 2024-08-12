@@ -6,18 +6,20 @@ import (
 
 // TODO: Eventually this will get put back into Core.
 
-type SummaryManifest struct {
+type ManifestContainer struct {
 	coreTypes.Manifest `json:",inline"`
-	LatestUpdate       string `json:"latestUpdate"`
-	NBlooms            uint64 `json:"nBlooms"`
-	BloomsSize         int64  `json:"bloomsSize"`
-	NIndexes           uint64 `json:"nIndexes"`
-	IndexSize          int64  `json:"indexSize"`
+	Items              []coreTypes.ChunkRecord `json:"items"`
+	LatestUpdate       string                  `json:"latestUpdate"`
+	NBlooms            uint64                  `json:"nBlooms"`
+	BloomsSize         int64                   `json:"bloomsSize"`
+	NIndexes           uint64                  `json:"nIndexes"`
+	IndexSize          int64                   `json:"indexSize"`
 }
 
-func NewSummaryManifest(manifest coreTypes.Manifest) SummaryManifest {
-	ret := SummaryManifest{
+func NewSummaryManifest(manifest coreTypes.Manifest) ManifestContainer {
+	ret := ManifestContainer{
 		Manifest: manifest,
+		Items:    manifest.Chunks,
 	}
 
 	for _, chunk := range manifest.Chunks {
@@ -30,8 +32,8 @@ func NewSummaryManifest(manifest coreTypes.Manifest) SummaryManifest {
 	return ret
 }
 
-func (s *SummaryManifest) ShallowCopy() SummaryManifest {
-	return SummaryManifest{
+func (s *ManifestContainer) ShallowCopy() ManifestContainer {
+	return ManifestContainer{
 		Manifest: coreTypes.Manifest{
 			Chain:         s.Manifest.Chain,
 			Specification: s.Manifest.Specification,

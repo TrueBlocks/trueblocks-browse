@@ -41,8 +41,8 @@ type App struct {
 
 	// Summaries
 	abis     types.AbiContainer
-	index    types.SummaryIndex
-	manifest types.SummaryManifest
+	index    types.IndexContainer
+	manifest types.ManifestContainer
 	monitors types.SummaryMonitor
 	names    types.SummaryName
 	status   types.SummaryStatus
