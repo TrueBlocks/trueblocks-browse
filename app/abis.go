@@ -11,15 +11,15 @@ import (
 
 // Find: NewViews
 func (a *App) GetAbis(first, pageSize int) types.SummaryAbis {
-	first = base.Max(0, base.Min(first, len(a.abis.Files)-1))
-	last := base.Min(len(a.abis.Files), first+pageSize)
+	first = base.Max(0, base.Min(first, len(a.abis.Items)-1))
+	last := base.Min(len(a.abis.Items), first+pageSize)
 	copy := a.abis.ShallowCopy()
-	copy.Files = a.abis.Files[first:last]
+	copy.Items = a.abis.Items[first:last]
 	return copy
 }
 
 func (a *App) GetAbisCnt() int {
-	return len(a.abis.Files)
+	return len(a.abis.Items)
 }
 
 func (a *App) loadAbis(wg *sync.WaitGroup) error {
@@ -39,11 +39,11 @@ func (a *App) loadAbis(wg *sync.WaitGroup) error {
 	} else if (abis == nil) || (len(abis) == 0) {
 		return fmt.Errorf("no status found")
 	} else {
-		if len(a.abis.Files) == len(abis) {
+		if len(a.abis.Items) == len(abis) {
 			return nil
 		}
 		a.abis = types.SummaryAbis{}
-		a.abis.Files = append(a.abis.Files, abis...)
+		a.abis.Items = append(a.abis.Items, abis...)
 		a.abis.Summarize()
 	}
 	return nil

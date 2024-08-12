@@ -51,7 +51,7 @@ export function IndexesView() {
   }, []);
 
   const table = useReactTable({
-    data: summaryItem.chunks || [],
+    data: summaryItem.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });

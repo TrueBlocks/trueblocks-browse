@@ -12,15 +12,15 @@ import (
 
 // Find: NewViews
 func (a *App) GetIndex(first, pageSize int) types.SummaryIndex {
-	first = base.Max(0, base.Min(first, len(a.index.Chunks)-1))
-	last := base.Min(len(a.index.Chunks), first+pageSize)
+	first = base.Max(0, base.Min(first, len(a.index.Items)-1))
+	last := base.Min(len(a.index.Items), first+pageSize)
 	copy := a.index.ShallowCopy()
-	copy.Chunks = a.index.Chunks[first:last]
+	copy.Items = a.index.Items[first:last]
 	return copy
 }
 
 func (a *App) GetIndexCnt() int {
-	return len(a.index.Chunks)
+	return len(a.index.Items)
 }
 
 func (a *App) loadIndex(wg *sync.WaitGroup) error {
@@ -36,13 +36,13 @@ func (a *App) loadIndex(wg *sync.WaitGroup) error {
 	} else if (chunks == nil) || (len(chunks) == 0) {
 		return fmt.Errorf("no index chunks found")
 	} else {
-		if len(a.index.Chunks) == len(chunks) {
+		if len(a.index.Items) == len(chunks) {
 			return nil
 		}
-		a.index = types.SummaryIndex{Chunks: chunks}
-		sort.Slice(a.index.Chunks, func(i, j int) bool {
+		a.index = types.SummaryIndex{Items: chunks}
+		sort.Slice(a.index.Items, func(i, j int) bool {
 			// reverse order
-			return a.index.Chunks[i].Range > a.index.Chunks[j].Range
+			return a.index.Items[i].Range > a.index.Items[j].Range
 		})
 		a.index.Summarize()
 	}

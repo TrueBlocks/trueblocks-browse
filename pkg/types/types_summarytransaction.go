@@ -21,12 +21,12 @@ type SummaryTransaction struct {
 	NTokens       int64                   `json:"nTokens"`
 	NErrors       int64                   `json:"nErrors"`
 	NTransactions int64                   `json:"nTransactions"`
-	Transactions  []coreTypes.Transaction `json:"transactions"`
+	Items         []coreTypes.Transaction `json:"items"`
 }
 
 func (s *SummaryTransaction) Summarize() {
-	s.NTransactions = int64(len(s.Transactions))
-	for _, tx := range s.Transactions {
+	s.NTransactions = int64(len(s.Items))
+	for _, tx := range s.Items {
 		if tx.Receipt != nil {
 			s.NEvents += int64(len(tx.Receipt.Logs))
 		}

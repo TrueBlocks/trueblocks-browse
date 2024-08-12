@@ -11,15 +11,15 @@ import (
 )
 
 func (a *App) GetMonitors(first, pageSize int) types.SummaryMonitor {
-	first = base.Max(0, base.Min(first, len(a.monitors.Monitors)-1))
-	last := base.Min(len(a.monitors.Monitors), first+pageSize)
+	first = base.Max(0, base.Min(first, len(a.monitors.Items)-1))
+	last := base.Min(len(a.monitors.Items), first+pageSize)
 	copy := a.monitors.ShallowCopy()
-	copy.Monitors = a.monitors.Monitors[first:last]
+	copy.Items = a.monitors.Items[first:last]
 	return copy
 }
 
 func (a *App) GetMonitorsCnt() int {
-	return len(a.monitors.Monitors)
+	return len(a.monitors.Items)
 }
 
 func (a *App) loadMonitors(wg *sync.WaitGroup) error {
@@ -33,18 +33,18 @@ func (a *App) loadMonitors(wg *sync.WaitGroup) error {
 	if monitors, _, err := opts.MonitorsList(); err != nil {
 		return err
 	} else {
-		if len(a.monitors.Monitors) == len(monitors) {
+		if len(a.monitors.Items) == len(monitors) {
 			return nil
 		}
 		a.monitors = types.SummaryMonitor{}
 		a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 		for _, mon := range monitors {
 			mon.Name = a.names.NamesMap[mon.Address].Name
-			a.monitors.Monitors = append(a.monitors.Monitors, mon)
+			a.monitors.Items = append(a.monitors.Items, mon)
 			a.monitors.MonitorMap[mon.Address] = mon
 		}
-		sort.Slice(a.monitors.Monitors, func(i, j int) bool {
-			return a.monitors.Monitors[i].NRecords > a.monitors.Monitors[j].NRecords
+		sort.Slice(a.monitors.Items, func(i, j int) bool {
+			return a.monitors.Items[i].NRecords > a.monitors.Items[j].NRecords
 		})
 		a.monitors.Summarize()
 	}

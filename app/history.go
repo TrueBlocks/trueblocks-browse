@@ -56,12 +56,12 @@ func (a *App) GetHistory(addr string, first, pageSize int) types.SummaryTransact
 					summary := a.historyMap[address]
 					summary.Address = address
 					summary.Name = a.names.NamesMap[address].Name
-					summary.Transactions = append(summary.Transactions, *txEx)
+					summary.Items = append(summary.Items, *txEx)
 					a.historyMap[address] = summary
-					if len(a.historyMap[address].Transactions)%pageSize == 0 {
+					if len(a.historyMap[address].Items)%pageSize == 0 {
 						messages.Send(a.ctx,
 							messages.Progress,
-							messages.NewProgressMsg(int64(len(a.historyMap[address].Transactions)), nItems, address),
+							messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), nItems, address),
 						)
 					}
 					historyMutex.Unlock()
@@ -81,30 +81,30 @@ func (a *App) GetHistory(addr string, first, pageSize int) types.SummaryTransact
 			return types.SummaryTransaction{}
 		}
 		historyMutex.Lock()
-		sort.Slice(a.historyMap[address].Transactions, func(i, j int) bool {
-			if a.historyMap[address].Transactions[i].BlockNumber == a.historyMap[address].Transactions[j].BlockNumber {
-				return a.historyMap[address].Transactions[i].TransactionIndex > a.historyMap[address].Transactions[j].TransactionIndex
+		sort.Slice(a.historyMap[address].Items, func(i, j int) bool {
+			if a.historyMap[address].Items[i].BlockNumber == a.historyMap[address].Items[j].BlockNumber {
+				return a.historyMap[address].Items[i].TransactionIndex > a.historyMap[address].Items[j].TransactionIndex
 			}
-			return a.historyMap[address].Transactions[i].BlockNumber > a.historyMap[address].Transactions[j].BlockNumber
+			return a.historyMap[address].Items[i].BlockNumber > a.historyMap[address].Items[j].BlockNumber
 		})
 		historyMutex.Unlock()
 
 		messages.Send(a.ctx,
 			messages.Completed,
-			messages.NewProgressMsg(int64(len(a.historyMap[address].Transactions)), int64(len(a.historyMap[address].Transactions)), address),
+			messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(len(a.historyMap[address].Items)), address),
 		)
 	}
 
 	historyMutex.Lock()
 	defer historyMutex.Unlock()
 
-	first = base.Max(0, base.Min(first, len(a.historyMap[address].Transactions)-1))
-	last := base.Min(len(a.historyMap[address].Transactions), first+pageSize)
+	first = base.Max(0, base.Min(first, len(a.historyMap[address].Items)-1))
+	last := base.Min(len(a.historyMap[address].Items), first+pageSize)
 	sum := a.historyMap[address]
 	sum.Summarize()
 	copy := sum.ShallowCopy()
 	copy.Balance = a.getBalance(address)
-	copy.Transactions = a.historyMap[address].Transactions[first:last]
+	copy.Items = a.historyMap[address].Items[first:last]
 	return copy
 }
 

@@ -716,7 +716,7 @@ export namespace types {
 	    largestFile: string;
 	    mostFunctions: string;
 	    mostEvents: string;
-	    chunks: Abi[];
+	    items: Abi[];
 	
 	    static createFrom(source: any = {}) {
 	        return new SummaryAbis(source);
@@ -737,7 +737,7 @@ export namespace types {
 	        this.largestFile = source["largestFile"];
 	        this.mostFunctions = source["mostFunctions"];
 	        this.mostEvents = source["mostEvents"];
-	        this.chunks = this.convertValues(source["chunks"], Abi);
+	        this.items = this.convertValues(source["items"], Abi);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -772,7 +772,7 @@ export namespace types {
 	    rangeEnd: string;
 	    ratio: number;
 	    recWid: number;
-	    chunks: ChunkStats[];
+	    items: ChunkStats[];
 	
 	    static createFrom(source: any = {}) {
 	        return new SummaryIndex(source);
@@ -793,7 +793,7 @@ export namespace types {
 	        this.rangeEnd = source["rangeEnd"];
 	        this.ratio = source["ratio"];
 	        this.recWid = source["recWid"];
-	        this.chunks = this.convertValues(source["chunks"], ChunkStats);
+	        this.items = this.convertValues(source["items"], ChunkStats);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -891,7 +891,7 @@ export namespace types {
 	    nNamed: number;
 	    nDeleted: number;
 	    monitorMap: {[key: string]: Monitor};
-	    monitors: Monitor[];
+	    items: Monitor[];
 	
 	    static createFrom(source: any = {}) {
 	        return new SummaryMonitor(source);
@@ -909,7 +909,7 @@ export namespace types {
 	        this.nNamed = source["nNamed"];
 	        this.nDeleted = source["nDeleted"];
 	        this.monitorMap = this.convertValues(source["monitorMap"], Monitor, true);
-	        this.monitors = this.convertValues(source["monitors"], Monitor);
+	        this.items = this.convertValues(source["items"], Monitor);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1470,7 +1470,7 @@ export namespace types {
 	    nTokens: number;
 	    nErrors: number;
 	    nTransactions: number;
-	    transactions: Transaction[];
+	    items: Transaction[];
 	
 	    static createFrom(source: any = {}) {
 	        return new SummaryTransaction(source);
@@ -1485,7 +1485,7 @@ export namespace types {
 	        this.nTokens = source["nTokens"];
 	        this.nErrors = source["nErrors"];
 	        this.nTransactions = source["nTransactions"];
-	        this.transactions = this.convertValues(source["transactions"], Transaction);
+	        this.items = this.convertValues(source["items"], Transaction);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

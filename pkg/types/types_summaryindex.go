@@ -19,7 +19,7 @@ import (
 
 type SummaryIndex struct {
 	coreTypes.ChunkStats
-	Chunks []coreTypes.ChunkStats `json:"chunks"`
+	Items []coreTypes.ChunkStats `json:"items"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -50,7 +50,7 @@ func (s *SummaryIndex) FinishUnmarshal() {
 
 // EXISTING_CODE
 func (s *SummaryIndex) Summarize() {
-	for _, chunk := range s.Chunks {
+	for _, chunk := range s.Items {
 		s.BloomSz += chunk.BloomSz
 		s.ChunkSz += chunk.ChunkSz
 		s.NAddrs += chunk.NAddrs

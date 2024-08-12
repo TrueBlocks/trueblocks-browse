@@ -9,19 +9,25 @@ export type Pager = {
   count: number;
   pageNumber: number;
   totalPages: number;
+  setpage: (newPage: number) => void;
 };
 
 export const Paginator = ({ pager }: { pager: Pager }) => {
   return (
     <div className={classes.paginator}>
       <Pagination
-        classNames={{ control: classes.red }}
         // siblings={1}
         size="sm"
         value={pager.pageNumber}
         total={pager.totalPages}
         // withEdges
-        styles={{ control: { border: "1px solid grey" } }}
+        classNames={{
+          root: classes.root,
+          control: classes.control,
+        }}
+        onChange={(value) => {
+          pager.setpage(value);
+        }}
       />
     </div>
   );

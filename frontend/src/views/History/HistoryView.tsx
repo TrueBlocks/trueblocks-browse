@@ -56,7 +56,7 @@ export function HistoryView() {
   }, [addr]);
 
   const table = useReactTable({
-    data: summaryItem.transactions || [],
+    data: summaryItem.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });

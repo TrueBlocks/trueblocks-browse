@@ -51,7 +51,7 @@ export function MonitorsView() {
   }, []);
 
   const table = useReactTable({
-    data: summaryItem.monitors || [],
+    data: summaryItem.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });

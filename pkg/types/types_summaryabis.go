@@ -27,7 +27,7 @@ type SummaryAbis struct {
 	lF            comparison      `json:"-"`
 	mF            comparison      `json:"-"`
 	mE            comparison      `json:"-"`
-	Files         []coreTypes.Abi `json:"chunks"`
+	Items         []coreTypes.Abi `json:"items"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -58,8 +58,8 @@ func (s *SummaryAbis) FinishUnmarshal() {
 
 // EXISTING_CODE
 func (s *SummaryAbis) Summarize() {
-	s.NAbis = int64(len(s.Files))
-	for _, file := range s.Files {
+	s.NAbis = int64(len(s.Items))
+	for _, file := range s.Items {
 		s.NFunctions += file.NFunctions
 		s.NEvents += file.NEvents
 		s.FileSize += file.FileSize

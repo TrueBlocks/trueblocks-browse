@@ -24,7 +24,7 @@ type SummaryMonitor struct {
 	NNamed     int64                              `json:"nNamed"`
 	NDeleted   int64                              `json:"nDeleted"`
 	MonitorMap map[base.Address]coreTypes.Monitor `json:"monitorMap"`
-	Monitors   []coreTypes.Monitor                `json:"monitors"`
+	Items      []coreTypes.Monitor                `json:"items"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -64,7 +64,7 @@ func (s *SummaryMonitor) ShallowCopy() SummaryMonitor {
 }
 
 func (s *SummaryMonitor) Summarize() {
-	for _, mon := range s.Monitors {
+	for _, mon := range s.Items {
 		s.NMonitors++
 		if mon.Deleted {
 			s.NDeleted++

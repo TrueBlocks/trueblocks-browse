@@ -4,7 +4,24 @@
   margin-top: 1rem;
 }
 
-.red {
-  border: 10px solid black;
-  background-color: #ffffff00;
+.root {
+  background-color: white !important;
+  color: black !important;
+}
+
+.control {
+  background-color: white !important;
+  border-color: white !important;
+  color: black !important;
+}
+
+.control[data-active] {
+  font-weight: bold;
+  color: black !important;
+  font-size: 1.1rem;
+}
+
+.control:hover {
+  font-weight: bold;
+  color: darkolivegreen !important;
 }
