@@ -26,7 +26,7 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
 export function Freshen(arg1:Array<string>):Promise<void>;
 
-export function GetAbis(arg1:number,arg2:number):Promise<types.SummaryAbis>;
+export function GetAbis(arg1:number,arg2:number):Promise<types.AbiContainer>;
 
 export function GetAbisCnt():Promise<number>;
 

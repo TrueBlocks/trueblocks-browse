@@ -18,7 +18,7 @@ import (
 
 // EXISTING_CODE
 
-type SummaryAbis struct {
+type AbiContainer struct {
 	coreTypes.Abi
 	NAbis         int64           `json:"nAbis"`
 	LargestFile   string          `json:"largestFile"`
@@ -32,12 +32,12 @@ type SummaryAbis struct {
 	// EXISTING_CODE
 }
 
-func (s SummaryAbis) String() string {
+func (s AbiContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-func (s *SummaryAbis) Model(chain, format string, verbose bool, extraOpts map[string]any) Model {
+func (s *AbiContainer) Model(chain, format string, verbose bool, extraOpts map[string]any) Model {
 	var model = map[string]any{}
 	var order = []string{}
 
@@ -51,13 +51,13 @@ func (s *SummaryAbis) Model(chain, format string, verbose bool, extraOpts map[st
 }
 
 // FinishUnmarshal is used by the cache. It may be unused depending on auto-code-gen
-func (s *SummaryAbis) FinishUnmarshal() {
+func (s *AbiContainer) FinishUnmarshal() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 // EXISTING_CODE
-func (s *SummaryAbis) Summarize() {
+func (s *AbiContainer) Summarize() {
 	s.NAbis = int64(len(s.Items))
 	for _, file := range s.Items {
 		s.NFunctions += file.NFunctions
@@ -72,8 +72,8 @@ func (s *SummaryAbis) Summarize() {
 	s.MostEvents = fmt.Sprintf("%s (%d events)", s.mE.Name, s.mE.Value)
 }
 
-func (s *SummaryAbis) ShallowCopy() SummaryAbis {
-	return SummaryAbis{
+func (s *AbiContainer) ShallowCopy() AbiContainer {
+	return AbiContainer{
 		Abi:           s.Abi,
 		NAbis:         s.NAbis,
 		LargestFile:   s.LargestFile,

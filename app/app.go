@@ -40,7 +40,7 @@ type App struct {
 	balanceMap map[base.Address]string
 
 	// Summaries
-	abis     types.SummaryAbis
+	abis     types.AbiContainer
 	index    types.SummaryIndex
 	manifest types.SummaryManifest
 	monitors types.SummaryMonitor

@@ -49,7 +49,7 @@ func main() {
 				&messages.DaemonMsg{},
 				&daemons.Daemon{},
 				&coreTypes.Transaction{},
-				&types.SummaryAbis{},
+				&types.AbiContainer{},
 				&types.SummaryIndex{},
 				&types.SummaryManifest{},
 				&types.SummaryMonitor{},

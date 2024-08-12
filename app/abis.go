@@ -10,7 +10,7 @@ import (
 )
 
 // Find: NewViews
-func (a *App) GetAbis(first, pageSize int) types.SummaryAbis {
+func (a *App) GetAbis(first, pageSize int) types.AbiContainer {
 	first = base.Max(0, base.Min(first, len(a.abis.Items)-1))
 	last := base.Min(len(a.abis.Items), first+pageSize)
 	copy := a.abis.ShallowCopy()
@@ -42,7 +42,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup) error {
 		if len(a.abis.Items) == len(abis) {
 			return nil
 		}
-		a.abis = types.SummaryAbis{}
+		a.abis = types.AbiContainer{}
 		a.abis.Items = append(a.abis.Items, abis...)
 		a.abis.Summarize()
 	}

@@ -424,6 +424,62 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class AbiContainer {
+	    address: base.Address;
+	    fileSize: number;
+	    functions: Function[];
+	    isKnown: boolean;
+	    lastModDate: string;
+	    nEvents: number;
+	    nFunctions: number;
+	    name: string;
+	    path: string;
+	    nAbis: number;
+	    largestFile: string;
+	    mostFunctions: string;
+	    mostEvents: string;
+	    items: Abi[];
+	
+	    static createFrom(source: any = {}) {
+	        return new AbiContainer(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.fileSize = source["fileSize"];
+	        this.functions = this.convertValues(source["functions"], Function);
+	        this.isKnown = source["isKnown"];
+	        this.lastModDate = source["lastModDate"];
+	        this.nEvents = source["nEvents"];
+	        this.nFunctions = source["nFunctions"];
+	        this.name = source["name"];
+	        this.path = source["path"];
+	        this.nAbis = source["nAbis"];
+	        this.largestFile = source["largestFile"];
+	        this.mostFunctions = source["mostFunctions"];
+	        this.mostEvents = source["mostEvents"];
+	        this.items = this.convertValues(source["items"], Abi);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class ChunkStats {
 	    addrsPerBlock: number;
 	    appsPerAddr: number;
@@ -682,62 +738,6 @@ export namespace types {
 	        this.nephew = this.convertValues(source["nephew"], null);
 	        this.txFee = this.convertValues(source["txFee"], null);
 	        this.uncle = this.convertValues(source["uncle"], null);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class SummaryAbis {
-	    address: base.Address;
-	    fileSize: number;
-	    functions: Function[];
-	    isKnown: boolean;
-	    lastModDate: string;
-	    nEvents: number;
-	    nFunctions: number;
-	    name: string;
-	    path: string;
-	    nAbis: number;
-	    largestFile: string;
-	    mostFunctions: string;
-	    mostEvents: string;
-	    items: Abi[];
-	
-	    static createFrom(source: any = {}) {
-	        return new SummaryAbis(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.address = this.convertValues(source["address"], base.Address);
-	        this.fileSize = source["fileSize"];
-	        this.functions = this.convertValues(source["functions"], Function);
-	        this.isKnown = source["isKnown"];
-	        this.lastModDate = source["lastModDate"];
-	        this.nEvents = source["nEvents"];
-	        this.nFunctions = source["nFunctions"];
-	        this.name = source["name"];
-	        this.path = source["path"];
-	        this.nAbis = source["nAbis"];
-	        this.largestFile = source["largestFile"];
-	        this.mostFunctions = source["mostFunctions"];
-	        this.mostEvents = source["mostEvents"];
-	        this.items = this.convertValues(source["items"], Abi);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
