@@ -11,15 +11,15 @@ import (
 )
 
 func (a *App) GetStatus(first, pageSize int) types.SummaryStatus {
-	first = base.Max(0, base.Min(first, len(a.status.Caches)-1))
-	last := base.Min(len(a.status.Caches), first+pageSize)
+	first = base.Max(0, base.Min(first, len(a.status.Items)-1))
+	last := base.Min(len(a.status.Items), first+pageSize)
 	copy := a.status.ShallowCopy()
-	copy.Caches = a.status.Caches[first:last]
+	copy.Items = a.status.Items[first:last]
 	return copy
 }
 
 func (a *App) GetStatusCnt() int {
-	return len(a.status.Caches)
+	return len(a.status.Items)
 }
 
 func (a *App) loadStatus() error {
@@ -32,8 +32,9 @@ func (a *App) loadStatus() error {
 		a.status.Status = statusArray[0]
 		// TODO: This is a hack. We need to get the version from the core
 		a.status.Version = version.LibraryVersion
-		sort.Slice(a.status.Caches, func(i, j int) bool {
-			return a.status.Caches[i].SizeInBytes > a.status.Caches[j].SizeInBytes
+		a.status.Items = a.status.Caches
+		sort.Slice(a.status.Items, func(i, j int) bool {
+			return a.status.Items[i].SizeInBytes > a.status.Items[j].SizeInBytes
 		})
 		a.status.Summarize()
 	}

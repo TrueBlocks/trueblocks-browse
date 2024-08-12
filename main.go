@@ -53,7 +53,7 @@ func main() {
 				&types.IndexContainer{},
 				&types.ManifestContainer{},
 				&types.MonitorContainer{},
-				&types.SummaryName{},
+				&types.NameContainer{},
 				&types.SummaryStatus{},
 			},
 			EnumBind: []interface{}{

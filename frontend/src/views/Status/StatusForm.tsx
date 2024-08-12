@@ -50,11 +50,7 @@ export function createForm(table: any, pager: Pager): GroupDefinition<theInstanc
       fields: [],
       components: [
         {
-          component: (
-            <>
-              <DataTable<types.CacheItem> table={table} loading={false} pager={pager} />
-            </>
-          ),
+          component: <DataTable<types.CacheItem> table={table} loading={false} pager={pager} />,
         },
       ],
     },

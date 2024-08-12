@@ -44,7 +44,7 @@ type App struct {
 	index    types.IndexContainer
 	manifest types.ManifestContainer
 	monitors types.MonitorContainer
-	names    types.SummaryName
+	names    types.NameContainer
 	status   types.SummaryStatus
 
 	// Add your application's data here

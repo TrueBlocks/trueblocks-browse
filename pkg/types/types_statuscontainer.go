@@ -8,10 +8,11 @@ import (
 
 type SummaryStatus struct {
 	coreTypes.Status `json:",inline"`
-	LatestUpdate     string `json:"latestUpdate"`
-	NFolders         uint64 `json:"nFolders"`
-	NFiles           uint64 `json:"nFiles"`
-	NBytes           int64  `json:"nBytes"`
+	Items            []coreTypes.CacheItem `json:"items"`
+	LatestUpdate     string                `json:"latestUpdate"`
+	NFolders         uint64                `json:"nFolders"`
+	NFiles           uint64                `json:"nFiles"`
+	NBytes           int64                 `json:"nBytes"`
 }
 
 func (s *SummaryStatus) ShallowCopy() SummaryStatus {
@@ -21,7 +22,7 @@ func (s *SummaryStatus) ShallowCopy() SummaryStatus {
 }
 
 func (s *SummaryStatus) Summarize() {
-	for _, cache := range s.Caches {
+	for _, cache := range s.Items {
 		s.NFolders += cache.NFolders
 		s.NFiles += cache.NFiles
 		s.NBytes += cache.SizeInBytes

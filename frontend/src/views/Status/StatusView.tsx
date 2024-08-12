@@ -51,7 +51,7 @@ export function StatusView() {
   }, []);
 
   const table = useReactTable({
-    data: summaryItem.caches || [],
+    data: summaryItem.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });

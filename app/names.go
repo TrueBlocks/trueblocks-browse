@@ -14,7 +14,7 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-func (a *App) GetNames(first, pageSize int) types.SummaryName {
+func (a *App) GetNames(first, pageSize int) types.NameContainer {
 	first = base.Max(0, base.Min(first, len(a.names.Names)-1))
 	last := base.Min(len(a.names.Names), first+pageSize)
 	copy := a.names.ShallowCopy()
@@ -59,7 +59,7 @@ func (a *App) loadNames(wg *sync.WaitGroup) error {
 			return nil
 		}
 
-		a.names = types.SummaryName{
+		a.names = types.NameContainer{
 			NamesMap: namesMap,
 			Names:    []coreTypes.Name{},
 		}

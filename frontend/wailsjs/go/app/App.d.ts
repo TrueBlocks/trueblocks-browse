@@ -58,7 +58,7 @@ export function GetMonitors(arg1:number,arg2:number):Promise<types.MonitorContai
 
 export function GetMonitorsCnt():Promise<number>;
 
-export function GetNames(arg1:number,arg2:number):Promise<types.SummaryName>;
+export function GetNames(arg1:number,arg2:number):Promise<types.NameContainer>;
 
 export function GetNamesCnt():Promise<number>;
 
