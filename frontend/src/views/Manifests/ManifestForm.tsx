@@ -1,19 +1,10 @@
 import React from "react";
 import { types } from "@gocode/models";
-import { GroupDefinition, DataTable } from "@components";
-import { Pagination } from "@mantine/core";
+import { GroupDefinition, DataTable, Pager } from "@components";
 
 export type theInstance = InstanceType<typeof types.SummaryManifest>;
 
-export function createForm(
-  table: any,
-  firstRecord: number,
-  totalRecords: number,
-  perPage: number
-): GroupDefinition<theInstance>[] {
-  const pageNumber = firstRecord < perPage ? 1 : Math.ceil(firstRecord / perPage) + 1;
-  const totalPages = Math.ceil(totalRecords / perPage);
-
+export function createForm(table: any, pager: Pager): GroupDefinition<theInstance>[] {
   return [
     {
       title: "Manifest Data",
@@ -42,10 +33,7 @@ export function createForm(
         {
           component: (
             <>
-              <DataTable<types.ChunkRecord> table={table} loading={false} />
-              <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1rem" }}>
-                <Pagination size="sm" value={pageNumber} total={totalPages} />
-              </div>
+              <DataTable<types.ChunkRecord> table={table} loading={false} pager={pager} />
             </>
           ),
         },

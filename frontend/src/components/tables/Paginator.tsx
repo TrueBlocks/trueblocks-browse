@@ -3,7 +3,16 @@ import React from "react";
 import { Pagination } from "@mantine/core";
 import classes from "./Paginator.module.css";
 
-export const Paginator = ({ pageNumber, totalPages }: { pageNumber: number; totalPages: number }) => {
+export type Pager = {
+  curItem: number;
+  perPage: number;
+  count: number;
+};
+
+export const Paginator = ({ pager }: { pager: Pager }) => {
+  const pageNumber = pager.curItem < pager.perPage ? 1 : Math.ceil(pager.curItem / pager.perPage) + 1;
+  const totalPages = Math.ceil(pager.count / pager.perPage);
+
   return (
     <div className={classes.paginator}>
       <Pagination

@@ -27,7 +27,7 @@ export function StatusView() {
       fetch(pager.curItem, pager.perPage);
       setRefresh(false);
     }
-  }, [count, pager, loaded, loading, refresh]);
+  }, [count, pager.curItem, pager.perPage, loaded, loading]);
 
   useEffect(() => {
     const handleRefresh = () => {
@@ -60,7 +60,7 @@ export function StatusView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={summaryItem} definition={createForm(table, pager.curItem, count, pager.perPage)} />
+        <FormTable data={summaryItem} definition={createForm(table, pager)} />
       </Stack>
       <ViewStatus />
     </View>

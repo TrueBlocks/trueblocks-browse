@@ -60,7 +60,7 @@ export function MonitorsView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={summaryItem} definition={createForm(table, pager.curItem, count, pager.perPage)} />
+        <FormTable data={summaryItem} definition={createForm(table, pager)} />
       </Stack>
       <ViewStatus />
     </View>

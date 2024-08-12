@@ -30,7 +30,7 @@ export function HistoryView() {
       };
       fetch(address, pager.curItem, pager.perPage);
     }
-  }, [count, pager, loaded, loading, address]);
+  }, [count, pager.curItem, pager.perPage, loaded, loading, address]);
 
   useEffect(() => {
     setLoading(true);
@@ -65,7 +65,7 @@ export function HistoryView() {
     <View>
       <Stack className={classes.mainContent}>
         <ViewTitle />
-        <FormTable data={summaryItem} definition={createForm(table, pager.curItem, count, pager.perPage)} />
+        <FormTable data={summaryItem} definition={createForm(table, pager)} />
       </Stack>
       <ViewStatus />
     </View>

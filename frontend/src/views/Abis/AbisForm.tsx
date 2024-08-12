@@ -1,18 +1,10 @@
 import React from "react";
 import { types } from "@gocode/models";
-import { GroupDefinition, DataTable, Paginator } from "@components";
+import { GroupDefinition, DataTable, Pager } from "@components";
 
 export type theInstance = InstanceType<typeof types.SummaryAbis>;
 
-export function createForm(
-  table: any,
-  firstRecord: number,
-  totalRecords: number,
-  perPage: number
-): GroupDefinition<theInstance>[] {
-  const pageNumber = firstRecord < perPage ? 1 : Math.ceil(firstRecord / perPage) + 1;
-  const totalPages = Math.ceil(totalRecords / perPage);
-
+export function createForm(table: any, pager: Pager): GroupDefinition<theInstance>[] {
   return [
     {
       title: "Abi Data",
@@ -40,8 +32,7 @@ export function createForm(
         {
           component: (
             <>
-              <DataTable<types.Abi> table={table} loading={false} />
-              <Paginator pageNumber={pageNumber} totalPages={totalPages} />
+              <DataTable<types.Abi> table={table} loading={false} pager={pager} />
             </>
           ),
         },
