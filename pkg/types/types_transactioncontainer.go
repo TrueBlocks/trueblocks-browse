@@ -13,7 +13,7 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-type SummaryTransaction struct {
+type TransactionContainer struct {
 	Address       base.Address            `json:"address"`
 	Name          string                  `json:"name"`
 	Balance       string                  `json:"balance"`
@@ -24,7 +24,7 @@ type SummaryTransaction struct {
 	Items         []coreTypes.Transaction `json:"items"`
 }
 
-func (s *SummaryTransaction) Summarize() {
+func (s *TransactionContainer) Summarize() {
 	s.NTransactions = int64(len(s.Items))
 	for _, tx := range s.Items {
 		if tx.Receipt != nil {
@@ -39,8 +39,8 @@ func (s *SummaryTransaction) Summarize() {
 	}
 }
 
-func (s *SummaryTransaction) ShallowCopy() SummaryTransaction {
-	return SummaryTransaction{
+func (s *TransactionContainer) ShallowCopy() TransactionContainer {
+	return TransactionContainer{
 		Address:       s.Address,
 		Name:          s.Name,
 		Balance:       s.Balance,

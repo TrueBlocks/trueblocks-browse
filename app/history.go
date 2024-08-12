@@ -14,11 +14,11 @@ import (
 
 var historyMutex sync.Mutex
 
-func (a *App) GetHistory(addr string, first, pageSize int) types.SummaryTransaction {
+func (a *App) GetHistory(addr string, first, pageSize int) types.TransactionContainer {
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
-		return types.SummaryTransaction{}
+		return types.TransactionContainer{}
 	}
 
 	historyMutex.Lock()
@@ -78,7 +78,7 @@ func (a *App) GetHistory(addr string, first, pageSize int) types.SummaryTransact
 		_, _, err := opts.Export()
 		if err != nil {
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
-			return types.SummaryTransaction{}
+			return types.TransactionContainer{}
 		}
 		historyMutex.Lock()
 		sort.Slice(a.historyMap[address].Items, func(i, j int) bool {

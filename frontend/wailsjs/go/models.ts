@@ -1140,113 +1140,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class Statement {
-	    accountedFor: base.Address;
-	    // Go type: base
-	    amountIn?: any;
-	    // Go type: base
-	    amountOut?: any;
-	    assetAddr: base.Address;
-	    assetSymbol: string;
-	    // Go type: base
-	    begBal: any;
-	    blockNumber: number;
-	    // Go type: base
-	    correctingIn?: any;
-	    // Go type: base
-	    correctingOut?: any;
-	    correctingReason?: string;
-	    decimals: number;
-	    // Go type: base
-	    endBal: any;
-	    // Go type: base
-	    gasOut?: any;
-	    // Go type: base
-	    internalIn?: any;
-	    // Go type: base
-	    internalOut?: any;
-	    logIndex: number;
-	    // Go type: base
-	    minerBaseRewardIn?: any;
-	    // Go type: base
-	    minerNephewRewardIn?: any;
-	    // Go type: base
-	    minerTxFeeIn?: any;
-	    // Go type: base
-	    minerUncleRewardIn?: any;
-	    // Go type: base
-	    prefundIn?: any;
-	    // Go type: base
-	    prevBal?: any;
-	    priceSource: string;
-	    recipient: base.Address;
-	    // Go type: base
-	    selfDestructIn?: any;
-	    // Go type: base
-	    selfDestructOut?: any;
-	    sender: base.Address;
-	    spotPrice: number;
-	    timestamp: number;
-	    transactionHash: base.Hash;
-	    transactionIndex: number;
-	
-	    static createFrom(source: any = {}) {
-	        return new Statement(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.accountedFor = this.convertValues(source["accountedFor"], base.Address);
-	        this.amountIn = this.convertValues(source["amountIn"], null);
-	        this.amountOut = this.convertValues(source["amountOut"], null);
-	        this.assetAddr = this.convertValues(source["assetAddr"], base.Address);
-	        this.assetSymbol = source["assetSymbol"];
-	        this.begBal = this.convertValues(source["begBal"], null);
-	        this.blockNumber = source["blockNumber"];
-	        this.correctingIn = this.convertValues(source["correctingIn"], null);
-	        this.correctingOut = this.convertValues(source["correctingOut"], null);
-	        this.correctingReason = source["correctingReason"];
-	        this.decimals = source["decimals"];
-	        this.endBal = this.convertValues(source["endBal"], null);
-	        this.gasOut = this.convertValues(source["gasOut"], null);
-	        this.internalIn = this.convertValues(source["internalIn"], null);
-	        this.internalOut = this.convertValues(source["internalOut"], null);
-	        this.logIndex = source["logIndex"];
-	        this.minerBaseRewardIn = this.convertValues(source["minerBaseRewardIn"], null);
-	        this.minerNephewRewardIn = this.convertValues(source["minerNephewRewardIn"], null);
-	        this.minerTxFeeIn = this.convertValues(source["minerTxFeeIn"], null);
-	        this.minerUncleRewardIn = this.convertValues(source["minerUncleRewardIn"], null);
-	        this.prefundIn = this.convertValues(source["prefundIn"], null);
-	        this.prevBal = this.convertValues(source["prevBal"], null);
-	        this.priceSource = source["priceSource"];
-	        this.recipient = this.convertValues(source["recipient"], base.Address);
-	        this.selfDestructIn = this.convertValues(source["selfDestructIn"], null);
-	        this.selfDestructOut = this.convertValues(source["selfDestructOut"], null);
-	        this.sender = this.convertValues(source["sender"], base.Address);
-	        this.spotPrice = source["spotPrice"];
-	        this.timestamp = source["timestamp"];
-	        this.transactionHash = this.convertValues(source["transactionHash"], base.Hash);
-	        this.transactionIndex = source["transactionIndex"];
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
 	export class TraceResult {
 	    address?: base.Address;
 	    code?: string;
@@ -1393,6 +1286,115 @@ export namespace types {
 		    return a;
 		}
 	}
+	
+	
+	export class Statement {
+	    accountedFor: base.Address;
+	    // Go type: base
+	    amountIn?: any;
+	    // Go type: base
+	    amountOut?: any;
+	    assetAddr: base.Address;
+	    assetSymbol: string;
+	    // Go type: base
+	    begBal: any;
+	    blockNumber: number;
+	    // Go type: base
+	    correctingIn?: any;
+	    // Go type: base
+	    correctingOut?: any;
+	    correctingReason?: string;
+	    decimals: number;
+	    // Go type: base
+	    endBal: any;
+	    // Go type: base
+	    gasOut?: any;
+	    // Go type: base
+	    internalIn?: any;
+	    // Go type: base
+	    internalOut?: any;
+	    logIndex: number;
+	    // Go type: base
+	    minerBaseRewardIn?: any;
+	    // Go type: base
+	    minerNephewRewardIn?: any;
+	    // Go type: base
+	    minerTxFeeIn?: any;
+	    // Go type: base
+	    minerUncleRewardIn?: any;
+	    // Go type: base
+	    prefundIn?: any;
+	    // Go type: base
+	    prevBal?: any;
+	    priceSource: string;
+	    recipient: base.Address;
+	    // Go type: base
+	    selfDestructIn?: any;
+	    // Go type: base
+	    selfDestructOut?: any;
+	    sender: base.Address;
+	    spotPrice: number;
+	    timestamp: number;
+	    transactionHash: base.Hash;
+	    transactionIndex: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Statement(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.accountedFor = this.convertValues(source["accountedFor"], base.Address);
+	        this.amountIn = this.convertValues(source["amountIn"], null);
+	        this.amountOut = this.convertValues(source["amountOut"], null);
+	        this.assetAddr = this.convertValues(source["assetAddr"], base.Address);
+	        this.assetSymbol = source["assetSymbol"];
+	        this.begBal = this.convertValues(source["begBal"], null);
+	        this.blockNumber = source["blockNumber"];
+	        this.correctingIn = this.convertValues(source["correctingIn"], null);
+	        this.correctingOut = this.convertValues(source["correctingOut"], null);
+	        this.correctingReason = source["correctingReason"];
+	        this.decimals = source["decimals"];
+	        this.endBal = this.convertValues(source["endBal"], null);
+	        this.gasOut = this.convertValues(source["gasOut"], null);
+	        this.internalIn = this.convertValues(source["internalIn"], null);
+	        this.internalOut = this.convertValues(source["internalOut"], null);
+	        this.logIndex = source["logIndex"];
+	        this.minerBaseRewardIn = this.convertValues(source["minerBaseRewardIn"], null);
+	        this.minerNephewRewardIn = this.convertValues(source["minerNephewRewardIn"], null);
+	        this.minerTxFeeIn = this.convertValues(source["minerTxFeeIn"], null);
+	        this.minerUncleRewardIn = this.convertValues(source["minerUncleRewardIn"], null);
+	        this.prefundIn = this.convertValues(source["prefundIn"], null);
+	        this.prevBal = this.convertValues(source["prevBal"], null);
+	        this.priceSource = source["priceSource"];
+	        this.recipient = this.convertValues(source["recipient"], base.Address);
+	        this.selfDestructIn = this.convertValues(source["selfDestructIn"], null);
+	        this.selfDestructOut = this.convertValues(source["selfDestructOut"], null);
+	        this.sender = this.convertValues(source["sender"], base.Address);
+	        this.spotPrice = source["spotPrice"];
+	        this.timestamp = source["timestamp"];
+	        this.transactionHash = this.convertValues(source["transactionHash"], base.Hash);
+	        this.transactionIndex = source["transactionIndex"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class Transaction {
 	    articulatedTx?: Function;
 	    blockHash: base.Hash;
@@ -1466,7 +1468,7 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class SummaryTransaction {
+	export class TransactionContainer {
 	    address: base.Address;
 	    name: string;
 	    balance: string;
@@ -1477,7 +1479,7 @@ export namespace types {
 	    items: Transaction[];
 	
 	    static createFrom(source: any = {}) {
-	        return new SummaryTransaction(source);
+	        return new TransactionContainer(source);
 	    }
 	
 	    constructor(source: any = {}) {
@@ -1510,9 +1512,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	
-	
-	
 
 }
 

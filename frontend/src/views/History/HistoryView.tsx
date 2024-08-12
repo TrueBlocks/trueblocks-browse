@@ -14,7 +14,7 @@ export function HistoryView() {
   const [address, setAddress] = useState<string>("trueblocks.eth");
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [summaryItem, setSummaryItem] = useState<types.SummaryTransaction>({} as types.SummaryTransaction);
+  const [summaryItem, setSummaryItem] = useState<types.TransactionContainer>({} as types.TransactionContainer);
   const [count, setCount] = useState<number>(0);
   const pager = useKeyboardPaging(count, [address], 15);
 
@@ -24,7 +24,7 @@ export function HistoryView() {
   useEffect(() => {
     if (loaded && !loading) {
       const fetch = async (addr: string, currentItem: number, itemsPerPage: number) => {
-        GetHistory(addr, currentItem, itemsPerPage).then((item: types.SummaryTransaction) => {
+        GetHistory(addr, currentItem, itemsPerPage).then((item: types.TransactionContainer) => {
           setSummaryItem(item);
         });
       };

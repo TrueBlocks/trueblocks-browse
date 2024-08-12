@@ -36,7 +36,7 @@ type App struct {
 	apiKeys    map[string]string
 	ensMap     map[string]base.Address
 	renderCtxs map[base.Address][]*output.RenderCtx
-	historyMap map[base.Address]types.SummaryTransaction
+	historyMap map[base.Address]types.TransactionContainer
 	balanceMap map[base.Address]string
 
 	// Summaries
@@ -60,7 +60,7 @@ func NewApp() *App {
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 		ensMap:     make(map[string]base.Address),
 		// Initialize maps here
-		historyMap: make(map[base.Address]types.SummaryTransaction),
+		historyMap: make(map[base.Address]types.TransactionContainer),
 		balanceMap: make(map[base.Address]string),
 		Documents:  make([]types.Document, 10),
 	}
