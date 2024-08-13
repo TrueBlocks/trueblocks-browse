@@ -54,10 +54,6 @@ export function GetDaemon(arg1) {
   return window['go']['app']['App']['GetDaemon'](arg1);
 }
 
-export function GetExistingAddrs() {
-  return window['go']['app']['App']['GetExistingAddrs']();
-}
-
 export function GetHistory(arg1, arg2, arg3) {
   return window['go']['app']['App']['GetHistory'](arg1, arg2, arg3);
 }

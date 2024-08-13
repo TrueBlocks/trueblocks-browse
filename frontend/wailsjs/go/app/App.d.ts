@@ -34,8 +34,6 @@ export function GetContext():Promise<context.Context>;
 
 export function GetDaemon(arg1:string):Promise<daemons.Daemon>;
 
-export function GetExistingAddrs():Promise<Array<string>>;
-
 export function GetHistory(arg1:string,arg2:number,arg3:number):Promise<types.TransactionContainer>;
 
 export function GetHistoryCnt(arg1:string):Promise<number>;
