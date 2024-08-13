@@ -1,10 +1,8 @@
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect } from "react";
 import { types } from "@gocode/models";
-import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
-import classes from "@/App.module.css";
-import { View, ViewStatus, ViewTitle, FormTable } from "@components";
+import { View2, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { GetMonitors, GetMonitorsCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
@@ -57,12 +55,8 @@ export function MonitorsView() {
   });
 
   return (
-    <View>
-      <Stack className={classes.mainContent}>
-        <ViewTitle />
-        <FormTable data={summaryItem} definition={createForm(table, pager)} />
-      </Stack>
-      <ViewStatus />
-    </View>
+    <View2>
+      <FormTable data={summaryItem} definition={createForm(table, pager)} />
+    </View2>
   );
 }

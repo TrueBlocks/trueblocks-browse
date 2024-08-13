@@ -1,16 +1,11 @@
 import React from "react";
-import { Stack, Text, Title } from "@mantine/core";
-import classes from "@/App.module.css";
-import { View, ViewStatus, ViewTitle } from "@components";
+import { Text } from "@mantine/core";
+import { View2 } from "@components";
 
 export function HomeView() {
   return (
-    <View>
-      <Stack className={classes.mainContent}>
-        <ViewTitle />
-        <Text>Home View Content</Text>
-      </Stack>
-      <ViewStatus />
-    </View>
+    <View2>
+      <Text>Home View Content</Text>
+    </View2>
   );
 }

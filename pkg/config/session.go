@@ -17,27 +17,24 @@ type Daemons struct {
 
 // Session stores ephemeral things such as last window position, last view, and recent file
 type Session struct {
-	X           int     `json:"x"`
-	Y           int     `json:"y"`
-	Width       int     `json:"width"`
-	Height      int     `json:"height"`
-	Title       string  `json:"title"`
-	LastRoute   string  `json:"lastRoute"`
-	LastTab     string  `json:"lastTab"`
-	LastAddress string  `json:"lastAddress"`
-	LastHelp    string  `json:"lastHelp"`
-	Daemons     Daemons `json:"daemons"`
+	X           int               `json:"x"`
+	Y           int               `json:"y"`
+	Width       int               `json:"width"`
+	Height      int               `json:"height"`
+	Title       string            `json:"title"`
+	LastRoute   string            `json:"lastRoute"`
+	LastTab     map[string]string `json:"lastTab"`
+	LastAddress string            `json:"lastAddress"`
+	LastHelp    string            `json:"lastHelp"`
+	Daemons     Daemons           `json:"daemons"`
 }
 
 var defaultSession = Session{
-	Width:  1024,
-	Height: 768,
-	Title:  "Browse by TrueBlocks",
+	Width:   1024,
+	Height:  768,
+	Title:   "Browse by TrueBlocks",
+	LastTab: map[string]string{},
 	Daemons: Daemons{},
-}
-
-func NewSession() Session {
-	return defaultSession
 }
 
 // Load loads the session from the configuration folder. If the file contains

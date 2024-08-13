@@ -3,10 +3,10 @@ import { useLocation } from "wouter";
 import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter } from "@components";
+import { SetLast } from "@gocode/app/App";
 
 const columnHelper = createColumnHelper<types.Monitor>();
 
-// Find: NewViews
 export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
   columnHelper.accessor("address", {
     header: () => "Address",
@@ -19,6 +19,7 @@ export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
           onClick={(e) => {
             e.preventDefault();
             setLocation(`/history/${address}`);
+            SetLast("route", `/history/${address}`);
           }}
         >
           {address}

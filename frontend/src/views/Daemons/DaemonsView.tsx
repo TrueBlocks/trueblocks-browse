@@ -1,11 +1,10 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { View, ViewStatus, ViewTitle } from "@components";
+import { View2 } from "@components";
 import { DaemonCard, DaemonLog } from ".";
 import { daemons, messages } from "@gocode/models";
 import { GetDaemon, ToggleDaemon } from "@gocode/app/App";
-import { Stack, Title, SimpleGrid, Fieldset } from "@mantine/core";
+import { SimpleGrid, Fieldset } from "@mantine/core";
 import { EventsOn, EventsOff } from "@runtime";
-import classes from "@/App.module.css";
 
 var empty = {} as daemons.Daemon;
 
@@ -59,21 +58,17 @@ export function DaemonsView() {
   };
 
   return (
-    <View>
-      <Stack className={classes.mainContent}>
-        <ViewTitle />
-        <Fieldset legend={"Daemons"} bg={"white"}>
-          <SimpleGrid cols={2}>
-            <DaemonCard daemon={scraper} toggle={toggleDaemon} />
-            <DaemonCard daemon={freshen} toggle={toggleDaemon} />
-            <DaemonCard daemon={ipfs} toggle={toggleDaemon} />
-          </SimpleGrid>
-        </Fieldset>
-        <Fieldset legend={"Logs"} bg={"white"}>
-          <DaemonLog logMessages={logMessages} />
-        </Fieldset>
-      </Stack>
-      <ViewStatus />
-    </View>
+    <View2>
+      <Fieldset legend={"Daemons"} bg={"white"}>
+        <SimpleGrid cols={2}>
+          <DaemonCard daemon={scraper} toggle={toggleDaemon} />
+          <DaemonCard daemon={freshen} toggle={toggleDaemon} />
+          <DaemonCard daemon={ipfs} toggle={toggleDaemon} />
+        </SimpleGrid>
+      </Fieldset>
+      <Fieldset legend={"Logs"} bg={"white"}>
+        <DaemonLog logMessages={logMessages} />
+      </Fieldset>
+    </View2>
   );
 }

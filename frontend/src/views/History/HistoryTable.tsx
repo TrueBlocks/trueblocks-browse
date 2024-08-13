@@ -6,7 +6,6 @@ import { useToEther, useDateTime } from "@hooks";
 
 const columnHelper = createColumnHelper<types.Transaction>();
 
-// Find: NewViews
 export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
   columnHelper.accessor((row) => `${row.blockNumber}.${row.transactionIndex}`, {
     id: "blockTx",

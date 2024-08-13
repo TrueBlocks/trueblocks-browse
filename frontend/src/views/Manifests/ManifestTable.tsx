@@ -5,7 +5,6 @@ import { CustomColumnDef, Formatter } from "@components";
 
 const columnHelper = createColumnHelper<types.ChunkRecord>();
 
-// Find: NewViews
 export const tableColumns: CustomColumnDef<types.ChunkRecord, any>[] = [
   columnHelper.accessor("range", {
     header: () => "Range",

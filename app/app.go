@@ -146,6 +146,9 @@ func (a *App) Shutdown(ctx context.Context) {
 }
 
 func (a *App) GetSession() *config.Session {
+	if a.session.LastTab == nil {
+		a.session.LastTab = make(map[string]string)
+	}
 	return &a.session
 }
 

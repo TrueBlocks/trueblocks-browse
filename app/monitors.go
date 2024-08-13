@@ -54,7 +54,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 			a.monitors.MonitorMap[mon.Address] = mon
 		}
 		sort.Slice(a.monitors.Items, func(i, j int) bool {
-			return a.monitors.Items[i].NRecords > a.monitors.Items[j].NRecords
+			return a.monitors.Items[i].NRecords < a.monitors.Items[j].NRecords
 		})
 		a.monitors.Summarize()
 	}

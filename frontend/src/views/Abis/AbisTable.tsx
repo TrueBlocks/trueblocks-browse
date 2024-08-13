@@ -5,7 +5,6 @@ import { CustomColumnDef, Formatter } from "@components";
 
 const columnHelper = createColumnHelper<types.Abi>();
 
-// Find: NewViews
 export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
   columnHelper.accessor("name", {
     header: () => "Name",

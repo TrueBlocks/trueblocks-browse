@@ -5,7 +5,6 @@ import { CustomColumnDef, Formatter } from "@components";
 
 const columnHelper = createColumnHelper<types.CacheItem>();
 
-// Find: NewViews
 export const tableColumns: CustomColumnDef<types.CacheItem, any>[] = [
   columnHelper.accessor("type", {
     header: () => "Type",

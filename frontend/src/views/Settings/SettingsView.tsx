@@ -1,18 +1,13 @@
 import React from "react";
-import { Stack, Title, Checkbox, InputLabel } from "@mantine/core";
-import classes from "@/App.module.css";
-import { View, ViewStatus, ViewTitle } from "@components";
+import { Checkbox, InputLabel } from "@mantine/core";
+import { View2 } from "@components";
 
 export function SettingsView() {
   return (
-    <View>
-      <Stack className={classes.mainContent}>
-        <ViewTitle />
-        <InputLabel>
-          <Checkbox label={"A checkbox"} />
-        </InputLabel>
-      </Stack>
-      <ViewStatus />
-    </View>
+    <View2>
+      <InputLabel>
+        <Checkbox label={"A checkbox"} />
+      </InputLabel>
+    </View2>
   );
 }

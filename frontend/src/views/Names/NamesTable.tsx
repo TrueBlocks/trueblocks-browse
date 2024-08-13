@@ -6,7 +6,6 @@ import { NameTags } from "./NameTag";
 
 const columnHelper = createColumnHelper<types.Name>();
 
-// Find: NewViews
 export const tableColumns: CustomColumnDef<types.Name, any>[] = [
   columnHelper.accessor("parts", {
     header: () => "Type",
