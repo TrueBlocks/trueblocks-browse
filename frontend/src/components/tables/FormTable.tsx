@@ -28,10 +28,9 @@ export type GroupDefinition<T> = {
 type FormTableProps<T> = {
   data: Partial<T>;
   definition: GroupDefinition<T>[];
-  progress?: Progress;
 };
 
-export function FormTable<T>({ data, definition, progress }: FormTableProps<T>) {
+export function FormTable<T>({ data, definition }: FormTableProps<T>) {
   return (
     <Container style={{ maxWidth: "95%", paddingRight: "5%" }}>
       <Grid>
