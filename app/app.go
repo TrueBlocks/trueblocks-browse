@@ -59,7 +59,6 @@ func NewApp() *App {
 		ensMap:     make(map[string]base.Address),
 		// Initialize maps here
 		historyMap: make(map[base.Address]types.TransactionContainer),
-		balanceMap: make(map[base.Address]string),
 		Documents:  make([]types.Document, 10),
 	}
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
@@ -105,7 +104,7 @@ func (a *App) Startup(ctx context.Context) {
 	}
 
 	logger.Info("Starting freshen process...")
-	a.Freshen(a.GetSession().LastRoute)
+	a.Refresh(a.GetSession().LastRoute)
 	if err := a.loadStatus(nil, nil); err != nil {
 		messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
 			a.FreshenController.Color,

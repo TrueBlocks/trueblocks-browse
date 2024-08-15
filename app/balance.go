@@ -1,23 +1,14 @@
 package app
 
 import (
-	"sync"
-
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
-var bMutex sync.Mutex
-
 func (a *App) getBalance(address base.Address) string {
-	bMutex.Lock()
-	_, exists := a.balanceMap[address]
-	bMutex.Unlock()
-
+	b, exists := a.balanceMap.Load(address)
 	if exists {
-		bMutex.Lock()
-		defer bMutex.Unlock()
-		return a.balanceMap[address]
+		return b.(string)
 	}
 
 	opts := sdk.StateOptions{
@@ -30,9 +21,8 @@ func (a *App) getBalance(address base.Address) string {
 	if balances, _, err := opts.State(); err != nil {
 		return "0"
 	} else {
-		bMutex.Lock()
-		defer bMutex.Unlock()
-		a.balanceMap[address] = balances[0].Balance.ToEtherStr(18)
-		return a.balanceMap[address]
+		value := balances[0].Balance.ToEtherStr(18)
+		a.balanceMap.Store(address, value)
+		return value
 	}
 }
