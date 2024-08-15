@@ -21,7 +21,7 @@ func (a *App) SetLast(which, value string) {
 	case "route":
 		parts := strings.Split(value, "/")
 		if len(parts) > 2 {
-			if !string.HasPrefix(parts[2], ":" {
+			if !strings.HasPrefix(parts[2], ":") {
 				route := "/" + parts[1]
 				a.GetSession().LastRoute = route
 				a.GetSession().LastSub[route] = parts[2]

@@ -81,7 +81,7 @@ func NewApp() *App {
 	return &a
 }
 
-func (a App) String() string {
+func (a *App) String() string {
 	bytes, _ := json.MarshalIndent(a, "", "  ")
 	return string(bytes)
 }

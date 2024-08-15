@@ -24,8 +24,6 @@ export function FileSave(arg1:menu.CallbackData):Promise<void>;
 
 export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
-export function Freshen(arg1:Array<string>):Promise<void>;
-
 export function GetAbis(arg1:number,arg2:number):Promise<types.AbiContainer>;
 
 export function GetAbisCnt():Promise<number>;
@@ -45,6 +43,8 @@ export function GetIndexCnt():Promise<number>;
 export function GetLast(arg1:string):Promise<string>;
 
 export function GetLastDaemon(arg1:string):Promise<boolean>;
+
+export function GetLastSub(arg1:string):Promise<string>;
 
 export function GetManifest(arg1:number,arg2:number):Promise<types.ManifestContainer>;
 
@@ -67,6 +67,8 @@ export function GetStatus(arg1:number,arg2:number):Promise<types.StatusContainer
 export function GetStatusCnt():Promise<number>;
 
 export function HelpToggle(arg1:menu.CallbackData):Promise<void>;
+
+export function Refresh(arg1:Array<string>):Promise<void>;
 
 export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
 

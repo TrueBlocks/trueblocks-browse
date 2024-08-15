@@ -52,8 +52,7 @@ export namespace config {
 	    height: number;
 	    title: string;
 	    lastRoute: string;
-	    lastSub: string;
-	    lastAddress: string;
+	    lastSub: {[key: string]: string};
 	    lastHelp: string;
 	    daemons: Daemons;
 	
@@ -70,7 +69,6 @@ export namespace config {
 	        this.title = source["title"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
-	        this.lastAddress = source["lastAddress"];
 	        this.lastHelp = source["lastHelp"];
 	        this.daemons = this.convertValues(source["daemons"], Daemons);
 	    }
@@ -98,17 +96,10 @@ export namespace config {
 
 export namespace daemons {
 	
-	export enum Type {
-	    FILEDAEMON = 0,
-	    SCRAPER = 1,
-	    FRESHEN = 2,
-	    API = 3,
-	    IPFS = 4,
-	}
 	export enum State {
-	    STOPPED = 0,
-	    RUNNING = 1,
-	    PAUSED = 2,
+	    STOPPED = "Stopped",
+	    RUNNING = "Running",
+	    PAUSED = "Paused",
 	}
 	export class Daemon {
 	    name: string;
@@ -157,12 +148,14 @@ export namespace daemons {
 export namespace messages {
 	
 	export enum Message {
-	    COMPLETED = 0,
-	    ERROR = 1,
-	    WARN = 2,
-	    PROGRESS = 3,
-	    DAEMON = 4,
-	    DOCUMENT = 5,
+	    COMPLETED = "Completed",
+	    ERROR = "Error",
+	    WARN = "Warn",
+	    PROGRESS = "Progress",
+	    DAEMON = "Daemon",
+	    DOCUMENT = "Document",
+	    NAVIGATE = "Navigate",
+	    TOGGLEHELP = "ToggleHelp",
 	}
 	export class DaemonMsg {
 	    name: string;
@@ -226,6 +219,19 @@ export namespace messages {
 		    return a;
 		}
 	}
+	
+	export class NavigateMsg {
+	    route: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new NavigateMsg(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.route = source["route"];
+	    }
+	}
 	export class ProgressMsg {
 	    address: base.Address;
 	    have: number;
@@ -282,12 +288,6 @@ export namespace output {
 
 export namespace types {
 	
-	export enum Parts {
-	    REGULAR = 2,
-	    CUSTOM = 4,
-	    PREFUND = 8,
-	    BADDRESS = 16,
-	}
 	export class Parameter {
 	    components?: Parameter[];
 	    indexed?: boolean;
@@ -819,7 +819,7 @@ export namespace types {
 	    tags: string;
 	    // Go type: base
 	    prefund?: any;
-	    parts?: Parts;
+	    parts?: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new Name(source);
@@ -1514,3 +1514,4 @@ export namespace types {
 	}
 
 }
+

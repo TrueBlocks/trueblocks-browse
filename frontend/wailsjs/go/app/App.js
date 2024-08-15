@@ -34,10 +34,6 @@ export function FileSaveAs(arg1) {
   return window['go']['app']['App']['FileSaveAs'](arg1);
 }
 
-export function Freshen(arg1) {
-  return window['go']['app']['App']['Freshen'](arg1);
-}
-
 export function GetAbis(arg1, arg2) {
   return window['go']['app']['App']['GetAbis'](arg1, arg2);
 }
@@ -76,6 +72,10 @@ export function GetLast(arg1) {
 
 export function GetLastDaemon(arg1) {
   return window['go']['app']['App']['GetLastDaemon'](arg1);
+}
+
+export function GetLastSub(arg1) {
+  return window['go']['app']['App']['GetLastSub'](arg1);
 }
 
 export function GetManifest(arg1, arg2) {
@@ -120,6 +120,10 @@ export function GetStatusCnt() {
 
 export function HelpToggle(arg1) {
   return window['go']['app']['App']['HelpToggle'](arg1);
+}
+
+export function Refresh(arg1) {
+  return window['go']['app']['App']['Refresh'](arg1);
 }
 
 export function RegisterCtx(arg1) {
