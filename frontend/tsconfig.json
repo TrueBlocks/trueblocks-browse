@@ -33,6 +33,9 @@
       "@hooks": [
         "./hooks/index"
       ],
+      "@state": [
+        "./state/index"
+      ],
       "@gocode/*": [
         "../wailsjs/go/*"
       ],
