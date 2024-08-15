@@ -6,7 +6,7 @@ import (
 	"errors"
 	"log"
 	"os"
-	"sync/atomic"
+	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
@@ -35,7 +35,7 @@ type App struct {
 	ensMap     map[string]base.Address
 	renderCtxs map[base.Address][]*output.RenderCtx
 	historyMap map[base.Address]types.TransactionContainer
-	balanceMap map[base.Address]string
+	balanceMap sync.Map
 
 	// Summaries
 	abis     types.AbiContainer
@@ -91,13 +91,11 @@ func (a *App) GetContext() context.Context {
 	return a.ctx
 }
 
-var freshenLock atomic.Uint32
-
 // Find: NewViews
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
-	a.FreshenController = daemons.NewFreshen(a, "freshen", 2000, a.GetLastDaemon("daemon-freshen"))
+	a.FreshenController = daemons.NewFreshen(a, "freshen", 3000, a.GetLastDaemon("daemon-freshen"))
 	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetLastDaemon("daemon-scraper"))
 	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.GetLastDaemon("daemon-ipfs"))
 	go a.startDaemons()

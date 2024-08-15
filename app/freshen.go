@@ -2,6 +2,7 @@ package app
 
 import (
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
@@ -9,8 +10,11 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-// Freshen gets called by the daemons to instruct first the backend, then the frontend to update.
-// Protect against updating too fast... Note that this routine is called as a goroutine.
+var freshenLock atomic.Uint32
+
+// Refresh when the app starts and then later by the daemons to instruct the backend and
+// by extension the frontend to update. We protect against updating too fast... Note
+// that this routine is called as a goroutine.
 func (a *App) Freshen(which ...string) {
 	// Skip this update we're actively upgrading
 	if !freshenLock.CompareAndSwap(0, 1) {
@@ -24,7 +28,7 @@ func (a *App) Freshen(which ...string) {
 	notify :=
 		func(msg messages.Message, msgStr string) {
 			messages.Send(a.ctx, msg, messages.NewDaemonMsg(
-				a.FreshenController.Color,
+				a.FreshenController.Name,
 				msgStr,
 				a.FreshenController.Color,
 			))
@@ -33,7 +37,7 @@ func (a *App) Freshen(which ...string) {
 	// We always load names first since we need them everywhere
 	err := a.loadNames(nil, nil)
 	if err != nil {
-		// note that we notify the error, but proceed anyway
+		// we report the error, but proceed anyway
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(
 			err,
 		))
@@ -52,6 +56,7 @@ func (a *App) Freshen(which ...string) {
 			err = a.loadIndex(nil, nil)
 		}
 		if err != nil {
+			// we report the error, but proceed anyway
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(
 				err,
 			))
@@ -65,10 +70,10 @@ func (a *App) Freshen(which ...string) {
 	errorChan := make(chan error, 5) // Buffered channel to hold up to 5 errors (one from each goroutine)
 
 	wg.Add(5)
+	go a.loadNames(&wg, errorChan)
 	go a.loadAbis(&wg, errorChan)
 	go a.loadManifest(&wg, errorChan)
 	go a.loadMonitors(&wg, errorChan)
-	go a.loadNames(&wg, errorChan)
 	go a.loadIndex(&wg, errorChan)
 
 	wg.Wait()
