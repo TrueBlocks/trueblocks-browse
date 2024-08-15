@@ -2,7 +2,7 @@ import React from "react";
 import { types, messages } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter } from "@components";
-import { AddressPopup } from "@components";
+import { AddressPopup, NamePopup } from "@components";
 
 const columnHelper = createColumnHelper<types.Monitor>();
 
@@ -15,10 +15,15 @@ export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
       editor: (getValue: () => any) => <AddressPopup address={getValue} />,
     },
   }),
-  columnHelper.accessor("address", {
+  columnHelper.accessor("name", {
     header: () => "Name",
-    cell: (info) => <Formatter type="name" value={info.renderValue()} />,
-    meta: { className: "wide cell" },
+    cell: (info) => info.renderValue(),
+    meta: {
+      className: "wide cell",
+      editor: (getValue: () => any) => (
+        <NamePopup name={getValue} onSubmit={(newValue: string) => console.log(newValue)} />
+      ),
+    },
   }),
   columnHelper.accessor("nRecords", {
     header: () => "Record Count",

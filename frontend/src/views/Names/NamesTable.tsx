@@ -31,7 +31,7 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
     meta: {
       className: "wide cell",
       editor: (getValue: () => any) => (
-        <NamePopup value={getValue} onSubmit={(newValue: string) => console.log(newValue)} />
+        <NamePopup name={getValue} onSubmit={(newValue: string) => console.log(newValue)} />
       ),
     },
   }),

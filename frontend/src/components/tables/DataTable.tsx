@@ -2,7 +2,7 @@ import React from "react";
 import "./DataTable.css";
 import { Table, Title } from "@mantine/core";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
-import { Popup } from ".";
+import { Popup } from "@components";
 import { CustomMeta, Paginator, Pager } from "./";
 
 interface DataTableProps<T> {
