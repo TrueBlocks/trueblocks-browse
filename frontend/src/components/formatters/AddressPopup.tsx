@@ -11,10 +11,11 @@ type AddressNameViewerProps = {
   address: () => string;
 };
 
-export const AddressNameViewer = forwardRef<HTMLDivElement, AddressNameViewerProps>(({ address }, ref) => {
+export const AddressPopup = forwardRef<HTMLDivElement, AddressNameViewerProps>(({ address }, ref) => {
   const copy = useCallback(() => {
     ClipboardSetText(address());
   }, []);
+
   return (
     <div ref={ref}>
       <Group>

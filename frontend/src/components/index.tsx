@@ -1,5 +1,4 @@
-export * from "./Formatter";
-export * from "./popovers";
+export * from "./formatters";
 export * from "./tables";
 export * from "./global";
 export * from "./view";

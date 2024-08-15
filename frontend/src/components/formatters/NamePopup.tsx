@@ -5,12 +5,12 @@ import { ClipboardSetText } from "@runtime";
 import { IconCopy } from "@tabler/icons-react";
 
 type AddressNameEditorProps = {
-  value?: () => any;
+  name?: () => any;
   onSubmit?: (value: string) => void;
 };
 
-export const AddressNameEditor = forwardRef<HTMLDivElement, AddressNameEditorProps>(({ value, onSubmit }, ref) => {
-  const [inputValue, setInputValue] = useState(String(value?.() || ""));
+export const NamePopup = forwardRef<HTMLDivElement, AddressNameEditorProps>(({ name, onSubmit }, ref) => {
+  const [inputValue, setInputValue] = useState(String(name?.() || ""));
   const submitForm = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();

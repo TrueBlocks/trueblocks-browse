@@ -2,7 +2,7 @@ import React from "react";
 import "./DataTable.css";
 import { Table, Title } from "@mantine/core";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
-import { DataPopover } from "../popovers";
+import { Popup } from ".";
 import { CustomMeta, Paginator, Pager } from "./";
 
 interface DataTableProps<T> {
@@ -36,9 +36,9 @@ export function DataTable<T>({ table, loading, pager }: DataTableProps<T>) {
                   const meta = cell.column.columnDef.meta as CustomMeta;
                   return (
                     <Table.Td key={cell.id} className={meta?.className}>
-                      <DataPopover editor={meta.editor?.(cell.getValue)}>
+                      <Popup editor={meta.editor?.(cell.getValue)}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </DataPopover>
+                      </Popup>
                     </Table.Td>
                   );
                 })}
