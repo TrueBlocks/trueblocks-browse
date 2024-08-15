@@ -17,7 +17,7 @@ func (s State) String() string {
 	return m[s]
 }
 
-var States = []struct {
+var AllStates = []struct {
 	Value  State
 	TSName string
 }{

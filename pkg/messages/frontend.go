@@ -20,3 +20,11 @@ func (m *ProgressMsg) Instance() ProgressMsg {
 func (m *DaemonMsg) Instance() DaemonMsg {
 	return DaemonMsg{}
 }
+
+func (m *HelpMsg) Instance() HelpMsg {
+	return HelpMsg{}
+}
+
+func (m *NavigateMsg) Instance() NavigateMsg {
+	return NavigateMsg{}
+}

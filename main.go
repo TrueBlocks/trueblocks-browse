@@ -47,6 +47,8 @@ func main() {
 				&messages.ErrorMsg{},
 				&messages.ProgressMsg{},
 				&messages.DaemonMsg{},
+				&messages.NavigateMsg{},
+				&messages.HelpMsg{},
 				&daemons.Daemon{},
 				&coreTypes.Transaction{},
 				&types.AbiContainer{},
@@ -57,10 +59,8 @@ func main() {
 				&types.StatusContainer{},
 			},
 			EnumBind: []interface{}{
-				types.NameParts,
-				daemons.Types,
-				daemons.States,
-				messages.Messages,
+				daemons.AllStates,
+				messages.AllMessages,
 			},
 			StartHidden: true,
 			AssetServer: &assetserver.Options{

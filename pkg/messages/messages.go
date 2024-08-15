@@ -18,12 +18,13 @@ const (
 )
 
 type MessageData interface {
-	string | ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg
+	string | ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg | NavigateMsg | HelpMsg
 }
 
-var Messages = []struct {
-	Value  Message
-	TSName string
+// AllMessages - all possible messages for the frontend codegen
+var AllMessages = []struct {
+	Value  Message `json:"value"`
+	TSName string  `json:"tsname"`
 }{
 	{Completed, "COMPLETED"},
 	{Error, "ERROR"},
@@ -31,14 +32,8 @@ var Messages = []struct {
 	{Progress, "PROGRESS"},
 	{Daemon, "DAEMON"},
 	{Document, "DOCUMENT"},
-}
-
-func MessageType(msg Message) string {
-	m := make(map[Message]string, len(Messages))
-	for _, message := range Messages {
-		m[message.Value] = message.TSName
-	}
-	return m[msg]
+	{Navigate, "NAVIGATE"},
+	{ToggleHelp, "TOGGLEHELP"},
 }
 
 func Send[T MessageData](ctx context.Context, msg Message, data *T) {
