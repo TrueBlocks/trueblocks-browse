@@ -17,9 +17,10 @@ func (s State) String() string {
 	return m[s]
 }
 
+// AllStates - all possible states for the frontend codegen
 var AllStates = []struct {
-	Value  State
-	TSName string
+	Value  State  `json:"value"`
+	TSName string `json:"tsName"`
 }{
 	{Stopped, "STOPPED"},
 	{Running, "RUNNING"},

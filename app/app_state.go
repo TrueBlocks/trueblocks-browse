@@ -8,8 +8,6 @@ func (a *App) GetLast(which string) string {
 	switch which {
 	case "route":
 		return a.GetSession().LastRoute
-	case "address":
-		return a.GetSession().LastAddress
 	case "help":
 		return a.GetSession().LastHelp
 	}
@@ -20,8 +18,6 @@ func (a *App) SetLast(which, value string) {
 	switch which {
 	case "route":
 		a.GetSession().LastRoute = value
-	case "address":
-		a.GetSession().LastAddress = value
 	case "help":
 		a.GetSession().LastHelp = value
 	}

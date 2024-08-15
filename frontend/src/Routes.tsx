@@ -1,6 +1,6 @@
 import React from "react";
 
-// Find: NewViews
+// Find: NewViews-React
 import {
   // Icons
   HomeIcon,

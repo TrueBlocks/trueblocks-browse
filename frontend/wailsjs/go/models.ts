@@ -52,7 +52,7 @@ export namespace config {
 	    height: number;
 	    title: string;
 	    lastRoute: string;
-	    lastTab: string;
+	    lastSub: string;
 	    lastAddress: string;
 	    lastHelp: string;
 	    daemons: Daemons;
@@ -69,7 +69,7 @@ export namespace config {
 	        this.height = source["height"];
 	        this.title = source["title"];
 	        this.lastRoute = source["lastRoute"];
-	        this.lastTab = source["lastTab"];
+	        this.lastSub = source["lastSub"];
 	        this.lastAddress = source["lastAddress"];
 	        this.lastHelp = source["lastHelp"];
 	        this.daemons = this.convertValues(source["daemons"], Daemons);
@@ -1514,4 +1514,3 @@ export namespace types {
 	}
 
 }
-

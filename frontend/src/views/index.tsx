@@ -1,4 +1,4 @@
-// Find: NewViews
+// Find: NewViews-React
 export * from "./Home/HomeView";
 export * from "./History/HistoryView";
 export * from "./Monitors/MonitorsView";

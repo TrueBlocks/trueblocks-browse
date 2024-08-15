@@ -20,14 +20,3 @@ func (s Type) String() string {
 	}
 	return m[s]
 }
-
-var Types = []struct {
-	Value  Type
-	TSName string
-}{
-	{ST_FileDaemon, "FILEDAEMON"},
-	{ST_Scraper, "SCRAPER"},
-	{ST_Freshen, "FRESHEN"},
-	{ST_Api, "API"},
-	{ST_Ipfs, "IPFS"},
-}
