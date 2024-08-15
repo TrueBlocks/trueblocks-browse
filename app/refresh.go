@@ -5,6 +5,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -21,7 +22,9 @@ func (a *App) Refresh(which ...string) {
 		// logger.Info(colors.Red, "Skipping update", colors.Off)
 		return
 	}
-	logger.Info(colors.Green, "Freshening...", colors.Off)
+	if a.ScraperController.State != daemons.Running {
+		logger.Info(colors.Green, "Freshening...", colors.Off)
+	}
 	defer freshenLock.CompareAndSwap(1, 0)
 
 	// We always load names first since we need them everywhere
