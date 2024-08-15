@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocation } from "wouter";
 import { types, messages } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter } from "@components";
@@ -12,7 +11,6 @@ export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
   columnHelper.accessor("address", {
     header: () => "Address",
     cell: ({ getValue }) => {
-      // const [_, setLocation] = useLocation();
       const address = getValue();
       return (
         <a
@@ -20,7 +18,6 @@ export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
           onClick={(e) => {
             e.preventDefault();
             SetLast("route", `/history/${address}`);
-            // setLocation(`/history/${address}`);
             EventsEmit(messages.Message.NAVIGATE, {
               route: `/history/${address}`,
             });

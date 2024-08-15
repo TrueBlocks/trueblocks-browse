@@ -8,7 +8,7 @@ export const Routes = () => {
   const [, setLocation] = useLocation();
 
   useEffect(() => {
-    const lastRoute = (GetLast("route") || "/").then((route) => {
+    (GetLast("route") || "/").then((route) => {
       setLocation(route);
     });
   }, [setLocation]);
