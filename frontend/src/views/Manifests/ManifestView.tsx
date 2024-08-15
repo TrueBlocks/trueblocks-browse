@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { types } from "@gocode/models";
+import { types, messages } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
 import { View2, FormTable } from "@components";
@@ -27,9 +27,10 @@ export function ManifestView() {
       fetch(pager.curItem, pager.perPage);
     };
 
-    EventsOn("DAEMON", handleRefresh);
+    var { Message } = messages;
+    EventsOn(Message.DAEMON, handleRefresh);
     return () => {
-      EventsOff("DAEMON");
+      EventsOff(Message.DAEMON);
     };
   }, [pager.curItem, pager.perPage]);
 

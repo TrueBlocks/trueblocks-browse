@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { messages } from "@gocode/models";
 import { AppShell, Text } from "@mantine/core";
 import { Aside, Header, Navbar, Routes } from "@components";
 import { EventsOn, EventsOff } from "@runtime";
@@ -8,35 +9,25 @@ import { GetLast, SetLast } from "@gocode/app/App";
 
 function App() {
   const [showHelp, setShowHelp] = useState<boolean>(false);
-  const [, setLocation] = useLocation();
-
-  const toggleHelp = () => {
-    setShowHelp((prevShowHelp) => {
-      const newShowHelp = !prevShowHelp;
-      SetLast("help", `${newShowHelp ? "true" : "false"}`);
-      return newShowHelp;
-    });
-  };
-
-  useEffect(() => {
-    const handleNavigation = (route: string) => {
-      console.log(`Navigating to ${route}`);
-      setLocation(route);
-    };
-
-    EventsOn("navigate", handleNavigation);
-    EventsOn("helpToggle", toggleHelp);
-
-    return () => {
-      EventsOff("navigate");
-      EventsOff("helpToggle");
-    };
-  }, [setLocation]);
 
   useEffect(() => {
     GetLast("help").then((value) => {
       setShowHelp(value === "true");
     });
+
+    const toggleHelp = () => {
+      setShowHelp((prevShowHelp) => {
+        const newShowHelp = !prevShowHelp;
+        SetLast("help", `${newShowHelp ? "true" : "false"}`);
+        return newShowHelp;
+      });
+    };
+
+    const { Message } = messages;
+    EventsOn(Message.TOGGLEHELP, toggleHelp);
+    return () => {
+      EventsOff(Message.TOGGLEHELP);
+    };
   }, []);
 
   return (

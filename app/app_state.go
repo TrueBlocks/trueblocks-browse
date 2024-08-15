@@ -1,13 +1,15 @@
 package app
 
 import (
+	"strings"
+
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 func (a *App) GetLast(which string) string {
 	switch which {
 	case "route":
-		return a.GetSession().LastRoute
+		return a.GetSession().LastRoute + a.GetLastSub(a.GetSession().LastRoute)
 	case "help":
 		return a.GetSession().LastHelp
 	}
@@ -17,11 +19,28 @@ func (a *App) GetLast(which string) string {
 func (a *App) SetLast(which, value string) {
 	switch which {
 	case "route":
-		a.GetSession().LastRoute = value
+		parts := strings.Split(value, "/")
+		if len(parts) > 2 {
+			if !string.HasPrefix(parts[2], ":" {
+				route := "/" + parts[1]
+				a.GetSession().LastRoute = route
+				a.GetSession().LastSub[route] = parts[2]
+			}
+		} else {
+			a.GetSession().LastRoute = value
+		}
 	case "help":
 		a.GetSession().LastHelp = value
 	}
 	a.GetSession().Save()
+}
+
+func (a *App) GetLastSub(which string) string {
+	val := a.GetSession().LastSub[which]
+	if val == "" {
+		return ""
+	}
+	return "/" + val
 }
 
 func (a *App) GetLastDaemon(which string) bool {

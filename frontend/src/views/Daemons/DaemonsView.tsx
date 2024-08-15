@@ -47,9 +47,10 @@ export function DaemonsView() {
   };
 
   useEffect(() => {
-    EventsOn("DAEMON", handleMessage);
+    var { Message } = messages;
+    EventsOn(Message.DAEMON, handleMessage);
     return () => {
-      EventsOff("DAEMON");
+      EventsOff(Message.DAEMON);
     };
   }, []);
 

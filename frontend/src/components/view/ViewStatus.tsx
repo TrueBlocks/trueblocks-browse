@@ -37,18 +37,19 @@ export function ViewStatus() {
       setColor(classes.red);
     };
 
-    EventsOn("DOCUMENT", handleDocument);
-    EventsOn("PROGRESS", handleProgress);
-    EventsOn("COMPLETED", handleCompleted);
-    EventsOn("WARN", handleWarning);
-    EventsOn("ERROR", handleError);
+    var { Message } = messages;
+    EventsOn(Message.DOCUMENT, handleDocument);
+    EventsOn(Message.PROGRESS, handleProgress);
+    EventsOn(Message.COMPLETED, handleCompleted);
+    EventsOn(Message.WARN, handleWarning);
+    EventsOn(Message.ERROR, handleError);
 
     return () => {
-      EventsOff("DOCUMENT");
-      EventsOff("PROGRESS");
-      EventsOff("COMPLETED");
-      EventsOff("WARN");
-      EventsOff("ERROR");
+      EventsOff(Message.DOCUMENT);
+      EventsOff(Message.PROGRESS);
+      EventsOff(Message.COMPLETED);
+      EventsOff(Message.WARN);
+      EventsOff(Message.ERROR);
     };
   }, []);
 

@@ -1,13 +1,13 @@
 package daemons
 
-type Type int
+type Type string
 
 const (
-	ST_FileDaemon Type = iota
-	ST_Scraper
-	ST_Freshen
-	ST_Api
-	ST_Ipfs
+	ST_FileDaemon Type = "FileDaemon"
+	ST_Scraper    Type = "Scraper"
+	ST_Freshen    Type = "Freshen"
+	ST_Api        Type = "Api"
+	ST_Ipfs       Type = "Ipfs"
 )
 
 func (s Type) String() string {

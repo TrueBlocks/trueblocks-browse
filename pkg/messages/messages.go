@@ -6,15 +6,17 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-type Message int
+type Message string
 
 const (
-	Completed Message = iota
-	Error
-	Warn
-	Progress
-	Daemon
-	Document
+	Completed  Message = "Completed"
+	Error      Message = "Error"
+	Warn       Message = "Warn"
+	Progress   Message = "Progress"
+	Daemon     Message = "Daemon"
+	Document   Message = "Document"
+	Navigate   Message = "Navigate"
+	ToggleHelp Message = "ToggleHelp"
 )
 
 type MessageData interface {
@@ -37,5 +39,5 @@ var AllMessages = []struct {
 }
 
 func Send[T MessageData](ctx context.Context, msg Message, data *T) {
-	runtime.EventsEmit(ctx, MessageType(msg), data)
+	runtime.EventsEmit(ctx, string(msg), data)
 }

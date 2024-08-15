@@ -1,11 +1,11 @@
 package daemons
 
-type State int
+type State string
 
 const (
-	Stopped State = iota
-	Running
-	Paused
+	Stopped State = "Stopped"
+	Running State = "Running"
+	Paused  State = "Paused"
 )
 
 func (s State) String() string {
