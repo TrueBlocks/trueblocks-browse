@@ -38,14 +38,12 @@ type App struct {
 	balanceMap sync.Map
 
 	// Summaries
-	abis     types.AbiContainer
-	index    types.IndexContainer
-	manifest types.ManifestContainer
-	monitors types.MonitorContainer
-	names    types.NameContainer
-	status   types.StatusContainer
-
-	// Add your application's data here
+	abis              types.AbiContainer
+	index             types.IndexContainer
+	manifest          types.ManifestContainer
+	monitors          types.MonitorContainer
+	names             types.NameContainer
+	status            types.StatusContainer
 	ScraperController *daemons.DaemonScraper
 	FreshenController *daemons.DaemonFreshen
 	IpfsController    *daemons.DaemonIpfs
@@ -57,7 +55,6 @@ func NewApp() *App {
 		apiKeys:    make(map[string]string),
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 		ensMap:     make(map[string]base.Address),
-		// Initialize maps here
 		historyMap: make(map[base.Address]types.TransactionContainer),
 		Documents:  make([]types.Document, 10),
 	}
@@ -105,13 +102,7 @@ func (a *App) Startup(ctx context.Context) {
 
 	logger.Info("Starting freshen process...")
 	a.Refresh(a.GetSession().LastRoute)
-	if err := a.loadStatus(nil, nil); err != nil {
-		messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
-			a.FreshenController.Color,
-			err.Error(),
-			a.FreshenController.Color,
-		))
-	}
+
 	if err := a.loadConfig(nil, nil); err != nil {
 		messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
 			a.FreshenController.Color,

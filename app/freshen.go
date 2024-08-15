@@ -24,16 +24,6 @@ func (a *App) Refresh(which ...string) {
 	logger.Info(colors.Green, "Freshening...", colors.Off)
 	defer freshenLock.CompareAndSwap(1, 0)
 
-	// Function to let the front end know that something freshened
-	notify :=
-		func(msg messages.Message, msgStr string) {
-			messages.Send(a.ctx, msg, messages.NewDaemonMsg(
-				a.FreshenController.Name,
-				msgStr,
-				a.FreshenController.Color,
-			))
-		}
-
 	// We always load names first since we need them everywhere
 	err := a.loadNames(nil, nil)
 	if err != nil {
@@ -54,14 +44,14 @@ func (a *App) Refresh(which ...string) {
 			err = a.loadMonitors(nil, nil)
 		case "/index":
 			err = a.loadIndex(nil, nil)
+		case "/status":
+			err = a.loadStatus(nil, nil)
 		}
 		if err != nil {
 			// we report the error, but proceed anyway
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(
 				err,
 			))
-		} else {
-			notify(messages.Daemon, "Freshing...")
 		}
 	}
 
@@ -69,13 +59,13 @@ func (a *App) Refresh(which ...string) {
 	wg := sync.WaitGroup{}
 	errorChan := make(chan error, 5) // Buffered channel to hold up to 5 errors (one from each goroutine)
 
-	wg.Add(5)
+	wg.Add(6)
 	go a.loadNames(&wg, errorChan)
 	go a.loadAbis(&wg, errorChan)
 	go a.loadManifest(&wg, errorChan)
 	go a.loadMonitors(&wg, errorChan)
 	go a.loadIndex(&wg, errorChan)
-
+	go a.loadStatus(&wg, errorChan)
 	wg.Wait()
 	close(errorChan) // Close the channel after all goroutines are done
 
@@ -95,6 +85,10 @@ func (a *App) Refresh(which ...string) {
 			time.Sleep(500 * time.Millisecond)
 		}
 	} else {
-		notify(messages.Daemon, "Freshing...")
+		messages.Send(a.ctx, messages.Daemon, messages.NewDaemonMsg(
+			a.FreshenController.Name,
+			"Freshening...",
+			a.FreshenController.Color,
+		))
 	}
 }

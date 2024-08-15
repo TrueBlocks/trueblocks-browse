@@ -29,9 +29,9 @@ export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
     },
     meta: { className: "wide cell" },
   }),
-  columnHelper.accessor("name", {
+  columnHelper.accessor("address", {
     header: () => "Name",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="name" value={info.renderValue()} />,
     meta: { className: "wide cell" },
   }),
   columnHelper.accessor("nRecords", {

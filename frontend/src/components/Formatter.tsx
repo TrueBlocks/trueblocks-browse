@@ -1,8 +1,8 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode } from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
-import { AddrToName } from "@gocode/app/App";
 import { base } from "@gocode/models";
 import { useDateTime } from "@hooks";
+import { AddressFormatter } from "./AddressFormatter";
 
 export type knownTypes =
   | "text"
@@ -13,22 +13,21 @@ export type knownTypes =
   | "boolean"
   | "check"
   | "address"
+  | "name"
   | "hash"
   | "error";
 
 export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, value }) => {
-  const formatInteger = (number: number): ReactNode => {
-    const n = new Intl.NumberFormat(navigator.language).format(number);
-    return <>{n}</>;
+  const formatInteger = (number: number): string => {
+    return new Intl.NumberFormat(navigator.language).format(number);
   };
 
-  const formatFloat = (number: number): ReactNode => {
-    const n = number?.toFixed(4);
-    return <>{n}</>;
+  const formatFloat = (number: number): string => {
+    return number?.toFixed(4);
   };
 
-  const formatBytes = (bytes: number): ReactNode => {
-    if (bytes === 0) return <>0 Bytes</>;
+  const formatBytes = (bytes: number): string => {
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
     const sizes = ["bytes", "Kb", "Mb", "Gb", "Tb", "Pb"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
@@ -36,21 +35,23 @@ export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, va
       minimumFractionDigits: 1,
       maximumFractionDigits: 1,
     });
-    return <>{`${formattedValue} ${sizes[i]}`}</>;
+    return `${formattedValue} ${sizes[i]}`;
   };
 
   var v = value as number;
   switch (type) {
     case "float":
-      return formatFloat(v);
+      return <>{formatFloat(v)}</>;
     case "bytes":
-      return formatBytes(v);
+      return <>{formatBytes(v)}</>;
     case "int":
-      return formatInteger(v);
+      return <>{formatInteger(v)}</>;
     case "address":
-      return <FormatAddressComponent address={value as base.Address} />;
+      return <AddressFormatter address={value as base.Address} />;
+    case "name":
+      return <AddressFormatter showSame={false} address={value as base.Address} />;
     case "date":
-      return useDateTime(v);
+      return <>{useDateTime(v)}</>;
     case "boolean":
       var fill = value ? "green" : "red";
       return <IconCircleCheck size={16} color="white" fill={fill} />;
@@ -59,24 +60,6 @@ export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, va
     case "error":
       return <>{value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>}</>;
     default:
-      return value;
+      return <>{value}</>;
   }
-};
-
-const FormatAddressComponent = ({ address }: { address: base.Address }) => {
-  const [formattedAddress, setFormattedAddress] = useState<string>("");
-  useEffect(() => {
-    const formatAddress = async () => {
-      const name = await AddrToName(address);
-      if (name && name.length > 0) {
-        setFormattedAddress(name);
-      } else {
-        setFormattedAddress(address as unknown as string);
-      }
-    };
-
-    formatAddress();
-  }, [address]);
-
-  return <Formatter type="text" value={formattedAddress} />;
 };

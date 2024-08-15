@@ -17,7 +17,8 @@ type StatusContainer struct {
 
 func (s *StatusContainer) ShallowCopy() StatusContainer {
 	return StatusContainer{
-		Status: s.Status.ShallowCopy(),
+		Status:       s.Status.ShallowCopy(),
+		LatestUpdate: s.LatestUpdate,
 	}
 }
 
