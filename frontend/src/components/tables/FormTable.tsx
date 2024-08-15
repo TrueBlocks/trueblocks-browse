@@ -11,7 +11,7 @@ export type Progress = {
 type FieldDefinition<T> = {
   label: string;
   accessor: keyof T;
-  // type?: knownTypes;
+  type?: knownTypes;
 };
 
 type CustomComponentDefinition = {
@@ -40,9 +40,9 @@ export function FormTable<T>({ data, definition }: FormTableProps<T>) {
               <Fieldset legend={group.title} bg="white" className={classes.fieldSet}>
                 {group.fields?.map((field, fieldIndex) => {
                   var value = <>{data[field.accessor]}</>;
-                  // if (field.type !== undefined) {
-                  //   value = <Formatter type={field.type} value={data[field.accessor]} />;
-                  // }
+                  if (field.type !== undefined) {
+                    value = <Formatter type={field.type} value={data[field.accessor]} />;
+                  }
                   return (
                     <Flex key={fieldIndex} gap="md" align="center">
                       <Text style={{ minWidth: "150px" }}>{field.label}</Text>

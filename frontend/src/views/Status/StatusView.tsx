@@ -24,7 +24,6 @@ export function StatusView() {
     fetch(pager.curItem, pager.perPage);
 
     const handleRefresh = () => {
-      // console.log("heard that in StatusView");
       fetch(pager.curItem, pager.perPage);
     };
 

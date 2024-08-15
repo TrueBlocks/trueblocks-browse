@@ -17,7 +17,7 @@ export type knownTypes =
   | "hash"
   | "error";
 
-export const Formatter: React.FC<{ type: knownTypes; value: any; subType?: string }> = ({ type, value, subType }) => {
+export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, value }) => {
   const formatInteger = (number: number): string => {
     return new Intl.NumberFormat(navigator.language).format(number);
   };

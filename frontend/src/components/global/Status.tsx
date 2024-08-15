@@ -15,8 +15,6 @@ export const Status = () => {
       GetStatus(0, 15).then((status) => {
         setUpdated(status.latestUpdate);
         setNode(status.clientVersion);
-        // const now = new Date();
-        // const currentTimeString = now.toLocaleTimeString();
         setFile("not loaded");
         setChain(status.chain ? status.chain : "mainnet");
       });
@@ -24,10 +22,6 @@ export const Status = () => {
     fetch();
 
     const handleRefresh = () => {
-      // const now = new Date();
-      // const currentTimeString = now.toLocaleTimeString();
-      // console.log(currentTimeString);
-      // console.log("heard that in Status");
       fetch();
     };
 
