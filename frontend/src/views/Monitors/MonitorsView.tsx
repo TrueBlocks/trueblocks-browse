@@ -8,45 +8,30 @@ import { GetMonitors, GetMonitorsCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
 
 export function MonitorsView() {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [loaded, setLoaded] = useState<boolean>(false);
   const [summaryItem, setSummaryItem] = useState<types.MonitorContainer>({} as types.MonitorContainer);
-  const [refresh, setRefresh] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   const pager = useKeyboardPaging(count, [], 15);
 
   useEffect(() => {
-    if (loaded && !loading) {
-      const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetMonitors(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
+    const fetch = async (currentItem: number, itemsPerPage: number) => {
+      GetMonitors(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
+        if (item) {
+          GetMonitorsCnt().then((cnt: number) => setCount(cnt));
           setSummaryItem(item);
-        });
-      };
-      fetch(pager.curItem, pager.perPage);
-      setRefresh(false);
-    }
-  }, [count, pager, loaded, loading, refresh]);
+        }
+      });
+    };
+    fetch(pager.curItem, pager.perPage);
 
-  useEffect(() => {
     const handleRefresh = () => {
-      setRefresh(true);
+      fetch(pager.curItem, pager.perPage);
     };
 
     EventsOn("DAEMON", handleRefresh);
     return () => {
       EventsOff("DAEMON");
     };
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    const fetch = async () => {
-      const cnt = await GetMonitorsCnt();
-      setCount(cnt);
-      setLoaded(true);
-    };
-    fetch().finally(() => setLoading(false));
-  }, []);
+  }, [pager.curItem, pager.perPage]);
 
   const table = useReactTable({
     data: summaryItem.items || [],

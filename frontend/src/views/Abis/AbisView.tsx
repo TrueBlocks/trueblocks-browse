@@ -8,45 +8,30 @@ import { GetAbis, GetAbisCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
 
 export function AbisView() {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [loaded, setLoaded] = useState<boolean>(false);
   const [summaryItem, setSummaryItem] = useState<types.AbiContainer>({} as types.AbiContainer);
-  const [refresh, setRefresh] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   const pager = useKeyboardPaging(count, [], 15);
 
   useEffect(() => {
-    if (loaded && !loading) {
-      const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetAbis(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
+    const fetch = async (currentItem: number, itemsPerPage: number) => {
+      GetAbis(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
+        if (item) {
+          GetAbisCnt().then((cnt: number) => setCount(cnt));
           setSummaryItem(item);
-        });
-      };
-      fetch(pager.curItem, pager.perPage);
-      setRefresh(false);
-    }
-  }, [count, pager.curItem, pager.perPage, loaded, loading]);
+        }
+      });
+    };
+    fetch(pager.curItem, pager.perPage);
 
-  useEffect(() => {
     const handleRefresh = () => {
-      setRefresh(true);
+      fetch(pager.curItem, pager.perPage);
     };
 
     EventsOn("DAEMON", handleRefresh);
     return () => {
       EventsOff("DAEMON");
     };
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    const fetch = async () => {
-      const cnt = await GetAbisCnt();
-      setCount(cnt);
-      setLoaded(true);
-    };
-    fetch().finally(() => setLoading(false));
-  }, []);
+  }, [pager.curItem, pager.perPage]);
 
   const table = useReactTable({
     data: summaryItem.items || [],

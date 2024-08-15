@@ -8,45 +8,30 @@ import { GetStatus, GetStatusCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
 
 export function StatusView() {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [loaded, setLoaded] = useState<boolean>(false);
   const [summaryItem, setSummaryItem] = useState<types.StatusContainer>({} as types.StatusContainer);
-  const [refresh, setRefresh] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   const pager = useKeyboardPaging(count, [], 10);
 
   useEffect(() => {
-    if (loaded && !loading) {
-      const fetch = async (currentItem: number, itemsPerPage: number) => {
-        GetStatus(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
+    const fetch = async (currentItem: number, itemsPerPage: number) => {
+      GetStatus(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
+        if (item) {
+          GetStatusCnt().then((cnt: number) => setCount(cnt));
           setSummaryItem(item);
-        });
-      };
-      fetch(pager.curItem, pager.perPage);
-      setRefresh(false);
-    }
-  }, [count, pager.curItem, pager.perPage, loaded, loading]);
+        }
+      });
+    };
+    fetch(pager.curItem, pager.perPage);
 
-  useEffect(() => {
     const handleRefresh = () => {
-      setRefresh(true);
+      fetch(pager.curItem, pager.perPage);
     };
 
     EventsOn("DAEMON", handleRefresh);
     return () => {
       EventsOff("DAEMON");
     };
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    const fetch = async () => {
-      const cnt = await GetStatusCnt();
-      setCount(cnt);
-      setLoaded(true);
-    };
-    fetch().finally(() => setLoading(false));
-  }, []);
+  }, [pager.curItem, pager.perPage]);
 
   const table = useReactTable({
     data: summaryItem.items || [],

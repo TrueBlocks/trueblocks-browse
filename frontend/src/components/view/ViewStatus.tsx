@@ -22,6 +22,9 @@ export function ViewStatus() {
     const handleCompleted = (msg: messages.ProgressMsg) => {
       setStatusMessage(`Completed (${msg.address}): ${msg.have}/${msg.want}`);
       setColor(classes.green);
+      setTimeout(() => {
+        setStatusMessage("");
+      }, 1000); // 1000ms = 1 second
     };
 
     const handleWarning = (msg: messages.ErrorMsg) => {
