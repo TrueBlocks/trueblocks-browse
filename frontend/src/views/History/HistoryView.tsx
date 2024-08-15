@@ -1,54 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "wouter";
-import { types } from "@gocode/models";
+import { useParams, useLocation } from "wouter";
+import { types, messages } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
 import { View2, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { GetHistory, GetHistoryCnt } from "@gocode/app/App";
+import { GetLastSub, GetHistory, GetHistoryCnt } from "@gocode/app/App";
+import { EventsOn, EventsOff } from "@runtime";
 
 export function HistoryView() {
-  const [address, setAddress] = useState<string>("trueblocks.eth");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [loaded, setLoaded] = useState<boolean>(false);
+  const [address, setAddress] = useState<string>("");
   const [summaryItem, setSummaryItem] = useState<types.TransactionContainer>({} as types.TransactionContainer);
   const [count, setCount] = useState<number>(0);
+  const [location, _] = useLocation();
   const pager = useKeyboardPaging(count, [address], 15);
 
-  const params = useParams();
-  const addr = params.address;
-
   useEffect(() => {
-    if (loaded && !loading) {
-      const fetch = async (addr: string, currentItem: number, itemsPerPage: number) => {
-        GetHistory(addr, currentItem, itemsPerPage).then((item: types.TransactionContainer) => {
-          setSummaryItem(item);
+    if (address !== "") {
+      // console.log("HistoryView::preFetch [" + address + "] [" + addr + "]");
+      const fetch = async (addy: string, currentItem: number, itemsPerPage: number) => {
+        GetHistory(addy, currentItem, itemsPerPage).then((item: types.TransactionContainer) => {
+          if (item) {
+            setSummaryItem(item);
+            GetHistoryCnt(addy).then((cnt: number) => {
+              setCount(cnt);
+            });
+          }
         });
       };
       fetch(address, pager.curItem, pager.perPage);
     }
-  }, [count, pager.curItem, pager.perPage, loaded, loading, address]);
+  }, [address, pager.curItem, pager.perPage]);
 
+  let addr = useParams().address;
   useEffect(() => {
-    setLoading(true);
-    try {
-      const fetch = async (addr: string) => {
-        const cnt = await GetHistoryCnt(addr);
-        setCount(cnt);
-        setLoaded(true);
-      };
-      fetch(address);
-      setLoaded(true);
-    } finally {
-      setLoading(false);
+    // console.log("HistoryView::addr", addr);
+    if (addr === ":address") {
+      GetLastSub("/history").then((a) => (addr = a));
     }
-  }, [address]);
-
-  useEffect(() => {
     if (addr && addr !== "" && addr !== ":address") {
+      // console.log("HistoryView::setAddress", addr);
       setAddress(addr);
     } else {
-      setAddress("trueblocks.eth");
+      // console.log("HistoryView::skipping", addr);
     }
   }, [addr]);
 
@@ -60,6 +54,9 @@ export function HistoryView() {
 
   return (
     <View2>
+      { /* <div>{`addr: ${addr}`}</div>
+      <div>{`address: ${address}`}</div>
+      <div>{`location: ${location}`}</div> */}
       <FormTable data={summaryItem} definition={createForm(table, pager)} />
     </View2>
   );

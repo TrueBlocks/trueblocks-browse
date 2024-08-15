@@ -61,7 +61,7 @@ func (a *App) GetHistory(addr string, first, pageSize int) types.TransactionCont
 					if len(a.historyMap[address].Items)%pageSize == 0 {
 						messages.Send(a.ctx,
 							messages.Progress,
-							messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), nItems, address),
+							messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(nItems), address),
 						)
 					}
 					historyMutex.Unlock()
@@ -108,11 +108,18 @@ func (a *App) GetHistory(addr string, first, pageSize int) types.TransactionCont
 	return copy
 }
 
-func (a *App) GetHistoryCnt(addr string) int64 {
+func (a *App) GetHistoryCnt(addr string) int {
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
 		return 0
+	}
+
+	historyMutex.Lock()
+	defer historyMutex.Unlock()
+	l := len(a.historyMap[address].Items)
+	if l > 0 {
+		return l
 	}
 
 	opts := sdk.ListOptions{
@@ -124,6 +131,7 @@ func (a *App) GetHistoryCnt(addr string) int64 {
 		return 0
 	} else if len(appearances) == 0 {
 		return 0
+	} else {
+		return int(appearances[0].NRecords)
 	}
-	return appearances[0].NRecords
 }
