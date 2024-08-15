@@ -22,10 +22,11 @@ func (a *App) Refresh(which ...string) {
 		// logger.Info(colors.Red, "Skipping update", colors.Off)
 		return
 	}
+	defer freshenLock.CompareAndSwap(1, 0)
+
 	if a.ScraperController.State != daemons.Running {
 		logger.Info(colors.Green, "Freshening...", colors.Off)
 	}
-	defer freshenLock.CompareAndSwap(1, 0)
 
 	// We always load names first since we need them everywhere
 	err := a.loadNames(nil, nil)

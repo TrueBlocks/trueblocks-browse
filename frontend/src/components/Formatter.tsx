@@ -56,7 +56,7 @@ export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, va
       var fill = value ? "green" : "red";
       return <IconCircleCheck size={16} color="white" fill={fill} />;
     case "check":
-      return <>{value ? <IconCircleCheck size={16} color="white" fill="green" /> : <></>}</>;
+      return value ? <IconCircleCheck size={16} color="white" fill="green" /> : <></>;
     case "error":
       return <>{value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>}</>;
     default:
