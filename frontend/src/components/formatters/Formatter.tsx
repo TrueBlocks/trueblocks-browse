@@ -13,7 +13,6 @@ export type knownTypes =
   | "boolean"
   | "check"
   | "address"
-  // | "name"
   | "hash"
   | "error";
 
@@ -48,8 +47,6 @@ export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, va
       return <>{formatInteger(v)}</>;
     case "address":
       return <AddressFormatter address={value as base.Address} />;
-    // case "name":
-    //   return <AddressFormatter showSame={false} address={value as base.Address} />;
     case "date":
       return <>{useDateTime(v)}</>;
     case "boolean":
