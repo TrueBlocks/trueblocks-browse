@@ -1082,6 +1082,7 @@ export namespace types {
 	    // Go type: MetaData
 	    diffs?: any;
 	    items: CacheItem[];
+	    nItems: number;
 	    latestUpdate: string;
 	    nFolders: number;
 	    nFiles: number;
@@ -1116,6 +1117,7 @@ export namespace types {
 	        this.meta = this.convertValues(source["meta"], null);
 	        this.diffs = this.convertValues(source["diffs"], null);
 	        this.items = this.convertValues(source["items"], CacheItem);
+	        this.nItems = source["nItems"];
 	        this.latestUpdate = source["latestUpdate"];
 	        this.nFolders = source["nFolders"];
 	        this.nFiles = source["nFiles"];

@@ -21,10 +21,6 @@ func (a *App) GetStatus(first, pageSize int) types.StatusContainer {
 	return copy
 }
 
-func (a *App) GetStatusCnt() int {
-	return len(a.status.Items)
-}
-
 func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
@@ -50,11 +46,13 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else {
+		a.status = types.StatusContainer{}
 		a.status.Status = statusArray[0]
 		// TODO: This is a hack. We need to get the version from the core
 		a.status.Version = version.LibraryVersion
 		a.status.LatestUpdate = time.Now().Format(time.RFC3339)
 		a.status.Items = a.status.Caches
+		a.status.NItems = uint64(len(a.status.Items))
 		sort.Slice(a.status.Items, func(i, j int) bool {
 			return a.status.Items[i].SizeInBytes > a.status.Items[j].SizeInBytes
 		})

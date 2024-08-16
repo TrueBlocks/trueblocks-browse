@@ -114,10 +114,6 @@ export function GetStatus(arg1, arg2) {
   return window['go']['app']['App']['GetStatus'](arg1, arg2);
 }
 
-export function GetStatusCnt() {
-  return window['go']['app']['App']['GetStatusCnt']();
-}
-
 export function HelpToggle(arg1) {
   return window['go']['app']['App']['HelpToggle'](arg1);
 }

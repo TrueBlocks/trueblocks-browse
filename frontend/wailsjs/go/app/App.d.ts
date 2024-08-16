@@ -64,8 +64,6 @@ export function GetSession():Promise<config.Session>;
 
 export function GetStatus(arg1:number,arg2:number):Promise<types.StatusContainer>;
 
-export function GetStatusCnt():Promise<number>;
-
 export function HelpToggle(arg1:menu.CallbackData):Promise<void>;
 
 export function Refresh(arg1:Array<string>):Promise<void>;

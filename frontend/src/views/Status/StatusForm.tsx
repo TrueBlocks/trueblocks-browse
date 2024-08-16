@@ -40,6 +40,7 @@ export function createForm(table: any, pager: Pager): GroupDefinition<theInstanc
       colSpan: 5,
       fields: [
         { label: "latestUpdate", accessor: "latestUpdate" },
+        { label: "nCaches", type: "int", accessor: "nItems" },
         { label: "nFiles", type: "int", accessor: "nFiles" },
         { label: "nFolders", type: "int", accessor: "nFolders" },
         { label: "sizeInBytes", type: "bytes", accessor: "nBytes" },

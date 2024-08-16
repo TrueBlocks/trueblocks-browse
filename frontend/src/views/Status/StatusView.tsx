@@ -4,11 +4,12 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
 import { View2, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { GetStatus, GetStatusCnt } from "@gocode/app/App";
+import { GetStatus } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
+import { useAppState } from "@state";
 
 export function StatusView() {
-  const [summaryItem, setSummaryItem] = useState<types.StatusContainer>({} as types.StatusContainer);
+  const { status, setStatus } = useAppState();
   const [count, setCount] = useState<number>(0);
   const pager = useKeyboardPaging(count, [], 10);
 
@@ -16,8 +17,8 @@ export function StatusView() {
     const fetch = async (currentItem: number, itemsPerPage: number) => {
       GetStatus(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
         if (item) {
-          GetStatusCnt().then((cnt: number) => setCount(cnt));
-          setSummaryItem(item);
+          setCount(item.nItems);
+          setStatus(item);
         }
       });
     };
@@ -35,14 +36,14 @@ export function StatusView() {
   }, [pager.curItem, pager.perPage]);
 
   const table = useReactTable({
-    data: summaryItem.items || [],
+    data: status.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
     <View2>
-      <FormTable data={summaryItem} definition={createForm(table, pager)} />
+      <FormTable data={status} definition={createForm(table, pager)} />
     </View2>
   );
 }
