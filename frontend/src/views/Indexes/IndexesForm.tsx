@@ -7,7 +7,7 @@ type theInstance = InstanceType<typeof types.IndexContainer>;
 export function createForm(table: any, pager: Pager): GroupDefinition<theInstance>[] {
   return [
     {
-      title: "Summary Data",
+      title: "Index Data",
       colSpan: 6,
       fields: [
         { label: "bloomSz", type: "bytes", accessor: "bloomSz" },

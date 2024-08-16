@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { View2 } from "@components";
+import { View } from "@components";
 import { DaemonCard, DaemonLog } from ".";
 import { daemons, messages } from "@gocode/models";
 import { GetDaemon, ToggleDaemon } from "@gocode/app/App";
@@ -59,7 +59,7 @@ export function DaemonsView() {
   };
 
   return (
-    <View2>
+    <View>
       <Fieldset legend={"Daemons"} bg={"white"}>
         <SimpleGrid cols={2}>
           <DaemonCard daemon={scraper} toggle={toggleDaemon} />
@@ -70,6 +70,6 @@ export function DaemonsView() {
       <Fieldset legend={"Logs"} bg={"white"}>
         <DaemonLog logMessages={logMessages} />
       </Fieldset>
-    </View2>
+    </View>
   );
 }
