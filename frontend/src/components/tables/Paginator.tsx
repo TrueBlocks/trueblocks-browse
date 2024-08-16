@@ -1,9 +1,10 @@
 import React from "react";
-
 import { Pagination } from "@mantine/core";
 import classes from "./Paginator.module.css";
+import { Route } from "@/Routes";
 
 export type Pager = {
+  name: Route;
   curItem: number;
   perPage: number;
   count: number;
@@ -31,4 +32,14 @@ export const Paginator = ({ pager }: { pager: Pager }) => {
       />
     </div>
   );
+};
+
+export const EmptyPager: Pager = {
+  name: "",
+  curItem: 0,
+  perPage: 0,
+  count: 0,
+  pageNumber: 0,
+  totalPages: 0,
+  setpage: function (newPage: number) {},
 };

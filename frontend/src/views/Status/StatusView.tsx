@@ -1,37 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { types, messages } from "@gocode/models";
+import React from "react";
+import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { tableColumns, createForm } from ".";
-import { View, FormTable } from "@components";
-import { useKeyboardPaging } from "@hooks";
-import { GetStatus } from "@gocode/app/App";
-import { EventsOn, EventsOff } from "@runtime";
+import { tableColumns } from "./StatusTable";
+import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { useAppState } from "@state";
 
 export function StatusView() {
-  const { status, setStatus } = useAppState();
-  const pager = useKeyboardPaging(status.nItems, [], 10);
-
-  useEffect(() => {
-    const fetch = async (currentItem: number, itemsPerPage: number) => {
-      GetStatus(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
-        if (item) {
-          setStatus(item);
-        }
-      });
-    };
-    fetch(pager.curItem, pager.perPage);
-
-    const handleRefresh = () => {
-      fetch(pager.curItem, pager.perPage);
-    };
-
-    var { Message } = messages;
-    EventsOn(Message.DAEMON, handleRefresh);
-    return () => {
-      EventsOff(Message.DAEMON);
-    };
-  }, [pager.curItem, pager.perPage]);
+  const { status } = useAppState();
 
   const table = useReactTable({
     data: status.items || [],
@@ -41,7 +16,62 @@ export function StatusView() {
 
   return (
     <View>
-      <FormTable data={status} definition={createForm(table, pager)} />
+      <FormTable data={status} definition={createStatusForm(table)} />
     </View>
   );
+}
+
+type theInstance = InstanceType<typeof types.StatusContainer>;
+function createStatusForm(table: any): GroupDefinition<theInstance>[] {
+  return [
+    {
+      title: "System Data",
+      colSpan: 7,
+      fields: [
+        { label: "trueblocks", accessor: "version" },
+        { label: "client", accessor: "clientVersion" },
+        { label: "isArchive", type: "boolean", accessor: "isArchive" },
+        { label: "isTracing", type: "boolean", accessor: "isTracing" },
+      ],
+    },
+    {
+      title: "API Keys",
+      colSpan: 5,
+      fields: [
+        { label: "hasEsKey", type: "boolean", accessor: "hasEsKey" },
+        { label: "hasPinKey", type: "boolean", accessor: "hasPinKey" },
+        { label: "rpcProvider", accessor: "rpcProvider" },
+      ],
+    },
+    {
+      title: "Configuration Paths",
+      colSpan: 7,
+      fields: [
+        { label: "rootConfig", accessor: "rootConfig" },
+        { label: "chainConfig", accessor: "chainConfig" },
+        { label: "indexPath", accessor: "indexPath" },
+        { label: "cachePath", accessor: "cachePath" },
+      ],
+    },
+    {
+      title: "Statistics",
+      colSpan: 5,
+      fields: [
+        { label: "latestUpdate", accessor: "latestUpdate" },
+        { label: "nCaches", type: "int", accessor: "nItems" },
+        { label: "nFiles", type: "int", accessor: "nFiles" },
+        { label: "nFolders", type: "int", accessor: "nFolders" },
+        { label: "sizeInBytes", type: "bytes", accessor: "nBytes" },
+      ],
+    },
+    {
+      title: "Caches",
+      fields: [],
+      components: [
+        {
+          component: <DataTable<types.CacheItem> table={table} loading={false} pagerName="status" />,
+        },
+      ],
+    },
+  ];
 }

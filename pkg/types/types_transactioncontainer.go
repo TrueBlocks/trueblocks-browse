@@ -14,18 +14,18 @@ import (
 )
 
 type TransactionContainer struct {
-	Address       base.Address            `json:"address"`
-	Name          string                  `json:"name"`
-	Balance       string                  `json:"balance"`
-	NEvents       int64                   `json:"nEvents"`
-	NTokens       int64                   `json:"nTokens"`
-	NErrors       int64                   `json:"nErrors"`
-	NTransactions int64                   `json:"nTransactions"`
-	Items         []coreTypes.Transaction `json:"items"`
+	Items   []coreTypes.Transaction `json:"items"`
+	NItems  int64                   `json:"nItems"`
+	Address base.Address            `json:"address"`
+	Name    string                  `json:"name"`
+	Balance string                  `json:"balance"`
+	NEvents int64                   `json:"nEvents"`
+	NTokens int64                   `json:"nTokens"`
+	NErrors int64                   `json:"nErrors"`
 }
 
 func (s *TransactionContainer) Summarize() {
-	s.NTransactions = int64(len(s.Items))
+	s.NItems = int64(len(s.Items))
 	for _, tx := range s.Items {
 		if tx.Receipt != nil {
 			s.NEvents += int64(len(tx.Receipt.Logs))
@@ -41,12 +41,12 @@ func (s *TransactionContainer) Summarize() {
 
 func (s *TransactionContainer) ShallowCopy() TransactionContainer {
 	return TransactionContainer{
-		Address:       s.Address,
-		Name:          s.Name,
-		Balance:       s.Balance,
-		NEvents:       s.NEvents,
-		NTokens:       s.NTokens,
-		NErrors:       s.NErrors,
-		NTransactions: s.NTransactions,
+		Address: s.Address,
+		Name:    s.Name,
+		Balance: s.Balance,
+		NEvents: s.NEvents,
+		NTokens: s.NTokens,
+		NErrors: s.NErrors,
+		NItems:  s.NItems,
 	}
 }

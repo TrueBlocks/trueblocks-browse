@@ -1475,14 +1475,14 @@ export namespace types {
 		}
 	}
 	export class TransactionContainer {
+	    items: Transaction[];
+	    nItems: number;
 	    address: base.Address;
 	    name: string;
 	    balance: string;
 	    nEvents: number;
 	    nTokens: number;
 	    nErrors: number;
-	    nTransactions: number;
-	    items: Transaction[];
 	
 	    static createFrom(source: any = {}) {
 	        return new TransactionContainer(source);
@@ -1490,14 +1490,14 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.items = this.convertValues(source["items"], Transaction);
+	        this.nItems = source["nItems"];
 	        this.address = this.convertValues(source["address"], base.Address);
 	        this.name = source["name"];
 	        this.balance = source["balance"];
 	        this.nEvents = source["nEvents"];
 	        this.nTokens = source["nTokens"];
 	        this.nErrors = source["nErrors"];
-	        this.nTransactions = source["nTransactions"];
-	        this.items = this.convertValues(source["items"], Transaction);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

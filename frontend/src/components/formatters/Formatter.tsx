@@ -46,7 +46,7 @@ export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, va
     case "int":
       return <>{formatInteger(v)}</>;
     case "address":
-      return <AddressFormatter address={value as base.Address} />;
+      return <AddressFormatter addressIn={value as base.Address} />;
     case "date":
       return <>{useDateTime(v)}</>;
     case "boolean":

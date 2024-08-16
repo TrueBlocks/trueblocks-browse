@@ -1,7 +1,22 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { types } from "@gocode/models";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { types, messages, base } from "@gocode/models";
+import { useKeyboardPaging } from "@hooks";
+import { Pager, EmptyPager } from "@components";
+import { EventsOn, EventsOff } from "@runtime";
+import {
+  GetHistory,
+  GetMonitors,
+  GetNames,
+  GetAbis,
+  GetIndex,
+  GetManifest,
+  GetStatus,
+  GetLastSub,
+} from "@gocode/app/App";
+import { Route } from "@/Routes";
 
 interface AppStateProps {
+  address: base.Address;
   history: types.TransactionContainer;
   monitors: types.MonitorContainer;
   names: types.NameContainer;
@@ -10,6 +25,7 @@ interface AppStateProps {
   manifests: types.ManifestContainer;
   status: types.StatusContainer;
 
+  setAddress: (address: base.Address) => void;
   setHistory: (history: types.TransactionContainer) => void;
   setMonitors: (monitors: types.MonitorContainer) => void;
   setNames: (names: types.NameContainer) => void;
@@ -18,6 +34,9 @@ interface AppStateProps {
   setManifests: (manifests: types.ManifestContainer) => void;
   setStatus: (status: types.StatusContainer) => void;
 
+  getPager: (name: Route) => Pager;
+  resetPager: (name: Route) => void;
+
   // settings: types.SettingsContainer;
   // setSettings: (settings: types.SettingsContainer) => void;
 }
@@ -25,35 +44,189 @@ interface AppStateProps {
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
 export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
+
   const [history, setHistory] = useState<types.TransactionContainer>({} as types.TransactionContainer);
+  let historyPgr = useKeyboardPaging("history", history.nItems, [], 15);
+
   const [monitors, setMonitors] = useState<types.MonitorContainer>({} as types.MonitorContainer);
+  let monitorPgr = useKeyboardPaging("monitors", monitors.nItems, [], 15);
+
   const [names, setNames] = useState<types.NameContainer>({} as types.NameContainer);
+  let namesPgr = useKeyboardPaging("names", names.nItems, [], 15);
+
   const [abis, setAbis] = useState<types.AbiContainer>({} as types.AbiContainer);
+  let abiPgr = useKeyboardPaging("abis", abis.nItems, [], 15);
+
   const [indexes, setIndexes] = useState<types.IndexContainer>({} as types.IndexContainer);
+  let indexPgr = useKeyboardPaging("indexes", indexes.nItems, [], 15);
+
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
+  let manifestPgr = useKeyboardPaging("manifest", manifests.nItems, [], 15);
+
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
-  return (
-    <AppState.Provider
-      value={{
-        history,
-        monitors,
-        names,
-        abis,
-        indexes,
-        manifests,
-        status,
-        setHistory,
-        setMonitors,
-        setNames,
-        setAbis,
-        setIndexes,
-        setManifests,
-        setStatus,
-      }}
-    >
-      {children}
-    </AppState.Provider>
-  );
+  let statusPgr = useKeyboardPaging("status", status.nItems, [], 10);
+
+  useEffect(() => {
+    const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
+      GetLastSub("/history").then((subRoute: string) => {
+        if (subRoute !== "") {
+          subRoute = subRoute.replace("/", "");
+          setAddress(subRoute as unknown as base.Address);
+          GetHistory(address as unknown as string, currentItem, itemsPerPage).then(
+            (item: types.TransactionContainer) => {
+              if (item) {
+                setHistory(item);
+              }
+            }
+          );
+        }
+      });
+    };
+    fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
+
+    const fetchMonitors = async (currentItem: number, itemsPerPage: number) => {
+      GetMonitors(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
+        if (item) {
+          setMonitors(item);
+        }
+      });
+    };
+    fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
+
+    const fetchNames = async (currentItem: number, itemsPerPage: number) => {
+      GetNames(currentItem, itemsPerPage).then((item: types.NameContainer) => {
+        if (item) {
+          setNames(item);
+        }
+      });
+    };
+    fetchNames(namesPgr.curItem, namesPgr.perPage);
+
+    const fetchAbis = async (currentItem: number, itemsPerPage: number) => {
+      GetAbis(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
+        if (item) {
+          setAbis(item);
+        }
+      });
+    };
+    fetchAbis(abiPgr.curItem, abiPgr.perPage);
+
+    const fetchIndexes = async (currentItem: number, itemsPerPage: number) => {
+      GetIndex(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
+        if (item) {
+          setIndexes(item);
+        }
+      });
+    };
+    fetchIndexes(indexPgr.curItem, indexPgr.perPage);
+
+    const fetchManifest = async (currentItem: number, itemsPerPage: number) => {
+      GetManifest(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
+        if (item) {
+          setManifests(item);
+        }
+      });
+    };
+    fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
+
+    const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
+      GetStatus(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
+        if (item) {
+          setStatus(item);
+        }
+      });
+    };
+    fetchStatus(statusPgr.curItem, statusPgr.perPage);
+
+    const handleRefresh = () => {
+      fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
+      fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
+      fetchNames(namesPgr.curItem, namesPgr.perPage);
+      fetchAbis(abiPgr.curItem, abiPgr.perPage);
+      fetchIndexes(indexPgr.curItem, indexPgr.perPage);
+      fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
+      fetchStatus(statusPgr.curItem, statusPgr.perPage);
+    };
+
+    var { Message } = messages;
+    EventsOn(Message.DAEMON, handleRefresh);
+    return () => {
+      EventsOff(Message.DAEMON);
+    };
+  }, [
+    address,
+    historyPgr.curItem,
+    historyPgr.perPage,
+    monitorPgr.curItem,
+    monitorPgr.perPage,
+    namesPgr.curItem,
+    namesPgr.perPage,
+    abiPgr.curItem,
+    abiPgr.perPage,
+    indexPgr.curItem,
+    indexPgr.perPage,
+    manifestPgr.curItem,
+    manifestPgr.perPage,
+    statusPgr.curItem,
+    statusPgr.perPage,
+  ]);
+
+  const getPager = (name: Route): Pager => {
+    switch (name) {
+      case "history":
+        return historyPgr;
+      case "monitors":
+        return monitorPgr;
+      case "names":
+        return namesPgr;
+      case "abis":
+        return abiPgr;
+      case "indexes":
+        return indexPgr;
+      case "manifest":
+        return manifestPgr;
+      case "status":
+        return statusPgr;
+      case "settings":
+      case "daemons":
+      case "":
+      default:
+        break;
+    }
+    return EmptyPager;
+  };
+
+  const resetPager = (name: Route) => {
+    switch (name) {
+      case "history":
+        historyPgr = useKeyboardPaging("history", history.nItems, [], 15);
+        break;
+    }
+  };
+
+  let state = {
+    address,
+    history,
+    monitors,
+    names,
+    abis,
+    indexes,
+    manifests,
+    status,
+    setAddress,
+    setHistory,
+    setMonitors,
+    setNames,
+    setAbis,
+    setIndexes,
+    setManifests,
+    setStatus,
+    getPager,
+    resetPager,
+  };
+
+  return <AppState.Provider value={state}>{children}</AppState.Provider>;
 };
 
 export const useAppState = () => {
