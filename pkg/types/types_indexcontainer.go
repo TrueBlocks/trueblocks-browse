@@ -19,7 +19,8 @@ import (
 
 type IndexContainer struct {
 	coreTypes.ChunkStats
-	Items []coreTypes.ChunkStats `json:"items"`
+	Items  []coreTypes.ChunkStats `json:"items"`
+	NItems uint64                 `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -50,6 +51,7 @@ func (s *IndexContainer) FinishUnmarshal() {
 
 // EXISTING_CODE
 func (s *IndexContainer) Summarize() {
+	s.NItems = uint64(len(s.Items))
 	for _, chunk := range s.Items {
 		s.BloomSz += chunk.BloomSz
 		s.ChunkSz += chunk.ChunkSz
@@ -71,6 +73,7 @@ func (s *IndexContainer) Summarize() {
 
 func (s *IndexContainer) ShallowCopy() IndexContainer {
 	return IndexContainer{
+		NItems:     s.NItems,
 		ChunkStats: s.ChunkStats,
 	}
 }

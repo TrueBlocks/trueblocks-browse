@@ -4,11 +4,12 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
 import { View2, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { GetManifest, GetManifestCnt } from "@gocode/app/App";
+import { GetManifest } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
+import { useAppState } from "@state";
 
 export function ManifestView() {
-  const [summaryItem, setSummaryItem] = useState<types.ManifestContainer>({} as types.ManifestContainer);
+  const { manifests, setManifests } = useAppState();
   const [count, setCount] = useState<number>(0);
   const pager = useKeyboardPaging(count, [], 15);
 
@@ -16,8 +17,8 @@ export function ManifestView() {
     const fetch = async (currentItem: number, itemsPerPage: number) => {
       GetManifest(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
         if (item) {
-          GetManifestCnt().then((cnt: number) => setCount(cnt));
-          setSummaryItem(item);
+          setCount(item.nItems);
+          setManifests(item);
         }
       });
     };
@@ -35,14 +36,14 @@ export function ManifestView() {
   }, [pager.curItem, pager.perPage]);
 
   const table = useReactTable({
-    data: summaryItem.items || [],
+    data: manifests.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
     <View2>
-      <FormTable data={summaryItem} definition={createForm(table, pager)} />
+      <FormTable data={manifests} definition={createForm(table, pager)} />
     </View2>
   );
 }

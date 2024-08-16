@@ -20,6 +20,7 @@ import (
 type ManifestContainer struct {
 	coreTypes.Manifest `json:",inline"`
 	Items              []coreTypes.ChunkRecord `json:"items"`
+	NItems             uint64                  `json:"nItems"`
 	LatestUpdate       string                  `json:"latestUpdate"`
 	NBlooms            uint64                  `json:"nBlooms"`
 	BloomsSize         int64                   `json:"bloomsSize"`
@@ -65,6 +66,7 @@ func NewManifestContainer(manifest coreTypes.Manifest) ManifestContainer {
 }
 
 func (s *ManifestContainer) Summarize() {
+	s.NItems = uint64(len(s.Items))
 	for _, item := range s.Items {
 		s.NBlooms++
 		s.BloomsSize += item.BloomSize
@@ -82,6 +84,7 @@ func (s *ManifestContainer) ShallowCopy() ManifestContainer {
 			Version:       s.Manifest.Version,
 		},
 		LatestUpdate: s.LatestUpdate,
+		NItems:       s.NItems,
 		NBlooms:      s.NBlooms,
 		BloomsSize:   s.BloomsSize,
 		NIndexes:     s.NIndexes,

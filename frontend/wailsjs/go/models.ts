@@ -576,6 +576,7 @@ export namespace types {
 	    ratio: number;
 	    recWid: number;
 	    items: ChunkStats[];
+	    nItems: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new IndexContainer(source);
@@ -597,6 +598,7 @@ export namespace types {
 	        this.ratio = source["ratio"];
 	        this.recWid = source["recWid"];
 	        this.items = this.convertValues(source["items"], ChunkStats);
+	        this.nItems = source["nItems"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -671,6 +673,7 @@ export namespace types {
 	    specification: string;
 	    version: string;
 	    items: ChunkRecord[];
+	    nItems: number;
 	    latestUpdate: string;
 	    nBlooms: number;
 	    bloomsSize: number;
@@ -688,6 +691,7 @@ export namespace types {
 	        this.specification = source["specification"];
 	        this.version = source["version"];
 	        this.items = this.convertValues(source["items"], ChunkRecord);
+	        this.nItems = source["nItems"];
 	        this.latestUpdate = source["latestUpdate"];
 	        this.nBlooms = source["nBlooms"];
 	        this.bloomsSize = source["bloomsSize"];

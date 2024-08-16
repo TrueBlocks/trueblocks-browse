@@ -62,10 +62,6 @@ export function GetIndex(arg1, arg2) {
   return window['go']['app']['App']['GetIndex'](arg1, arg2);
 }
 
-export function GetIndexCnt() {
-  return window['go']['app']['App']['GetIndexCnt']();
-}
-
 export function GetLast(arg1) {
   return window['go']['app']['App']['GetLast'](arg1);
 }
@@ -80,10 +76,6 @@ export function GetLastSub(arg1) {
 
 export function GetManifest(arg1, arg2) {
   return window['go']['app']['App']['GetManifest'](arg1, arg2);
-}
-
-export function GetManifestCnt() {
-  return window['go']['app']['App']['GetManifestCnt']();
 }
 
 export function GetMenus() {
