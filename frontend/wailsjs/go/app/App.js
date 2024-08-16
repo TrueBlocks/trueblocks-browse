@@ -38,10 +38,6 @@ export function GetAbis(arg1, arg2) {
   return window['go']['app']['App']['GetAbis'](arg1, arg2);
 }
 
-export function GetAbisCnt() {
-  return window['go']['app']['App']['GetAbisCnt']();
-}
-
 export function GetContext() {
   return window['go']['app']['App']['GetContext']();
 }
@@ -92,10 +88,6 @@ export function GetMonitorsCnt() {
 
 export function GetNames(arg1, arg2) {
   return window['go']['app']['App']['GetNames'](arg1, arg2);
-}
-
-export function GetNamesCnt() {
-  return window['go']['app']['App']['GetNamesCnt']();
 }
 
 export function GetSession() {

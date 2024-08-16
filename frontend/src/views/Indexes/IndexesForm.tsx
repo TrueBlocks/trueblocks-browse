@@ -22,6 +22,7 @@ export function createForm(table: any, pager: Pager): GroupDefinition<theInstanc
       title: "Statistics",
       colSpan: 6,
       fields: [
+        { label: "nItems", type: "int", accessor: "nItems" },
         { label: "addrsPerBlock", type: "float", accessor: "addrsPerBlock" },
         { label: "appsPerAddr", type: "float", accessor: "appsPerAddr" },
         { label: "appsPerBlock", type: "float", accessor: "appsPerBlock" },

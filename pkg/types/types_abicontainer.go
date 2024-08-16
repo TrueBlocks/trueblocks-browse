@@ -20,14 +20,14 @@ import (
 
 type AbiContainer struct {
 	coreTypes.Abi
-	NAbis         int64           `json:"nAbis"`
+	Items         []coreTypes.Abi `json:"items"`
+	NItems        int64           `json:"nItems"`
 	LargestFile   string          `json:"largestFile"`
 	MostFunctions string          `json:"mostFunctions"`
 	MostEvents    string          `json:"mostEvents"`
 	lF            comparison      `json:"-"`
 	mF            comparison      `json:"-"`
 	mE            comparison      `json:"-"`
-	Items         []coreTypes.Abi `json:"items"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -58,7 +58,7 @@ func (s *AbiContainer) FinishUnmarshal() {
 
 // EXISTING_CODE
 func (s *AbiContainer) Summarize() {
-	s.NAbis = int64(len(s.Items))
+	s.NItems = int64(len(s.Items))
 	for _, file := range s.Items {
 		s.NFunctions += file.NFunctions
 		s.NEvents += file.NEvents
@@ -75,7 +75,7 @@ func (s *AbiContainer) Summarize() {
 func (s *AbiContainer) ShallowCopy() AbiContainer {
 	return AbiContainer{
 		Abi:           s.Abi,
-		NAbis:         s.NAbis,
+		NItems:        s.NItems,
 		LargestFile:   s.LargestFile,
 		MostFunctions: s.MostFunctions,
 		MostEvents:    s.MostEvents,

@@ -22,10 +22,6 @@ func (a *App) GetNames(first, pageSize int) types.NameContainer {
 	return copy
 }
 
-func (a *App) GetNamesCnt() int {
-	return len(a.names.Names)
-}
-
 func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {

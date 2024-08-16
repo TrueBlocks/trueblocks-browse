@@ -434,11 +434,11 @@ export namespace types {
 	    nFunctions: number;
 	    name: string;
 	    path: string;
-	    nAbis: number;
+	    items: Abi[];
+	    nItems: number;
 	    largestFile: string;
 	    mostFunctions: string;
 	    mostEvents: string;
-	    items: Abi[];
 	
 	    static createFrom(source: any = {}) {
 	        return new AbiContainer(source);
@@ -455,11 +455,11 @@ export namespace types {
 	        this.nFunctions = source["nFunctions"];
 	        this.name = source["name"];
 	        this.path = source["path"];
-	        this.nAbis = source["nAbis"];
+	        this.items = this.convertValues(source["items"], Abi);
+	        this.nItems = source["nItems"];
 	        this.largestFile = source["largestFile"];
 	        this.mostFunctions = source["mostFunctions"];
 	        this.mostEvents = source["mostEvents"];
-	        this.items = this.convertValues(source["items"], Abi);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -866,7 +866,9 @@ export namespace types {
 		}
 	}
 	export class NameContainer {
-	    nNames: number;
+	    names: Name[];
+	    namesMap: {[key: string]: Name};
+	    nItems: number;
 	    nContracts: number;
 	    nErc20s: number;
 	    nErc721s: number;
@@ -875,8 +877,6 @@ export namespace types {
 	    nPrefund: number;
 	    nBaddress: number;
 	    nDeleted: number;
-	    namesMap: {[key: string]: Name};
-	    names: Name[];
 	
 	    static createFrom(source: any = {}) {
 	        return new NameContainer(source);
@@ -884,7 +884,9 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.nNames = source["nNames"];
+	        this.names = this.convertValues(source["names"], Name);
+	        this.namesMap = this.convertValues(source["namesMap"], Name, true);
+	        this.nItems = source["nItems"];
 	        this.nContracts = source["nContracts"];
 	        this.nErc20s = source["nErc20s"];
 	        this.nErc721s = source["nErc721s"];
@@ -893,8 +895,6 @@ export namespace types {
 	        this.nPrefund = source["nPrefund"];
 	        this.nBaddress = source["nBaddress"];
 	        this.nDeleted = source["nDeleted"];
-	        this.namesMap = this.convertValues(source["namesMap"], Name, true);
-	        this.names = this.convertValues(source["names"], Name);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

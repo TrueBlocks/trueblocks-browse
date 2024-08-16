@@ -10,7 +10,7 @@ export function createForm(table: any, pager: Pager): GroupDefinition<theInstanc
       title: "Abi Data",
       colSpan: 6,
       fields: [
-        { label: "nAbis", type: "int", accessor: "nAbis" },
+        { label: "nItems", type: "int", accessor: "nItems" },
         { label: "nFunctions", type: "int", accessor: "nFunctions" },
         { label: "nEvents", type: "int", accessor: "nEvents" },
         { label: "fileSize", type: "bytes", accessor: "fileSize" },

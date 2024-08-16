@@ -4,11 +4,12 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
 import { View2, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { GetNames, GetNamesCnt } from "@gocode/app/App";
+import { GetNames } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
+import { useAppState } from "@state";
 
 export function NamesView() {
-  const [summaryItem, setSummaryItem] = useState<types.NameContainer>({} as types.NameContainer);
+  const { names, setNames } = useAppState();
   const [count, setCount] = useState<number>(0);
   const pager = useKeyboardPaging(count, [], 15);
 
@@ -16,8 +17,8 @@ export function NamesView() {
     const fetch = async (currentItem: number, itemsPerPage: number) => {
       GetNames(currentItem, itemsPerPage).then((item: types.NameContainer) => {
         if (item) {
-          GetNamesCnt().then((cnt: number) => setCount(cnt));
-          setSummaryItem(item);
+          setCount(item.nItems);
+          setNames(item);
         }
       });
     };
@@ -35,14 +36,14 @@ export function NamesView() {
   }, [pager.curItem, pager.perPage]);
 
   const table = useReactTable({
-    data: summaryItem.names || [],
+    data: names.names || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
     <View2>
-      <FormTable data={summaryItem} definition={createForm(table, pager)} />
+      <FormTable data={names} definition={createForm(table, pager)} />
     </View2>
   );
 }

@@ -10,7 +10,7 @@ export function createForm(table: any, pager: Pager): GroupDefinition<theInstanc
       title: "Name Data",
       colSpan: 6,
       fields: [
-        { label: "nNames", type: "int", accessor: "nNames" },
+        { label: "nNames", type: "int", accessor: "nItems" },
         { label: "nContracts", type: "int", accessor: "nContracts" },
         { label: "nErc20s", type: "int", accessor: "nErc20s" },
         { label: "nErc721s", type: "int", accessor: "nErc721s" },

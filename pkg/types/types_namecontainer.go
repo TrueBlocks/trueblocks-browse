@@ -6,7 +6,9 @@ import (
 )
 
 type NameContainer struct {
-	NNames     int64                           `json:"nNames"`
+	Names      []coreTypes.Name                `json:"names"`
+	NamesMap   map[base.Address]coreTypes.Name `json:"namesMap"`
+	NItems     int64                           `json:"nItems"`
 	NContracts int64                           `json:"nContracts"`
 	NErc20s    int64                           `json:"nErc20s"`
 	NErc721s   int64                           `json:"nErc721s"`
@@ -15,12 +17,10 @@ type NameContainer struct {
 	NPrefund   int64                           `json:"nPrefund"`
 	NBaddress  int64                           `json:"nBaddress"`
 	NDeleted   int64                           `json:"nDeleted"`
-	NamesMap   map[base.Address]coreTypes.Name `json:"namesMap"`
-	Names      []coreTypes.Name                `json:"names"`
 }
 
 func (s *NameContainer) Summarize() {
-	s.NNames = int64(len(s.Names))
+	s.NItems = int64(len(s.Names))
 	for _, name := range s.Names {
 		if name.Parts&coreTypes.Regular > 0 {
 			s.NRegular++
@@ -51,7 +51,7 @@ func (s *NameContainer) Summarize() {
 
 func (s *NameContainer) ShallowCopy() NameContainer {
 	return NameContainer{
-		NNames:     s.NNames,
+		NItems:     s.NItems,
 		NContracts: s.NContracts,
 		NErc20s:    s.NErc20s,
 		NErc721s:   s.NErc721s,
