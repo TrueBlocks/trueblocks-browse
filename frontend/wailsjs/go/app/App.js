@@ -82,10 +82,6 @@ export function GetMonitors(arg1, arg2) {
   return window['go']['app']['App']['GetMonitors'](arg1, arg2);
 }
 
-export function GetMonitorsCnt() {
-  return window['go']['app']['App']['GetMonitorsCnt']();
-}
-
 export function GetNames(arg1, arg2) {
   return window['go']['app']['App']['GetNames'](arg1, arg2);
 }

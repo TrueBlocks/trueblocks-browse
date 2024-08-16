@@ -48,8 +48,6 @@ export function GetMenus():Promise<menu.Menu>;
 
 export function GetMonitors(arg1:number,arg2:number):Promise<types.MonitorContainer>;
 
-export function GetMonitorsCnt():Promise<number>;
-
 export function GetNames(arg1:number,arg2:number):Promise<types.NameContainer>;
 
 export function GetSession():Promise<config.Session>;

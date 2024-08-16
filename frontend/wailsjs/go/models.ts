@@ -765,11 +765,11 @@ export namespace types {
 	    lastScanned: number;
 	    nRecords: number;
 	    name: string;
-	    nMonitors: number;
+	    items: Monitor[];
+	    nItems: number;
 	    nNamed: number;
 	    nDeleted: number;
 	    monitorMap: {[key: string]: Monitor};
-	    items: Monitor[];
 	
 	    static createFrom(source: any = {}) {
 	        return new MonitorContainer(source);
@@ -783,11 +783,11 @@ export namespace types {
 	        this.lastScanned = source["lastScanned"];
 	        this.nRecords = source["nRecords"];
 	        this.name = source["name"];
-	        this.nMonitors = source["nMonitors"];
+	        this.items = this.convertValues(source["items"], Monitor);
+	        this.nItems = source["nItems"];
 	        this.nNamed = source["nNamed"];
 	        this.nDeleted = source["nDeleted"];
 	        this.monitorMap = this.convertValues(source["monitorMap"], Monitor, true);
-	        this.items = this.convertValues(source["items"], Monitor);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

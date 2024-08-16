@@ -20,11 +20,11 @@ import (
 
 type MonitorContainer struct {
 	coreTypes.Monitor
-	NMonitors  int64                              `json:"nMonitors"`
+	Items      []coreTypes.Monitor                `json:"items"`
+	Nitems     int64                              `json:"nItems"`
 	NNamed     int64                              `json:"nNamed"`
 	NDeleted   int64                              `json:"nDeleted"`
 	MonitorMap map[base.Address]coreTypes.Monitor `json:"monitorMap"`
-	Items      []coreTypes.Monitor                `json:"items"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -56,16 +56,16 @@ func (s *MonitorContainer) FinishUnmarshal() {
 // EXISTING_CODE
 func (s *MonitorContainer) ShallowCopy() MonitorContainer {
 	return MonitorContainer{
-		Monitor:   s.Monitor,
-		NNamed:    s.NNamed,
-		NDeleted:  s.NDeleted,
-		NMonitors: s.NMonitors,
+		Monitor:  s.Monitor,
+		NNamed:   s.NNamed,
+		NDeleted: s.NDeleted,
+		Nitems:   s.Nitems,
 	}
 }
 
 func (s *MonitorContainer) Summarize() {
+	s.Nitems = int64(len(s.Items))
 	for _, mon := range s.Items {
-		s.NMonitors++
 		if mon.Deleted {
 			s.NDeleted++
 		}

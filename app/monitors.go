@@ -19,10 +19,6 @@ func (a *App) GetMonitors(first, pageSize int) types.MonitorContainer {
 	return copy
 }
 
-func (a *App) GetMonitorsCnt() int {
-	return len(a.monitors.Items)
-}
-
 func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
