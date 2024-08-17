@@ -3,6 +3,7 @@ import { types, messages, base, wizard } from "@gocode/models";
 import { useKeyboardPaging } from "@hooks";
 import { Pager, EmptyPager } from "@components";
 import { EventsOn, EventsOff } from "@runtime";
+import { Route } from "@/Routes";
 import {
   HistoryPage,
   MonitorPage,
@@ -15,7 +16,6 @@ import {
   StepWizard,
   GetWizardState,
 } from "@gocode/app/App";
-import { Route } from "@/Routes";
 
 interface AppStateProps {
   address: base.Address;
@@ -42,9 +42,6 @@ interface AppStateProps {
   isConfigured: boolean;
   wizardState: wizard.State;
   stepWizard: (step: wizard.Step) => void;
-
-  // settings: types.SettingsContainer;
-  // setSettings: (settings: types.SettingsContainer) => void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -75,13 +72,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
   let statusPgr = useKeyboardPaging("status", status.nItems, [], 10);
-
-  const stepWizard = (step: wizard.Step) => {
-    StepWizard(step).then((state) => {
-      setWizardState(state);
-      setIsConfigured(state == wizard.State.OKAY);
-    });
-  };
 
   useEffect(() => {
     const fetchWizard = async () => {
@@ -197,6 +187,13 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     statusPgr.curItem,
     statusPgr.perPage,
   ]);
+
+  const stepWizard = (step: wizard.Step) => {
+    StepWizard(step).then((state) => {
+      setWizardState(state);
+      setIsConfigured(state == wizard.State.OKAY);
+    });
+  };
 
   const getPager = (name: Route): Pager => {
     switch (name) {

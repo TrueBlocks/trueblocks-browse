@@ -6,3 +6,4 @@ export * from "./Navbar";
 export * from "./Routes";
 export * from "./AppStatus";
 export * from "./DaemonStatus";
+export * from "./StyledNavLink";

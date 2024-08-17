@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Route, Switch, useLocation } from "wouter";
 import classes from "@/App.module.css";
 import { GetLast } from "@gocode/app/App";

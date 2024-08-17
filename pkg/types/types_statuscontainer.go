@@ -1,6 +1,8 @@
 package types
 
 import (
+	"time"
+
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -27,6 +29,7 @@ func (s *StatusContainer) ShallowCopy() StatusContainer {
 
 func (s *StatusContainer) Summarize() {
 	s.NItems = uint64(len(s.Items))
+	s.LatestUpdate = time.Now().Format(time.RFC3339)
 	for _, cache := range s.Items {
 		s.NFolders += cache.NFolders
 		s.NFiles += cache.NFiles

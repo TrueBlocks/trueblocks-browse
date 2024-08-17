@@ -55,8 +55,7 @@ export namespace config {
 	    lastSub: {[key: string]: string};
 	    lastHelp: boolean;
 	    daemons: Daemons;
-	    // Go type: wizard
-	    wizard: any;
+	    wizard: wizard.Wizard;
 	
 	    static createFrom(source: any = {}) {
 	        return new Session(source);
@@ -73,7 +72,7 @@ export namespace config {
 	        this.lastSub = source["lastSub"];
 	        this.lastHelp = source["lastHelp"];
 	        this.daemons = this.convertValues(source["daemons"], Daemons);
-	        this.wizard = this.convertValues(source["wizard"], null);
+	        this.wizard = this.convertValues(source["wizard"], wizard.Wizard);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1539,6 +1538,18 @@ export namespace wizard {
 	    PREVIOUS = "Previous",
 	    NEXT = "Next",
 	    FINISH = "Finish",
+	}
+	export class Wizard {
+	    state: State;
+	
+	    static createFrom(source: any = {}) {
+	        return new Wizard(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.state = source["state"];
+	    }
 	}
 
 }
