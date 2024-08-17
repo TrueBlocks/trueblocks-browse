@@ -41,15 +41,24 @@ var defaultSession = Session{
 	Wizard:    wizard.Wizard{State: wizard.NotOkay},
 }
 
+func (s *Session) CheckWizard() (wizard.State, string) {
+	if os.Getenv("TB_BAD_CONFIG") == "true" {
+		s.Wizard.State = wizard.NotOkay
+		s.Save()
+	} else if s.Wizard.State == wizard.Okay && s.LastRoute == "/wizard" {
+		s.LastRoute = "/"
+		s.Save()
+	}
+	return s.Wizard.State, s.LastRoute
+}
+
 // Load loads the session from the configuration folder. If the file contains
 // data, we return true. False otherwise.
 func (s *Session) MustLoadSession() {
 	fn := getSessionFn()
 	if contents := file.AsciiFileToString(fn); len(contents) > 0 {
 		if err := json.Unmarshal([]byte(contents), s); err == nil {
-			if os.Getenv("TB_BAD_CONFIG") == "true" {
-				s.Wizard.State = wizard.NotOkay
-			}
+			s.Wizard.State, s.LastRoute = s.CheckWizard()
 			return
 		}
 	}
@@ -57,9 +66,7 @@ func (s *Session) MustLoadSession() {
 	resolution := resolution.GetPrimary()
 	s.Width = resolution.Width
 	s.Height = resolution.Height
-	if os.Getenv("TB_BAD_CONFIG") == "true" {
-		s.Wizard.State = wizard.NotOkay
-	}
+	s.Wizard.State, s.LastRoute = s.CheckWizard()
 	s.Save()
 }
 

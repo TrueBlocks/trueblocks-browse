@@ -90,17 +90,8 @@ func (a *App) ViewSettings(cd *menu.CallbackData) {
 }
 
 func (a *App) ViewWizard(cd *menu.CallbackData) {
-    if a.isConfigured() {
-		a.StepWizard(wizard.Reset)
-    }
-
-	if a.isConfigured() {
-		logger.Info("ViewHome")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
-		a.SetLast("route", "/")
-	} else {
-		logger.Info("ViewWizard")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/wizard"))
-		a.SetLast("route", "/wizard")
-	}
+	a.StepWizard(wizard.Reset)
+	logger.Info("ViewWizard")
+	messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/wizard"))
+	a.SetLast("route", "/wizard")
 }

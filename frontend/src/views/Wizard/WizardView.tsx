@@ -10,18 +10,37 @@ export function WizardView() {
     <div>
       <div>{`wizardState: ${wizardState}`}</div>
       <div>{`isConfigured: ${isConfigured}`}</div>
-      <Button size={"xs"} onClick={() => stepWizard(wizard.Step.RESET)}>
-        Reset
-      </Button>
-      <Button size={"xs"} onClick={() => stepWizard(wizard.Step.PREVIOUS)}>
-        Prev
-      </Button>
-      <Button size={"xs"} onClick={() => stepWizard(wizard.Step.NEXT)}>
-        Next
-      </Button>
-      <Button size={"xs"} onClick={() => stepWizard(wizard.Step.FINISH)}>
-        Finish
-      </Button>
+      <ResetWizard />
+      <StepWizard back />
+      <StepWizard />
+      <FinishWizard />
     </div>
+  );
+}
+
+export function ResetWizard() {
+  const { stepWizard } = useAppState();
+  return (
+    <Button size={"xs"} onClick={() => stepWizard(wizard.Step.RESET)}>
+      Reset
+    </Button>
+  );
+}
+
+export function StepWizard({ back = false }: { back?: boolean }) {
+  const { stepWizard } = useAppState();
+  return (
+    <Button size={"xs"} onClick={() => stepWizard(back ? wizard.Step.PREVIOUS : wizard.Step.NEXT)}>
+      {back ? "Back" : "Next"}
+    </Button>
+  );
+}
+
+export function FinishWizard() {
+  const { stepWizard } = useAppState();
+  return (
+    <Button size={"xs"} onClick={() => stepWizard(wizard.Step.FINISH)}>
+      Finish
+    </Button>
   );
 }

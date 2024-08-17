@@ -76,13 +76,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
   let statusPgr = useKeyboardPaging("status", status.nItems, [], 10);
 
-  useEffect(() => {
-    GetWizardState().then((state) => {
-      setWizardState(state);
-      setIsConfigured(state == wizard.State.OKAY);
-    });
-  }, []);
-
   const stepWizard = (step: wizard.Step) => {
     StepWizard(step).then((state) => {
       setWizardState(state);
@@ -91,6 +84,14 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   useEffect(() => {
+    const fetchWizard = async () => {
+      GetWizardState().then((state) => {
+        setWizardState(state);
+        setIsConfigured(state == wizard.State.OKAY);
+      });
+    };
+    fetchWizard();
+
     const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
       GetLastSub("/history").then((subRoute: string) => {
         if (subRoute !== "") {
@@ -163,6 +164,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchStatus(statusPgr.curItem, statusPgr.perPage);
 
     const handleRefresh = () => {
+      fetchWizard();
       fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
       fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
       fetchNames(namesPgr.curItem, namesPgr.perPage);

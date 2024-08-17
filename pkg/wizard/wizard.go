@@ -1,10 +1,5 @@
 package wizard
 
-import (
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-)
-
 type Wizard struct {
 	State State
 }
