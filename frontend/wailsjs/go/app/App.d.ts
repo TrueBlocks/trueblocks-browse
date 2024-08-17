@@ -5,6 +5,7 @@ import {menu} from '../models';
 import {types} from '../models';
 import {context} from '../models';
 import {daemons} from '../models';
+import {wizard} from '../models';
 import {config} from '../models';
 import {output} from '../models';
 
@@ -32,8 +33,6 @@ export function GetDaemon(arg1:string):Promise<daemons.Daemon>;
 
 export function GetHistory(arg1:string,arg2:number,arg3:number):Promise<types.TransactionContainer>;
 
-export function GetHistoryCnt(arg1:string):Promise<number>;
-
 export function GetIndex(arg1:number,arg2:number):Promise<types.IndexContainer>;
 
 export function GetLast(arg1:string):Promise<string>;
@@ -41,6 +40,8 @@ export function GetLast(arg1:string):Promise<string>;
 export function GetLastDaemon(arg1:string):Promise<boolean>;
 
 export function GetLastSub(arg1:string):Promise<string>;
+
+export function GetLastWizard():Promise<wizard.State>;
 
 export function GetManifest(arg1:number,arg2:number):Promise<types.ManifestContainer>;
 
@@ -54,6 +55,8 @@ export function GetSession():Promise<config.Session>;
 
 export function GetStatus(arg1:number,arg2:number):Promise<types.StatusContainer>;
 
+export function GetWizardState():Promise<wizard.State>;
+
 export function HelpToggle(arg1:menu.CallbackData):Promise<void>;
 
 export function Refresh(arg1:Array<string>):Promise<void>;
@@ -65,6 +68,8 @@ export function SetLast(arg1:string,arg2:string):Promise<void>;
 export function SetLastDaemon(arg1:string,arg2:boolean):Promise<void>;
 
 export function StateToString(arg1:string):Promise<string>;
+
+export function StepWizard(arg1:wizard.Step):Promise<wizard.State>;
 
 export function String():Promise<string>;
 
@@ -93,3 +98,5 @@ export function ViewNames(arg1:menu.CallbackData):Promise<void>;
 export function ViewSettings(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewStatus(arg1:menu.CallbackData):Promise<void>;
+
+export function ViewWizard(arg1:menu.CallbackData):Promise<void>;

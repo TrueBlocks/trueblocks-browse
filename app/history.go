@@ -15,6 +15,10 @@ import (
 var historyMutex sync.Mutex
 
 func (a *App) GetHistory(addr string, first, pageSize int) types.TransactionContainer {
+	if !a.isConfigured() {
+		return types.TransactionContainer{}
+	}
+
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
@@ -37,7 +41,7 @@ func (a *App) GetHistory(addr string, first, pageSize int) types.TransactionCont
 		}
 
 		go func() {
-			nItems := a.GetHistoryCnt(addr)
+			nItems := a.getHistoryCnt(addr)
 			for {
 				select {
 				case model := <-opts.RenderCtx.ModelChan:
@@ -108,7 +112,7 @@ func (a *App) GetHistory(addr string, first, pageSize int) types.TransactionCont
 	return copy
 }
 
-func (a *App) GetHistoryCnt(addr string) int {
+func (a *App) getHistoryCnt(addr string) int {
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))

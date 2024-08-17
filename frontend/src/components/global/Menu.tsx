@@ -3,14 +3,16 @@ import { NavLink } from "@mantine/core";
 import { Link, useRoute } from "wouter";
 import { GetLast, GetLastSub, SetLast } from "@gocode/app/App";
 // TODO: This alias is wrong, can it not be @Routes See also @/App.module.css
-import { routeItems } from "@/Routes";
+import { routeItems, RouteItem } from "@/Routes";
 import { useLocation } from "wouter";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
+import { useAppState } from "@state";
 
 export function Menu() {
   const [activeRoute, setActiveRoute] = useState("/");
   const [_, setLocation] = useLocation();
+  const { isConfigured } = useAppState();
 
   useEffect(() => {
     (GetLast("route") || "/").then((route) => {
@@ -55,11 +57,14 @@ export function Menu() {
     }
   };
 
+  const routes = routeItems
+    .filter((item: RouteItem) => (isConfigured ? item.route !== "/wizard" : item.route === "/wizard"))
+    .sort((a, b) => a.order - b.order);
+
   return (
     <div style={{ flexGrow: 1 }}>
-      {routeItems
-        .sort((a, b) => a.order - b.order)
-        .map((item) => (
+      {routes.map((item) => {
+        return (
           <StyledNavLink
             key={item.route}
             label={item.label}
@@ -68,7 +73,8 @@ export function Menu() {
             onClick={() => handleRouteChange(item.route)}
             activeRoute={activeRoute}
           />
-        ))}
+        );
+      })}
     </div>
   );
 }

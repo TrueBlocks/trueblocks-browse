@@ -26,6 +26,10 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}()
 
+	if !a.isConfigured() {
+		return nil
+	}
+
 	opts := sdk.MonitorsOptions{}
 	if monitors, _, err := opts.MonitorsList(); err != nil {
 		if errorChan != nil {

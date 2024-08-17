@@ -13,6 +13,7 @@ import {
   StatusIcon,
   DaemonsIcon,
   SettingsIcon,
+  WizardIcon,
   // Views
   HomeView,
   HistoryView,
@@ -24,6 +25,7 @@ import {
   DaemonsView,
   StatusView,
   SettingsView,
+  WizardView,
 } from "@views";
 
 export type Route =
@@ -36,7 +38,8 @@ export type Route =
   | "manifest"
   | "status"
   | "settings"
-  | "daemons";
+  | "daemons"
+  | "wizard";
 
 export type FullRoute = string;
 
@@ -48,7 +51,7 @@ function asFull(r: Route): FullRoute {
   return "/" + r;
 }
 
-type RouteItem = {
+export type RouteItem = {
   order: number;
   route: FullRoute;
   label: string;
@@ -119,6 +122,13 @@ export const routeItems: RouteItem[] = [
     label: "Daemons",
     icon: DaemonsIcon,
     component: DaemonsView,
+  },
+  {
+    order: 100,
+    route: asFull("wizard"),
+    label: "Wizard",
+    icon: WizardIcon,
+    component: WizardView,
   },
   {
     order: 0,

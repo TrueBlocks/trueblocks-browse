@@ -17,6 +17,10 @@ var freshenLock atomic.Uint32
 // by extension the frontend to update. We protect against updating too fast... Note
 // that this routine is called as a goroutine.
 func (a *App) Refresh(which ...string) {
+	if !a.isConfigured() {
+		return
+	}
+
 	// Skip this update we're actively upgrading
 	if !freshenLock.CompareAndSwap(0, 1) {
 		// logger.Info(colors.Red, "Skipping update", colors.Off)

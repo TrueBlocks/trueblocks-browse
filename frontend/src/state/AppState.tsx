@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import { types, messages, base } from "@gocode/models";
+import { types, messages, base, wizard } from "@gocode/models";
 import { useKeyboardPaging } from "@hooks";
 import { Pager, EmptyPager } from "@components";
 import { EventsOn, EventsOff } from "@runtime";
@@ -12,6 +12,8 @@ import {
   GetManifest,
   GetStatus,
   GetLastSub,
+  StepWizard,
+  GetWizardState,
 } from "@gocode/app/App";
 import { Route } from "@/Routes";
 
@@ -37,6 +39,10 @@ interface AppStateProps {
   getPager: (name: Route) => Pager;
   resetPager: (name: Route) => void;
 
+  isConfigured: boolean;
+  wizardState: wizard.State;
+  stepWizard: (step: wizard.Step) => void;
+
   // settings: types.SettingsContainer;
   // setSettings: (settings: types.SettingsContainer) => void;
 }
@@ -44,6 +50,9 @@ interface AppStateProps {
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
 export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.NOTOKAY);
+  const [isConfigured, setIsConfigured] = useState<boolean>(false);
+
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
 
   const [history, setHistory] = useState<types.TransactionContainer>({} as types.TransactionContainer);
@@ -66,6 +75,20 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
   let statusPgr = useKeyboardPaging("status", status.nItems, [], 10);
+
+  useEffect(() => {
+    GetWizardState().then((state) => {
+      setWizardState(state);
+      setIsConfigured(state == wizard.State.OKAY);
+    });
+  }, []);
+
+  const stepWizard = (step: wizard.Step) => {
+    StepWizard(step).then((state) => {
+      setWizardState(state);
+      setIsConfigured(state == wizard.State.OKAY);
+    });
+  };
 
   useEffect(() => {
     const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
@@ -155,6 +178,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       EventsOff(Message.DAEMON);
     };
   }, [
+    wizardState,
     address,
     historyPgr.curItem,
     historyPgr.perPage,
@@ -224,6 +248,9 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     setStatus,
     getPager,
     resetPager,
+    isConfigured,
+    wizardState,
+    stepWizard,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;

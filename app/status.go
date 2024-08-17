@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"io"
 	"sort"
 	"sync"
 	"time"
@@ -28,9 +29,13 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}()
 
+	if !a.isConfigured() {
+		return nil
+	}
+
 	// silence progress reporting for a second...
 	w := logger.GetLoggerWriter()
-	logger.SetLoggerWriter(nil)
+	logger.SetLoggerWriter(io.Discard)
 	defer logger.SetLoggerWriter(w)
 
 	opts := sdk.StatusOptions{}

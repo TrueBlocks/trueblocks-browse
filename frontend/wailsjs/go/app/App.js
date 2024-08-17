@@ -50,10 +50,6 @@ export function GetHistory(arg1, arg2, arg3) {
   return window['go']['app']['App']['GetHistory'](arg1, arg2, arg3);
 }
 
-export function GetHistoryCnt(arg1) {
-  return window['go']['app']['App']['GetHistoryCnt'](arg1);
-}
-
 export function GetIndex(arg1, arg2) {
   return window['go']['app']['App']['GetIndex'](arg1, arg2);
 }
@@ -68,6 +64,10 @@ export function GetLastDaemon(arg1) {
 
 export function GetLastSub(arg1) {
   return window['go']['app']['App']['GetLastSub'](arg1);
+}
+
+export function GetLastWizard() {
+  return window['go']['app']['App']['GetLastWizard']();
 }
 
 export function GetManifest(arg1, arg2) {
@@ -94,6 +94,10 @@ export function GetStatus(arg1, arg2) {
   return window['go']['app']['App']['GetStatus'](arg1, arg2);
 }
 
+export function GetWizardState() {
+  return window['go']['app']['App']['GetWizardState']();
+}
+
 export function HelpToggle(arg1) {
   return window['go']['app']['App']['HelpToggle'](arg1);
 }
@@ -116,6 +120,10 @@ export function SetLastDaemon(arg1, arg2) {
 
 export function StateToString(arg1) {
   return window['go']['app']['App']['StateToString'](arg1);
+}
+
+export function StepWizard(arg1) {
+  return window['go']['app']['App']['StepWizard'](arg1);
 }
 
 export function String() {
@@ -172,4 +180,8 @@ export function ViewSettings(arg1) {
 
 export function ViewStatus(arg1) {
   return window['go']['app']['App']['ViewStatus'](arg1);
+}
+
+export function ViewWizard(arg1) {
+  return window['go']['app']['App']['ViewWizard'](arg1);
 }

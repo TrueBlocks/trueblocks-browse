@@ -25,6 +25,10 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}()
 
+	if !a.isConfigured() {
+		return nil
+	}
+
 	opts := sdk.ChunksOptions{}
 	if manifests, _, err := opts.ChunksManifest(); err != nil {
 		if errorChan != nil {

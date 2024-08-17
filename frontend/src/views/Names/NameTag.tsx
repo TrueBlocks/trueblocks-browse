@@ -1,9 +1,9 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { Badge } from "@mantine/core";
 import { types } from "@gocode/models";
 
 export const NameTags = ({ name }: { name: types.Name }) => {
-  const [tags, setTags] = React.useState<ReactNode>([]);
+  const [tags, setTags] = useState<ReactNode>([]);
 
   useEffect(() => {
     // TODO: Can't figure out how to get this in the frontend
