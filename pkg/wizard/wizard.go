@@ -1,7 +1,7 @@
 package wizard
 
 type Wizard struct {
-	State State
+	State State `json:"state"`
 }
 
 var stateOrder = []State{

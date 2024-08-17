@@ -4,8 +4,6 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-// TODO: Eventually this will get put back into Core.
-
 type StatusContainer struct {
 	coreTypes.Status `json:",inline"`
 	Items            []coreTypes.CacheItem `json:"items"`

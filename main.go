@@ -69,6 +69,9 @@ func main() {
 			AssetServer: &assetserver.Options{
 				Assets: assets,
 			},
+			Debug: options.Debug{
+				OpenInspectorOnStartup: os.Getenv("TB_DEBUG") == "true",
+			},
 		}
 
 		if err := wails.Run(&opts); err != nil {

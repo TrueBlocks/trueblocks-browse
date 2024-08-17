@@ -1,4 +1,4 @@
-package resolution
+package screen
 
 import "fmt"
 

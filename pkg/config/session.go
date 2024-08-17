@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/resolution"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/screen"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -63,9 +63,9 @@ func (s *Session) MustLoadSession() {
 		}
 	}
 	*s = defaultSession
-	resolution := resolution.GetPrimary()
-	s.Width = resolution.Width
-	s.Height = resolution.Height
+	screen := screen.GetPrimary()
+	s.Width = screen.Width
+	s.Height = screen.Height
 	s.Wizard.State, s.LastRoute = s.CheckWizard()
 	s.Save()
 }

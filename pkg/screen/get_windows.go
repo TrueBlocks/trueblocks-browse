@@ -1,4 +1,4 @@
-package resolution
+package screen
 
 import (
 	"github.com/lxn/win"
