@@ -53,7 +53,7 @@ export namespace config {
 	    title: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
-	    lastHelp: string;
+	    lastHelp: boolean;
 	    daemons: Daemons;
 	
 	    static createFrom(source: any = {}) {

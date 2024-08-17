@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"path/filepath"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/resolution"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -24,30 +25,32 @@ type Session struct {
 	Title     string            `json:"title"`
 	LastRoute string            `json:"lastRoute"`
 	LastSub   map[string]string `json:"lastSub"`
-	LastHelp  string            `json:"lastHelp"`
+	LastHelp  bool              `json:"lastHelp"`
 	Daemons   Daemons           `json:"daemons"`
 }
 
 var defaultSession = Session{
-	Width:   1024,
-	Height:  768,
-	Title:   "Browse by TrueBlocks",
-	Daemons: Daemons{},
-	LastSub: map[string]string{},
+	Title:     "Browse by TrueBlocks",
+	Daemons:   Daemons{Freshen: true},
+	LastRoute: "/",
+	LastSub:   map[string]string{"/history": "trueblocks.eth"},
+	LastHelp:  true,
 }
 
 // Load loads the session from the configuration folder. If the file contains
 // data, we return true. False otherwise.
-func (s *Session) Load() bool {
+func (s *Session) MustLoadSession() {
 	fn := getSessionFn()
 	if contents := file.AsciiFileToString(fn); len(contents) > 0 {
-		if err := json.Unmarshal([]byte(contents), s); err != nil {
-			*s = defaultSession
+		if err := json.Unmarshal([]byte(contents), s); err == nil {
+			return
 		}
-		return true
-	} else {
-		return false
 	}
+	*s = defaultSession
+	resolution := resolution.GetPrimary()
+	s.Width = resolution.Width
+	s.Height = resolution.Height
+	s.Save()
 }
 
 // Save saves the session to the configuration folder.

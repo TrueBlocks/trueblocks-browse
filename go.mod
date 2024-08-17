@@ -11,6 +11,7 @@ require (
 	github.com/TrueBlocks/trueblocks-core/sdk/v3 v3.0.0-20240728020742-8b2832e69983
 	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20240808100829-648e5249703a
 	github.com/joho/godotenv v1.5.1
+	github.com/lxn/win v0.0.0-20210218163916-a377121e959e
 	github.com/wailsapp/wails/v2 v2.8.2
 )
 

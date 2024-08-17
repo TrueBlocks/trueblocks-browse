@@ -64,7 +64,7 @@ func NewApp() *App {
 	a.CurrentDoc.Filename = "Untitled"
 
 	// it's okay if it's not found
-	_ = a.session.Load()
+	a.session.MustLoadSession()
 
 	if err := godotenv.Load(); err != nil {
 		// a.Fatal("Error loading .env file")
