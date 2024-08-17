@@ -14,7 +14,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/version"
 )
 
-func (a *App) GetStatus(first, pageSize int) types.StatusContainer {
+func (a *App) StatusPage(first, pageSize int) types.StatusContainer {
 	first = base.Max(0, base.Min(first, len(a.status.Items)-1))
 	last := base.Min(len(a.status.Items), first+pageSize)
 	copy := a.status.ShallowCopy()

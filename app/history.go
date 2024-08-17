@@ -14,7 +14,7 @@ import (
 
 var historyMutex sync.Mutex
 
-func (a *App) GetHistory(addr string, first, pageSize int) types.TransactionContainer {
+func (a *App) HistoryPage(addr string, first, pageSize int) types.TransactionContainer {
 	if !a.isConfigured() {
 		return types.TransactionContainer{}
 	}

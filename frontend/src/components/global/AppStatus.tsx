@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text } from "@mantine/core";
 import { messages } from "@gocode/models";
-import { GetStatus } from "@gocode/app/App";
+import { StatusPage } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
 
 export const AppStatus = () => {
@@ -12,7 +12,7 @@ export const AppStatus = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      GetStatus(0, 15).then((status) => {
+      StatusPage(0, 15).then((status) => {
         setUpdated(status.latestUpdate);
         setNode(status.clientVersion);
         setFile("not loaded");

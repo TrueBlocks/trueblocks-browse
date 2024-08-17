@@ -11,7 +11,7 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-func (a *App) GetMonitors(first, pageSize int) types.MonitorContainer {
+func (a *App) MonitorPage(first, pageSize int) types.MonitorContainer {
 	first = base.Max(0, base.Min(first, len(a.monitors.Items)-1))
 	last := base.Min(len(a.monitors.Items), first+pageSize)
 	copy := a.monitors.ShallowCopy()

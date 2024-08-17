@@ -4,13 +4,13 @@ import { useKeyboardPaging } from "@hooks";
 import { Pager, EmptyPager } from "@components";
 import { EventsOn, EventsOff } from "@runtime";
 import {
-  GetHistory,
-  GetMonitors,
-  GetNames,
-  GetAbis,
-  GetIndex,
-  GetManifest,
-  GetStatus,
+  HistoryPage,
+  MonitorPage,
+  NamePage,
+  AbiPage,
+  IndexPage,
+  ManifestPage,
+  StatusPage,
   GetLastSub,
   StepWizard,
   GetWizardState,
@@ -97,7 +97,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
         if (subRoute !== "") {
           subRoute = subRoute.replace("/", "");
           setAddress(subRoute as unknown as base.Address);
-          GetHistory(address as unknown as string, currentItem, itemsPerPage).then(
+          HistoryPage(address as unknown as string, currentItem, itemsPerPage).then(
             (item: types.TransactionContainer) => {
               if (item) {
                 setHistory(item);
@@ -110,7 +110,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
 
     const fetchMonitors = async (currentItem: number, itemsPerPage: number) => {
-      GetMonitors(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
+      MonitorPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
         if (item) {
           setMonitors(item);
         }
@@ -119,7 +119,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
 
     const fetchNames = async (currentItem: number, itemsPerPage: number) => {
-      GetNames(currentItem, itemsPerPage).then((item: types.NameContainer) => {
+      NamePage(currentItem, itemsPerPage).then((item: types.NameContainer) => {
         if (item) {
           setNames(item);
         }
@@ -128,7 +128,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchNames(namesPgr.curItem, namesPgr.perPage);
 
     const fetchAbis = async (currentItem: number, itemsPerPage: number) => {
-      GetAbis(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
+      AbiPage(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
         if (item) {
           setAbis(item);
         }
@@ -137,7 +137,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchAbis(abiPgr.curItem, abiPgr.perPage);
 
     const fetchIndexes = async (currentItem: number, itemsPerPage: number) => {
-      GetIndex(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
+      IndexPage(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
         if (item) {
           setIndexes(item);
         }
@@ -146,7 +146,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchIndexes(indexPgr.curItem, indexPgr.perPage);
 
     const fetchManifest = async (currentItem: number, itemsPerPage: number) => {
-      GetManifest(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
+      ManifestPage(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
         if (item) {
           setManifests(item);
         }
@@ -155,7 +155,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
 
     const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
-      GetStatus(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
+      StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
         if (item) {
           setStatus(item);
         }

@@ -10,7 +10,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
-func (a *App) GetManifest(first, pageSize int) types.ManifestContainer {
+func (a *App) ManifestPage(first, pageSize int) types.ManifestContainer {
 	first = base.Max(0, base.Min(first, len(a.manifest.Items)-1))
 	last := base.Min(len(a.manifest.Items), first+pageSize)
 	copy := a.manifest.ShallowCopy()

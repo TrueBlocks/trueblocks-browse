@@ -34,8 +34,8 @@ export function FileSaveAs(arg1) {
   return window['go']['app']['App']['FileSaveAs'](arg1);
 }
 
-export function GetAbis(arg1, arg2) {
-  return window['go']['app']['App']['GetAbis'](arg1, arg2);
+export function AbiPage(arg1, arg2) {
+  return window['go']['app']['App']['AbiPage'](arg1, arg2);
 }
 
 export function GetContext() {
@@ -46,12 +46,12 @@ export function GetDaemon(arg1) {
   return window['go']['app']['App']['GetDaemon'](arg1);
 }
 
-export function GetHistory(arg1, arg2, arg3) {
-  return window['go']['app']['App']['GetHistory'](arg1, arg2, arg3);
+export function HistoryPage(arg1, arg2, arg3) {
+  return window['go']['app']['App']['HistoryPage'](arg1, arg2, arg3);
 }
 
-export function GetIndex(arg1, arg2) {
-  return window['go']['app']['App']['GetIndex'](arg1, arg2);
+export function IndexPage(arg1, arg2) {
+  return window['go']['app']['App']['IndexPage'](arg1, arg2);
 }
 
 export function GetLast(arg1) {
@@ -70,28 +70,28 @@ export function GetLastWizard() {
   return window['go']['app']['App']['GetLastWizard']();
 }
 
-export function GetManifest(arg1, arg2) {
-  return window['go']['app']['App']['GetManifest'](arg1, arg2);
+export function ManifestPage(arg1, arg2) {
+  return window['go']['app']['App']['ManifestPage'](arg1, arg2);
 }
 
 export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
 
-export function GetMonitors(arg1, arg2) {
-  return window['go']['app']['App']['GetMonitors'](arg1, arg2);
+export function MonitorPage(arg1, arg2) {
+  return window['go']['app']['App']['MonitorPage'](arg1, arg2);
 }
 
-export function GetNames(arg1, arg2) {
-  return window['go']['app']['App']['GetNames'](arg1, arg2);
+export function NamePage(arg1, arg2) {
+  return window['go']['app']['App']['NamePage'](arg1, arg2);
 }
 
 export function GetSession() {
   return window['go']['app']['App']['GetSession']();
 }
 
-export function GetStatus(arg1, arg2) {
-  return window['go']['app']['App']['GetStatus'](arg1, arg2);
+export function StatusPage(arg1, arg2) {
+  return window['go']['app']['App']['StatusPage'](arg1, arg2);
 }
 
 export function GetWizardState() {

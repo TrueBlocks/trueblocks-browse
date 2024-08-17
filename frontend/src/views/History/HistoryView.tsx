@@ -4,7 +4,7 @@ import { types, base } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./HistoryTable";
 import { View, FormTable, DataTable, GroupDefinition, Pager } from "@components";
-import { GetLastSub, GetHistory } from "@gocode/app/App";
+import { GetLastSub, HistoryPage } from "@gocode/app/App";
 import { useAppState } from "@state";
 
 export function HistoryView() {

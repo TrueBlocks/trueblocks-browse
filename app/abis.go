@@ -10,7 +10,7 @@ import (
 )
 
 // Find: NewViews
-func (a *App) GetAbis(first, pageSize int) types.AbiContainer {
+func (a *App) AbiPage(first, pageSize int) types.AbiContainer {
 	first = base.Max(0, base.Min(first, len(a.abis.Items)-1))
 	last := base.Min(len(a.abis.Items), first+pageSize)
 	copy := a.abis.ShallowCopy()

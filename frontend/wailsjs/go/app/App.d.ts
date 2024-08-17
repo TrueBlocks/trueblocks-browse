@@ -25,15 +25,15 @@ export function FileSave(arg1:menu.CallbackData):Promise<void>;
 
 export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
-export function GetAbis(arg1:number,arg2:number):Promise<types.AbiContainer>;
+export function AbiPage(arg1:number,arg2:number):Promise<types.AbiContainer>;
 
 export function GetContext():Promise<context.Context>;
 
 export function GetDaemon(arg1:string):Promise<daemons.Daemon>;
 
-export function GetHistory(arg1:string,arg2:number,arg3:number):Promise<types.TransactionContainer>;
+export function HistoryPage(arg1:string,arg2:number,arg3:number):Promise<types.TransactionContainer>;
 
-export function GetIndex(arg1:number,arg2:number):Promise<types.IndexContainer>;
+export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>;
 
 export function GetLast(arg1:string):Promise<string>;
 
@@ -43,17 +43,17 @@ export function GetLastSub(arg1:string):Promise<string>;
 
 export function GetLastWizard():Promise<wizard.State>;
 
-export function GetManifest(arg1:number,arg2:number):Promise<types.ManifestContainer>;
+export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
 
 export function GetMenus():Promise<menu.Menu>;
 
-export function GetMonitors(arg1:number,arg2:number):Promise<types.MonitorContainer>;
+export function MonitorPage(arg1:number,arg2:number):Promise<types.MonitorContainer>;
 
-export function GetNames(arg1:number,arg2:number):Promise<types.NameContainer>;
+export function NamePage(arg1:number,arg2:number):Promise<types.NameContainer>;
 
 export function GetSession():Promise<config.Session>;
 
-export function GetStatus(arg1:number,arg2:number):Promise<types.StatusContainer>;
+export function StatusPage(arg1:number,arg2:number):Promise<types.StatusContainer>;
 
 export function GetWizardState():Promise<wizard.State>;
 
