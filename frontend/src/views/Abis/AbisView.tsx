@@ -4,7 +4,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
 import { View2, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { GetAbis, GetAbisCnt } from "@gocode/app/App";
+import { AbiPage, GetAbisCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
 
 export function AbisView() {
@@ -14,7 +14,7 @@ export function AbisView() {
 
   useEffect(() => {
     const fetch = async (currentItem: number, itemsPerPage: number) => {
-      GetAbis(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
+      AbiPage(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
         if (item) {
           GetAbisCnt().then((cnt: number) => setCount(cnt));
           setSummaryItem(item);

@@ -14,7 +14,7 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-func (a *App) GetNames(first, pageSize int) types.NameContainer {
+func (a *App) NamePage(first, pageSize int) types.NameContainer {
 	first = base.Max(0, base.Min(first, len(a.names.Names)-1))
 	last := base.Min(len(a.names.Names), first+pageSize)
 	copy := a.names.ShallowCopy()

@@ -4,7 +4,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
 import { View2, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { GetIndex, GetIndexCnt } from "@gocode/app/App";
+import { IndexPage, GetIndexCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
 
 export function IndexesView() {
@@ -14,7 +14,7 @@ export function IndexesView() {
 
   useEffect(() => {
     const fetch = async (currentItem: number, itemsPerPage: number) => {
-      GetIndex(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
+      IndexPage(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
         if (item) {
           GetIndexCnt().then((cnt: number) => setCount(cnt));
           setSummaryItem(item);

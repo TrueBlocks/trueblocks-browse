@@ -4,7 +4,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
 import { View2, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { GetManifest, GetManifestCnt } from "@gocode/app/App";
+import { ManifestPage, GetManifestCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
 
 export function ManifestView() {
@@ -14,7 +14,7 @@ export function ManifestView() {
 
   useEffect(() => {
     const fetch = async (currentItem: number, itemsPerPage: number) => {
-      GetManifest(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
+      ManifestPage(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
         if (item) {
           GetManifestCnt().then((cnt: number) => setCount(cnt));
           setSummaryItem(item);

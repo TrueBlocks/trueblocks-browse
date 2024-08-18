@@ -4,7 +4,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
 import { View2, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { GetMonitors, GetMonitorsCnt } from "@gocode/app/App";
+import { MonitorPage, GetMonitorsCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
 
 export function MonitorsView() {
@@ -14,7 +14,7 @@ export function MonitorsView() {
 
   useEffect(() => {
     const fetch = async (currentItem: number, itemsPerPage: number) => {
-      GetMonitors(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
+      MonitorPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
         if (item) {
           GetMonitorsCnt().then((cnt: number) => setCount(cnt));
           setSummaryItem(item);

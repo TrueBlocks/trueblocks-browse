@@ -4,7 +4,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
 import { View2, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { GetStatus, GetStatusCnt } from "@gocode/app/App";
+import { StatusPage, GetStatusCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
 
 export function StatusView() {
@@ -14,7 +14,7 @@ export function StatusView() {
 
   useEffect(() => {
     const fetch = async (currentItem: number, itemsPerPage: number) => {
-      GetStatus(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
+      StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
         if (item) {
           GetStatusCnt().then((cnt: number) => setCount(cnt));
           setSummaryItem(item);

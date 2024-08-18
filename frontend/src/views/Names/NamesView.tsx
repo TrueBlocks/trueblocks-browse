@@ -4,7 +4,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
 import { View2, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
-import { GetNames, GetNamesCnt } from "@gocode/app/App";
+import { NamePage, GetNamesCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
 
 export function NamesView() {
@@ -14,7 +14,7 @@ export function NamesView() {
 
   useEffect(() => {
     const fetch = async (currentItem: number, itemsPerPage: number) => {
-      GetNames(currentItem, itemsPerPage).then((item: types.NameContainer) => {
+      NamePage(currentItem, itemsPerPage).then((item: types.NameContainer) => {
         if (item) {
           GetNamesCnt().then((cnt: number) => setCount(cnt));
           setSummaryItem(item);

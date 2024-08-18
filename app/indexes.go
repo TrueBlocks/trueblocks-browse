@@ -11,7 +11,7 @@ import (
 )
 
 // Find: NewViews
-func (a *App) GetIndex(first, pageSize int) types.IndexContainer {
+func (a *App) IndexPage(first, pageSize int) types.IndexContainer {
 	first = base.Max(0, base.Min(first, len(a.index.Items)-1))
 	last := base.Min(len(a.index.Items), first+pageSize)
 	copy := a.index.ShallowCopy()
