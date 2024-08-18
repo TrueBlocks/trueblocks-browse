@@ -23,3 +23,4 @@ export const AbisIcon = <IconChartArrows />;
 export const StatusIcon = <IconMoustache />;
 export const DaemonsIcon = <IconServer />;
 export const SettingsIcon = <IconSettings />;
+export const WizardIcon = <IconSettings />;

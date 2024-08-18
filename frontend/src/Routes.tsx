@@ -13,6 +13,7 @@ import {
   StatusIcon,
   DaemonsIcon,
   SettingsIcon,
+  WizardIcon,
   // Views
   HomeView,
   HistoryView,
@@ -24,11 +25,9 @@ import {
   DaemonsView,
   StatusView,
   SettingsView,
+  WizardView,
 } from "@views";
 
-// Note:
-//  Change with care. The order of the items in this list matters (the last one is the default).
-//  The order field is used to sort the menu items.
 export const routeItems = [
   {
     order: 10,
@@ -53,24 +52,24 @@ export const routeItems = [
   },
   {
     order: 40,
+    route: "/abis",
+    label: "Abis",
+    icon: AbisIcon,
+    component: AbisView,
+  },
+  {
+    order: 50,
     route: "/indexes",
     label: "Indexes",
     icon: IndexesIcon,
     component: IndexesView,
   },
   {
-    order: 50,
+    order: 60,
     route: "/manifest",
     label: "Manifest",
     icon: ManifestIcon,
     component: ManifestView,
-  },
-  {
-    order: 60,
-    route: "/abis",
-    label: "Abis",
-    icon: AbisIcon,
-    component: AbisView,
   },
   {
     order: 70,
@@ -81,17 +80,24 @@ export const routeItems = [
   },
   {
     order: 80,
+    route: "/settings",
+    label: "Settings",
+    icon: SettingsIcon,
+    component: SettingsView,
+  },
+  {
+    order: 90,
     route: "/daemons",
     label: "Daemons",
     icon: DaemonsIcon,
     component: DaemonsView,
   },
   {
-    order: 90,
-    route: "/settings",
-    label: "Settings",
-    icon: SettingsIcon,
-    component: SettingsView,
+    order: 100,
+    route: "/wizard",
+    label: "Wizard",
+    icon: WizardIcon,
+    component: WizardView,
   },
   {
     order: 0,

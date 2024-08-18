@@ -55,6 +55,7 @@ export namespace config {
 	    lastSub: {[key: string]: string};
 	    lastHelp: boolean;
 	    daemons: Daemons;
+	    wizard: wizard.Wizard;
 	
 	    static createFrom(source: any = {}) {
 	        return new Session(source);
@@ -71,6 +72,7 @@ export namespace config {
 	        this.lastSub = source["lastSub"];
 	        this.lastHelp = source["lastHelp"];
 	        this.daemons = this.convertValues(source["daemons"], Daemons);
+	        this.wizard = this.convertValues(source["wizard"], wizard.Wizard);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1515,6 +1517,37 @@ export namespace types {
 		    }
 		    return a;
 		}
+	}
+
+}
+
+export namespace wizard {
+	
+	export enum State {
+	    NOTOKAY = "notOkay",
+	    TOMLOKAY = "tomlOkay",
+	    RPCOKAY = "rpcOkay",
+	    BLOOMSOKAY = "bloomsOkay",
+	    INDEXOKAY = "indexOkay",
+	    OKAY = "okay",
+	}
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
+	}
+	export class Wizard {
+	    state: State;
+	
+	    static createFrom(source: any = {}) {
+	        return new Wizard(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.state = source["state"];
+	    }
 	}
 
 }

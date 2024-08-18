@@ -9,4 +9,5 @@ export * from "./Manifests/ManifestView";
 export * from "./Abis/AbisView";
 export * from "./Status/StatusView";
 export * from "./Settings/SettingsView";
+export * from "./Wizard/WizardView";
 export * from "./Icons";

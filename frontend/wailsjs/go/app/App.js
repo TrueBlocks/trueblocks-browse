@@ -70,6 +70,10 @@ export function GetLastSub(arg1) {
   return window['go']['app']['App']['GetLastSub'](arg1);
 }
 
+export function GetLastWizard() {
+  return window['go']['app']['App']['GetLastWizard']();
+}
+
 export function GetManifestCnt() {
   return window['go']['app']['App']['GetManifestCnt']();
 }
@@ -96,6 +100,10 @@ export function GetSession() {
 
 export function GetStatusCnt() {
   return window['go']['app']['App']['GetStatusCnt']();
+}
+
+export function GetWizardState() {
+  return window['go']['app']['App']['GetWizardState']();
 }
 
 export function HelpToggle(arg1) {
@@ -144,6 +152,10 @@ export function StateToString(arg1) {
 
 export function StatusPage(arg1, arg2) {
   return window['go']['app']['App']['StatusPage'](arg1, arg2);
+}
+
+export function StepWizard(arg1) {
+  return window['go']['app']['App']['StepWizard'](arg1);
 }
 
 export function String() {
@@ -200,4 +212,8 @@ export function ViewSettings(arg1) {
 
 export function ViewStatus(arg1) {
   return window['go']['app']['App']['ViewStatus'](arg1);
+}
+
+export function ViewWizard(arg1) {
+  return window['go']['app']['App']['ViewWizard'](arg1);
 }

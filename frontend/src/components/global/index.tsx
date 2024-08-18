@@ -5,3 +5,4 @@ export * from "./Menu";
 export * from "./Navbar";
 export * from "./Routes";
 export * from "./DaemonStatus";
+export * from "./StyledNavLink";
