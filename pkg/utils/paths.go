@@ -40,7 +40,7 @@ func GetCacheDir(appDir string) (string, error) {
 
 var ErrDocFolderNotFound = errors.New("no documents folder found")
 
-// GetCacheDir returns the user's documents folder. The documents folder is
+// GetDocumentsDir returns the user's documents folder. The documents folder is
 // the user's (OS-specific) home folder with the word "Documents" appended to it.
 // If the home folder or the $HOME/Documents folder is not found, an error is returned.
 func GetDocumentsDir() (string, error) {
