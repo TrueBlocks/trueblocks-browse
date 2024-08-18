@@ -15,6 +15,7 @@ export type knownTypes =
   | "check"
   | "date"
   | "error"
+  | "ether"
   | "float"
   | "hash"
   | "int"
@@ -72,7 +73,7 @@ export const Formatter = ({ type, size = "md", value, value2 = null }: Formatter
       return <MyText size={size}>{useDateTime(v)}</MyText>;
     case "error":
       return <MyText size={size}>{value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>}</MyText>;
-  case "ether":
+    case "ether":
       return <MyText size={size}>{useToEther(value as bigint)}</MyText>;
     case "float":
       return <MyText size={size}>{formatFloat(v)}</MyText>;
@@ -102,10 +103,11 @@ export const Formatter = ({ type, size = "md", value, value2 = null }: Formatter
 };
 
 export const MyText = ({ size, children }: { size?: TextProps["size"]; children: React.ReactNode }) => {
-  var color = "red";
+  // var color = "red";
   return (
-    <Text className={classes.black} c={color} size={size}>
-      {children}
-    </Text>
+    // <Text className={classes.black} c={color} size={size}>
+    //   {children}
+    // </Text>
+    <Text size={size}>{children}</Text>
   );
 };
