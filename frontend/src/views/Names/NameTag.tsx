@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { Badge } from "@mantine/core";
 import { types } from "@gocode/models";
+import classes from "../../components/formatters/Formatter.module.css";
 
 export const NameTags = ({ name }: { name: types.Name }) => {
   const [tags, setTags] = useState<ReactNode>([]);
@@ -14,28 +15,28 @@ export const NameTags = ({ name }: { name: types.Name }) => {
     var types: ReactNode[] = [];
     if (name.parts && name.parts & 2 /* REGULAR */) {
       types.push(
-        <Badge size="xs" color="blue">
+        <Badge className={classes.black} size="xs" color="blue">
           R
         </Badge>
       );
     }
     if (name.parts && name.parts & 4 /* CUSTOM */) {
       types.push(
-        <Badge size="xs" color="yellow">
+        <Badge className={classes.black} size="xs" color="yellow">
           C
         </Badge>
       );
     }
     if (name.parts && name.parts & 8 /* PREFUND */) {
       types.push(
-        <Badge size="xs" color="green">
+        <Badge className={classes.black} size="xs" color="green">
           P
         </Badge>
       );
     }
     if (name.parts && name.parts & 16 /* BADDRESS */) {
       types.push(
-        <Badge size="xs" color="pink">
+        <Badge className={classes.black} size="xs" color="pink">
           B
         </Badge>
       );

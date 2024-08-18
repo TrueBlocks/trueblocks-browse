@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { TextProps } from "@mantine/core";
 import { AddrToName } from "@gocode/app/App";
 import { base } from "@gocode/models";
 import { Formatter } from ".";
 import { useAppState } from "@state";
 
-export const AddressFormatter = ({ addressIn }: { addressIn: base.Address }) => {
+export const AddressFormatter = ({ addressIn, size = "md" }: { addressIn: base.Address; size?: TextProps["size"] }) => {
   const { address } = useAppState();
   const [formattedAddress, setFormattedAddress] = useState<string>("");
 
@@ -21,8 +22,8 @@ export const AddressFormatter = ({ addressIn }: { addressIn: base.Address }) => 
   }, [addressIn]);
 
   if (addressIn === address) {
-    return <Formatter type="text" value={formattedAddress} />;
+    return <Formatter size={size} type="text" value={formattedAddress} />;
   }
 
-  return <Formatter type="text" value={formattedAddress} />;
+  return <Formatter size={size} type="text" value={formattedAddress} />;
 };

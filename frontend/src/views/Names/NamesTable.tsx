@@ -14,12 +14,12 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
   }),
   columnHelper.accessor("tags", {
     header: () => "Tags",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("address", {
     header: () => "Address",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="address-only" value={info.renderValue()} />,
     meta: {
       className: "wide cell",
       editor: (getValue: () => any) => <AddressPopup address={getValue} />,
@@ -27,7 +27,7 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
   }),
   columnHelper.accessor("name", {
     header: () => "Name",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="name-only" value={info.renderValue()} />,
     meta: {
       className: "wide cell",
       editor: (getValue: () => any) => (
@@ -37,12 +37,12 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
   }),
   columnHelper.accessor("symbol", {
     header: () => "Symbol",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
     meta: { className: "small cell" },
   }),
   columnHelper.accessor("decimals", {
     header: () => "Decimals",
-    cell: (info) => (info.getValue() === 0 ? "-" : info.getValue()),
+    cell: (info) => <Formatter type="int" value={info.renderValue()} />,
     meta: { className: "small center cell" },
   }),
   columnHelper.accessor("isContract", {

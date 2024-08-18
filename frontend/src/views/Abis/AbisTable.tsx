@@ -1,22 +1,35 @@
 import React from "react";
 import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef, Formatter } from "@components";
+import { CustomColumnDef, Formatter, AddressPopup, NamePopup } from "@components";
 
 const columnHelper = createColumnHelper<types.Abi>();
 
 export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
+  columnHelper.accessor("address", {
+    header: () => "Address",
+    cell: (info) => <Formatter type="address-only" value={info.renderValue()} />,
+    meta: {
+      className: "wide cell",
+      editor: (getValue: () => any) => <AddressPopup address={getValue} />,
+    },
+  }),
   columnHelper.accessor("name", {
     header: () => "Name",
     cell: (info) => {
       const { address, name } = info.row.original;
-      return address && address.toString() !== "0x0" ? <Formatter type="address" value={address} /> : name;
+      return <Formatter type="name-only" value={info.renderValue()} value2={name} />;
     },
-    meta: { className: "wide cell" },
+    meta: {
+      className: "wide cell",
+      editor: (getValue: () => any) => (
+        <NamePopup name={getValue} onSubmit={(newValue: string) => console.log(newValue)} />
+      ),
+    },
   }),
   columnHelper.accessor("lastModDate", {
     header: () => "lastModDate",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="date" value={info.renderValue()} />,
     meta: { className: "large cell" },
   }),
   columnHelper.accessor("fileSize", {

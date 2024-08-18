@@ -28,10 +28,10 @@ function createManifestForm(table: any): GroupDefinition<theInstance>[] {
       title: "Manifest Data",
       colSpan: 6,
       fields: [
-        { label: "version", accessor: "version" },
-        { label: "chain", accessor: "chain" },
-        { label: "specification", accessor: "specification" },
-        { label: "latestUpdate", accessor: "latestUpdate" },
+        { label: "version", type: "text", accessor: "version" },
+        { label: "chain", type: "text", accessor: "chain" },
+        { label: "specification", type: "hash", accessor: "specification" },
+        { label: "latestUpdate", type: "date", accessor: "latestUpdate" },
       ],
     },
     {

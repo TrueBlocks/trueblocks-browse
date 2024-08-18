@@ -10,17 +10,17 @@ export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
   columnHelper.accessor((row) => `${row.blockNumber}.${row.transactionIndex}`, {
     id: "blockTx",
     header: () => "Id",
-    cell: (info) => info.getValue(),
+    cell: (info) => <Formatter type="appearance" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("timestamp", {
     id: "Timestamp",
-    cell: (info) => useDateTime(info.getValue()),
+    cell: (info) => <Formatter type="timestamp" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("from", {
     header: () => "From",
-    cell: (info) => <Formatter type="address" value={info.renderValue()} />,
+    cell: (info) => <Formatter type="address-name" value={info.renderValue()} />,
     meta: {
       className: "wide cell",
       editor: (getValue: () => any) => <AddressPopup address={getValue} />,
@@ -28,25 +28,15 @@ export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
   }),
   columnHelper.accessor("to", {
     header: () => "To",
-    cell: (info) => <Formatter type="address" value={info.renderValue()} />,
+    cell: (info) => <Formatter type="address-name" value={info.renderValue()} />,
     meta: {
       className: "wide cell",
       editor: (getValue: () => any) => <AddressPopup address={getValue} />,
     },
   }),
-  // columnHelper.accessor("date", {
-  //   header: () => "Date",
-  //   cell: (info) => info.renderValue(),
-  //   meta: { className: "medium cell" },
-  // }),
-  // columnHelper.accessor("logCount", {
-  //   header: () => "nEvents",
-  //   cell: (info) => (info.renderValue() === 0 ? "-" : info.renderValue()),
-  //   meta: { className: "medium cell" },
-  // }),
   columnHelper.accessor("value", {
     header: () => "Ether",
-    cell: (info) => useToEther(info.renderValue() as bigint),
+    cell: (info) => <Formatter type="ether" value={info.renderValue())} />,
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("hasToken", {
