@@ -30,6 +30,7 @@ func (a *App) GetMenus() *menu.Menu {
 	viewMenu.AddText("Status", keys.CmdOrCtrl("8"), a.ViewStatus)
 	viewMenu.AddText("Settings", keys.CmdOrCtrl("9"), a.ViewSettings)
 	viewMenu.AddText("Daemons", keys.CmdOrCtrl("0"), a.ViewDaemons)
+	viewMenu.AddText("Wizard", keys.CmdOrCtrl("w"), a.ViewWizard)
 
 	helpMenu := appMenu.AddSubmenu("Help")
 	helpMenu.AddText("Show Help", keys.CmdOrCtrl("h"), a.HelpToggle)

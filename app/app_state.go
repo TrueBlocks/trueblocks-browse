@@ -4,13 +4,19 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 func (a *App) GetLast(which string) string {
 	switch which {
 	case "route":
+		if !a.isConfigured() {
+			return "/wizard"
+		}
 		return a.GetSession().LastRoute + a.GetLastSub(a.GetSession().LastRoute)
+	case "wizard":
+		return a.GetSession().Wizard.State.String()
 	case "help":
 		return fmt.Sprintf("%t", a.GetSession().LastHelp)
 	}
@@ -55,6 +61,10 @@ func (a *App) GetLastDaemon(which string) bool {
 	}
 	logger.Error("Should not happen in GetLastDaemon")
 	return false
+}
+
+func (a *App) GetLastWizard() wizard.State {
+	return a.GetSession().Wizard.State
 }
 
 func (a *App) SetLastDaemon(which string, value bool) {

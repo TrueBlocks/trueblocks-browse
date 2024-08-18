@@ -16,23 +16,20 @@ var freshenLock atomic.Uint32
 // by extension the frontend to update. We protect against updating too fast... Note
 // that this routine is called as a goroutine.
 func (a *App) Refresh(which ...string) {
+	if !a.isConfigured() {
+		return
+	}
+
 	// Skip this update we're actively upgrading
 	if !freshenLock.CompareAndSwap(0, 1) {
 		// logger.Info(colors.Red, "Skipping update", colors.Off)
 		return
 	}
-	logger.Info(colors.Green, "Freshening...", colors.Off)
 	defer freshenLock.CompareAndSwap(1, 0)
 
-	// Function to let the front end know that something freshened
-	notify :=
-		func(msg messages.Message, msgStr string) {
-			messages.Send(a.ctx, msg, messages.NewDaemonMsg(
-				a.FreshenController.Name,
-				msgStr,
-				a.FreshenController.Color,
-			))
-		}
+	if a.ScraperController.State != daemons.Running {
+		logger.Info(colors.Green, "Freshening...", colors.Off)
+	}
 
 	// We always load names first since we need them everywhere
 	err := a.loadNames(nil, nil)
@@ -60,8 +57,6 @@ func (a *App) Refresh(which ...string) {
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(
 				err,
 			))
-		} else {
-			notify(messages.Daemon, "Freshing...")
 		}
 	}
 
@@ -95,6 +90,10 @@ func (a *App) Refresh(which ...string) {
 			time.Sleep(500 * time.Millisecond)
 		}
 	} else {
-		notify(messages.Daemon, "Freshing...")
+		messages.Send(a.ctx, messages.Daemon, messages.NewDaemonMsg(
+			a.FreshenController.Name,
+			"Freshening...",
+			a.FreshenController.Color,
+		))
 	}
 }

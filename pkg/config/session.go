@@ -2,9 +2,11 @@ package config
 
 import (
 	"encoding/json"
+	"os"
 	"path/filepath"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
@@ -26,6 +28,7 @@ type Session struct {
 	LastSub   map[string]string `json:"lastSub"`
 	LastHelp  bool              `json:"lastHelp"`
 	Daemons   Daemons           `json:"daemons"`
+	Wizard    wizard.Wizard     `json:"wizard"`
 }
 
 var defaultSession = Session{
@@ -36,18 +39,32 @@ var defaultSession = Session{
 	LastRoute: "/",
 	LastSub:   map[string]string{"/history": "trueblocks.eth"},
 	LastHelp:  true,
+	Wizard:    wizard.Wizard{State: wizard.NotOkay},
 }
 
 // Load loads the session from the configuration folder. If the file contains
 // data, we return true. False otherwise.
 func (s *Session) MustLoadSession() {
+	checkWizard := func() (wizard.State, string) {
+		if os.Getenv("TB_BAD_CONFIG") == "true" {
+			s.Wizard.State = wizard.NotOkay
+			s.Save()
+		} else if s.Wizard.State == wizard.Okay && s.LastRoute == "/wizard" {
+			s.LastRoute = "/"
+			s.Save()
+		}
+		return s.Wizard.State, s.LastRoute
+	}
+
 	fn := getSessionFn()
 	if contents := file.AsciiFileToString(fn); len(contents) > 0 {
 		if err := json.Unmarshal([]byte(contents), s); err == nil {
+			s.Wizard.State, s.LastRoute = checkWizard()
 			return
 		}
 	}
 	*s = defaultSession
+	s.Wizard.State, s.LastRoute = checkWizard()
 	s.Save()
 }
 

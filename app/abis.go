@@ -29,6 +29,10 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}()
 
+	if !a.isConfigured() {
+		return nil
+	}
+
 	opts := sdk.AbisOptions{
 		Globals: sdk.Globals{
 			Verbose: true,

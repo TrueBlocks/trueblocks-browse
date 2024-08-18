@@ -12,6 +12,10 @@ import (
 var e sync.Mutex
 
 func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
+	if !a.isConfigured() {
+		return base.ZeroAddr, false
+	}
+
 	if !strings.HasSuffix(addr, ".eth") {
 		ret := base.HexToAddress(addr)
 		return ret, ret != base.ZeroAddr

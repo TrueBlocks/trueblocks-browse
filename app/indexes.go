@@ -30,6 +30,10 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}()
 
+	if !a.isConfigured() {
+		return nil
+	}
+
 	opts := sdk.ChunksOptions{}
 	if chunks, meta, err := opts.ChunksStats(); err != nil {
 		if errorChan != nil {

@@ -33,6 +33,10 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}()
 
+	if !a.isConfigured() {
+		return nil
+	}
+
 	chain := "mainnet"
 	filePath := filepath.Join(config.MustGetPathToChainConfig(chain), string(names.DatabaseCustom))
 	lineCount, _ := file.WordCount(filePath, true)
