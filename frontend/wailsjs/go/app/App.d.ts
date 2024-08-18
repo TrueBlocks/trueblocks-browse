@@ -41,6 +41,8 @@ export function GetLastWizard():Promise<wizard.State>;
 
 export function GetMenus():Promise<menu.Menu>;
 
+export function GetMeta():Promise<types.MetaData>;
+
 export function GetSession():Promise<config.Session>;
 
 export function GetWizardState():Promise<wizard.State>;

@@ -34,7 +34,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 			Verbose: true,
 		},
 	}
-	if abis, _, err := opts.AbisList(); err != nil {
+	if abis, meta, err := opts.AbisList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -46,6 +46,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else {
+		a.meta = *meta
 		if len(a.abis.Items) == len(abis) {
 			return nil
 		}

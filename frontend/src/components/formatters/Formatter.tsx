@@ -1,5 +1,6 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
+import { Text, TextProps } from "@mantine/core";
 import { base } from "@gocode/models";
 import { useDateTime } from "@hooks";
 import { AddressFormatter } from "./AddressFormatter";
@@ -16,7 +17,7 @@ export type knownTypes =
   | "hash"
   | "error";
 
-export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, value }) => {
+export const Formatter = ({ type, value, size = "md" }: { type: knownTypes; value: any; size?: TextProps["size"] }) => {
   const formatInteger = (number: number): string => {
     return new Intl.NumberFormat(navigator.language).format(number);
   };
@@ -40,23 +41,23 @@ export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, va
   var v = value as number;
   switch (type) {
     case "float":
-      return <>{formatFloat(v)}</>;
+      return <Text size={size}>{formatFloat(v)}</Text>;
     case "bytes":
-      return <>{formatBytes(v)}</>;
+      return <Text size={size}>{formatBytes(v)}</Text>;
     case "int":
-      return <>{formatInteger(v)}</>;
+      return <Text size={size}>{formatInteger(v)}</Text>;
     case "address":
       return <AddressFormatter addressIn={value as base.Address} />;
     case "date":
-      return <>{useDateTime(v)}</>;
+      return <Text size={size}>{useDateTime(v)}</Text>;
     case "boolean":
       var fill = value ? "green" : "red";
       return <IconCircleCheck size={16} color="white" fill={fill} />;
     case "check":
       return value ? <IconCircleCheck size={16} color="white" fill="green" /> : <></>;
     case "error":
-      return <>{value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>}</>;
+      return <Text size={size}>{value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>}</Text>;
     default:
-      return <>{value}</>;
+      return <Text size={size}>{value}</Text>;
   }
 };

@@ -719,6 +719,32 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class MetaData {
+	    client: number;
+	    finalized: number;
+	    staging: number;
+	    ripe: number;
+	    unripe: number;
+	    chainId?: number;
+	    networkId?: number;
+	    chain?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new MetaData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.client = source["client"];
+	        this.finalized = source["finalized"];
+	        this.staging = source["staging"];
+	        this.ripe = source["ripe"];
+	        this.unripe = source["unripe"];
+	        this.chainId = source["chainId"];
+	        this.networkId = source["networkId"];
+	        this.chain = source["chain"];
+	    }
+	}
 	
 	export class Monitor {
 	    address: base.Address;
@@ -1012,32 +1038,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class MetaData {
-	    client: number;
-	    finalized: number;
-	    staging: number;
-	    ripe: number;
-	    unripe: number;
-	    chainId?: number;
-	    networkId?: number;
-	    chain?: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new MetaData(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.client = source["client"];
-	        this.finalized = source["finalized"];
-	        this.staging = source["staging"];
-	        this.ripe = source["ripe"];
-	        this.unripe = source["unripe"];
-	        this.chainId = source["chainId"];
-	        this.networkId = source["networkId"];
-	        this.chain = source["chain"];
-	    }
-	}
 	export class Chain {
 	    chain: string;
 	    chainId: number;
@@ -1083,10 +1083,8 @@ export namespace types {
 	    rootConfig?: string;
 	    rpcProvider?: string;
 	    version?: string;
-	    // Go type: MetaData
-	    meta?: any;
-	    // Go type: MetaData
-	    diffs?: any;
+	    meta?: MetaData;
+	    diffs?: MetaData;
 	    items: CacheItem[];
 	    nItems: number;
 	    latestUpdate: string;
@@ -1120,8 +1118,8 @@ export namespace types {
 	        this.rootConfig = source["rootConfig"];
 	        this.rpcProvider = source["rpcProvider"];
 	        this.version = source["version"];
-	        this.meta = this.convertValues(source["meta"], null);
-	        this.diffs = this.convertValues(source["diffs"], null);
+	        this.meta = this.convertValues(source["meta"], MetaData);
+	        this.diffs = this.convertValues(source["diffs"], MetaData);
 	        this.items = this.convertValues(source["items"], CacheItem);
 	        this.nItems = source["nItems"];
 	        this.latestUpdate = source["latestUpdate"];

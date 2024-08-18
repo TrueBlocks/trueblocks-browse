@@ -39,7 +39,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	defer logger.SetLoggerWriter(w)
 
 	opts := sdk.StatusOptions{}
-	if statusArray, _, err := opts.StatusAll(); err != nil {
+	if statusArray, meta, err := opts.StatusAll(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -51,6 +51,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else {
+		a.meta = *meta
 		a.status = types.StatusContainer{}
 		a.status.Status = statusArray[0]
 		// TODO: This is a hack. We need to get the version from the core

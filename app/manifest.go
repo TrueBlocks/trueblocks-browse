@@ -30,7 +30,7 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.ChunksOptions{}
-	if manifests, _, err := opts.ChunksManifest(); err != nil {
+	if manifests, meta, err := opts.ChunksManifest(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -42,6 +42,7 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else {
+		a.meta = *meta
 		if len(a.manifest.Items) == len(manifests[0].Chunks) {
 			return nil
 		}

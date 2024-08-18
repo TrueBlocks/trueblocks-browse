@@ -22,9 +22,10 @@ func (a *App) getBalance(address base.Address) string {
 			Cache: true,
 		},
 	}
-	if balances, _, err := opts.State(); err != nil {
+	if balances, meta, err := opts.State(); err != nil {
 		return "0"
 	} else {
+		a.meta = *meta
 		value := balances[0].Balance.ToEtherStr(18)
 		a.balanceMap.Store(address, value)
 		return value

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import { types, messages, base, wizard } from "@gocode/models";
+import { types, messages, base, wizard, daemons } from "@gocode/models";
 import { useKeyboardPaging } from "@hooks";
 import { Pager, EmptyPager } from "@components";
 import { EventsOn, EventsOff } from "@runtime";
@@ -15,6 +15,7 @@ import {
   GetLastSub,
   StepWizard,
   GetWizardState,
+  GetMeta,
 } from "@gocode/app/App";
 
 interface AppStateProps {
@@ -42,11 +43,16 @@ interface AppStateProps {
   isConfigured: boolean;
   wizardState: wizard.State;
   stepWizard: (step: wizard.Step) => void;
+
+  meta: types.MetaData;
+  setMeta: (meta: types.MetaData) => void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
 export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
+
   const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.NOTOKAY);
   const [isConfigured, setIsConfigured] = useState<boolean>(false);
 
@@ -74,6 +80,13 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   let statusPgr = useKeyboardPaging("status", status.nItems, [], 10);
 
   useEffect(() => {
+    const fetchMeta = async () => {
+      GetMeta().then((meta) => {
+        setMeta(meta);
+      });
+    };
+    fetchMeta();
+
     const fetchWizard = async () => {
       GetWizardState().then((state) => {
         setWizardState(state);
@@ -154,6 +167,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchStatus(statusPgr.curItem, statusPgr.perPage);
 
     const handleRefresh = () => {
+      fetchMeta();
       fetchWizard();
       fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
       fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
@@ -170,6 +184,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       EventsOff(Message.DAEMON);
     };
   }, [
+    meta,
     wizardState,
     address,
     historyPgr.curItem,
@@ -250,6 +265,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     isConfigured,
     wizardState,
     stepWizard,
+    meta,
+    setMeta,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;

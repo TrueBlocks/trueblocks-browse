@@ -66,6 +66,10 @@ export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
 
+export function GetMeta() {
+  return window['go']['app']['App']['GetMeta']();
+}
+
 export function GetSession() {
   return window['go']['app']['App']['GetSession']();
 }
