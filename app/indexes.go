@@ -31,7 +31,7 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 
 	opts := sdk.ChunksOptions{}
-	if chunks, _, err := opts.ChunksStats(); err != nil {
+	if chunks, meta, err := opts.ChunksStats(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -43,6 +43,7 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else {
+		a.meta = *meta
 		if len(a.index.Items) == len(chunks) {
 			return nil
 		}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"sync"
+	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
@@ -31,7 +32,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 
 	opts := sdk.StatusOptions{}
-	if statusArray, _, err := opts.StatusAll(); err != nil {
+	if statusArray, meta, err := opts.StatusAll(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -43,9 +44,12 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else {
+		a.meta = *meta
+		a.status = types.StatusContainer{}
 		a.status.Status = statusArray[0]
 		// TODO: This is a hack. We need to get the version from the core
 		a.status.Version = version.LibraryVersion
+		a.status.LatestUpdate = time.Now().Format(time.RFC3339)
 		a.status.Items = a.status.Caches
 		sort.Slice(a.status.Items, func(i, j int) bool {
 			return a.status.Items[i].SizeInBytes > a.status.Items[j].SizeInBytes

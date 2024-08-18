@@ -36,6 +36,7 @@ type App struct {
 	renderCtxs map[base.Address][]*output.RenderCtx
 	historyMap map[base.Address]types.TransactionContainer
 	balanceMap sync.Map
+	meta       coreTypes.MetaData
 
 	// Summaries
 	abis              types.AbiContainer
@@ -168,4 +169,8 @@ func (a *App) Fatal(message string) {
 		Message: message,
 	})
 	os.Exit(1)
+}
+
+func (a *App) GetMeta() coreTypes.MetaData {
+	return a.meta
 }

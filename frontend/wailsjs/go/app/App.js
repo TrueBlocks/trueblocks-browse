@@ -90,6 +90,10 @@ export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
 
+export function GetMeta() {
+  return window['go']['app']['App']['GetMeta']();
+}
+
 export function GetMonitors(arg1, arg2) {
   return window['go']['app']['App']['GetMonitors'](arg1, arg2);
 }

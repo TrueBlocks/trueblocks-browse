@@ -52,6 +52,8 @@ export function GetManifestCnt():Promise<number>;
 
 export function GetMenus():Promise<menu.Menu>;
 
+export function GetMeta():Promise<types.MetaData>;
+
 export function GetMonitors(arg1:number,arg2:number):Promise<types.MonitorContainer>;
 
 export function GetMonitorsCnt():Promise<number>;

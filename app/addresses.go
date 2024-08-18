@@ -29,10 +29,11 @@ func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
 	opts := sdk.NamesOptions{
 		Terms: []string{addr},
 	}
-	if names, _, err := opts.Names(); err != nil {
+	if names, meta, err := opts.Names(); err != nil {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err))
 		return base.ZeroAddr, false
 	} else {
+		a.meta = *meta
 		if len(names) > 0 {
 			e.Lock()
 			defer e.Unlock()

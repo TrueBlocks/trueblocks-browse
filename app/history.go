@@ -75,11 +75,12 @@ func (a *App) GetHistory(addr string, first, pageSize int) types.TransactionCont
 			}
 		}()
 
-		_, _, err := opts.Export()
+		_, meta, err := opts.Export()
 		if err != nil {
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
 			return types.TransactionContainer{}
 		}
+		a.meta = *meta
 		historyMutex.Lock()
 		sort.Slice(a.historyMap[address].Items, func(i, j int) bool {
 			if a.historyMap[address].Items[i].BlockNumber == a.historyMap[address].Items[j].BlockNumber {
@@ -125,13 +126,14 @@ func (a *App) GetHistoryCnt(addr string) int {
 	opts := sdk.ListOptions{
 		Addrs: []string{addr},
 	}
-	appearances, _, err := opts.ListCount()
+	appearances, meta, err := opts.ListCount()
 	if err != nil {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
 		return 0
 	} else if len(appearances) == 0 {
 		return 0
 	} else {
+		a.meta = *meta
 		return int(appearances[0].NRecords)
 	}
 }

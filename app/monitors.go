@@ -31,7 +31,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 
 	opts := sdk.MonitorsOptions{}
-	if monitors, _, err := opts.MonitorsList(); err != nil {
+	if monitors, meta, err := opts.MonitorsList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -43,6 +43,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else {
+		a.meta = *meta
 		if len(a.monitors.Items) == len(monitors) {
 			return nil
 		}
