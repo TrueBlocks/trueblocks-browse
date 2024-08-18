@@ -38,14 +38,12 @@ type App struct {
 	balanceMap sync.Map
 
 	// Summaries
-	abis     types.AbiContainer
-	index    types.IndexContainer
-	manifest types.ManifestContainer
-	monitors types.MonitorContainer
-	names    types.NameContainer
-	status   types.StatusContainer
-
-	// Add your application's data here
+	abis              types.AbiContainer
+	index             types.IndexContainer
+	manifest          types.ManifestContainer
+	monitors          types.MonitorContainer
+	names             types.NameContainer
+	status            types.StatusContainer
 	ScraperController *daemons.DaemonScraper
 	FreshenController *daemons.DaemonFreshen
 	IpfsController    *daemons.DaemonIpfs
@@ -57,7 +55,6 @@ func NewApp() *App {
 		apiKeys:    make(map[string]string),
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 		ensMap:     make(map[string]base.Address),
-		// Initialize maps here
 		historyMap: make(map[base.Address]types.TransactionContainer),
 		Documents:  make([]types.Document, 10),
 	}
@@ -67,7 +64,7 @@ func NewApp() *App {
 	a.CurrentDoc.Filename = "Untitled"
 
 	// it's okay if it's not found
-	_ = a.session.Load()
+	a.session.MustLoadSession()
 
 	if err := godotenv.Load(); err != nil {
 		// a.Fatal("Error loading .env file")
@@ -94,7 +91,7 @@ func (a *App) GetContext() context.Context {
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
-	a.FreshenController = daemons.NewFreshen(a, "freshen", 3000, a.GetLastDaemon("daemon-freshen"))
+	a.FreshenController = daemons.NewFreshen(a, "freshen", 7000, a.GetLastDaemon("daemon-freshen"))
 	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetLastDaemon("daemon-scraper"))
 	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.GetLastDaemon("daemon-ipfs"))
 	go a.startDaemons()

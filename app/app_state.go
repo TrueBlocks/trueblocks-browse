@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -11,7 +12,7 @@ func (a *App) GetLast(which string) string {
 	case "route":
 		return a.GetSession().LastRoute + a.GetLastSub(a.GetSession().LastRoute)
 	case "help":
-		return a.GetSession().LastHelp
+		return fmt.Sprintf("%t", a.GetSession().LastHelp)
 	}
 	return "Unknown"
 }
@@ -30,7 +31,7 @@ func (a *App) SetLast(which, value string) {
 			a.GetSession().LastRoute = value
 		}
 	case "help":
-		a.GetSession().LastHelp = value
+		a.GetSession().LastHelp = strings.EqualFold(value, "true")
 	}
 	a.GetSession().Save()
 }
