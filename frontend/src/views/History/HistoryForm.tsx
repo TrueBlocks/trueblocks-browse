@@ -19,7 +19,7 @@ export function createForm(table: any, pager: Pager): GroupDefinition<theInstanc
       title: "Future Use",
       colSpan: 6,
       fields: [
-        { label: "nTransactions", type: "int", accessor: "nTransactions" },
+        { label: "nTransactions", type: "int", accessor: "nItems" },
         { label: "nEvents", type: "int", accessor: "nEvents" },
         { label: "nTokens", type: "int", accessor: "nTokens" },
         { label: "nErrors", type: "int", accessor: "nErrors" },

@@ -1,14 +1,5 @@
-// Copyright 2016, 2024 The TrueBlocks Authors. All rights reserved.
-// Use of this source code is governed by a license that can
-// be found in the LICENSE file.
-/*
- * Parts of this file were auto generated. Edit only those parts of
- * the code inside of 'EXISTING_CODE' tags.
- */
-
 package types
 
-// EXISTING_CODE
 import (
 	"encoding/json"
 
@@ -16,17 +7,13 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-// EXISTING_CODE
-
 type MonitorContainer struct {
 	coreTypes.Monitor
-	NMonitors  int64                              `json:"nMonitors"`
-	NNamed     int64                              `json:"nNamed"`
-	NDeleted   int64                              `json:"nDeleted"`
-	MonitorMap map[base.Address]coreTypes.Monitor `json:"monitorMap"`
 	Items      []coreTypes.Monitor                `json:"items"`
-	// EXISTING_CODE
-	// EXISTING_CODE
+	NItems     int                                `json:"nItems"`
+	NNamed     int                                `json:"nNamed"`
+	NDeleted   int                                `json:"nDeleted"`
+	MonitorMap map[base.Address]coreTypes.Monitor `json:"monitorMap"`
 }
 
 func (s MonitorContainer) String() string {
@@ -34,38 +21,18 @@ func (s MonitorContainer) String() string {
 	return string(bytes)
 }
 
-func (s *MonitorContainer) Model(chain, format string, verbose bool, extraOpts map[string]any) Model {
-	var model = map[string]any{}
-	var order = []string{}
-
-	// EXISTING_CODE
-	// EXISTING_CODE
-
-	return Model{
-		Data:  model,
-		Order: order,
-	}
-}
-
-// FinishUnmarshal is used by the cache. It may be unused depending on auto-code-gen
-func (s *MonitorContainer) FinishUnmarshal() {
-	// EXISTING_CODE
-	// EXISTING_CODE
-}
-
-// EXISTING_CODE
 func (s *MonitorContainer) ShallowCopy() MonitorContainer {
 	return MonitorContainer{
-		Monitor:   s.Monitor,
-		NNamed:    s.NNamed,
-		NDeleted:  s.NDeleted,
-		NMonitors: s.NMonitors,
+		Monitor:  s.Monitor,
+		NNamed:   s.NNamed,
+		NDeleted: s.NDeleted,
+		NItems:   s.NItems,
 	}
 }
 
 func (s *MonitorContainer) Summarize() {
+	s.NItems = len(s.Items)
 	for _, mon := range s.Items {
-		s.NMonitors++
 		if mon.Deleted {
 			s.NDeleted++
 		}
@@ -76,5 +43,3 @@ func (s *MonitorContainer) Summarize() {
 		s.NRecords += mon.NRecords
 	}
 }
-
-// EXISTING_CODE
