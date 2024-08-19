@@ -82,10 +82,6 @@ export function GetMonitorsCnt() {
   return window['go']['app']['App']['GetMonitorsCnt']();
 }
 
-export function GetNamesCnt() {
-  return window['go']['app']['App']['GetNamesCnt']();
-}
-
 export function GetSession() {
   return window['go']['app']['App']['GetSession']();
 }

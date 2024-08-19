@@ -49,8 +49,6 @@ export function GetMeta():Promise<types.MetaData>;
 
 export function GetMonitorsCnt():Promise<number>;
 
-export function GetNamesCnt():Promise<number>;
-
 export function GetSession():Promise<config.Session>;
 
 export function GetWizardState():Promise<wizard.State>;
