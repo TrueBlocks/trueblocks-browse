@@ -181,7 +181,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     const handleRefresh = () => {
       fetchMeta();
       fetchWizard();
-      // fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
+      fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
       fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
       fetchNames(namesPgr.curItem, namesPgr.perPage);
       fetchAbis(abiPgr.curItem, abiPgr.perPage);
@@ -196,8 +196,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       EventsOff(Message.DAEMON);
     };
   }, [
-    // historyPgr.curItem,
-    // historyPgr.perPage,
+    historyPgr.curItem,
+    historyPgr.perPage,
     monitorPgr.curItem,
     monitorPgr.perPage,
     namesPgr.curItem,

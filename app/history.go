@@ -41,7 +41,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.TransactionCon
 		}
 
 		go func() {
-			nItems := a.GetHistoryCnt(addr)
+			nItems := a.getHistoryCnt(addr)
 			for {
 				select {
 				case model := <-opts.RenderCtx.ModelChan:
@@ -113,7 +113,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.TransactionCon
 	return copy
 }
 
-func (a *App) GetHistoryCnt(addr string) int {
+func (a *App) getHistoryCnt(addr string) int {
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))

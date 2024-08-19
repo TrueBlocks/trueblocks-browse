@@ -46,10 +46,6 @@ export function GetDaemon(arg1) {
   return window['go']['app']['App']['GetDaemon'](arg1);
 }
 
-export function GetHistoryCnt(arg1) {
-  return window['go']['app']['App']['GetHistoryCnt'](arg1);
-}
-
 export function GetLast(arg1) {
   return window['go']['app']['App']['GetLast'](arg1);
 }
