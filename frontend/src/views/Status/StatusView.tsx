@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { types, messages } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
-import { View2, FormTable } from "@components";
+import { View, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { StatusPage, GetStatusCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
@@ -41,8 +41,8 @@ export function StatusView() {
   });
 
   return (
-    <View2>
+    <View>
       <FormTable data={summaryItem} definition={createForm(table, pager)} />
-    </View2>
+    </View>
   );
 }

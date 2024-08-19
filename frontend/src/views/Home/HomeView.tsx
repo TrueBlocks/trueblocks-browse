@@ -1,11 +1,11 @@
 import React from "react";
 import { Text } from "@mantine/core";
-import { View2 } from "@components";
+import { View } from "@components";
 
 export function HomeView() {
   return (
-    <View2>
+    <View>
       <Text>Home View Content</Text>
-    </View2>
+    </View>
   );
 }

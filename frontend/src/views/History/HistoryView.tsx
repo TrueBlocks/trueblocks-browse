@@ -3,7 +3,7 @@ import { useParams, useLocation } from "wouter";
 import { types, messages } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns, createForm } from ".";
-import { View2, FormTable } from "@components";
+import { View, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { GetLastSub, HistoryPage, GetHistoryCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
@@ -53,11 +53,11 @@ export function HistoryView() {
   });
 
   return (
-    <View2>
+    <View>
       {/* <div>{`addr: ${addr}`}</div>
       <div>{`address: ${address}`}</div>
       <div>{`location: ${location}`}</div> */}
       <FormTable data={summaryItem} definition={createForm(table, pager)} />
-    </View2>
+    </View>
   );
 }

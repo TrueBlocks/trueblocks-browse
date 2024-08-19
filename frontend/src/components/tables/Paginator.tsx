@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Pagination } from "@mantine/core";
 import classes from "./Paginator.module.css";
 
