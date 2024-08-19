@@ -4,6 +4,7 @@ import { AddrToName } from "@gocode/app/App";
 import { base } from "@gocode/models";
 import { Formatter } from ".";
 import { useAppState } from "@state";
+import classes from "./Formatter.module.css";
 
 export const AddressFormatter = ({ addressIn, size = "md" }: { addressIn: base.Address; size?: TextProps["size"] }) => {
   const { address } = useAppState();
@@ -22,7 +23,7 @@ export const AddressFormatter = ({ addressIn, size = "md" }: { addressIn: base.A
   }, [addressIn]);
 
   if (addressIn === address) {
-    return <Formatter size={size} type="text" value={formattedAddress} />;
+    return <Formatter className={classes.bold} size={size} type="text" value={formattedAddress} />;
   }
 
   return <Formatter size={size} type="text" value={formattedAddress} />;

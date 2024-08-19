@@ -2,7 +2,7 @@
 
 .brown {
   background-color: brown;
-  color: white;
+  color: yellow;
 }
 
 .red {
@@ -12,7 +12,7 @@
 
 .green {
   background-color: green;
-  color: white;
+  color: yellow;
 }
 
 .blue {
@@ -46,6 +46,8 @@
 }
 
 .bold {
+  background-color: lightgrey;
   font-weight: bold;
   font-style: italic;
+  font-size: 2em;
 }
