@@ -9,12 +9,12 @@ import (
 type ManifestContainer struct {
 	coreTypes.Manifest `json:",inline"`
 	Items              []coreTypes.ChunkRecord `json:"items"`
-	NItems             uint64                  `json:"nItems"`
+	NItems             int                     `json:"nItems"`
 	LatestUpdate       string                  `json:"latestUpdate"`
-	NBlooms            uint64                  `json:"nBlooms"`
-	BloomsSize         int64                   `json:"bloomsSize"`
-	NIndexes           uint64                  `json:"nIndexes"`
-	IndexSize          int64                   `json:"indexSize"`
+	NBlooms            int                     `json:"nBlooms"`
+	BloomsSize         int                     `json:"bloomsSize"`
+	NIndexes           int                     `json:"nIndexes"`
+	IndexSize          int                     `json:"indexSize"`
 }
 
 func (s ManifestContainer) String() string {
@@ -33,12 +33,12 @@ func NewManifestContainer(manifest coreTypes.Manifest) ManifestContainer {
 }
 
 func (s *ManifestContainer) Summarize() {
-	s.NItems = uint64(len(s.Items))
+	s.NItems = len(s.Items)
 	for _, item := range s.Items {
 		s.NBlooms++
-		s.BloomsSize += item.BloomSize
+		s.BloomsSize += int(item.BloomSize)
 		s.NIndexes++
-		s.IndexSize += item.IndexSize
+		s.IndexSize += int(item.IndexSize)
 	}
 
 }

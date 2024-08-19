@@ -13,16 +13,11 @@ export function HistoryView() {
 
   let addr = useParams().address;
   useEffect(() => {
-    // console.log("addr:", addr);
     if (addr === ":address") {
       GetLastSub("/history").then((a) => (addr = a));
     }
-    // console.log("addr2:", addr);
     if (addr && addr !== "" && addr !== ":address") {
-      // console.log("addr3:", addr);
       setAddress(addr as unknown as base.Address);
-    } else {
-      // console.log("addr4:", addr);
     }
   }, [addr]);
 

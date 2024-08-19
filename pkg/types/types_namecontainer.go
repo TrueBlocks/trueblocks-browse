@@ -8,19 +8,19 @@ import (
 type NameContainer struct {
 	Names      []coreTypes.Name                `json:"names"`
 	NamesMap   map[base.Address]coreTypes.Name `json:"namesMap"`
-	NItems     int64                           `json:"nItems"`
-	NContracts int64                           `json:"nContracts"`
-	NErc20s    int64                           `json:"nErc20s"`
-	NErc721s   int64                           `json:"nErc721s"`
-	NCustom    int64                           `json:"nCustom"`
-	NRegular   int64                           `json:"nRegular"`
-	NPrefund   int64                           `json:"nPrefund"`
-	NBaddress  int64                           `json:"nBaddress"`
-	NDeleted   int64                           `json:"nDeleted"`
+	NItems     int                             `json:"nItems"`
+	NContracts int                             `json:"nContracts"`
+	NErc20s    int                             `json:"nErc20s"`
+	NErc721s   int                             `json:"nErc721s"`
+	NCustom    int                             `json:"nCustom"`
+	NRegular   int                             `json:"nRegular"`
+	NPrefund   int                             `json:"nPrefund"`
+	NBaddress  int                             `json:"nBaddress"`
+	NDeleted   int                             `json:"nDeleted"`
 }
 
 func (s *NameContainer) Summarize() {
-	s.NItems = int64(len(s.Names))
+	s.NItems = len(s.Names)
 	for _, name := range s.Names {
 		if name.Parts&coreTypes.Regular > 0 {
 			s.NRegular++

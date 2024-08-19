@@ -2,22 +2,37 @@ import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { Text, TextProps } from "@mantine/core";
 import { base } from "@gocode/models";
-import { useDateTime } from "@hooks";
+import { useDateTime, useToEther } from "@hooks";
 import { AddressFormatter } from "./AddressFormatter";
 
 export type knownTypes =
-  | "text"
-  | "float"
-  | "int"
-  | "bytes"
-  | "date"
+  | "address-name"
+  | "address-only"
+  | "appearance"
   | "boolean"
+  | "bytes"
   | "check"
-  | "address"
+  | "date"
+  | "error"
+  | "ether"
+  | "float"
   | "hash"
-  | "error";
+  | "int"
+  | "name-only"
+  | "path"
+  | "range"
+  | "text"
+  | "timestamp"
+  | "url";
 
-export const Formatter = ({ type, value, size = "md" }: { type: knownTypes; value: any; size?: TextProps["size"] }) => {
+type FormatterProps = {
+  type: knownTypes;
+  size?: TextProps["size"];
+  value: any;
+  value2?: any;
+};
+
+export const Formatter = ({ type, size = "md", value, value2 = null }: FormatterProps) => {
   const formatInteger = (number: number): string => {
     return new Intl.NumberFormat(navigator.language).format(number);
   };
@@ -40,24 +55,48 @@ export const Formatter = ({ type, value, size = "md" }: { type: knownTypes; valu
 
   var v = value as number;
   switch (type) {
-    case "float":
-      return <Text size={size}>{formatFloat(v)}</Text>;
-    case "bytes":
-      return <Text size={size}>{formatBytes(v)}</Text>;
-    case "int":
-      return <Text size={size}>{formatInteger(v)}</Text>;
-    case "address":
-      return <AddressFormatter addressIn={value as base.Address} />;
-    case "date":
-      return <Text size={size}>{useDateTime(v)}</Text>;
+    case "address-name":
+      return <AddressFormatter size={size} addressIn={value as base.Address} />;
+    case "address-only":
+      return <Text size={size}>{value}</Text>;
+    case "appearance":
+      return <Text size={size}>{value}</Text>;
     case "boolean":
       var fill = value ? "green" : "red";
       return <IconCircleCheck size={16} color="white" fill={fill} />;
+    case "bytes":
+      return <Text size={size}>{formatBytes(v)}</Text>;
     case "check":
       return value ? <IconCircleCheck size={16} color="white" fill="green" /> : <></>;
+    case "date":
+      return <Text size={size}>{useDateTime(v)}</Text>;
     case "error":
       return <Text size={size}>{value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>}</Text>;
-    default:
+    case "ether":
+      return <Text size={size}>{useToEther(value as bigint)}</Text>;
+    case "float":
+      return <Text size={size}>{formatFloat(v)}</Text>;
+    case "hash":
       return <Text size={size}>{value}</Text>;
+    case "int":
+      if (v === 0) {
+        return <Text size={size}>{"-"}</Text>;
+      } else {
+        return <Text size={size}>{formatInteger(v)}</Text>;
+      }
+    case "name-only":
+      return <Formatter type="text" value={value} />;
+    case "path":
+      return <Text size={size}>{value}</Text>;
+    case "range":
+      return <Text size={size}>{value}</Text>;
+    case "text":
+      return <Text size={size}>{value}</Text>;
+    case "timestamp":
+      return <Text size={size}>{useDateTime(v)}</Text>;
+    case "url":
+      return <Text size={size}>{value}</Text>;
+    default:
+      return <Text size={size}>UNKNOWN FORMATTER TYPE</Text>;
   }
 };

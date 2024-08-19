@@ -1,19 +1,33 @@
 import React from "react";
-import { Text } from "@mantine/core";
-import { View } from "@components";
+import { Text, Group } from "@mantine/core";
+import { View, Formatter } from "@components";
 import { useAppState } from "@state";
 
 export function HomeView() {
-  const { monitors, names, abis, indexes, manifests, status } = useAppState();
+  const { getCounters } = useAppState();
+
+  var counters = getCounters();
   return (
     <View>
       <Text>Current State</Text>
-      <Text>{`nMonitors: ${monitors.nItems}`}</Text>
-      <Text>{`nNames: ${names.nItems}`}</Text>
-      <Text>{`nAbis: ${abis.nItems}`}</Text>
-      <Text>{`nIndexes: ${indexes.nItems}`}</Text>
-      <Text>{`nManifests: ${manifests.nItems}`}</Text>
-      <Text>{`nCaches: ${status.nItems}`}</Text>
+      <Group>
+        <Text>nMonitors:</Text> <Formatter type="int" value={counters.nMonitors} />
+      </Group>
+      <Group>
+        <Text>nNames:</Text> <Formatter type="int" value={counters.nNames} />
+      </Group>
+      <Group>
+        <Text>nAbis:</Text> <Formatter type="int" value={counters.nAbis} />
+      </Group>
+      <Group>
+        <Text>nIndexes:</Text> <Formatter type="int" value={counters.nIndexes} />
+      </Group>
+      <Group>
+        <Text>nManifests:</Text> <Formatter type="int" value={counters.nManifests} />
+      </Group>
+      <Group>
+        <Text>nCaches:</Text> <Formatter type="int" value={counters.nStatus} />
+      </Group>
     </View>
   );
 }

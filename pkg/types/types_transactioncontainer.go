@@ -7,20 +7,20 @@ import (
 
 type TransactionContainer struct {
 	Items   []coreTypes.Transaction `json:"items"`
-	NItems  int64                   `json:"nItems"`
+	NItems  int                     `json:"nItems"`
 	Address base.Address            `json:"address"`
 	Name    string                  `json:"name"`
 	Balance string                  `json:"balance"`
-	NEvents int64                   `json:"nEvents"`
-	NTokens int64                   `json:"nTokens"`
-	NErrors int64                   `json:"nErrors"`
+	NEvents int                     `json:"nEvents"`
+	NTokens int                     `json:"nTokens"`
+	NErrors int                     `json:"nErrors"`
 }
 
 func (s *TransactionContainer) Summarize() {
-	s.NItems = int64(len(s.Items))
+	s.NItems = len(s.Items)
 	for _, tx := range s.Items {
 		if tx.Receipt != nil {
-			s.NEvents += int64(len(tx.Receipt.Logs))
+			s.NEvents += len(tx.Receipt.Logs)
 		}
 		if tx.HasToken {
 			s.NTokens++

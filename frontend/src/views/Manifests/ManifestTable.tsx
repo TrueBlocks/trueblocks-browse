@@ -8,7 +8,7 @@ const columnHelper = createColumnHelper<types.ChunkRecord>();
 export const tableColumns: CustomColumnDef<types.ChunkRecord, any>[] = [
   columnHelper.accessor("range", {
     header: () => "Range",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="range" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("bloomHash", {

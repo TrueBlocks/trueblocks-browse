@@ -1,15 +1,15 @@
 import React, { useState, forwardRef, useCallback } from "react";
-
 import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
 import { ClipboardSetText } from "@runtime";
 import { IconCopy } from "@tabler/icons-react";
+import { ExploreButton, MonitorButton } from ".";
 
-type AddressNameEditorProps = {
+type PopupProps = {
   name?: () => any;
   onSubmit?: (value: string) => void;
 };
 
-export const NamePopup = forwardRef<HTMLDivElement, AddressNameEditorProps>(({ name, onSubmit }, ref) => {
+export const NamePopup = forwardRef<HTMLDivElement, PopupProps>(({ name, onSubmit }, ref) => {
   const [inputValue, setInputValue] = useState(String(name?.() || ""));
   const submitForm = useCallback(
     (e: React.FormEvent) => {
@@ -28,10 +28,14 @@ export const NamePopup = forwardRef<HTMLDivElement, AddressNameEditorProps>(({ n
         <Stack>
           <TextInput value={inputValue} onChange={(event) => setInputValue(event.currentTarget.value)} autoFocus />
           <Group>
+            <ExploreButton address={""} /> {/* address()} /> */}
+            <MonitorButton address={""} /> {/* address()} /> */}
+            <Button size="xs" type="submit">
+              Save
+            </Button>
             <ActionIcon variant="outline" onClick={copy} title="Copy to clipboard">
               <IconCopy />
             </ActionIcon>
-            <Button type="submit">Save</Button>
           </Group>
         </Stack>
       </form>

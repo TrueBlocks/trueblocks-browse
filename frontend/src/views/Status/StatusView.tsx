@@ -28,8 +28,8 @@ function createStatusForm(table: any): GroupDefinition<theInstance>[] {
       title: "System Data",
       colSpan: 7,
       fields: [
-        { label: "trueblocks", accessor: "version" },
-        { label: "client", accessor: "clientVersion" },
+        { label: "trueblocks", type: "text", accessor: "version" },
+        { label: "client", type: "text", accessor: "clientVersion" },
         { label: "isArchive", type: "boolean", accessor: "isArchive" },
         { label: "isTracing", type: "boolean", accessor: "isTracing" },
       ],
@@ -40,24 +40,24 @@ function createStatusForm(table: any): GroupDefinition<theInstance>[] {
       fields: [
         { label: "hasEsKey", type: "boolean", accessor: "hasEsKey" },
         { label: "hasPinKey", type: "boolean", accessor: "hasPinKey" },
-        { label: "rpcProvider", accessor: "rpcProvider" },
+        { label: "rpcProvider", type: "url", accessor: "rpcProvider" },
       ],
     },
     {
       title: "Configuration Paths",
       colSpan: 7,
       fields: [
-        { label: "rootConfig", accessor: "rootConfig" },
-        { label: "chainConfig", accessor: "chainConfig" },
-        { label: "indexPath", accessor: "indexPath" },
-        { label: "cachePath", accessor: "cachePath" },
+        { label: "rootConfig", type: "path", accessor: "rootConfig" },
+        { label: "chainConfig", type: "path", accessor: "chainConfig" },
+        { label: "indexPath", type: "path", accessor: "indexPath" },
+        { label: "cachePath", type: "path", accessor: "cachePath" },
       ],
     },
     {
       title: "Statistics",
       colSpan: 5,
       fields: [
-        { label: "latestUpdate", accessor: "latestUpdate" },
+        { label: "latestUpdate", type: "date", accessor: "latestUpdate" },
         { label: "nCaches", type: "int", accessor: "nItems" },
         { label: "nFiles", type: "int", accessor: "nFiles" },
         { label: "nFolders", type: "int", accessor: "nFolders" },

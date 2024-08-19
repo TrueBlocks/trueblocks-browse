@@ -10,9 +10,9 @@ import (
 type MonitorContainer struct {
 	coreTypes.Monitor
 	Items      []coreTypes.Monitor                `json:"items"`
-	Nitems     int64                              `json:"nItems"`
-	NNamed     int64                              `json:"nNamed"`
-	NDeleted   int64                              `json:"nDeleted"`
+	NItems     int                                `json:"nItems"`
+	NNamed     int                                `json:"nNamed"`
+	NDeleted   int                                `json:"nDeleted"`
 	MonitorMap map[base.Address]coreTypes.Monitor `json:"monitorMap"`
 }
 
@@ -26,12 +26,12 @@ func (s *MonitorContainer) ShallowCopy() MonitorContainer {
 		Monitor:  s.Monitor,
 		NNamed:   s.NNamed,
 		NDeleted: s.NDeleted,
-		Nitems:   s.Nitems,
+		NItems:   s.NItems,
 	}
 }
 
 func (s *MonitorContainer) Summarize() {
-	s.Nitems = int64(len(s.Items))
+	s.NItems = len(s.Items)
 	for _, mon := range s.Items {
 		if mon.Deleted {
 			s.NDeleted++
