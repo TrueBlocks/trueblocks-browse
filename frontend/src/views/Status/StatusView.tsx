@@ -23,7 +23,6 @@ export function StatusView() {
 
 type theInstance = InstanceType<typeof types.StatusContainer>;
 function createStatusForm(table: any): GroupDefinition<theInstance>[] {
-  const { getPager } = useAppState();
   return [
     {
       title: "System Data",
@@ -70,7 +69,7 @@ function createStatusForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.CacheItem> table={table} loading={false} pager={getPager("status")} />,
+          component: <DataTable<types.CacheItem> table={table} loading={false} pagerName="status" />,
         },
       ],
     },

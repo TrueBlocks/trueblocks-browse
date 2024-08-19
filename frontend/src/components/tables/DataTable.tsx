@@ -3,15 +3,19 @@ import "./DataTable.css";
 import { Table, Title } from "@mantine/core";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
 import { Popup } from "@components";
-import { CustomMeta, Paginator, Pager } from "./";
+import { CustomMeta, Paginator, Pager, EmptyPager } from "./";
+import { useAppState } from "@state";
+import { Route } from "@/Routes";
 
 interface DataTableProps<T> {
   table: ReactTable<T>;
   loading: boolean;
-  pager: Pager;
+  pagerName: Route;
 }
 
-export function DataTable<T>({ table, loading, pager }: DataTableProps<T>) {
+export function DataTable<T>({ table, loading, pagerName }: DataTableProps<T>) {
+  const { getPager } = useAppState();
+
   if (loading) {
     return <Title order={3}>Loading...</Title>;
   } else {
@@ -46,7 +50,7 @@ export function DataTable<T>({ table, loading, pager }: DataTableProps<T>) {
             ))}
           </Table.Tbody>
         </Table>
-        <Paginator pager={pager} />
+        <Paginator pager={getPager(pagerName)} />
       </>
     );
   }

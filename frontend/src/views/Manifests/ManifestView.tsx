@@ -43,22 +43,22 @@ export function ManifestView() {
 
   return (
     <View>
-      <FormTable data={summaryItem} definition={createManifestForm(table, pager)} />
+      <FormTable data={summaryItem} definition={createManifestForm(table)} />
     </View>
   );
 }
 
 type theInstance = InstanceType<typeof types.ManifestContainer>;
-function createManifestForm(table: any, pager: Pager): GroupDefinition<theInstance>[] {
+function createManifestForm(table: any): GroupDefinition<theInstance>[] {
   return [
     {
       title: "Manifest Data",
       colSpan: 6,
       fields: [
-        { label: "version", accessor: "version" },
-        { label: "chain", accessor: "chain" },
-        { label: "specification", accessor: "specification" },
-        { label: "latestUpdate", accessor: "latestUpdate" },
+        { label: "version", type: "text", accessor: "version" },
+        { label: "chain", type: "text", accessor: "chain" },
+        { label: "specification", type: "hash", accessor: "specification" },
+        { label: "latestUpdate", type: "date", accessor: "latestUpdate" },
       ],
     },
     {
@@ -76,7 +76,7 @@ function createManifestForm(table: any, pager: Pager): GroupDefinition<theInstan
       fields: [],
       components: [
         {
-          component: <DataTable<types.ChunkRecord> table={table} loading={false} pager={pager} />,
+          component: <DataTable<types.ChunkRecord> table={table} loading={false} pagerName="manifest" />,
         },
       ],
     },

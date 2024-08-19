@@ -75,7 +75,7 @@ function createAbisForm(table: any, pager: Pager): GroupDefinition<theInstance>[
       fields: [],
       components: [
         {
-          component: <DataTable<types.Abi> table={table} loading={false} pager={pager} />,
+          component: <DataTable<types.Abi> table={table} loading={false} pagerName="abis" />,
         },
       ],
     },

@@ -78,7 +78,7 @@ function createIndexForm(table: any, pager: Pager): GroupDefinition<theInstance>
       fields: [],
       components: [
         {
-          component: <DataTable<types.ChunkStats> table={table} loading={false} pager={pager} />,
+          component: <DataTable<types.ChunkStats> table={table} loading={false} pagerName="indexes" />,
         },
       ],
     },

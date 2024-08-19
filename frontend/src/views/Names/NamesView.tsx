@@ -77,7 +77,7 @@ function createNameForm(table: any, pager: Pager): GroupDefinition<theInstance>[
       fields: [],
       components: [
         {
-          component: <DataTable<types.Name> table={table} loading={false} pager={pager} />,
+          component: <DataTable<types.Name> table={table} loading={false} pagerName="names" />,
         },
       ],
     },

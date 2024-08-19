@@ -6,7 +6,7 @@ import { Formatter } from ".";
 import { useAppState } from "@state";
 
 export const AddressFormatter = ({ addressIn, size = "md" }: { addressIn: base.Address; size?: TextProps["size"] }) => {
-  // const { address } = useAppState();
+  const { address } = useAppState();
   const [formattedAddress, setFormattedAddress] = useState<string>("");
 
   useEffect(() => {
@@ -21,9 +21,9 @@ export const AddressFormatter = ({ addressIn, size = "md" }: { addressIn: base.A
     formatAddress();
   }, [addressIn]);
 
-  // if (addressIn === address) {
-  //   return <Formatter size={size} type="text" value={formattedAddress} />;
-  // }
+  if (addressIn === address) {
+    return <Formatter size={size} type="text" value={formattedAddress} />;
+  }
 
   return <Formatter size={size} type="text" value={formattedAddress} />;
 };

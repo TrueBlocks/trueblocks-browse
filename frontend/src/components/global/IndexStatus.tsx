@@ -4,11 +4,16 @@ import { useAppState } from "@state";
 import { Formatter } from "@components";
 
 export function IndexStatus() {
-  const { meta } = useAppState();
+  const { indexes, meta } = useAppState();
+
+  if (!indexes.items) {
+    return <Text size="sm">loading indexes...</Text>;
+  }
 
   return (
     <Group justify={"space-between"}>
       <Text size="sm">unchained index: </Text>
+      <Formatter size="sm" type="int" value={indexes.nItems} />
       {" / "}
       <Formatter size="sm" type="int" value={meta.client} />
       {" / "}

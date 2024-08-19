@@ -73,7 +73,7 @@ function createMonitorForm(table: any, pager: Pager): GroupDefinition<theInstanc
       fields: [],
       components: [
         {
-          component: <DataTable<types.Monitor> table={table} loading={false} pager={pager} />,
+          component: <DataTable<types.Monitor> table={table} loading={false} pagerName="monitors" />,
         },
       ],
     },

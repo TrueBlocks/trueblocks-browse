@@ -35,7 +35,7 @@ var defaultSession = Session{
 	Width:     1024,
 	Height:    768,
 	Title:     "Browse by TrueBlocks",
-	Daemons:   Daemons{},
+	Daemons:   Daemons{Freshen: true},
 	LastRoute: "/",
 	LastSub:   map[string]string{"/history": "trueblocks.eth"},
 	LastHelp:  true,
