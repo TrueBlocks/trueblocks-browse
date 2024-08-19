@@ -66,20 +66,12 @@ export function GetLastWizard() {
   return window['go']['app']['App']['GetLastWizard']();
 }
 
-export function GetManifestCnt() {
-  return window['go']['app']['App']['GetManifestCnt']();
-}
-
 export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
 
 export function GetMeta() {
   return window['go']['app']['App']['GetMeta']();
-}
-
-export function GetMonitorsCnt() {
-  return window['go']['app']['App']['GetMonitorsCnt']();
 }
 
 export function GetSession() {

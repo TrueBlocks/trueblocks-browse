@@ -18,10 +18,6 @@ func (a *App) ManifestPage(first, pageSize int) types.ManifestContainer {
 	return copy
 }
 
-func (a *App) GetManifestCnt() int {
-	return len(a.manifest.Items)
-}
-
 func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {

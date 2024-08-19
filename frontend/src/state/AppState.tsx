@@ -182,7 +182,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       fetchMeta();
       fetchWizard();
       // fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
-      // fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
+      fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
       fetchNames(namesPgr.curItem, namesPgr.perPage);
       fetchAbis(abiPgr.curItem, abiPgr.perPage);
       fetchIndexes(indexPgr.curItem, indexPgr.perPage);
@@ -198,8 +198,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, [
     // historyPgr.curItem,
     // historyPgr.perPage,
-    // monitorPgr.curItem,
-    // monitorPgr.perPage,
+    monitorPgr.curItem,
+    monitorPgr.perPage,
     namesPgr.curItem,
     namesPgr.perPage,
     abiPgr.curItem,

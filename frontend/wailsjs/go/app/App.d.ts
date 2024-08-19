@@ -41,13 +41,9 @@ export function GetLastSub(arg1:string):Promise<string>;
 
 export function GetLastWizard():Promise<wizard.State>;
 
-export function GetManifestCnt():Promise<number>;
-
 export function GetMenus():Promise<menu.Menu>;
 
 export function GetMeta():Promise<types.MetaData>;
-
-export function GetMonitorsCnt():Promise<number>;
 
 export function GetSession():Promise<config.Session>;
 
