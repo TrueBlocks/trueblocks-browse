@@ -8,7 +8,7 @@ const columnHelper = createColumnHelper<types.ChunkStats>();
 export const tableColumns: CustomColumnDef<types.ChunkStats, any>[] = [
   columnHelper.accessor("range", {
     header: () => "range",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="range" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("nBlocks", {

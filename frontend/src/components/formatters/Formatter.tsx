@@ -6,7 +6,6 @@ import { useDateTime, useToEther } from "@hooks";
 import { AddressFormatter } from "./AddressFormatter";
 
 export type knownTypes =
-  | "address"
   | "address-name"
   | "address-only"
   | "appearance"
