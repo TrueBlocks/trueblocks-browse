@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { types, messages } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { tableColumns, createForm } from ".";
+import { tableColumns } from "./IndexesTable";
 import { View, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { IndexPage, GetIndexCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
+import { GroupDefinition, DataTable, Pager } from "@components";
 
 export function IndexesView() {
   const [summaryItem, setSummaryItem] = useState<types.IndexContainer>({} as types.IndexContainer);
@@ -42,7 +43,44 @@ export function IndexesView() {
 
   return (
     <View>
-      <FormTable data={summaryItem} definition={createForm(table, pager)} />
+      <FormTable data={summaryItem} definition={createIndexForm(table, pager)} />
     </View>
   );
+}
+
+type theInstance = InstanceType<typeof types.IndexContainer>;
+function createIndexForm(table: any, pager: Pager): GroupDefinition<theInstance>[] {
+  return [
+    {
+      title: "Summary Data",
+      colSpan: 6,
+      fields: [
+        { label: "bloomSz", type: "bytes", accessor: "bloomSz" },
+        { label: "chunkSz", type: "bytes", accessor: "chunkSz" },
+        { label: "nAddrs", type: "int", accessor: "nAddrs" },
+        { label: "nApps", type: "int", accessor: "nApps" },
+        { label: "nBlocks", type: "int", accessor: "nBlocks" },
+        { label: "nBlooms", type: "int", accessor: "nBlooms" },
+      ],
+    },
+    {
+      title: "Statistics",
+      colSpan: 6,
+      fields: [
+        { label: "nItems", type: "int", accessor: "nItems" },
+        { label: "addrsPerBlock", type: "float", accessor: "addrsPerBlock" },
+        { label: "appsPerAddr", type: "float", accessor: "appsPerAddr" },
+        { label: "appsPerBlock", type: "float", accessor: "appsPerBlock" },
+      ],
+    },
+    {
+      title: "Chunks",
+      fields: [],
+      components: [
+        {
+          component: <DataTable<types.ChunkStats> table={table} loading={false} pager={pager} />,
+        },
+      ],
+    },
+  ];
 }

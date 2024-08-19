@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { types, messages } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { tableColumns, createForm } from ".";
+import { tableColumns } from "./MonitorsTable";
 import { View, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { MonitorPage, GetMonitorsCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
+import { GroupDefinition, DataTable, Pager } from "@components";
 
 export function MonitorsView() {
   const [summaryItem, setSummaryItem] = useState<types.MonitorContainer>({} as types.MonitorContainer);
@@ -42,7 +43,39 @@ export function MonitorsView() {
 
   return (
     <View>
-      <FormTable data={summaryItem} definition={createForm(table, pager)} />
+      <FormTable data={summaryItem} definition={createMonitorForm(table, pager)} />
     </View>
   );
+}
+
+type theInstance = InstanceType<typeof types.MonitorContainer>;
+function createMonitorForm(table: any, pager: Pager): GroupDefinition<theInstance>[] {
+  return [
+    {
+      title: "Monitor Data",
+      colSpan: 6,
+      fields: [
+        { label: "nItems", type: "int", accessor: "nItems" },
+        { label: "nRecords", type: "int", accessor: "nRecords" },
+        { label: "nNamed", type: "int", accessor: "nNamed" },
+      ],
+    },
+    {
+      title: "Other",
+      colSpan: 6,
+      fields: [
+        { label: "fileSize", type: "bytes", accessor: "fileSize" },
+        { label: "nDeleted", type: "int", accessor: "nDeleted" },
+      ],
+    },
+    {
+      title: "Files",
+      fields: [],
+      components: [
+        {
+          component: <DataTable<types.Monitor> table={table} loading={false} pager={pager} />,
+        },
+      ],
+    },
+  ];
 }

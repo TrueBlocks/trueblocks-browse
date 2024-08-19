@@ -1,9 +1,9 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { Text, TextProps } from "@mantine/core";
-import { AddrToName } from "@gocode/app/App";
 import { base } from "@gocode/models";
-import { useDateTime } from "@hooks";
+import { useDateTime, useToEther } from "@hooks";
+import { AddressFormatter } from "./AddressFormatter";
 
 export type knownTypes =
   | "address"
@@ -26,23 +26,24 @@ export type knownTypes =
   | "timestamp"
   | "url";
 
-export const Formatter: React.FC<{ type: knownTypes; value: any; size?: TextProps["size"] }> = ({
-  type,
-  value,
-  size = "md",
-}) => {
-  const formatInteger = (number: number): ReactNode => {
-    const n = new Intl.NumberFormat(navigator.language).format(number);
-    return <>{n}</>;
+type FormatterProps = {
+  type: knownTypes;
+  size?: TextProps["size"];
+  value: any;
+  value2?: any;
+};
+
+export const Formatter = ({ type, size = "md", value, value2 = null }: FormatterProps) => {
+  const formatInteger = (number: number): string => {
+    return new Intl.NumberFormat(navigator.language).format(number);
   };
 
-  const formatFloat = (number: number): ReactNode => {
-    const n = number?.toFixed(4);
-    return <>{n}</>;
+  const formatFloat = (number: number): string => {
+    return number?.toFixed(4);
   };
 
-  const formatBytes = (bytes: number): ReactNode => {
-    if (bytes === 0) return <>0 Bytes</>;
+  const formatBytes = (bytes: number): string => {
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
     const sizes = ["bytes", "Kb", "Mb", "Gb", "Tb", "Pb"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
@@ -50,47 +51,53 @@ export const Formatter: React.FC<{ type: knownTypes; value: any; size?: TextProp
       minimumFractionDigits: 1,
       maximumFractionDigits: 1,
     });
-    return <>{`${formattedValue} ${sizes[i]}`}</>;
+    return `${formattedValue} ${sizes[i]}`;
   };
 
   var v = value as number;
   switch (type) {
-    case "float":
-      return formatFloat(v);
-    case "bytes":
-      return formatBytes(v);
-    case "int":
-      return formatInteger(v);
-    case "address":
-      return <FormatAddressComponent address={value as base.Address} />;
-    case "date":
-      return useDateTime(v);
+    case "address-name":
+      return <AddressFormatter size={size} addressIn={value as base.Address} />;
+    case "address-only":
+      return <Text size={size}>{value}</Text>;
+    case "appearance":
+      return <Text size={size}>{value}</Text>;
     case "boolean":
       var fill = value ? "green" : "red";
       return <IconCircleCheck size={16} color="white" fill={fill} />;
+    case "bytes":
+      return <Text size={size}>{formatBytes(v)}</Text>;
     case "check":
-      return <>{value ? <IconCircleCheck size={16} color="white" fill="green" /> : <></>}</>;
+      return value ? <IconCircleCheck size={16} color="white" fill="green" /> : <></>;
+    case "date":
+      return <Text size={size}>{useDateTime(v)}</Text>;
     case "error":
-      return <>{value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>}</>;
-    default:
-      return value;
-  }
-};
-
-const FormatAddressComponent = ({ address }: { address: base.Address }) => {
-  const [formattedAddress, setFormattedAddress] = useState<string>("");
-  useEffect(() => {
-    const formatAddress = async () => {
-      const name = await AddrToName(address);
-      if (name && name.length > 0) {
-        setFormattedAddress(name);
+      return <Text size={size}>{value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>}</Text>;
+    case "ether":
+      return <Text size={size}>{useToEther(value as bigint)}</Text>;
+    case "float":
+      return <Text size={size}>{formatFloat(v)}</Text>;
+    case "hash":
+      return <Text size={size}>{value}</Text>;
+    case "int":
+      if (v === 0) {
+        return <Text size={size}>{"-"}</Text>;
       } else {
-        setFormattedAddress(address as unknown as string);
+        return <Text size={size}>{formatInteger(v)}</Text>;
       }
-    };
-
-    formatAddress();
-  }, [address]);
-
-  return <Formatter type="text" value={formattedAddress} />;
+    case "name-only":
+      return <Formatter type="text" value={value} />;
+    case "path":
+      return <Text size={size}>{value}</Text>;
+    case "range":
+      return <Text size={size}>{value}</Text>;
+    case "text":
+      return <Text size={size}>{value}</Text>;
+    case "timestamp":
+      return <Text size={size}>{useDateTime(v)}</Text>;
+    case "url":
+      return <Text size={size}>{value}</Text>;
+    default:
+      return <Text size={size}>UNKNOWN FORMATTER TYPE</Text>;
+  }
 };

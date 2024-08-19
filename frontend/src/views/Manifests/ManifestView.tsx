@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { types, messages } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { tableColumns, createForm } from ".";
+import { tableColumns } from "./ManifestTable";
 import { View, FormTable } from "@components";
 import { useKeyboardPaging } from "@hooks";
 import { ManifestPage, GetManifestCnt } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
+import { GroupDefinition, DataTable, Pager } from "@components";
 
 export function ManifestView() {
   const [summaryItem, setSummaryItem] = useState<types.ManifestContainer>({} as types.ManifestContainer);
@@ -42,7 +43,42 @@ export function ManifestView() {
 
   return (
     <View>
-      <FormTable data={summaryItem} definition={createForm(table, pager)} />
+      <FormTable data={summaryItem} definition={createManifestForm(table, pager)} />
     </View>
   );
+}
+
+type theInstance = InstanceType<typeof types.ManifestContainer>;
+function createManifestForm(table: any, pager: Pager): GroupDefinition<theInstance>[] {
+  return [
+    {
+      title: "Manifest Data",
+      colSpan: 6,
+      fields: [
+        { label: "version", accessor: "version" },
+        { label: "chain", accessor: "chain" },
+        { label: "specification", accessor: "specification" },
+        { label: "latestUpdate", accessor: "latestUpdate" },
+      ],
+    },
+    {
+      title: "Statistics",
+      colSpan: 6,
+      fields: [
+        { label: "nBlooms", type: "int", accessor: "nBlooms" },
+        { label: "bloomsSize", type: "bytes", accessor: "bloomsSize" },
+        { label: "nIndexes", type: "int", accessor: "nIndexes" },
+        { label: "indexSize", type: "bytes", accessor: "indexSize" },
+      ],
+    },
+    {
+      title: "Chunks",
+      fields: [],
+      components: [
+        {
+          component: <DataTable<types.ChunkRecord> table={table} loading={false} pager={pager} />,
+        },
+      ],
+    },
+  ];
 }
