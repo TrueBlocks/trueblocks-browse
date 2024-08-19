@@ -10,16 +10,19 @@ import { useAppState } from "@state";
 export function HistoryView() {
   const { address, setAddress, history } = useAppState();
 
-  let addr = useParams().address;
+  var aa = useParams().address;
   useEffect(() => {
-    var addrStr = addr as unknown as string;
-    if (addrStr === ":address") {
-      GetLastSub("/history").then((a) => (addrStr = a));
+    if (aa === ":address") {
+      GetLastSub("/history").then((subRoute) => {
+        // console.log("subRoute: ", subRoute);
+        // console.log("as address: ", subRoute as unknown as base.Address);
+        subRoute = subRoute.replace("/", "");
+        return setAddress(subRoute as unknown as base.Address);
+      });
+    } else {
+      setAddress(aa as unknown as base.Address);
     }
-    if (addrStr.length === 42) {
-      setAddress(addr as unknown as base.Address);
-    }
-  }, [addr]);
+  }, [aa]);
 
   const table = useReactTable({
     data: history.items || [],

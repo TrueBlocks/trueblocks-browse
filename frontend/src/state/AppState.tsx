@@ -4,6 +4,7 @@ import { useKeyboardPaging } from "@hooks";
 import { Pager, EmptyPager } from "@components";
 import { EventsOn, EventsOff } from "@runtime";
 import { Route } from "@/Routes";
+import { useParams } from "wouter";
 import {
   HistoryPage,
   MonitorPage,
@@ -91,21 +92,15 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
   let statusPgr = useKeyboardPaging("status", status.nItems, [], 10);
 
-  const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
-    GetLastSub("/history").then((subRoute: string) => {
-      if (subRoute !== "") {
-        subRoute = subRoute.replace("/", "");
-        setAddress(subRoute as unknown as base.Address);
-        HistoryPage(address as unknown as string, currentItem, itemsPerPage).then(
-          (item: types.TransactionContainer) => {
-            if (item) {
-              setHistory(item);
-            }
-          }
-        );
+  useEffect(() => {
+    HistoryPage(address as unknown as string, historyPgr.curItem, historyPgr.perPage).then(
+      (item: types.TransactionContainer) => {
+        if (item) {
+          setHistory(item);
+        }
       }
-    });
-  };
+    );
+  }, [address, historyPgr.curItem, historyPgr.perPage]);
 
   useEffect(() => {
     const fetchMeta = async () => {
@@ -123,6 +118,17 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
     fetchWizard();
 
+    const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
+      GetLastSub("/history").then((subRoute: string) => {
+        if (subRoute !== "") {
+          console.log("subRoute-app1: ", subRoute);
+          subRoute = subRoute.replace("/", "");
+          console.log("subRoute-app2: ", subRoute);
+          console.log("subRoute-app3: ", subRoute as unknown as base.Address);
+          setAddress(subRoute as unknown as base.Address);
+        }
+      });
+    };
     fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
 
     const fetchMonitors = async (currentItem: number, itemsPerPage: number) => {
@@ -212,10 +218,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     statusPgr.curItem,
     statusPgr.perPage,
   ]);
-
-  useEffect(() => {
-    fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
-  }, [address]);
 
   const stepWizard = (step: wizard.Step) => {
     StepWizard(step).then((state) => {
