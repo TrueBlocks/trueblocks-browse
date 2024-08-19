@@ -103,13 +103,7 @@ func (a *App) Startup(ctx context.Context) {
 
 	logger.Info("Starting freshen process...")
 	a.Refresh(a.GetSession().LastRoute)
-	if err := a.loadStatus(nil, nil); err != nil {
-		messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
-			a.FreshenController.Color,
-			err.Error(),
-			a.FreshenController.Color,
-		))
-	}
+
 	if err := a.loadConfig(nil, nil); err != nil {
 		messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
 			a.FreshenController.Color,

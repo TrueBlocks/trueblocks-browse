@@ -22,10 +22,6 @@ func (a *App) StatusPage(first, pageSize int) types.StatusContainer {
 	return copy
 }
 
-func (a *App) GetStatusCnt() int {
-	return len(a.status.Items)
-}
-
 func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {

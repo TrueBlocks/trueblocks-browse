@@ -52,6 +52,8 @@ func (a *App) Refresh(which ...string) {
 			err = a.loadMonitors(nil, nil)
 		case "/index":
 			err = a.loadIndex(nil, nil)
+		case "/status":
+			err = a.loadStatus(nil, nil)
 		}
 		if err != nil {
 			// we report the error, but proceed anyway
@@ -65,13 +67,13 @@ func (a *App) Refresh(which ...string) {
 	wg := sync.WaitGroup{}
 	errorChan := make(chan error, 5) // Buffered channel to hold up to 5 errors (one from each goroutine)
 
-	wg.Add(5)
+	wg.Add(6)
 	go a.loadNames(&wg, errorChan)
 	go a.loadAbis(&wg, errorChan)
 	go a.loadManifest(&wg, errorChan)
 	go a.loadMonitors(&wg, errorChan)
 	go a.loadIndex(&wg, errorChan)
-
+	go a.loadStatus(&wg, errorChan)
 	wg.Wait()
 	close(errorChan) // Close the channel after all goroutines are done
 

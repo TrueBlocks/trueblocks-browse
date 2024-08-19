@@ -198,8 +198,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       // indexPgr.perPage,
       // manifestPgr.curItem,
       // manifestPgr.perPage,
-      // statusPgr.curItem,
-      // statusPgr.perPage,
+      statusPgr.curItem,
+      statusPgr.perPage,
     ]
   );
 

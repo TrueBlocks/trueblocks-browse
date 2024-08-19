@@ -55,8 +55,6 @@ export function GetNamesCnt():Promise<number>;
 
 export function GetSession():Promise<config.Session>;
 
-export function GetStatusCnt():Promise<number>;
-
 export function GetWizardState():Promise<wizard.State>;
 
 export function HelpToggle(arg1:menu.CallbackData):Promise<void>;

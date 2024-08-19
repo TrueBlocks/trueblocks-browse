@@ -94,10 +94,6 @@ export function GetSession() {
   return window['go']['app']['App']['GetSession']();
 }
 
-export function GetStatusCnt() {
-  return window['go']['app']['App']['GetStatusCnt']();
-}
-
 export function GetWizardState() {
   return window['go']['app']['App']['GetWizardState']();
 }
