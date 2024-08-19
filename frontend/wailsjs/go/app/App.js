@@ -38,10 +38,6 @@ export function FileSaveAs(arg1) {
   return window['go']['app']['App']['FileSaveAs'](arg1);
 }
 
-export function GetAbisCnt() {
-  return window['go']['app']['App']['GetAbisCnt']();
-}
-
 export function GetContext() {
   return window['go']['app']['App']['GetContext']();
 }

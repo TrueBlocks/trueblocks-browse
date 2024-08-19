@@ -18,10 +18,6 @@ func (a *App) AbiPage(first, pageSize int) types.AbiContainer {
 	return copy
 }
 
-func (a *App) GetAbisCnt() int {
-	return len(a.abis.Items)
-}
-
 func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {

@@ -27,8 +27,6 @@ export function FileSave(arg1:menu.CallbackData):Promise<void>;
 
 export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
-export function GetAbisCnt():Promise<number>;
-
 export function GetContext():Promise<context.Context>;
 
 export function GetDaemon(arg1:string):Promise<daemons.Daemon>;
