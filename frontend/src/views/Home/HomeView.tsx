@@ -4,27 +4,29 @@ import { View, Formatter } from "@components";
 import { useAppState } from "@state";
 
 export function HomeView() {
-  const { monitors, names, abis, indexes, manifests, status } = useAppState();
+  const { getCounters } = useAppState();
+
+  var counters = getCounters();
   return (
     <View>
       <Text>Current State</Text>
       <Group>
-        <Text>nMonitors:</Text> <Formatter type="int" value={monitors.nItems} />
+        <Text>nMonitors:</Text> <Formatter type="int" value={counters.nMonitors} />
       </Group>
       <Group>
-        <Text>nNames:</Text> <Formatter type="int" value={names.nItems} />
+        <Text>nNames:</Text> <Formatter type="int" value={counters.nNames} />
       </Group>
       <Group>
-        <Text>nAbis:</Text> <Formatter type="int" value={abis.nItems} />
+        <Text>nAbis:</Text> <Formatter type="int" value={counters.nAbis} />
       </Group>
       <Group>
-        <Text>nIndexes:</Text> <Formatter type="int" value={indexes.nItems} />
+        <Text>nIndexes:</Text> <Formatter type="int" value={counters.nIndexes} />
       </Group>
       <Group>
-        <Text>nManifests:</Text> <Formatter type="int" value={manifests.nItems} />
+        <Text>nManifests:</Text> <Formatter type="int" value={counters.nManifests} />
       </Group>
       <Group>
-        <Text>nCaches:</Text> <Formatter type="int" value={status.nItems} />
+        <Text>nCaches:</Text> <Formatter type="int" value={counters.nStatus} />
       </Group>
     </View>
   );

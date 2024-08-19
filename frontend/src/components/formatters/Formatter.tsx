@@ -4,7 +4,6 @@ import { Text, TextProps } from "@mantine/core";
 import { base } from "@gocode/models";
 import { useDateTime, useToEther } from "@hooks";
 import { AddressFormatter } from "./AddressFormatter";
-import classes from "./Formatter.module.css";
 
 export type knownTypes =
   | "address-name"
@@ -59,55 +58,45 @@ export const Formatter = ({ type, size = "md", value, value2 = null }: Formatter
     case "address-name":
       return <AddressFormatter size={size} addressIn={value as base.Address} />;
     case "address-only":
-      return <MyText size={size}>{value}</MyText>;
+      return <Text size={size}>{value}</Text>;
     case "appearance":
-      return <MyText size={size}>{value}</MyText>;
+      return <Text size={size}>{value}</Text>;
     case "boolean":
       var fill = value ? "green" : "red";
       return <IconCircleCheck size={16} color="white" fill={fill} />;
     case "bytes":
-      return <MyText size={size}>{formatBytes(v)}</MyText>;
+      return <Text size={size}>{formatBytes(v)}</Text>;
     case "check":
       return value ? <IconCircleCheck size={16} color="white" fill="green" /> : <></>;
     case "date":
-      return <MyText size={size}>{useDateTime(v)}</MyText>;
+      return <Text size={size}>{useDateTime(v)}</Text>;
     case "error":
-      return <MyText size={size}>{value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>}</MyText>;
+      return <Text size={size}>{value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>}</Text>;
     case "ether":
-      return <MyText size={size}>{useToEther(value as bigint)}</MyText>;
+      return <Text size={size}>{useToEther(value as bigint)}</Text>;
     case "float":
-      return <MyText size={size}>{formatFloat(v)}</MyText>;
+      return <Text size={size}>{formatFloat(v)}</Text>;
     case "hash":
-      return <MyText size={size}>{value}</MyText>;
+      return <Text size={size}>{value}</Text>;
     case "int":
       if (v === 0) {
-        return <MyText size={size}>{"-"}</MyText>;
+        return <Text size={size}>{"-"}</Text>;
       } else {
-        return <MyText size={size}>{formatInteger(v)}</MyText>;
+        return <Text size={size}>{formatInteger(v)}</Text>;
       }
     case "name-only":
       return <Formatter type="text" value={value} />;
     case "path":
-      return <MyText size={size}>{value}</MyText>;
+      return <Text size={size}>{value}</Text>;
     case "range":
-      return <MyText size={size}>{value}</MyText>;
+      return <Text size={size}>{value}</Text>;
     case "text":
-      return <MyText size={size}>{value}</MyText>;
+      return <Text size={size}>{value}</Text>;
     case "timestamp":
-      return <MyText size={size}>{useDateTime(v)}</MyText>;
+      return <Text size={size}>{useDateTime(v)}</Text>;
     case "url":
-      return <MyText size={size}>{value}</MyText>;
+      return <Text size={size}>{value}</Text>;
     default:
-      return <MyText size={size}>UNKNOWN FORMATTER TYPE</MyText>;
+      return <Text size={size}>UNKNOWN FORMATTER TYPE</Text>;
   }
-};
-
-export const MyText = ({ size, children }: { size?: TextProps["size"]; children: React.ReactNode }) => {
-  // var color = "red";
-  return (
-    // <Text className={classes.black} c={color} size={size}>
-    //   {children}
-    // </Text>
-    <Text size={size}>{children}</Text>
-  );
 };

@@ -18,6 +18,16 @@ import {
   GetMeta,
 } from "@gocode/app/App";
 
+type Counters = {
+  nTxs: number;
+  nMonitors: number;
+  nNames: number;
+  nAbis: number;
+  nIndexes: number;
+  nManifests: number;
+  nStatus: number;
+};
+
 interface AppStateProps {
   address: base.Address;
   history: types.TransactionContainer;
@@ -46,6 +56,8 @@ interface AppStateProps {
 
   meta: types.MetaData;
   setMeta: (meta: types.MetaData) => void;
+
+  getCounters: () => Counters;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -184,9 +196,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       EventsOff(Message.DAEMON);
     };
   }, [
-    meta,
-    wizardState,
-    address,
     historyPgr.curItem,
     historyPgr.perPage,
     monitorPgr.curItem,
@@ -209,6 +218,18 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       setIsConfigured(state == wizard.State.OKAY);
     });
   };
+
+  function getCounters(): Counters {
+    return {
+      nTxs: history.nItems,
+      nMonitors: monitors.nItems,
+      nNames: names.nItems,
+      nAbis: abis.nItems,
+      nIndexes: indexes.nItems,
+      nManifests: manifests.nItems,
+      nStatus: status.nItems,
+    };
+  }
 
   const getPager = (name: Route): Pager => {
     switch (name) {
@@ -267,6 +288,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     stepWizard,
     meta,
     setMeta,
+    getCounters,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;

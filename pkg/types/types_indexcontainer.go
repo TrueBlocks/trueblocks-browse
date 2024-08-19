@@ -9,7 +9,7 @@ import (
 type IndexContainer struct {
 	coreTypes.ChunkStats
 	Items  []coreTypes.ChunkStats `json:"items"`
-	NItems uint64                 `json:"nItems"`
+	NItems int                    `json:"nItems"`
 }
 
 func (s IndexContainer) String() string {
@@ -18,7 +18,7 @@ func (s IndexContainer) String() string {
 }
 
 func (s *IndexContainer) Summarize() {
-	s.NItems = uint64(len(s.Items))
+	s.NItems = len(s.Items)
 	for _, chunk := range s.Items {
 		s.BloomSz += chunk.BloomSz
 		s.ChunkSz += chunk.ChunkSz

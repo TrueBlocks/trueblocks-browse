@@ -26,9 +26,7 @@ export const NamePopup = forwardRef<HTMLDivElement, PopupProps>(({ name, onSubmi
     <div ref={ref}>
       <form onSubmit={submitForm}>
         <Stack>
-          <Group>
-            <TextInput value={inputValue} onChange={(event) => setInputValue(event.currentTarget.value)} autoFocus />
-          </Group>
+          <TextInput value={inputValue} onChange={(event) => setInputValue(event.currentTarget.value)} autoFocus />
           <Group>
             <ExploreButton address={""} /> {/* address()} /> */}
             <MonitorButton address={""} /> {/* address()} /> */}

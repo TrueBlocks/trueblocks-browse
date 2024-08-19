@@ -11,8 +11,8 @@ export function IndexStatus() {
   }
 
   return (
-    <Group justify={"space-between"} style={{ marginRight: "1em" }}>
-      <Text>unchained index: </Text>
+    <Group justify={"space-between"}>
+      <Text size="sm">unchained index: </Text>
       <Formatter size="sm" type="int" value={indexes.nItems} />
       {" / "}
       <Formatter size="sm" type="int" value={meta.client} />

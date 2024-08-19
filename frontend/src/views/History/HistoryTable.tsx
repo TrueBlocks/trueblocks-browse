@@ -23,8 +23,7 @@ export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
     cell: (info) => <Formatter type="address-name" value={info.renderValue()} />,
     meta: {
       className: "wide cell",
-      // TODO: causes infinite recursion
-      // editor: (getValue: () => any) => <AddressPopup address={getValue} />,
+      editor: (getValue: () => any) => <AddressPopup address={getValue} />,
     },
   }),
   columnHelper.accessor("to", {
@@ -32,8 +31,7 @@ export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
     cell: (info) => <Formatter type="address-name" value={info.renderValue()} />,
     meta: {
       className: "wide cell",
-      // TODO: causes infinite recursion
-      // editor: (getValue: () => any) => <AddressPopup address={getValue} />,
+      editor: (getValue: () => any) => <AddressPopup address={getValue} />,
     },
   }),
   columnHelper.accessor("value", {

@@ -10,7 +10,7 @@ import (
 type AbiContainer struct {
 	coreTypes.Abi
 	Items         []coreTypes.Abi `json:"items"`
-	NItems        int64           `json:"nItems"`
+	NItems        int             `json:"nItems"`
 	LargestFile   string          `json:"largestFile"`
 	MostFunctions string          `json:"mostFunctions"`
 	MostEvents    string          `json:"mostEvents"`
@@ -25,14 +25,14 @@ func (s AbiContainer) String() string {
 }
 
 func (s *AbiContainer) Summarize() {
-	s.NItems = int64(len(s.Items))
+	s.NItems = len(s.Items)
 	for _, file := range s.Items {
 		s.NFunctions += file.NFunctions
 		s.NEvents += file.NEvents
 		s.FileSize += file.FileSize
-		s.lF.MarkMax(file.Name, file.FileSize)
-		s.mF.MarkMax(file.Name, file.NFunctions)
-		s.mE.MarkMax(file.Name, file.NEvents)
+		s.lF.MarkMax(file.Name, int(file.FileSize))
+		s.mF.MarkMax(file.Name, int(file.NFunctions))
+		s.mE.MarkMax(file.Name, int(file.NEvents))
 	}
 	s.LargestFile = fmt.Sprintf("%s (%d bytes)", s.lF.Name, s.lF.Value)
 	s.MostFunctions = fmt.Sprintf("%s (%d functions)", s.mF.Name, s.mF.Value)
