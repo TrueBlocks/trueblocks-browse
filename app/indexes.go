@@ -19,10 +19,6 @@ func (a *App) IndexPage(first, pageSize int) types.IndexContainer {
 	return copy
 }
 
-func (a *App) GetIndexCnt() int {
-	return len(a.index.Items)
-}
-
 func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {

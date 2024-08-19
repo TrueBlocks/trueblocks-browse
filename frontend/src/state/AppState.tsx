@@ -185,7 +185,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       // fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
       // fetchNames(namesPgr.curItem, namesPgr.perPage);
       // fetchAbis(abiPgr.curItem, abiPgr.perPage);
-      // fetchIndexes(indexPgr.curItem, indexPgr.perPage);
+      fetchIndexes(indexPgr.curItem, indexPgr.perPage);
       // fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
       fetchStatus(statusPgr.curItem, statusPgr.perPage);
     };
@@ -204,8 +204,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     // namesPgr.perPage,
     // abiPgr.curItem,
     // abiPgr.perPage,
-    // indexPgr.curItem,
-    // indexPgr.perPage,
+    indexPgr.curItem,
+    indexPgr.perPage,
     // manifestPgr.curItem,
     // manifestPgr.perPage,
     statusPgr.curItem,

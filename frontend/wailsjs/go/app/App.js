@@ -50,10 +50,6 @@ export function GetHistoryCnt(arg1) {
   return window['go']['app']['App']['GetHistoryCnt'](arg1);
 }
 
-export function GetIndexCnt() {
-  return window['go']['app']['App']['GetIndexCnt']();
-}
-
 export function GetLast(arg1) {
   return window['go']['app']['App']['GetLast'](arg1);
 }

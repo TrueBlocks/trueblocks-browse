@@ -33,8 +33,6 @@ export function GetDaemon(arg1:string):Promise<daemons.Daemon>;
 
 export function GetHistoryCnt(arg1:string):Promise<number>;
 
-export function GetIndexCnt():Promise<number>;
-
 export function GetLast(arg1:string):Promise<string>;
 
 export function GetLastDaemon(arg1:string):Promise<boolean>;
