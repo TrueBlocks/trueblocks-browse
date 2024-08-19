@@ -69,7 +69,7 @@ export const Formatter = ({ type, size = "md", value, value2 = null }: Formatter
     case "check":
       return value ? <IconCircleCheck size={16} color="white" fill="green" /> : <></>;
     case "date":
-      return <Text size={size}>{useDateTime(v)}</Text>;
+      return <Text size={size}>{value}</Text>;
     case "error":
       return <Text size={size}>{value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>}</Text>;
     case "ether":
