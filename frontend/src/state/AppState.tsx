@@ -184,9 +184,9 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       // fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
       // fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
       fetchNames(namesPgr.curItem, namesPgr.perPage);
-      // fetchAbis(abiPgr.curItem, abiPgr.perPage);
+      fetchAbis(abiPgr.curItem, abiPgr.perPage);
       fetchIndexes(indexPgr.curItem, indexPgr.perPage);
-      // fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
+      fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
       fetchStatus(statusPgr.curItem, statusPgr.perPage);
     };
 
@@ -202,12 +202,12 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     // monitorPgr.perPage,
     namesPgr.curItem,
     namesPgr.perPage,
-    // abiPgr.curItem,
-    // abiPgr.perPage,
+    abiPgr.curItem,
+    abiPgr.perPage,
     indexPgr.curItem,
     indexPgr.perPage,
-    // manifestPgr.curItem,
-    // manifestPgr.perPage,
+    manifestPgr.curItem,
+    manifestPgr.perPage,
     statusPgr.curItem,
     statusPgr.perPage,
   ]);

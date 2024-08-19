@@ -1,49 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { types, messages } from "@gocode/models";
+import React from "react";
+import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./ManifestTable";
-import { View, FormTable } from "@components";
-import { useKeyboardPaging } from "@hooks";
-import { ManifestPage, GetManifestCnt } from "@gocode/app/App";
-import { EventsOn, EventsOff } from "@runtime";
-import { GroupDefinition, DataTable, Pager } from "@components";
+import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { useAppState } from "@state";
 
 export function ManifestView() {
-  const [summaryItem, setSummaryItem] = useState<types.ManifestContainer>({} as types.ManifestContainer);
-  const [count, setCount] = useState<number>(0);
-  const pager = useKeyboardPaging("manifest", count, [], 15);
-
-  useEffect(() => {
-    const fetch = async (currentItem: number, itemsPerPage: number) => {
-      ManifestPage(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
-        if (item) {
-          GetManifestCnt().then((cnt: number) => setCount(cnt));
-          setSummaryItem(item);
-        }
-      });
-    };
-    fetch(pager.curItem, pager.perPage);
-
-    const handleRefresh = () => {
-      fetch(pager.curItem, pager.perPage);
-    };
-
-    var { Message } = messages;
-    EventsOn(Message.DAEMON, handleRefresh);
-    return () => {
-      EventsOff(Message.DAEMON);
-    };
-  }, [pager.curItem, pager.perPage]);
+  const { manifests } = useAppState();
 
   const table = useReactTable({
-    data: summaryItem.items || [],
+    data: manifests.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
     <View>
-      <FormTable data={summaryItem} definition={createManifestForm(table)} />
+      <FormTable data={manifests} definition={createManifestForm(table)} />
     </View>
   );
 }
