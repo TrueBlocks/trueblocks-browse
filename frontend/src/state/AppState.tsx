@@ -91,6 +91,22 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
   let statusPgr = useKeyboardPaging("status", status.nItems, [], 10);
 
+  const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
+    GetLastSub("/history").then((subRoute: string) => {
+      if (subRoute !== "") {
+        subRoute = subRoute.replace("/", "");
+        setAddress(subRoute as unknown as base.Address);
+        HistoryPage(address as unknown as string, currentItem, itemsPerPage).then(
+          (item: types.TransactionContainer) => {
+            if (item) {
+              setHistory(item);
+            }
+          }
+        );
+      }
+    });
+  };
+
   useEffect(() => {
     const fetchMeta = async () => {
       GetMeta().then((meta) => {
@@ -107,21 +123,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
     fetchWizard();
 
-    const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
-      GetLastSub("/history").then((subRoute: string) => {
-        if (subRoute !== "") {
-          subRoute = subRoute.replace("/", "");
-          setAddress(subRoute as unknown as base.Address);
-          HistoryPage(address as unknown as string, currentItem, itemsPerPage).then(
-            (item: types.TransactionContainer) => {
-              if (item) {
-                setHistory(item);
-              }
-            }
-          );
-        }
-      });
-    };
     fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
 
     const fetchMonitors = async (currentItem: number, itemsPerPage: number) => {
@@ -211,6 +212,10 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     statusPgr.curItem,
     statusPgr.perPage,
   ]);
+
+  useEffect(() => {
+    fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
+  }, [address]);
 
   const stepWizard = (step: wizard.Step) => {
     StepWizard(step).then((state) => {

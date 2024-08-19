@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "wouter";
 import { types, base } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./HistoryTable";
-import { View, FormTable, DataTable, GroupDefinition, Pager } from "@components";
-import { GetLastSub, HistoryPage } from "@gocode/app/App";
+import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { GetLastSub } from "@gocode/app/App";
 import { useAppState } from "@state";
 
 export function HistoryView() {
-  const { address, setAddress, history, setHistory } = useAppState();
-  const historyPgr = useAppState().getPager("history");
+  const { address, setAddress, history } = useAppState();
 
   let addr = useParams().address;
   useEffect(() => {
-    if (addr === ":address") {
-      GetLastSub("/history").then((a) => (addr = a));
+    var addrStr = addr as unknown as string;
+    if (addrStr === ":address") {
+      GetLastSub("/history").then((a) => (addrStr = a));
     }
-    if (addr && addr !== "" && addr !== ":address") {
+    if (addrStr.length === 42) {
       setAddress(addr as unknown as base.Address);
     }
   }, [addr]);
