@@ -18,6 +18,16 @@ import {
   GetMeta,
 } from "@gocode/app/App";
 
+type Counters = {
+  nTxs: number;
+  nMonitors: number;
+  nNames: number;
+  nAbis: number;
+  nIndexes: number;
+  nManifests: number;
+  nStatus: number;
+};
+
 interface AppStateProps {
   address: base.Address;
   history: types.TransactionContainer;
@@ -46,6 +56,8 @@ interface AppStateProps {
 
   meta: types.MetaData;
   setMeta: (meta: types.MetaData) => void;
+
+  getCounters: () => Counters;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -79,129 +91,126 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
   let statusPgr = useKeyboardPaging("status", status.nItems, [], 10);
 
-  useEffect(
-    () => {
-      const fetchMeta = async () => {
-        GetMeta().then((meta) => {
-          setMeta(meta);
-        });
-      };
-      fetchMeta();
+  useEffect(() => {
+    const fetchMeta = async () => {
+      GetMeta().then((meta) => {
+        setMeta(meta);
+      });
+    };
+    fetchMeta();
 
-      const fetchWizard = async () => {
-        GetWizardState().then((state) => {
-          setWizardState(state);
-          setIsConfigured(state == wizard.State.OKAY);
-        });
-      };
-      fetchWizard();
+    const fetchWizard = async () => {
+      GetWizardState().then((state) => {
+        setWizardState(state);
+        setIsConfigured(state == wizard.State.OKAY);
+      });
+    };
+    fetchWizard();
 
-      const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
-        GetLastSub("/history").then((subRoute: string) => {
-          if (subRoute !== "") {
-            subRoute = subRoute.replace("/", "");
-            setAddress(subRoute as unknown as base.Address);
-            HistoryPage(address as unknown as string, currentItem, itemsPerPage).then(
-              (item: types.TransactionContainer) => {
-                if (item) {
-                  setHistory(item);
-                }
+    const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
+      GetLastSub("/history").then((subRoute: string) => {
+        if (subRoute !== "") {
+          subRoute = subRoute.replace("/", "");
+          setAddress(subRoute as unknown as base.Address);
+          HistoryPage(address as unknown as string, currentItem, itemsPerPage).then(
+            (item: types.TransactionContainer) => {
+              if (item) {
+                setHistory(item);
               }
-            );
-          }
-        });
-      };
-      fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
+            }
+          );
+        }
+      });
+    };
+    fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
 
-      const fetchMonitors = async (currentItem: number, itemsPerPage: number) => {
-        MonitorPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
-          if (item) {
-            setMonitors(item);
-          }
-        });
-      };
-      fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
+    const fetchMonitors = async (currentItem: number, itemsPerPage: number) => {
+      MonitorPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
+        if (item) {
+          setMonitors(item);
+        }
+      });
+    };
+    fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
 
-      const fetchNames = async (currentItem: number, itemsPerPage: number) => {
-        NamePage(currentItem, itemsPerPage).then((item: types.NameContainer) => {
-          if (item) {
-            setNames(item);
-          }
-        });
-      };
-      fetchNames(namesPgr.curItem, namesPgr.perPage);
+    const fetchNames = async (currentItem: number, itemsPerPage: number) => {
+      NamePage(currentItem, itemsPerPage).then((item: types.NameContainer) => {
+        if (item) {
+          setNames(item);
+        }
+      });
+    };
+    fetchNames(namesPgr.curItem, namesPgr.perPage);
 
-      const fetchAbis = async (currentItem: number, itemsPerPage: number) => {
-        AbiPage(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
-          if (item) {
-            setAbis(item);
-          }
-        });
-      };
-      fetchAbis(abiPgr.curItem, abiPgr.perPage);
+    const fetchAbis = async (currentItem: number, itemsPerPage: number) => {
+      AbiPage(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
+        if (item) {
+          setAbis(item);
+        }
+      });
+    };
+    fetchAbis(abiPgr.curItem, abiPgr.perPage);
 
-      const fetchIndexes = async (currentItem: number, itemsPerPage: number) => {
-        IndexPage(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
-          if (item) {
-            setIndexes(item);
-          }
-        });
-      };
-      fetchIndexes(indexPgr.curItem, indexPgr.perPage);
+    const fetchIndexes = async (currentItem: number, itemsPerPage: number) => {
+      IndexPage(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
+        if (item) {
+          setIndexes(item);
+        }
+      });
+    };
+    fetchIndexes(indexPgr.curItem, indexPgr.perPage);
 
-      const fetchManifest = async (currentItem: number, itemsPerPage: number) => {
-        ManifestPage(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
-          if (item) {
-            setManifests(item);
-          }
-        });
-      };
-      fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
+    const fetchManifest = async (currentItem: number, itemsPerPage: number) => {
+      ManifestPage(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
+        if (item) {
+          setManifests(item);
+        }
+      });
+    };
+    fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
 
-      const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
-        StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
-          if (item) {
-            setStatus(item);
-          }
-        });
-      };
+    const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
+      StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
+        if (item) {
+          setStatus(item);
+        }
+      });
+    };
+    fetchStatus(statusPgr.curItem, statusPgr.perPage);
+
+    const handleRefresh = () => {
+      fetchMeta();
+      fetchWizard();
+      // fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
+      // fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
+      // fetchNames(namesPgr.curItem, namesPgr.perPage);
+      // fetchAbis(abiPgr.curItem, abiPgr.perPage);
+      // fetchIndexes(indexPgr.curItem, indexPgr.perPage);
+      // fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
       fetchStatus(statusPgr.curItem, statusPgr.perPage);
+    };
 
-      const handleRefresh = () => {
-        fetchMeta();
-        fetchWizard();
-        // fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
-        // fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
-        // fetchNames(namesPgr.curItem, namesPgr.perPage);
-        // fetchAbis(abiPgr.curItem, abiPgr.perPage);
-        // fetchIndexes(indexPgr.curItem, indexPgr.perPage);
-        // fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
-        fetchStatus(statusPgr.curItem, statusPgr.perPage);
-      };
-
-      var { Message } = messages;
-      EventsOn(Message.DAEMON, handleRefresh);
-      return () => {
-        EventsOff(Message.DAEMON);
-      };
-    },
-    [
-      // historyPgr.curItem,
-      // historyPgr.perPage,
-      // monitorPgr.curItem,
-      // monitorPgr.perPage,
-      // namesPgr.curItem,
-      // namesPgr.perPage,
-      // abiPgr.curItem,
-      // abiPgr.perPage,
-      // indexPgr.curItem,
-      // indexPgr.perPage,
-      // manifestPgr.curItem,
-      // manifestPgr.perPage,
-      statusPgr.curItem,
-      statusPgr.perPage,
-    ]
-  );
+    var { Message } = messages;
+    EventsOn(Message.DAEMON, handleRefresh);
+    return () => {
+      EventsOff(Message.DAEMON);
+    };
+  }, [
+    // historyPgr.curItem,
+    // historyPgr.perPage,
+    // monitorPgr.curItem,
+    // monitorPgr.perPage,
+    // namesPgr.curItem,
+    // namesPgr.perPage,
+    // abiPgr.curItem,
+    // abiPgr.perPage,
+    // indexPgr.curItem,
+    // indexPgr.perPage,
+    // manifestPgr.curItem,
+    // manifestPgr.perPage,
+    statusPgr.curItem,
+    statusPgr.perPage,
+  ]);
 
   const stepWizard = (step: wizard.Step) => {
     StepWizard(step).then((state) => {
@@ -209,6 +218,18 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       setIsConfigured(state == wizard.State.OKAY);
     });
   };
+
+  function getCounters(): Counters {
+    return {
+      nTxs: history.nItems,
+      nMonitors: monitors.nItems,
+      nNames: names.nItems,
+      nAbis: abis.nItems,
+      nIndexes: indexes.nItems,
+      nManifests: manifests.nItems,
+      nStatus: status.nItems,
+    };
+  }
 
   const getPager = (name: Route): Pager => {
     switch (name) {
@@ -267,6 +288,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     stepWizard,
     meta,
     setMeta,
+    getCounters,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;
