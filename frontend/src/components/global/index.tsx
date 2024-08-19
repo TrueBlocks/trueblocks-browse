@@ -1,4 +1,4 @@
-export * from "./AppStatus";
+export * from "./IndexStatus";
 export * from "./Aside";
 export * from "./Header";
 export * from "./Menu";

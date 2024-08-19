@@ -28,7 +28,15 @@ import {
   WizardView,
 } from "@views";
 
-export const routeItems = [
+export type RouteItem = {
+  order: number;
+  route: string;
+  label: string;
+  icon: JSX.Element;
+  component: React.ComponentType;
+};
+
+export const routeItems: RouteItem[] = [
   {
     order: 10,
     route: "/history/:address",

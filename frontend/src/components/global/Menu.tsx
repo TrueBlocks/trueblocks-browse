@@ -1,7 +1,7 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GetLast, GetLastSub, SetLast } from "@gocode/app/App";
 // TODO: This alias is wrong, can it not be @Routes See also @/App.module.css
-import { routeItems } from "@/Routes";
+import { routeItems, RouteItem } from "@/Routes";
 import { useLocation } from "wouter";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";

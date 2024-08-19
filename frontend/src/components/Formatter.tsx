@@ -1,5 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
+import { Text, TextProps } from "@mantine/core";
 import { AddrToName } from "@gocode/app/App";
 import { base } from "@gocode/models";
 import { useDateTime } from "@hooks";
@@ -16,7 +17,11 @@ export type knownTypes =
   | "hash"
   | "error";
 
-export const Formatter: React.FC<{ type: knownTypes; value: any }> = ({ type, value }) => {
+export const Formatter: React.FC<{ type: knownTypes; value: any; size?: TextProps["size"] }> = ({
+  type,
+  value,
+  size = "md",
+}) => {
   const formatInteger = (number: number): ReactNode => {
     const n = new Intl.NumberFormat(navigator.language).format(number);
     return <>{n}</>;
