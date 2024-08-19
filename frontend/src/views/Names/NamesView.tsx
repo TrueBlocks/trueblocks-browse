@@ -10,7 +10,7 @@ import { EventsOn, EventsOff } from "@runtime";
 export function NamesView() {
   const [summaryItem, setSummaryItem] = useState<types.NameContainer>({} as types.NameContainer);
   const [count, setCount] = useState<number>(0);
-  const pager = useKeyboardPaging(count, [], 15);
+  const pager = useKeyboardPaging("names", count, [], 15);
 
   useEffect(() => {
     const fetch = async (currentItem: number, itemsPerPage: number) => {

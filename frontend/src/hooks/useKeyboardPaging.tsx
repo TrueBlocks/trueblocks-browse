@@ -1,46 +1,50 @@
-import React, { useEffect, useState, DependencyList } from "react";
+import React, { useEffect, useState, DependencyList, KeyboardEvent } from "react";
+import { useLocation } from "wouter";
 import { Pager } from "@components";
-import { useHotkeys } from "react-hotkeys-hook";
+import { useHotkeys, HotkeyCallback } from "react-hotkeys-hook";
+import { Route } from "@/Routes";
 
-export function useKeyboardPaging(nItems: number, deps: DependencyList = [], perPage: number = 20): Pager {
+export function useKeyboardPaging(
+  route: Route,
+  nItems: number,
+  deps: DependencyList = [],
+  perPage: number = 20
+): Pager {
   const [curItem, setCurItem] = useState<number>(0);
+  const [location] = useLocation();
 
-  useHotkeys("left", (event) => {
-    setCurItem((cur) => Math.max(cur - 1, 0));
-    event.preventDefault();
+  const handleKey = (e: any, callback: React.SetStateAction<number>) => {
+    if (!location.includes(route)) {
+      return;
+    }
+    e.preventDefault();
+    setCurItem(callback);
+  };
+
+  useHotkeys("left", (e) => {
+    handleKey(e, (cur) => Math.max(cur - 1, 0));
   });
-  useHotkeys("pageup", (event) => {
-    setCurItem((cur) => Math.max(cur - perPage * 10, 0));
-    event.preventDefault();
+  useHotkeys("pageup", (e) => {
+    handleKey(e, (cur) => Math.max(cur - perPage * 10, 0));
   });
-  useHotkeys("up", (event) => {
-    setCurItem((cur) => Math.max(cur - perPage, 0));
-    event.preventDefault();
+  useHotkeys("up", (e) => {
+    handleKey(e, (cur) => Math.max(cur - perPage, 0));
   });
-  useHotkeys("home", (event) => {
-    setCurItem(0);
-    event.preventDefault();
+  useHotkeys("home", (e) => {
+    handleKey(e, Math.max(0, 0));
   });
 
-  useHotkeys("right", (event) => {
-    var max = Math.max(nItems - perPage, 0);
-    setCurItem((cur) => Math.min(max, cur + 1));
-    event.preventDefault();
+  useHotkeys("right", (e) => {
+    handleKey(e, (cur) => Math.min(Math.max(nItems - perPage, 0), cur + 1));
   });
-  useHotkeys("pagedown", (event) => {
-    var max = Math.max(nItems - perPage * 10, 0);
-    setCurItem((cur) => Math.min(max, cur + perPage * 10));
-    event.preventDefault();
+  useHotkeys("pagedown", (e) => {
+    handleKey(e, (cur) => Math.min(Math.max(nItems - perPage * 10, 0), cur + perPage * 10));
   });
-  useHotkeys("down", (event) => {
-    var max = Math.max(nItems - perPage, 0);
-    setCurItem((cur) => Math.min(max, cur + perPage));
-    event.preventDefault();
+  useHotkeys("down", (e) => {
+    handleKey(e, (cur) => Math.min(Math.max(nItems - perPage, 0), cur + perPage));
   });
-  useHotkeys("end", (event) => {
-    var max = Math.max(nItems - perPage, 0);
-    setCurItem(max);
-    event.preventDefault();
+  useHotkeys("end", (e) => {
+    handleKey(e, Math.max(nItems - perPage, 0));
   });
 
   useEffect(() => {
@@ -54,6 +58,7 @@ export function useKeyboardPaging(nItems: number, deps: DependencyList = [], per
   const pageNumber = curItem < perPage ? 1 : Math.ceil(curItem / perPage) + 1;
   const totalPages = Math.ceil(nItems / perPage);
   return {
+    name: route,
     curItem: curItem,
     perPage: perPage,
     count: nItems,

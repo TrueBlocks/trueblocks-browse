@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { messages } from "@gocode/models";
-import { AppShell, Text } from "@mantine/core";
-import { Aside, Header, Navbar, Routes } from "@components";
+import { AppShell } from "@mantine/core";
+import { Aside, Header, Navbar, Routes, AppStatus } from "@components";
 import { EventsOn, EventsOff } from "@runtime";
 import classes from "@/App.module.css";
 import { GetLast, SetLast } from "@gocode/app/App";
@@ -51,7 +51,7 @@ function App() {
           <Aside />
         </AppShell.Aside>
         <AppShell.Footer>
-          <Text size={"sm"}>time / date / currently opened file</Text>
+          <AppStatus />
         </AppShell.Footer>
       </AppShell>
     </AppStateProvider>

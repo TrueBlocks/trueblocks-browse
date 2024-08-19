@@ -8,7 +8,7 @@ const columnHelper = createColumnHelper<types.CacheItem>();
 export const tableColumns: CustomColumnDef<types.CacheItem, any>[] = [
   columnHelper.accessor("type", {
     header: () => "Type",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("nFolders", {
@@ -28,12 +28,12 @@ export const tableColumns: CustomColumnDef<types.CacheItem, any>[] = [
   }),
   columnHelper.accessor("lastCached", {
     header: () => "LastCached",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="date" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("path", {
     header: () => "Path",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Formatter type="path" value={info.renderValue()} />,
     meta: { className: "wide cell" },
   }),
 ];

@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 
 import { Popover } from "@mantine/core";
 
-export function DataPopover({ children, editor }: { children: ReactNode; editor: ReactNode }) {
+export function Popup({ children, editor }: { children: ReactNode; editor: ReactNode }) {
   return (
     <>
       {editor ? (

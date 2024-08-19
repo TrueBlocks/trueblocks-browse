@@ -1,0 +1,51 @@
+/* Used for debugging only */
+
+.brown {
+  background-color: brown;
+  color: white;
+}
+
+.red {
+  background-color: red;
+  color: white;
+}
+
+.green {
+  background-color: green;
+  color: white;
+}
+
+.blue {
+  background-color: blue;
+  color: white;
+}
+
+.purple {
+  background-color: purple;
+  color: white;
+}
+
+.black {
+  background-color: black;
+  color: white;
+}
+
+.pink {
+  background-color: pink;
+  color: black;
+}
+
+.orange {
+  background-color: orange;
+  color: black;
+}
+
+.lightblue {
+  background-color: powderblue;
+  color: black;
+}
+
+.bold {
+  font-weight: bold;
+  font-style: italic;
+}

@@ -6,16 +6,25 @@ import { base } from "@gocode/models";
 import { useDateTime } from "@hooks";
 
 export type knownTypes =
-  | "text"
-  | "float"
-  | "int"
-  | "bytes"
-  | "date"
-  | "boolean"
-  | "check"
   | "address"
+  | "address-name"
+  | "address-only"
+  | "appearance"
+  | "boolean"
+  | "bytes"
+  | "check"
+  | "date"
+  | "error"
+  | "ether"
+  | "float"
   | "hash"
-  | "error";
+  | "int"
+  | "name-only"
+  | "path"
+  | "range"
+  | "text"
+  | "timestamp"
+  | "url";
 
 export const Formatter: React.FC<{ type: knownTypes; value: any; size?: TextProps["size"] }> = ({
   type,

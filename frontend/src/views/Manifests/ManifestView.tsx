@@ -10,7 +10,7 @@ import { EventsOn, EventsOff } from "@runtime";
 export function ManifestView() {
   const [summaryItem, setSummaryItem] = useState<types.ManifestContainer>({} as types.ManifestContainer);
   const [count, setCount] = useState<number>(0);
-  const pager = useKeyboardPaging(count, [], 15);
+  const pager = useKeyboardPaging("manifest", count, [], 15);
 
   useEffect(() => {
     const fetch = async (currentItem: number, itemsPerPage: number) => {

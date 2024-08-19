@@ -10,7 +10,7 @@ import { EventsOn, EventsOff } from "@runtime";
 export function AbisView() {
   const [summaryItem, setSummaryItem] = useState<types.AbiContainer>({} as types.AbiContainer);
   const [count, setCount] = useState<number>(0);
-  const pager = useKeyboardPaging(count, [], 15);
+  const pager = useKeyboardPaging("abis", count, [], 15);
 
   useEffect(() => {
     const fetch = async (currentItem: number, itemsPerPage: number) => {

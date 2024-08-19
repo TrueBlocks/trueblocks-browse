@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { types, messages, base, wizard, daemons } from "@gocode/models";
-// import { useKeyboardPaging } from "@hooks";
-// import { Pager, EmptyPager } from "@components";
+import { useKeyboardPaging } from "@hooks";
+import { Pager, EmptyPager } from "@components";
 import { EventsOn, EventsOff } from "@runtime";
-// import { Route } from "@/Routes";
+import { Route } from "@/Routes";
 import {
   // HistoryPage,
   // MonitorPage,
@@ -11,7 +11,7 @@ import {
   // AbiPage,
   // IndexPage,
   // ManifestPage,
-  // StatusPage,
+  StatusPage,
   // GetLastSub,
   StepWizard,
   GetWizardState,
@@ -26,7 +26,7 @@ interface AppStateProps {
   // abis: types.AbiContainer;
   // indexes: types.IndexContainer;
   // manifests: types.ManifestContainer;
-  // status: types.StatusContainer;
+  status: types.StatusContainer;
 
   // setAddress: (address: base.Address) => void;
   // setHistory: (history: types.TransactionContainer) => void;
@@ -35,10 +35,10 @@ interface AppStateProps {
   // setAbis: (abis: types.AbiContainer) => void;
   // setIndexes: (indexes: types.IndexContainer) => void;
   // setManifests: (manifests: types.ManifestContainer) => void;
-  // setStatus: (status: types.StatusContainer) => void;
+  setStatus: (status: types.StatusContainer) => void;
 
-  // getPager: (name: Route) => Pager;
-  // resetPager: (name: Route) => void;
+  getPager: (name: Route) => Pager;
+  resetPager: (name: Route) => void;
 
   isConfigured: boolean;
   wizardState: wizard.State;
@@ -76,24 +76,25 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   // const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
   // let manifestPgr = useKeyboardPaging("manifest", manifests.nItems, [], 15);
 
-  // const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
-  // let statusPgr = useKeyboardPaging("status", status.nItems, [], 10);
+  const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
+  let statusPgr = useKeyboardPaging("status", status.nItems, [], 10);
 
-  useEffect(() => {
-    const fetchMeta = async () => {
-      GetMeta().then((meta) => {
-        setMeta(meta);
-      });
-    };
-    fetchMeta();
+  useEffect(
+    () => {
+      const fetchMeta = async () => {
+        GetMeta().then((meta) => {
+          setMeta(meta);
+        });
+      };
+      fetchMeta();
 
-    const fetchWizard = async () => {
-      GetWizardState().then((state) => {
-        setWizardState(state);
-        setIsConfigured(state == wizard.State.OKAY);
-      });
-    };
-    fetchWizard();
+      const fetchWizard = async () => {
+        GetWizardState().then((state) => {
+          setWizardState(state);
+          setIsConfigured(state == wizard.State.OKAY);
+        });
+      };
+      fetchWizard();
 
       // const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
       //   GetLastSub("/history").then((subRoute: string) => {
@@ -157,33 +158,34 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       // };
       // fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
 
-      // const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
-      //   StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
-      //     if (item) {
-      //       setStatus(item);
-      //     }
-      //   });
-      // };
-      // fetchStatus(statusPgr.curItem, statusPgr.perPage);
+      const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
+        StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
+          if (item) {
+            setStatus(item);
+          }
+        });
+      };
+      fetchStatus(statusPgr.curItem, statusPgr.perPage);
 
-    const handleRefresh = () => {
-      fetchMeta();
-      fetchWizard();
+      const handleRefresh = () => {
+        fetchMeta();
+        fetchWizard();
         // fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
         // fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
         // fetchNames(namesPgr.curItem, namesPgr.perPage);
         // fetchAbis(abiPgr.curItem, abiPgr.perPage);
         // fetchIndexes(indexPgr.curItem, indexPgr.perPage);
         // fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
-        // fetchStatus(statusPgr.curItem, statusPgr.perPage);
-    };
+        fetchStatus(statusPgr.curItem, statusPgr.perPage);
+      };
 
-    var { Message } = messages;
-    EventsOn(Message.DAEMON, handleRefresh);
-    return () => {
-      EventsOff(Message.DAEMON);
-    };
-  }, [
+      var { Message } = messages;
+      EventsOn(Message.DAEMON, handleRefresh);
+      return () => {
+        EventsOff(Message.DAEMON);
+      };
+    },
+    [
       // historyPgr.curItem,
       // historyPgr.perPage,
       // monitorPgr.curItem,
@@ -198,7 +200,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       // manifestPgr.perPage,
       // statusPgr.curItem,
       // statusPgr.perPage,
-  ]);
+    ]
+  );
 
   const stepWizard = (step: wizard.Step) => {
     StepWizard(step).then((state) => {
@@ -207,38 +210,38 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  // const getPager = (name: Route): Pager => {
-  //   switch (name) {
-  //     case "history":
-  //       return historyPgr;
-  //     case "monitors":
-  //       return monitorPgr;
-  //     case "names":
-  //       return namesPgr;
-  //     case "abis":
-  //       return abiPgr;
-  //     case "indexes":
-  //       return indexPgr;
-  //     case "manifest":
-  //       return manifestPgr;
-  //     case "status":
-  //       return statusPgr;
-  //     case "settings":
-  //     case "daemons":
-  //     case "":
-  //     default:
-  //       break;
-  //   }
-  //   return EmptyPager;
-  // };
+  const getPager = (name: Route): Pager => {
+    switch (name) {
+      //     case "history":
+      //       return historyPgr;
+      //     case "monitors":
+      //       return monitorPgr;
+      //     case "names":
+      //       return namesPgr;
+      //     case "abis":
+      //       return abiPgr;
+      //     case "indexes":
+      //       return indexPgr;
+      //     case "manifest":
+      //       return manifestPgr;
+      case "status":
+        return statusPgr;
+      //     case "settings":
+      //     case "daemons":
+      //     case "":
+      //     default:
+      //       break;
+    }
+    return EmptyPager;
+  };
 
-  // const resetPager = (name: Route) => {
-  //   switch (name) {
-  //     case "history":
-  //       historyPgr = useKeyboardPaging("history", history.nItems, [], 15);
-  //       break;
-  //   }
-  // };
+  const resetPager = (name: Route) => {
+    // switch (name) {
+    //   case "history":
+    //     historyPgr = useKeyboardPaging("history", history.nItems, [], 15);
+    //     break;
+    // }
+  };
 
   let state = {
     // address,
@@ -248,7 +251,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     // abis,
     // indexes,
     // manifests,
-    // status,
+    status,
     // setAddress,
     // setHistory,
     // setMonitors,
@@ -256,9 +259,9 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     // setAbis,
     // setIndexes,
     // setManifests,
-    // setStatus,
-    // getPager,
-    // resetPager,
+    setStatus,
+    getPager,
+    resetPager,
     isConfigured,
     wizardState,
     stepWizard,

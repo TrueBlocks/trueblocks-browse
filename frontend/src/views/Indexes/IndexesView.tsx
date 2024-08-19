@@ -10,7 +10,7 @@ import { EventsOn, EventsOff } from "@runtime";
 export function IndexesView() {
   const [summaryItem, setSummaryItem] = useState<types.IndexContainer>({} as types.IndexContainer);
   const [count, setCount] = useState<number>(0);
-  const pager = useKeyboardPaging(count, [], 15);
+  const pager = useKeyboardPaging("indexes", count, [], 15);
 
   useEffect(() => {
     const fetch = async (currentItem: number, itemsPerPage: number) => {

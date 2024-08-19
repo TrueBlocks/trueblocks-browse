@@ -1,48 +1,78 @@
-import React, { useState, useEffect } from "react";
-import { types, messages } from "@gocode/models";
+import React from "react";
+import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { tableColumns, createForm } from ".";
-import { View, FormTable } from "@components";
-import { useKeyboardPaging } from "@hooks";
-import { StatusPage, GetStatusCnt } from "@gocode/app/App";
-import { EventsOn, EventsOff } from "@runtime";
+import { tableColumns } from "./StatusTable";
+import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { useAppState } from "@state";
 
 export function StatusView() {
-  const [summaryItem, setSummaryItem] = useState<types.StatusContainer>({} as types.StatusContainer);
-  const [count, setCount] = useState<number>(0);
-  const pager = useKeyboardPaging(count, [], 10);
-
-  useEffect(() => {
-    const fetch = async (currentItem: number, itemsPerPage: number) => {
-      StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
-        if (item) {
-          GetStatusCnt().then((cnt: number) => setCount(cnt));
-          setSummaryItem(item);
-        }
-      });
-    };
-    fetch(pager.curItem, pager.perPage);
-
-    const handleRefresh = () => {
-      fetch(pager.curItem, pager.perPage);
-    };
-
-    var { Message } = messages;
-    EventsOn(Message.DAEMON, handleRefresh);
-    return () => {
-      EventsOff(Message.DAEMON);
-    };
-  }, [pager.curItem, pager.perPage]);
+  const { status } = useAppState();
 
   const table = useReactTable({
-    data: summaryItem.items || [],
+    data: status.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
     <View>
-      <FormTable data={summaryItem} definition={createForm(table, pager)} />
+      <FormTable data={status} definition={createStatusForm(table)} />
     </View>
   );
+}
+
+type theInstance = InstanceType<typeof types.StatusContainer>;
+function createStatusForm(table: any): GroupDefinition<theInstance>[] {
+  const { getPager } = useAppState();
+  return [
+    {
+      title: "System Data",
+      colSpan: 7,
+      fields: [
+        { label: "trueblocks", type: "text", accessor: "version" },
+        { label: "client", type: "text", accessor: "clientVersion" },
+        { label: "isArchive", type: "boolean", accessor: "isArchive" },
+        { label: "isTracing", type: "boolean", accessor: "isTracing" },
+      ],
+    },
+    {
+      title: "API Keys",
+      colSpan: 5,
+      fields: [
+        { label: "hasEsKey", type: "boolean", accessor: "hasEsKey" },
+        { label: "hasPinKey", type: "boolean", accessor: "hasPinKey" },
+        { label: "rpcProvider", type: "url", accessor: "rpcProvider" },
+      ],
+    },
+    {
+      title: "Configuration Paths",
+      colSpan: 7,
+      fields: [
+        { label: "rootConfig", type: "path", accessor: "rootConfig" },
+        { label: "chainConfig", type: "path", accessor: "chainConfig" },
+        { label: "indexPath", type: "path", accessor: "indexPath" },
+        { label: "cachePath", type: "path", accessor: "cachePath" },
+      ],
+    },
+    {
+      title: "Statistics",
+      colSpan: 5,
+      fields: [
+        { label: "latestUpdate", type: "date", accessor: "latestUpdate" },
+        { label: "nCaches", type: "int", accessor: "nItems" },
+        { label: "nFiles", type: "int", accessor: "nFiles" },
+        { label: "nFolders", type: "int", accessor: "nFolders" },
+        { label: "sizeInBytes", type: "bytes", accessor: "nBytes" },
+      ],
+    },
+    {
+      title: "Caches",
+      fields: [],
+      components: [
+        {
+          component: <DataTable<types.CacheItem> table={table} loading={false} pager={getPager("status")} />,
+        },
+      ],
+    },
+  ];
 }

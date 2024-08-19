@@ -1,7 +1,7 @@
 import React from "react";
 import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef, AddressNameEditor, AddressNameViewer, Formatter } from "@components";
+import { CustomColumnDef, NamePopup, AddressPopup, Formatter } from "@components";
 import { NameTags } from "./NameTag";
 
 const columnHelper = createColumnHelper<types.Name>();
@@ -22,7 +22,7 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
     cell: (info) => info.renderValue(),
     meta: {
       className: "wide cell",
-      editor: (getValue: () => any) => <AddressNameViewer address={getValue} />,
+      editor: (getValue: () => any) => <AddressPopup address={getValue} />,
     },
   }),
   columnHelper.accessor("name", {
@@ -30,9 +30,7 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
     cell: (info) => info.renderValue(),
     meta: {
       className: "wide cell",
-      editor: (getValue: () => any) => (
-        <AddressNameEditor value={getValue} onSubmit={(newValue) => console.log(newValue)} />
-      ),
+      editor: (getValue: () => any) => <NamePopup name={getValue} onSubmit={(newValue) => console.log(newValue)} />,
     },
   }),
   columnHelper.accessor("symbol", {

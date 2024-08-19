@@ -13,7 +13,7 @@ export function HistoryView() {
   const [summaryItem, setSummaryItem] = useState<types.TransactionContainer>({} as types.TransactionContainer);
   const [count, setCount] = useState<number>(0);
   const [location, _] = useLocation();
-  const pager = useKeyboardPaging(count, [address], 15);
+  const pager = useKeyboardPaging("history", count, [address], 15);
 
   useEffect(() => {
     if (address !== "") {
