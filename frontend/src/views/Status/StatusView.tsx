@@ -6,7 +6,7 @@ import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { useAppState, ViewStateProvider } from "@state";
 
 export function StatusView() {
-  const { status } = useAppState();
+  const { status, fetchStatus } = useAppState();
 
   const table = useReactTable({
     data: status.items || [],
@@ -15,7 +15,7 @@ export function StatusView() {
   });
 
   return (
-    <ViewStateProvider route="status" nItems={status.nItems}>
+    <ViewStateProvider route={"status"} nItems={status.nItems} fetchFn={fetchStatus}>
       <View>
         <FormTable data={status} definition={createStatusForm(table)} />
       </View>

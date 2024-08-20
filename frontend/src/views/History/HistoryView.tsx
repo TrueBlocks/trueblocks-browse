@@ -8,13 +8,10 @@ import { GetLastSub } from "@gocode/app/App";
 import { useAppState, ViewStateProvider } from "@state";
 
 export function HistoryView() {
-  const { setAddress, history, resetPager } = useAppState();
+  const { setAddress, history, fetchHistory } = useAppState();
 
   var aa = useParams().address;
   useEffect(() => {
-    // TODO: This doesn't compile. It uses useKeyboardPaging but can't outside of a
-    // TODO: component. It's needed when the address changes to go back to page zero.
-    // resetPager("history");
     if (aa === ":address") {
       GetLastSub("/history").then((subRoute) => {
         subRoute = subRoute.replace("/", "");
@@ -32,7 +29,7 @@ export function HistoryView() {
   });
 
   return (
-    <ViewStateProvider route="history" nItems={history.nItems}>
+    <ViewStateProvider route={"history"} nItems={history.nItems} fetchFn={fetchHistory}>
       <View>
         <FormTable data={history} definition={createHistoryForm(table)} />
       </View>

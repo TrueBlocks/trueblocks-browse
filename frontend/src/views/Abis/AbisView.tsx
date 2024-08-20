@@ -6,7 +6,7 @@ import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { useAppState, ViewStateProvider } from "@state";
 
 export function AbisView() {
-  const { abis } = useAppState();
+  const { abis, fetchAbis } = useAppState();
 
   const table = useReactTable({
     data: abis.items || [],
@@ -15,7 +15,7 @@ export function AbisView() {
   });
 
   return (
-    <ViewStateProvider route="abis" nItems={abis.nItems}>
+    <ViewStateProvider route={"abis"} nItems={abis.nItems} fetchFn={fetchAbis}>
       <View>
         <FormTable data={abis} definition={createAbisForm(table)} />
       </View>

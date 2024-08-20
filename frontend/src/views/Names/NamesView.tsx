@@ -3,8 +3,7 @@ import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./NamesTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { useAppState } from "@state";
-import { ViewStateProvider } from "@state";
+import { useAppState, ViewStateProvider } from "@state";
 
 export function NamesView() {
   const { names, fetchNames } = useAppState();

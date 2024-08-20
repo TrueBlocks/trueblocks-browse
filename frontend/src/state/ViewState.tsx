@@ -1,17 +1,11 @@
-import React, { createContext, useEffect, useContext, useState, ReactNode } from "react";
-import { Pager, EmptyPager } from "@components";
+import React, { createContext, useEffect, useContext, ReactNode } from "react";
+import { Pager } from "@components";
 import { Route } from "@/Routes";
 import { useKeyboardPaging } from "@hooks";
-import { messages } from "@gocode/models";
+import { types, messages } from "@gocode/models";
+import { HistoryPage } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
-
-// TODO: Complicated situation during development. Will be corrected. There are two pagers
-// TODO: for the same route. This one (in the ViewContext) and the one in the useAppState.
-// TODO: We would rather have only one (this one) but we need to refactor the useAppState
-// TODO: so that it's not required there. Since both pagers (per route) listen for and
-// TODO: respond to "DAEMON" (i.e. freshen) messages, it works fine. Just inefficient.
-// TODO: The useAppState pager is used to grab a page from the backend state. This pager
-// TODO: causes the page to advance.
+import { useAppState } from "@state";
 
 interface ViewStateProps {
   route: Route;
@@ -28,6 +22,7 @@ export const ViewStateProvider: React.FC<{
   fetchFn?: (curItem: number, perPage: number, item?: any) => void;
   children: ReactNode;
 }> = ({ route, nItems = -1, fetchFn, children }) => {
+  const { address, setHistory } = useAppState();
   const pager = useKeyboardPaging(route, nItems, [], 15);
 
   useEffect(() => {
@@ -50,8 +45,20 @@ export const ViewStateProvider: React.FC<{
     };
   }, [EventsOn, EventsOff, fetchFn]);
 
-  const getViewPager = (route: Route): Pager | null => {
-    return null;
+  useEffect(() => {
+    if (route === "history") {
+      HistoryPage(address as unknown as string, pager.curItem, pager.perPage).then(
+        (item: types.TransactionContainer) => {
+          if (item) {
+            setHistory(item);
+          }
+        }
+      );
+    }
+  }, [address, pager.curItem, pager.perPage]);
+
+  const getViewPager = (route: Route): Pager  => {
+    return pager;
   };
 
   let state = {

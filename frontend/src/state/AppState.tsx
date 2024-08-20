@@ -1,10 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect, useRef } from "react";
-import { types, messages, base, wizard, daemons } from "@gocode/models";
-import { useKeyboardPaging } from "@hooks";
-import { Pager, EmptyPager } from "@components";
+import { types, messages, base, wizard } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
-import { Route } from "@/Routes";
-import { useParams } from "wouter";
 import {
   HistoryPage,
   MonitorPage,
@@ -22,17 +18,22 @@ import {
 interface AppStateProps {
   address: base.Address;
   history: types.TransactionContainer;
+  fetchHistory: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  setHistory: React.Dispatch<React.SetStateAction<types.TransactionContainer>>;
   monitors: types.MonitorContainer;
+  fetchMonitors: (currentItem: number, itemsPerPage: number, item?: any) => void;
   names: types.NameContainer;
   fetchNames: (currentItem: number, itemsPerPage: number, item?: any) => void;
   abis: types.AbiContainer;
+  fetchAbis: (currentItem: number, itemsPerPage: number, item?: any) => void;
   indexes: types.IndexContainer;
+  fetchIndexes: (currentItem: number, itemsPerPage: number, item?: any) => void;
   manifests: types.ManifestContainer;
+  fetchManifest: (currentItem: number, itemsPerPage: number, item?: any) => void;
   status: types.StatusContainer;
+  fetchStatus: (currentItem: number, itemsPerPage: number, item?: any) => void;
 
   setAddress: (address: base.Address) => void;
-  getAppPager: (name: Route) => Pager;
-  resetPager: (name: Route) => void;
 
   isConfigured: boolean;
   wizardState: wizard.State;
@@ -57,25 +58,12 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
 
   const [history, setHistory] = useState<types.TransactionContainer>({} as types.TransactionContainer);
-  let historyPgr = useKeyboardPaging("history", history.nItems, [], 15);
-
   const [monitors, setMonitors] = useState<types.MonitorContainer>({} as types.MonitorContainer);
-  let monitorPgr = useKeyboardPaging("monitors", monitors.nItems, [], 15);
-
   const [names, setNames] = useState<types.NameContainer>({} as types.NameContainer);
-  let namesPgr = useKeyboardPaging("names", names.nItems, [], 15);
-
   const [abis, setAbis] = useState<types.AbiContainer>({} as types.AbiContainer);
-  let abiPgr = useKeyboardPaging("abis", abis.nItems, [], 15);
-
   const [indexes, setIndexes] = useState<types.IndexContainer>({} as types.IndexContainer);
-  let indexPgr = useKeyboardPaging("indexes", indexes.nItems, [], 15);
-
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
-  let manifestPgr = useKeyboardPaging("manifest", manifests.nItems, [], 15);
-
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
-  let statusPgr = useKeyboardPaging("status", status.nItems, [], 10);
 
   const fetchMeta = async () => {
     GetMeta().then((meta) => {
@@ -90,7 +78,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
+  const fetchHistory = async (currentItem: number, itemsPerPage: number, item?: any) => {
     myRef.current = true;
     GetLastSub("/history").then((subRoute: string) => {
       if (subRoute !== "") {
@@ -102,20 +90,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       }
     });
   };
-  useEffect(() => {
-    if (myRef.current) {
-      // only run this after the first render
-      HistoryPage(address as unknown as string, historyPgr.curItem, historyPgr.perPage).then(
-        (item: types.TransactionContainer) => {
-          if (item) {
-            setHistory(item);
-          }
-        }
-      );
-    }
-  }, [address, historyPgr.curItem, historyPgr.perPage]);
 
-  const fetchMonitors = async (currentItem: number, itemsPerPage: number) => {
+  const fetchMonitors = async (currentItem: number, itemsPerPage: number, item?: any) => {
     MonitorPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
       if (item) {
         setMonitors(item);
@@ -131,7 +107,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchAbis = async (currentItem: number, itemsPerPage: number) => {
+  const fetchAbis = async (currentItem: number, itemsPerPage: number, item?: any) => {
     AbiPage(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
       if (item) {
         setAbis(item);
@@ -139,7 +115,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchIndexes = async (currentItem: number, itemsPerPage: number) => {
+  const fetchIndexes = async (currentItem: number, itemsPerPage: number, item?: any) => {
     IndexPage(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
       if (item) {
         setIndexes(item);
@@ -147,7 +123,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchManifest = async (currentItem: number, itemsPerPage: number) => {
+  const fetchManifest = async (currentItem: number, itemsPerPage: number, item?: any) => {
     ManifestPage(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
       if (item) {
         setManifests(item);
@@ -155,7 +131,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
+  const fetchStatus = async (currentItem: number, itemsPerPage: number, item?: any) => {
     StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
       if (item) {
         setStatus(item);
@@ -167,39 +143,15 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     myRef.current = true;
     fetchMeta();
     fetchWizard();
-    fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
-    fetchNames(namesPgr.curItem, namesPgr.perPage);
-    fetchAbis(abiPgr.curItem, abiPgr.perPage);
-    fetchIndexes(indexPgr.curItem, indexPgr.perPage);
-    fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
-    fetchStatus(statusPgr.curItem, statusPgr.perPage);
-  }, [
-    monitorPgr.curItem,
-    monitorPgr.perPage,
-    namesPgr.curItem,
-    namesPgr.perPage,
-    abiPgr.curItem,
-    abiPgr.perPage,
-    indexPgr.curItem,
-    indexPgr.perPage,
-    manifestPgr.curItem,
-    manifestPgr.perPage,
-    statusPgr.curItem,
-    statusPgr.perPage,
-  ]);
+    fetchStatus(0, 1);
+  }, []);
 
   useEffect(() => {
     myRef.current = true;
     const handleRefresh = () => {
       fetchMeta();
       fetchWizard();
-      fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
-      fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
-      fetchNames(namesPgr.curItem, namesPgr.perPage);
-      fetchAbis(abiPgr.curItem, abiPgr.perPage);
-      fetchIndexes(indexPgr.curItem, indexPgr.perPage);
-      fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
-      fetchStatus(statusPgr.curItem, statusPgr.perPage);
+      fetchStatus(0, 1);
     };
 
     var { Message } = messages;
@@ -228,52 +180,24 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
   }
 
-  const getAppPager = (name: Route): Pager => {
-    switch (name) {
-      case "history":
-        return historyPgr;
-      case "monitors":
-        return monitorPgr;
-      case "names":
-        return namesPgr;
-      case "abis":
-        return abiPgr;
-      case "indexes":
-        return indexPgr;
-      case "manifest":
-        return manifestPgr;
-      case "status":
-        return statusPgr;
-      case "settings":
-      case "daemons":
-      case "":
-      default:
-        break;
-    }
-    return EmptyPager;
-  };
-
-  const resetPager = (name: Route) => {
-    switch (name) {
-      case "history":
-        // setHistoryPgr(useKeyboardPaging("history", history.nItems, [], 15));
-        break;
-    }
-  };
-
   let state = {
     address,
     history,
+    fetchHistory,
+    setHistory,
     monitors,
+    fetchMonitors,
     names,
     fetchNames,
     abis,
+    fetchAbis,
     indexes,
+    fetchIndexes,
     manifests,
+    fetchManifest,
     status,
+    fetchStatus,
     setAddress,
-    getAppPager,
-    resetPager,
     isConfigured,
     wizardState,
     stepWizard,

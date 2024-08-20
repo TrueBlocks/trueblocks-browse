@@ -6,7 +6,7 @@ import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { useAppState, ViewStateProvider } from "@state";
 
 export function MonitorsView() {
-  const { monitors } = useAppState();
+  const { monitors, fetchMonitors } = useAppState();
 
   const table = useReactTable({
     data: monitors.items || [],
@@ -15,7 +15,7 @@ export function MonitorsView() {
   });
 
   return (
-    <ViewStateProvider route="monitors" nItems={monitors.nItems}>
+    <ViewStateProvider route="monitors" nItems={monitors.nItems} fetchFn={fetchMonitors}>
       <View>
         <FormTable data={monitors} definition={createMonitorForm(table)} />
       </View>
@@ -24,7 +24,6 @@ export function MonitorsView() {
 }
 
 type theInstance = InstanceType<typeof types.MonitorContainer>;
-
 function createMonitorForm(table: any): GroupDefinition<theInstance>[] {
   return [
     {

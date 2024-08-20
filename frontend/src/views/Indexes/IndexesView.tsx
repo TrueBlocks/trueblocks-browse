@@ -6,7 +6,7 @@ import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { useAppState, ViewStateProvider } from "@state";
 
 export function IndexesView() {
-  const { indexes } = useAppState();
+  const { indexes, fetchIndexes } = useAppState();
 
   const table = useReactTable({
     data: indexes.items || [],
@@ -15,7 +15,7 @@ export function IndexesView() {
   });
 
   return (
-    <ViewStateProvider route="indexes" nItems={indexes.nItems}>
+    <ViewStateProvider route={"indexes"} nItems={indexes.nItems} fetchFn={fetchIndexes}>
       <View>
         <FormTable data={indexes} definition={createIndexForm(table)} />
       </View>
