@@ -20,7 +20,11 @@ interface ViewStateProps {
 
 const ViewContext = createContext<ViewStateProps | undefined>(undefined);
 
-export const ViewStateProvider: React.FC<{ route: Route; nItems: number; children: ReactNode }> = ({
+export const ViewStateProvider: React.FC<{
+  route: Route;
+  nItems: number;
+  children: ReactNode;
+}> = ({
   route,
   nItems,
   children,
