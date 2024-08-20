@@ -13,9 +13,9 @@ interface DataTableProps<T> {
 }
 
 export function DataTable<T>({ table, loading }: DataTableProps<T>) {
-  const { route } = useViewState();
-  const { getPager } = useAppState();
-  const pager = getPager(route);
+  const { route, getViewPager } = useViewState();
+  const { getAppPager } = useAppState();
+  const pager = getViewPager(route) != null ? getViewPager(route) : getAppPager(route);
 
   if (loading) {
     return <Title order={3}>Loading...</Title>;

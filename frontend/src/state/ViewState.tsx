@@ -1,7 +1,9 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Pager } from "@components";
+import React, { createContext, useEffect, useContext, useState, ReactNode } from "react";
+import { Pager, EmptyPager } from "@components";
 import { Route } from "@/Routes";
 import { useKeyboardPaging } from "@hooks";
+import { messages } from "@gocode/models";
+import { EventsOn, EventsOff } from "@runtime";
 
 // TODO: Complicated situation during development. Will be corrected. There are two pagers
 // TODO: for the same route. This one (in the ViewContext) and the one in the useAppState.
@@ -15,7 +17,7 @@ interface ViewStateProps {
   route: Route;
   nItems: number;
   pager: Pager;
-  setPager: React.Dispatch<React.SetStateAction<Pager>>;
+  getViewPager: (route: Route) => Pager | null;
 }
 
 const ViewContext = createContext<ViewStateProps | undefined>(undefined);
@@ -25,18 +27,38 @@ export const ViewStateProvider: React.FC<{
   nItems?: number;
   fetchFn?: (curItem: number, perPage: number, item?: any) => void;
   children: ReactNode;
-}> = ({
-  route,
-  nItems = -1,
-  fetchFn,
-  children,
-}) => {
-  const [pager, setPager] = useState<Pager>(useKeyboardPaging(route, nItems, [], 15));
+}> = ({ route, nItems = -1, fetchFn, children }) => {
+  const pager = useKeyboardPaging(route, nItems, [], 15);
+
+  useEffect(() => {
+    if (fetchFn) {
+      fetchFn(pager.curItem, pager.perPage, null);
+    }
+  }, [pager.curItem, pager.perPage, pager]);
+
+  useEffect(() => {
+    const handleRefresh = () => {
+      if (fetchFn) {
+        fetchFn(pager.curItem, pager.perPage);
+      }
+    };
+
+    var { Message } = messages;
+    EventsOn(Message.DAEMON, handleRefresh);
+    return () => {
+      EventsOff(Message.DAEMON);
+    };
+  }, [EventsOn, EventsOff, fetchFn]);
+
+  const getViewPager = (route: Route): Pager | null => {
+    return null;
+  };
+
   let state = {
     route,
     nItems,
     pager,
-    setPager,
+    getViewPager,
   };
 
   return <ViewContext.Provider value={state}>{children}</ViewContext.Provider>;

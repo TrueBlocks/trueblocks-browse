@@ -31,7 +31,7 @@ interface AppStateProps {
   status: types.StatusContainer;
 
   setAddress: (address: base.Address) => void;
-  getPager: (name: Route) => Pager;
+  getAppPager: (name: Route) => Pager;
   resetPager: (name: Route) => void;
 
   isConfigured: boolean;
@@ -228,7 +228,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
   }
 
-  const getPager = (name: Route): Pager => {
+  const getAppPager = (name: Route): Pager => {
     switch (name) {
       case "history":
         return historyPgr;
@@ -272,7 +272,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     manifests,
     status,
     setAddress,
-    getPager,
+    getAppPager,
     resetPager,
     isConfigured,
     wizardState,

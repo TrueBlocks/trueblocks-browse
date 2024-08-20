@@ -13,7 +13,11 @@ export type Pager = {
   setpage: (newPage: number) => void;
 };
 
-export const Paginator = ({ pager }: { pager: Pager }) => {
+export const Paginator = ({ pager }: { pager: Pager | null }) => {
+  if (!pager) {
+    return null;
+  }
+
   return (
     <div className={classes.paginator}>
       <Pagination
