@@ -15,7 +15,7 @@ export function ManifestView() {
   });
 
   return (
-    <View>
+    <View route="manifest" nItems={manifests.nItems}>
       <FormTable data={manifests} definition={createManifestForm(table)} />
     </View>
   );
@@ -49,7 +49,7 @@ function createManifestForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.ChunkRecord> table={table} loading={false} pagerName="manifest" />,
+          component: <DataTable<types.ChunkRecord> table={table} loading={false} />,
         },
       ],
     },

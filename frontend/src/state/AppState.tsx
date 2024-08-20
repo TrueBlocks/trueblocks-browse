@@ -19,16 +19,6 @@ import {
   GetMeta,
 } from "@gocode/app/App";
 
-type Counters = {
-  nTxs: number;
-  nMonitors: number;
-  nNames: number;
-  nAbis: number;
-  nIndexes: number;
-  nManifests: number;
-  nStatus: number;
-};
-
 interface AppStateProps {
   address: base.Address;
   history: types.TransactionContainer;
@@ -40,14 +30,6 @@ interface AppStateProps {
   status: types.StatusContainer;
 
   setAddress: (address: base.Address) => void;
-  setHistory: (history: types.TransactionContainer) => void;
-  setMonitors: (monitors: types.MonitorContainer) => void;
-  setNames: (names: types.NameContainer) => void;
-  setAbis: (abis: types.AbiContainer) => void;
-  setIndexes: (indexes: types.IndexContainer) => void;
-  setManifests: (manifests: types.ManifestContainer) => void;
-  setStatus: (status: types.StatusContainer) => void;
-
   getPager: (name: Route) => Pager;
   resetPager: (name: Route) => void;
 
@@ -266,7 +248,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const resetPager = (name: Route) => {
     switch (name) {
       case "history":
-        historyPgr = useKeyboardPaging("history", history.nItems, [], 15);
+        // setHistoryPgr(useKeyboardPaging("history", history.nItems, [], 15));
         break;
     }
   };
@@ -281,13 +263,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     manifests,
     status,
     setAddress,
-    setHistory,
-    setMonitors,
-    setNames,
-    setAbis,
-    setIndexes,
-    setManifests,
-    setStatus,
     getPager,
     resetPager,
     isConfigured,
@@ -307,4 +282,14 @@ export const useAppState = () => {
     throw new Error("useAppState must be used within a AppStateProvider");
   }
   return context;
+};
+
+type Counters = {
+  nTxs: number;
+  nMonitors: number;
+  nNames: number;
+  nAbis: number;
+  nIndexes: number;
+  nManifests: number;
+  nStatus: number;
 };

@@ -15,7 +15,7 @@ export function NamesView() {
   });
 
   return (
-    <View>
+    <View route="names" nItems={names.nItems}>
       <FormTable data={names} definition={createNameForm(table)} />
     </View>
   );
@@ -50,7 +50,7 @@ function createNameForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.Name> table={table} loading={false} pagerName="names" />,
+          component: <DataTable<types.Name> table={table} loading={false} />,
         },
       ],
     },

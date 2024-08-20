@@ -1,6 +1,6 @@
 import React, { useEffect, useState, DependencyList, KeyboardEvent } from "react";
 import { useLocation } from "wouter";
-import { Pager } from "@components";
+import { Pager, EmptyPager } from "@components";
 import { useHotkeys, HotkeyCallback } from "react-hotkeys-hook";
 import { Route } from "@/Routes";
 
@@ -57,13 +57,17 @@ export function useKeyboardPaging(
 
   const pageNumber = curItem < perPage ? 1 : Math.ceil(curItem / perPage) + 1;
   const totalPages = Math.ceil(nItems / perPage);
-  return {
-    name: route,
-    curItem: curItem,
-    perPage: perPage,
-    count: nItems,
-    pageNumber: pageNumber,
-    totalPages: totalPages,
-    setpage: setPage,
-  };
+  if (nItems < 0) {
+    return EmptyPager;
+  } else {
+    return {
+      name: route,
+      curItem: curItem,
+      perPage: perPage,
+      count: nItems,
+      pageNumber: pageNumber,
+      totalPages: totalPages,
+      setpage: setPage,
+    };
+  }
 }

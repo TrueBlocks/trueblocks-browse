@@ -15,7 +15,7 @@ export function MonitorsView() {
   });
 
   return (
-    <View>
+    <View route="monitors" nItems={monitors.nItems}>
       <FormTable data={monitors} definition={createMonitorForm(table)} />
     </View>
   );
@@ -47,7 +47,7 @@ function createMonitorForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.Monitor> table={table} loading={false} pagerName="monitors" />,
+          component: <DataTable<types.Monitor> table={table} loading={false} />,
         },
       ],
     },

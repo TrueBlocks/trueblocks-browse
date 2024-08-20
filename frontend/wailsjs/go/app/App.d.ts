@@ -31,6 +31,8 @@ export function GetContext():Promise<context.Context>;
 
 export function GetDaemon(arg1:string):Promise<daemons.Daemon>;
 
+export function GetEnv(arg1:string):Promise<string>;
+
 export function GetLast(arg1:string):Promise<string>;
 
 export function GetLastDaemon(arg1:string):Promise<boolean>;

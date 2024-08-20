@@ -15,7 +15,7 @@ export function StatusView() {
   });
 
   return (
-    <View>
+    <View route="status" nItems={status.nItems}>
       <FormTable data={status} definition={createStatusForm(table)} />
     </View>
   );
@@ -69,7 +69,7 @@ function createStatusForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.CacheItem> table={table} loading={false} pagerName="status" />,
+          component: <DataTable<types.CacheItem> table={table} loading={false} />,
         },
       ],
     },

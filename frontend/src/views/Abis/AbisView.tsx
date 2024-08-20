@@ -15,7 +15,7 @@ export function AbisView() {
   });
 
   return (
-    <View>
+    <View route="abis" nItems={abis.nItems}>
       <FormTable data={abis} definition={createAbisForm(table)} />
     </View>
   );
@@ -48,7 +48,7 @@ function createAbisForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.Abi> table={table} loading={false} pagerName="abis" />,
+          component: <DataTable<types.Abi> table={table} loading={false} />,
         },
       ],
     },

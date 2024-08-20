@@ -15,7 +15,7 @@ export function IndexesView() {
   });
 
   return (
-    <View>
+    <View route="indexes" nItems={indexes.nItems}>
       <FormTable data={indexes} definition={createIndexForm(table)} />
     </View>
   );
@@ -51,7 +51,7 @@ function createIndexForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.ChunkStats> table={table} loading={false} pagerName="indexes" />,
+          component: <DataTable<types.ChunkStats> table={table} loading={false} />,
         },
       ],
     },

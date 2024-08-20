@@ -54,5 +54,5 @@ func (a *App) AddrToName(addr base.Address) string {
 	if name, exists := a.names.NamesMap[addr]; exists {
 		return name.Name
 	}
-	return addr.Hex()
+	return ""
 }

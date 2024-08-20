@@ -4,12 +4,15 @@ import { View, Formatter } from "@components";
 import { useAppState } from "@state";
 
 export function HomeView() {
-  const { getCounters } = useAppState();
+  const { address, getCounters } = useAppState();
 
   var counters = getCounters();
   return (
-    <View>
+    <View route="">
       <Text>Current State</Text>
+      <Group>
+        <Text>current address:</Text> <Formatter type="address-address-only" value={address} />
+      </Group>
       <Group>
         <Text>nMonitors:</Text> <Formatter type="int" value={counters.nMonitors} />
       </Group>
