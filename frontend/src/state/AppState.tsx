@@ -24,6 +24,7 @@ interface AppStateProps {
   history: types.TransactionContainer;
   monitors: types.MonitorContainer;
   names: types.NameContainer;
+  fetchNames: (currentItem: number, itemsPerPage: number, item?: any) => void;
   abis: types.AbiContainer;
   indexes: types.IndexContainer;
   manifests: types.ManifestContainer;
@@ -122,7 +123,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchNames = async (currentItem: number, itemsPerPage: number) => {
+  const fetchNames = async (currentItem: number, itemsPerPage: number, item?: any) => {
     NamePage(currentItem, itemsPerPage).then((item: types.NameContainer) => {
       if (item) {
         setNames(item);
@@ -265,6 +266,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     history,
     monitors,
     names,
+    fetchNames,
     abis,
     indexes,
     manifests,
