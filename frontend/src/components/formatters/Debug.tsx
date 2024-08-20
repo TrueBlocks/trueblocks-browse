@@ -1,7 +1,7 @@
 import { knownTypes } from ".";
 import classes from "./Formatter.module.css";
 
-const debug = true;
+export const debug = 0; // 0 for production, 1 for color, 2 for color and name
 
 export const getDebugColor = (type: knownTypes): string => {
   var ret: string = "";
@@ -23,19 +23,19 @@ export const getDebugColor = (type: knownTypes): string => {
       case "error":
         break;
       case "ether":
-        ret = classes.brown;
+        ret = classes.red;
         break;
       case "timestamp":
-        ret = classes.blue;
+        ret = classes.red;
         break;
       case "bytes":
-        ret = classes.green;
+        ret = classes.red;
         break;
       case "float":
         ret = classes.red;
         break;
       case "int":
-        ret = classes.blue;
+        ret = classes.red;
         break;
       case "appearance":
         ret = classes.lightblue;

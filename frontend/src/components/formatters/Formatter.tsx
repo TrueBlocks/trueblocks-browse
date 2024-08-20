@@ -1,9 +1,9 @@
 import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
-import { Text, TextProps } from "@mantine/core";
+import { Text, TextProps, Stack } from "@mantine/core";
 import { base } from "@gocode/models";
 import { useDateTime, useToEther } from "@hooks";
-import { AddressFormatter, getDebugColor } from ".";
+import { AddressFormatter, getDebugColor, debug } from ".";
 import { useAppState } from "@state";
 import classes from "./Formatter.module.css";
 
@@ -83,11 +83,22 @@ export const Formatter = ({ type, size = "md", className, value, value2 = null }
       value = "UNKNOWN FORMATTER TYPE";
   }
 
-  return (
-    <Text className={cn} size={size}>
-      {value}
-    </Text>
-  );
+  if (debug === 2) {
+    return (
+      <Stack gap={0}>
+        <Text className={cn} size={size}>
+          {value}
+        </Text>
+        <Text size="xs">{type}</Text>
+      </Stack>
+    );
+  } else {
+    return (
+      <Text className={cn} size={size}>
+        {value}
+      </Text>
+    );
+  }
 };
 
 const formatInteger = (number: number): string => {

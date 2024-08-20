@@ -44,9 +44,9 @@ function createHistoryForm(table: any): GroupDefinition<theInstance>[] {
       title: "Transaction Data",
       colSpan: 6,
       fields: [
-        { label: "address", type: "text", accessor: "address" },
-        { label: "name", type: "text", accessor: "name" },
-        { label: "balance", type: "text", accessor: "balance" },
+        { label: "address", type: "address-address-only", accessor: "address" },
+        { label: "name", type: "address-name-only", accessor: "name" },
+        { label: "balance", type: "ether", accessor: "balance" },
       ],
     },
     {
