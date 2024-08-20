@@ -90,6 +90,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
+    myRef.current = true;
     GetLastSub("/history").then((subRoute: string) => {
       if (subRoute !== "") {
         console.log("subRoute-app1: ", subRoute);
@@ -100,6 +101,18 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       }
     });
   };
+  useEffect(() => {
+    if (myRef.current) {
+      // only run this after the first render
+      HistoryPage(address as unknown as string, historyPgr.curItem, historyPgr.perPage).then(
+        (item: types.TransactionContainer) => {
+          if (item) {
+            setHistory(item);
+          }
+        }
+      );
+    }
+  }, [address, historyPgr.curItem, historyPgr.perPage]);
 
   const fetchMonitors = async (currentItem: number, itemsPerPage: number) => {
     MonitorPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
@@ -150,21 +163,9 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   useEffect(() => {
-    if (myRef.current) {
-      // only run this after the first render
-      HistoryPage(address as unknown as string, historyPgr.curItem, historyPgr.perPage).then((item: types.TransactionContainer) => {
-        if (item) {
-          setHistory(item);
-        }
-      });
-    }
-  }, [address, historyPgr.curItem, historyPgr.perPage]);
-
-  useEffect(() => {
     myRef.current = true;
     fetchMeta();
     fetchWizard();
-    fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
     fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
     fetchNames(namesPgr.curItem, namesPgr.perPage);
     fetchAbis(abiPgr.curItem, abiPgr.perPage);
@@ -172,8 +173,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
     fetchStatus(statusPgr.curItem, statusPgr.perPage);
   }, [
-    historyPgr.curItem,
-    historyPgr.perPage,
     monitorPgr.curItem,
     monitorPgr.perPage,
     namesPgr.curItem,
