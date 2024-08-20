@@ -19,16 +19,6 @@ import {
   GetMeta,
 } from "@gocode/app/App";
 
-type Counters = {
-  nTxs: number;
-  nMonitors: number;
-  nNames: number;
-  nAbis: number;
-  nIndexes: number;
-  nManifests: number;
-  nStatus: number;
-};
-
 interface AppStateProps {
   address: base.Address;
   history: types.TransactionContainer;
@@ -307,4 +297,14 @@ export const useAppState = () => {
     throw new Error("useAppState must be used within a AppStateProvider");
   }
   return context;
+};
+
+type Counters = {
+  nTxs: number;
+  nMonitors: number;
+  nNames: number;
+  nAbis: number;
+  nIndexes: number;
+  nManifests: number;
+  nStatus: number;
 };

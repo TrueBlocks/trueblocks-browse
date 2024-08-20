@@ -20,7 +20,7 @@ export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
   }),
   columnHelper.accessor("from", {
     header: () => "From",
-    cell: (info) => <Formatter type="address-name" value={info.renderValue()} />,
+    cell: (info) => <Formatter type="address-and-name" value={info.renderValue()} />,
     meta: {
       className: "wide cell",
       editor: (getValue: () => any) => <AddressPopup address={getValue} />,
@@ -28,7 +28,7 @@ export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
   }),
   columnHelper.accessor("to", {
     header: () => "To",
-    cell: (info) => <Formatter type="address-name" value={info.renderValue()} />,
+    cell: (info) => <Formatter type="address-and-name" value={info.renderValue()} />,
     meta: {
       className: "wide cell",
       editor: (getValue: () => any) => <AddressPopup address={getValue} />,

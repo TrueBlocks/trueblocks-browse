@@ -3,13 +3,14 @@ import { IconCircleCheck } from "@tabler/icons-react";
 import { Text, TextProps } from "@mantine/core";
 import { base } from "@gocode/models";
 import { useDateTime, useToEther } from "@hooks";
-import { AddressFormatter } from "./AddressFormatter";
+import { AddressFormatter, getDebugColor } from ".";
 import { useAppState } from "@state";
 import classes from "./Formatter.module.css";
 
 export type knownTypes =
-  | "address-name"
-  | "address-only"
+  | "address-and-name"
+  | "address-address-only"
+  | "address-name-only"
   | "appearance"
   | "boolean"
   | "bytes"
@@ -20,7 +21,6 @@ export type knownTypes =
   | "float"
   | "hash"
   | "int"
-  | "name-only"
   | "path"
   | "range"
   | "text"
@@ -41,20 +41,21 @@ export const Formatter = ({ type, size = "md", className, value, value2 = null }
   var n = value as number;
   var bi = value as bigint;
   var addr = value as unknown as base.Address;
+  const isCurrent = addr === address;
+  var cn = getDebugColor(type) || (isCurrent ? classes.bold : className);
 
   switch (type) {
-    case "address-name":
-      return <AddressFormatter size={size} addressIn={value as base.Address} />;
-    case "address-only":
-    case "name-only":
-      className = addr === address ? classes.bold : className;
-      break;
     case "boolean":
       return <IconCircleCheck size={16} color="white" fill={value ? "green" : "red"} />;
     case "check":
       return value ? <IconCircleCheck size={16} color="white" fill="green" /> : <></>;
     case "error":
       return value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>;
+    case "address-and-name":
+      return <AddressFormatter className={cn} size={size} addressIn={value as base.Address} />;
+    case "address-address-only":
+    case "address-name-only":
+      break;
     case "ether":
       value = useToEther(bi);
       break;
@@ -83,70 +84,10 @@ export const Formatter = ({ type, size = "md", className, value, value2 = null }
   }
 
   return (
-    <Text className={getDebugColor(type) || className} size={size}>
+    <Text className={cn} size={size}>
       {value}
     </Text>
   );
-};
-
-const getDebugColor = (type: knownTypes): string | null => {
-  var ret: string | null = null;
-  switch (type) {
-    case "address-name":
-      break;
-    case "boolean":
-      break;
-    case "check":
-      break;
-    case "error":
-      break;
-    case "ether":
-      ret = classes.brown;
-      break;
-    case "timestamp":
-      ret = classes.blue;
-      break;
-    case "bytes":
-      ret = classes.green;
-      break;
-    case "float":
-      ret = classes.red;
-      break;
-    case "int":
-      ret = classes.pink;
-      break;
-    case "address-only":
-      ret = classes.orange;
-      break;
-    case "appearance":
-      ret = classes.lightblue;
-      break;
-    case "date":
-      ret = classes.purple;
-      break;
-    case "hash":
-      ret = classes.lightblue;
-      break;
-    case "name-only":
-      ret = classes.orange;
-      break;
-    case "path":
-      ret = classes.pink;
-      break;
-    case "range":
-      ret = classes.green;
-      break;
-    case "text":
-      ret = classes.green;
-      break;
-    case "url":
-      ret = classes.red;
-      break;
-    default:
-      ret = classes.blue;
-      break;
-  }
-  return null; // ret;
 };
 
 const formatInteger = (number: number): string => {

@@ -19,7 +19,7 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
   }),
   columnHelper.accessor("address", {
     header: () => "Address",
-    cell: (info) => <Formatter type="address-only" value={info.renderValue()} />,
+    cell: (info) => <Formatter type="address-address-only" value={info.renderValue()} />,
     meta: {
       className: "wide cell",
       editor: (getValue: () => any) => <AddressPopup address={getValue} />,
@@ -27,7 +27,7 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
   }),
   columnHelper.accessor("name", {
     header: () => "Name",
-    cell: (info) => <Formatter type="name-only" value={info.renderValue()} />,
+    cell: (info) => <Formatter type="address-name-only" value={info.renderValue()} />,
     meta: {
       className: "wide cell",
       editor: (getValue: () => any) => (
