@@ -22,11 +22,11 @@ const ViewContext = createContext<ViewStateProps | undefined>(undefined);
 
 export const ViewStateProvider: React.FC<{
   route: Route;
-  nItems: number;
+  nItems?: number;
   children: ReactNode;
 }> = ({
   route,
-  nItems,
+  nItems = -1,
   children,
 }) => {
   const [pager, setPager] = useState<Pager>(useKeyboardPaging(route, nItems, [], 15));
