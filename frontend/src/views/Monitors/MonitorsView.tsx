@@ -47,7 +47,7 @@ function createMonitorForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.Monitor> table={table} loading={false} pagerName="monitors" />,
+          component: <DataTable<types.Monitor> table={table} loading={false} />,
         },
       ],
     },

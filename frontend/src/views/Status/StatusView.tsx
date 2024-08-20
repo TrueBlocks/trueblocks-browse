@@ -69,7 +69,7 @@ function createStatusForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.CacheItem> table={table} loading={false} pagerName="status" />,
+          component: <DataTable<types.CacheItem> table={table} loading={false} />,
         },
       ],
     },

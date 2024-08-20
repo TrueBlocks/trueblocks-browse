@@ -64,7 +64,7 @@ function createHistoryForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.Transaction> table={table} loading={false} pagerName="history" />,
+          component: <DataTable<types.Transaction> table={table} loading={false} />,
         },
       ],
     },

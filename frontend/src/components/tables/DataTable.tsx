@@ -6,15 +6,18 @@ import { Popup } from "@components";
 import { CustomMeta, Paginator, Pager, EmptyPager } from "./";
 import { useAppState } from "@state";
 import { Route } from "@/Routes";
+import { useViewState } from "@state";
 
 interface DataTableProps<T> {
   table: ReactTable<T>;
   loading: boolean;
-  pagerName: Route;
+  pagerName?: Route;
 }
 
 export function DataTable<T>({ table, loading, pagerName }: DataTableProps<T>) {
+  const { route } = useViewState();
   const { getPager } = useAppState();
+  const pager = pagerName ? getPager(pagerName) : getPager(route);
 
   if (loading) {
     return <Title order={3}>Loading...</Title>;
@@ -50,7 +53,7 @@ export function DataTable<T>({ table, loading, pagerName }: DataTableProps<T>) {
             ))}
           </Table.Tbody>
         </Table>
-        <Paginator pager={getPager(pagerName)} />
+        <Paginator pager={pager} />
       </>
     );
   }

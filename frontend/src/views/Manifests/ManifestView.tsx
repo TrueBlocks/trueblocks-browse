@@ -49,7 +49,7 @@ function createManifestForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.ChunkRecord> table={table} loading={false} pagerName="manifest" />,
+          component: <DataTable<types.ChunkRecord> table={table} loading={false} />,
         },
       ],
     },

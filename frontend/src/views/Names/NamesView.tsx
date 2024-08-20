@@ -50,7 +50,7 @@ function createNameForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.Name> table={table} loading={false} pagerName="names" />,
+          component: <DataTable<types.Name> table={table} loading={false} />,
         },
       ],
     },

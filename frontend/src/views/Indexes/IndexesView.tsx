@@ -51,7 +51,7 @@ function createIndexForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.ChunkStats> table={table} loading={false} pagerName="indexes" />,
+          component: <DataTable<types.ChunkStats> table={table} loading={false} />,
         },
       ],
     },
