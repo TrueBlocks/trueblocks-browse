@@ -46,6 +46,10 @@ export function GetDaemon(arg1) {
   return window['go']['app']['App']['GetDaemon'](arg1);
 }
 
+export function GetEnv(arg1) {
+  return window['go']['app']['App']['GetEnv'](arg1);
+}
+
 export function GetLast(arg1) {
   return window['go']['app']['App']['GetLast'](arg1);
 }

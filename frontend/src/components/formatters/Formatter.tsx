@@ -3,8 +3,9 @@ import { IconCircleCheck } from "@tabler/icons-react";
 import { Text, TextProps, Stack } from "@mantine/core";
 import { base } from "@gocode/models";
 import { useDateTime, useToEther } from "@hooks";
-import { AddressFormatter, getDebugColor, debug } from ".";
+import { AddressFormatter, getDebugColor } from ".";
 import { useAppState } from "@state";
+import { useEnvironment } from "@hooks";
 import classes from "./Formatter.module.css";
 
 export type knownTypes =
@@ -37,6 +38,7 @@ type FormatterProps = {
 
 export const Formatter = ({ type, size = "md", className, value, value2 = null }: FormatterProps) => {
   const { address } = useAppState();
+  const debug = useEnvironment("TB_DEBUG_DISPLAY");
 
   var n = value as number;
   var bi = value as bigint;
@@ -83,7 +85,7 @@ export const Formatter = ({ type, size = "md", className, value, value2 = null }
       value = "UNKNOWN FORMATTER TYPE";
   }
 
-  if (debug > 1) {
+  if (debug == "verbose") {
     return (
       <Stack gap={0}>
         <Text className={cn} size={size}>

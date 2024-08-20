@@ -165,6 +165,10 @@ func (a *App) Fatal(message string) {
 	os.Exit(1)
 }
 
+func (a *App) GetEnv(key string) string {
+	return os.Getenv(key)
+}
+
 func (a *App) GetMeta() coreTypes.MetaData {
 	return a.meta
 }
