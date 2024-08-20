@@ -7,7 +7,7 @@ import { useAppState } from "@state";
 import { ViewStateProvider } from "@state";
 
 export function NamesView() {
-  const { names } = useAppState();
+  const { names, fetchNames } = useAppState();
 
   const table = useReactTable({
     data: names.names || [],
@@ -16,7 +16,7 @@ export function NamesView() {
   });
 
   return (
-    <ViewStateProvider route={"names"} nItems={names.nItems}>
+    <ViewStateProvider route={"names"} nItems={names.nItems} fetchFn={fetchNames}>
       <View>
         <FormTable data={names} definition={createNameForm(table)} />
       </View>
