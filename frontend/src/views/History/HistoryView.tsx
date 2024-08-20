@@ -8,16 +8,17 @@ import { GetLastSub } from "@gocode/app/App";
 import { useAppState } from "@state";
 
 export function HistoryView() {
-  const { address, setAddress, history } = useAppState();
+  const { setAddress, history, resetPager } = useAppState();
 
   var aa = useParams().address;
   useEffect(() => {
+    // TODO: This doesn't compile. It uses useKeyboardPaging but can't outside of a
+    // TODO: component. It's needed when the address changes to go back to page zero.
+    // resetPager("history");
     if (aa === ":address") {
       GetLastSub("/history").then((subRoute) => {
-        // console.log("subRoute: ", subRoute);
-        // console.log("as address: ", subRoute as unknown as base.Address);
         subRoute = subRoute.replace("/", "");
-        return setAddress(subRoute as unknown as base.Address);
+        setAddress(subRoute as unknown as base.Address);
       });
     } else {
       setAddress(aa as unknown as base.Address);

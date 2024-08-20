@@ -3,6 +3,14 @@ import { Pager } from "@components";
 import { Route } from "@/Routes";
 import { useKeyboardPaging } from "@hooks";
 
+// TODO: Complicated situation during development. Will be corrected. There are two pagers
+// TODO: for the same route. This one (in the ViewContext) and the one in the useAppState.
+// TODO: We would rather have only one (this one) but we need to refactor the useAppState
+// TODO: so that it's not required there. Since both pagers (per route) listen for and
+// TODO: respond to "DAEMON" (i.e. freshen) messages, it works fine. Just inefficient.
+// TODO: The useAppState pager is used to grab a page from the backend state. This pager
+// TODO: causes the page to advance.
+
 interface ViewStateProps {
   route: Route;
   nItems: number;
