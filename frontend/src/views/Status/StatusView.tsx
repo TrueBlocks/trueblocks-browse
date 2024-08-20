@@ -15,7 +15,7 @@ export function StatusView() {
   });
 
   return (
-    <View>
+    <View route="status" nItems={status.nItems}>
       <FormTable data={status} definition={createStatusForm(table)} />
     </View>
   );

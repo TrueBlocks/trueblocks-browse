@@ -8,10 +8,10 @@ export function HomeView() {
 
   var counters = getCounters();
   return (
-    <View>
+    <View route="">
       <Text>Current State</Text>
       <Group>
-        <Text>current:</Text> <Formatter type="address-address-only" value={address} />
+        <Text>current address:</Text> <Formatter type="address-address-only" value={address} />
       </Group>
       <Group>
         <Text>nMonitors:</Text> <Formatter type="int" value={counters.nMonitors} />

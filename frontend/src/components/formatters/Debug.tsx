@@ -1,7 +1,7 @@
 import { knownTypes } from ".";
 import classes from "./Formatter.module.css";
 
-export const debug = 0; // 0 for production, 1 for color, 2 for color and name
+export const debug = 2; // 0 for production, 1 for color, 2 for color and name
 
 export const getDebugColor = (type: knownTypes): string => {
   var ret: string = "";

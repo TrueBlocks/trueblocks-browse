@@ -15,7 +15,7 @@ export function AbisView() {
   });
 
   return (
-    <View>
+    <View route="abis" nItems={abis.nItems}>
       <FormTable data={abis} definition={createAbisForm(table)} />
     </View>
   );

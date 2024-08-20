@@ -59,7 +59,7 @@ export function DaemonsView() {
   };
 
   return (
-    <View>
+    <View route="daemons">
       <Fieldset legend={"Daemons"} bg={"white"}>
         <SimpleGrid cols={2}>
           <DaemonCard daemon={scraper} toggle={toggleDaemon} />

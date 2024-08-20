@@ -15,7 +15,7 @@ export function MonitorsView() {
   });
 
   return (
-    <View>
+    <View route="monitors" nItems={monitors.nItems}>
       <FormTable data={monitors} definition={createMonitorForm(table)} />
     </View>
   );

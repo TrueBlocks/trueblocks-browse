@@ -15,7 +15,7 @@ export function ManifestView() {
   });
 
   return (
-    <View>
+    <View route="manifest" nItems={manifests.nItems}>
       <FormTable data={manifests} definition={createManifestForm(table)} />
     </View>
   );

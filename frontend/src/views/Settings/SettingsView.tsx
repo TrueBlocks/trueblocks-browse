@@ -14,7 +14,7 @@ export function SettingsView() {
   }, []);
 
   return (
-    <View>
+    <View route="settings">
       <InputLabel>
         <Checkbox label={"A checkbox"} />
         <pre>{JSON.stringify(session, null, 2)}</pre>

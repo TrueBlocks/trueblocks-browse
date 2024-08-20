@@ -15,7 +15,7 @@ export function IndexesView() {
   });
 
   return (
-    <View>
+    <View route="indexes" nItems={indexes.nItems}>
       <FormTable data={indexes} definition={createIndexForm(table)} />
     </View>
   );

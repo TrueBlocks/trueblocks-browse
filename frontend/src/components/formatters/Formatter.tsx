@@ -83,7 +83,7 @@ export const Formatter = ({ type, size = "md", className, value, value2 = null }
       value = "UNKNOWN FORMATTER TYPE";
   }
 
-  if (debug === 2) {
+  if (debug > 1) {
     return (
       <Stack gap={0}>
         <Text className={cn} size={size}>

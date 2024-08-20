@@ -31,7 +31,7 @@ export function HistoryView() {
   });
 
   return (
-    <View>
+    <View route="history" nItems={history.nItems}>
       <FormTable data={history} definition={createHistoryForm(table)} />
     </View>
   );

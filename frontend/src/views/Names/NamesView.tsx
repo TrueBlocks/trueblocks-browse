@@ -15,7 +15,7 @@ export function NamesView() {
   });
 
   return (
-    <View>
+    <View route="names" nItems={names.nItems}>
       <FormTable data={names} definition={createNameForm(table)} />
     </View>
   );
