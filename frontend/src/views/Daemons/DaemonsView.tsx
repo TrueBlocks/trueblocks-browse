@@ -5,6 +5,7 @@ import { daemons, messages } from "@gocode/models";
 import { GetDaemon, ToggleDaemon } from "@gocode/app/App";
 import { SimpleGrid, Fieldset } from "@mantine/core";
 import { EventsOn, EventsOff } from "@runtime";
+import { ViewStateProvider } from "@state";
 
 var empty = {} as daemons.Daemon;
 
@@ -59,17 +60,19 @@ export function DaemonsView() {
   };
 
   return (
-    <View route="daemons">
-      <Fieldset legend={"Daemons"} bg={"white"}>
-        <SimpleGrid cols={2}>
-          <DaemonCard daemon={scraper} toggle={toggleDaemon} />
-          <DaemonCard daemon={freshen} toggle={toggleDaemon} />
-          <DaemonCard daemon={ipfs} toggle={toggleDaemon} />
-        </SimpleGrid>
-      </Fieldset>
-      <Fieldset legend={"Logs"} bg={"white"}>
-        <DaemonLog logMessages={logMessages} />
-      </Fieldset>
-    </View>
+    <ViewStateProvider route="daemons">
+      <View>
+        <Fieldset legend={"Daemons"} bg={"white"}>
+          <SimpleGrid cols={2}>
+            <DaemonCard daemon={scraper} toggle={toggleDaemon} />
+            <DaemonCard daemon={freshen} toggle={toggleDaemon} />
+            <DaemonCard daemon={ipfs} toggle={toggleDaemon} />
+          </SimpleGrid>
+        </Fieldset>
+        <Fieldset legend={"Logs"} bg={"white"}>
+          <DaemonLog logMessages={logMessages} />
+        </Fieldset>
+      </View>
+    </ViewStateProvider>
   );
 }

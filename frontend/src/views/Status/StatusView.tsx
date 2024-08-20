@@ -3,7 +3,7 @@ import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./StatusTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { useAppState } from "@state";
+import { useAppState, ViewStateProvider } from "@state";
 
 export function StatusView() {
   const { status } = useAppState();
@@ -15,9 +15,11 @@ export function StatusView() {
   });
 
   return (
-    <View route="status" nItems={status.nItems}>
-      <FormTable data={status} definition={createStatusForm(table)} />
-    </View>
+    <ViewStateProvider route="status" nItems={status.nItems}>
+      <View>
+        <FormTable data={status} definition={createStatusForm(table)} />
+      </View>
+    </ViewStateProvider>
   );
 }
 

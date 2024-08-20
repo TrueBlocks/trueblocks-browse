@@ -5,7 +5,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./HistoryTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { GetLastSub } from "@gocode/app/App";
-import { useAppState } from "@state";
+import { useAppState, ViewStateProvider } from "@state";
 
 export function HistoryView() {
   const { setAddress, history, resetPager } = useAppState();
@@ -32,9 +32,11 @@ export function HistoryView() {
   });
 
   return (
-    <View route="history" nItems={history.nItems}>
-      <FormTable data={history} definition={createHistoryForm(table)} />
-    </View>
+    <ViewStateProvider route="history" nItems={history.nItems}>
+      <View>
+        <FormTable data={history} definition={createHistoryForm(table)} />
+      </View>
+    </ViewStateProvider>
   );
 }
 

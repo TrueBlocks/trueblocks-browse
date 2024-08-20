@@ -3,7 +3,7 @@ import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./IndexesTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { useAppState } from "@state";
+import { useAppState, ViewStateProvider } from "@state";
 
 export function IndexesView() {
   const { indexes } = useAppState();
@@ -15,9 +15,11 @@ export function IndexesView() {
   });
 
   return (
-    <View route="indexes" nItems={indexes.nItems}>
-      <FormTable data={indexes} definition={createIndexForm(table)} />
-    </View>
+    <ViewStateProvider route="indexes" nItems={indexes.nItems}>
+      <View>
+        <FormTable data={indexes} definition={createIndexForm(table)} />
+      </View>
+    </ViewStateProvider>
   );
 }
 

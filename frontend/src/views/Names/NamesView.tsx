@@ -4,6 +4,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./NamesTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { useAppState } from "@state";
+import { ViewStateProvider } from "@state";
 
 export function NamesView() {
   const { names } = useAppState();
@@ -15,9 +16,11 @@ export function NamesView() {
   });
 
   return (
-    <View route="names" nItems={names.nItems}>
-      <FormTable data={names} definition={createNameForm(table)} />
-    </View>
+    <ViewStateProvider route={"names"} nItems={names.nItems}>
+      <View>
+        <FormTable data={names} definition={createNameForm(table)} />
+      </View>
+    </ViewStateProvider>
   );
 }
 

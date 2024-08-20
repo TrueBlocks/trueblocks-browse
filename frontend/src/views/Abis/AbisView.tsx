@@ -3,7 +3,7 @@ import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./AbisTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { useAppState } from "@state";
+import { useAppState, ViewStateProvider } from "@state";
 
 export function AbisView() {
   const { abis } = useAppState();
@@ -15,9 +15,11 @@ export function AbisView() {
   });
 
   return (
-    <View route="abis" nItems={abis.nItems}>
-      <FormTable data={abis} definition={createAbisForm(table)} />
-    </View>
+    <ViewStateProvider route="abis" nItems={abis.nItems}>
+      <View>
+        <FormTable data={abis} definition={createAbisForm(table)} />
+      </View>
+    </ViewStateProvider>
   );
 }
 

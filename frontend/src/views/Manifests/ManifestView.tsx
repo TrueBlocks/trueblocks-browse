@@ -3,7 +3,7 @@ import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./ManifestTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { useAppState } from "@state";
+import { useAppState, ViewStateProvider } from "@state";
 
 export function ManifestView() {
   const { manifests } = useAppState();
@@ -15,9 +15,11 @@ export function ManifestView() {
   });
 
   return (
-    <View route="manifest" nItems={manifests.nItems}>
-      <FormTable data={manifests} definition={createManifestForm(table)} />
-    </View>
+    <ViewStateProvider route="manifest" nItems={manifests.nItems}>
+      <View>
+        <FormTable data={manifests} definition={createManifestForm(table)} />
+      </View>
+    </ViewStateProvider>
   );
 }
 

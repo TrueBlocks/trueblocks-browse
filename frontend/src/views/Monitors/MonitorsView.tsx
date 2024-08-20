@@ -3,7 +3,7 @@ import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./MonitorsTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { useAppState } from "@state";
+import { useAppState, ViewStateProvider } from "@state";
 
 export function MonitorsView() {
   const { monitors } = useAppState();
@@ -15,9 +15,11 @@ export function MonitorsView() {
   });
 
   return (
-    <View route="monitors" nItems={monitors.nItems}>
-      <FormTable data={monitors} definition={createMonitorForm(table)} />
-    </View>
+    <ViewStateProvider route="monitors" nItems={monitors.nItems}>
+      <View>
+        <FormTable data={monitors} definition={createMonitorForm(table)} />
+      </View>
+    </ViewStateProvider>
   );
 }
 
