@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect, useRef } from "react";
 import { types, messages, base, wizard, daemons } from "@gocode/models";
 import { useKeyboardPaging } from "@hooks";
 import { Pager, EmptyPager } from "@components";
@@ -46,6 +46,8 @@ interface AppStateProps {
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
 export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const myRef = useRef(false);
+
   const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
 
   const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.NOTOKAY);
@@ -74,99 +76,120 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
   let statusPgr = useKeyboardPaging("status", status.nItems, [], 10);
 
+  const fetchMeta = async () => {
+    GetMeta().then((meta) => {
+      setMeta(meta);
+    });
+  };
+
+  const fetchWizard = async () => {
+    GetWizardState().then((state) => {
+      setWizardState(state);
+      setIsConfigured(state == wizard.State.OKAY);
+    });
+  };
+
+  const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
+    GetLastSub("/history").then((subRoute: string) => {
+      if (subRoute !== "") {
+        console.log("subRoute-app1: ", subRoute);
+        subRoute = subRoute.replace("/", "");
+        console.log("subRoute-app2: ", subRoute);
+        console.log("subRoute-app3: ", subRoute as unknown as base.Address);
+        setAddress(subRoute as unknown as base.Address);
+      }
+    });
+  };
+
+  const fetchMonitors = async (currentItem: number, itemsPerPage: number) => {
+    MonitorPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
+      if (item) {
+        setMonitors(item);
+      }
+    });
+  };
+
+  const fetchNames = async (currentItem: number, itemsPerPage: number) => {
+    NamePage(currentItem, itemsPerPage).then((item: types.NameContainer) => {
+      if (item) {
+        setNames(item);
+      }
+    });
+  };
+
+  const fetchAbis = async (currentItem: number, itemsPerPage: number) => {
+    AbiPage(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
+      if (item) {
+        setAbis(item);
+      }
+    });
+  };
+
+  const fetchIndexes = async (currentItem: number, itemsPerPage: number) => {
+    IndexPage(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
+      if (item) {
+        setIndexes(item);
+      }
+    });
+  };
+
+  const fetchManifest = async (currentItem: number, itemsPerPage: number) => {
+    ManifestPage(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
+      if (item) {
+        setManifests(item);
+      }
+    });
+  };
+
+  const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
+    StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
+      if (item) {
+        setStatus(item);
+      }
+    });
+  };
+
   useEffect(() => {
-    HistoryPage(address as unknown as string, historyPgr.curItem, historyPgr.perPage).then(
-      (item: types.TransactionContainer) => {
+    if (myRef.current) {
+      // only run this after the first render
+      HistoryPage(address as unknown as string, historyPgr.curItem, historyPgr.perPage).then((item: types.TransactionContainer) => {
         if (item) {
           setHistory(item);
         }
-      }
-    );
+      });
+    }
   }, [address, historyPgr.curItem, historyPgr.perPage]);
 
   useEffect(() => {
-    const fetchMeta = async () => {
-      GetMeta().then((meta) => {
-        setMeta(meta);
-      });
-    };
+    myRef.current = true;
     fetchMeta();
-
-    const fetchWizard = async () => {
-      GetWizardState().then((state) => {
-        setWizardState(state);
-        setIsConfigured(state == wizard.State.OKAY);
-      });
-    };
     fetchWizard();
-
-    const fetchHistory = async (address: base.Address, currentItem: number, itemsPerPage: number) => {
-      GetLastSub("/history").then((subRoute: string) => {
-        if (subRoute !== "") {
-          console.log("subRoute-app1: ", subRoute);
-          subRoute = subRoute.replace("/", "");
-          console.log("subRoute-app2: ", subRoute);
-          console.log("subRoute-app3: ", subRoute as unknown as base.Address);
-          setAddress(subRoute as unknown as base.Address);
-        }
-      });
-    };
     fetchHistory(address, historyPgr.curItem, historyPgr.perPage);
-
-    const fetchMonitors = async (currentItem: number, itemsPerPage: number) => {
-      MonitorPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
-        if (item) {
-          setMonitors(item);
-        }
-      });
-    };
     fetchMonitors(monitorPgr.curItem, monitorPgr.perPage);
-
-    const fetchNames = async (currentItem: number, itemsPerPage: number) => {
-      NamePage(currentItem, itemsPerPage).then((item: types.NameContainer) => {
-        if (item) {
-          setNames(item);
-        }
-      });
-    };
     fetchNames(namesPgr.curItem, namesPgr.perPage);
-
-    const fetchAbis = async (currentItem: number, itemsPerPage: number) => {
-      AbiPage(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
-        if (item) {
-          setAbis(item);
-        }
-      });
-    };
     fetchAbis(abiPgr.curItem, abiPgr.perPage);
-
-    const fetchIndexes = async (currentItem: number, itemsPerPage: number) => {
-      IndexPage(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
-        if (item) {
-          setIndexes(item);
-        }
-      });
-    };
     fetchIndexes(indexPgr.curItem, indexPgr.perPage);
-
-    const fetchManifest = async (currentItem: number, itemsPerPage: number) => {
-      ManifestPage(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
-        if (item) {
-          setManifests(item);
-        }
-      });
-    };
     fetchManifest(manifestPgr.curItem, manifestPgr.perPage);
-
-    const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
-      StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
-        if (item) {
-          setStatus(item);
-        }
-      });
-    };
     fetchStatus(statusPgr.curItem, statusPgr.perPage);
+  }, [
+    historyPgr.curItem,
+    historyPgr.perPage,
+    monitorPgr.curItem,
+    monitorPgr.perPage,
+    namesPgr.curItem,
+    namesPgr.perPage,
+    abiPgr.curItem,
+    abiPgr.perPage,
+    indexPgr.curItem,
+    indexPgr.perPage,
+    manifestPgr.curItem,
+    manifestPgr.perPage,
+    statusPgr.curItem,
+    statusPgr.perPage,
+  ]);
 
+  useEffect(() => {
+    myRef.current = true;
     const handleRefresh = () => {
       fetchMeta();
       fetchWizard();
@@ -184,22 +207,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     return () => {
       EventsOff(Message.DAEMON);
     };
-  }, [
-    historyPgr.curItem,
-    historyPgr.perPage,
-    monitorPgr.curItem,
-    monitorPgr.perPage,
-    namesPgr.curItem,
-    namesPgr.perPage,
-    abiPgr.curItem,
-    abiPgr.perPage,
-    indexPgr.curItem,
-    indexPgr.perPage,
-    manifestPgr.curItem,
-    manifestPgr.perPage,
-    statusPgr.curItem,
-    statusPgr.perPage,
-  ]);
+  }, []);
 
   const stepWizard = (step: wizard.Step) => {
     StepWizard(step).then((state) => {
