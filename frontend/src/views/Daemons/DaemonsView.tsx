@@ -60,7 +60,7 @@ export function DaemonsView() {
   };
 
   return (
-    <ViewStateProvider route="daemons">
+    <ViewStateProvider route="daemons" fetchFn={(curItem: number, perPage: number, item?: any) => {}}>
       <View>
         <Fieldset legend={"Daemons"} bg={"white"}>
           <SimpleGrid cols={2}>

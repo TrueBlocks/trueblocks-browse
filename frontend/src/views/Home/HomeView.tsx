@@ -8,7 +8,7 @@ export function HomeView() {
 
   var counters = getCounters();
   return (
-    <ViewStateProvider route="">
+    <ViewStateProvider route="" fetchFn={(curItem: number, perPage: number, item?: any) => {}}>
       <View>
         <Text>Current State</Text>
         <Group>

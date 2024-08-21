@@ -1,5 +1,7 @@
 // from https://viem.sh/docs/utilities/formatUnits
 export function useToEther(value: bigint) {
+  if (!value) return "-";
+
   let display = value.toString();
   const negative = display.startsWith("-");
   if (negative) display = display.slice(1);

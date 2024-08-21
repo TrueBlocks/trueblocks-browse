@@ -62,7 +62,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.TransactionCon
 					summary.Name = a.names.NamesMap[address].Name
 					summary.Items = append(summary.Items, *txEx)
 					a.historyMap[address] = summary
-					if len(a.historyMap[address].Items)%pageSize == 0 {
+					if len(a.historyMap[address].Items)%base.Max(pageSize, 1) == 0 {
 						messages.Send(a.ctx,
 							messages.Progress,
 							messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(nItems), address),
