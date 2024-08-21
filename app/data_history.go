@@ -49,18 +49,11 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.TransactionCon
 					if !ok {
 						continue
 					}
-					txEx := tx //types.NewTransactionEx(tx)
-					// if name, ok := a.names.NamesMap[tx.From]; ok {
-					// 	txEx.FromName = name.Name
-					// }
-					// if name, ok := a.names.NamesMap[tx.To]; ok {
-					// 	txEx.ToName = name.Name
-					// }
 					historyMutex.Lock()
 					summary := a.historyMap[address]
 					summary.Address = address
 					summary.Name = a.names.NamesMap[address].Name
-					summary.Items = append(summary.Items, *txEx)
+					summary.Items = append(summary.Items, *tx)
 					a.historyMap[address] = summary
 					if len(a.historyMap[address].Items)%base.Max(pageSize, 1) == 0 {
 						messages.Send(a.ctx,
