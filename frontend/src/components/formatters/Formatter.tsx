@@ -1,11 +1,10 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
-import { Text, TextProps, Stack } from "@mantine/core";
+import { TextProps } from "@mantine/core";
 import { base } from "@gocode/models";
 import { useDateTime, useToEther } from "@hooks";
 import { AddressFormatter, getDebugColor, Popup, NamePopup, AddressPopup } from ".";
 import { useAppState } from "@state";
-import { useEnvironment } from "@hooks";
 import classes from "./Formatter.module.css";
 import { TextFormatter } from "./TextFormatter";
 
@@ -42,7 +41,7 @@ export const Formatter = ({ type, size = "md", className, value, value2 = null }
 
   var n = value as number;
   var bi = value as bigint;
-  const isCurrent = useMemo(() => value === address, [address]);
+  const isCurrent = value === address;
   const cn = getDebugColor(type) || (isCurrent ? classes.bold : className);
 
 
