@@ -169,6 +169,10 @@ func (a *App) GetEnv(key string) string {
 	return os.Getenv(key)
 }
 
+func (a *App) SetEnv(key, value string) {
+	os.Setenv(key, value)
+}
+
 func (a *App) GetMeta() coreTypes.MetaData {
 	return a.meta
 }

@@ -29,7 +29,7 @@ interface AppStateProps {
   indexes: types.IndexContainer;
   fetchIndexes: (currentItem: number, itemsPerPage: number, item?: any) => void;
   manifests: types.ManifestContainer;
-  fetchManifest: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  fetchManifests: (currentItem: number, itemsPerPage: number, item?: any) => void;
   status: types.StatusContainer;
   fetchStatus: (currentItem: number, itemsPerPage: number, item?: any) => void;
 
@@ -123,7 +123,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchManifest = async (currentItem: number, itemsPerPage: number, item?: any) => {
+  const fetchManifests = async (currentItem: number, itemsPerPage: number, item?: any) => {
     ManifestPage(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
       if (item) {
         setManifests(item);
@@ -194,7 +194,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     indexes,
     fetchIndexes,
     manifests,
-    fetchManifest,
+    fetchManifests,
     status,
     fetchStatus,
     setAddress,

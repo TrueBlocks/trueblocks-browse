@@ -65,6 +65,8 @@ export function Refresh(arg1:Array<string>):Promise<void>;
 
 export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
 
+export function SetEnv(arg1:string,arg2:string):Promise<void>;
+
 export function SetLast(arg1:string,arg2:string):Promise<void>;
 
 export function SetLastDaemon(arg1:string,arg2:boolean):Promise<void>;
@@ -98,8 +100,6 @@ export function ViewManifest(arg1:menu.CallbackData):Promise<void>;
 export function ViewMonitors(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewNames(arg1:menu.CallbackData):Promise<void>;
-
-export function ViewReload(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewSettings(arg1:menu.CallbackData):Promise<void>;
 

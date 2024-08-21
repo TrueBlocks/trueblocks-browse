@@ -114,6 +114,10 @@ export function RegisterCtx(arg1) {
   return window['go']['app']['App']['RegisterCtx'](arg1);
 }
 
+export function SetEnv(arg1, arg2) {
+  return window['go']['app']['App']['SetEnv'](arg1, arg2);
+}
+
 export function SetLast(arg1, arg2) {
   return window['go']['app']['App']['SetLast'](arg1, arg2);
 }
@@ -180,10 +184,6 @@ export function ViewMonitors(arg1) {
 
 export function ViewNames(arg1) {
   return window['go']['app']['App']['ViewNames'](arg1);
-}
-
-export function ViewReload(arg1) {
-  return window['go']['app']['App']['ViewReload'](arg1);
 }
 
 export function ViewSettings(arg1) {
