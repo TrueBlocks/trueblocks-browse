@@ -90,6 +90,10 @@ export function HistoryPage(arg1, arg2, arg3) {
   return window['go']['app']['App']['HistoryPage'](arg1, arg2, arg3);
 }
 
+export function HistorySize(arg1) {
+  return window['go']['app']['App']['HistorySize'](arg1);
+}
+
 export function IndexPage(arg1, arg2) {
   return window['go']['app']['App']['IndexPage'](arg1, arg2);
 }

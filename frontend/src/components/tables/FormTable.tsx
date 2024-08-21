@@ -3,11 +3,6 @@ import { Fieldset, Container, Grid, Flex, Text, Stack } from "@mantine/core";
 import { Formatter, knownTypes } from "@components";
 import classes from "./FormTable.module.css";
 
-export type Progress = {
-  have: number;
-  want: number;
-};
-
 type FieldDefinition<T> = {
   label: string;
   accessor: keyof T;

@@ -44,13 +44,11 @@ export const ViewStateProvider: React.FC<{
 
   useEffect(() => {
     if (route === "history") {
-      HistoryPage(address as unknown as string, pager.curItem, pager.perPage).then(
-        (item: types.TransactionContainer) => {
-          if (item) {
-            setHistory(item);
-          }
+      HistoryPage(address as unknown as string, pager.curItem, pager.perPage).then((item: types.HistoryContainer) => {
+        if (item) {
+          setHistory(item);
         }
-      );
+      });
     }
   }, [address, pager.curItem, pager.perPage]);
 

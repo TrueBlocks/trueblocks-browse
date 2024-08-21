@@ -14,15 +14,15 @@ import (
 
 var historyMutex sync.Mutex
 
-func (a *App) HistoryPage(addr string, first, pageSize int) types.TransactionContainer {
+func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContainer {
 	if !a.isConfigured() {
-		return types.TransactionContainer{}
+		return types.HistoryContainer{}
 	}
 
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
-		return types.TransactionContainer{}
+		return types.HistoryContainer{}
 	}
 
 	historyMutex.Lock()
@@ -80,7 +80,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.TransactionCon
 		_, meta, err := opts.Export()
 		if err != nil {
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
-			return types.TransactionContainer{}
+			return types.HistoryContainer{}
 		}
 		a.meta = *meta
 		historyMutex.Lock()
@@ -138,4 +138,17 @@ func (a *App) getHistoryCnt(addr string) int {
 		a.meta = *meta
 		return int(appearances[0].NRecords)
 	}
+}
+
+func (a *App) HistorySize(addr string) int {
+	address, ok := a.ConvertToAddress(addr)
+	if !ok {
+		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
+		return 0
+	}
+
+	historyMutex.Lock()
+	defer historyMutex.Unlock()
+	d := a.historyMap[address]
+	return d.SizeOf()
 }

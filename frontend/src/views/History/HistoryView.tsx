@@ -37,7 +37,7 @@ export function HistoryView() {
   );
 }
 
-type theInstance = InstanceType<typeof types.TransactionContainer>;
+type theInstance = InstanceType<typeof types.HistoryContainer>;
 function createHistoryForm(table: any): GroupDefinition<theInstance>[] {
   return [
     {

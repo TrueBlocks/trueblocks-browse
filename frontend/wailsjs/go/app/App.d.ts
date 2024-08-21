@@ -51,7 +51,9 @@ export function GetWizardState():Promise<wizard.State>;
 
 export function HelpToggle(arg1:menu.CallbackData):Promise<void>;
 
-export function HistoryPage(arg1:string,arg2:number,arg3:number):Promise<types.TransactionContainer>;
+export function HistoryPage(arg1:string,arg2:number,arg3:number):Promise<types.HistoryContainer>;
+
+export function HistorySize(arg1:string):Promise<number>;
 
 export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>;
 

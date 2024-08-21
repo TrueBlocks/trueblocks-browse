@@ -15,36 +15,6 @@ import {
   GetMeta,
 } from "@gocode/app/App";
 
-interface AppStateProps {
-  address: base.Address;
-  history: types.TransactionContainer;
-  fetchHistory: (currentItem: number, itemsPerPage: number, item?: any) => void;
-  setHistory: React.Dispatch<React.SetStateAction<types.TransactionContainer>>;
-  monitors: types.MonitorContainer;
-  fetchMonitors: (currentItem: number, itemsPerPage: number, item?: any) => void;
-  names: types.NameContainer;
-  fetchNames: (currentItem: number, itemsPerPage: number, item?: any) => void;
-  abis: types.AbiContainer;
-  fetchAbis: (currentItem: number, itemsPerPage: number, item?: any) => void;
-  indexes: types.IndexContainer;
-  fetchIndexes: (currentItem: number, itemsPerPage: number, item?: any) => void;
-  manifests: types.ManifestContainer;
-  fetchManifests: (currentItem: number, itemsPerPage: number, item?: any) => void;
-  status: types.StatusContainer;
-  fetchStatus: (currentItem: number, itemsPerPage: number, item?: any) => void;
-
-  setAddress: (address: base.Address) => void;
-
-  isConfigured: boolean;
-  wizardState: wizard.State;
-  stepWizard: (step: wizard.Step) => void;
-
-  meta: types.MetaData;
-  setMeta: (meta: types.MetaData) => void;
-
-  getCounters: () => Counters;
-}
-
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
 export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -57,7 +27,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
 
-  const [history, setHistory] = useState<types.TransactionContainer>({} as types.TransactionContainer);
+  const [history, setHistory] = useState<types.HistoryContainer>({} as types.HistoryContainer);
   const [monitors, setMonitors] = useState<types.MonitorContainer>({} as types.MonitorContainer);
   const [names, setNames] = useState<types.NameContainer>({} as types.NameContainer);
   const [abis, setAbis] = useState<types.AbiContainer>({} as types.AbiContainer);
@@ -161,6 +131,15 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
   }, []);
 
+  useEffect(() => {
+    fetchHistory(0, 15, null);
+    HistoryPage(address as unknown as string, 0, 15).then((item: types.HistoryContainer) => {
+      if (item) {
+        setHistory(item);
+      }
+    });
+  }, []);
+
   const stepWizard = (step: wizard.Step) => {
     StepWizard(step).then((state) => {
       setWizardState(state);
@@ -226,3 +205,33 @@ type Counters = {
   nManifests: number;
   nStatus: number;
 };
+
+interface AppStateProps {
+  address: base.Address;
+  history: types.HistoryContainer;
+  fetchHistory: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  setHistory: React.Dispatch<React.SetStateAction<types.HistoryContainer>>;
+  monitors: types.MonitorContainer;
+  fetchMonitors: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  names: types.NameContainer;
+  fetchNames: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  abis: types.AbiContainer;
+  fetchAbis: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  indexes: types.IndexContainer;
+  fetchIndexes: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  manifests: types.ManifestContainer;
+  fetchManifests: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  status: types.StatusContainer;
+  fetchStatus: (currentItem: number, itemsPerPage: number, item?: any) => void;
+
+  setAddress: (address: base.Address) => void;
+
+  isConfigured: boolean;
+  wizardState: wizard.State;
+  stepWizard: (step: wizard.Step) => void;
+
+  meta: types.MetaData;
+  setMeta: (meta: types.MetaData) => void;
+
+  getCounters: () => Counters;
+}

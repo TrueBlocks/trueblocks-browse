@@ -77,6 +77,9 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 			return compare(a.names.Names[i], a.names.Names[j])
 		})
 		a.names.Summarize()
+		a.names.SizeOnDisc = int(file.FileSize(filePath))
+		filePath = filepath.Join(config.MustGetPathToChainConfig(chain), string(names.DatabaseRegular))
+		a.names.SizeOnDisc += int(file.FileSize(filePath))
 		return nil
 	}
 }

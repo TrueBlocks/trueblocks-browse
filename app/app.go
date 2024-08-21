@@ -34,7 +34,7 @@ type App struct {
 	apiKeys    map[string]string
 	ensMap     map[string]base.Address
 	renderCtxs map[base.Address][]*output.RenderCtx
-	historyMap map[base.Address]types.TransactionContainer
+	historyMap map[base.Address]types.HistoryContainer
 	balanceMap sync.Map
 	meta       coreTypes.MetaData
 
@@ -56,7 +56,7 @@ func NewApp() *App {
 		apiKeys:    make(map[string]string),
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 		ensMap:     make(map[string]base.Address),
-		historyMap: make(map[base.Address]types.TransactionContainer),
+		historyMap: make(map[base.Address]types.HistoryContainer),
 		Documents:  make([]types.Document, 10),
 	}
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
