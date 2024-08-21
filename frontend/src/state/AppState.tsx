@@ -113,7 +113,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     myRef.current = true;
     fetchMeta();
     fetchWizard();
-    fetchStatus(0, 1);
+    fetchStatus(0, 100);
   }, []);
 
   useEffect(() => {
@@ -121,7 +121,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     const handleRefresh = () => {
       fetchMeta();
       fetchWizard();
-      fetchStatus(0, 1);
+      fetchStatus(0, 100);
     };
 
     var { Message } = messages;

@@ -11,7 +11,6 @@ interface ViewStateProps {
   route: Route;
   nItems: number;
   pager: Pager;
-  getViewPager: (route: Route) => Pager | null;
 }
 
 const ViewContext = createContext<ViewStateProps | undefined>(undefined);
@@ -52,15 +51,10 @@ export const ViewStateProvider: React.FC<{
     }
   }, [address, pager.curItem, pager.perPage]);
 
-  const getViewPager = (route: Route): Pager => {
-    return pager;
-  };
-
   let state = {
     route,
     nItems,
     pager,
-    getViewPager,
   };
 
   return <ViewContext.Provider value={state}>{children}</ViewContext.Provider>;

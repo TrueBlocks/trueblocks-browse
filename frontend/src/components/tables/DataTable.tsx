@@ -13,7 +13,7 @@ interface DataTableProps<T> {
 }
 
 export function DataTable<T>({ table, loading }: DataTableProps<T>) {
-  const { route, getViewPager } = useViewState();
+  const { route, pager } = useViewState();
 
   if (loading) {
     return <Title order={3}>Loading...</Title>;
@@ -49,7 +49,7 @@ export function DataTable<T>({ table, loading }: DataTableProps<T>) {
             ))}
           </Table.Tbody>
         </Table>
-        <Paginator pager={getViewPager(route)} />
+        <Paginator pager={pager} />
       </>
     );
   }
