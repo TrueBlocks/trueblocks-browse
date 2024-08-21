@@ -157,6 +157,7 @@ export namespace messages {
 	    DAEMON = "Daemon",
 	    DOCUMENT = "Document",
 	    NAVIGATE = "Navigate",
+	    RELOAD = "Reload",
 	    TOGGLEHELP = "ToggleHelp",
 	}
 	export class DaemonMsg {

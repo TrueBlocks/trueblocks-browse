@@ -1,5 +1,11 @@
 // from https://viem.sh/docs/utilities/formatUnits
-export function useToEther(value: bigint) {
+export function useToEther(value: bigint | string) {
+  // Check if the input is a string that already contains a decimal
+  if (typeof value === "string" && value.includes(".")) {
+    return value;
+  }
+
+  // Handle bigint input as usual
   if (!value) return "-";
 
   let display = value.toString();

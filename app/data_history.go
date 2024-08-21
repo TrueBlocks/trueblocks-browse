@@ -30,6 +30,11 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.TransactionCon
 	historyMutex.Unlock()
 
 	if !exists {
+		messages.Send(a.ctx,
+			messages.Progress,
+			messages.NewProgressMsg(0, 0, address),
+		)
+
 		rCtx := a.RegisterCtx(address)
 		opts := sdk.ExportOptions{
 			Addrs:     []string{addr},

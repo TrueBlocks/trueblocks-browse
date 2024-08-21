@@ -182,6 +182,10 @@ export function ViewNames(arg1) {
   return window['go']['app']['App']['ViewNames'](arg1);
 }
 
+export function ViewReload(arg1) {
+  return window['go']['app']['App']['ViewReload'](arg1);
+}
+
 export function ViewSettings(arg1) {
   return window['go']['app']['App']['ViewSettings'](arg1);
 }

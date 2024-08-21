@@ -23,11 +23,12 @@ export const ViewStateProvider: React.FC<{
   children: ReactNode;
 }> = ({ route, nItems = -1, fetchFn, children }) => {
   const { address, setHistory } = useAppState();
-  const pager = useKeyboardPaging(route, nItems, [], 15);
+  const lines = route === "status" ? 10 : 14;
+  const pager = useKeyboardPaging(route, nItems, [], lines);
 
   useEffect(() => {
     fetchFn(pager.curItem, pager.perPage, null);
-  }, [pager.curItem, pager.perPage, pager]);
+  }, [pager.curItem, pager.perPage]);
 
   useEffect(() => {
     const handleRefresh = () => {

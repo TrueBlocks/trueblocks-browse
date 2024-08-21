@@ -16,11 +16,12 @@ const (
 	Daemon     Message = "Daemon"
 	Document   Message = "Document"
 	Navigate   Message = "Navigate"
+	Reload     Message = "Reload"
 	ToggleHelp Message = "ToggleHelp"
 )
 
 type MessageData interface {
-	string | ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg | NavigateMsg | HelpMsg
+	string | ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg | NavigateMsg | ReloadMsg | HelpMsg
 }
 
 // AllMessages - all possible messages for the frontend codegen
@@ -35,6 +36,7 @@ var AllMessages = []struct {
 	{Daemon, "DAEMON"},
 	{Document, "DOCUMENT"},
 	{Navigate, "NAVIGATE"},
+	{Reload, "RELOAD"},
 	{ToggleHelp, "TOGGLEHELP"},
 }
 

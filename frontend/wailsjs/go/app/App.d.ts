@@ -99,6 +99,8 @@ export function ViewMonitors(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewNames(arg1:menu.CallbackData):Promise<void>;
 
+export function ViewReload(arg1:menu.CallbackData):Promise<void>;
+
 export function ViewSettings(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewStatus(arg1:menu.CallbackData):Promise<void>;
