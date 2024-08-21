@@ -11,7 +11,7 @@ export function HomeView() {
     useAppState();
 
   const fetchFn = (curItem: number, perPage: number, item?: any) => {
-    // fetchHistory(curItem, perPage, item);
+    fetchHistory(curItem, perPage, item);
     fetchMonitors(curItem, perPage, item);
     fetchNames(curItem, perPage, item);
     fetchAbis(curItem, perPage, item);
