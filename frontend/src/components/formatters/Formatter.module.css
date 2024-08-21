@@ -2,52 +2,52 @@
 
 .brown {
   background-color: brown;
-  color: yellow;
+  color: yellow !important;
 }
 
 .red {
   background-color: red;
-  color: white;
+  color: floralwhite !important;
 }
 
 .green {
   background-color: green;
-  color: yellow;
+  color: yellow !important;
 }
 
 .blue {
   background-color: blue;
-  color: white;
+  color: white !important;
 }
 
 .purple {
   background-color: purple;
-  color: white;
+  color: white !important;
 }
 
 .black {
   background-color: black;
-  color: white;
+  color: white !important;
 }
 
 .pink {
   background-color: pink;
-  color: black;
+  color: black !important;
 }
 
 .orange {
   background-color: orange;
-  color: black;
+  color: black !important;
 }
 
 .lightblue {
   background-color: powderblue;
-  color: black;
+  color: black !important;
 }
 
 .bold {
   background-color: lightgrey;
-  font-weight: bold;
-  font-style: italic;
-  font-size: 2em;
+  /* font-weight: bold !important; */
+  font-style: italic !important;
+  font-size: 1.1em !important;
 }

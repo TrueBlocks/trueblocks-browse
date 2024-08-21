@@ -6,7 +6,7 @@ import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { useAppState, ViewStateProvider } from "@state";
 
 export function ManifestView() {
-  const { manifests, fetchManifest } = useAppState();
+  const { manifests, fetchManifests } = useAppState();
 
   const table = useReactTable({
     data: manifests.items || [],
@@ -15,7 +15,7 @@ export function ManifestView() {
   });
 
   return (
-    <ViewStateProvider route={"manifest"} nItems={manifests.nItems} fetchFn={fetchManifest}>
+    <ViewStateProvider route={"manifest"} nItems={manifests.nItems} fetchFn={fetchManifests}>
       <View>
         <FormTable data={manifests} definition={createManifestForm(table)} />
       </View>

@@ -41,6 +41,7 @@ function createNameForm(table: any): GroupDefinition<theInstance>[] {
       title: "Database Parts",
       colSpan: 6,
       fields: [
+        { label: "sizeOnDisc", type: "bytes", accessor: "sizeOnDisc" },
         { label: "nCustom", type: "int", accessor: "nCustom" },
         { label: "nRegular", type: "int", accessor: "nRegular" },
         { label: "nPrefund", type: "int", accessor: "nPrefund" },

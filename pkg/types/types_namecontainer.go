@@ -7,6 +7,7 @@ import (
 
 type NameContainer struct {
 	Names      []coreTypes.Name                `json:"names"`
+	SizeOnDisc int                             `json:"sizeOnDisc"`
 	NamesMap   map[base.Address]coreTypes.Name `json:"namesMap"`
 	NItems     int                             `json:"nItems"`
 	NContracts int                             `json:"nContracts"`
@@ -52,6 +53,7 @@ func (s *NameContainer) Summarize() {
 func (s *NameContainer) ShallowCopy() NameContainer {
 	return NameContainer{
 		NItems:     s.NItems,
+		SizeOnDisc: s.SizeOnDisc,
 		NContracts: s.NContracts,
 		NErc20s:    s.NErc20s,
 		NErc721s:   s.NErc721s,
