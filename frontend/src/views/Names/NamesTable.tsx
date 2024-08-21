@@ -20,20 +20,12 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
   columnHelper.accessor("address", {
     header: () => "Address",
     cell: (info) => <Formatter type="address-address-only" value={info.renderValue()} />,
-    meta: {
-      className: "wide cell",
-      editor: (getValue: () => any) => <AddressPopup address={getValue} />,
-    },
+    meta: { className: "wide cell" },
   }),
   columnHelper.accessor("name", {
     header: () => "Name",
     cell: (info) => <Formatter type="address-name-only" value={info.renderValue()} />,
-    meta: {
-      className: "wide cell",
-      editor: (getValue: () => any) => (
-        <NamePopup name={getValue} onSubmit={(newValue: string) => console.log(newValue)} />
-      ),
-    },
+    meta: { className: "wide cell" },
   }),
   columnHelper.accessor("symbol", {
     header: () => "Symbol",
