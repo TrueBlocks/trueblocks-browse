@@ -2,34 +2,25 @@ import React, { useEffect, useState } from "react";
 import { TextProps } from "@mantine/core";
 import { AddrToName } from "@gocode/app/App";
 import { base } from "@gocode/models";
-import { Formatter, knownTypes } from ".";
+import { Formatter, FormatterProps, knownType } from ".";
 import { useAppState } from "@state";
-import classes from "./Formatter.module.css";
 
-export const AddressFormatter = ({
-  addressIn,
-  className,
-  size = "md",
-}: {
-  addressIn: base.Address;
-  className?: string;
-  size?: TextProps["size"];
-}) => {
+export const AddressFormatter = ({ value, className, size = "md" }: FormatterProps) => {
   const { address } = useAppState();
   const [formattedAddress, setFormattedAddress] = useState<string>("");
-  const [type, setType] = useState<knownTypes>("text");
+  const [type, setType] = useState<knownType>("text");
 
   useEffect(() => {
     const formatAddress = async () => {
-      AddrToName(addressIn).then((name) => {
-        setFormattedAddress(name?.length > 0 ? name : (addressIn as unknown as string));
+      AddrToName(value).then((name) => {
+        setFormattedAddress(name?.length > 0 ? name : value);
         setType(name?.length > 0 ? "address-name-only" : "address-address-only");
       });
     };
     formatAddress();
-  }, [addressIn]);
+  }, [value]);
 
-  if (addressIn === address) {
+  if (value === address) {
     return <Formatter className={className} size={size} type={type} value={formattedAddress} />;
   }
 

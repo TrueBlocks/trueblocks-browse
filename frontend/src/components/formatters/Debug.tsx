@@ -1,9 +1,9 @@
 import React from "react";
-import { knownTypes } from ".";
+import { knownType } from ".";
 import { useEnvironment } from "@hooks";
 import classes from "./Formatter.module.css";
 
-export const getDebugColor = (type: knownTypes): string => {
+export const getDebugColor = (type: knownType): string => {
   const debug = useEnvironment("TB_DEBUG_DISPLAY");
 
   var ret: string = "";

@@ -16,7 +16,7 @@ export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
     header: () => "Name",
     cell: (info) => {
       const { address, name } = info.row.original;
-      return <Formatter type="address-name-only" value={info.renderValue()} value2={name} />;
+      return <Formatter type="address-name-only" value={info.renderValue()} />;
     },
     meta: { className: "wide cell" },
   }),

@@ -18,6 +18,7 @@ export const NamePopup = forwardRef<HTMLDivElement, PopupProps>(({ name, onSubmi
     },
     [inputValue]
   );
+
   const copy = useCallback(() => {
     ClipboardSetText(inputValue);
   }, []);
@@ -28,8 +29,8 @@ export const NamePopup = forwardRef<HTMLDivElement, PopupProps>(({ name, onSubmi
         <Stack>
           <TextInput value={inputValue} onChange={(event) => setInputValue(event.currentTarget.value)} autoFocus />
           <Group>
-            <ExploreButton address={""} /> {/* address()} /> */}
-            <MonitorButton address={""} /> {/* address()} /> */}
+            <ExploreButton address={""} /> {/* TODO: address()} /> */}
+            <MonitorButton address={""} /> {/* TODO: address()} /> */}
             <Button size="xs" type="submit">
               Save
             </Button>

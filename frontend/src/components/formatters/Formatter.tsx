@@ -8,7 +8,7 @@ import { useAppState } from "@state";
 import classes from "./Formatter.module.css";
 import { TextFormatter } from "./TextFormatter";
 
-export type knownTypes =
+export type knownType =
   | "address-and-name"
   | "address-address-only"
   | "address-name-only"
@@ -28,22 +28,20 @@ export type knownTypes =
   | "timestamp"
   | "url";
 
-type FormatterProps = {
-  type: knownTypes;
-  size?: TextProps["size"];
+export type FormatterProps = {
+  type: knownType;
   value: any;
-  value2?: any;
   className?: string;
+  size?: TextProps["size"];
 };
 
-export const Formatter = ({ type, size = "md", className, value, value2 = null }: FormatterProps) => {
+export const Formatter = ({ type, value, className, size = "md" }: FormatterProps) => {
   const { address } = useAppState();
 
   var n = value as number;
   var bi = value as bigint;
   const isCurrent = value === address;
   const cn = getDebugColor(type) || (isCurrent ? classes.bold : className);
-
 
   switch (type) {
     case "boolean":
@@ -53,7 +51,7 @@ export const Formatter = ({ type, size = "md", className, value, value2 = null }
     case "error":
       return value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>;
     case "address-and-name":
-      return <AddressFormatter className={cn} size={size} addressIn={value as base.Address} />;
+      return <AddressFormatter type={type} className={cn} size={size} value={value as base.Address} />;
     case "address-address-only":
       return (
         <Popup editor={<AddressPopup address={value} />}>
@@ -93,7 +91,7 @@ export const Formatter = ({ type, size = "md", className, value, value2 = null }
       value = "UNKNOWN FORMATTER TYPE";
   }
 
-  return <TextFormatter value={value} size={size} type={type} className={cn} />
+  return <TextFormatter value={value} size={size} type={type} className={cn} />;
 };
 
 const formatInteger = (number: number): string => {

@@ -3,6 +3,7 @@ export * from "./NamePopup";
 export * from "./AddressPopup";
 export * from "./Formatter";
 export * from "./AddressFormatter";
+export * from "./TextFormatter";
 export * from "./ExploreButton";
 export * from "./MonitorButton";
 export * from "./Debug";

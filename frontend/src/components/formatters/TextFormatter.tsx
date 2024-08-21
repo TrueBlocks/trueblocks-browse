@@ -1,16 +1,9 @@
 import React, { ReactNode, useMemo } from "react";
 import { useEnvironment } from "@hooks";
 import { Stack, Text, TextProps } from "@mantine/core";
-import { knownTypes } from "./Formatter";
+import { FormatterProps } from "./Formatter";
 
-type TextFormatterProps = {
-  className?: string,
-  type: knownTypes,
-  value: any,
-  size?: TextProps["size"];
-}
-
-export function TextFormatter({ className, type, value, size }: TextFormatterProps) {
+export function TextFormatter({ className, type, value, size }: FormatterProps) {
   const debug = useEnvironment("TB_DEBUG_DISPLAY");
 
   const inner = (

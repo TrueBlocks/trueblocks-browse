@@ -39,9 +39,7 @@ export function DataTable<T>({ table, loading }: DataTableProps<T>) {
                   const meta = cell.column.columnDef.meta as CustomMeta;
                   return (
                     <Table.Td key={cell.id} className={meta?.className}>
-                      <Popup editor={meta.editor?.(cell.getValue)}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </Popup>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </Table.Td>
                   );
                 })}

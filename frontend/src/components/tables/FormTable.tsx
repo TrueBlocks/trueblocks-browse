@@ -1,12 +1,12 @@
 import React, { ReactNode } from "react";
 import { Fieldset, Container, Grid, Flex, Text, Stack } from "@mantine/core";
-import { Formatter, knownTypes } from "@components";
+import { Formatter, knownType } from "@components";
 import classes from "./FormTable.module.css";
 
 type FieldDefinition<T> = {
+  type: knownType;
   label: string;
   accessor: keyof T;
-  type: knownTypes;
 };
 
 type CustomComponentDefinition = {
