@@ -5,12 +5,12 @@ import { IconCopy } from "@tabler/icons-react";
 import { ExploreButton, MonitorButton } from ".";
 
 type PopupProps = {
-  name?: () => any;
+  name?: string;
   onSubmit?: (value: string) => void;
 };
 
 export const NamePopup = forwardRef<HTMLDivElement, PopupProps>(({ name, onSubmit }, ref) => {
-  const [inputValue, setInputValue] = useState(String(name?.() || ""));
+  const [inputValue, setInputValue] = useState(name || "");
   const submitForm = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();

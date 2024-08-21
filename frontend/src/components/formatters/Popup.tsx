@@ -4,17 +4,11 @@ import { Popover } from "@mantine/core";
 
 export function Popup({ children, editor }: { children: ReactNode; editor: ReactNode }) {
   return (
-    <>
-      {editor ? (
-        <Popover withArrow width="target">
-          <Popover.Target>
-            <div>{children}</div>
-          </Popover.Target>
-          <Popover.Dropdown>{editor}</Popover.Dropdown>
-        </Popover>
-      ) : (
-        children
-      )}
-    </>
+    <Popover withArrow>
+      <Popover.Target>
+        <div>{children}</div>
+      </Popover.Target>
+      <Popover.Dropdown>{editor}</Popover.Dropdown>
+    </Popover>
   );
 }

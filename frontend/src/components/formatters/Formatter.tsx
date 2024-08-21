@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { Text, TextProps, Stack } from "@mantine/core";
 import { base } from "@gocode/models";
 import { useDateTime, useToEther } from "@hooks";
-import { AddressFormatter, getDebugColor } from ".";
+import { AddressFormatter, getDebugColor, Popup, NamePopup, AddressPopup } from ".";
 import { useAppState } from "@state";
 import { useEnvironment } from "@hooks";
 import classes from "./Formatter.module.css";
+import { TextFormatter } from "./TextFormatter";
 
 export type knownTypes =
   | "address-and-name"
@@ -38,13 +39,12 @@ type FormatterProps = {
 
 export const Formatter = ({ type, size = "md", className, value, value2 = null }: FormatterProps) => {
   const { address } = useAppState();
-  const debug = useEnvironment("TB_DEBUG_DISPLAY");
 
   var n = value as number;
   var bi = value as bigint;
-  var addr = value as unknown as base.Address;
-  const isCurrent = addr === address;
-  var cn = getDebugColor(type) || (isCurrent ? classes.bold : className);
+  const isCurrent = useMemo(() => value === address, [address]);
+  const cn = getDebugColor(type) || (isCurrent ? classes.bold : className);
+
 
   switch (type) {
     case "boolean":
@@ -56,8 +56,17 @@ export const Formatter = ({ type, size = "md", className, value, value2 = null }
     case "address-and-name":
       return <AddressFormatter className={cn} size={size} addressIn={value as base.Address} />;
     case "address-address-only":
+      return (
+        <Popup editor={<AddressPopup address={value} />}>
+          <TextFormatter value={value} size={size} type={type} className={cn} />
+        </Popup>
+      );
     case "address-name-only":
-      break;
+      return (
+        <Popup editor={<NamePopup name={value} onSubmit={(newValue: string) => console.log(newValue)} />}>
+          <TextFormatter value={value} size={size} type={type} className={cn} />
+        </Popup>
+      );
     case "ether":
       value = useToEther(bi);
       break;
@@ -85,22 +94,7 @@ export const Formatter = ({ type, size = "md", className, value, value2 = null }
       value = "UNKNOWN FORMATTER TYPE";
   }
 
-  if (debug == "verbose") {
-    return (
-      <Stack gap={0}>
-        <Text className={cn} size={size}>
-          {value}
-        </Text>
-        <Text size="xs">{type}</Text>
-      </Stack>
-    );
-  } else {
-    return (
-      <Text className={cn} size={size}>
-        {value}
-      </Text>
-    );
-  }
+  return <TextFormatter value={value} size={size} type={type} className={cn} />
 };
 
 const formatInteger = (number: number): string => {
