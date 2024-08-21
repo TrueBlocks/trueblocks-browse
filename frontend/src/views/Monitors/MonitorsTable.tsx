@@ -10,10 +10,7 @@ export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
   columnHelper.accessor("address", {
     header: () => "Address",
     cell: (info) => <Formatter type="address-address-only" value={info.renderValue()} />,
-    meta: {
-      className: "wide cell",
-      editor: (getValue: () => any) => <AddressPopup address={getValue} />,
-    },
+    meta: { className: "wide cell" },
   }),
   columnHelper.accessor("name", {
     header: () => "Name",
@@ -21,12 +18,7 @@ export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
       const { address, name } = info.row.original;
       return <Formatter type="address-name-only" value={info.renderValue()} value2={name} />;
     },
-    meta: {
-      className: "wide cell",
-      editor: (getValue: () => any) => (
-        <NamePopup name={getValue} onSubmit={(newValue: string) => console.log(newValue)} />
-      ),
-    },
+    meta: { className: "wide cell" },
   }),
   columnHelper.accessor("nRecords", {
     header: () => "Record Count",
