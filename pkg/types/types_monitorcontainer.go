@@ -7,6 +7,7 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
+/*
 type MonitorFilter struct {
 	Address     base.Address `json:"address"`
 	Deleted     bool         `json:"deleted"`
@@ -34,14 +35,15 @@ func (m *MonitorContainer) Filter(f func(*coreTypes.Monitor) bool) []int {
 	}
 	return items
 }
+*/
 
 type MonitorContainer struct {
 	coreTypes.Monitor
 	Items  []coreTypes.Monitor `json:"items"`
 	NItems int                 `json:"nItems"`
 
-	FilteredItems []int         `json:"filteresdItems"`
-	MonitorFilter MonitorFilter `json:"filter"`
+	// FilteredItems []int         `json:"filteresdItems"`
+	// MonitorFilter MonitorFilter `json:"filter"`
 
 	NNamed     int                                `json:"nNamed"`
 	NDeleted   int                                `json:"nDeleted"`

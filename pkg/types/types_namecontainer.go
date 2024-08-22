@@ -6,19 +6,18 @@ import (
 )
 
 type NameContainer struct {
-	Names         []coreTypes.Name                `json:"names"`
-	FilteredNames []int                           `json:"fitleredNames"`
-	SizeOnDisc    int                             `json:"sizeOnDisc"`
-	NamesMap      map[base.Address]coreTypes.Name `json:"namesMap"`
-	NItems        int                             `json:"nItems"`
-	NContracts    int                             `json:"nContracts"`
-	NErc20s       int                             `json:"nErc20s"`
-	NErc721s      int                             `json:"nErc721s"`
-	NCustom       int                             `json:"nCustom"`
-	NRegular      int                             `json:"nRegular"`
-	NPrefund      int                             `json:"nPrefund"`
-	NBaddress     int                             `json:"nBaddress"`
-	NDeleted      int                             `json:"nDeleted"`
+	Names      []coreTypes.Name                `json:"names"`
+	SizeOnDisc int                             `json:"sizeOnDisc"`
+	NamesMap   map[base.Address]coreTypes.Name `json:"namesMap"`
+	NItems     int                             `json:"nItems"`
+	NContracts int                             `json:"nContracts"`
+	NErc20s    int                             `json:"nErc20s"`
+	NErc721s   int                             `json:"nErc721s"`
+	NCustom    int                             `json:"nCustom"`
+	NRegular   int                             `json:"nRegular"`
+	NPrefund   int                             `json:"nPrefund"`
+	NBaddress  int                             `json:"nBaddress"`
+	NDeleted   int                             `json:"nDeleted"`
 }
 
 func (s *NameContainer) Summarize() {

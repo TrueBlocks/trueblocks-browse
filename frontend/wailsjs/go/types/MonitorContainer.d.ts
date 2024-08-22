@@ -3,8 +3,6 @@
 import {io} from '../models';
 import {types} from '../models';
 
-export function Filter(arg1:any):Promise<Array<number>>;
-
 export function FinishUnmarshal():Promise<void>;
 
 export function MarshalCache(arg1:io.Writer):Promise<void>;
