@@ -998,7 +998,7 @@ export namespace types {
 	    address: base.Address;
 	    name: string;
 	    balance: string;
-	    nEvents: number;
+	    nLogs: number;
 	    nTokens: number;
 	    nErrors: number;
 	
@@ -1013,7 +1013,7 @@ export namespace types {
 	        this.address = this.convertValues(source["address"], base.Address);
 	        this.name = source["name"];
 	        this.balance = source["balance"];
-	        this.nEvents = source["nEvents"];
+	        this.nLogs = source["nLogs"];
 	        this.nTokens = source["nTokens"];
 	        this.nErrors = source["nErrors"];
 	    }

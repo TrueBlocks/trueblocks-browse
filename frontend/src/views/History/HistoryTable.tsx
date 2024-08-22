@@ -43,4 +43,9 @@ export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
     cell: (info) => <Formatter type="error" value={info.renderValue()} />,
     meta: { className: "small center cell" },
   }),
+  columnHelper.accessor("articulatedTx", {
+    header: () => "isArticulated",
+    cell: (info) => <Formatter type="check" value={info.renderValue()} />,
+    meta: { className: "small center cell" },
+  }),
 ];

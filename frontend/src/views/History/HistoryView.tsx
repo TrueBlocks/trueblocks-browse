@@ -54,7 +54,7 @@ function createHistoryForm(table: any): GroupDefinition<theInstance>[] {
       colSpan: 6,
       fields: [
         { label: "nTransactions", type: "int", accessor: "nItems" },
-        { label: "nEvents", type: "int", accessor: "nEvents" },
+        { label: "nLogs", type: "int", accessor: "nLogs" },
         { label: "nTokens", type: "int", accessor: "nTokens" },
         { label: "nErrors", type: "int", accessor: "nErrors" },
       ],

@@ -13,7 +13,7 @@ type HistoryContainer struct {
 	Address base.Address            `json:"address"`
 	Name    string                  `json:"name"`
 	Balance string                  `json:"balance"`
-	NEvents int                     `json:"nEvents"`
+	NLogs   int                     `json:"nLogs"`
 	NTokens int                     `json:"nTokens"`
 	NErrors int                     `json:"nErrors"`
 }
@@ -22,7 +22,7 @@ func (s *HistoryContainer) Summarize() {
 	s.NItems = len(s.Items)
 	for _, tx := range s.Items {
 		if tx.Receipt != nil {
-			s.NEvents += len(tx.Receipt.Logs)
+			s.NLogs += len(tx.Receipt.Logs)
 		}
 		if tx.HasToken {
 			s.NTokens++
@@ -38,7 +38,7 @@ func (s *HistoryContainer) ShallowCopy() HistoryContainer {
 		Address: s.Address,
 		Name:    s.Name,
 		Balance: s.Balance,
-		NEvents: s.NEvents,
+		NLogs:   s.NLogs,
 		NTokens: s.NTokens,
 		NErrors: s.NErrors,
 		NItems:  s.NItems,
@@ -46,7 +46,7 @@ func (s *HistoryContainer) ShallowCopy() HistoryContainer {
 }
 
 func (s *HistoryContainer) SizeOf() int {
-	size := unsafe.Sizeof(s.Address) + unsafe.Sizeof(s.Name) + unsafe.Sizeof(s.Balance) + unsafe.Sizeof(s.NEvents) + unsafe.Sizeof(s.NTokens) + unsafe.Sizeof(s.NErrors) + unsafe.Sizeof(s.NItems)
+	size := unsafe.Sizeof(s.Address) + unsafe.Sizeof(s.Name) + unsafe.Sizeof(s.Balance) + unsafe.Sizeof(s.NLogs) + unsafe.Sizeof(s.NTokens) + unsafe.Sizeof(s.NErrors) + unsafe.Sizeof(s.NItems)
 	for _, record := range s.Items {
 		size += unsafe.Sizeof(record)
 	}

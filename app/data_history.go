@@ -37,8 +37,9 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 
 		rCtx := a.RegisterCtx(address)
 		opts := sdk.ExportOptions{
-			Addrs:     []string{addr},
-			RenderCtx: rCtx,
+			Addrs:      []string{addr},
+			RenderCtx:  rCtx,
+			Articulate: true,
 			Globals: sdk.Globals{
 				Cache: true,
 				Ether: true,
