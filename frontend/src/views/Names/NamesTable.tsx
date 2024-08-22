@@ -14,7 +14,7 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
   }),
   columnHelper.accessor("tags", {
     header: () => "Tags",
-    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
+    cell: (info) => <Formatter type="tag" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("address", {
