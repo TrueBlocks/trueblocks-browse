@@ -33,19 +33,14 @@ export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
     cell: (info) => <Formatter type="ether" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
-  columnHelper.accessor("hasToken", {
-    header: () => "hasToken",
-    cell: (info) => <Formatter type="check" value={info.renderValue()} />,
-    meta: { className: "small center cell" },
-  }),
   columnHelper.accessor("isError", {
     header: () => "isError",
     cell: (info) => <Formatter type="error" value={info.renderValue()} />,
     meta: { className: "small center cell" },
   }),
-  columnHelper.accessor("articulatedTx", {
-    header: () => "isArticulated",
-    cell: (info) => <Formatter type="check" value={info.renderValue()} />,
-    meta: { className: "small center cell" },
+  columnHelper.accessor("input", {
+    header: () => "Function",
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
+    meta: { className: "medium center cell" },
   }),
 ];

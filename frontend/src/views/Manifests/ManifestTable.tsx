@@ -11,6 +11,16 @@ export const tableColumns: CustomColumnDef<types.ChunkRecord, any>[] = [
     cell: (info) => <Formatter type="range" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
+  columnHelper.accessor("rangeDates", {
+    header: () => "First",
+    cell: (info) => <Formatter type="date" value={info.renderValue().firstDate} />,
+    meta: { className: "medium cell" },
+  }),
+  columnHelper.accessor("rangeDates", {
+    header: () => "Last",
+    cell: (info) => <Formatter type="date" value={info.renderValue().lastDate} />,
+    meta: { className: "medium cell" },
+  }),
   columnHelper.accessor("bloomHash", {
     header: () => "BloomHash",
     cell: (info) => <Formatter type="hash" value={info.renderValue()} />,

@@ -507,12 +507,31 @@ export namespace types {
 	        this.type = source["type"];
 	    }
 	}
+	export class RangeDates {
+	    firstDate?: string;
+	    firstTs?: number;
+	    lastDate?: string;
+	    lastTs?: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new RangeDates(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.firstDate = source["firstDate"];
+	        this.firstTs = source["firstTs"];
+	        this.lastDate = source["lastDate"];
+	        this.lastTs = source["lastTs"];
+	    }
+	}
 	export class ChunkRecord {
 	    bloomHash: string;
 	    bloomSize: number;
 	    indexHash: string;
 	    indexSize: number;
 	    range: string;
+	    rangeDates: RangeDates;
 	
 	    static createFrom(source: any = {}) {
 	        return new ChunkRecord(source);
@@ -525,7 +544,26 @@ export namespace types {
 	        this.indexHash = source["indexHash"];
 	        this.indexSize = source["indexSize"];
 	        this.range = source["range"];
+	        this.rangeDates = this.convertValues(source["rangeDates"], RangeDates);
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class ChunkStats {
 	    addrsPerBlock: number;
@@ -538,7 +576,7 @@ export namespace types {
 	    nBlocks: number;
 	    nBlooms: number;
 	    range: string;
-	    rangeEnd: string;
+	    rangeDates: RangeDates;
 	    ratio: number;
 	    recWid: number;
 	
@@ -558,10 +596,28 @@ export namespace types {
 	        this.nBlocks = source["nBlocks"];
 	        this.nBlooms = source["nBlooms"];
 	        this.range = source["range"];
-	        this.rangeEnd = source["rangeEnd"];
+	        this.rangeDates = this.convertValues(source["rangeDates"], RangeDates);
 	        this.ratio = source["ratio"];
 	        this.recWid = source["recWid"];
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	
 	export class Statement {
@@ -1047,7 +1103,7 @@ export namespace types {
 	    nBlocks: number;
 	    nBlooms: number;
 	    range: string;
-	    rangeEnd: string;
+	    rangeDates: RangeDates;
 	    ratio: number;
 	    recWid: number;
 	    items: ChunkStats[];
@@ -1069,7 +1125,7 @@ export namespace types {
 	        this.nBlocks = source["nBlocks"];
 	        this.nBlooms = source["nBlooms"];
 	        this.range = source["range"];
-	        this.rangeEnd = source["rangeEnd"];
+	        this.rangeDates = this.convertValues(source["rangeDates"], RangeDates);
 	        this.ratio = source["ratio"];
 	        this.recWid = source["recWid"];
 	        this.items = this.convertValues(source["items"], ChunkStats);
@@ -1371,6 +1427,7 @@ export namespace types {
 		    return a;
 		}
 	}
+	
 	
 	
 	export class Rewards {
