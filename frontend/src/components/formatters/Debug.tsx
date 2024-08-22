@@ -42,6 +42,8 @@ export const getDebugColor = (type: knownType): string => {
       case "appearance":
         ret = classes.lightblue;
         break;
+      case "time":
+        ret = classes.purple;
       case "date":
         ret = classes.purple;
         break;

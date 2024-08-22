@@ -9,7 +9,7 @@ replace (
 
 require (
 	github.com/TrueBlocks/trueblocks-core/sdk/v3 v3.0.0-20240821011737-818d01eef74f
-	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20240821011737-818d01eef74f
+	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20240822005808-46dd505c9f20
 	github.com/joho/godotenv v1.5.1
 	github.com/wailsapp/wails/v2 v2.8.2
 )

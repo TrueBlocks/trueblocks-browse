@@ -17,6 +17,7 @@ export type knownType =
   | "bytes"
   | "check"
   | "date"
+  | "time"
   | "error"
   | "ether"
   | "float"
@@ -64,11 +65,26 @@ export const Formatter = ({ type, value, className, size = "md" }: FormatterProp
           <TextFormatter value={value} size={size} type={type} className={cn} />
         </Popup>
       );
-    case "ether":
-      value = useToEther(bi);
-      break;
     case "timestamp":
       value = useDateTime(n);
+    case "date":
+      if (value) {
+        value = value.replace("T", " ");
+        const parts = value.split(" ");
+        if (parts.length > 1) {
+          return (
+            <>
+              <TextFormatter value={parts[0]} size={size} type="date" className={cn} />
+              <i>
+                <TextFormatter value={parts[1] + " UTC"} size={"xs"} type="time" className={cn} />
+              </i>
+            </>
+          );
+        }
+      }
+      break;
+    case "ether":
+      value = useToEther(bi);
       break;
     case "bytes":
       value = formatBytes(n);
@@ -80,7 +96,6 @@ export const Formatter = ({ type, value, className, size = "md" }: FormatterProp
       value = formatInteger(n);
       break;
     case "appearance":
-    case "date":
     case "hash":
     case "path":
     case "range":
