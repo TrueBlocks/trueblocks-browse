@@ -1,7 +1,7 @@
 import React from "react";
 import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef, Formatter, AddressPopup, NamePopup } from "@components";
+import { CustomColumnDef, Formatter, FormatterProps } from "@components";
 
 const columnHelper = createColumnHelper<types.Abi>();
 
@@ -34,6 +34,11 @@ export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
     cell: (info) => <Formatter type="check" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
+  columnHelper.accessor("fileSize", {
+    header: () => "isEmpty",
+    cell: (info) => <AbiFormatter value={info.renderValue()} />,
+    meta: { className: "medium cell" },
+  }),
   columnHelper.accessor("nFunctions", {
     header: () => "nFunctions",
     cell: (info) => <Formatter type="int" value={info.renderValue()} />,
@@ -45,3 +50,8 @@ export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
     meta: { className: "medium cell" },
   }),
 ];
+
+function AbiFormatter({ className, value, size }: Omit<FormatterProps, "type">) {
+  // 42 byte files in the abis folder means we could not find the abi
+  return <Formatter type="error" value={value === 42} />;
+}

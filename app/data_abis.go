@@ -29,30 +29,45 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
-	opts := sdk.AbisOptions{
-		Globals: sdk.Globals{
-			Verbose: true,
-		},
-	}
-	if abis, meta, err := opts.AbisList(); err != nil {
+	opts := sdk.AbisOptions{}
+	if count, meta, err := opts.AbisCount(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (abis == nil) || (len(abis) == 0) {
-		err = fmt.Errorf("no status found")
+	} else if (len(count) == 0) || (count[0].Count == 0) {
+		err = fmt.Errorf("no abis found")
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
 	} else {
 		a.meta = *meta
-		if len(a.abis.Items) == len(abis) {
+		if a.abis.NItems == int(count[0].Count) {
 			return nil
 		}
-		a.abis = types.AbiContainer{}
-		a.abis.Items = append(a.abis.Items, abis...)
-		a.abis.Summarize()
+
+		opts.Globals.Verbose = true
+		if abis, meta, err := opts.AbisList(); err != nil {
+			if errorChan != nil {
+				errorChan <- err
+			}
+			return err
+		} else if (abis == nil) || (len(abis) == 0) {
+			err = fmt.Errorf("no status found")
+			if errorChan != nil {
+				errorChan <- err
+			}
+			return err
+		} else {
+			a.meta = *meta
+			if len(a.abis.Items) == len(abis) {
+				return nil
+			}
+			a.abis = types.AbiContainer{}
+			a.abis.Items = append(a.abis.Items, abis...)
+			a.abis.Summarize()
+		}
 	}
 	return nil
 }
