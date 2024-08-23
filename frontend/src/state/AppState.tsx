@@ -18,8 +18,6 @@ import {
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
 export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const myRef = useRef(false);
-
   const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
 
   const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.NOTOKAY);
@@ -49,7 +47,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   const fetchHistory = async (currentItem: number, itemsPerPage: number, item?: any) => {
-    myRef.current = true;
     GetLastSub("/history").then((subRoute: string) => {
       if (subRoute !== "") {
         console.log("subRoute-app1: ", subRoute);
@@ -110,14 +107,12 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   useEffect(() => {
-    myRef.current = true;
     fetchMeta();
     fetchWizard();
     fetchStatus(0, 100);
   }, []);
 
   useEffect(() => {
-    myRef.current = true;
     const handleRefresh = () => {
       fetchMeta();
       fetchWizard();

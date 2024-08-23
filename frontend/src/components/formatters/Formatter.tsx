@@ -3,11 +3,10 @@ import { IconCircleCheck } from "@tabler/icons-react";
 import { TextProps } from "@mantine/core";
 import { base } from "@gocode/models";
 import { useDateTime, useToEther } from "@hooks";
-import { AddressFormatter, getDebugColor, Popup, NamePopup, AddressPopup } from ".";
 import { useAppState } from "@state";
 import classes from "./Formatter.module.css";
-import { TextFormatter } from "./TextFormatter";
-import { TagFormatter } from "./TagFormatter";
+import { Popup, NamePopup, AddressPopup, getDebugColor } from ".";
+import { AddressFormatter, DateFormatter, TagFormatter, TextFormatter } from "@components";
 
 export type knownType =
   | "address-and-name"
@@ -68,29 +67,19 @@ export const Formatter = ({ type, value, className, size = "md" }: FormatterProp
         </Popup>
       );
     case "tag":
-      return (
-        <TagFormatter value={value} size={size} className={cn} />
-      );
+      return <TagFormatter value={value} size={size} className={cn} />;
     case "ether":
       value = useToEther(bi);
       break;
     case "timestamp":
       value = useDateTime(n);
     case "date":
-      if (value) {
-        value = value.replace("T", " ");
-        const parts = value.split(" ");
-        if (parts.length > 1) {
-          return (
-            <>
-              <TextFormatter value={parts[0]} size={size} type="date" className={cn} />
-              <i>
-                <TextFormatter value={parts[1] + " UTC"} size={"xs"} type="time" className={cn} />
-              </i>
-            </>
-          );
-        }
+      value = value?.replace("T", " ");
+      if ((value?.match(/ /g)?.length ?? 0) > 0) {
+        // at least one space
+        return <DateFormatter value={value} size={size} className={cn} />;
       }
+      // else, render using TextFormatter
       break;
     case "bytes":
       value = formatBytes(n);
