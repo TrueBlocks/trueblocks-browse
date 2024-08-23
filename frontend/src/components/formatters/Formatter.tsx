@@ -7,6 +7,7 @@ import { AddressFormatter, getDebugColor, Popup, NamePopup, AddressPopup } from 
 import { useAppState } from "@state";
 import classes from "./Formatter.module.css";
 import { TextFormatter } from "./TextFormatter";
+import { TagFormatter } from "./TagFormatter";
 
 export type knownType =
   | "address-and-name"
@@ -25,6 +26,7 @@ export type knownType =
   | "int"
   | "path"
   | "range"
+  | "tag"
   | "text"
   | "timestamp"
   | "url";
@@ -65,6 +67,13 @@ export const Formatter = ({ type, value, className, size = "md" }: FormatterProp
           <TextFormatter value={value} size={size} type={type} className={cn} />
         </Popup>
       );
+    case "tag":
+      return (
+        <TagFormatter value={value} size={size} className={cn} />
+      );
+    case "ether":
+      value = useToEther(bi);
+      break;
     case "timestamp":
       value = useDateTime(n);
     case "date":
@@ -82,9 +91,6 @@ export const Formatter = ({ type, value, className, size = "md" }: FormatterProp
           );
         }
       }
-      break;
-    case "ether":
-      value = useToEther(bi);
       break;
     case "bytes":
       value = formatBytes(n);
