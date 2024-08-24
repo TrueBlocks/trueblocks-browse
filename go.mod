@@ -8,8 +8,8 @@ replace (
 )
 
 require (
-	github.com/TrueBlocks/trueblocks-core/sdk/v3 v3.0.0-20240823185622-04524ce7ed81
-	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20240823185622-04524ce7ed81
+	github.com/TrueBlocks/trueblocks-core/sdk/v3 v3.0.0-20240824155716-96b9bae47597
+	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20240824041557-9259099dd92d
 	github.com/joho/godotenv v1.5.1
 	github.com/wailsapp/wails/v2 v2.8.2
 )

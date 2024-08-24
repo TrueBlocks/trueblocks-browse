@@ -1,7 +1,6 @@
 changed.toml
 trueBlocks.toml
 code_gen
-makefile
 build
 backup_other
 .DS_Store
