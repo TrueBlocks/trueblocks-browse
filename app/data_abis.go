@@ -64,8 +64,8 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 			if len(a.abis.Items) == len(abis) {
 				return nil
 			}
-			a.abis = types.AbiContainer{}
-			a.abis.Items = append(a.abis.Items, abis...)
+			a.abis = types.NewAbiContainer(abis)
+			sdk.SortAbis(a.abis.Items, a.abis.Sort.Fields, a.abis.Sort.Order)
 			a.abis.Summarize()
 		}
 	}

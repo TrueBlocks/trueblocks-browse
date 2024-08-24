@@ -8,15 +8,10 @@ const columnHelper = createColumnHelper<types.Monitor>();
 
 export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
   columnHelper.accessor("address", {
-    header: () => "Address",
-    cell: (info) => <Formatter type="address-address-only" value={info.renderValue()} />,
-    meta: { className: "wide cell" },
-  }),
-  columnHelper.accessor("name", {
-    header: () => "Name",
+    header: () => "Name/Address",
     cell: (info) => {
       const { address, name } = info.row.original;
-      return <Formatter type="address-name-only" value={info.renderValue()} />;
+      return <Formatter type="address-and-name" value={address} value2={name} />;
     },
     meta: { className: "wide cell" },
   }),

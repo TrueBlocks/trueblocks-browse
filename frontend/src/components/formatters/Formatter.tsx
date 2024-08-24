@@ -11,7 +11,9 @@ import { AddressFormatter, DateFormatter, TagFormatter, TextFormatter } from "@c
 export type knownType =
   | "address-and-name"
   | "address-address-only"
-  | "address-name-only"
+  | "address-big"
+  | "address-small"
+  | "address-name"
   | "appearance"
   | "boolean"
   | "bytes"
@@ -33,11 +35,12 @@ export type knownType =
 export type FormatterProps = {
   type: knownType;
   value: any;
+  value2?: any;
   className?: string;
   size?: TextProps["size"];
 };
 
-export const Formatter = ({ type, value, className, size = "md" }: FormatterProps) => {
+export const Formatter = ({ type, value, value2, className, size = "md" }: FormatterProps) => {
   const { address } = useAppState();
 
   var n = value as number;
@@ -53,19 +56,12 @@ export const Formatter = ({ type, value, className, size = "md" }: FormatterProp
     case "error":
       return value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>;
     case "address-and-name":
-      return <AddressFormatter type={type} className={cn} size={size} value={value as base.Address} />;
+      return <AddressFormatter type={type} className={cn} size={size} value={value} value2={value2} />;
     case "address-address-only":
-      return (
-        <Popup editor={<AddressPopup address={value} />}>
-          <TextFormatter value={value} size={size} type={type} className={cn} />
-        </Popup>
-      );
-    case "address-name-only":
-      return (
-        <Popup editor={<NamePopup name={value} onSubmit={(newValue: string) => console.log(newValue)} />}>
-          <TextFormatter value={value} size={size} type={type} className={cn} />
-        </Popup>
-      );
+    case "address-big":
+    case "address-small":
+    case "address-name":
+      return <TextFormatter value={value} size={size} type={type} className={cn} />;
     case "tag":
       return <TagFormatter value={value} size={size} className={cn} />;
     case "ether":
@@ -115,7 +111,7 @@ const formatFloat = (number: number): string => {
 const formatBytes = (bytes: number): string => {
   if (bytes === 0) return "0 Bytes";
   const k = 1024;
-  const sizes = ["bytes", "Kb", "Mb", "Gb", "Tb", "Pb"];
+  const sizes = ["b", "Kb", "Mb", "Gb", "Tb", "Pb"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   const formattedValue = (bytes / Math.pow(k, i)).toLocaleString("en-US", {
     minimumFractionDigits: 1,

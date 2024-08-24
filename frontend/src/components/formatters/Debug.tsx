@@ -15,7 +15,7 @@ export const getDebugColor = (type: knownType): string => {
       case "address-address-only":
         ret = classes.orange;
         break;
-      case "address-name-only":
+      case "address-name":
         ret = classes.orange;
         break;
       case "boolean":

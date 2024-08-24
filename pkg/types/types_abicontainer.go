@@ -4,8 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
+
+type Sort struct {
+	Fields []string        `json:"fields"`
+	Order  []sdk.SortOrder `json:"orders"`
+}
 
 type AbiContainer struct {
 	coreTypes.Abi
@@ -17,8 +23,18 @@ type AbiContainer struct {
 	lF            comparison      `json:"-"`
 	mF            comparison      `json:"-"`
 	mE            comparison      `json:"-"`
+	Sort          Sort            `json:"sort"`
 }
 
+func NewAbiContainer(items []coreTypes.Abi) AbiContainer {
+	return AbiContainer{
+		Items: items,
+		Sort: Sort{
+			Fields: []string{"isEmpty", "isKnown", "address"},
+			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},
+		},
+	}
+}
 func (s AbiContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)

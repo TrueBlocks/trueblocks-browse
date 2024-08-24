@@ -385,6 +385,7 @@ export namespace types {
 	    address: base.Address;
 	    fileSize: number;
 	    functions: Function[];
+	    isEmpty: boolean;
 	    isKnown: boolean;
 	    lastModDate: string;
 	    nEvents: number;
@@ -401,6 +402,7 @@ export namespace types {
 	        this.address = this.convertValues(source["address"], base.Address);
 	        this.fileSize = source["fileSize"];
 	        this.functions = this.convertValues(source["functions"], Function);
+	        this.isEmpty = source["isEmpty"];
 	        this.isKnown = source["isKnown"];
 	        this.lastModDate = source["lastModDate"];
 	        this.nEvents = source["nEvents"];
@@ -427,10 +429,25 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class Sort {
+	    fields: string[];
+	    orders: boolean[];
+	
+	    static createFrom(source: any = {}) {
+	        return new Sort(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.fields = source["fields"];
+	        this.orders = source["orders"];
+	    }
+	}
 	export class AbiContainer {
 	    address: base.Address;
 	    fileSize: number;
 	    functions: Function[];
+	    isEmpty: boolean;
 	    isKnown: boolean;
 	    lastModDate: string;
 	    nEvents: number;
@@ -442,6 +459,7 @@ export namespace types {
 	    largestFile: string;
 	    mostFunctions: string;
 	    mostEvents: string;
+	    sort: Sort;
 	
 	    static createFrom(source: any = {}) {
 	        return new AbiContainer(source);
@@ -452,6 +470,7 @@ export namespace types {
 	        this.address = this.convertValues(source["address"], base.Address);
 	        this.fileSize = source["fileSize"];
 	        this.functions = this.convertValues(source["functions"], Function);
+	        this.isEmpty = source["isEmpty"];
 	        this.isKnown = source["isKnown"];
 	        this.lastModDate = source["lastModDate"];
 	        this.nEvents = source["nEvents"];
@@ -463,6 +482,7 @@ export namespace types {
 	        this.largestFile = source["largestFile"];
 	        this.mostFunctions = source["mostFunctions"];
 	        this.mostEvents = source["mostEvents"];
+	        this.sort = this.convertValues(source["sort"], Sort);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1470,6 +1490,7 @@ export namespace types {
 		    return a;
 		}
 	}
+	
 	export class Chain {
 	    chain: string;
 	    chainId: number;

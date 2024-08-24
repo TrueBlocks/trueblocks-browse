@@ -6,11 +6,12 @@ import { ExploreButton, MonitorButton } from ".";
 
 type PopupProps = {
   name?: string;
+  address: string;
   onSubmit?: (value: string) => void;
 };
 
-export const NamePopup = forwardRef<HTMLDivElement, PopupProps>(({ name, onSubmit }, ref) => {
-  const [inputValue, setInputValue] = useState(name || "");
+export const NamePopup = forwardRef<HTMLDivElement, PopupProps>(({ name, address, onSubmit }, ref) => {
+  const [inputValue, setInputValue] = useState(name === address ? "" : name || "");
   const submitForm = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
@@ -29,8 +30,8 @@ export const NamePopup = forwardRef<HTMLDivElement, PopupProps>(({ name, onSubmi
         <Stack>
           <TextInput value={inputValue} onChange={(event) => setInputValue(event.currentTarget.value)} autoFocus />
           <Group>
-            <ExploreButton address={""} /> {/* TODO: address()} /> */}
-            <MonitorButton address={""} /> {/* TODO: address()} /> */}
+            <ExploreButton address={address} />
+            <MonitorButton address={address} />
             <Button size="xs" type="submit">
               Save
             </Button>

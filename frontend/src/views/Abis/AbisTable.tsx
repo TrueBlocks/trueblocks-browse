@@ -7,22 +7,17 @@ const columnHelper = createColumnHelper<types.Abi>();
 
 export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
   columnHelper.accessor("address", {
-    header: () => "Address",
-    cell: (info) => <Formatter type="address-address-only" value={info.renderValue()} />,
-    meta: { className: "wide cell" },
-  }),
-  columnHelper.accessor("name", {
-    header: () => "Name",
+    header: () => "Name/Address",
     cell: (info) => {
       const { address, name } = info.row.original;
-      return <Formatter type="address-name-only" value={info.renderValue()} />;
+      return <Formatter type="address-and-name" value={address} value2={name} />;
     },
     meta: { className: "wide cell" },
   }),
   columnHelper.accessor("lastModDate", {
     header: () => "lastModDate",
     cell: (info) => <Formatter type="date" value={info.renderValue()} />,
-    meta: { className: "large cell" },
+    meta: { className: "medium cell" },
   }),
   columnHelper.accessor("fileSize", {
     header: () => "fileSize",
@@ -34,9 +29,9 @@ export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
     cell: (info) => <Formatter type="check" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
-  columnHelper.accessor("fileSize", {
+  columnHelper.accessor("isEmpty", {
     header: () => "isEmpty",
-    cell: (info) => <AbiFormatter value={info.renderValue()} />,
+    cell: (info) => <Formatter type="error" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("nFunctions", {
@@ -49,9 +44,19 @@ export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
     cell: (info) => <Formatter type="int" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
+  columnHelper.accessor("nFunctions", {
+    header: () => "hasContructor",
+    cell: (info) => <Formatter type="check" value={info.renderValue() > 0} />,
+    meta: { className: "medium cell" },
+  }),
+  columnHelper.accessor("nEvents", {
+    header: () => "hasFallback",
+    cell: (info) => <Formatter type="check" value={info.renderValue() > 0} />,
+    meta: { className: "medium cell" },
+  }),
 ];
 
-function AbiFormatter({ className, value, size }: Omit<FormatterProps, "type">) {
-  // 42 byte files in the abis folder means we could not find the abi
-  return <Formatter type="error" value={value === 42} />;
-}
+// function AbiFormatter({ className, value, size }: Omit<FormatterProps, "type">) {
+//   // 42 byte files in the abis folder means we could not find the abi
+//   return <Formatter size={size} className={className} type="error" value={value === 42} />;
+// }
