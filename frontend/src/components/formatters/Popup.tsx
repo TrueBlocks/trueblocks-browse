@@ -1,18 +1,16 @@
-import React, { ReactNode } from "react";
-
+import React, { ReactNode, useState } from "react";
 import { Popover } from "@mantine/core";
 
 export function Popup({ children, editor }: { children: ReactNode; editor: ReactNode }) {
-  if (!editor) {
-    return <>{children}</>;
-  }
+  const [opened, setOpened] = useState(false);
+  const toggleOpened = () => setOpened((o) => !o);
 
   return (
-    <Popover withArrow>
+    <Popover opened={opened} onChange={setOpened} withArrow>
       <Popover.Target>
-        <div>{children}</div>
+        <div onClick={toggleOpened}>{children}</div>
       </Popover.Target>
-      <Popover.Dropdown>{editor}</Popover.Dropdown>
+      {editor && <Popover.Dropdown>{editor}</Popover.Dropdown>}
     </Popover>
   );
 }

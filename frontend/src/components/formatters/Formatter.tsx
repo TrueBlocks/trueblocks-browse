@@ -5,7 +5,7 @@ import { useDateTime, useToEther } from "@hooks";
 import { useAppState } from "@state";
 import classes from "./Formatter.module.css";
 import { getDebugColor } from ".";
-import { AddressEditor, DateFormatter, TagFormatter, TextFormatter, EditorMode } from "@components";
+import { AddressEditor, DateFormatter, TagFormatter, TextFormatter, EdMode } from "@components";
 
 export type knownType =
   | "address-editor"
@@ -86,18 +86,13 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
     case "url":
       break;
     case "address-editor":
-      return (
-        <AddressEditor
-          type={type}
-          className={cn}
-          size={size}
-          value={value}
-          value2={value2}
-          mode={EditorMode.NameOnly}
-        />
-      );
+      return <AddressEditor type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.All} />;
     case "address-address-only":
+      return (
+        <AddressEditor type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.Address} />
+      );
     case "address-name-only":
+      return <AddressEditor type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.Name} />;
     case "address-line1":
       return <TextFormatter value={value} size={size} type={type} className={cn} />;
     case "address-line2":

@@ -1,37 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { AddrToName } from "@gocode/app/App";
-import { base } from "@gocode/models";
 import { Formatter, FormatterProps, knownType, Popup, AddressPopup } from ".";
 
-export enum EditorMode {
+export enum EdMode {
   All = "all",
-  NameOnly = "name_only",
-  AddressOnly = "address_only",
+  Name = "name_only",
+  Address = "address_only",
 }
 
 interface AddressEditorProps extends FormatterProps {
-  mode?: EditorMode;
+  mode?: EdMode;
 }
 
-export const AddressEditor = ({ value, value2, className, size = "md", mode = EditorMode.All }: AddressEditorProps) => {
+export const AddressEditor = ({ value, value2, className, size = "md", mode = EdMode.All }: AddressEditorProps) => {
   const [line1, setLine1] = useState<string>("");
   const [line2, setLine2] = useState<string>("");
+  const [isPopupOpen, setPopupOpen] = useState(false); // State to manage popup visibility
 
   const givenName = value2 as string;
   const givenAddress = value as unknown as string;
 
   useEffect(() => {
     const formatAddress = async () => {
-      if (!givenAddress || givenAddress == "0x0") {
+      if (!givenAddress || givenAddress === "0x0") {
         setLine1(givenName);
         setLine2("");
         return;
       }
 
       switch (mode) {
-        case EditorMode.NameOnly:
-        case EditorMode.AddressOnly:
-        case EditorMode.All:
+        case EdMode.Address:
+          setLine1(givenAddress);
+          break;
+        case EdMode.Name:
+          AddrToName(value).then((knownName) => {
+            if (knownName || givenName) {
+              setLine1(knownName ? knownName : givenName);
+              setLine2("");
+            } else {
+              setLine1("");
+              setLine2("");
+            }
+          });
+          break;
+        case EdMode.All:
         default:
           AddrToName(value).then((knownName) => {
             if (knownName || givenName) {
@@ -45,16 +57,33 @@ export const AddressEditor = ({ value, value2, className, size = "md", mode = Ed
       }
     };
     formatAddress();
-  }, [value, givenName]);
+  }, [value, value2, mode]);
 
   const line1Type: knownType = "address-line1";
   const line2Type: knownType = "address-line2";
 
-  const editor = <AddressPopup address={value} name={line1} onSubmit={(newValue: string) => console.log(newValue)} />;
+  const handleClosePopup = () => setPopupOpen(false); // Function to close the popup
+
+  const handleOpenPopup = () => setPopupOpen(true); // Function to open the popup
+
+  const editor = isPopupOpen ? (
+    <AddressPopup
+      address={value}
+      name={line1}
+      onSubmit={(newValue: string) => {
+        console.log(newValue);
+        handleClosePopup(); // Close the popup after submission
+      }}
+      onClose={handleClosePopup} // Close the popup when needed
+    />
+  ) : null;
+
   return (
     <Popup editor={editor}>
-      <Formatter className={className} size={size} type={line1Type} value={line1} />
-      {line2 ? <Formatter className={className} size={size} type={line2Type} value={line2} /> : <></>}
+      <div onClick={handleOpenPopup}>
+        <Formatter className={className} size={size} type={line1Type} value={line1} />
+        {line2 ? <Formatter className={className} size={size} type={line2Type} value={line2} /> : null}
+      </div>
     </Popup>
   );
 };

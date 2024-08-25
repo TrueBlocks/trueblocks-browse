@@ -2,3 +2,7 @@
   margin-bottom: 1rem;
   overflow: hidden;
 }
+
+.fieldPrompt {
+  min-width: 8em;
+}
