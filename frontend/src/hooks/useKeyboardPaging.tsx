@@ -67,7 +67,8 @@ export function useKeyboardPaging(
       count: nItems,
       pageNumber: pageNumber,
       totalPages: totalPages,
-      setpage: setPage,
+      setPage: setPage,
+      offset: () => (pageNumber - 1) * perPage,
     };
   }
 }

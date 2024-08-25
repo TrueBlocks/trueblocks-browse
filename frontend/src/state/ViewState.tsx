@@ -18,11 +18,11 @@ const ViewContext = createContext<ViewStateProps | undefined>(undefined);
 export const ViewStateProvider: React.FC<{
   route: Route;
   nItems?: number;
-  fetchFn: (curItem: number, perPage: number, item?: any) => void;
+  fetchFn: (selected: number, perPage: number, item?: any) => void;
   children: ReactNode;
 }> = ({ route, nItems = -1, fetchFn, children }) => {
   const { address, setHistory } = useAppState();
-  const lines = route === "status" ? 6 : route === "names" || route === "monitors" ? 15 : 10;
+  const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
   const pager = useKeyboardPaging(route, nItems, [], lines);
 
   useEffect(() => {

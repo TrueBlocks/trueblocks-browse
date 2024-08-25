@@ -10,14 +10,14 @@ export function HomeView() {
   const { fetchHistory, fetchMonitors, fetchNames, fetchAbis, fetchIndexes, fetchManifests, fetchStatus } =
     useAppState();
 
-  const fetchFn = (curItem: number, perPage: number, item?: any) => {
-    fetchHistory(curItem, perPage, item);
-    fetchMonitors(curItem, perPage, item);
-    fetchNames(curItem, perPage, item);
-    fetchAbis(curItem, perPage, item);
-    fetchIndexes(curItem, perPage, item);
-    fetchManifests(curItem, perPage, item);
-    fetchStatus(curItem, perPage, item);
+  const fetchFn = (selected: number, perPage: number, item?: any) => {
+    fetchHistory(selected, perPage, item);
+    fetchMonitors(selected, perPage, item);
+    fetchNames(selected, perPage, item);
+    fetchAbis(selected, perPage, item);
+    fetchIndexes(selected, perPage, item);
+    fetchManifests(selected, perPage, item);
+    fetchStatus(selected, perPage, item);
     HistorySize(address as unknown as string).then((size) => setSize(size));
   };
 
@@ -27,7 +27,7 @@ export function HomeView() {
       <View>
         <Text>Current State</Text>
         <Group>
-          <Text>current address:</Text> <Formatter type="address-address-only" value={address} />
+          <Text>current address:</Text> <Formatter type="address-editor" value={address} />
         </Group>
         <Group>
           <Text>current address size:</Text> <Formatter type="bytes" value={size} />

@@ -42,3 +42,8 @@ th {
 .center {
   text-align: center;
 }
+
+.selected-row {
+  background-color: lightblue !important;
+  border: 1px solid darkblue !important;
+}
