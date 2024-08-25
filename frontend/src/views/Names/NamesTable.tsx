@@ -20,8 +20,7 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
   columnHelper.accessor("address", {
     header: () => "Name/Address",
     cell: (info) => {
-      const { address, name } = info.row.original;
-      return <Formatter type="address-editor" value={address} value2={name} />;
+      return <Formatter type="address-editor" value={info.renderValue()} />;
     },
     meta: { className: "wide cell" },
   }),

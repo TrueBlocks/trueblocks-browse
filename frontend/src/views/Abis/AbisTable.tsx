@@ -9,6 +9,7 @@ export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
   columnHelper.accessor("address", {
     header: () => "Name/Address",
     cell: (info) => {
+      // for known abis, address is zero so we must use the name
       const { address, name } = info.row.original;
       return <Formatter type="address-editor" value={address} value2={name} />;
     },
