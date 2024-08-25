@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { TextProps } from "@mantine/core";
 import { AddrToName } from "@gocode/app/App";
 import { base } from "@gocode/models";
-import { Formatter, FormatterProps, knownType, Popup, AddressPopup } from ".";
 import { useAppState } from "@state";
-import { types } from "@gocode/models";
+import { Formatter, FormatterProps, knownType, Popup, AddressPopup } from ".";
 
-export const AddressEditor = ({ value, value2, className, size = "md" }: FormatterProps) => {
+export enum EditorMode {
+  All = "all",
+  NameOnly = "name_only",
+  AddressOnly = "address_only",
+}
+
+interface AddressEditorProps extends FormatterProps {
+  mode?: EditorMode;
+}
+
+export const AddressEditor = ({ value, value2, className, size = "md", mode = EditorMode.All }: AddressEditorProps) => {
   const [line1, setLine1] = useState<string>("");
   const [line2, setLine2] = useState<string>("");
 
