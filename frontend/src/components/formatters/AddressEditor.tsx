@@ -22,22 +22,27 @@ export const AddressEditor = ({ value, value2, className, size = "md", mode = Ed
 
   useEffect(() => {
     const formatAddress = async () => {
-      let address = value as string;
-      if (!address || address == "0x0") {
+      if (!givenAddress || givenAddress == "0x0") {
         setLine1(givenName);
         setLine2("");
         return;
       }
 
-      AddrToName(address as unknown as base.Address).then((knownName) => {
-        if (knownName || givenName) {
-          setLine1(knownName ? knownName : givenName);
-          setLine2(value);
-        } else {
-          setLine1(value);
-          setLine2("");
-        }
-      });
+      switch (mode) {
+        case EditorMode.NameOnly:
+        case EditorMode.AddressOnly:
+        case EditorMode.All:
+        default:
+          AddrToName(value).then((knownName) => {
+            if (knownName || givenName) {
+              setLine1(knownName ? knownName : givenName);
+              setLine2(value);
+            } else {
+              setLine1(value);
+              setLine2("");
+            }
+          });
+      }
     };
     formatAddress();
   }, [value, givenName]);
@@ -48,7 +53,6 @@ export const AddressEditor = ({ value, value2, className, size = "md", mode = Ed
   const editor = <AddressPopup address={value} name={line1} onSubmit={(newValue: string) => console.log(newValue)} />;
   return (
     <Popup editor={editor}>
-      {/* {givenAddress} */}
       <Formatter className={className} size={size} type={line1Type} value={line1} />
       {line2 ? <Formatter className={className} size={size} type={line2Type} value={line2} /> : <></>}
     </Popup>

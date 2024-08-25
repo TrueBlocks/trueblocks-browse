@@ -3,6 +3,10 @@ import React, { ReactNode } from "react";
 import { Popover } from "@mantine/core";
 
 export function Popup({ children, editor }: { children: ReactNode; editor: ReactNode }) {
+  if (!editor) {
+    return <>{children}</>;
+  }
+
   return (
     <Popover withArrow>
       <Popover.Target>
