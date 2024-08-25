@@ -14,7 +14,7 @@ export function SettingsView() {
   }, []);
 
   return (
-    <ViewStateProvider route="settings" fetchFn={(curItem: number, perPage: number, item?: any) => {}}>
+    <ViewStateProvider route="settings" fetchFn={(unused: number, perPage: number, item?: any) => {}}>
       <View>
         <InputLabel>
           <Checkbox label={"A checkbox"} />

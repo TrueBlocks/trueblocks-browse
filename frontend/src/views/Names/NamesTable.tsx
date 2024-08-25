@@ -1,7 +1,7 @@
 import React from "react";
 import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef, NamePopup, AddressPopup, Formatter } from "@components";
+import { CustomColumnDef, Formatter } from "@components";
 import { NameTags } from "./NameTag";
 
 const columnHelper = createColumnHelper<types.Name>();
@@ -21,7 +21,7 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
     header: () => "Name/Address",
     cell: (info) => {
       const { address, name } = info.row.original;
-      return <Formatter type="address-and-name" value={address} value2={name} />;
+      return <Formatter type="address-editor" value={address} value2={name} />;
     },
     meta: { className: "wide cell" },
   }),

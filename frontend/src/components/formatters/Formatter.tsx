@@ -1,25 +1,23 @@
 import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { TextProps } from "@mantine/core";
-import { base } from "@gocode/models";
 import { useDateTime, useToEther } from "@hooks";
 import { useAppState } from "@state";
 import classes from "./Formatter.module.css";
-import { Popup, NamePopup, AddressPopup, getDebugColor } from ".";
-import { AddressFormatter, DateFormatter, TagFormatter, TextFormatter } from "@components";
+import { getDebugColor } from ".";
+import { AddressEditor, DateFormatter, TagFormatter, TextFormatter } from "@components";
 
 export type knownType =
-  | "address-and-name"
+  | "address-editor"
   | "address-address-only"
-  | "address-big"
-  | "address-small"
-  | "address-name"
+  | "address-name-only"
+  | "address-line1"
+  | "address-line2"
   | "appearance"
   | "boolean"
   | "bytes"
   | "check"
   | "date"
-  | "time"
   | "error"
   | "ether"
   | "float"
@@ -29,6 +27,7 @@ export type knownType =
   | "range"
   | "tag"
   | "text"
+  | "time"
   | "timestamp"
   | "url";
 
@@ -55,13 +54,6 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
       return value ? <IconCircleCheck size={16} color="white" fill="green" /> : <></>;
     case "error":
       return value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>;
-    case "address-and-name":
-      return <AddressFormatter type={type} className={cn} size={size} value={value} value2={value2} />;
-    case "address-address-only":
-    case "address-big":
-    case "address-small":
-    case "address-name":
-      return <TextFormatter value={value} size={size} type={type} className={cn} />;
     case "tag":
       return <TagFormatter value={value} size={size} className={cn} />;
     case "ether":
@@ -93,6 +85,14 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
     case "text":
     case "url":
       break;
+    case "address-editor":
+      return <AddressEditor type={type} className={cn} size={size} value={value} value2={value2} />;
+    case "address-address-only":
+    case "address-name-only":
+    case "address-line1":
+      return <TextFormatter value={value} size={size} type={type} className={cn} />;
+    case "address-line2":
+      return <TextFormatter value={value} size="xs" type={type} className={cn} />;
     default:
       value = "UNKNOWN FORMATTER TYPE";
   }
@@ -109,7 +109,7 @@ const formatFloat = (number: number): string => {
 };
 
 const formatBytes = (bytes: number): string => {
-  if (bytes === 0) return "0 Bytes";
+  if (bytes === 0) return "-";
   const k = 1024;
   const sizes = ["b", "Kb", "Mb", "Gb", "Tb", "Pb"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));

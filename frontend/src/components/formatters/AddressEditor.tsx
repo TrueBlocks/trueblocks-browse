@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { TextProps } from "@mantine/core";
 import { AddrToName } from "@gocode/app/App";
 import { base } from "@gocode/models";
-import { Formatter, FormatterProps, knownType, Popup, NamePopup, AddressPopup } from ".";
+import { Formatter, FormatterProps, knownType, Popup, AddressPopup } from ".";
 import { useAppState } from "@state";
 import { types } from "@gocode/models";
 
-export const AddressFormatter = ({ value, value2, className, size = "md" }: FormatterProps) => {
+export const AddressEditor = ({ value, value2, className, size = "md" }: FormatterProps) => {
   const [line1, setLine1] = useState<string>("");
   const [line2, setLine2] = useState<string>("");
 
@@ -32,10 +32,10 @@ export const AddressFormatter = ({ value, value2, className, size = "md" }: Form
     formatAddress();
   }, [value, value2]);
 
-  const line1Type: knownType = "address-big";
-  const line2Type: knownType = "address-small";
+  const line1Type: knownType = "address-line1";
+  const line2Type: knownType = "address-line2";
 
-  const editor = <NamePopup address={value} name={line1} onSubmit={(newValue: string) => console.log(newValue)} />;
+  const editor = <AddressPopup address={value} name={line1} onSubmit={(newValue: string) => console.log(newValue)} />;
   return (
     <Popup editor={editor}>
       <Formatter className={className} size={size} type={line1Type} value={line1} />

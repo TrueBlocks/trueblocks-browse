@@ -1,8 +1,7 @@
 import React from "react";
-import { types, messages } from "@gocode/models";
+import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter } from "@components";
-import { AddressPopup, NamePopup } from "@components";
 
 const columnHelper = createColumnHelper<types.Monitor>();
 
@@ -11,7 +10,7 @@ export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
     header: () => "Name/Address",
     cell: (info) => {
       const { address, name } = info.row.original;
-      return <Formatter type="address-and-name" value={address} value2={name} />;
+      return <Formatter type="address-editor" value={address} value2={name} />;
     },
     meta: { className: "wide cell" },
   }),

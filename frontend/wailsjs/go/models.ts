@@ -385,6 +385,8 @@ export namespace types {
 	    address: base.Address;
 	    fileSize: number;
 	    functions: Function[];
+	    hasConstructor: boolean;
+	    hasFallback: boolean;
 	    isEmpty: boolean;
 	    isKnown: boolean;
 	    lastModDate: string;
@@ -402,6 +404,8 @@ export namespace types {
 	        this.address = this.convertValues(source["address"], base.Address);
 	        this.fileSize = source["fileSize"];
 	        this.functions = this.convertValues(source["functions"], Function);
+	        this.hasConstructor = source["hasConstructor"];
+	        this.hasFallback = source["hasFallback"];
 	        this.isEmpty = source["isEmpty"];
 	        this.isKnown = source["isKnown"];
 	        this.lastModDate = source["lastModDate"];
@@ -447,6 +451,8 @@ export namespace types {
 	    address: base.Address;
 	    fileSize: number;
 	    functions: Function[];
+	    hasConstructor: boolean;
+	    hasFallback: boolean;
 	    isEmpty: boolean;
 	    isKnown: boolean;
 	    lastModDate: string;
@@ -470,6 +476,8 @@ export namespace types {
 	        this.address = this.convertValues(source["address"], base.Address);
 	        this.fileSize = source["fileSize"];
 	        this.functions = this.convertValues(source["functions"], Function);
+	        this.hasConstructor = source["hasConstructor"];
+	        this.hasFallback = source["hasFallback"];
 	        this.isEmpty = source["isEmpty"];
 	        this.isKnown = source["isKnown"];
 	        this.lastModDate = source["lastModDate"];

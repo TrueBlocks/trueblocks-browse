@@ -1,8 +1,7 @@
 import React from "react";
 import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef, Formatter, AddressPopup } from "@components";
-import { useToEther, useDateTime } from "@hooks";
+import { CustomColumnDef, Formatter } from "@components";
 
 const columnHelper = createColumnHelper<types.Transaction>();
 
@@ -20,12 +19,12 @@ export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
   }),
   columnHelper.accessor("from", {
     header: () => "From",
-    cell: (info) => <Formatter type="address-and-name" value={info.renderValue()} />,
+    cell: (info) => <Formatter type="address-editor" value={info.renderValue()} />,
     meta: { className: "wide cell" },
   }),
   columnHelper.accessor("to", {
     header: () => "To",
-    cell: (info) => <Formatter type="address-and-name" value={info.renderValue()} />,
+    cell: (info) => <Formatter type="address-editor" value={info.renderValue()} />,
     meta: { className: "wide cell" },
   }),
   columnHelper.accessor("value", {

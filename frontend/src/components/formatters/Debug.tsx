@@ -9,13 +9,11 @@ export const getDebugColor = (type: knownType): string => {
   var ret: string = "";
   if (debug) {
     switch (type) {
-      case "address-and-name":
-        ret = classes.orange;
-        break;
+      case "address-editor":
       case "address-address-only":
-        ret = classes.orange;
-        break;
-      case "address-name":
+      case "address-name-only":
+      case "address-line1":
+      case "address-line2":
         ret = classes.orange;
         break;
       case "boolean":
@@ -23,6 +21,9 @@ export const getDebugColor = (type: knownType): string => {
       case "check":
         break;
       case "error":
+        break;
+      case "tag":
+        ret = classes.green;
         break;
       case "ether":
         ret = classes.red;

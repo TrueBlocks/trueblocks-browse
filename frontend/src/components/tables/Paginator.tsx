@@ -5,10 +5,10 @@ import { Route } from "@/Routes";
 
 export type Pager = {
   name: Route;
-  curItem: number;
-  perPage: number;
   count: number;
+  curItem: number;
   pageNumber: number;
+  perPage: number;
   totalPages: number;
   setpage: (newPage: number) => void;
 };
@@ -40,9 +40,9 @@ export const Paginator = ({ pager }: { pager: Pager | null }) => {
 
 export const EmptyPager: Pager = {
   name: "",
+  count: 0,
   curItem: 0,
   perPage: 0,
-  count: 0,
   pageNumber: 0,
   totalPages: 0,
   setpage: function (newPage: number) {},

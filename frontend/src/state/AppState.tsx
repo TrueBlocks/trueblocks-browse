@@ -49,10 +49,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const fetchHistory = async (currentItem: number, itemsPerPage: number, item?: any) => {
     GetLastSub("/history").then((subRoute: string) => {
       if (subRoute !== "") {
-        console.log("subRoute-app1: ", subRoute);
         subRoute = subRoute.replace("/", "");
-        console.log("subRoute-app2: ", subRoute);
-        console.log("subRoute-app3: ", subRoute as unknown as base.Address);
         setAddress(subRoute as unknown as base.Address);
       }
     });
