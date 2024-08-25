@@ -5,11 +5,11 @@ import { Route } from "@/Routes";
 
 export type Pager = {
   name: Route;
-  count: number;
-  curItem: number;
+  nItems: number;
+  selected: number;
   pageNumber: number;
   perPage: number;
-  totalPages: number;
+  lastPage: number;
   setPage: (newPage: number) => void;
   offset: () => number;
 };
@@ -25,7 +25,7 @@ export const Paginator = ({ pager }: { pager: Pager | null }) => {
         // siblings={1}
         size="sm"
         value={pager.pageNumber}
-        total={pager.totalPages}
+        total={pager.lastPage + 1}
         // withEdges
         classNames={{
           root: classes.root,
@@ -41,11 +41,11 @@ export const Paginator = ({ pager }: { pager: Pager | null }) => {
 
 export const EmptyPager: Pager = {
   name: "",
-  count: 0,
-  curItem: 0,
+  nItems: 0,
+  selected: 0,
   perPage: 0,
   pageNumber: 0,
-  totalPages: 0,
+  lastPage: 0,
   setPage: (newPage: number) => {},
   offset: () => 0,
 };

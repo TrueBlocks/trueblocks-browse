@@ -26,12 +26,12 @@ export const ViewStateProvider: React.FC<{
   const pager = useKeyboardPaging(route, nItems, [], lines);
 
   useEffect(() => {
-    fetchFn(pager.curItem, pager.perPage, null);
-  }, [pager.curItem, pager.perPage]);
+    fetchFn(pager.offset(), pager.perPage, null);
+  }, [pager.pageNumber, pager.perPage]);
 
   useEffect(() => {
     const handleRefresh = () => {
-      fetchFn(pager.curItem, pager.perPage);
+      fetchFn(pager.offset(), pager.perPage);
     };
 
     var { Message } = messages;
@@ -43,13 +43,13 @@ export const ViewStateProvider: React.FC<{
 
   useEffect(() => {
     if (route === "history") {
-      HistoryPage(address as unknown as string, pager.curItem, pager.perPage).then((item: types.HistoryContainer) => {
+      HistoryPage(address as unknown as string, pager.offset(), pager.perPage).then((item: types.HistoryContainer) => {
         if (item) {
           setHistory(item);
         }
       });
     }
-  }, [address, pager.curItem, pager.perPage]);
+  }, [address, pager.pageNumber, pager.perPage]);
 
   let state = {
     route,

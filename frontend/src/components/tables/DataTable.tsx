@@ -17,11 +17,12 @@ export function DataTable<T>({ table, loading }: DataTableProps<T>) {
     return <Title order={3}>Loading...</Title>;
   }
 
+  const selectedRow = pager.selected % pager.perPage;
   return (
     <>
       <Table>
         <TableHeader table={table} />
-        <TableBody table={table} />
+        <TableBody table={table} selectedRow={selectedRow} />
       </Table>
       <Paginator pager={pager} />
     </>
@@ -30,6 +31,7 @@ export function DataTable<T>({ table, loading }: DataTableProps<T>) {
 
 interface TablePartProps<T> {
   table: ReactTable<T>;
+  selectedRow?: number;
 }
 
 function TableHeader<T>({ table }: TablePartProps<T>) {
@@ -48,11 +50,11 @@ function TableHeader<T>({ table }: TablePartProps<T>) {
   );
 }
 
-function TableBody<T>({ table }: TablePartProps<T>) {
+function TableBody<T>({ table, selectedRow }: TablePartProps<T>) {
   return (
     <Table.Tbody>
-      {table.getRowModel().rows.map((row) => (
-        <Table.Tr key={row.id}>
+      {table.getRowModel().rows.map((row, index) => (
+        <Table.Tr key={row.id} className={index === selectedRow ? "selected-row" : ""}>
           {row.getVisibleCells().map((cell) => {
             const meta = cell.column.columnDef.meta as CustomMeta;
             return (

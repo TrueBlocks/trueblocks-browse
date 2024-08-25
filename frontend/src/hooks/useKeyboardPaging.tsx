@@ -1,7 +1,6 @@
-import React, { useEffect, useState, DependencyList, KeyboardEvent } from "react";
-import { useLocation } from "wouter";
+import React, { useEffect, useState, DependencyList } from "react";
 import { Pager, EmptyPager } from "@components";
-import { useHotkeys, HotkeyCallback } from "react-hotkeys-hook";
+import { useHotkeys } from "react-hotkeys-hook";
 import { Route } from "@/Routes";
 
 export function useKeyboardPaging(
@@ -10,64 +9,114 @@ export function useKeyboardPaging(
   deps: DependencyList = [],
   perPage: number = 20
 ): Pager {
-  const [curItem, setCurItem] = useState<number>(0);
-  const [location] = useLocation();
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [selected, setSelected] = useState<number>(0);
 
-  const handleKey = (e: any, callback: React.SetStateAction<number>) => {
-    if (!location.includes(route)) {
-      return;
-    }
-    e.preventDefault();
-    setCurItem(callback);
-  };
+  const lastPage = Math.floor(nItems / perPage);
 
-  useHotkeys("left", (e) => {
-    handleKey(e, (cur) => Math.max(cur - 1, 0));
-  });
-  useHotkeys("pageup", (e) => {
-    handleKey(e, (cur) => Math.max(cur - perPage * 10, 0));
-  });
+  // Navigate one row at a time
   useHotkeys("up", (e) => {
-    handleKey(e, (cur) => Math.max(cur - perPage, 0));
-  });
-  useHotkeys("home", (e) => {
-    handleKey(e, Math.max(0, 0));
-  });
-
-  useHotkeys("right", (e) => {
-    handleKey(e, (cur) => Math.min(Math.max(nItems - perPage, 0), cur + 1));
-  });
-  useHotkeys("pagedown", (e) => {
-    handleKey(e, (cur) => Math.min(Math.max(nItems - perPage * 10, 0), cur + perPage * 10));
+    e.preventDefault();
+    // console.log("Up Pressed. curItem:", selected, " perPage:", perPage);
+    const curPage = Math.floor(selected / perPage);
+    const newRec = Math.max(selected - 1, 0);
+    const newPage = Math.floor(newRec / perPage);
+    if (newPage !== curPage) {
+      setPage(newPage + 1); // page is one based
+    }
+    setSelected(newRec);
   });
   useHotkeys("down", (e) => {
-    handleKey(e, (cur) => Math.min(Math.max(nItems - perPage, 0), cur + perPage));
-  });
-  useHotkeys("end", (e) => {
-    handleKey(e, Math.max(nItems - perPage, 0));
+    e.preventDefault();
+    // console.log("Down Pressed. curItem:", selected, " perPage:", perPage);
+    const curPage = Math.floor(selected / perPage);
+    const newRec = Math.min(selected + 1, nItems - 1);
+    const newPage = Math.floor(newRec / perPage);
+    if (newPage !== curPage) {
+      setPage(newPage + 1); // page is one based
+    }
+    setSelected(newRec);
   });
 
-  useEffect(() => {
-    setCurItem(0);
-  }, deps);
+  // Navigate one page at a time
+  useHotkeys("left", (e) => {
+    e.preventDefault();
+    // console.log("Left Pressed. curItem:", selected, " perPage:", perPage);
+    const curPage = Math.floor(selected / perPage);
+    const newRec = Math.max(selected - perPage, 0);
+    const newPage = Math.floor(newRec / perPage);
+    if (newPage !== curPage) {
+      setPage(newPage + 1); // page is one based
+    }
+    setSelected(newPage * perPage);
+  });
+  useHotkeys("right", (e) => {
+    e.preventDefault();
+    // console.log("Right Pressed. curItem:", selected, " perPage:", perPage);
+    const curPage = Math.floor(selected / perPage);
+    const newRec = Math.min(selected + perPage, nItems - 1);
+    const newPage = Math.floor(newRec / perPage);
+    if (newPage !== curPage) {
+      setPage(newPage + 1); // page is one based
+    }
+    setSelected(newPage * perPage);
+  });
+
+  // Navigate ten pages at a time
+  useHotkeys("pageup", (e) => {
+    e.preventDefault();
+    // console.log("PageUp Pressed. curItem:", selected, " perPage:", perPage);
+    const curPage = Math.floor(selected / perPage);
+    const newRec = Math.max(selected - perPage * 10, 0);
+    const newPage = Math.floor(newRec / perPage);
+    if (newPage !== curPage) {
+      setPage(newPage + 1); // page is one based
+    }
+    setSelected(newPage * perPage);
+  });
+  useHotkeys("pagedown", (e) => {
+    e.preventDefault();
+    // console.log("PageDown Pressed. curItem:", selected, " perPage:", perPage);
+    const curPage = Math.floor(selected / perPage);
+    const newRec = Math.min(selected + perPage * 10, nItems - 1);
+    const newPage = Math.floor(newRec / perPage);
+    if (newPage !== curPage) {
+      setPage(newPage + 1); // page is one based
+    }
+    setSelected(newPage * perPage);
+  });
+
+  // Navigate to first and last records
+  useHotkeys("home", (e) => {
+    e.preventDefault();
+    // console.log("Home Pressed. curItem:", selected, " perPage:", perPage);
+    setPage(1);
+    setSelected(0);
+  });
+
+  useHotkeys("end", (e) => {
+    e.preventDefault();
+    // console.log("End Pressed. curItem:", selected, " perPage:", perPage);
+    setPage(lastPage + 1);
+    setSelected(lastPage * perPage);
+  });
 
   const setPage = (newPage: number) => {
-    setCurItem((newPage - 1) * perPage);
+    setSelected((newPage - 1) * perPage);
+    setPageNumber(newPage);
   };
 
-  const pageNumber = curItem < perPage ? 1 : Math.ceil(curItem / perPage) + 1;
-  const totalPages = Math.ceil(nItems / perPage);
   if (nItems < 0) {
     return EmptyPager;
   } else {
     return {
       name: route,
-      curItem: curItem,
-      perPage: perPage,
-      count: nItems,
-      pageNumber: pageNumber,
-      totalPages: totalPages,
-      setPage: setPage,
+      selected,
+      perPage,
+      nItems,
+      pageNumber,
+      lastPage,
+      setPage,
       offset: () => (pageNumber - 1) * perPage,
     };
   }
