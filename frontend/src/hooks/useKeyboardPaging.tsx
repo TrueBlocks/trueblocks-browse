@@ -7,7 +7,8 @@ export function useKeyboardPaging(
   route: Route,
   nItems: number,
   deps: DependencyList = [],
-  perPage: number = 20
+  perPage: number = 20,
+  onEnter?: (row: number) => void
 ): Pager {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [selected, setSelected] = useState<number>(0);
@@ -100,6 +101,20 @@ export function useKeyboardPaging(
     setPage(lastPage + 1);
     setSelected(lastPage * perPage);
   });
+
+  // Handle Enter key
+  useHotkeys(
+    "enter",
+    (e) => {
+      e.preventDefault();
+      console.log("Got enter key");
+      if (onEnter) {
+        console.log("has onEnter");
+        onEnter(selected);
+      }
+    },
+    [onEnter]
+  );
 
   const setPage = (newPage: number) => {
     setSelected((newPage - 1) * perPage);

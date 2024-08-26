@@ -19,11 +19,13 @@ export const ViewStateProvider: React.FC<{
   route: Route;
   nItems?: number;
   fetchFn: (selected: number, perPage: number, item?: any) => void;
+  onEnter?: (row: number) => void;
   children: ReactNode;
-}> = ({ route, nItems = -1, fetchFn, children }) => {
+}> = ({ route, nItems = -1, fetchFn, onEnter, children }) => {
   const { address, setHistory } = useAppState();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
-  const pager = useKeyboardPaging(route, nItems, [], lines);
+  console.log("ViewProvider", route, onEnter ? "with onEnter" : "no onEnter");
+  const pager = useKeyboardPaging(route, nItems, [], lines, onEnter);
 
   useEffect(() => {
     fetchFn(pager.offset(), pager.perPage, null);

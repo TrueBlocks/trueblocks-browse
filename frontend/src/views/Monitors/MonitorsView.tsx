@@ -3,10 +3,14 @@ import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./MonitorsTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { useAppState, ViewStateProvider } from "@state";
+import { useAppState, useViewState, ViewStateProvider } from "@state";
 
 export function MonitorsView() {
   const { monitors, fetchMonitors } = useAppState();
+
+  const handleEnter = (row: number) => {
+    console.log(`Enter pressed on item index: ${row}`);
+  };
 
   const table = useReactTable({
     data: monitors.items || [],
@@ -15,7 +19,7 @@ export function MonitorsView() {
   });
 
   return (
-    <ViewStateProvider route="monitors" nItems={monitors.nItems} fetchFn={fetchMonitors}>
+    <ViewStateProvider route="monitors" nItems={monitors.nItems} fetchFn={fetchMonitors} onEnter={handleEnter}>
       <View>
         <FormTable data={monitors} definition={createMonitorForm(table)} />
       </View>

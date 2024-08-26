@@ -51,8 +51,10 @@ function TableHeader<T>({ table }: TablePartProps<T>) {
 }
 
 function TableBody<T>({ table, selectedRow }: TablePartProps<T>) {
+  const { pager } = useViewState();
   return (
     <Table.Tbody>
+      {JSON.stringify(pager, null, 2)}
       {table.getRowModel().rows.map((row, index) => (
         <Table.Tr key={row.id} className={index === selectedRow ? "selected-row" : ""}>
           {row.getVisibleCells().map((cell) => {
