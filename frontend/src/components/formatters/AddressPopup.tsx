@@ -44,12 +44,7 @@ export const AddressPopup = forwardRef<HTMLDivElement, PopupProps>(
     // Close the popup when clicking outside
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
-        if (
-          ref &&
-          "current" in ref &&
-          ref.current &&
-          !ref.current.contains(event.target as Node)
-        ) {
+        if (ref && "current" in ref && ref.current && !ref.current.contains(event.target as Node)) {
           onClose();
         }
       };

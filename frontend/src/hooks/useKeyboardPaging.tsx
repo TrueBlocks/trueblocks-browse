@@ -107,13 +107,11 @@ export function useKeyboardPaging(
     "enter",
     (e) => {
       e.preventDefault();
-      console.log("Got enter key");
       if (onEnter) {
-        console.log("has onEnter");
         onEnter(selected);
       }
     },
-    [onEnter]
+    [onEnter, selected]
   );
 
   const setPage = (newPage: number) => {
