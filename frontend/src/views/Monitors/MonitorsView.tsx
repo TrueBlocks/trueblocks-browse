@@ -33,13 +33,15 @@ function createMonitorForm(table: any): GroupDefinition<theInstance>[] {
         { label: "nMonitors", type: "int", accessor: "nItems" },
         { label: "nRecords", type: "int", accessor: "nRecords" },
         { label: "nNamed", type: "int", accessor: "nNamed" },
+        { label: "fileSize", type: "bytes", accessor: "fileSize" },
       ],
     },
     {
       title: "Other",
       colSpan: 6,
       fields: [
-        { label: "fileSize", type: "bytes", accessor: "fileSize" },
+        { label: "nEmpty", type: "int", accessor: "nEmpty" },
+        { label: "nStaged", type: "int", accessor: "nStaged" },
         { label: "nDeleted", type: "int", accessor: "nDeleted" },
       ],
     },

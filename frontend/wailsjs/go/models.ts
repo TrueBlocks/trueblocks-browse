@@ -1260,6 +1260,8 @@ export namespace types {
 	    address: base.Address;
 	    deleted: boolean;
 	    fileSize: number;
+	    isEmpty: boolean;
+	    isStaged: boolean;
 	    lastScanned: number;
 	    nRecords: number;
 	    name: string;
@@ -1273,6 +1275,8 @@ export namespace types {
 	        this.address = this.convertValues(source["address"], base.Address);
 	        this.deleted = source["deleted"];
 	        this.fileSize = source["fileSize"];
+	        this.isEmpty = source["isEmpty"];
+	        this.isStaged = source["isStaged"];
 	        this.lastScanned = source["lastScanned"];
 	        this.nRecords = source["nRecords"];
 	        this.name = source["name"];
@@ -1300,6 +1304,8 @@ export namespace types {
 	    address: base.Address;
 	    deleted: boolean;
 	    fileSize: number;
+	    isEmpty: boolean;
+	    isStaged: boolean;
 	    lastScanned: number;
 	    nRecords: number;
 	    name: string;
@@ -1307,6 +1313,8 @@ export namespace types {
 	    nItems: number;
 	    nNamed: number;
 	    nDeleted: number;
+	    nStaged: number;
+	    nEmpty: number;
 	    monitorMap: {[key: string]: Monitor};
 	
 	    static createFrom(source: any = {}) {
@@ -1318,6 +1326,8 @@ export namespace types {
 	        this.address = this.convertValues(source["address"], base.Address);
 	        this.deleted = source["deleted"];
 	        this.fileSize = source["fileSize"];
+	        this.isEmpty = source["isEmpty"];
+	        this.isStaged = source["isStaged"];
 	        this.lastScanned = source["lastScanned"];
 	        this.nRecords = source["nRecords"];
 	        this.name = source["name"];
@@ -1325,6 +1335,8 @@ export namespace types {
 	        this.nItems = source["nItems"];
 	        this.nNamed = source["nNamed"];
 	        this.nDeleted = source["nDeleted"];
+	        this.nStaged = source["nStaged"];
+	        this.nEmpty = source["nEmpty"];
 	        this.monitorMap = this.convertValues(source["monitorMap"], Monitor, true);
 	    }
 	
@@ -1615,6 +1627,12 @@ export namespace types {
 
 export namespace wizard {
 	
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
+	}
 	export enum State {
 	    NOTOKAY = "notOkay",
 	    TOMLOKAY = "tomlOkay",
@@ -1622,12 +1640,6 @@ export namespace wizard {
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
 	    OKAY = "okay",
-	}
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
 	}
 	export class Wizard {
 	    state: State;
