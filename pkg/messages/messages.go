@@ -10,6 +10,7 @@ type Message string
 
 const (
 	Completed  Message = "Completed"
+	Cancelled  Message = "Cancelled"
 	Error      Message = "Error"
 	Warn       Message = "Warn"
 	Progress   Message = "Progress"
@@ -30,6 +31,7 @@ var AllMessages = []struct {
 	TSName string  `json:"tsname"`
 }{
 	{Completed, "COMPLETED"},
+	{Cancelled, "CANCELLED"},
 	{Error, "ERROR"},
 	{Warn, "WARN"},
 	{Progress, "PROGRESS"},

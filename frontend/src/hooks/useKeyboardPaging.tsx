@@ -2,13 +2,20 @@ import React, { useEffect, useState, DependencyList } from "react";
 import { Pager, EmptyPager } from "@components";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Route } from "@/Routes";
+import { CancleContexts } from "@gocode/app/App";
+
+export type Page = {
+  selected: number;
+  perPage: number;
+  pageNumber: number;
+};
 
 export function useKeyboardPaging(
   route: Route,
   nItems: number,
   deps: DependencyList = [],
   perPage: number = 20,
-  onEnter?: (row: number) => void
+  onEnter: (page: Page) => void
 ): Pager {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [selected, setSelected] = useState<number>(0);
@@ -102,16 +109,22 @@ export function useKeyboardPaging(
     setSelected(lastPage * perPage);
   });
 
-  // Handle Enter key
+  useHotkeys("esc", (e) => {
+    e.preventDefault();
+    CancleContexts();
+  });
+
   useHotkeys(
     "enter",
     (e) => {
       e.preventDefault();
-      if (onEnter) {
-        onEnter(selected);
-      }
+      onEnter({
+        selected,
+        perPage,
+        pageNumber,
+      });
     },
-    [onEnter, selected]
+    [onEnter, selected, pageNumber, perPage]
   );
 
   const setPage = (newPage: number) => {

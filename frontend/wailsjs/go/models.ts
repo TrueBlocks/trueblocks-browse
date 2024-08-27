@@ -151,6 +151,7 @@ export namespace messages {
 	
 	export enum Message {
 	    COMPLETED = "Completed",
+	    CANCELLED = "Cancelled",
 	    ERROR = "Error",
 	    WARN = "Warn",
 	    PROGRESS = "Progress",
@@ -284,6 +285,25 @@ export namespace output {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	
+	    }
+	}
+
+}
+
+export namespace sdk {
+	
+	export class SortSpec {
+	    fields: string[];
+	    orders: boolean[];
+	
+	    static createFrom(source: any = {}) {
+	        return new SortSpec(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.fields = source["fields"];
+	        this.orders = source["orders"];
 	    }
 	}
 
@@ -433,20 +453,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class Sort {
-	    fields: string[];
-	    orders: boolean[];
-	
-	    static createFrom(source: any = {}) {
-	        return new Sort(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.fields = source["fields"];
-	        this.orders = source["orders"];
-	    }
-	}
 	export class AbiContainer {
 	    address: base.Address;
 	    fileSize: number;
@@ -465,7 +471,7 @@ export namespace types {
 	    largestFile: string;
 	    mostFunctions: string;
 	    mostEvents: string;
-	    sort: Sort;
+	    sort: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new AbiContainer(source);
@@ -490,7 +496,7 @@ export namespace types {
 	        this.largestFile = source["largestFile"];
 	        this.mostFunctions = source["mostFunctions"];
 	        this.mostEvents = source["mostEvents"];
-	        this.sort = this.convertValues(source["sort"], Sort);
+	        this.sort = this.convertValues(source["sort"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1136,6 +1142,7 @@ export namespace types {
 	    recWid: number;
 	    items: ChunkStats[];
 	    nItems: number;
+	    sort: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new IndexContainer(source);
@@ -1158,6 +1165,7 @@ export namespace types {
 	        this.recWid = source["recWid"];
 	        this.items = this.convertValues(source["items"], ChunkStats);
 	        this.nItems = source["nItems"];
+	        this.sort = this.convertValues(source["sort"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1510,7 +1518,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	
 	export class Chain {
 	    chain: string;
 	    chainId: number;

@@ -15,6 +15,8 @@ export function AddrToName(arg1:base.Address):Promise<string>;
 
 export function Cancel(arg1:base.Address):Promise<number|boolean>;
 
+export function CancleContexts():Promise<void>;
+
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
 export function Fatal(arg1:string):Promise<void>;
@@ -30,6 +32,8 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 export function GetContext():Promise<context.Context>;
 
 export function GetDaemon(arg1:string):Promise<daemons.Daemon>;
+
+export function GetDalle():Promise<string>;
 
 export function GetEnv(arg1:string):Promise<string>;
 

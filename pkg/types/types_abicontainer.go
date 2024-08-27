@@ -8,11 +8,6 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-type Sort struct {
-	Fields []string        `json:"fields"`
-	Order  []sdk.SortOrder `json:"orders"`
-}
-
 type AbiContainer struct {
 	coreTypes.Abi
 	Items         []coreTypes.Abi `json:"items"`
@@ -23,13 +18,13 @@ type AbiContainer struct {
 	lF            comparison      `json:"-"`
 	mF            comparison      `json:"-"`
 	mE            comparison      `json:"-"`
-	Sort          Sort            `json:"sort"`
+	Sorts         sdk.SortSpec    `json:"sort"`
 }
 
 func NewAbiContainer(items []coreTypes.Abi) AbiContainer {
 	return AbiContainer{
 		Items: items,
-		Sort: Sort{
+		Sorts: sdk.SortSpec{
 			Fields: []string{"isEmpty", "isKnown", "address"},
 			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},
 		},

@@ -1,12 +1,24 @@
 import React from "react";
-import { types } from "@gocode/models";
+import { types, messages } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./NamesTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { useAppState, ViewStateProvider } from "@state";
+import { SetLast } from "@gocode/app/App";
+import { EventsEmit } from "@runtime";
+import { Page } from "@hooks";
 
 export function NamesView() {
   const { names, fetchNames } = useAppState();
+
+  const handleEnter = (page: Page) => {
+    const record = page.selected - page.perPage * (page.pageNumber - 1);
+    const address = names.names[record].address;
+    SetLast("route", `/history/${address}`);
+    EventsEmit(messages.Message.NAVIGATE, {
+      route: `/history/${address}`,
+    });
+  };
 
   const table = useReactTable({
     data: names.names || [],
@@ -15,7 +27,7 @@ export function NamesView() {
   });
 
   return (
-    <ViewStateProvider route={"names"} nItems={names.nItems} fetchFn={fetchNames}>
+    <ViewStateProvider route={"names"} nItems={names.nItems} fetchFn={fetchNames} onEnter={handleEnter}>
       <View>
         <FormTable data={names} definition={createNameForm(table)} />
       </View>

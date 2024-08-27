@@ -2,9 +2,9 @@ package app
 
 import (
 	"fmt"
-	"sort"
 	"sync"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
@@ -51,11 +51,10 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 		if len(a.index.Items) == len(chunks) {
 			return nil
 		}
-		a.index = types.IndexContainer{Items: chunks}
-		sort.Slice(a.index.Items, func(i, j int) bool {
-			// reverse order
-			return a.index.Items[i].Range > a.index.Items[j].Range
-		})
+		a.index = types.NewIndexContainer(chunks)
+		if err := sdk.SortChunkStats(a.index.Items, a.index.Sorts); err != nil {
+			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err))
+		}
 		a.index.Summarize()
 	}
 	return nil

@@ -10,6 +10,10 @@ export function HomeView() {
   const { fetchHistory, fetchMonitors, fetchNames, fetchAbis, fetchIndexes, fetchManifests, fetchStatus } =
     useAppState();
 
+  if (!address) {
+    return <Text>Address not found</Text>;
+  }
+
   const fetchFn = (selected: number, perPage: number, item?: any) => {
     fetchHistory(selected, perPage, item);
     fetchMonitors(selected, perPage, item);

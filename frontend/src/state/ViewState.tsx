@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useContext, ReactNode } from "react";
 import { Pager } from "@components";
 import { Route } from "@/Routes";
-import { useKeyboardPaging } from "@hooks";
+import { Page, useKeyboardPaging } from "@hooks";
 import { types, messages } from "@gocode/models";
 import { HistoryPage } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
@@ -19,13 +19,13 @@ export const ViewStateProvider: React.FC<{
   route: Route;
   nItems?: number;
   fetchFn: (selected: number, perPage: number, item?: any) => void;
-  onEnter?: (row: number) => void;
+  onEnter?: (page: Page) => void;
   children: ReactNode;
 }> = ({ route, nItems = -1, fetchFn, onEnter, children }) => {
   const { address, setHistory } = useAppState();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
-  console.log("ViewProvider", route, onEnter ? "with onEnter" : "no onEnter");
-  const pager = useKeyboardPaging(route, nItems, [], lines, onEnter);
+  const ignoreEnter = (page: Page) => {};
+  const pager = useKeyboardPaging(route, nItems, [], lines, onEnter ? onEnter : ignoreEnter);
 
   useEffect(() => {
     fetchFn(pager.offset(), pager.perPage, null);

@@ -51,7 +51,6 @@ function TableHeader<T>({ table }: TablePartProps<T>) {
 }
 
 function TableBody<T>({ table, selectedRow }: TablePartProps<T>) {
-  const { pager } = useViewState();
   return (
     <Table.Tbody>
       {table.getRowModel().rows.map((row, index) => (
