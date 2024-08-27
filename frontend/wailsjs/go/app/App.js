@@ -14,6 +14,10 @@ export function Cancel(arg1) {
   return window['go']['app']['App']['Cancel'](arg1);
 }
 
+export function CancleContexts() {
+  return window['go']['app']['App']['CancleContexts']();
+}
+
 export function ConvertToAddress(arg1) {
   return window['go']['app']['App']['ConvertToAddress'](arg1);
 }

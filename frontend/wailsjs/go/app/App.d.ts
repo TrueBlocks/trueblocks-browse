@@ -15,6 +15,8 @@ export function AddrToName(arg1:base.Address):Promise<string>;
 
 export function Cancel(arg1:base.Address):Promise<number|boolean>;
 
+export function CancleContexts():Promise<void>;
+
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
 export function Fatal(arg1:string):Promise<void>;

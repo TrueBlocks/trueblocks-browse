@@ -14,10 +14,24 @@ import (
 
 var historyMutex sync.Mutex
 
+func (a *App) CancleContexts() {
+	for address, ctxArrays := range a.renderCtxs {
+		for _, ctx := range ctxArrays {
+			messages.Send(a.ctx,
+				messages.Cancelled,
+				messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(len(a.historyMap[address].Items)), address),
+			)
+			(*ctx).Cancel()
+		}
+	}
+}
+
 func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContainer {
 	if !a.isConfigured() {
 		return types.HistoryContainer{}
 	}
+
+	a.CancleContexts()
 
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {

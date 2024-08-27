@@ -2,6 +2,7 @@ import React, { useEffect, useState, DependencyList } from "react";
 import { Pager, EmptyPager } from "@components";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Route } from "@/Routes";
+import { CancleContexts } from "@gocode/app/App";
 
 export function useKeyboardPaging(
   route: Route,
@@ -102,7 +103,11 @@ export function useKeyboardPaging(
     setSelected(lastPage * perPage);
   });
 
-  // Handle Enter key
+  useHotkeys("esc", (e) => {
+    e.preventDefault();
+    CancleContexts();
+  });
+
   useHotkeys(
     "enter",
     (e) => {

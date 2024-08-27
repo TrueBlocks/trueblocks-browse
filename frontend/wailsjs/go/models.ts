@@ -151,6 +151,7 @@ export namespace messages {
 	
 	export enum Message {
 	    COMPLETED = "Completed",
+	    CANCELLED = "Cancelled",
 	    ERROR = "Error",
 	    WARN = "Warn",
 	    PROGRESS = "Progress",
