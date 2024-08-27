@@ -65,7 +65,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 				return nil
 			}
 			a.abis = types.NewAbiContainer(abis)
-			sdk.SortAbis(a.abis.Items, a.abis.Sort.Fields, a.abis.Sort.Order)
+			// sdk.SortAbis(a.abis.Items, a.abis.Sort.Fields, a.abis.Sort.Order)
 			a.abis.Summarize()
 		}
 	}
