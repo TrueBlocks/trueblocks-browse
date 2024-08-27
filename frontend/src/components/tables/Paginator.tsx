@@ -25,7 +25,7 @@ export const Paginator = ({ pager }: { pager: Pager | null }) => {
         // siblings={1}
         size="sm"
         value={pager.pageNumber}
-        total={pager.lastPage + 1}
+        total={pager.lastPage}
         // withEdges
         classNames={{
           root: classes.root,

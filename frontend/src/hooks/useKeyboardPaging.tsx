@@ -18,9 +18,12 @@ export function useKeyboardPaging(
   onEnter: (page: Page) => void
 ): Pager {
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [lastPage, setLastPage] = useState<number>(1);
   const [selected, setSelected] = useState<number>(0);
 
-  const lastPage = Math.floor(nItems / perPage);
+  useEffect(() => {
+    setLastPage(Math.ceil(nItems / perPage));
+  }, [nItems, perPage]);
 
   // Navigate one row at a time
   useHotkeys("up", (e) => {
@@ -105,8 +108,13 @@ export function useKeyboardPaging(
   useHotkeys("end", (e) => {
     e.preventDefault();
     // console.log("End Pressed. curItem:", selected, " perPage:", perPage);
-    setPage(lastPage + 1);
-    setSelected(lastPage * perPage);
+    const curPage = Math.floor(selected / perPage);
+    const newRec = nItems - 1;
+    const newPage = Math.floor(newRec / perPage);
+    if (newPage !== curPage) {
+      setPage(newPage + 1); // page is one based
+    }
+    setSelected(newRec);
   });
 
   useHotkeys("esc", (e) => {
