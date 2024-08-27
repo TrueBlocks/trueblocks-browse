@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/json"
 
+	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -10,6 +11,17 @@ type IndexContainer struct {
 	coreTypes.ChunkStats
 	Items  []coreTypes.ChunkStats `json:"items"`
 	NItems int                    `json:"nItems"`
+	Sorts  sdk.SortSpec           `json:"sort"`
+}
+
+func NewIndexContainer(items []coreTypes.ChunkStats) IndexContainer {
+	return IndexContainer{
+		Items: items,
+		Sorts: sdk.SortSpec{
+			Fields: []string{"range"},
+			Order:  []sdk.SortOrder{sdk.Dec},
+		},
+	}
 }
 
 func (s IndexContainer) String() string {

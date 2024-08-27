@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
@@ -65,7 +66,9 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 				return nil
 			}
 			a.abis = types.NewAbiContainer(abis)
-			// sdk.SortAbis(a.abis.Items, a.abis.Sort.Fields, a.abis.Sort.Order)
+			if err := sdk.SortAbis(a.abis.Items, a.abis.Sorts); err != nil {
+				messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err))
+			}
 			a.abis.Summarize()
 		}
 	}
