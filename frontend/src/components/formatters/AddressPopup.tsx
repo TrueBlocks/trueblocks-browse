@@ -26,8 +26,9 @@ export const AddressPopup = forwardRef<HTMLDivElement, PopupProps>(
     );
 
     const copy = useCallback(() => {
-      ClipboardSetText(inputValue);
-      onClose(); // Close the popup after copying
+      ClipboardSetText(inputValue).then(() => {
+        onClose(); // Close the popup after copying
+      });
     }, [inputValue, onClose]);
 
     const handleButtonClick = useCallback(() => {
