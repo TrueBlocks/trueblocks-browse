@@ -11,7 +11,7 @@ export type Pager = {
   perPage: number;
   lastPage: number;
   setPage: (newPage: number) => void;
-  offset: () => number;
+  getOffset: () => number;
 };
 
 export const Paginator = ({ pager }: { pager: Pager | null }) => {
@@ -47,5 +47,5 @@ export const EmptyPager: Pager = {
   pageNumber: 0,
   lastPage: 0,
   setPage: (newPage: number) => {},
-  offset: () => 0,
+  getOffset: () => 0,
 };

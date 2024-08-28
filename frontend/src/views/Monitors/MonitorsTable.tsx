@@ -33,11 +33,11 @@ export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
     cell: (info) => <Formatter type="check" value={info.renderValue()} />,
     meta: { className: "small centered cell" },
   }),
-  // columnHelper.accessor("isStaged", {
-  //   header: () => "isStaged",
-  //   cell: (info) => <Formatter type="check" value={info.renderValue()} />,
-  //   meta: { className: "small centered cell" },
-  // }),
+  columnHelper.accessor("isStaged", {
+    header: () => "isStaged",
+    cell: (info) => <Formatter type="check" value={info.renderValue()} />,
+    meta: { className: "small centered cell" },
+  }),
   columnHelper.accessor("deleted", {
     header: () => "Deleted",
     cell: (info) => <Formatter type="check" value={info.renderValue()} />,

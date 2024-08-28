@@ -6,10 +6,12 @@ import { CustomColumnDef, Formatter } from "@components";
 const columnHelper = createColumnHelper<types.Transaction>();
 
 export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
-  columnHelper.accessor((row) => `${row.blockNumber}.${row.transactionIndex}`, {
-    id: "blockTx",
-    header: () => "Id",
-    cell: (info) => <Formatter type="appearance" value={info.renderValue()} />,
+  columnHelper.accessor("blockNumber", {
+    header: () => "TxId",
+    cell: (info) => {
+      const { blockNumber, transactionIndex, hash } = info.row.original;
+      return <Formatter type="appearance" value={`${blockNumber}.${transactionIndex}`} value2={hash} />;
+    },
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("timestamp", {
