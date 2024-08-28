@@ -1,3 +1,50 @@
+export namespace app {
+	
+	export class HomeContainer {
+	    items: types.HistoryContainer[];
+	    nMonitors: number;
+	    nNames: number;
+	    nAbis: number;
+	    nIndexes: number;
+	    nManifests: number;
+	    nCaches: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new HomeContainer(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.items = this.convertValues(source["items"], types.HistoryContainer);
+	        this.nMonitors = source["nMonitors"];
+	        this.nNames = source["nNames"];
+	        this.nAbis = source["nAbis"];
+	        this.nIndexes = source["nIndexes"];
+	        this.nManifests = source["nManifests"];
+	        this.nCaches = source["nCaches"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
 export namespace base {
 	
 	export class Address {

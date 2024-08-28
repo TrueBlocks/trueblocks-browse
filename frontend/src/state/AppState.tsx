@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect, useRef } from "react";
-import { types, messages, base, wizard } from "@gocode/models";
+import { app, types, messages, base, wizard } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import {
+  HomePage,
   HistoryPage,
   MonitorPage,
   NamePage,
@@ -25,6 +26,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
 
+  const [home, setHome] = useState<app.HomeContainer>({} as app.HomeContainer);
   const [history, setHistory] = useState<types.HistoryContainer>({} as types.HistoryContainer);
   const [monitors, setMonitors] = useState<types.MonitorContainer>({} as types.MonitorContainer);
   const [names, setNames] = useState<types.NameContainer>({} as types.NameContainer);
@@ -43,6 +45,14 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     GetWizardState().then((state) => {
       setWizardState(state);
       setIsConfigured(state == wizard.State.OKAY);
+    });
+  };
+
+  const fetchHome = async (currentItem: number, itemsPerPage: number, item?: any) => {
+    HomePage(currentItem, itemsPerPage).then((item: app.HomeContainer) => {
+      if (item) {
+        setHome(item);
+      }
     });
   };
 
@@ -153,6 +163,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   let state = {
     address,
+    home,
+    fetchHome,
     history,
     fetchHistory,
     setHistory,
@@ -200,6 +212,8 @@ type Counters = {
 
 interface AppStateProps {
   address: base.Address;
+  home: app.HomeContainer;
+  fetchHome: (currentItem: number, itemsPerPage: number, item?: any) => void;
   history: types.HistoryContainer;
   fetchHistory: (currentItem: number, itemsPerPage: number, item?: any) => void;
   setHistory: React.Dispatch<React.SetStateAction<types.HistoryContainer>>;

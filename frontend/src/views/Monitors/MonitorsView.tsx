@@ -12,7 +12,7 @@ export function MonitorsView() {
   const { monitors, fetchMonitors } = useAppState();
 
   const handleEnter = (page: Page) => {
-    const record = page.selected - page.perPage * (page.pageNumber - 1);
+    const record = page.selected - page.getOffset();
     const address = monitors.items[record].address;
     SetLast("route", `/history/${address}`);
     EventsEmit(messages.Message.NAVIGATE, {
@@ -58,7 +58,7 @@ function createMonitorForm(table: any): GroupDefinition<theInstance>[] {
       ],
     },
     {
-      title: "Files",
+      title: "Available Monitors",
       fields: [],
       components: [
         {

@@ -25,7 +25,7 @@ export const ViewStateProvider: React.FC<{
   const { address, setHistory } = useAppState();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
   const ignoreEnter = (page: Page) => {};
-  const pager = useKeyboardPaging(route, nItems, [], lines, onEnter ? onEnter : ignoreEnter);
+  const pager = useKeyboardPaging(route, nItems, lines, onEnter ? onEnter : ignoreEnter);
 
   useEffect(() => {
     fetchFn(pager.getOffset(), pager.perPage, null);

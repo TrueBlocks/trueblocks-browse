@@ -62,6 +62,7 @@ func (a *App) Refresh(which ...string) {
 			))
 		}
 	}
+	a.loadHome(nil, nil)
 
 	// And then update everything else in the fullness of time
 	wg := sync.WaitGroup{}
@@ -74,8 +75,11 @@ func (a *App) Refresh(which ...string) {
 	go a.loadMonitors(&wg, errorChan)
 	go a.loadIndex(&wg, errorChan)
 	go a.loadStatus(&wg, errorChan)
-	wg.Wait()
-	close(errorChan) // Close the channel after all goroutines are done
+
+	go func() {
+		wg.Wait()
+		close(errorChan) // Close the channel after all goroutines are done
+	}()
 
 	var errors []error
 	for err := range errorChan {
@@ -83,6 +87,8 @@ func (a *App) Refresh(which ...string) {
 			errors = append(errors, err)
 		}
 	}
+
+	a.loadHome(nil, nil)
 
 	if len(errors) > 0 {
 		// Handle errors, e.g., wait 1/2 second between each error message
