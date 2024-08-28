@@ -1478,12 +1478,14 @@ export namespace types {
 	
 	export class PortfolioContainer {
 	    items: HistoryContainer[];
+	    myCount: number;
 	    nMonitors: number;
 	    nNames: number;
 	    nAbis: number;
 	    nIndexes: number;
 	    nManifests: number;
 	    nCaches: number;
+	    historySize: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new PortfolioContainer(source);
@@ -1492,12 +1494,14 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.items = this.convertValues(source["items"], HistoryContainer);
+	        this.myCount = source["myCount"];
 	        this.nMonitors = source["nMonitors"];
 	        this.nNames = source["nNames"];
 	        this.nAbis = source["nAbis"];
 	        this.nIndexes = source["nIndexes"];
 	        this.nManifests = source["nManifests"];
 	        this.nCaches = source["nCaches"];
+	        this.historySize = source["historySize"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

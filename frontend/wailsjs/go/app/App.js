@@ -102,10 +102,6 @@ export function HistoryPage(arg1, arg2, arg3) {
   return window['go']['app']['App']['HistoryPage'](arg1, arg2, arg3);
 }
 
-export function HistorySize(arg1) {
-  return window['go']['app']['App']['HistorySize'](arg1);
-}
-
 export function IndexPage(arg1, arg2) {
   return window['go']['app']['App']['IndexPage'](arg1, arg2);
 }
@@ -134,8 +130,8 @@ export function RegisterCtx(arg1) {
   return window['go']['app']['App']['RegisterCtx'](arg1);
 }
 
-export function Reload(arg1, arg2, arg3) {
-  return window['go']['app']['App']['Reload'](arg1, arg2, arg3);
+export function Reload(arg1) {
+  return window['go']['app']['App']['Reload'](arg1);
 }
 
 export function SetEnv(arg1, arg2) {

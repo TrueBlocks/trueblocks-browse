@@ -32,6 +32,7 @@ func (a *App) loadPortfolio(wg *sync.WaitGroup, errorChan chan error) error {
 	a.portfolio.NCaches = len(a.status.Items)
 	a.portfolio.HistorySize = 0
 	for _, m := range a.historyMap {
+		a.portfolio.Summary.Balance += m.Balance
 		a.portfolio.Summary.NItems += m.NItems
 		a.portfolio.Summary.NLogs += m.NLogs
 		a.portfolio.Summary.NErrors += m.NErrors
