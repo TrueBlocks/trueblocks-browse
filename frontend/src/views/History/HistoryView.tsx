@@ -4,7 +4,7 @@ import { types, base } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./HistoryTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { GetLastSub } from "@gocode/app/App";
+import { GetLastSub, CancleContexts } from "@gocode/app/App";
 import { useAppState, ViewStateProvider } from "@state";
 
 export function HistoryView() {
@@ -12,6 +12,7 @@ export function HistoryView() {
 
   var aa = useParams().address;
   useEffect(() => {
+    CancleContexts();
     if (aa === ":address") {
       GetLastSub("/history").then((subRoute) => {
         subRoute = subRoute.replace("/", "");

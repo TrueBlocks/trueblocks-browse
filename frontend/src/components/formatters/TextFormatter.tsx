@@ -1,6 +1,6 @@
-import React, { ReactNode, useMemo } from "react";
+import React from "react";
 import { useEnvironment } from "@hooks";
-import { Stack, Text, TextProps } from "@mantine/core";
+import { Stack, Text } from "@mantine/core";
 import { FormatterProps } from "./Formatter";
 
 export function TextFormatter({ className, type, value, size }: FormatterProps) {

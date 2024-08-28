@@ -23,6 +23,7 @@ func (a *App) CancleContexts() {
 			)
 			(*ctx).Cancel()
 		}
+		delete(a.renderCtxs, address)
 	}
 }
 
@@ -30,8 +31,6 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 	if !a.isConfigured() {
 		return types.HistoryContainer{}
 	}
-
-	a.CancleContexts()
 
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
@@ -74,6 +73,12 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 					summary.Address = address
 					summary.Name = a.names.NamesMap[address].Name
 					summary.Items = append(summary.Items, *tx)
+					sort.Slice(summary.Items, func(i, j int) bool {
+						if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
+							return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
+						}
+						return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
+					})
 					a.historyMap[address] = summary
 					if len(a.historyMap[address].Items)%base.Max(pageSize, 1) == 0 {
 						messages.Send(a.ctx,
