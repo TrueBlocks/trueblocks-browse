@@ -10,6 +10,7 @@ export type Pager = {
   pageNumber: number;
   perPage: number;
   lastPage: number;
+  setRecord: (newRecord: number) => void;
   setPage: (newPage: number) => void;
   getOffset: () => number;
 };
@@ -32,7 +33,7 @@ export const Paginator = ({ pager }: { pager: Pager | null }) => {
           control: classes.control,
         }}
         onChange={(value) => {
-          pager.setPage(value);
+          pager.setRecord((value - 1) * pager.perPage);
         }}
       />
     </div>
@@ -47,5 +48,6 @@ export const EmptyPager: Pager = {
   pageNumber: 0,
   lastPage: 0,
   setPage: (newPage: number) => {},
+  setRecord: (newRecord: number) => {},
   getOffset: () => 0,
 };

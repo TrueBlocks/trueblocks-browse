@@ -4,7 +4,11 @@ import { SetLast } from "@gocode/app/App";
 import { EventsEmit } from "@runtime";
 import { IconLink } from "@tabler/icons-react";
 import { messages } from "@gocode/models";
-import { AddressButtonProps } from "."
+
+export type AddressButtonProps = {
+  address: string;
+  onClick: () => void;
+};
 
 export const MonitorButton = ({ address, onClick }: AddressButtonProps) => {
   const handleClick = () => {

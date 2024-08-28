@@ -51,10 +51,15 @@ function TableHeader<T>({ table }: TablePartProps<T>) {
 }
 
 function TableBody<T>({ table, selectedRow }: TablePartProps<T>) {
+  const { pager } = useViewState(); // Access pager to use setSelected
   return (
     <Table.Tbody>
       {table.getRowModel().rows.map((row, index) => (
-        <Table.Tr key={row.id} className={index === selectedRow ? "selected-row" : ""}>
+        <Table.Tr
+          key={row.id}
+          className={index === selectedRow ? "selected-row" : ""}
+          onClick={() => pager.setRecord(index + pager.getOffset())}
+        >
           {row.getVisibleCells().map((cell) => {
             const meta = cell.column.columnDef.meta as CustomMeta;
             return (

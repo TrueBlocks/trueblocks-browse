@@ -3,14 +3,15 @@ import { Button } from "@mantine/core";
 import { BrowserOpenURL } from "@runtime";
 import { IconExternalLink } from "@tabler/icons-react";
 
-export type AddressButtonProps = {
-  address: string;
+export type ExploreButtonProps = {
+  endpoint: string;
+  value: string;
   onClick?: () => void;
 };
 
-export const ExploreButton = ({ address, onClick }: AddressButtonProps) => {
+export const ExploreButton = ({ endpoint, value, onClick }: ExploreButtonProps) => {
   const handleClick = () => {
-    BrowserOpenURL(`https://etherscan.io/address/${address}`);
+    BrowserOpenURL(`https://etherscan.io/${endpoint}/${value}`);
     if (onClick) {
       onClick();
     }
