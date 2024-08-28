@@ -186,10 +186,6 @@ export function ViewHistory(arg1) {
   return window['go']['app']['App']['ViewHistory'](arg1);
 }
 
-export function ViewHome(arg1) {
-  return window['go']['app']['App']['ViewHome'](arg1);
-}
-
 export function ViewIndexes(arg1) {
   return window['go']['app']['App']['ViewIndexes'](arg1);
 }
@@ -204,6 +200,10 @@ export function ViewMonitors(arg1) {
 
 export function ViewNames(arg1) {
   return window['go']['app']['App']['ViewNames'](arg1);
+}
+
+export function ViewPortfolio(arg1) {
+  return window['go']['app']['App']['ViewPortfolio'](arg1);
 }
 
 export function ViewSettings(arg1) {

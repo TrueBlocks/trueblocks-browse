@@ -20,7 +20,7 @@ func (a *App) GetMenus() *menu.Menu {
 	fileMenu.AddText("Save As File", keys.CmdOrCtrl("a"), a.FileSaveAs)
 
 	viewMenu := appMenu.AddSubmenu("View")
-	viewMenu.AddText("Home", keys.CmdOrCtrl("1"), a.ViewHome)
+	viewMenu.AddText("Portfolio", keys.CmdOrCtrl("1"), a.ViewPortfolio)
 	viewMenu.AddText("History", keys.CmdOrCtrl("2"), a.ViewHistory)
 	viewMenu.AddText("Monitors", keys.CmdOrCtrl("3"), a.ViewMonitors)
 	viewMenu.AddText("Names", keys.CmdOrCtrl("4"), a.ViewNames)

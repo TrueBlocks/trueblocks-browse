@@ -101,8 +101,6 @@ export function ViewDaemons(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewHistory(arg1:menu.CallbackData):Promise<void>;
 
-export function ViewHome(arg1:menu.CallbackData):Promise<void>;
-
 export function ViewIndexes(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewManifest(arg1:menu.CallbackData):Promise<void>;
@@ -110,6 +108,8 @@ export function ViewManifest(arg1:menu.CallbackData):Promise<void>;
 export function ViewMonitors(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewNames(arg1:menu.CallbackData):Promise<void>;
+
+export function ViewPortfolio(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewSettings(arg1:menu.CallbackData):Promise<void>;
 
