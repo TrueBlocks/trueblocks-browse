@@ -83,7 +83,7 @@ export function useKeyboardPaging(
   });
   useHotkeys("mod+r", (e) => {
     e.preventDefault();
-    Reload(address, getOffset(), perPage);
+    Reload(address).then(() => {});
   });
 
   useHotkeys(

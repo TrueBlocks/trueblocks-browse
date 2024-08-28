@@ -1,7 +1,8 @@
 import React from "react";
 import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef, Formatter } from "@components";
+import { CustomColumnDef, Formatter, ExploreButton, ExportButton, ViewButton } from "@components";
+import { Group } from "@mantine/core";
 
 const columnHelper = createColumnHelper<types.HistoryContainer>();
 
@@ -9,7 +10,7 @@ export const tableColumns: CustomColumnDef<types.HistoryContainer, any>[] = [
   columnHelper.accessor("address", {
     header: () => "Address",
     cell: (info) => <Formatter type="address-editor" value={info.renderValue()} />,
-    meta: { className: "large cell" },
+    meta: { className: "wide cell" },
   }),
   columnHelper.accessor("balance", {
     header: () => "Balance",
@@ -26,14 +27,20 @@ export const tableColumns: CustomColumnDef<types.HistoryContainer, any>[] = [
     cell: (info) => <Formatter type="text" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
-  columnHelper.accessor("nTokens", {
-    header: () => "nTokens",
-    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
-    meta: { className: "medium cell" },
-  }),
   columnHelper.accessor("nErrors", {
     header: () => "nErrors",
     cell: (info) => <Formatter type="text" value={info.renderValue()} />,
     meta: { className: "medium cell" },
+  }),
+  columnHelper.accessor("address", {
+    header: () => " ",
+    cell: (info) => (
+      <Group wrap={"nowrap"}>
+        <ExploreButton size="xs" noText endpoint="address" value={info.renderValue()} />
+        <ViewButton size="xs" noText value={info.renderValue()} />
+        <ExportButton size="xs" noText value={info.renderValue()} />
+      </Group>
+    ),
+    meta: { className: "wide cell" },
   }),
 ];

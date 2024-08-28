@@ -70,8 +70,8 @@ function createHistoryForm(table: any): GroupDefinition<theInstance>[] {
         {
           component: (
             <Stack>
-              <ExploreButton endpoint="address" value={address as unknown as string} />
-              <ExportButton endpoint="address" value={address as unknown as string} />
+              <ExploreButton size="sm" endpoint="address" value={address as unknown as string} />
+              <ExportButton size="sm" value={address as unknown as string} />
             </Stack>
           ),
         },

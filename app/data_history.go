@@ -14,12 +14,14 @@ import (
 
 var historyMutex sync.Mutex
 
-func (a *App) Reload(addr base.Address, first, pageSize int) types.HistoryContainer {
+func (a *App) Reload(addr base.Address) {
 	a.CancleContexts()
 	historyMutex.Lock()
 	delete(a.historyMap, addr)
 	historyMutex.Unlock()
-	return a.HistoryPage(addr.String(), first, pageSize)
+	a.portfolio = types.PortfolioContainer{}
+	a.monitors = types.MonitorContainer{}
+	a.Refresh()
 }
 
 func (a *App) CancleContexts() {
@@ -81,14 +83,14 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 					summary.Address = address
 					summary.Name = a.names.NamesMap[address].Name
 					summary.Items = append(summary.Items, *tx)
-					// sort.Slice(summary.Items, func(i, j int) bool {
-					// 	if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
-					// 		return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
-					// 	}
-					// 	return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
-					// })
 					a.historyMap[address] = summary
 					if len(a.historyMap[address].Items)%base.Max(pageSize, 1) == 0 {
+						sort.Slice(summary.Items, func(i, j int) bool {
+							if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
+								return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
+							}
+							return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
+						})
 						messages.Send(a.ctx,
 							messages.Progress,
 							messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(nItems), address),
@@ -166,17 +168,4 @@ func (a *App) getHistoryCnt(addr string) int {
 		a.meta = *meta
 		return int(appearances[0].NRecords)
 	}
-}
-
-func (a *App) HistorySize(addr string) int {
-	address, ok := a.ConvertToAddress(addr)
-	if !ok {
-		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
-		return 0
-	}
-
-	historyMutex.Lock()
-	defer historyMutex.Unlock()
-	d := a.historyMap[address]
-	return d.SizeOf()
 }

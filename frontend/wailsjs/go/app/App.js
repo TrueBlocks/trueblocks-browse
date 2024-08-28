@@ -22,6 +22,10 @@ export function ConvertToAddress(arg1) {
   return window['go']['app']['App']['ConvertToAddress'](arg1);
 }
 
+export function ExportToCsv(arg1) {
+  return window['go']['app']['App']['ExportToCsv'](arg1);
+}
+
 export function Fatal(arg1) {
   return window['go']['app']['App']['Fatal'](arg1);
 }

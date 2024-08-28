@@ -9,38 +9,38 @@ import { SetLast } from "@gocode/app/App";
 import { EventsEmit } from "@runtime";
 
 export function PortfolioView() {
-  const { home, fetchHome } = useAppState();
-
-  //   if (!address) {
-  //     return <Text>Address not found</Text>;
-  //   }
+  const { portfolio, fetchPortfolio } = useAppState();
 
   const handleEnter = (page: Page) => {
     const record = page.selected - page.getOffset();
-    const address = home.items[record].address;
+    const address = portfolio.items[record].address;
     SetLast("route", `/history/${address}`);
     EventsEmit(messages.Message.NAVIGATE, {
       route: `/history/${address}`,
     });
   };
 
+  //   if (!address) {
+  //     return <Text>Address not found</Text>;
+  //   }
+
   const table = useReactTable({
-    data: home.items || [],
+    data: portfolio.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
-    <ViewStateProvider route={""} nItems={home.items?.length} fetchFn={fetchHome} onEnter={handleEnter}>
+    <ViewStateProvider route={""} nItems={portfolio.myCount} fetchFn={fetchPortfolio} onEnter={handleEnter}>
       <View>
-        <FormTable data={home} definition={createHomeForm(table)} />
+        <FormTable data={portfolio} definition={createPortfolioForm(table)} />
       </View>
     </ViewStateProvider>
   );
 }
 
 type theInstance = InstanceType<typeof types.PortfolioContainer>;
-function createHomeForm(table: any): GroupDefinition<theInstance>[] {
+function createPortfolioForm(table: any): GroupDefinition<theInstance>[] {
   return [
     {
       title: "Open Monitors",
@@ -67,6 +67,7 @@ function createHomeForm(table: any): GroupDefinition<theInstance>[] {
         { label: "nIndexes", type: "int", accessor: "nIndexes" },
         { label: "nManifests", type: "int", accessor: "nManifests" },
         { label: "nCaches", type: "int", accessor: "nCaches" },
+        { label: "historySize", type: "bytes", accessor: "historySize" },
       ],
     },
   ];

@@ -19,6 +19,8 @@ export function CancleContexts():Promise<void>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
+export function ExportToCsv(arg1:string):Promise<void>;
+
 export function Fatal(arg1:string):Promise<void>;
 
 export function FileNew(arg1:menu.CallbackData):Promise<void>;

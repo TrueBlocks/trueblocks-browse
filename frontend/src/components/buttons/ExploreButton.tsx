@@ -2,14 +2,13 @@ import React from "react";
 import { Button } from "@mantine/core";
 import { BrowserOpenURL } from "@runtime";
 import { IconExternalLink } from "@tabler/icons-react";
+import { ButtonProps } from "@components";
 
-export type ExploreButtonProps = {
+export interface ExploreButtonProps extends ButtonProps {
   endpoint: string;
-  value: string;
-  onClick?: () => void;
-};
+}
 
-export const ExploreButton = ({ endpoint, value, onClick }: ExploreButtonProps) => {
+export const ExploreButton = ({ endpoint, value, noText, size, onClick }: ExploreButtonProps) => {
   const handleClick = () => {
     BrowserOpenURL(`https://etherscan.io/${endpoint}/${value}`);
     if (onClick) {
@@ -18,8 +17,8 @@ export const ExploreButton = ({ endpoint, value, onClick }: ExploreButtonProps) 
   };
 
   return (
-    <Button size={"xs"} onClick={handleClick} leftSection={<IconExternalLink />}>
-      Explore
+    <Button size={size} onClick={handleClick} leftSection={<IconExternalLink />}>
+      {noText ? null : "Explore"}
     </Button>
   );
 };

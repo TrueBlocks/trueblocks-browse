@@ -15,7 +15,7 @@ export const AppearancePopup = forwardRef<HTMLDivElement, AppearancePopupProps>(
 
   return (
     <Group>
-      <ExploreButton endpoint="tx" value={hash} onClick={handleButtonClick} />
+      <ExploreButton size="sm" endpoint="tx" value={hash} onClick={handleButtonClick} />
       <ActionIcon variant="outline" onClick={onCopy} title="Copy to clipboard">
         <IconCopy />
       </ActionIcon>

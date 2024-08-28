@@ -23,21 +23,25 @@ func (a *App) loadPortfolio(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	a.portfolio = types.PortfolioContainer{}
+	a.portfolio.MyCount = len(a.historyMap)
 	a.portfolio.NMonitors = len(a.monitors.Items)
 	a.portfolio.NNames = len(a.names.Names)
 	a.portfolio.NAbis = len(a.abis.Items)
 	a.portfolio.NIndexes = len(a.index.Items)
 	a.portfolio.NManifests = len(a.manifest.Items)
 	a.portfolio.NCaches = len(a.status.Items)
+	a.portfolio.HistorySize = 0
 	for _, m := range a.historyMap {
 		a.portfolio.Summary.NItems += m.NItems
 		a.portfolio.Summary.NLogs += m.NLogs
 		a.portfolio.Summary.NErrors += m.NErrors
 		a.portfolio.Summary.NTokens += m.NTokens
+		m.Summarize()
 		a.portfolio.Items = append(a.portfolio.Items, m.ShallowCopy())
+		a.portfolio.HistorySize += m.SizeOf()
 	}
 	sort.Slice(a.portfolio.Items, func(i, j int) bool {
-		return a.portfolio.Items[i].Name < a.portfolio.Items[j].Name
+		return a.portfolio.Items[i].Address.Cmp(a.portfolio.Items[j].Address.Address) < 0
 	})
 
 	return nil

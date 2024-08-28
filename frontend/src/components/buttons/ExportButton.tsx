@@ -1,25 +1,22 @@
 import React from "react";
 import { Button } from "@mantine/core";
-import { BrowserOpenURL } from "@runtime";
+import { ExportToCsv } from "@gocode/app/App";
 import { IconFileExport } from "@tabler/icons-react";
+import { ButtonProps } from "@components";
 
-export type ExportButtonProps = {
-  endpoint: string;
-  value: string;
-  onClick?: () => void;
-};
+export interface ExportButtonProps extends ButtonProps {}
 
-export const ExportButton = ({ endpoint, value, onClick }: ExportButtonProps) => {
+export const ExportButton = ({ value, noText, size, onClick }: ExportButtonProps) => {
   const handleClick = () => {
-    BrowserOpenURL(`https://etherscan.io/${endpoint}/${value}`);
+    ExportToCsv(value);
     if (onClick) {
       onClick();
     }
   };
 
   return (
-    <Button size={"xs"} onClick={handleClick} leftSection={<IconFileExport />}>
-      Export
+    <Button size={size} onClick={handleClick} leftSection={<IconFileExport />}>
+      {noText ? null : "Export"}
     </Button>
   );
 };

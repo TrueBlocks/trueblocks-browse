@@ -4,17 +4,15 @@ import { SetLast } from "@gocode/app/App";
 import { EventsEmit } from "@runtime";
 import { IconLink } from "@tabler/icons-react";
 import { messages } from "@gocode/models";
+import { ButtonProps } from "@components";
 
-export type AddressButtonProps = {
-  address: string;
-  onClick: () => void;
-};
+export interface ViewButtonProps extends ButtonProps {}
 
-export const ViewButton = ({ address, onClick }: AddressButtonProps) => {
+export const ViewButton = ({ value, noText, size, onClick }: ViewButtonProps) => {
   const handleClick = () => {
-    SetLast("route", `/history/${address}`);
+    SetLast("route", `/history/${value}`);
     EventsEmit(messages.Message.NAVIGATE, {
-      route: `/history/${address}`,
+      route: `/history/${value}`,
     });
     if (onClick) {
       onClick();
@@ -22,8 +20,8 @@ export const ViewButton = ({ address, onClick }: AddressButtonProps) => {
   };
 
   return (
-    <Button size={"xs"} onClick={handleClick} leftSection={<IconLink />}>
-      View
+    <Button size={size} onClick={handleClick} leftSection={<IconLink />}>
+      {noText ? null : "View"}
     </Button>
   );
 };
