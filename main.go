@@ -51,7 +51,7 @@ func main() {
 				&messages.NavigateMsg{},
 				&messages.HelpMsg{},
 				&types.AbiContainer{},
-				&app.HomeContainer{},
+				&types.PortfolioContainer{},
 				&types.IndexContainer{},
 				&types.ManifestContainer{},
 				&types.MonitorContainer{},

@@ -102,10 +102,6 @@ export function HistorySize(arg1) {
   return window['go']['app']['App']['HistorySize'](arg1);
 }
 
-export function HomePage(arg1, arg2) {
-  return window['go']['app']['App']['HomePage'](arg1, arg2);
-}
-
 export function IndexPage(arg1, arg2) {
   return window['go']['app']['App']['IndexPage'](arg1, arg2);
 }
@@ -120,6 +116,10 @@ export function MonitorPage(arg1, arg2) {
 
 export function NamePage(arg1, arg2) {
   return window['go']['app']['App']['NamePage'](arg1, arg2);
+}
+
+export function PortfolioPage(arg1, arg2) {
+  return window['go']['app']['App']['PortfolioPage'](arg1, arg2);
 }
 
 export function Refresh(arg1) {

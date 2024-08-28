@@ -7,7 +7,6 @@ import {context} from '../models';
 import {daemons} from '../models';
 import {wizard} from '../models';
 import {config} from '../models';
-import {app} from '../models';
 import {output} from '../models';
 
 export function AbiPage(arg1:number,arg2:number):Promise<types.AbiContainer>;
@@ -60,8 +59,6 @@ export function HistoryPage(arg1:string,arg2:number,arg3:number):Promise<types.H
 
 export function HistorySize(arg1:string):Promise<number>;
 
-export function HomePage(arg1:number,arg2:number):Promise<app.HomeContainer>;
-
 export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>;
 
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
@@ -69,6 +66,8 @@ export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestCont
 export function MonitorPage(arg1:number,arg2:number):Promise<types.MonitorContainer>;
 
 export function NamePage(arg1:number,arg2:number):Promise<types.NameContainer>;
+
+export function PortfolioPage(arg1:number,arg2:number):Promise<types.PortfolioContainer>;
 
 export function Refresh(arg1:Array<string>):Promise<void>;
 

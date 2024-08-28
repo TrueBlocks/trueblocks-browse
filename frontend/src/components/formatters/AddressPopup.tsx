@@ -1,7 +1,7 @@
 import React, { useState, forwardRef, useCallback, useEffect, useRef } from "react";
 import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
 import { IconCopy } from "@tabler/icons-react";
-import { ExploreButton, MonitorButton, PopupProps } from "@components";
+import { ExploreButton, ViewButton, PopupProps } from "@components";
 
 export interface AddressPopupProps extends PopupProps {
   address: string;
@@ -51,7 +51,7 @@ export const AddressPopup = forwardRef<HTMLDivElement, AddressPopupProps>(
             />
             <Group>
               <ExploreButton endpoint="address" value={address} onClick={handleButtonClick} />
-              <MonitorButton address={address} onClick={handleButtonClick} />
+              <ViewButton address={address} onClick={handleButtonClick} />
               <Button size="xs" type="submit">
                 Save
               </Button>

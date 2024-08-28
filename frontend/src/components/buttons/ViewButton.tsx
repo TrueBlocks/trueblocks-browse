@@ -10,7 +10,7 @@ export type AddressButtonProps = {
   onClick: () => void;
 };
 
-export const MonitorButton = ({ address, onClick }: AddressButtonProps) => {
+export const ViewButton = ({ address, onClick }: AddressButtonProps) => {
   const handleClick = () => {
     SetLast("route", `/history/${address}`);
     EventsEmit(messages.Message.NAVIGATE, {
