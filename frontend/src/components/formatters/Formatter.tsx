@@ -2,10 +2,16 @@ import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { TextProps } from "@mantine/core";
 import { useDateTime, useToEther } from "@hooks";
-import { useAppState } from "@state";
-import classes from "./Formatter.module.css";
 import { getDebugColor } from ".";
-import { AddressFormatter, AppearanceFormatter, DateFormatter, TagFormatter, TextFormatter, EdMode } from "@components";
+import {
+  AddressFormatter,
+  AppearanceFormatter,
+  CrudButton,
+  DateFormatter,
+  TagFormatter,
+  TextFormatter,
+  EdMode,
+} from "@components";
 
 export type knownType =
   | "address-editor"
@@ -17,6 +23,7 @@ export type knownType =
   | "boolean"
   | "bytes"
   | "check"
+  | "crud"
   | "date"
   | "error"
   | "ether"
@@ -82,6 +89,8 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
     case "text":
     case "url":
       break;
+    case "crud":
+      return <CrudButton size="xs" value={value} isDeleted={value2} />;
     case "address-editor":
       return (
         <AddressFormatter type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.All} />
