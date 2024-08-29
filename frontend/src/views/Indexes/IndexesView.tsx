@@ -1,9 +1,8 @@
-import React from "react";
+import { DataTable, FormTable, GroupDefinition, View } from "@components";
 import { types } from "@gocode/models";
+import { useAppState, ViewStateProvider } from "@state";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./IndexesTable";
-import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { useAppState, ViewStateProvider } from "@state";
 
 export function IndexesView() {
   const { indexes, fetchIndexes } = useAppState();

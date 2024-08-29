@@ -10,9 +10,11 @@ export interface CrudButtonProps extends ButtonProps {
   isDeleted: boolean;
 }
 
+//  crudOperation(route: Route, selected: number, op: string): void;
+
 export const CrudButton = ({ value, size, isDeleted, onClick }: CrudButtonProps) => {
   const [address, setAddress] = useState<base.Address>(value as unknown as base.Address);
-  const { fetchNames } = useAppState();
+  const { fetchNames, crudOperation } = useAppState();
   const { pager } = useViewState();
   const { selected, setRecord } = pager;
 
@@ -24,8 +26,7 @@ export const CrudButton = ({ value, size, isDeleted, onClick }: CrudButtonProps)
     e.preventDefault();
     ModifyName("delete", address).then(() => {});
     fetchNames(pager.getOffset(), pager.perPage);
-    setRecord(0);
-    setRecord(selected);
+    crudOperation("names", selected, "delete");
     if (onClick) {
       onClick();
     }
@@ -35,8 +36,7 @@ export const CrudButton = ({ value, size, isDeleted, onClick }: CrudButtonProps)
     e.preventDefault();
     ModifyName("undelete", address).then(() => {});
     fetchNames(pager.getOffset(), pager.perPage);
-    setRecord(0);
-    setRecord(selected);
+    crudOperation("names", selected, "undelete");
     if (onClick) {
       onClick();
     }
@@ -46,8 +46,9 @@ export const CrudButton = ({ value, size, isDeleted, onClick }: CrudButtonProps)
     e.preventDefault();
     ModifyName("remove", address).then(() => {});
     fetchNames(pager.getOffset(), pager.perPage);
-    setRecord(0);
-    setRecord(selected);
+    // setRecord(0);
+    // setRecord(selected);
+    crudOperation("names", selected, "remove");
     if (onClick) {
       onClick();
     }
@@ -56,6 +57,7 @@ export const CrudButton = ({ value, size, isDeleted, onClick }: CrudButtonProps)
   if (isDeleted) {
     return (
       <>
+        {selected}
         <ActionIcon c="red" size={size} variant="outline" onClick={handleUndelete} title="Delete">
           <IconArrowBackUp />
         </ActionIcon>
@@ -67,8 +69,11 @@ export const CrudButton = ({ value, size, isDeleted, onClick }: CrudButtonProps)
   }
 
   return (
-    <ActionIcon size={size} variant="outline" onClick={handleDelete} title="Delete">
-      <IconTrash />
-    </ActionIcon>
+    <>
+      {selected}
+      <ActionIcon size={size} variant="outline" onClick={handleDelete} title="Delete">
+        <IconTrash />
+      </ActionIcon>
+    </>
   );
 };
