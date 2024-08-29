@@ -59,11 +59,11 @@ export function HelpToggle(arg1:menu.CallbackData):Promise<void>;
 
 export function HistoryPage(arg1:string,arg2:number,arg3:number):Promise<types.HistoryContainer>;
 
-export function HistorySize(arg1:string):Promise<number>;
-
 export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>;
 
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
+
+export function ModifyName(arg1:string,arg2:base.Address):Promise<void>;
 
 export function MonitorPage(arg1:number,arg2:number):Promise<types.MonitorContainer>;
 
@@ -75,7 +75,7 @@ export function Refresh(arg1:Array<string>):Promise<void>;
 
 export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
 
-export function Reload(arg1:base.Address,arg2:number,arg3:number):Promise<types.HistoryContainer>;
+export function Reload(arg1:base.Address):Promise<void>;
 
 export function SetEnv(arg1:string,arg2:string):Promise<void>;
 
