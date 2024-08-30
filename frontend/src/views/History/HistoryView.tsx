@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useParams } from "wouter";
 import { types, base } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
@@ -28,10 +28,12 @@ export function HistoryView() {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const definition = useMemo(() => createHistoryForm(table), [table]);
+
   return (
     <ViewStateProvider route={"history"} nItems={history.nItems} fetchFn={fetchHistory}>
       <View>
-        <FormTable data={history} definition={createHistoryForm(table)} />
+        <FormTable data={history} definition={definition} />
       </View>
     </ViewStateProvider>
   );

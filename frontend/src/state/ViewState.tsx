@@ -1,5 +1,5 @@
-import React, { createContext, useEffect, useContext, ReactNode } from "react";
-import { Pager } from "@components";
+import React, { createContext, useEffect, useContext, ReactNode, useMemo } from "react";
+import { EmptyPager, Pager } from "@components";
 import { Route } from "@/Routes";
 import { useKeyboardPaging } from "@hooks";
 import { types, messages } from "@gocode/models";
@@ -53,11 +53,11 @@ export const ViewStateProvider: React.FC<{
     }
   }, [address, pager.pageNumber, pager.perPage]);
 
-  let state = {
+  let state = useMemo(() => ({
     route,
     nItems,
     pager,
-  };
+  }), [route, nItems, pager]);
 
   return <ViewContext.Provider value={state}>{children}</ViewContext.Provider>;
 };
