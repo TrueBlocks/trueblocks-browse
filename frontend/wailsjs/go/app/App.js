@@ -14,8 +14,16 @@ export function Cancel(arg1) {
   return window['go']['app']['App']['Cancel'](arg1);
 }
 
+export function CancleContexts() {
+  return window['go']['app']['App']['CancleContexts']();
+}
+
 export function ConvertToAddress(arg1) {
   return window['go']['app']['App']['ConvertToAddress'](arg1);
+}
+
+export function ExportToCsv(arg1) {
+  return window['go']['app']['App']['ExportToCsv'](arg1);
 }
 
 export function Fatal(arg1) {
@@ -44,6 +52,10 @@ export function GetContext() {
 
 export function GetDaemon(arg1) {
   return window['go']['app']['App']['GetDaemon'](arg1);
+}
+
+export function GetDalle() {
+  return window['go']['app']['App']['GetDalle']();
 }
 
 export function GetEnv(arg1) {
@@ -90,16 +102,16 @@ export function HistoryPage(arg1, arg2, arg3) {
   return window['go']['app']['App']['HistoryPage'](arg1, arg2, arg3);
 }
 
-export function HistorySize(arg1) {
-  return window['go']['app']['App']['HistorySize'](arg1);
-}
-
 export function IndexPage(arg1, arg2) {
   return window['go']['app']['App']['IndexPage'](arg1, arg2);
 }
 
 export function ManifestPage(arg1, arg2) {
   return window['go']['app']['App']['ManifestPage'](arg1, arg2);
+}
+
+export function ModifyName(arg1, arg2) {
+  return window['go']['app']['App']['ModifyName'](arg1, arg2);
 }
 
 export function MonitorPage(arg1, arg2) {
@@ -110,12 +122,20 @@ export function NamePage(arg1, arg2) {
   return window['go']['app']['App']['NamePage'](arg1, arg2);
 }
 
+export function PortfolioPage(arg1, arg2) {
+  return window['go']['app']['App']['PortfolioPage'](arg1, arg2);
+}
+
 export function Refresh(arg1) {
   return window['go']['app']['App']['Refresh'](arg1);
 }
 
 export function RegisterCtx(arg1) {
   return window['go']['app']['App']['RegisterCtx'](arg1);
+}
+
+export function Reload(arg1) {
+  return window['go']['app']['App']['Reload'](arg1);
 }
 
 export function SetEnv(arg1, arg2) {
@@ -170,10 +190,6 @@ export function ViewHistory(arg1) {
   return window['go']['app']['App']['ViewHistory'](arg1);
 }
 
-export function ViewHome(arg1) {
-  return window['go']['app']['App']['ViewHome'](arg1);
-}
-
 export function ViewIndexes(arg1) {
   return window['go']['app']['App']['ViewIndexes'](arg1);
 }
@@ -188,6 +204,10 @@ export function ViewMonitors(arg1) {
 
 export function ViewNames(arg1) {
   return window['go']['app']['App']['ViewNames'](arg1);
+}
+
+export function ViewPortfolio(arg1) {
+  return window['go']['app']['App']['ViewPortfolio'](arg1);
 }
 
 export function ViewSettings(arg1) {

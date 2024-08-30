@@ -1,3 +1,4 @@
+*.csv
 changed.toml
 trueBlocks.toml
 code_gen

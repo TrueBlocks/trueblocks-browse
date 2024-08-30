@@ -3,15 +3,17 @@ import { useParams } from "wouter";
 import { types, base } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./HistoryTable";
-import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { GetLastSub } from "@gocode/app/App";
+import { ExploreButton, ExportButton, View, FormTable, DataTable, GroupDefinition } from "@components";
+import { GetLastSub, CancleContexts } from "@gocode/app/App";
 import { useAppState, ViewStateProvider } from "@state";
+import { Stack } from "@mantine/core";
 
 export function HistoryView() {
   const { setAddress, history, fetchHistory } = useAppState();
 
   var aa = useParams().address;
   useEffect(() => {
+    CancleContexts();
     if (aa === ":address") {
       GetLastSub("/history").then((subRoute) => {
         subRoute = subRoute.replace("/", "");
@@ -41,6 +43,7 @@ export function HistoryView() {
 
 type theInstance = InstanceType<typeof types.HistoryContainer>;
 function createHistoryForm(table: any): GroupDefinition<theInstance>[] {
+  const { address } = useAppState();
   return [
     {
       title: "Transaction Data",
@@ -52,8 +55,8 @@ function createHistoryForm(table: any): GroupDefinition<theInstance>[] {
       ],
     },
     {
-      title: "Future Use",
-      colSpan: 6,
+      title: "Data 0",
+      colSpan: 4,
       fields: [
         { label: "nTransactions", type: "int", accessor: "nItems" },
         { label: "nLogs", type: "int", accessor: "nLogs" },
@@ -62,7 +65,22 @@ function createHistoryForm(table: any): GroupDefinition<theInstance>[] {
       ],
     },
     {
-      title: "Files",
+      title: "Buttons",
+      colSpan: 2,
+      fields: [],
+      components: [
+        {
+          component: (
+            <Stack>
+              <ExploreButton size="sm" endpoint="address" value={address as unknown as string} />
+              <ExportButton size="sm" value={address as unknown as string} />
+            </Stack>
+          ),
+        },
+      ],
+    },
+    {
+      title: "Transaction History",
       fields: [],
       components: [
         {

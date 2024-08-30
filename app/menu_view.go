@@ -8,9 +8,9 @@ import (
 )
 
 // Find: NewViews
-func (a *App) ViewHome(cd *menu.CallbackData) {
+func (a *App) ViewPortfolio(cd *menu.CallbackData) {
 	if a.isConfigured() {
-		logger.Info("ViewHome")
+		logger.Info("ViewPortfolio")
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
 		a.SetLast("route", "/")
 	}

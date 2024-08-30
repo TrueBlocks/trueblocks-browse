@@ -2,19 +2,26 @@ package app
 
 import (
 	"fmt"
-	"path/filepath"
 	"sort"
 	"sync"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
+var nameMutex sync.Mutex
+
 func (a *App) NamePage(first, pageSize int) types.NameContainer {
+	nameMutex.Lock()
+	defer nameMutex.Unlock()
+
 	first = base.Max(0, base.Min(first, len(a.names.Names)-1))
 	last := base.Min(len(a.names.Names), first+pageSize)
 	copy := a.names.ShallowCopy()
@@ -33,22 +40,23 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
-	chain := "mainnet"
-	filePath := filepath.Join(config.MustGetPathToChainConfig(chain), string(names.DatabaseCustom))
-	lineCount, _ := file.WordCount(filePath, true)
-	customCount := 0
-	for _, name := range a.names.Names {
-		if name.Parts&coreTypes.Custom != 0 {
-			customCount++
-		} else {
-			break
-		}
-	}
-	if lineCount == customCount {
+	if !a.names.NeedsUpdate() {
+		messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
+			a.FreshenController.Color,
+			"No need to reload",
+			a.FreshenController.Color,
+		))
 		return nil
 	}
+
+	messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
+		a.FreshenController.Color,
+		"Reloading",
+		a.FreshenController.Color,
+	))
 	names.ClearCustomNames()
 
+	chain := "mainnet"
 	parts := coreTypes.Regular | coreTypes.Custom | coreTypes.Prefund | coreTypes.Baddress
 	if namesMap, err := names.LoadNamesMap(chain, parts, nil); err != nil {
 		if errorChan != nil {
@@ -62,9 +70,8 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else {
-		if len(a.names.Names) == len(namesMap) {
-			return nil
-		}
+		nameMutex.Lock()
+		defer nameMutex.Unlock()
 
 		a.names = types.NameContainer{
 			NamesMap: namesMap,
@@ -77,9 +84,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 			return compare(a.names.Names[i], a.names.Names[j])
 		})
 		a.names.Summarize()
-		a.names.SizeOnDisc = int(file.FileSize(filePath))
-		filePath = filepath.Join(config.MustGetPathToChainConfig(chain), string(names.DatabaseRegular))
-		a.names.SizeOnDisc += int(file.FileSize(filePath))
+		logger.Info(colors.Green, "finished loadNames", colors.Off)
 		return nil
 	}
 }
@@ -100,4 +105,56 @@ func compare(nameI, nameJ coreTypes.Name) bool {
 		return nameI.Tags < nameJ.Tags
 	}
 	return ti < tj
+}
+
+func (a *App) ModifyName(op string, address base.Address) error {
+	if !a.isConfigured() {
+		return nil
+	}
+
+	opFromString := func(op string) crud.NameOperation {
+		m := map[string]crud.NameOperation{
+			"delete":   crud.Delete,
+			"undelete": crud.Undelete,
+			"remove":   crud.Remove,
+		}
+		return m[op]
+	}
+
+	cd := crud.CrudFromAddress(address)
+	str := fmt.Sprintf("%s-%v", opFromString(op), *cd)
+	messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
+		a.FreshenController.Color,
+		str,
+		a.FreshenController.Color,
+	))
+
+	if _, ok := a.names.NamesMap[address]; ok {
+		opts := sdk.NamesOptions{}
+		if _, _, err := opts.ModifyName(opFromString(op), cd); err != nil {
+			logger.Error(err)
+			return err
+		}
+
+		nameMutex.Lock()
+		defer nameMutex.Unlock()
+		newArray := []coreTypes.Name{}
+		for _, n := range a.names.Names {
+			if n.IsCustom && n.Address == address {
+				switch opFromString(op) {
+				case crud.Delete:
+					n.Deleted = true
+				case crud.Undelete:
+					n.Deleted = false
+				case crud.Remove:
+					continue
+				}
+				a.names.NamesMap[address] = n
+			}
+			newArray = append(newArray, n)
+		}
+		a.names.Names = newArray
+	}
+
+	return nil
 }

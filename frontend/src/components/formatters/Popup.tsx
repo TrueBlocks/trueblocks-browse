@@ -1,6 +1,12 @@
 import React, { ReactNode, useState } from "react";
 import { Popover } from "@mantine/core";
 
+export type PopupProps = {
+  onClose: () => void;
+  onCopy: () => void;
+  onSubmit: (value: string) => void;
+};
+
 export function Popup({ children, editor }: { children: ReactNode; editor: ReactNode }) {
   const [opened, setOpened] = useState(false);
   const toggleOpened = () => setOpened((o) => !o);

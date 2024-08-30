@@ -15,7 +15,11 @@ export function AddrToName(arg1:base.Address):Promise<string>;
 
 export function Cancel(arg1:base.Address):Promise<number|boolean>;
 
+export function CancleContexts():Promise<void>;
+
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
+
+export function ExportToCsv(arg1:string):Promise<void>;
 
 export function Fatal(arg1:string):Promise<void>;
 
@@ -30,6 +34,8 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 export function GetContext():Promise<context.Context>;
 
 export function GetDaemon(arg1:string):Promise<daemons.Daemon>;
+
+export function GetDalle():Promise<string>;
 
 export function GetEnv(arg1:string):Promise<string>;
 
@@ -53,19 +59,23 @@ export function HelpToggle(arg1:menu.CallbackData):Promise<void>;
 
 export function HistoryPage(arg1:string,arg2:number,arg3:number):Promise<types.HistoryContainer>;
 
-export function HistorySize(arg1:string):Promise<number>;
-
 export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>;
 
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
+
+export function ModifyName(arg1:string,arg2:base.Address):Promise<void>;
 
 export function MonitorPage(arg1:number,arg2:number):Promise<types.MonitorContainer>;
 
 export function NamePage(arg1:number,arg2:number):Promise<types.NameContainer>;
 
+export function PortfolioPage(arg1:number,arg2:number):Promise<types.PortfolioContainer>;
+
 export function Refresh(arg1:Array<string>):Promise<void>;
 
 export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
+
+export function Reload(arg1:base.Address):Promise<void>;
 
 export function SetEnv(arg1:string,arg2:string):Promise<void>;
 
@@ -93,8 +103,6 @@ export function ViewDaemons(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewHistory(arg1:menu.CallbackData):Promise<void>;
 
-export function ViewHome(arg1:menu.CallbackData):Promise<void>;
-
 export function ViewIndexes(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewManifest(arg1:menu.CallbackData):Promise<void>;
@@ -102,6 +110,8 @@ export function ViewManifest(arg1:menu.CallbackData):Promise<void>;
 export function ViewMonitors(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewNames(arg1:menu.CallbackData):Promise<void>;
+
+export function ViewPortfolio(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewSettings(arg1:menu.CallbackData):Promise<void>;
 

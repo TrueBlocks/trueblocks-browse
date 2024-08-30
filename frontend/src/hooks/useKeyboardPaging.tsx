@@ -1,123 +1,102 @@
-import { useState, DependencyList, useCallback, useMemo } from "react";
+import { useState, DependencyList, useCallback, useMemo, useEffect } from "react";
 import { Pager, EmptyPager } from "@components";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Route } from "@/Routes";
+import { CancleContexts, Reload } from "@gocode/app/App";
+import { useAppState } from "@state";
+import { base } from "@gocode/models";
+
+export type Page = {
+  selected: number;
+  getOffset: () => number;
+};
 
 export function useKeyboardPaging(
   route: Route,
   nItems: number,
-  deps: DependencyList = [],
   perPage: number = 20,
-  onEnter?: (row: number) => void
+  onEnter: (page: Page) => void
 ): Pager {
+  const { address } = useAppState();
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [lastPage, setLastPage] = useState<number>(1);
   const [selected, setSelected] = useState<number>(0);
 
-  const lastPage = Math.floor(nItems / perPage);
+  useEffect(() => {
+    setLastPage(Math.ceil(nItems / perPage));
+  }, [nItems, perPage]);
 
-  // Navigate one row at a time
-  useHotkeys("up", (e) => {
-    e.preventDefault();
-    // console.log("Up Pressed. curItem:", selected, " perPage:", perPage);
+  const setRecord = (newRecord: number) => {
     const curPage = Math.floor(selected / perPage);
-    const newRec = Math.max(selected - 1, 0);
-    const newPage = Math.floor(newRec / perPage);
+    const newPage = Math.floor(newRecord / perPage);
     if (newPage !== curPage) {
-      setPage(newPage + 1); // page is one based
+      setPage(newPage + 1);
     }
-    setSelected(newRec);
-  });
-  useHotkeys("down", (e) => {
-    e.preventDefault();
-    // console.log("Down Pressed. curItem:", selected, " perPage:", perPage);
-    const curPage = Math.floor(selected / perPage);
-    const newRec = Math.min(selected + 1, nItems - 1);
-    const newPage = Math.floor(newRec / perPage);
-    if (newPage !== curPage) {
-      setPage(newPage + 1); // page is one based
-    }
-    setSelected(newRec);
-  });
-
-  // Navigate one page at a time
-  useHotkeys("left", (e) => {
-    e.preventDefault();
-    // console.log("Left Pressed. curItem:", selected, " perPage:", perPage);
-    const curPage = Math.floor(selected / perPage);
-    const newRec = Math.max(selected - perPage, 0);
-    const newPage = Math.floor(newRec / perPage);
-    if (newPage !== curPage) {
-      setPage(newPage + 1); // page is one based
-    }
-    setSelected(newPage * perPage);
-  });
-  useHotkeys("right", (e) => {
-    e.preventDefault();
-    // console.log("Right Pressed. curItem:", selected, " perPage:", perPage);
-    const curPage = Math.floor(selected / perPage);
-    const newRec = Math.min(selected + perPage, nItems - 1);
-    const newPage = Math.floor(newRec / perPage);
-    if (newPage !== curPage) {
-      setPage(newPage + 1); // page is one based
-    }
-    setSelected(newPage * perPage);
-  });
-
-  // Navigate ten pages at a time
-  useHotkeys("pageup", (e) => {
-    e.preventDefault();
-    // console.log("PageUp Pressed. curItem:", selected, " perPage:", perPage);
-    const curPage = Math.floor(selected / perPage);
-    const newRec = Math.max(selected - perPage * 10, 0);
-    const newPage = Math.floor(newRec / perPage);
-    if (newPage !== curPage) {
-      setPage(newPage + 1); // page is one based
-    }
-    setSelected(newPage * perPage);
-  });
-  useHotkeys("pagedown", (e) => {
-    e.preventDefault();
-    // console.log("PageDown Pressed. curItem:", selected, " perPage:", perPage);
-    const curPage = Math.floor(selected / perPage);
-    const newRec = Math.min(selected + perPage * 10, nItems - 1);
-    const newPage = Math.floor(newRec / perPage);
-    if (newPage !== curPage) {
-      setPage(newPage + 1); // page is one based
-    }
-    setSelected(newPage * perPage);
-  });
-
-  // Navigate to first and last records
-  useHotkeys("home", (e) => {
-    e.preventDefault();
-    // console.log("Home Pressed. curItem:", selected, " perPage:", perPage);
-    setPage(1);
-    setSelected(0);
-  });
-
-  useHotkeys("end", (e) => {
-    e.preventDefault();
-    // console.log("End Pressed. curItem:", selected, " perPage:", perPage);
-    setPage(lastPage + 1);
-    setSelected(lastPage * perPage);
-  });
-
-  // Handle Enter key
-  useHotkeys(
-    "enter",
-    (e) => {
-      e.preventDefault();
-      if (onEnter) {
-        onEnter(selected);
-      }
-    },
-    [onEnter, selected]
-  );
+    setSelected(newRecord);
+  };
 
   const setPage = useCallback((newPage: number) => {
     setSelected((newPage - 1) * perPage);
     setPageNumber(newPage);
   }, [setSelected, setPageNumber]);
+
+  const getOffset = () => (pageNumber - 1) * perPage;
+
+  // keyboard shortcuts
+  useHotkeys("up", (e) => {
+    e.preventDefault();
+    setRecord(Math.max(selected - 1, 0));
+  });
+  useHotkeys("left", (e) => {
+    e.preventDefault();
+    setRecord(Math.max(selected - perPage, 0));
+  });
+  useHotkeys("pageup", (e) => {
+    e.preventDefault();
+    setRecord(Math.max(selected - perPage * 10, 0));
+  });
+  useHotkeys("home", (e) => {
+    e.preventDefault();
+    setRecord(0);
+  });
+
+  useHotkeys("down", (e) => {
+    e.preventDefault();
+    setRecord(Math.min(selected + 1, nItems - 1));
+  });
+  useHotkeys("right", (e) => {
+    e.preventDefault();
+    setRecord(Math.min(selected + perPage, nItems - 1));
+  });
+  useHotkeys("pagedown", (e) => {
+    e.preventDefault();
+    setRecord(Math.min(selected + perPage * 10, nItems - 1));
+  });
+  useHotkeys("end", (e) => {
+    e.preventDefault();
+    setRecord(nItems - 1);
+  });
+
+  useHotkeys("esc", (e) => {
+    e.preventDefault();
+    CancleContexts();
+  });
+  useHotkeys("mod+r", (e) => {
+    e.preventDefault();
+    Reload(address).then(() => {});
+  });
+
+  useHotkeys(
+    "enter",
+    (e) => {
+      e.preventDefault();
+      onEnter({
+        selected,
+        getOffset,
+      });
+    },
+    [onEnter, selected, pageNumber, perPage]
+  );
 
   const memo = useMemo(() => ({
     name: route,
@@ -126,8 +105,9 @@ export function useKeyboardPaging(
     nItems,
     pageNumber,
     lastPage,
+    setRecord,
     setPage,
-    offset: () => (pageNumber - 1) * perPage,
+    getOffset,
   }), [selected, pageNumber, lastPage]);
 
   if (nItems < 0) {

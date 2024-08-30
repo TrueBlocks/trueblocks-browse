@@ -45,6 +45,7 @@ type App struct {
 	monitors          types.MonitorContainer
 	names             types.NameContainer
 	status            types.StatusContainer
+	portfolio         types.PortfolioContainer
 	ScraperController *daemons.DaemonScraper
 	FreshenController *daemons.DaemonFreshen
 	IpfsController    *daemons.DaemonIpfs

@@ -3,7 +3,7 @@ import React from "react";
 // Find: NewViews-React
 import {
   // Icons
-  HomeIcon,
+  PortfolioIcon,
   HistoryIcon,
   MonitorIcon,
   NamesIcon,
@@ -15,7 +15,7 @@ import {
   SettingsIcon,
   WizardIcon,
   // Views
-  HomeView,
+  PortfolioView,
   HistoryView,
   NamesView,
   MonitorsView,
@@ -133,8 +133,8 @@ export const routeItems: RouteItem[] = [
   {
     order: 0,
     route: asFull(""),
-    label: "Home",
-    icon: HomeIcon,
-    component: HomeView,
+    label: "Portfolio",
+    icon: PortfolioIcon,
+    component: PortfolioView,
   },
 ];

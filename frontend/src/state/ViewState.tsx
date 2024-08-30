@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useContext, ReactNode, useMemo } from "react";
 import { EmptyPager, Pager } from "@components";
 import { Route } from "@/Routes";
-import { useKeyboardPaging } from "@hooks";
+import { Page, useKeyboardPaging } from "@hooks";
 import { types, messages } from "@gocode/models";
 import { HistoryPage } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
@@ -19,21 +19,21 @@ export const ViewStateProvider: React.FC<{
   route: Route;
   nItems?: number;
   fetchFn: (selected: number, perPage: number, item?: any) => void;
-  onEnter?: (row: number) => void;
+  onEnter?: (page: Page) => void;
   children: ReactNode;
 }> = ({ route, nItems = -1, fetchFn, onEnter, children }) => {
   const { address, setHistory } = useAppState();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
-  console.log("ViewProvider", route, onEnter ? "with onEnter" : "no onEnter");
-  const pager = useKeyboardPaging(route, nItems, [], lines, onEnter);
+  const ignoreEnter = (page: Page) => {};
+  const pager = useKeyboardPaging(route, nItems, lines, onEnter ? onEnter : ignoreEnter);
 
   useEffect(() => {
-    fetchFn(pager.offset(), pager.perPage, null);
+    fetchFn(pager.getOffset(), pager.perPage, null);
   }, [pager.pageNumber, pager.perPage]);
 
   useEffect(() => {
     const handleRefresh = () => {
-      fetchFn(pager.offset(), pager.perPage);
+      fetchFn(pager.getOffset(), pager.perPage);
     };
 
     var { Message } = messages;
@@ -45,7 +45,8 @@ export const ViewStateProvider: React.FC<{
 
   useEffect(() => {
     if (route === "history") {
-      HistoryPage(address as unknown as string, pager.offset(), pager.perPage).then((item: types.HistoryContainer) => {
+      const addr = address as unknown as string;
+      HistoryPage(addr, pager.getOffset(), pager.perPage).then((item: types.HistoryContainer) => {
         if (item) {
           setHistory(item);
         }

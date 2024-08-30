@@ -1,15 +1,23 @@
-import React from "react";
-import { types } from "@gocode/models";
+import React, { useState } from "react";
+import { types, messages, base } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./MonitorsTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { useAppState, useViewState, ViewStateProvider } from "@state";
+import { useAppState, ViewStateProvider } from "@state";
+import { SetLast } from "@gocode/app/App";
+import { EventsEmit } from "@runtime";
+import { Page } from "@hooks";
 
 export function MonitorsView() {
   const { monitors, fetchMonitors } = useAppState();
 
-  const handleEnter = (row: number) => {
-    console.log(`Enter pressed on item index: ${row}`);
+  const handleEnter = (page: Page) => {
+    const record = page.selected - page.getOffset();
+    const address = monitors.items[record].address;
+    SetLast("route", `/history/${address}`);
+    EventsEmit(messages.Message.NAVIGATE, {
+      route: `/history/${address}`,
+    });
   };
 
   const table = useReactTable({
@@ -50,7 +58,7 @@ function createMonitorForm(table: any): GroupDefinition<theInstance>[] {
       ],
     },
     {
-      title: "Files",
+      title: "Available Monitors",
       fields: [],
       components: [
         {

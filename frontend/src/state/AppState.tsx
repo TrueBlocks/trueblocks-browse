@@ -1,19 +1,61 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect, useRef } from "react";
-import { types, messages, base, wizard } from "@gocode/models";
-import { EventsOn, EventsOff } from "@runtime";
+import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { Route } from "@/Routes";
 import {
-  HistoryPage,
-  MonitorPage,
-  NamePage,
   AbiPage,
+  GetLastSub,
+  GetMeta,
+  GetWizardState,
+  HistoryPage,
   IndexPage,
   ManifestPage,
+  MonitorPage,
+  NamePage,
+  PortfolioPage,
   StatusPage,
-  GetLastSub,
   StepWizard,
-  GetWizardState,
-  GetMeta,
 } from "@gocode/app/App";
+import { base, messages, types, wizard } from "@gocode/models";
+import { EventsOff, EventsOn } from "@runtime";
+
+interface AppStateProps {
+  address: base.Address;
+
+  portfolio: types.PortfolioContainer;
+  fetchPortfolio: (currentItem: number, itemsPerPage: number, item?: any) => void;
+
+  history: types.HistoryContainer;
+  fetchHistory: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  setHistory: React.Dispatch<React.SetStateAction<types.HistoryContainer>>;
+
+  monitors: types.MonitorContainer;
+  fetchMonitors: (currentItem: number, itemsPerPage: number, item?: any) => void;
+
+  names: types.NameContainer;
+  fetchNames: (currentItem: number, itemsPerPage: number, item?: any) => void;
+
+  abis: types.AbiContainer;
+  fetchAbis: (currentItem: number, itemsPerPage: number, item?: any) => void;
+
+  indexes: types.IndexContainer;
+  fetchIndexes: (currentItem: number, itemsPerPage: number, item?: any) => void;
+
+  manifests: types.ManifestContainer;
+  fetchManifests: (currentItem: number, itemsPerPage: number, item?: any) => void;
+
+  status: types.StatusContainer;
+  fetchStatus: (currentItem: number, itemsPerPage: number, item?: any) => void;
+
+  setAddress: (address: base.Address) => void;
+
+  isConfigured: boolean;
+  wizardState: wizard.State;
+  stepWizard: (step: wizard.Step) => void;
+
+  meta: types.MetaData;
+  setMeta: (meta: types.MetaData) => void;
+
+  crudOperation(route: Route, selected: number, op: string): void;
+}
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
@@ -25,6 +67,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
 
+  const [portfolio, setPortfolio] = useState<types.PortfolioContainer>({} as types.PortfolioContainer);
   const [history, setHistory] = useState<types.HistoryContainer>({} as types.HistoryContainer);
   const [monitors, setMonitors] = useState<types.MonitorContainer>({} as types.MonitorContainer);
   const [names, setNames] = useState<types.NameContainer>({} as types.NameContainer);
@@ -43,6 +86,14 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     GetWizardState().then((state) => {
       setWizardState(state);
       setIsConfigured(state == wizard.State.OKAY);
+    });
+  };
+
+  const fetchPortfolio = async (currentItem: number, itemsPerPage: number, item?: any) => {
+    PortfolioPage(currentItem, itemsPerPage).then((item: types.PortfolioContainer) => {
+      if (item) {
+        setPortfolio(item);
+      }
     });
   };
 
@@ -103,6 +154,16 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
+  const crudOperation = (route: Route, selected: number, op: string) => {
+    console.log(
+      "crudOperation",
+      route,
+      selected,
+      op === "delete" ? "should delete" : op === "remove" ? "should remove" : "should undelete"
+    );
+    names.names[selected].deleted = op === "delete" ? true : op === "remove" ? false : false;
+  };
+
   useEffect(() => {
     fetchMeta();
     fetchWizard();
@@ -139,20 +200,10 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  function getCounters(): Counters {
-    return {
-      nTxs: history.nItems,
-      nMonitors: monitors.nItems,
-      nNames: names.nItems,
-      nAbis: abis.nItems,
-      nIndexes: indexes.nItems,
-      nManifests: manifests.nItems,
-      nStatus: status.nItems,
-    };
-  }
-
   let state = {
     address,
+    portfolio,
+    fetchPortfolio,
     history,
     fetchHistory,
     setHistory,
@@ -174,7 +225,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     stepWizard,
     meta,
     setMeta,
-    getCounters,
+    crudOperation,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;
@@ -187,43 +238,3 @@ export const useAppState = () => {
   }
   return context;
 };
-
-type Counters = {
-  nTxs: number;
-  nMonitors: number;
-  nNames: number;
-  nAbis: number;
-  nIndexes: number;
-  nManifests: number;
-  nStatus: number;
-};
-
-interface AppStateProps {
-  address: base.Address;
-  history: types.HistoryContainer;
-  fetchHistory: (currentItem: number, itemsPerPage: number, item?: any) => void;
-  setHistory: React.Dispatch<React.SetStateAction<types.HistoryContainer>>;
-  monitors: types.MonitorContainer;
-  fetchMonitors: (currentItem: number, itemsPerPage: number, item?: any) => void;
-  names: types.NameContainer;
-  fetchNames: (currentItem: number, itemsPerPage: number, item?: any) => void;
-  abis: types.AbiContainer;
-  fetchAbis: (currentItem: number, itemsPerPage: number, item?: any) => void;
-  indexes: types.IndexContainer;
-  fetchIndexes: (currentItem: number, itemsPerPage: number, item?: any) => void;
-  manifests: types.ManifestContainer;
-  fetchManifests: (currentItem: number, itemsPerPage: number, item?: any) => void;
-  status: types.StatusContainer;
-  fetchStatus: (currentItem: number, itemsPerPage: number, item?: any) => void;
-
-  setAddress: (address: base.Address) => void;
-
-  isConfigured: boolean;
-  wizardState: wizard.State;
-  stepWizard: (step: wizard.Step) => void;
-
-  meta: types.MetaData;
-  setMeta: (meta: types.MetaData) => void;
-
-  getCounters: () => Counters;
-}

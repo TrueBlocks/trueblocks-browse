@@ -27,6 +27,14 @@ export function ViewStatus() {
       }, 1000); // 1000ms = 1 second
     };
 
+    const handleCancel = (msg: messages.ProgressMsg) => {
+      setStatusMessage(`Canceled (${msg.address})`);
+      setColor(classes.green);
+      setTimeout(() => {
+        setStatusMessage("");
+      }, 1000); // 1000ms = 1 second
+    };
+
     const handleWarning = (msg: messages.ErrorMsg) => {
       setStatusMessage(`Warning: ${msg.errStr} ${msg.address}`);
       setColor(classes.yellow);
@@ -41,6 +49,7 @@ export function ViewStatus() {
     EventsOn(Message.DOCUMENT, handleDocument);
     EventsOn(Message.PROGRESS, handleProgress);
     EventsOn(Message.COMPLETED, handleCompleted);
+    EventsOn(Message.CANCELLED, handleCancel);
     EventsOn(Message.WARN, handleWarning);
     EventsOn(Message.ERROR, handleError);
 
@@ -48,6 +57,7 @@ export function ViewStatus() {
       EventsOff(Message.DOCUMENT);
       EventsOff(Message.PROGRESS);
       EventsOff(Message.COMPLETED);
+      EventsOff(Message.CANCELLED);
       EventsOff(Message.WARN);
       EventsOff(Message.ERROR);
     };

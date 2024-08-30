@@ -2,10 +2,16 @@ import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { TextProps } from "@mantine/core";
 import { useDateTime, useToEther } from "@hooks";
-import { useAppState } from "@state";
-import classes from "./Formatter.module.css";
 import { getDebugColor } from ".";
-import { AddressEditor, DateFormatter, TagFormatter, TextFormatter, EdMode } from "@components";
+import {
+  AddressFormatter,
+  AppearanceFormatter,
+  CrudButton,
+  DateFormatter,
+  TagFormatter,
+  TextFormatter,
+  EdMode,
+} from "@components";
 
 export type knownType =
   | "address-editor"
@@ -17,6 +23,7 @@ export type knownType =
   | "boolean"
   | "bytes"
   | "check"
+  | "crud"
   | "date"
   | "error"
   | "ether"
@@ -40,12 +47,9 @@ export type FormatterProps = {
 };
 
 export const Formatter = ({ type, value, value2, className, size = "md" }: FormatterProps) => {
-  const { address } = useAppState();
-
   var n = value as number;
   var bi = value as bigint;
-  const isCurrent = value === address;
-  const cn = getDebugColor(type) || (isCurrent ? classes.bold : className);
+  const cn = getDebugColor(type) || className;
 
   switch (type) {
     case "boolean":
@@ -64,7 +68,6 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
     case "date":
       value = value?.replace("T", " ");
       if ((value?.match(/ /g)?.length ?? 0) > 0) {
-        // at least one space
         return <DateFormatter value={value} size={size} className={cn} />;
       }
       // else, render using TextFormatter
@@ -79,20 +82,27 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
       value = formatInteger(n);
       break;
     case "appearance":
+      return <AppearanceFormatter value={value} value2={value2} size={size} className={cn} />;
     case "hash":
     case "path":
     case "range":
     case "text":
     case "url":
       break;
+    case "crud":
+      return <CrudButton size="xs" value={value} isDeleted={value2} />;
     case "address-editor":
-      return <AddressEditor type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.All} />;
+      return (
+        <AddressFormatter type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.All} />
+      );
     case "address-address-only":
       return (
-        <AddressEditor type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.Address} />
+        <AddressFormatter type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.Address} />
       );
     case "address-name-only":
-      return <AddressEditor type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.Name} />;
+      return (
+        <AddressFormatter type={type} className={"cn"} size={size} value={value} value2={value2} mode={EdMode.Name} />
+      );
     case "address-line1":
       return <TextFormatter value={value} size={size} type={type} className={cn} />;
     case "address-line2":

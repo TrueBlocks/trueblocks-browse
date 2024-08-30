@@ -13,7 +13,7 @@ import {
   IconSettings,
 } from "@tabler/icons-react";
 
-export const HomeIcon = <IconHome />;
+export const PortfolioIcon = <IconHome />;
 export const HistoryIcon = <IconBuildingMonument />;
 export const MonitorIcon = <IconDeviceDesktop />;
 export const NamesIcon = <IconTag />;
