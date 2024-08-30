@@ -46,6 +46,7 @@ func main() {
 				a,
 				&messages.DocumentMsg{},
 				&messages.ErrorMsg{},
+				&messages.InfoMsg{},
 				&messages.ProgressMsg{},
 				&messages.DaemonMsg{},
 				&messages.NavigateMsg{},

@@ -45,21 +45,28 @@ export function ViewStatus() {
       setColor(classes.red);
     };
 
+    const handleInfo = (msg: messages.InfoMsg) => {
+      setStatusMessage(`Info: ${msg.message}`);
+      setColor(classes.blue);
+    };
+
     var { Message } = messages;
     EventsOn(Message.DOCUMENT, handleDocument);
     EventsOn(Message.PROGRESS, handleProgress);
     EventsOn(Message.COMPLETED, handleCompleted);
     EventsOn(Message.CANCELLED, handleCancel);
-    EventsOn(Message.WARN, handleWarning);
+    EventsOn(Message.WARNING, handleWarning);
     EventsOn(Message.ERROR, handleError);
+    EventsOn(Message.INFO, handleInfo);
 
     return () => {
       EventsOff(Message.DOCUMENT);
       EventsOff(Message.PROGRESS);
       EventsOff(Message.COMPLETED);
       EventsOff(Message.CANCELLED);
-      EventsOff(Message.WARN);
+      EventsOff(Message.WARNING);
       EventsOff(Message.ERROR);
+      EventsOff(Message.INFO);
     };
   }, []);
 

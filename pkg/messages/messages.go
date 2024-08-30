@@ -13,6 +13,7 @@ const (
 	Cancelled  Message = "Cancelled"
 	Error      Message = "Error"
 	Warn       Message = "Warn"
+	Info       Message = "Info"
 	Progress   Message = "Progress"
 	Daemon     Message = "Daemon"
 	Document   Message = "Document"
@@ -22,7 +23,7 @@ const (
 )
 
 type MessageData interface {
-	string | ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg | NavigateMsg | ReloadMsg | HelpMsg
+	string | ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg | NavigateMsg | ReloadMsg | HelpMsg | InfoMsg
 }
 
 // AllMessages - all possible messages for the frontend codegen
@@ -33,7 +34,8 @@ var AllMessages = []struct {
 	{Completed, "COMPLETED"},
 	{Cancelled, "CANCELLED"},
 	{Error, "ERROR"},
-	{Warn, "WARN"},
+	{Warn, "WARNING"},
+	{Info, "INFO"},
 	{Progress, "PROGRESS"},
 	{Daemon, "DAEMON"},
 	{Document, "DOCUMENT"},

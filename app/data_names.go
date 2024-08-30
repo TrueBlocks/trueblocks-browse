@@ -9,9 +9,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
@@ -41,19 +39,11 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	if !a.names.NeedsUpdate() {
-		messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
-			a.FreshenController.Color,
-			"No need to reload",
-			a.FreshenController.Color,
-		))
+		messages.SendInfo(a.ctx, "No need to reload")
 		return nil
 	}
 
-	messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
-		a.FreshenController.Color,
-		"Reloading",
-		a.FreshenController.Color,
-	))
+	messages.SendInfo(a.ctx, "Reloading names")
 	names.ClearCustomNames()
 
 	chain := "mainnet"
@@ -84,7 +74,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 			return compare(a.names.Names[i], a.names.Names[j])
 		})
 		a.names.Summarize()
-		logger.Info(colors.Green, "finished loadNames", colors.Off)
+		messages.SendInfo(a.ctx, "Finished loading names")
 		return nil
 	}
 }
@@ -122,17 +112,12 @@ func (a *App) ModifyName(op string, address base.Address) error {
 	}
 
 	cd := crud.CrudFromAddress(address)
-	str := fmt.Sprintf("%s-%v", opFromString(op), *cd)
-	messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
-		a.FreshenController.Color,
-		str,
-		a.FreshenController.Color,
-	))
+	messages.SendInfo(a.ctx, fmt.Sprintf("%s-%v", opFromString(op), *cd))
 
 	if _, ok := a.names.NamesMap[address]; ok {
 		opts := sdk.NamesOptions{}
 		if _, _, err := opts.ModifyName(opFromString(op), cd); err != nil {
-			logger.Error(err)
+			messages.SendError(a.ctx, err)
 			return err
 		}
 

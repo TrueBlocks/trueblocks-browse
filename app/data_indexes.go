@@ -53,7 +53,7 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		a.index = types.NewIndexContainer(chunks)
 		if err := sdk.SortChunkStats(a.index.Items, a.index.Sorts); err != nil {
-			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err))
+			messages.SendError(a.ctx, err)
 		}
 		a.index.Summarize()
 	}

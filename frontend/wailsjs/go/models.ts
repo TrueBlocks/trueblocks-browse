@@ -153,7 +153,8 @@ export namespace messages {
 	    COMPLETED = "Completed",
 	    CANCELLED = "Cancelled",
 	    ERROR = "Error",
-	    WARN = "Warn",
+	    WARNING = "Warn",
+	    INFO = "Info",
 	    PROGRESS = "Progress",
 	    DAEMON = "Daemon",
 	    DOCUMENT = "Document",
@@ -224,6 +225,18 @@ export namespace messages {
 		}
 	}
 	
+	export class InfoMsg {
+	    message: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new InfoMsg(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.message = source["message"];
+	    }
+	}
 	export class NavigateMsg {
 	    route: string;
 	

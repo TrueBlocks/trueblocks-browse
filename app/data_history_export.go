@@ -12,7 +12,8 @@ import (
 func (a *App) ExportToCsv(addr string) {
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
-		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
+		err := fmt.Errorf("Invalid address: " + addr)
+		messages.SendError(a.ctx, err)
 		return
 	}
 

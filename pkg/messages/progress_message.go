@@ -20,3 +20,8 @@ func NewProgressMsg(have int64, want int64, addrs ...base.Address) *ProgressMsg 
 		Want:    want,
 	}
 }
+
+// This function is required for Wails to generate the binding code.
+func (m *ProgressMsg) Instance() ProgressMsg {
+	return ProgressMsg{}
+}

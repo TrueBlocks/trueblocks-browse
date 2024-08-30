@@ -13,3 +13,8 @@ func NewDaemonMsg(name string, message string, color string) *DaemonMsg {
 		Color:   color,
 	}
 }
+
+// This function is required for Wails to generate the binding code.
+func (m *DaemonMsg) Instance() DaemonMsg {
+	return DaemonMsg{}
+}

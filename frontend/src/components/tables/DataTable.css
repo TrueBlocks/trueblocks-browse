@@ -53,3 +53,13 @@ tr:hover {
   background-color: #ffffe0; /* Light yellow
 }
 */
+
+.bumper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0px;
+  margin-top: -1rem;
+  z-index: 1000;
+  background-color: #f0f0f0;
+}

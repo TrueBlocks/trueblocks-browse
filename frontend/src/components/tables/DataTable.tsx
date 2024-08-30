@@ -1,16 +1,17 @@
 import React from "react";
 import "./DataTable.css";
-import { Table, Title } from "@mantine/core";
+import { Table, Title, Button, Box } from "@mantine/core";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
 import { CustomMeta, Paginator } from "./";
 import { useViewState } from "@state";
 
 interface DataTableProps<T> {
   table: ReactTable<T>;
+  bumper?: boolean;
   loading: boolean;
 }
 
-export function DataTable<T>({ table, loading }: DataTableProps<T>) {
+export function DataTable<T>({ table, bumper, loading }: DataTableProps<T>) {
   const { pager } = useViewState();
 
   if (loading) {
@@ -20,6 +21,7 @@ export function DataTable<T>({ table, loading }: DataTableProps<T>) {
   const selectedRow = pager.selected % pager.perPage;
   return (
     <>
+      {bumper ? <Box className="bumper">{JSON.stringify(pager, null, 2)}</Box> : <></>}
       <Table>
         <TableHeader table={table} />
         <TableBody table={table} selectedRow={selectedRow} />

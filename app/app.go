@@ -106,11 +106,7 @@ func (a *App) Startup(ctx context.Context) {
 	a.Refresh(a.GetSession().LastRoute)
 
 	if err := a.loadConfig(nil, nil); err != nil {
-		messages.Send(a.ctx, messages.Error, messages.NewDaemonMsg(
-			a.FreshenController.Color,
-			err.Error(),
-			a.FreshenController.Color,
-		))
+		messages.SendError(a.ctx, err)
 	}
 }
 

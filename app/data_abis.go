@@ -67,7 +67,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 			}
 			a.abis = types.NewAbiContainer(abis)
 			if err := sdk.SortAbis(a.abis.Items, a.abis.Sorts); err != nil {
-				messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err))
+				messages.SendError(a.ctx, err)
 			}
 			a.abis.Summarize()
 		}

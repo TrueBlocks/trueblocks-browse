@@ -160,7 +160,7 @@ func (a *App) getHistoryCnt(addr string) int {
 	}
 	appearances, meta, err := opts.ListCount()
 	if err != nil {
-		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
+		messages.SendError(a.ctx, err, address)
 		return 0
 	} else if len(appearances) == 0 {
 		return 0

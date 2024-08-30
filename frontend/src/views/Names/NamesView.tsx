@@ -3,10 +3,11 @@ import { types, messages } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./NamesTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { useAppState, ViewStateProvider } from "@state";
+import { useAppState, ViewStateProvider, useViewState } from "@state";
 import { SetLast } from "@gocode/app/App";
 import { EventsEmit } from "@runtime";
 import { Page } from "@hooks";
+import { Box } from "@mantine/core";
 
 export function NamesView() {
   const { names, fetchNames } = useAppState();
@@ -65,7 +66,7 @@ function createNameForm(table: any): GroupDefinition<theInstance>[] {
       fields: [],
       components: [
         {
-          component: <DataTable<types.Name> table={table} loading={false} />,
+          component: <DataTable<types.Name> bumper table={table} loading={false} />,
         },
       ],
     },
