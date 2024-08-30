@@ -9,7 +9,7 @@ import { useAppState, ViewStateProvider } from "@state";
 import { Stack } from "@mantine/core";
 
 export function HistoryView() {
-  const { setAddress, history, fetchHistory } = useAppState();
+  const { setAddress, history, fetchHistory, address } = useAppState();
 
   var aa = useParams().address;
   useEffect(() => {
@@ -30,7 +30,7 @@ export function HistoryView() {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const definition = useMemo(() => createHistoryForm(table), [table]);
+  const definition = useMemo(() => createHistoryForm(table, address), [table]);
 
   return (
     <ViewStateProvider route={"history"} nItems={history.nItems} fetchFn={fetchHistory}>
@@ -42,8 +42,7 @@ export function HistoryView() {
 }
 
 type theInstance = InstanceType<typeof types.HistoryContainer>;
-function createHistoryForm(table: any): GroupDefinition<theInstance>[] {
-  const { address } = useAppState();
+function createHistoryForm(table: any, address: base.Address): GroupDefinition<theInstance>[] {
   return [
     {
       title: "Transaction Data",
