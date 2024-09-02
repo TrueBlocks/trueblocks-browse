@@ -3,8 +3,8 @@ package types
 import (
 	"encoding/json"
 
-	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 type IndexContainer struct {
