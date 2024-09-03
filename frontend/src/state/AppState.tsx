@@ -98,10 +98,9 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   const fetchHistory = async (currentItem: number, itemsPerPage: number, item?: any) => {
-    GetLastSub("/history").then((subRoute: string) => {
-      if (subRoute !== "") {
-        subRoute = subRoute.replace("/", "");
-        setAddress(subRoute as unknown as base.Address);
+    HistoryPage(String(address), currentItem, itemsPerPage).then((item: types.HistoryContainer) => {
+      if (item) {
+        setHistory(item);
       }
     });
   };
