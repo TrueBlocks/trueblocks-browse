@@ -1,3 +1,6 @@
+import { base } from "@gocode/models";
+import { useAppState } from "../state";
+
 // from https://viem.sh/docs/utilities/formatUnits
 export function useToEther(value: bigint | string) {
   // Check if the input is a string that already contains a decimal
@@ -21,4 +24,12 @@ export function useToEther(value: bigint | string) {
   let v = `${negative ? "-" : ""}${integer || "0"}.${fraction}`;
   if (v === "0.00000") return "-";
   return v;
+}
+
+export function useToGas(value: bigint, from: base.Address) {
+  const { address } = useAppState();
+  if (from !== address) {
+    return "-";
+  }
+  return useToEther(value);
 }

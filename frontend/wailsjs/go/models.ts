@@ -578,7 +578,7 @@ export namespace types {
 	    indexHash: string;
 	    indexSize: number;
 	    range: string;
-	    rangeDates: RangeDates;
+	    rangeDates?: RangeDates;
 	
 	    static createFrom(source: any = {}) {
 	        return new ChunkRecord(source);
@@ -623,7 +623,7 @@ export namespace types {
 	    nBlocks: number;
 	    nBlooms: number;
 	    range: string;
-	    rangeDates: RangeDates;
+	    rangeDates?: RangeDates;
 	    ratio: number;
 	    recWid: number;
 	
@@ -1150,7 +1150,7 @@ export namespace types {
 	    nBlocks: number;
 	    nBlooms: number;
 	    range: string;
-	    rangeDates: RangeDates;
+	    rangeDates?: RangeDates;
 	    ratio: number;
 	    recWid: number;
 	    items: ChunkStats[];
