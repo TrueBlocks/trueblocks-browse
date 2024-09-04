@@ -1,4 +1,4 @@
-import React, { useEffect, useState, DependencyList } from "react";
+import { useState, DependencyList, useCallback, useMemo, useEffect } from "react";
 import { Pager, EmptyPager } from "@components";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Route } from "@/Routes";
@@ -35,10 +35,10 @@ export function useKeyboardPaging(
     setSelected(newRecord);
   };
 
-  const setPage = (newPage: number) => {
+  const setPage = useCallback((newPage: number) => {
     setSelected((newPage - 1) * perPage);
     setPageNumber(newPage);
-  };
+  }, [setSelected, setPageNumber]);
 
   const getOffset = () => (pageNumber - 1) * perPage;
 
@@ -98,19 +98,21 @@ export function useKeyboardPaging(
     [onEnter, selected, pageNumber, perPage]
   );
 
+  const memo = useMemo(() => ({
+    name: route,
+    selected,
+    perPage,
+    nItems,
+    pageNumber,
+    lastPage,
+    setRecord,
+    setPage,
+    getOffset,
+  }), [selected, pageNumber, lastPage]);
+
   if (nItems < 0) {
     return EmptyPager;
   } else {
-    return {
-      name: route,
-      selected,
-      perPage,
-      nItems,
-      pageNumber,
-      lastPage,
-      setRecord,
-      setPage,
-      getOffset,
-    };
+    return memo;
   }
 }

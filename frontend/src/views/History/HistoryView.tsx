@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useParams } from "wouter";
 import { types, base } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
@@ -9,7 +9,7 @@ import { useAppState, ViewStateProvider } from "@state";
 import { Stack } from "@mantine/core";
 
 export function HistoryView() {
-  const { setAddress, history, fetchHistory } = useAppState();
+  const { setAddress, history, fetchHistory, address } = useAppState();
 
   var aa = useParams().address;
   useEffect(() => {
@@ -30,18 +30,19 @@ export function HistoryView() {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const definition = useMemo(() => createHistoryForm(table, address), [table]);
+
   return (
     <ViewStateProvider route={"history"} nItems={history.nItems} fetchFn={fetchHistory}>
       <View>
-        <FormTable data={history} definition={createHistoryForm(table)} />
+        <FormTable data={history} definition={definition} />
       </View>
     </ViewStateProvider>
   );
 }
 
 type theInstance = InstanceType<typeof types.HistoryContainer>;
-function createHistoryForm(table: any): GroupDefinition<theInstance>[] {
-  const { address } = useAppState();
+function createHistoryForm(table: any, address: base.Address): GroupDefinition<theInstance>[] {
   return [
     {
       title: "Transaction Data",

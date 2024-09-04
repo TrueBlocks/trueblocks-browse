@@ -1,6 +1,6 @@
-import React, { createContext, useEffect, useContext, ReactNode } from "react";
-
+import React, { createContext, useEffect, useContext, ReactNode, useMemo } from "react";
 import { Pager } from "@components";
+import { Route } from "@/Routes";
 import { messages } from "@gocode/models";
 import { Page, useKeyboardPaging } from "@hooks";
 import { EventsOn, EventsOff } from "@runtime";
@@ -51,7 +51,7 @@ export const ViewStateProvider: React.FC<{
     route,
     nItems,
     pager,
-  };
+  }), [route, nItems, pager]);
 
   return <ViewContext.Provider value={state}>{children}</ViewContext.Provider>;
 };
