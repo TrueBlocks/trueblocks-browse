@@ -1,26 +1,33 @@
 import "./DataTable.css";
-import { Table, Title, Box } from "@mantine/core";
+import { Table, Title, Box, Alert } from "@mantine/core";
+import { IconInfoCircle } from "@tabler/icons-react";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
 import { useViewState } from "@state";
 import { CustomMeta, Paginator } from "./";
 
 interface DataTableProps<T> {
   table: ReactTable<T>;
-  bumper?: boolean;
   loading: boolean;
 }
 
-export function DataTable<T>({ table, bumper, loading }: DataTableProps<T>) {
-  const { pager } = useViewState();
+export function DataTable<T>({ table, loading }: DataTableProps<T>) {
+  const { pager, nItems } = useViewState();
 
   if (loading) {
     return <Title order={3}>Loading...</Title>;
   }
 
+  if (nItems <= 0) {
+    return (
+      <Box style={{ width: "100%" }}>
+        <Alert variant="light" color="blue" title="No data found" icon={<IconInfoCircle />} style={{ width: "100%" }} />
+      </Box>
+    );
+  }
+
   const selectedRow = pager.selected % pager.perPage;
   return (
     <>
-      {bumper ? <Box className="bumper">{JSON.stringify(pager, null, 2)}</Box> : <></>}
       <Table>
         <TableHeader table={table} />
         <TableBody table={table} selectedRow={selectedRow} />
