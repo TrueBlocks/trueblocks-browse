@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
+
 import "./DataTable.css";
-import { Table, Title, Button, Box } from "@mantine/core";
-import { flexRender, Table as ReactTable } from "@tanstack/react-table";
-import { CustomMeta, Paginator } from "./";
+import { Table, Title, Box, Alert } from "@mantine/core";
 import { useViewState } from "@state";
+import { IconInfoCircle } from "@tabler/icons-react";
+import { flexRender, Table as ReactTable } from "@tanstack/react-table";
+
+import { CustomMeta, Paginator } from "./";
 
 interface DataTableProps<T> {
   table: ReactTable<T>;
@@ -12,10 +15,14 @@ interface DataTableProps<T> {
 }
 
 export function DataTable<T>({ table, bumper, loading }: DataTableProps<T>) {
-  const { pager } = useViewState();
+  const { pager, nItems } = useViewState();
 
   if (loading) {
     return <Title order={3}>Loading...</Title>;
+  }
+
+  if (nItems <= 0) {
+    return <Alert variant="light" color="blue" title="No data found" icon={<IconInfoCircle />}></Alert>;
   }
 
   const selectedRow = pager.selected % pager.perPage;
@@ -54,24 +61,23 @@ function TableHeader<T>({ table }: TablePartProps<T>) {
 
 function TableBody<T>({ table, selectedRow }: TablePartProps<T>) {
   const { pager } = useViewState(); // Access pager to use setSelected
-  return (
-    <Table.Tbody>
-      {table.getRowModel().rows.map((row, index) => (
-        <Table.Tr
-          key={row.id}
-          className={index === selectedRow ? "selected-row" : ""}
-          onClick={() => pager.setRecord(index + pager.getOffset())}
-        >
-          {row.getVisibleCells().map((cell) => {
-            const meta = cell.column.columnDef.meta as CustomMeta;
-            return (
-              <Table.Td key={cell.id} className={meta?.className}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </Table.Td>
-            );
-          })}
-        </Table.Tr>
-      ))}
-    </Table.Tbody>
-  );
+  const inner = useMemo(() => {
+    return table.getRowModel().rows.map((row, index) => (
+      <Table.Tr
+        key={row.id}
+        className={index === selectedRow ? "selected-row" : ""}
+        onClick={() => pager.setRecord(index + pager.getOffset())}
+      >
+        {row.getVisibleCells().map((cell) => {
+          const meta = cell.column.columnDef.meta as CustomMeta;
+          return (
+            <Table.Td key={cell.id} className={meta?.className}>
+              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            </Table.Td>
+          );
+        })}
+      </Table.Tr>
+    ));
+  }, [pager, selectedRow, table]);
+  return <Table.Tbody>{inner}</Table.Tbody>;
 }

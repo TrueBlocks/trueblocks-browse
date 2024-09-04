@@ -1,11 +1,11 @@
 import React, { createContext, useEffect, useContext, ReactNode } from "react";
+
 import { Pager } from "@components";
-import { Route } from "@/Routes";
+import { messages } from "@gocode/models";
 import { Page, useKeyboardPaging } from "@hooks";
-import { types, messages } from "@gocode/models";
-import { HistoryPage } from "@gocode/app/App";
 import { EventsOn, EventsOff } from "@runtime";
-import { useAppState } from "@state";
+
+import { Route } from "@/Routes";
 
 interface ViewStateProps {
   route: Route;
@@ -22,7 +22,6 @@ export const ViewStateProvider: React.FC<{
   onEnter?: (page: Page) => void;
   children: ReactNode;
 }> = ({ route, nItems = -1, fetchFn, onEnter, children }) => {
-  const { address, setHistory } = useAppState();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
   const ignoreEnter = (page: Page) => {};
   const pager = useKeyboardPaging(route, nItems, lines, onEnter ? onEnter : ignoreEnter);
@@ -33,28 +32,22 @@ export const ViewStateProvider: React.FC<{
 
   useEffect(() => {
     const handleRefresh = () => {
-      fetchFn(pager.getOffset(), pager.perPage);
+      // Fetch page only if it makes sense: the current page is the first page
+      // (showing the latest transactions) and is incomplete.
+      // Otherwise we get into constant rerendering
+      if (pager.pageNumber === 1 && nItems < pager.perPage) {
+        fetchFn(pager.getOffset(), pager.perPage);
+      }
     };
 
-    var { Message } = messages;
+    const { Message } = messages;
     EventsOn(Message.DAEMON, handleRefresh);
     return () => {
       EventsOff(Message.DAEMON);
     };
-  }, [EventsOn, EventsOff, fetchFn]);
+  }, [fetchFn, nItems, pager]);
 
-  useEffect(() => {
-    if (route === "history") {
-      const addr = address as unknown as string;
-      HistoryPage(addr, pager.getOffset(), pager.perPage).then((item: types.HistoryContainer) => {
-        if (item) {
-          setHistory(item);
-        }
-      });
-    }
-  }, [address, pager.pageNumber, pager.perPage]);
-
-  let state = {
+  const state = {
     route,
     nItems,
     pager,
