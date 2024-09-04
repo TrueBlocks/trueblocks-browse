@@ -1,9 +1,8 @@
-import React from "react";
-import { types } from "@gocode/models";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { tableColumns } from "./AbisTable";
+import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
+import { tableColumns } from "./AbisTable";
 
 export function AbisView() {
   const { abis, fetchAbis } = useAppState();
@@ -24,7 +23,7 @@ export function AbisView() {
 }
 
 type theInstance = InstanceType<typeof types.AbiContainer>;
-function createAbisForm(table: any): GroupDefinition<theInstance>[] {
+function createAbisForm(table: Table<types.Abi>): GroupDefinition<theInstance>[] {
   return [
     {
       title: "Abi Data",

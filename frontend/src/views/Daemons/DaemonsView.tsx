@@ -1,13 +1,13 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { View } from "@components";
-import { DaemonCard, DaemonLog } from ".";
-import { daemons, messages } from "@gocode/models";
-import { GetDaemon, ToggleDaemon } from "@gocode/app/App";
 import { SimpleGrid, Fieldset } from "@mantine/core";
+import { View } from "@components";
+import { GetDaemon, ToggleDaemon } from "@gocode/app/App";
+import { daemons, messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import { ViewStateProvider } from "@state";
+import { DaemonCard, DaemonLog } from ".";
 
-var empty = {} as daemons.Daemon;
+const empty = {} as daemons.Daemon;
 
 export function DaemonsView() {
   const [scraper, setScraper] = useState<daemons.Daemon>(empty);
@@ -48,7 +48,7 @@ export function DaemonsView() {
   };
 
   useEffect(() => {
-    var { Message } = messages;
+    const { Message } = messages;
     EventsOn(Message.DAEMON, handleMessage);
     return () => {
       EventsOff(Message.DAEMON);
@@ -60,7 +60,8 @@ export function DaemonsView() {
   };
 
   return (
-    <ViewStateProvider route="daemons" fetchFn={(unused: number, perPage: number, item?: any) => {}}>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    <ViewStateProvider route="daemons" fetchFn={(_unused1: number, _unused2: number) => {}}>
       <View>
         <Fieldset legend={"Daemons"} bg={"white"}>
           <SimpleGrid cols={2}>

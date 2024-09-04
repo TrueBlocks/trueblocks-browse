@@ -1,8 +1,7 @@
-import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { Route } from "@/Routes";
 import {
   AbiPage,
-  GetLastSub,
   GetMeta,
   GetWizardState,
   HistoryPage,
@@ -21,29 +20,29 @@ interface AppStateProps {
   address: base.Address;
 
   portfolio: types.PortfolioContainer;
-  fetchPortfolio: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  fetchPortfolio: (currentItem: number, itemsPerPage: number) => void;
 
   history: types.HistoryContainer;
-  fetchHistory: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  fetchHistory: (currentItem: number, itemsPerPage: number) => void;
   setHistory: React.Dispatch<React.SetStateAction<types.HistoryContainer>>;
 
   monitors: types.MonitorContainer;
-  fetchMonitors: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  fetchMonitors: (currentItem: number, itemsPerPage: number) => void;
 
   names: types.NameContainer;
-  fetchNames: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  fetchNames: (currentItem: number, itemsPerPage: number) => void;
 
   abis: types.AbiContainer;
-  fetchAbis: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  fetchAbis: (currentItem: number, itemsPerPage: number) => void;
 
   indexes: types.IndexContainer;
-  fetchIndexes: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  fetchIndexes: (currentItem: number, itemsPerPage: number) => void;
 
   manifests: types.ManifestContainer;
-  fetchManifests: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  fetchManifests: (currentItem: number, itemsPerPage: number) => void;
 
   status: types.StatusContainer;
-  fetchStatus: (currentItem: number, itemsPerPage: number, item?: any) => void;
+  fetchStatus: (currentItem: number, itemsPerPage: number) => void;
 
   setAddress: (address: base.Address) => void;
 
@@ -59,7 +58,7 @@ interface AppStateProps {
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
-export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => {
   const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
 
   const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.NOTOKAY);
@@ -89,7 +88,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchPortfolio = async (currentItem: number, itemsPerPage: number, item?: any) => {
+  const fetchPortfolio = async (currentItem: number, itemsPerPage: number) => {
     PortfolioPage(currentItem, itemsPerPage).then((item: types.PortfolioContainer) => {
       if (item) {
         setPortfolio(item);
@@ -97,15 +96,13 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchHistory = async (currentItem: number, itemsPerPage: number, item?: any) => {
+  const fetchHistory = async (currentItem: number, itemsPerPage: number) => {
     HistoryPage(String(address), currentItem, itemsPerPage).then((item: types.HistoryContainer) => {
-      if (item) {
-        setHistory(item);
-      }
+      setHistory(item);
     });
   };
 
-  const fetchMonitors = async (currentItem: number, itemsPerPage: number, item?: any) => {
+  const fetchMonitors = async (currentItem: number, itemsPerPage: number) => {
     MonitorPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
       if (item) {
         setMonitors(item);
@@ -113,7 +110,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchNames = async (currentItem: number, itemsPerPage: number, item?: any) => {
+  const fetchNames = async (currentItem: number, itemsPerPage: number) => {
     NamePage(currentItem, itemsPerPage).then((item: types.NameContainer) => {
       if (item) {
         setNames(item);
@@ -121,7 +118,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchAbis = async (currentItem: number, itemsPerPage: number, item?: any) => {
+  const fetchAbis = async (currentItem: number, itemsPerPage: number) => {
     AbiPage(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
       if (item) {
         setAbis(item);
@@ -129,7 +126,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchIndexes = async (currentItem: number, itemsPerPage: number, item?: any) => {
+  const fetchIndexes = async (currentItem: number, itemsPerPage: number) => {
     IndexPage(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
       if (item) {
         setIndexes(item);
@@ -137,7 +134,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchManifests = async (currentItem: number, itemsPerPage: number, item?: any) => {
+  const fetchManifests = async (currentItem: number, itemsPerPage: number) => {
     ManifestPage(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
       if (item) {
         setManifests(item);
@@ -145,7 +142,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchStatus = async (currentItem: number, itemsPerPage: number, item?: any) => {
+  const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
     StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
       if (item) {
         setStatus(item);
@@ -184,13 +181,11 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   useEffect(() => {
-    fetchHistory(0, 15, null);
+    fetchHistory(0, 15);
     HistoryPage(address as unknown as string, 0, 15).then((item: types.HistoryContainer) => {
-      if (item) {
-        setHistory(item);
-      }
+      setHistory(item);
     });
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const stepWizard = (step: wizard.Step) => {
     StepWizard(step).then((state) => {
