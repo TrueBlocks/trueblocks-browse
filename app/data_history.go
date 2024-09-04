@@ -19,8 +19,7 @@ func (a *App) Reload(addr base.Address) {
 	historyMutex.Lock()
 	delete(a.historyMap, addr)
 	historyMutex.Unlock()
-	a.portfolio = types.PortfolioContainer{}
-	a.monitors = types.MonitorContainer{}
+	a.removeAddress(addr)
 	a.Refresh()
 }
 
@@ -167,5 +166,22 @@ func (a *App) getHistoryCnt(addr string) int {
 	} else {
 		a.meta = *meta
 		return int(appearances[0].NRecords)
+	}
+}
+
+func (a *App) removeAddress(addr base.Address) {
+	for i, item := range a.portfolio.Items {
+		if item.Address == addr {
+			a.portfolio.Items = append(a.portfolio.Items[:i], a.portfolio.Items[i+1:]...)
+			a.portfolio.MyCount--
+			break
+		}
+	}
+	for i, item := range a.monitors.Items {
+		if item.Address == addr {
+			a.monitors.Items = append(a.monitors.Items[:i], a.monitors.Items[i+1:]...)
+			a.monitors.NItems--
+			break
+		}
 	}
 }

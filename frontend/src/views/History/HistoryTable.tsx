@@ -34,6 +34,15 @@ export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
     cell: (info) => <Formatter type="ether" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
+  columnHelper.accessor("gasUsed", {
+    header: () => "Gas",
+    cell: (info) => {
+      const { gasUsed, gasPrice, from } = info.row.original;
+      const gasCost = gasUsed * gasPrice;
+      return <Formatter type="gas" value={gasCost} value2={from} />;
+    },
+    meta: { className: "medium cell" },
+  }),
   columnHelper.accessor("isError", {
     header: () => "isError",
     cell: (info) => <Formatter type="error" value={info.renderValue()} />,
