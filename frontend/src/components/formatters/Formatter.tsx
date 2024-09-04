@@ -1,8 +1,9 @@
 import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { TextProps } from "@mantine/core";
-import { useDateTime, useToEther } from "@hooks";
+import { useDateTime, useToEther, useToGas } from "@hooks";
 import { getDebugColor } from ".";
+import { base } from "@gocode/models";
 import {
   AddressFormatter,
   AppearanceFormatter,
@@ -27,6 +28,7 @@ export type knownType =
   | "date"
   | "error"
   | "ether"
+  | "gas"
   | "float"
   | "hash"
   | "int"
@@ -60,6 +62,9 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
       return value ? <IconCircleCheck size={16} color="white" fill="red" /> : <></>;
     case "tag":
       return <TagFormatter value={value} size={size} className={cn} />;
+    case "gas":
+      value = useToGas(bi, value2 as base.Address);
+      break;
     case "ether":
       value = useToEther(bi);
       break;
