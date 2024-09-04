@@ -1,9 +1,8 @@
-import React from "react";
 import "./DataTable.css";
-import { Table, Title, Button, Box } from "@mantine/core";
+import { Table, Title, Box } from "@mantine/core";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
-import { CustomMeta, Paginator } from "./";
 import { useViewState } from "@state";
+import { CustomMeta, Paginator } from "./";
 
 interface DataTableProps<T> {
   table: ReactTable<T>;
@@ -54,24 +53,25 @@ function TableHeader<T>({ table }: TablePartProps<T>) {
 
 function TableBody<T>({ table, selectedRow }: TablePartProps<T>) {
   const { pager } = useViewState(); // Access pager to use setSelected
-  return (
-    <Table.Tbody>
-      {table.getRowModel().rows.map((row, index) => (
-        <Table.Tr
-          key={row.id}
-          className={index === selectedRow ? "selected-row" : ""}
-          onClick={() => pager.setRecord(index + pager.getOffset())}
-        >
-          {row.getVisibleCells().map((cell) => {
-            const meta = cell.column.columnDef.meta as CustomMeta;
-            return (
-              <Table.Td key={cell.id} className={meta?.className}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </Table.Td>
-            );
-          })}
-        </Table.Tr>
-      ))}
-    </Table.Tbody>
-  );
+  const inner = table.getRowModel().rows.map((row, rowIndex) => {
+    const rowKey = `row-${rowIndex}-${row.id}`;
+    return (
+      <Table.Tr
+        key={rowKey}
+        className={rowIndex === selectedRow ? "selected-row" : ""}
+        onClick={() => pager.setRecord(pager.getOffset() + rowIndex)}
+      >
+        {row.getVisibleCells().map((cell, cellIndex) => {
+          const cellKey = `cell-${rowIndex}-${cellIndex}-${cell.id}`;
+          const meta = cell.column.columnDef.meta as CustomMeta;
+          return (
+            <Table.Td key={cellKey} className={meta?.className}>
+              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            </Table.Td>
+          );
+        })}
+      </Table.Tr>
+    );
+  });
+  return <Table.Tbody>{inner}</Table.Tbody>;
 }

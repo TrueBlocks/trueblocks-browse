@@ -1,11 +1,10 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
 import { fixupPluginRules } from "@eslint/compat";
 import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
+import * as tsParser from "@typescript-eslint/parser";
 import eslintPluginImportX from "eslint-plugin-import-x";
 import react from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
@@ -25,7 +24,7 @@ export default [
   },
   ...compat.extends(
     "eslint:recommended",
-    "plugin:react/jsx-runtime",
+    "plugin:react/jsx-runtime", // Ensures compatibility with the new JSX transform
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
@@ -51,6 +50,9 @@ export default [
 
     settings: {
       ...eslintPluginImportX.flatConfigs.typescript.settings,
+      react: {
+        version: "detect", // Automatically detect the react version
+      },
     },
 
     rules: {
@@ -59,7 +61,6 @@ export default [
         "error",
         {
           groups: ["builtin", "external", "internal", "parent", "sibling", "index", "object"],
-
           pathGroups: [
             {
               pattern: "react",
@@ -69,18 +70,14 @@ export default [
             {
               pattern: "**/*.css",
               group: "object",
-
               patternOptions: {
                 matchBase: true,
               },
-
               position: "after",
             },
           ],
-
           pathGroupsExcludedImportTypes: ["react"],
-          "newlines-between": "always",
-
+          "newlines-between": "never",
           alphabetize: {
             order: "asc",
             caseInsensitive: true,
@@ -95,6 +92,7 @@ export default [
       "import-x/namespace": "error",
       "import-x/default": "error",
       "import-x/export": "error",
+      "react/react-in-jsx-scope": "off",
     },
   },
 ];
