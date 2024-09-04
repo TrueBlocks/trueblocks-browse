@@ -3,10 +3,8 @@ package daemons
 import (
 	"time"
 
-	// "github.com/TrueBlocks/trueblocks-core/sdk/v3"
-
-	"github.com/TrueBlocks/trueblocks-core/sdk/v3"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 type DaemonScraper struct {

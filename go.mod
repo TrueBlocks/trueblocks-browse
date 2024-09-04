@@ -3,13 +3,13 @@ module github.com/TrueBlocks/trueblocks-browse
 go 1.22
 
 replace (
-	github.com/TrueBlocks/trueblocks-core/sdk/v3 => ../trueblocks-core/sdk
 	github.com/TrueBlocks/trueblocks-core/src/apps/chifra => ../trueblocks-core/src/apps/chifra
+	github.com/TrueBlocks/trueblocks-sdk/v3 => ../trueblocks-sdk
 )
 
 require (
-	github.com/TrueBlocks/trueblocks-core/sdk/v3 v3.0.0-20240828113739-542145d54102
-	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20240828113739-542145d54102
+	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20240901202206-c19a76f941df
+	github.com/TrueBlocks/trueblocks-sdk/v3 v3.0.0-20240828113739-542145d54102
 	github.com/joho/godotenv v1.5.1
 	github.com/wailsapp/wails/v2 v2.8.2
 )
