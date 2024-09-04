@@ -98,10 +98,9 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   const fetchHistory = async (currentItem: number, itemsPerPage: number, item?: any) => {
-    GetLastSub("/history").then((subRoute: string) => {
-      if (subRoute !== "") {
-        subRoute = subRoute.replace("/", "");
-        setAddress(subRoute as unknown as base.Address);
+    HistoryPage(String(address), currentItem, itemsPerPage).then((item: types.HistoryContainer) => {
+      if (item) {
+        setHistory(item);
       }
     });
   };
@@ -177,7 +176,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       fetchStatus(0, 100);
     };
 
-    var { Message } = messages;
+    const { Message } = messages;
     EventsOn(Message.DAEMON, handleRefresh);
     return () => {
       EventsOff(Message.DAEMON);
@@ -200,7 +199,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  let state = {
+  const state = {
     address,
     portfolio,
     fetchPortfolio,
