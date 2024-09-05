@@ -1,10 +1,9 @@
-import React, { useEffect, useState, DependencyList } from "react";
-import { Pager, EmptyPager } from "@components";
+import { useEffect, useState, DependencyList } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Route } from "@/Routes";
+import { Pager, EmptyPager } from "@components";
 import { CancleContexts, Reload } from "@gocode/app/App";
 import { useAppState } from "@state";
-import { base } from "@gocode/models";
 
 export type Page = {
   selected: number;

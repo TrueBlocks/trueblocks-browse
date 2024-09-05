@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import { Stack } from "@mantine/core";
+import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { useParams } from "wouter";
-import { types, base } from "@gocode/models";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { tableColumns } from "./HistoryTable";
 import { ExploreButton, ExportButton, View, FormTable, DataTable, GroupDefinition } from "@components";
 import { GetLastSub, CancleContexts } from "@gocode/app/App";
+import { types, base } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
-import { Stack } from "@mantine/core";
+import { tableColumns } from "./HistoryTable";
 
 export function HistoryView() {
   const { setAddress, history, fetchHistory } = useAppState();
 
-  var aa = useParams().address;
+  const aa = useParams().address;
   useEffect(() => {
     CancleContexts();
     if (aa === ":address") {
@@ -33,14 +33,14 @@ export function HistoryView() {
   return (
     <ViewStateProvider route={"history"} nItems={history.nItems} fetchFn={fetchHistory}>
       <View>
-        <FormTable data={history} definition={createHistoryForm(table)} />
+        <FormTable data={history} definition={CreateHistoryForm(table)} />
       </View>
     </ViewStateProvider>
   );
 }
 
 type theInstance = InstanceType<typeof types.HistoryContainer>;
-function createHistoryForm(table: any): GroupDefinition<theInstance>[] {
+function CreateHistoryForm(table: Table<types.Transaction>): GroupDefinition<theInstance>[] {
   const { address } = useAppState();
   return [
     {

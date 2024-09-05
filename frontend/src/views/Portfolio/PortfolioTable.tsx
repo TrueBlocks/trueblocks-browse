@@ -1,8 +1,7 @@
-import React from "react";
-import { types } from "@gocode/models";
+import { Group } from "@mantine/core";
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter, ExploreButton, ExportButton, ViewButton } from "@components";
-import { Group } from "@mantine/core";
+import { types } from "@gocode/models";
 
 const columnHelper = createColumnHelper<types.HistoryContainer>();
 

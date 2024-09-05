@@ -1,14 +1,11 @@
-import React from "react";
 import { Button } from "@mantine/core";
-import { SetLast } from "@gocode/app/App";
-import { EventsEmit } from "@runtime";
 import { IconLink } from "@tabler/icons-react";
-import { messages } from "@gocode/models";
 import { ButtonProps } from "@components";
+import { SetLast } from "@gocode/app/App";
+import { messages } from "@gocode/models";
+import { EventsEmit } from "@runtime";
 
-export interface ViewButtonProps extends ButtonProps {}
-
-export const ViewButton = ({ value, noText, size, onClick }: ViewButtonProps) => {
+export const ViewButton = ({ value, noText, size, onClick }: ButtonProps) => {
   const handleClick = () => {
     SetLast("route", `/history/${value}`);
     EventsEmit(messages.Message.NAVIGATE, {

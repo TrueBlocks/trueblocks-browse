@@ -1,9 +1,5 @@
-import React from "react";
-import { IconCircleCheck } from "@tabler/icons-react";
 import { TextProps } from "@mantine/core";
-import { useDateTime, useToEther, useToGas } from "@hooks";
-import { getDebugColor } from ".";
-import { base } from "@gocode/models";
+import { IconCircleCheck } from "@tabler/icons-react";
 import {
   AddressFormatter,
   AppearanceFormatter,
@@ -13,6 +9,9 @@ import {
   TextFormatter,
   EdMode,
 } from "@components";
+import { base } from "@gocode/models";
+import { useDateTime, useToEther, useToGas } from "@hooks";
+import { GetDebugColor } from ".";
 
 export type knownType =
   | "address-editor"
@@ -49,9 +48,9 @@ export type FormatterProps = {
 };
 
 export const Formatter = ({ type, value, value2, className, size = "md" }: FormatterProps) => {
-  var n = value as number;
-  var bi = value as bigint;
-  const cn = getDebugColor(type) || className;
+  const n = value as number;
+  const bi = value as bigint;
+  const cn = GetDebugColor(type) || className;
 
   switch (type) {
     case "boolean":
@@ -70,6 +69,7 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
       break;
     case "timestamp":
       value = useDateTime(n);
+      break;
     case "date":
       value = value?.replace("T", " ");
       if ((value?.match(/ /g)?.length ?? 0) > 0) {

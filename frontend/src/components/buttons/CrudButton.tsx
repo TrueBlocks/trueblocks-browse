@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ActionIcon } from "@mantine/core";
 import { IconTrash, IconTrashX, IconArrowBackUp } from "@tabler/icons-react";
 import { ButtonProps } from "@components";
-import { ModifyName, Reload } from "@gocode/app/App";
+import { ModifyName } from "@gocode/app/App";
 import { base } from "@gocode/models";
 import { useAppState, useViewState } from "@state";
 
@@ -16,7 +16,7 @@ export const CrudButton = ({ value, size, isDeleted, onClick }: CrudButtonProps)
   const [address, setAddress] = useState<base.Address>(value as unknown as base.Address);
   const { fetchNames, crudOperation } = useAppState();
   const { pager } = useViewState();
-  const { selected, setRecord } = pager;
+  const { selected } = pager;
 
   useEffect(() => {
     setAddress(value as unknown as base.Address);

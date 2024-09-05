@@ -1,7 +1,7 @@
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { DataTable, FormTable, GroupDefinition, View } from "@components";
 import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { tableColumns } from "./IndexesTable";
 
 export function IndexesView() {

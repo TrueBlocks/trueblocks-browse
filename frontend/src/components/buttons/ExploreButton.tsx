@@ -1,8 +1,7 @@
-import React from "react";
 import { Button } from "@mantine/core";
-import { BrowserOpenURL } from "@runtime";
 import { IconExternalLink } from "@tabler/icons-react";
 import { ButtonProps } from "@components";
+import { BrowserOpenURL } from "@runtime";
 
 export interface ExploreButtonProps extends ButtonProps {
   endpoint: string;

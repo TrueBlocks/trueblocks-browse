@@ -1,4 +1,3 @@
-import React from "react";
 import { TextFormatter, FormatterProps } from ".";
 
 export function DateFormatter({ className, value, size }: Omit<FormatterProps, "type">) {

@@ -1,6 +1,5 @@
-import React from "react";
-import { useEnvironment } from "@hooks";
 import { Stack, Text } from "@mantine/core";
+import { useEnvironment } from "@hooks";
 import { FormatterProps } from "./Formatter";
 
 export function TextFormatter({ className, type, value, size }: FormatterProps) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { SimpleGrid, Fieldset } from "@mantine/core";
 import { View } from "@components";
 import { GetDaemon, ToggleDaemon } from "@gocode/app/App";

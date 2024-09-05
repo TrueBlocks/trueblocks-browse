@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Fieldset, Container, Grid, Flex, Text, Stack } from "@mantine/core";
 import { Formatter, knownType } from "@components";
 import classes from "./FormTable.module.css";
@@ -34,7 +34,7 @@ export function FormTable<T>({ data, definition }: FormTableProps<T>) {
             <Stack>
               <Fieldset legend={group.title} bg="white" className={classes.fieldSet}>
                 {group.fields?.map((field, fieldIndex) => {
-                  var value = <Formatter type={field.type} value={data[field.accessor]} />;
+                  const value = <Formatter type={field.type} value={data[field.accessor]} />;
                   return (
                     <Flex key={fieldIndex} gap="md" align="center">
                       <Text className={classes.fieldPrompt}>{field.label}</Text>

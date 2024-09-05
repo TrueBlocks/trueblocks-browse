@@ -1,12 +1,11 @@
-import React from "react";
-import { types, messages } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { tableColumns } from "./PortfolioTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { useAppState, ViewStateProvider } from "@state";
-import { Page } from "@hooks";
 import { SetLast } from "@gocode/app/App";
+import { types, messages } from "@gocode/models";
+import { Page } from "@hooks";
 import { EventsEmit } from "@runtime";
+import { useAppState, ViewStateProvider } from "@state";
+import { tableColumns } from "./PortfolioTable";
 
 export function PortfolioView() {
   const { portfolio, fetchPortfolio } = useAppState();

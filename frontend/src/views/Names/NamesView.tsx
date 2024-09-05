@@ -1,12 +1,10 @@
-import React from "react";
-import { Box } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { SetLast } from "@gocode/app/App";
 import { types, messages } from "@gocode/models";
 import { Page } from "@hooks";
 import { EventsEmit } from "@runtime";
-import { useAppState, ViewStateProvider, useViewState } from "@state";
+import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./NamesTable";
 
 export function NamesView() {

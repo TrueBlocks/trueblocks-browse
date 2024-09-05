@@ -1,8 +1,8 @@
-import React, { forwardRef, useCallback } from "react";
+import { forwardRef, useCallback } from "react";
 import { ActionIcon } from "@mantine/core";
+import { Group } from "@mantine/core";
 import { IconCopy } from "@tabler/icons-react";
 import { ExploreButton, PopupProps } from "@components";
-import { Group } from "@mantine/core";
 
 export interface AppearancePopupProps extends PopupProps {
   hash: string;

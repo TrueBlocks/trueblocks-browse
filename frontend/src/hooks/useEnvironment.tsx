@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { GetEnv } from "@gocode/app/App";
 
 export const useEnvironment = (key: string): string => {

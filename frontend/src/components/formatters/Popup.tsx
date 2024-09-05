@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 import { Popover } from "@mantine/core";
 
 export type PopupProps = {

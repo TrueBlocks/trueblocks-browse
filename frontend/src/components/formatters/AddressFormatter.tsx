@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { Formatter, FormatterProps, knownType, Popup, AddressPopup } from "@components";
 import { AddrToName } from "@gocode/app/App";
 import { ClipboardSetText } from "@runtime";
-import { Formatter, FormatterProps, knownType, Popup, AddressPopup } from "@components";
 import { useAppState } from "@state";
 import classes from "./Formatter.module.css";
 
@@ -19,7 +19,6 @@ export const AddressFormatter = ({ value, value2, className, size = "md", mode =
   const { address } = useAppState();
 
   const [line1, setLine1] = useState<string>("");
-  const [line1Style, setLine1Style] = useState<string>("");
   const [line2, setLine2] = useState<string>("");
   const [isPopupOpen, setPopupOpen] = useState(false);
 

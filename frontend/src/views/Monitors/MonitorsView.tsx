@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import { types, messages, base } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { tableColumns } from "./MonitorsTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { useAppState, ViewStateProvider } from "@state";
 import { SetLast } from "@gocode/app/App";
-import { EventsEmit } from "@runtime";
+import { types, messages } from "@gocode/models";
 import { Page } from "@hooks";
+import { EventsEmit } from "@runtime";
+import { useAppState, ViewStateProvider } from "@state";
+import { tableColumns } from "./MonitorsTable";
 
 export function MonitorsView() {
   const { monitors, fetchMonitors } = useAppState();

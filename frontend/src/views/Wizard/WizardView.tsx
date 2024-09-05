@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
 import { Button } from "@mantine/core";
-import { useAppState } from "@state";
 import { wizard } from "@gocode/models";
+import { useAppState } from "@state";
 
 export function WizardView() {
-  const { isConfigured, wizardState, stepWizard } = useAppState();
+  const { isConfigured, wizardState } = useAppState();
 
   return (
     <div>

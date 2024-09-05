@@ -1,5 +1,4 @@
-import React from "react";
-import { Card, Text, Title } from "@mantine/core";
+import { Card, Text } from "@mantine/core";
 import { messages } from "@gocode/models";
 
 export const DaemonLog = ({ logMessages }: { logMessages: messages.DaemonMsg[] }) => {

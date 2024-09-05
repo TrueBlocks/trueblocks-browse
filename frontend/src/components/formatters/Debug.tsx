@@ -1,12 +1,11 @@
-import React from "react";
-import { knownType } from ".";
 import { useEnvironment } from "@hooks";
 import classes from "./Formatter.module.css";
+import { knownType } from ".";
 
-export const getDebugColor = (type: knownType): string => {
+export const GetDebugColor = (type: knownType): string => {
   const debug = useEnvironment("TB_DEBUG_DISPLAY");
 
-  var ret: string = "";
+  let ret: string = "";
   if (debug) {
     switch (type) {
       case "address-editor":
@@ -45,6 +44,7 @@ export const getDebugColor = (type: knownType): string => {
         break;
       case "time":
         ret = classes.purple;
+        break;
       case "date":
         ret = classes.purple;
         break;

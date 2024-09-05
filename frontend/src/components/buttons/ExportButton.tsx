@@ -1,12 +1,9 @@
-import React from "react";
 import { Button } from "@mantine/core";
-import { ExportToCsv } from "@gocode/app/App";
 import { IconFileExport } from "@tabler/icons-react";
 import { ButtonProps } from "@components";
+import { ExportToCsv } from "@gocode/app/App";
 
-export interface ExportButtonProps extends ButtonProps {}
-
-export const ExportButton = ({ value, noText, size, onClick }: ExportButtonProps) => {
+export const ExportButton = ({ value, noText, size, onClick }: ButtonProps) => {
   const handleClick = () => {
     ExportToCsv(value);
     if (onClick) {

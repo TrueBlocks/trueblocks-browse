@@ -1,6 +1,5 @@
-import React from "react";
-import { FormatterProps } from "./Formatter"
 import { Badge } from "@mantine/core";
+import { FormatterProps } from "./Formatter";
 
 export function TagFormatter({ className, value, size }: Omit<FormatterProps, "type">) {
   return (

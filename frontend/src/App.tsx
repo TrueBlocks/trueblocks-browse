@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { messages } from "@gocode/models";
+import { useState, useEffect } from "react";
 import { AppShell } from "@mantine/core";
 import { Aside, Header, Navbar, Routes, AppStatus } from "@components";
-import { EventsOn, EventsOff } from "@runtime";
-import classes from "@/App.module.css";
 import { GetLast, SetLast } from "@gocode/app/App";
+import { messages } from "@gocode/models";
+import { EventsOn, EventsOff } from "@runtime";
 import { AppStateProvider } from "@state";
+import classes from "@/App.module.css";
 
 function App() {
   const [showHelp, setShowHelp] = useState<boolean>(false);

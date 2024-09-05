@@ -1,7 +1,6 @@
-import React from "react";
-import { types } from "@gocode/models";
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter } from "@components";
+import { types } from "@gocode/models";
 import { NameTags } from "./NameTag";
 
 const columnHelper = createColumnHelper<types.Name>();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Card, Text, Group, Badge, Title } from "@mantine/core";
 import { StateToString } from "@gocode/app/App";
 import { daemons } from "@gocode/models";

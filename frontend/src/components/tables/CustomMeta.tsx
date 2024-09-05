@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 
 export interface CustomMeta {

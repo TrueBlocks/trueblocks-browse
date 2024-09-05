@@ -1,9 +1,8 @@
-import React from "react";
-import { types } from "@gocode/models";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { tableColumns } from "./StatusTable";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
+import { tableColumns } from "./StatusTable";
 
 export function StatusView() {
   const { status, fetchStatus } = useAppState();

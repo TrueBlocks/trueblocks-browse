@@ -15,16 +15,25 @@ interface ViewStateProps {
 
 const ViewContext = createContext<ViewStateProps | undefined>(undefined);
 
+type ViewContextType = {
+  route: Route;
+  nItems?: number;
+  fetchFn: (selected: number, perPage: number) => void;
+  onEnter?: (page: Page) => void;
+  children: ReactNode;
+};
+
 export const ViewStateProvider: React.FC<{
   route: Route;
   nItems?: number;
   fetchFn: (selected: number, perPage: number) => void;
   onEnter?: (page: Page) => void;
   children: ReactNode;
-}> = ({ route, nItems = -1, fetchFn, onEnter, children }) => {
+}> = ({ route, nItems = -1, fetchFn, onEnter, children }: ViewContextType) => {
   const { address, setHistory } = useAppState();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
-  const ignoreEnter = (page: Page) => {};
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const ignoreEnter = (_unused: Page) => {};
   const pager = useKeyboardPaging(route, nItems, lines, onEnter ? onEnter : ignoreEnter);
 
   useEffect(() => {
