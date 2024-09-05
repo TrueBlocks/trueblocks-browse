@@ -8,28 +8,20 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-var historyMutex sync.Mutex
+var historyMutex sync.RWMutex
 
 func (a *App) Reload(addr base.Address) {
-	logger.Info(colors.Red, len(a.portfolio.Items), " items in portfolio", colors.Off)
-	logger.Info(colors.Red, len(a.historyMap), " items in historyMap", colors.Off)
 	a.CancleContexts()
 	historyMutex.Lock()
 	delete(a.historyMap, addr)
 	historyMutex.Unlock()
 	a.HistoryPage(addr.String(), 0, 15)
 	a.removeAddress(addr)
-	// a.portfolio = types.PortfolioContainer{}
-	// a.monitors = types.MonitorContainer{}
 	a.Refresh()
-	logger.Info(colors.Blue, len(a.portfolio.Items), " items in portfolio", colors.Off)
-	logger.Info(colors.Blue, len(a.historyMap), " items in historyMap", colors.Off)
 }
 
 func (a *App) CancleContexts() {
@@ -56,9 +48,9 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 		return types.HistoryContainer{}
 	}
 
-	historyMutex.Lock()
+	historyMutex.RLock()
 	_, exists := a.historyMap[address]
-	historyMutex.Unlock()
+	historyMutex.RUnlock()
 
 	if !exists {
 		messages.Send(a.ctx,
@@ -86,13 +78,14 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 					if !ok {
 						continue
 					}
-					historyMutex.Lock()
+					historyMutex.RLock()
 					summary := a.historyMap[address]
+					historyMutex.RUnlock()
+
 					summary.Address = address
 					summary.Name = a.names.NamesMap[address].Name
 					summary.Items = append(summary.Items, *tx)
-					a.historyMap[address] = summary
-					if len(a.historyMap[address].Items)%base.Max(pageSize, 1) == 0 {
+					if len(summary.Items)%base.Max(pageSize, 1) == 0 {
 						sort.Slice(summary.Items, func(i, j int) bool {
 							if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
 								return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
@@ -101,12 +94,17 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 						})
 						messages.Send(a.ctx,
 							messages.Progress,
-							messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(nItems), address),
+							messages.NewProgressMsg(int64(len(summary.Items)), int64(nItems), address),
 						)
 					}
+
+					historyMutex.Lock()
+					a.historyMap[address] = summary
 					historyMutex.Unlock()
+
 				case err := <-opts.RenderCtx.ErrorChan:
 					messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
+
 				default:
 					if opts.RenderCtx.WasCanceled() {
 						return
@@ -115,12 +113,13 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 			}
 		}()
 
-		_, meta, err := opts.Export()
+		_, meta, err := opts.Export() // blocks until forever loop above finishes
 		if err != nil {
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
 			return types.HistoryContainer{}
 		}
 		a.meta = *meta
+
 		historyMutex.Lock()
 		sort.Slice(a.historyMap[address].Items, func(i, j int) bool {
 			if a.historyMap[address].Items[i].BlockNumber == a.historyMap[address].Items[j].BlockNumber {
@@ -138,8 +137,8 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 		a.loadPortfolio(nil, nil)
 	}
 
-	historyMutex.Lock()
-	defer historyMutex.Unlock()
+	historyMutex.RLock()
+	defer historyMutex.RUnlock()
 
 	first = base.Max(0, base.Min(first, len(a.historyMap[address].Items)-1))
 	last := base.Min(len(a.historyMap[address].Items), first+pageSize)
@@ -158,9 +157,9 @@ func (a *App) getHistoryCnt(addr string) int {
 		return 0
 	}
 
-	historyMutex.Lock()
-	defer historyMutex.Unlock()
+	historyMutex.RLock()
 	l := len(a.historyMap[address].Items)
+	historyMutex.RUnlock()
 	if l > 0 {
 		return l
 	}
