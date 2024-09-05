@@ -62,7 +62,7 @@ func (a *App) Refresh(which ...string) {
 			))
 		}
 	}
-	a.loadPortfolio(nil, nil)
+	// a.loadPortfolio(nil, nil)
 
 	// And then update everything else in the fullness of time
 	wg := sync.WaitGroup{}

@@ -8,6 +8,8 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -15,12 +17,19 @@ import (
 var historyMutex sync.Mutex
 
 func (a *App) Reload(addr base.Address) {
+	logger.Info(colors.Red, len(a.portfolio.Items), " items in portfolio", colors.Off)
+	logger.Info(colors.Red, len(a.historyMap), " items in historyMap", colors.Off)
 	a.CancleContexts()
 	historyMutex.Lock()
 	delete(a.historyMap, addr)
 	historyMutex.Unlock()
+	a.HistoryPage(addr.String(), 0, 15)
 	a.removeAddress(addr)
+	// a.portfolio = types.PortfolioContainer{}
+	// a.monitors = types.MonitorContainer{}
 	a.Refresh()
+	logger.Info(colors.Blue, len(a.portfolio.Items), " items in portfolio", colors.Off)
+	logger.Info(colors.Blue, len(a.historyMap), " items in historyMap", colors.Off)
 }
 
 func (a *App) CancleContexts() {
@@ -125,6 +134,8 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 			messages.Completed,
 			messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(len(a.historyMap[address].Items)), address),
 		)
+
+		a.loadPortfolio(nil, nil)
 	}
 
 	historyMutex.Lock()
@@ -173,14 +184,14 @@ func (a *App) removeAddress(addr base.Address) {
 	for i, item := range a.portfolio.Items {
 		if item.Address == addr {
 			a.portfolio.Items = append(a.portfolio.Items[:i], a.portfolio.Items[i+1:]...)
-			a.portfolio.MyCount--
+			// a.portfolio.MyCount--
 			break
 		}
 	}
 	for i, item := range a.monitors.Items {
 		if item.Address == addr {
 			a.monitors.Items = append(a.monitors.Items[:i], a.monitors.Items[i+1:]...)
-			a.monitors.NItems--
+			// a.monitors.NItems--
 			break
 		}
 	}
