@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, Text, Loader, Center } from "@mantine/core";
 import { GetDalle } from "@gocode/app/App";
 

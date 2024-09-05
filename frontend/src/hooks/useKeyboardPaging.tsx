@@ -1,4 +1,4 @@
-import { useEffect, useState, DependencyList } from "react";
+import { useEffect, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Route } from "@/Routes";
 import { Pager, EmptyPager } from "@components";

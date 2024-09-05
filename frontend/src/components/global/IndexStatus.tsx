@@ -1,7 +1,6 @@
-import React from "react";
 import { Text, Group } from "@mantine/core";
-import { useAppState } from "@state";
 import { Formatter } from "@components";
+import { useAppState } from "@state";
 
 export function IndexStatus() {
   const { indexes, meta } = useAppState();

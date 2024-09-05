@@ -1,7 +1,6 @@
-import React from "react";
 import { Group, Title, Text } from "@mantine/core";
-import { IndexStatus } from "./";
 import { useLocation } from "wouter";
+import { IndexStatus } from "./";
 
 export const Header = ({ title }: { title: string }) => {
   const [location] = useLocation();

@@ -1,4 +1,4 @@
-import { useState, forwardRef, useCallback, useEffect, useRef } from "react";
+import { useState, forwardRef, useCallback, useEffect } from "react";
 import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
 import { IconCopy } from "@tabler/icons-react";
 import { ExploreButton, ViewButton, PopupProps } from "@components";

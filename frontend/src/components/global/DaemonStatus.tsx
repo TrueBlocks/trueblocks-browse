@@ -1,4 +1,3 @@
-import React from "react";
 import { Flex, Space, Text } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 

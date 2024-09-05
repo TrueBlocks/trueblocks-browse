@@ -1,4 +1,3 @@
-import React from "react";
 import { Stack } from "@mantine/core";
 import { Menu, DaemonStatus } from "./";
 

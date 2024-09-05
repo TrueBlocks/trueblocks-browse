@@ -1,8 +1,8 @@
-import React, { ReactNode, useState, useEffect } from "react";
-import classes from "./ViewStatus.module.css";
+import { useState, useEffect } from "react";
+import { Text } from "@mantine/core";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
-import { Text } from "@mantine/core";
+import classes from "./ViewStatus.module.css";
 
 export function ViewStatus() {
   const [statusMessage, setStatusMessage] = useState<string>("");
@@ -50,7 +50,7 @@ export function ViewStatus() {
       setColor(classes.blue);
     };
 
-    var { Message } = messages;
+    const { Message } = messages;
     EventsOn(Message.DOCUMENT, handleDocument);
     EventsOn(Message.PROGRESS, handleProgress);
     EventsOn(Message.COMPLETED, handleCompleted);
