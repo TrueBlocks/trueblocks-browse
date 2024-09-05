@@ -1,99 +1,72 @@
-import React, { useState, useEffect } from "react";
-import classes from "@/App.module.css";
-import lClasses from "../Columns.module.css";
-import { GetNamesPage, GetNamesCnt } from "@gocode/app/App";
-import { app } from "@gocode/models";
-import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { Stack, Table, Title } from "@mantine/core";
-import { nameColumns } from "./NameTable";
-import { CustomMeta } from "../CustomMeta";
-import { View, ViewStatus } from "@components";
-import { useKeyboardPaging } from "@hooks";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { SetLast } from "@gocode/app/App";
+import { types, messages } from "@gocode/models";
+import { Page } from "@hooks";
+import { EventsEmit } from "@runtime";
+import { useAppState, ViewStateProvider } from "@state";
+import { tableColumns } from "./NamesTable";
 
-// TODO: This should use tabs per type (Regular, Custom, Prefund, Baddress, etc.)
-// TODO: Or, at least have tags for each type.
 export function NamesView() {
-  const [count, setCount] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [loaded, setLoaded] = useState<boolean>(false);
-  const [items, setItems] = useState<app.NameEx[]>([]);
-  const { curItem, perPage } = useKeyboardPaging<app.NameEx>(items, count);
+  const { names, fetchNames } = useAppState();
 
-  useEffect(() => {
-    if (loaded && !loading) {
-      const fetch = async (currentItem: number, itemsPerPage: number) => {
-        const newItems = await GetNamesPage(currentItem, itemsPerPage);
-        setItems(newItems);
-      };
-      fetch(curItem, perPage);
-    }
-  }, [count, curItem, perPage]);
-
-  useEffect(() => {
-    setLoading(true);
-    try {
-      const fetch = async () => {
-        const cnt = await GetNamesCnt();
-        setCount(cnt);
-      };
-      fetch();
-      setLoaded(true);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const handleEnter = (page: Page) => {
+    const record = page.selected - page.getOffset();
+    const address = names.names[record].address;
+    SetLast("route", `/history/${address}`);
+    EventsEmit(messages.Message.NAVIGATE, {
+      route: `/history/${address}`,
+    });
+  };
 
   const table = useReactTable({
-    data: items,
-    columns: nameColumns,
+    data: names.names || [],
+    columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  if (loading) {
-    return (
-      <View>
-        <Stack className={classes.mainContent}>
-          <Title order={3}>Loading...</Title>
-        </Stack>
-      </View>
-    );
-  }
-
   return (
-    <View>
-      <Stack className={classes.mainContent}>
-        <Title order={3}>
-          Names: showing record {curItem + 1}-{curItem + 1 + perPage - 1} of {count}
-        </Title>
-        <Table>
-          <Table.Thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <Table.Tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <Table.Th key={header.id} className={lClasses.centered}>
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                  </Table.Th>
-                ))}
-              </Table.Tr>
-            ))}
-          </Table.Thead>
-          <Table.Tbody>
-            {table.getRowModel().rows.map((row) => (
-              <Table.Tr key={row.id}>
-                {row.getVisibleCells().map((cell) => {
-                  var meta = cell.column.columnDef.meta as CustomMeta;
-                  return (
-                    <Table.Td key={cell.id} className={lClasses[meta?.className || ""]}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </Table.Td>
-                  );
-                })}
-              </Table.Tr>
-            ))}
-          </Table.Tbody>
-        </Table>
-      </Stack>
-      <ViewStatus />
-    </View>
+    <ViewStateProvider route={"names"} nItems={names.nItems} fetchFn={fetchNames} onEnter={handleEnter}>
+      <View>
+        <FormTable data={names} definition={createNameForm(table)} />
+      </View>
+    </ViewStateProvider>
   );
+}
+
+type theInstance = InstanceType<typeof types.NameContainer>;
+function createNameForm(table: any): GroupDefinition<theInstance>[] {
+  return [
+    {
+      title: "Name Data",
+      colSpan: 6,
+      fields: [
+        { label: "nNames", type: "int", accessor: "nItems" },
+        { label: "nContracts", type: "int", accessor: "nContracts" },
+        { label: "nErc20s", type: "int", accessor: "nErc20s" },
+        { label: "nErc721s", type: "int", accessor: "nErc721s" },
+        { label: "nDeleted", type: "int", accessor: "nDeleted" },
+      ],
+    },
+    {
+      title: "Database Parts",
+      colSpan: 6,
+      fields: [
+        { label: "sizeOnDisc", type: "bytes", accessor: "sizeOnDisc" },
+        { label: "nCustom", type: "int", accessor: "nCustom" },
+        { label: "nRegular", type: "int", accessor: "nRegular" },
+        { label: "nPrefund", type: "int", accessor: "nPrefund" },
+        { label: "nBaddress", type: "int", accessor: "nBaddress" },
+      ],
+    },
+    {
+      title: "Names",
+      fields: [],
+      components: [
+        {
+          component: <DataTable<types.Name> table={table} loading={false} />,
+        },
+      ],
+    },
+  ];
 }

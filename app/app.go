@@ -6,11 +6,16 @@ import (
 	"errors"
 	"log"
 	"os"
+	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/joho/godotenv"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -19,31 +24,53 @@ import (
 // is executed, we keep track of the first fatal error that has happened before Startup
 var startupError error
 
+// Find: NewViews
 type App struct {
 	ctx        context.Context
+	Documents  []types.Document
+	CurrentDoc *types.Document
+
 	session    config.Session
 	apiKeys    map[string]string
-	namesMap   map[base.Address]NameEx
-	names      []NameEx // We keep both for performance reasons
 	ensMap     map[string]base.Address
 	renderCtxs map[base.Address][]*output.RenderCtx
-	// Add your application's data here
+	historyMap map[base.Address]types.HistoryContainer
+	balanceMap sync.Map
+	meta       coreTypes.MetaData
+
+	// Summaries
+	abis              types.AbiContainer
+	index             types.IndexContainer
+	manifest          types.ManifestContainer
+	monitors          types.MonitorContainer
+	names             types.NameContainer
+	status            types.StatusContainer
+	portfolio         types.PortfolioContainer
+	ScraperController *daemons.DaemonScraper
+	FreshenController *daemons.DaemonFreshen
+	IpfsController    *daemons.DaemonIpfs
 }
 
+// Find: NewViews
 func NewApp() *App {
 	a := App{
 		apiKeys:    make(map[string]string),
-		namesMap:   make(map[base.Address]NameEx),
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 		ensMap:     make(map[string]base.Address),
-		// Initialize maps here
+		historyMap: make(map[base.Address]types.HistoryContainer),
+		Documents:  make([]types.Document, 10),
 	}
+	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
+	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
+	a.CurrentDoc = &a.Documents[0]
+	a.CurrentDoc.Filename = "Untitled"
 
 	// it's okay if it's not found
-	_ = a.session.Load()
+	a.session.MustLoadSession()
 
 	if err := godotenv.Load(); err != nil {
-		a.Fatal("Error loading .env file")
+		// a.Fatal("Error loading .env file")
+		logger.Info("Could not load .env file") // we don't need it for this app
 		// } else if a.apiKeys["openAi"] = os.Getenv("OPENAI_API_KEY"); a.apiKeys["openAi"] == "" {
 		// 	log.Fatal("No OPENAI_API_KEY key found")
 	}
@@ -53,18 +80,33 @@ func NewApp() *App {
 	return &a
 }
 
-func (a App) String() string {
+func (a *App) String() string {
 	bytes, _ := json.MarshalIndent(a, "", "  ")
 	return string(bytes)
 }
 
+func (a *App) GetContext() context.Context {
+	return a.ctx
+}
+
+// Find: NewViews
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
+
+	a.FreshenController = daemons.NewFreshen(a, "freshen", 7000, a.GetLastDaemon("daemon-freshen"))
+	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetLastDaemon("daemon-scraper"))
+	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.GetLastDaemon("daemon-ipfs"))
+	go a.startDaemons()
+
 	if startupError != nil {
 		a.Fatal(startupError.Error())
 	}
-	if err := a.loadNames(); err != nil {
-		logger.Panic(err)
+
+	logger.Info("Starting freshen process...")
+	a.Refresh(a.GetSession().LastRoute)
+
+	if err := a.loadConfig(nil, nil); err != nil {
+		messages.SendError(a.ctx, err)
 	}
 }
 
@@ -90,6 +132,9 @@ func (a *App) Shutdown(ctx context.Context) {
 }
 
 func (a *App) GetSession() *config.Session {
+	if a.session.LastSub == nil {
+		a.session.LastSub = make(map[string]string)
+	}
 	return &a.session
 }
 
@@ -115,4 +160,16 @@ func (a *App) Fatal(message string) {
 		Message: message,
 	})
 	os.Exit(1)
+}
+
+func (a *App) GetEnv(key string) string {
+	return os.Getenv(key)
+}
+
+func (a *App) SetEnv(key, value string) {
+	os.Setenv(key, value)
+}
+
+func (a *App) GetMeta() coreTypes.MetaData {
+	return a.meta
 }

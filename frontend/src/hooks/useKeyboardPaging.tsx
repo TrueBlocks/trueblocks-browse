@@ -1,41 +1,115 @@
-import { useEffect, useState, DependencyList } from "react";
+import { useEffect, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
+import { Route } from "@/Routes";
+import { Pager, EmptyPager } from "@components";
+import { CancleContexts, Reload } from "@gocode/app/App";
+import { useAppState } from "@state";
 
-export function useKeyboardPaging<T>(items: T[], nItems: number, deps: DependencyList = [], perPage: number = 20) {
-  const [curItem, setCurItem] = useState<number>(0);
+export type Page = {
+  selected: number;
+  getOffset: () => number;
+};
 
-  useHotkeys("left", (event) => {
-    setCurItem((cur) => Math.max(cur - 1, 0));
-    event.preventDefault();
-  });
-  useHotkeys("up", (event) => {
-    setCurItem((cur) => Math.max(cur - perPage, 0));
-    event.preventDefault();
-  });
-  useHotkeys("home", (event) => {
-    setCurItem(0);
-    event.preventDefault();
-  });
-
-  useHotkeys("right", (event) => {
-    var max = Math.max(nItems - perPage, 0);
-    setCurItem((cur) => Math.min(max, cur + 1));
-    event.preventDefault();
-  });
-  useHotkeys("down", (event) => {
-    var max = Math.max(nItems - perPage, 0);
-    setCurItem((cur) => Math.min(max, cur + perPage));
-    event.preventDefault();
-  });
-  useHotkeys("end", (event) => {
-    var max = Math.max(nItems - perPage, 0);
-    setCurItem(max);
-    event.preventDefault();
-  });
+export function useKeyboardPaging(
+  route: Route,
+  nItems: number,
+  perPage: number = 20,
+  onEnter: (page: Page) => void
+): Pager {
+  const { address } = useAppState();
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [lastPage, setLastPage] = useState<number>(1);
+  const [selected, setSelected] = useState<number>(0);
 
   useEffect(() => {
-    setCurItem(0);
-  }, deps);
+    setLastPage(Math.ceil(nItems / perPage));
+  }, [nItems, perPage]);
 
-  return { curItem, perPage };
+  const setRecord = (newRecord: number) => {
+    const curPage = Math.floor(selected / perPage);
+    const newPage = Math.floor(newRecord / perPage);
+    if (newPage !== curPage) {
+      setPage(newPage + 1);
+    }
+    setSelected(newRecord);
+  };
+
+  const setPage = (newPage: number) => {
+    setSelected((newPage - 1) * perPage);
+    setPageNumber(newPage);
+  };
+
+  const getOffset = () => (pageNumber - 1) * perPage;
+
+  // keyboard shortcuts
+  useHotkeys("up", (e) => {
+    e.preventDefault();
+    setRecord(Math.max(selected - 1, 0));
+  });
+  useHotkeys("left", (e) => {
+    e.preventDefault();
+    setRecord(Math.max(selected - perPage, 0));
+  });
+  useHotkeys("pageup", (e) => {
+    e.preventDefault();
+    setRecord(Math.max(selected - perPage * 10, 0));
+  });
+  useHotkeys("home", (e) => {
+    e.preventDefault();
+    setRecord(0);
+  });
+
+  useHotkeys("down", (e) => {
+    e.preventDefault();
+    setRecord(Math.min(selected + 1, nItems - 1));
+  });
+  useHotkeys("right", (e) => {
+    e.preventDefault();
+    setRecord(Math.min(selected + perPage, nItems - 1));
+  });
+  useHotkeys("pagedown", (e) => {
+    e.preventDefault();
+    setRecord(Math.min(selected + perPage * 10, nItems - 1));
+  });
+  useHotkeys("end", (e) => {
+    e.preventDefault();
+    setRecord(nItems - 1);
+  });
+
+  useHotkeys("esc", (e) => {
+    e.preventDefault();
+    CancleContexts();
+  });
+  useHotkeys("mod+r", (e) => {
+    e.preventDefault();
+    Reload(address).then(() => {});
+  });
+
+  useHotkeys(
+    "enter",
+    (e) => {
+      e.preventDefault();
+      onEnter({
+        selected,
+        getOffset,
+      });
+    },
+    [onEnter, selected, pageNumber, perPage]
+  );
+
+  if (nItems < 0) {
+    return EmptyPager;
+  } else {
+    return {
+      name: route,
+      selected,
+      perPage,
+      nItems,
+      pageNumber,
+      lastPage,
+      setRecord,
+      setPage,
+      getOffset,
+    };
+  }
 }

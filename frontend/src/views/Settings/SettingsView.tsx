@@ -1,18 +1,28 @@
-import React from "react";
-import { Stack, Title, Checkbox, InputLabel } from "@mantine/core";
-import classes from "@/App.module.css";
-import { View, ViewStatus } from "@components";
+import { useState, useEffect } from "react";
+import { Checkbox, InputLabel } from "@mantine/core";
+import { View } from "@components";
+import { GetSession } from "@gocode/app/App";
+import { config } from "@gocode/models";
+import { useAppState, ViewStateProvider } from "@state";
 
 export function SettingsView() {
+  const [session, setSession] = useState<config.Session | null>(null);
+  const { status } = useAppState();
+
+  useEffect(() => {
+    GetSession().then((s) => setSession(s));
+  }, []);
+
   return (
-    <View>
-      <Title order={3}>Settings View Header</Title>
-      <Stack className={classes.mainContent}>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    <ViewStateProvider route="settings" fetchFn={(_unused1: number, _unused2: number) => {}}>
+      <View>
         <InputLabel>
           <Checkbox label={"A checkbox"} />
+          <pre>{JSON.stringify(session, null, 2)}</pre>
+          <pre>{status ? JSON.stringify(status, null, 2) : ""}</pre>
         </InputLabel>
-      </Stack>
-      <ViewStatus />
-    </View>
+      </View>
+    </ViewStateProvider>
   );
 }

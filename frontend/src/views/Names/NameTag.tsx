@@ -1,25 +1,46 @@
-import React, { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Badge } from "@mantine/core";
-import { app } from "@gocode/models";
+import { types } from "@gocode/models";
 
-export const NameTags = ({ name }: { name: app.NameEx }) => {
-  const [tags, setTags] = React.useState<ReactNode>([]);
+export const NameTags = ({ name }: { name: types.Name }) => {
+  const [tags, setTags] = useState<ReactNode>([]);
 
   useEffect(() => {
-    var types: ReactNode[] = [];
-    if (name.type & 2) {
-      types.push(<Badge color="blue">Reg</Badge>);
+    // TODO: Can't figure out how to get this in the frontend
+    // REGULAR = 2,
+    // CUSTOM = 4,
+    // PREFUND = 8,
+    // BADDRESS = 16,
+    const types: ReactNode[] = [];
+    if (name.parts && name.parts & 2 /* REGULAR */) {
+      types.push(
+        <Badge key="regular" size="xs" color="blue">
+          R
+        </Badge>
+      );
     }
-    if (name.type & 4) {
-      types.push(<Badge color="yellow">Cus</Badge>);
+    if (name.parts && name.parts & 4 /* CUSTOM */) {
+      types.push(
+        <Badge key="custom" size="xs" color="yellow">
+          C
+        </Badge>
+      );
     }
-    if (name.type & 8) {
-      types.push(<Badge color="green">Pre</Badge>);
+    if (name.parts && name.parts & 8 /* PREFUND */) {
+      types.push(
+        <Badge key="prefund" size="xs" color="green">
+          P
+        </Badge>
+      );
     }
-    if (name.type & 16) {
-      types.push(<Badge color="pink">Bad</Badge>);
+    if (name.parts && name.parts & 16 /* BADDRESS */) {
+      types.push(
+        <Badge key="baddress" size="xs" color="pink">
+          B
+        </Badge>
+      );
     }
-    setTags(<div>{types.map((tag) => tag)}</div>);
+    setTags(<div>{types}</div>);
   }, [name]);
 
   return <div>{tags}</div>;

@@ -1,0 +1,27 @@
+.paginator {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.root {
+  background-color: white !important;
+  color: black !important;
+}
+
+.control {
+  background-color: white !important;
+  border-color: white !important;
+  color: black !important;
+}
+
+.control[data-active] {
+  font-weight: bold;
+  color: black !important;
+  font-size: 1.1rem;
+}
+
+.control:hover {
+  font-weight: bold;
+  color: darkolivegreen !important;
+}

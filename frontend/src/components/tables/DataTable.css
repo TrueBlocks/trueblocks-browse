@@ -1,0 +1,65 @@
+th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.small {
+  width: 2rem;
+  max-width: 2rem;
+  min-width: 2rem;
+}
+
+.medium {
+  width: 6rem;
+  max-width: 6rem;
+  min-width: 6rem;
+}
+
+.large {
+  width: 12rem;
+  max-width: 12rem;
+  min-width: 12rem;
+}
+
+.wide {
+  width: 18rem;
+  max-width: 18rem;
+  min-width: 18rem;
+}
+
+.cell {
+  /* border: 1px solid #ddd; */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+}
+
+.right {
+  text-align: right;
+}
+
+.center {
+  text-align: center;
+}
+
+.selected-row {
+  background-color: lightblue !important;
+  border: 1px solid darkblue !important;
+}
+
+/*
+tr:hover {
+  background-color: #ffffe0; /* Light yellow
+}
+*/
+
+.bumper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0px;
+  margin-top: -1rem;
+  z-index: 1000;
+  background-color: #f0f0f0;
+}

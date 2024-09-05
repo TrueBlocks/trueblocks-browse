@@ -1,51 +1,72 @@
-import React, { ReactNode, useState, useEffect } from "react";
-import classes from "./ViewStatus.module.css";
-import { EventsOn, EventsOff } from "@runtime";
+import { useState, useEffect } from "react";
 import { Text } from "@mantine/core";
-import { MessageType } from "@gocode/app/App";
-
-// TODO: Why is this not availabe in the Wails folders?
-type Progress = {
-  address: string;
-  have: number;
-  want: number;
-};
+import { messages } from "@gocode/models";
+import { EventsOn, EventsOff } from "@runtime";
+import classes from "./ViewStatus.module.css";
 
 export function ViewStatus() {
   const [statusMessage, setStatusMessage] = useState<string>("");
   const [color, setColor] = useState<string>(classes.green);
 
   useEffect(() => {
-    const handleDone = () => {
-      setStatusMessage("done");
+    const handleDocument = (msg: messages.DocumentMsg) => {
+      setStatusMessage(`${msg.msg} ${msg.filename}`);
       setColor(classes.green);
     };
 
-    const handleProgress = (p: Progress) => {
-      setStatusMessage(`Progress (${p.address}): ${p.have}/${p.want}`);
+    const handleProgress = (msg: messages.ProgressMsg) => {
+      setStatusMessage(`Progress (${msg.address}): ${msg.have}/${msg.want}`);
       setColor(classes.green);
     };
 
-    const handleWarning = (warnStr: string) => {
-      setStatusMessage(`Warning: ${warnStr}`);
+    const handleCompleted = (msg: messages.ProgressMsg) => {
+      setStatusMessage(`Completed (${msg.address}): ${msg.have}/${msg.want}`);
+      setColor(classes.green);
+      setTimeout(() => {
+        setStatusMessage("");
+      }, 1000); // 1000ms = 1 second
+    };
+
+    const handleCancel = (msg: messages.ProgressMsg) => {
+      setStatusMessage(`Canceled (${msg.address})`);
+      setColor(classes.green);
+      setTimeout(() => {
+        setStatusMessage("");
+      }, 1000); // 1000ms = 1 second
+    };
+
+    const handleWarning = (msg: messages.ErrorMsg) => {
+      setStatusMessage(`Warning: ${msg.errStr} ${msg.address}`);
       setColor(classes.yellow);
     };
 
-    const handleError = (errorStr: string) => {
-      setStatusMessage(`Error: ${errorStr}`);
+    const handleError = (msg: messages.ErrorMsg) => {
+      setStatusMessage(`Error: ${msg.errStr} ${msg.address}`);
       setColor(classes.red);
     };
 
-    EventsOn("Completed", handleDone);
-    EventsOn("Progress", handleProgress);
-    EventsOn("Warning", handleWarning);
-    EventsOn("Error", handleError);
+    const handleInfo = (msg: messages.InfoMsg) => {
+      setStatusMessage(`Info: ${msg.message}`);
+      setColor(classes.blue);
+    };
+
+    const { Message } = messages;
+    EventsOn(Message.DOCUMENT, handleDocument);
+    EventsOn(Message.PROGRESS, handleProgress);
+    EventsOn(Message.COMPLETED, handleCompleted);
+    EventsOn(Message.CANCELLED, handleCancel);
+    EventsOn(Message.WARNING, handleWarning);
+    EventsOn(Message.ERROR, handleError);
+    EventsOn(Message.INFO, handleInfo);
 
     return () => {
-      EventsOff("Completed");
-      EventsOff("Progress");
-      EventsOff("Warning");
-      EventsOff("Error");
+      EventsOff(Message.DOCUMENT);
+      EventsOff(Message.PROGRESS);
+      EventsOff(Message.COMPLETED);
+      EventsOff(Message.CANCELLED);
+      EventsOff(Message.WARNING);
+      EventsOff(Message.ERROR);
+      EventsOff(Message.INFO);
     };
   }, []);
 

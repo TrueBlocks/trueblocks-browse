@@ -1,28 +1,29 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Route, Switch, useLocation } from "wouter";
-import classes from "@/App.module.css";
-import { HomeView, NamesView, SettingsView } from "@views";
+import { routeItems, RouteItem } from "@/Routes";
 import { GetLast } from "@gocode/app/App";
+import { useAppState } from "@state";
+import classes from "@/App.module.css";
 
 export const Routes = () => {
   const [, setLocation] = useLocation();
+  const { isConfigured } = useAppState();
 
   useEffect(() => {
-    const lastRoute = (GetLast("route") || "/").then((route) => {
+    (GetLast("route") || "/").then((route) => {
       setLocation(route);
     });
   }, [setLocation]);
 
-  var menuItems = [
-    { route: "/names", component: NamesView },
-    { route: "/settings", component: SettingsView },
-    { route: "/", component: HomeView },
-  ];
+  // item.route !== "/wizard"
+  const routes = routeItems
+    .filter((item: RouteItem) => (isConfigured ? true : item.route === "/wizard"))
+    .sort((a, b) => a.order - b.order);
 
   return (
     <div className={classes.mainContent}>
       <Switch>
-        {menuItems.map((item) => (
+        {routes.map((item) => (
           <Route key={item.route} path={item.route}>
             <item.component />
           </Route>
@@ -31,4 +32,3 @@ export const Routes = () => {
     </div>
   );
 };
-

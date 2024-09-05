@@ -1,8 +1,14 @@
 {
     "scripts": {
-        "dev": "wails dev --debounce 2000"
+        "dev": "wails dev --debounce 2000",
+        "start": "wails dev --debounce 2000"
     },
-    "name": "trueblocks-browse",
+    "name": "trueblocks-miniDapp",
     "version": "1.0.0",
-    "license": "GPL-3.0"
+    "license": "GPL-3.0",
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^8.0.1",
+        "@typescript-eslint/parser": "^8.0.1",
+        "eslint-plugin-import": "^2.29.1"
+    }
 }

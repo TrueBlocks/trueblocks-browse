@@ -1,0 +1,53 @@
+/* Used for debugging only */
+
+.brown {
+  background-color: brown;
+  color: yellow !important;
+}
+
+.red {
+  background-color: red;
+  color: floralwhite !important;
+}
+
+.green {
+  background-color: green;
+  color: yellow !important;
+}
+
+.blue {
+  background-color: blue;
+  color: white !important;
+}
+
+.purple {
+  background-color: purple;
+  color: white !important;
+}
+
+.black {
+  background-color: black !important;
+  color: white !important;
+}
+
+.pink {
+  background-color: pink;
+  color: black !important;
+}
+
+.orange {
+  background-color: orange;
+  color: black !important;
+}
+
+.lightblue {
+  background-color: powderblue;
+  color: black !important;
+}
+
+.bold {
+  background-color: #f5f5f5; /* Light yellow */
+  border: 1px solid #ddd;
+  font-size: 1.1em !important;
+  font-weight: bold !important;
+}
