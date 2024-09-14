@@ -6,14 +6,14 @@ export const AppearanceFormatter = ({ value, value2, className, size = "md" }: O
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   const copyHash = useCallback(() => {
-    ClipboardSetText(value2).then(() => {
+    ClipboardSetText(String(value2)).then(() => {
       setPopupOpen(false);
     });
   }, [value2]);
 
   const appPopup = (
     <AppearancePopup
-      hash={value2}
+      hash={String(value2)}
       onSubmit={() => setPopupOpen(false)}
       onClose={() => setPopupOpen(false)}
       onCopy={() => copyHash}

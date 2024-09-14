@@ -10,7 +10,7 @@ import {
   EdMode,
 } from "@components";
 import { base } from "@gocode/models";
-import { useDateTime, useToEther, useToGas } from "@hooks";
+import { useAppState } from "@state";
 import { GetDebugColor } from ".";
 
 export type knownType =
@@ -42,15 +42,19 @@ export type knownType =
 export type FormatterProps = {
   type: knownType;
   value: any;
-  value2?: any;
+  value2?: boolean | base.Hash | base.Address | string | undefined;
   className?: string;
   size?: TextProps["size"];
 };
 
 export const Formatter = ({ type, value, value2, className, size = "md" }: FormatterProps) => {
+  const { address } = useAppState();
+
+  const cn = GetDebugColor(type) || className;
   const n = value as number;
   const bi = value as bigint;
-  const cn = GetDebugColor(type) || className;
+  const bool = value2 as boolean;
+  const from = value2 as unknown as base.Address;
 
   switch (type) {
     case "boolean":
@@ -62,13 +66,13 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
     case "tag":
       return <TagFormatter value={value} size={size} className={cn} />;
     case "gas":
-      value = useToGas(bi, value2 as base.Address);
+      value = from !== address ? "-" : formatEther(bi);
       break;
     case "ether":
-      value = useToEther(bi);
+      value = bool ? "" : formatEther(bi);
       break;
     case "timestamp":
-      value = useDateTime(n);
+      value = formatDateTime(n);
       break;
     case "date":
       value = value?.replace("T", " ");
@@ -95,7 +99,7 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
     case "url":
       break;
     case "crud":
-      return <CrudButton size="xs" value={value} isDeleted={value2} />;
+      return <CrudButton size="xs" value={value} isDeleted={bool} />;
     case "address-editor":
       return (
         <AddressFormatter type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.All} />
@@ -137,4 +141,40 @@ const formatBytes = (bytes: number): string => {
     maximumFractionDigits: 1,
   });
   return `${formattedValue} ${sizes[i]}`;
+};
+
+const formatEther = (value: bigint | string) => {
+  // from https://viem.sh/docs/utilities/formatUnits
+  if (typeof value === "string" && value.includes(".")) {
+    return value;
+  }
+  if (!value) return "-";
+
+  let display = value.toString();
+  const negative = display.startsWith("-");
+  if (negative) display = display.slice(1);
+  display = display.padStart(18, "0");
+
+  const integer = display.slice(0, display.length - 18);
+  let fraction = display.slice(display.length - 18);
+  fraction = fraction.slice(0, 5).padEnd(5, "0");
+
+  const v = `${negative ? "-" : ""}${integer || "0"}.${fraction}`;
+  // return display === "000000000000000000" ? "-" : v + " --- " + display;
+  if (v === "0.00000") return "-";
+  return v;
+};
+
+const formatDateTime = (timestamp: number): string => {
+  const date = new Date(timestamp * 1000); // Convert timestamp from seconds to milliseconds
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  const formatted = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  return formatted;
 };

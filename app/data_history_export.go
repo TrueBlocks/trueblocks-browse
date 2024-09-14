@@ -17,9 +17,9 @@ func (a *App) ExportToCsv(addr string) {
 		return
 	}
 
-	historyMutex.Lock()
+	historyMutex.RLock()
 	_, exists := a.historyMap[address]
-	historyMutex.Unlock()
+	historyMutex.RUnlock()
 
 	if exists {
 		fn := fmt.Sprintf("history_%s.csv", address)
@@ -39,7 +39,7 @@ func (a *App) ExportToCsv(addr string) {
 			"Nonce",
 			"Input",
 			"TransactionType"))
-		historyMutex.Lock()
+		historyMutex.RLock()
 		for _, item := range a.historyMap[address].Items {
 			lines = append(lines, fmt.Sprintf("%d,%s,%d,%s,%s,%s,%d,%d,%d,%d,%d,%d,%s,%s",
 				item.BlockNumber,
@@ -57,7 +57,7 @@ func (a *App) ExportToCsv(addr string) {
 				item.Input,
 				item.TransactionType))
 		}
-		historyMutex.Unlock()
+		historyMutex.RUnlock()
 		file.StringToAsciiFile(fn, strings.Join(lines, "\n")+"\n")
 		utils.System(fmt.Sprintf("open %s", fn))
 	}
