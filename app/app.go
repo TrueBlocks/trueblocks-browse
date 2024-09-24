@@ -16,6 +16,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 	"github.com/joho/godotenv"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -37,6 +38,7 @@ type App struct {
 	historyMap map[base.Address]types.HistoryContainer
 	balanceMap sync.Map
 	meta       coreTypes.MetaData
+	globals    sdk.Globals
 
 	// Summaries
 	abis              types.AbiContainer
@@ -59,6 +61,9 @@ func NewApp() *App {
 		ensMap:     make(map[string]base.Address),
 		historyMap: make(map[base.Address]types.HistoryContainer),
 		Documents:  make([]types.Document, 10),
+	}
+	a.globals = sdk.Globals{
+		Chain: "mainnet",
 	}
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)

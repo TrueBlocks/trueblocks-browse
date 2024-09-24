@@ -32,6 +32,7 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 	opts := sdk.ChunksOptions{
 		Globals: sdk.Globals{
 			Verbose: true,
+			Chain:   a.globals.Chain,
 		},
 	}
 	if manifests, meta, err := opts.ChunksManifest(); err != nil {

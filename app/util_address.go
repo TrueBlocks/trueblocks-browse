@@ -31,7 +31,8 @@ func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
 
 	// Try to get an ENS or return the same input
 	opts := sdk.NamesOptions{
-		Terms: []string{addr},
+		Terms:   []string{addr},
+		Globals: a.globals,
 	}
 	if names, meta, err := opts.Names(); err != nil {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err))
