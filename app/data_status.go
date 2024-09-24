@@ -38,7 +38,9 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	logger.SetLoggerWriter(io.Discard)
 	defer logger.SetLoggerWriter(w)
 
-	opts := sdk.StatusOptions{}
+	opts := sdk.StatusOptions{
+		Globals: a.globals,
+	}
 	if statusArray, meta, err := opts.StatusAll(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

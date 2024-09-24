@@ -33,6 +33,7 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 	opts := sdk.ChunksOptions{
 		Globals: sdk.Globals{
 			Verbose: true,
+			Chain:   a.globals.Chain,
 		},
 	}
 	if chunks, meta, err := opts.ChunksStats(); err != nil {

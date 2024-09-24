@@ -30,7 +30,9 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
-	opts := sdk.AbisOptions{}
+	opts := sdk.AbisOptions{
+		Globals: a.globals,
+	}
 	if count, meta, err := opts.AbisCount(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

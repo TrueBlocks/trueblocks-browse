@@ -66,6 +66,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 			Globals: sdk.Globals{
 				Cache: true,
 				Ether: true,
+				Chain: a.globals.Chain,
 			},
 		}
 
@@ -165,7 +166,8 @@ func (a *App) getHistoryCnt(addr string) int {
 	}
 
 	opts := sdk.ListOptions{
-		Addrs: []string{addr},
+		Addrs:   []string{addr},
+		Globals: a.globals,
 	}
 	appearances, meta, err := opts.ListCount()
 	if err != nil {
