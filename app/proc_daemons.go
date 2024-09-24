@@ -33,11 +33,11 @@ func (a *App) ToggleDaemon(name string) error {
 		return err
 	case "scraper":
 		err := a.ScraperController.Toggle()
-		a.SetLastDaemon("daemon-scraper", a.FreshenController.State == daemons.Running)
+		a.SetLastDaemon("daemon-scraper", a.ScraperController.State == daemons.Running)
 		return err
 	case "ipfs":
 		err := a.IpfsController.Toggle()
-		a.SetLastDaemon("daemon-ipfs", a.FreshenController.State == daemons.Running)
+		a.SetLastDaemon("daemon-ipfs", a.IpfsController.State == daemons.Running)
 		return err
 	default:
 		return fmt.Errorf("daemon %s not found in ToggleDaemon", name)
