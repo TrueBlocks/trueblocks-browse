@@ -23,7 +23,7 @@ type Daemoner interface {
 	IsRunning() bool
 	String() string
 	GetState() State
-	// Toggle() error
+	Toggle() error
 }
 
 type Daemon struct {

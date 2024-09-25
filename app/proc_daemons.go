@@ -21,21 +21,14 @@ func (a *App) GetDaemonJson(name string) string {
 }
 
 func (a *App) ToggleDaemon(name string) error {
-	switch name {
-	case "freshen":
-		err := a.FreshenController.Toggle()
-		a.SetLastDaemon("daemon-freshen", a.FreshenController.IsRunning())
-		return err
-	case "scraper":
-		err := a.ScraperController.Toggle()
-		a.SetLastDaemon("daemon-scraper", a.ScraperController.IsRunning())
-		return err
-	case "ipfs":
-		err := a.IpfsController.Toggle()
-		a.SetLastDaemon("daemon-ipfs", a.IpfsController.IsRunning())
-		return err
-	default:
-		return fmt.Errorf("daemon %s not found in ToggleDaemon", name)
+	if s := a.getDaemon(name); s == nil {
+		return fmt.Errorf("could not find daemon %s", name)
+	} else {
+		if err := s.Toggle(); err != nil {
+			return err
+		}
+		a.SetLastDaemon("daemon-"+name, s.IsRunning())
+		return nil
 	}
 }
 

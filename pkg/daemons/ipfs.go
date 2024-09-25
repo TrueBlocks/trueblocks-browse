@@ -48,6 +48,10 @@ func (s *DaemonIpfs) Pause() error {
 	return s.Daemon.Pause()
 }
 
+func (s *DaemonIpfs) Toggle() error {
+	return s.Daemon.Toggle()
+}
+
 func (s *DaemonIpfs) Tick(msg ...string) int {
 	return s.Daemon.Tick(msg...)
 }

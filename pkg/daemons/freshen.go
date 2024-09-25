@@ -47,6 +47,10 @@ func (s *DaemonFreshen) Pause() error {
 	return s.Daemon.Pause()
 }
 
+func (s *DaemonFreshen) Toggle() error {
+	return s.Daemon.Toggle()
+}
+
 func (s *DaemonFreshen) Tick(msg ...string) int {
 	go s.freshener.Refresh()
 	s.Ticks++

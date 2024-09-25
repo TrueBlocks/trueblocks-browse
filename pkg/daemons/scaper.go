@@ -61,6 +61,10 @@ func (s *DaemonScraper) Pause() error {
 	return s.Daemon.Pause()
 }
 
+func (s *DaemonScraper) Toggle() error {
+	return s.Daemon.Toggle()
+}
+
 func (s *DaemonScraper) Tick(msg ...string) int {
 	go s.freshener.Refresh()
 	s.Ticks++
