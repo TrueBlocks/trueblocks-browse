@@ -1,6 +1,7 @@
 package daemons
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -20,25 +21,46 @@ func NewFreshen(freshener Freshener, name string, sleep time.Duration, start boo
 			Name:      name,
 			Sleep:     sleep,
 			Color:     "blue",
-			State:     state,
 			Started:   time.Now(),
+			State:     state,
 			freshener: freshener,
 		},
 	}
 }
 
+func (s *DaemonFreshen) String() string {
+	bytes, _ := json.Marshal(s.Daemon)
+	return string(bytes)
+}
+
 func (s *DaemonFreshen) Run() {
 	logger.Info("Starting fresheners...")
 	for {
-		if s.Daemon.State == Running {
+		if s.IsRunning() {
 			s.Tick("Freshen")
 		}
 		time.Sleep(s.Sleep * time.Millisecond)
 	}
 }
 
+func (s *DaemonFreshen) Pause() error {
+	return s.Daemon.Pause()
+}
+
+func (s *DaemonFreshen) Toggle() error {
+	return s.Daemon.Toggle()
+}
+
 func (s *DaemonFreshen) Tick(msg ...string) int {
 	go s.freshener.Refresh()
 	s.Ticks++
 	return s.Ticks // we don't use the Daemon's Tick since Freshen notifies if it runs
+}
+
+func (s *DaemonFreshen) IsRunning() bool {
+	return s.Daemon.IsRunning()
+}
+
+func (s *DaemonFreshen) GetState() State {
+	return s.Daemon.GetState()
 }

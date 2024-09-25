@@ -5,7 +5,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -28,7 +27,7 @@ func (a *App) Refresh(which ...string) {
 	}
 	defer freshenLock.CompareAndSwap(1, 0)
 
-	if a.ScraperController.State != daemons.Running {
+	if !a.ScraperController.IsRunning() {
 		logger.Info(colors.Green, "Freshening...", colors.Off)
 	}
 
