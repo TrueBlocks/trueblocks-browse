@@ -45,11 +45,11 @@ func (a *App) ToggleDaemon(name string) error {
 }
 
 func (a *App) StateToString(name string) string {
-	s := a.GetDaemon(name)
-	if s == nil {
+	if s := a.GetDaemon(name); s == nil {
 		return "Daemon not found"
+	} else {
+		return s.StateToString()
 	}
-	return s.StateToString()
 }
 
 func (a *App) Instance(name string) daemons.Daemon {

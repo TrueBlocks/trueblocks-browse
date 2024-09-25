@@ -80,5 +80,5 @@ type Daemoner interface {
 	Pause() error
 	Tick(msg ...string) int
 	IsRunning() bool
-	Toggle() error
+	// Toggle() error
 }
