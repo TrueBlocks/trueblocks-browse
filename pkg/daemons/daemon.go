@@ -2,6 +2,7 @@ package daemons
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -14,29 +15,48 @@ type Freshener interface {
 	GetContext() context.Context
 }
 
+type Daemoner interface {
+	Run()
+	Stop() error
+	Pause() error
+	Tick(msg ...string) int
+	IsRunning() bool
+	String() string
+	// Toggle() error
+}
+
 type Daemon struct {
 	Name      string        `json:"name"`
 	Sleep     time.Duration `json:"sleep"`
 	Color     string        `json:"color"`
 	Started   time.Time     `json:"started"`
 	Ticks     int           `json:"ticks"`
-	state     State
+	State     State         `json:"state"`
 	freshener Freshener
 }
 
+func (s *Daemon) String() string {
+	bytes, _ := json.Marshal(s)
+	return string(bytes)
+}
+
+func (s *Daemon) Instance() *Daemon {
+	return &Daemon{}
+}
+
 func (s *Daemon) Run() {
-	s.state = Running
+	s.State = Running
 	s.Tick("Run")
 }
 
 func (s *Daemon) Stop() error {
-	s.state = Stopped
+	s.State = Stopped
 	s.Tick("Stopped")
 	return nil
 }
 
 func (s *Daemon) Pause() error {
-	s.state = Paused
+	s.State = Paused
 	s.Tick("Paused")
 	return nil
 }
@@ -67,18 +87,9 @@ func (s *Daemon) Tick(msg ...string) int {
 }
 
 func (s *Daemon) IsRunning() bool {
-	return s.state == Running
+	return s.State == Running
 }
 
 func (s *Daemon) StateToString() string {
-	return s.state.String()
-}
-
-type Daemoner interface {
-	Run()
-	Stop() error
-	Pause() error
-	Tick(msg ...string) int
-	IsRunning() bool
-	// Toggle() error
+	return s.State.String()
 }

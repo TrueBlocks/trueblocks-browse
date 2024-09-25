@@ -110,6 +110,7 @@ export namespace daemons {
 	    // Go type: time
 	    started: any;
 	    ticks: number;
+	    state: State;
 	
 	    static createFrom(source: any = {}) {
 	        return new Daemon(source);
@@ -122,6 +123,7 @@ export namespace daemons {
 	        this.color = source["color"];
 	        this.started = this.convertValues(source["started"], null);
 	        this.ticks = source["ticks"];
+	        this.state = source["state"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

@@ -12,17 +12,12 @@ func (a *App) startDaemons() {
 	go a.IpfsController.Run()
 }
 
-func (a *App) GetDaemon(name string) *daemons.Daemon {
-	switch name {
-	case "freshen":
-		return &a.FreshenController.Daemon
-	case "scraper":
-		return &a.ScraperController.Daemon
-	case "ipfs":
-		return &a.IpfsController.Daemon
-	default:
-		return nil
+func (a *App) GetDaemonJson(name string) string {
+	d := a.getDaemon(name)
+	if d == nil {
+		return "{}"
 	}
+	return d.String()
 }
 
 func (a *App) ToggleDaemon(name string) error {
@@ -45,13 +40,26 @@ func (a *App) ToggleDaemon(name string) error {
 }
 
 func (a *App) StateToString(name string) string {
-	if s := a.GetDaemon(name); s == nil {
+	if s := a.getDaemon(name); s == nil {
 		return "Daemon not found"
 	} else {
 		return s.StateToString()
 	}
 }
 
-func (a *App) Instance(name string) daemons.Daemon {
-	return daemons.Daemon{}
+func (a *App) DaemonInstance() *daemons.Daemon {
+	return &daemons.Daemon{}
+}
+
+func (a *App) getDaemon(name string) *daemons.Daemon {
+	switch name {
+	case "freshen":
+		return &a.FreshenController.Daemon
+	case "scraper":
+		return &a.ScraperController.Daemon
+	case "ipfs":
+		return &a.IpfsController.Daemon
+	default:
+		return nil
+	}
 }

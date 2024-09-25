@@ -1,6 +1,7 @@
 package daemons
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -22,10 +23,15 @@ func NewScraper(freshener Freshener, name string, sleep time.Duration, start boo
 			Sleep:     sleep,
 			Color:     "yellow",
 			Started:   time.Now(),
-			state:     state,
+			State:     state,
 			freshener: freshener,
 		},
 	}
+}
+
+func (s *DaemonScraper) String() string {
+	bytes, _ := json.Marshal(s.Daemon)
+	return string(bytes)
 }
 
 func (s *DaemonScraper) Run() {

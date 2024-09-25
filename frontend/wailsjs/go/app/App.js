@@ -22,6 +22,10 @@ export function ConvertToAddress(arg1) {
   return window['go']['app']['App']['ConvertToAddress'](arg1);
 }
 
+export function DaemonInstance() {
+  return window['go']['app']['App']['DaemonInstance']();
+}
+
 export function ExportToCsv(arg1) {
   return window['go']['app']['App']['ExportToCsv'](arg1);
 }
@@ -50,8 +54,8 @@ export function GetContext() {
   return window['go']['app']['App']['GetContext']();
 }
 
-export function GetDaemon(arg1) {
-  return window['go']['app']['App']['GetDaemon'](arg1);
+export function GetDaemonJson(arg1) {
+  return window['go']['app']['App']['GetDaemonJson'](arg1);
 }
 
 export function GetDalle() {
@@ -104,10 +108,6 @@ export function HistoryPage(arg1, arg2, arg3) {
 
 export function IndexPage(arg1, arg2) {
   return window['go']['app']['App']['IndexPage'](arg1, arg2);
-}
-
-export function Instance(arg1) {
-  return window['go']['app']['App']['Instance'](arg1);
 }
 
 export function ManifestPage(arg1, arg2) {
