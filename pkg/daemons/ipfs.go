@@ -21,7 +21,7 @@ func NewIpfs(freshener Freshener, name string, sleep time.Duration, start bool) 
 			Sleep:     sleep,
 			Color:     "red",
 			Started:   time.Now(),
-			State:     state,
+			state:     state,
 			freshener: freshener,
 		},
 	}

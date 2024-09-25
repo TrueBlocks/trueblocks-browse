@@ -110,7 +110,6 @@ export namespace daemons {
 	    // Go type: time
 	    started: any;
 	    ticks: number;
-	    state: State;
 	
 	    static createFrom(source: any = {}) {
 	        return new Daemon(source);
@@ -123,7 +122,6 @@ export namespace daemons {
 	        this.color = source["color"];
 	        this.started = this.convertValues(source["started"], null);
 	        this.ticks = source["ticks"];
-	        this.state = source["state"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1693,12 +1691,6 @@ export namespace types {
 
 export namespace wizard {
 	
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
-	}
 	export enum State {
 	    NOTOKAY = "notOkay",
 	    TOMLOKAY = "tomlOkay",
@@ -1706,6 +1698,12 @@ export namespace wizard {
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
 	    OKAY = "okay",
+	}
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
 	}
 	export class Wizard {
 	    state: State;

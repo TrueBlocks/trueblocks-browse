@@ -14,6 +14,10 @@ export function Run() {
   return window['go']['daemons']['Daemon']['Run']();
 }
 
+export function StateToString() {
+  return window['go']['daemons']['Daemon']['StateToString']();
+}
+
 export function Stop() {
   return window['go']['daemons']['Daemon']['Stop']();
 }

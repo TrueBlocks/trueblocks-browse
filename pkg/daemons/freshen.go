@@ -21,7 +21,7 @@ func NewFreshen(freshener Freshener, name string, sleep time.Duration, start boo
 			Sleep:     sleep,
 			Color:     "blue",
 			Started:   time.Now(),
-			State:     state,
+			state:     state,
 			freshener: freshener,
 		},
 	}

@@ -53,7 +53,7 @@ export function DaemonsView() {
     return () => {
       EventsOff(Message.DAEMON);
     };
-  }, []);
+  });
 
   const toggleDaemon = (name: string) => {
     ToggleDaemon(name);

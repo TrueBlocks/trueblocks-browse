@@ -7,6 +7,8 @@ export function Pause():Promise<void>;
 
 export function Run():Promise<void>;
 
+export function StateToString():Promise<string>;
+
 export function Stop():Promise<void>;
 
 export function Tick(arg1:Array<string>):Promise<number>;

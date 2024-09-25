@@ -20,29 +20,29 @@ type Daemon struct {
 	Color     string        `json:"color"`
 	Started   time.Time     `json:"started"`
 	Ticks     int           `json:"ticks"`
-	State     State         `json:"state"`
+	state     State
 	freshener Freshener
 }
 
 func (s *Daemon) Run() {
-	s.State = Running
+	s.state = Running
 	s.Tick("Run")
 }
 
 func (s *Daemon) Stop() error {
-	s.State = Stopped
+	s.state = Stopped
 	s.Tick("Stopped")
 	return nil
 }
 
 func (s *Daemon) Pause() error {
-	s.State = Paused
+	s.state = Paused
 	s.Tick("Paused")
 	return nil
 }
 
 func (s *Daemon) Toggle() error {
-	if s.State == Running {
+	if s.IsRunning() {
 		return s.Pause()
 	}
 	s.Run()
@@ -67,7 +67,11 @@ func (s *Daemon) Tick(msg ...string) int {
 }
 
 func (s *Daemon) IsRunning() bool {
-	return s.State == Running
+	return s.state == Running
+}
+
+func (s *Daemon) StateToString() string {
+	return s.state.String()
 }
 
 type Daemoner interface {

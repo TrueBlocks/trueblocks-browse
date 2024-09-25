@@ -22,7 +22,7 @@ func NewScraper(freshener Freshener, name string, sleep time.Duration, start boo
 			Sleep:     sleep,
 			Color:     "yellow",
 			Started:   time.Now(),
-			State:     state,
+			state:     state,
 			freshener: freshener,
 		},
 	}
