@@ -22,6 +22,7 @@ type Daemoner interface {
 	Tick(msg ...string) int
 	IsRunning() bool
 	String() string
+	GetState() State
 	// Toggle() error
 }
 
@@ -90,6 +91,6 @@ func (s *Daemon) IsRunning() bool {
 	return s.State == Running
 }
 
-func (s *Daemon) StateToString() string {
-	return s.State.String()
+func (s *Daemon) GetState() State {
+	return s.State
 }

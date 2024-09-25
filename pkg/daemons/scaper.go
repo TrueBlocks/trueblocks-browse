@@ -70,3 +70,7 @@ func (s *DaemonScraper) Tick(msg ...string) int {
 func (s *DaemonScraper) IsRunning() bool {
 	return s.Daemon.IsRunning()
 }
+
+func (s *DaemonScraper) GetState() State {
+	return s.Daemon.GetState()
+}

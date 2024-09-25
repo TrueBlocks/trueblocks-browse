@@ -56,3 +56,7 @@ func (s *DaemonFreshen) Tick(msg ...string) int {
 func (s *DaemonFreshen) IsRunning() bool {
 	return s.Daemon.IsRunning()
 }
+
+func (s *DaemonFreshen) GetState() State {
+	return s.Daemon.GetState()
+}

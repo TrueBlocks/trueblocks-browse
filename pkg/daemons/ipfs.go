@@ -55,3 +55,7 @@ func (s *DaemonIpfs) Tick(msg ...string) int {
 func (s *DaemonIpfs) IsRunning() bool {
 	return s.Daemon.IsRunning()
 }
+
+func (s *DaemonIpfs) GetState() State {
+	return s.Daemon.GetState()
+}

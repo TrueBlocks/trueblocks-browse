@@ -40,15 +40,24 @@ func (a *App) ToggleDaemon(name string) error {
 }
 
 func (a *App) StateToString(name string) string {
-	if s := a.getDaemon(name); s == nil {
+	if s := a.getDaemon2(name); s == nil {
 		return "Daemon not found"
 	} else {
-		return s.StateToString()
+		return s.GetState().String()
 	}
 }
 
-func (a *App) DaemonInstance() *daemons.Daemon {
-	return &daemons.Daemon{}
+func (a *App) getDaemon2(name string) daemons.Daemoner {
+	switch name {
+	case "freshen":
+		return a.FreshenController
+	case "scraper":
+		return a.ScraperController
+	case "ipfs":
+		return a.IpfsController
+	default:
+		return nil
+	}
 }
 
 func (a *App) getDaemon(name string) *daemons.Daemon {
