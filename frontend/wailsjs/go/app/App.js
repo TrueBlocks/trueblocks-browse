@@ -106,6 +106,10 @@ export function IndexPage(arg1, arg2) {
   return window['go']['app']['App']['IndexPage'](arg1, arg2);
 }
 
+export function Instance(arg1) {
+  return window['go']['app']['App']['Instance'](arg1);
+}
+
 export function ManifestPage(arg1, arg2) {
   return window['go']['app']['App']['ManifestPage'](arg1, arg2);
 }

@@ -21,8 +21,8 @@ func NewScraper(freshener Freshener, name string, sleep time.Duration, start boo
 			Name:      name,
 			Sleep:     sleep,
 			Color:     "yellow",
-			State:     state,
 			Started:   time.Now(),
+			State:     state,
 			freshener: freshener,
 		},
 	}
@@ -32,7 +32,7 @@ func (s *DaemonScraper) Run() {
 	logger.Info("Starting scraper...")
 
 	for {
-		if s.Daemon.State == Running {
+		if s.IsRunning() {
 			opts := sdk.ScrapeOptions{
 				BlockCnt: 500,
 			}
@@ -51,8 +51,16 @@ func (s *DaemonScraper) Run() {
 	}
 }
 
+func (s *DaemonScraper) Pause() error {
+	return s.Daemon.Pause()
+}
+
 func (s *DaemonScraper) Tick(msg ...string) int {
 	go s.freshener.Refresh()
 	s.Ticks++
 	return s.Ticks // we don't use the Daemon's Tick since Freshen notifies if it runs
+}
+
+func (s *DaemonScraper) IsRunning() bool {
+	return s.Daemon.IsRunning()
 }

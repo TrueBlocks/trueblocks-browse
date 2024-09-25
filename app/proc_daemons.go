@@ -51,3 +51,7 @@ func (a *App) StateToString(name string) string {
 	}
 	return s.State.String()
 }
+
+func (a *App) Instance(name string) daemons.Daemon {
+	return daemons.Daemon{}
+}

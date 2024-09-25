@@ -24,10 +24,9 @@ type Daemon struct {
 	freshener Freshener
 }
 
-func (s *Daemon) Run() error {
+func (s *Daemon) Run() {
 	s.State = Running
 	s.Tick("Run")
-	return nil
 }
 
 func (s *Daemon) Stop() error {
@@ -46,7 +45,8 @@ func (s *Daemon) Toggle() error {
 	if s.State == Running {
 		return s.Pause()
 	}
-	return s.Run()
+	s.Run()
+	return nil
 }
 
 func (s *Daemon) Tick(msg ...string) int {
@@ -66,9 +66,15 @@ func (s *Daemon) Tick(msg ...string) int {
 	return s.Ticks
 }
 
-type Daemoner *interface {
-	Run() error
+func (s *Daemon) IsRunning() bool {
+	return s.State == Running
+}
+
+type Daemoner interface {
+	Run()
 	Stop() error
 	Pause() error
 	Tick(msg ...string) int
+	IsRunning() bool
+	Toggle() error
 }

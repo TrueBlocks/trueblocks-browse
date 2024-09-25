@@ -61,6 +61,8 @@ export function HistoryPage(arg1:string,arg2:number,arg3:number):Promise<types.H
 
 export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>;
 
+export function Instance(arg1:string):Promise<daemons.Daemon>;
+
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
 
 export function ModifyName(arg1:string,arg2:base.Address):Promise<void>;
