@@ -4,7 +4,6 @@ import {types} from '../models';
 import {base} from '../models';
 import {menu} from '../models';
 import {context} from '../models';
-import {daemons} from '../models';
 import {wizard} from '../models';
 import {config} from '../models';
 import {output} from '../models';
@@ -33,7 +32,7 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
 export function GetContext():Promise<context.Context>;
 
-export function GetDaemon(arg1:string):Promise<daemons.Daemon>;
+export function GetDaemonJson(arg1:string):Promise<string>;
 
 export function GetDalle():Promise<string>;
 
