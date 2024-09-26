@@ -34,6 +34,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		Staged: true,
 		Globals: sdk.Globals{
 			Verbose: true,
+			Chain:   a.globals.Chain,
 		},
 	}
 	if monitors, meta, err := opts.MonitorsList(); err != nil {

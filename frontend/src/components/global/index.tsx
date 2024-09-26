@@ -8,3 +8,4 @@ export * from "./AppStatus";
 export * from "./DaemonStatus";
 export * from "./StyledNavLink";
 export * from "./DalleDress";
+export * from "./ChainSelector";

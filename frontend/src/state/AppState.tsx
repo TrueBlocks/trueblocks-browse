@@ -3,6 +3,8 @@ import { Route } from "@/Routes";
 import {
   AbiPage,
   GetMeta,
+  GetChain,
+  SetChain,
   GetWizardState,
   HistoryPage,
   IndexPage,
@@ -45,6 +47,9 @@ interface AppStateProps {
   address: base.Address;
   setAddress: (address: base.Address) => void;
 
+  chain: string;
+  changeChain: (newChain: string) => void;
+
   meta: types.MetaData;
   setMeta: (meta: types.MetaData) => void;
 
@@ -68,6 +73,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
+  const [chain, setChain] = useState<string>("");
   const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
 
   const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.NOTOKAY);
@@ -135,6 +141,12 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
+  const fetchChain = async () => {
+    GetChain().then((chain) => {
+      setChain(chain);
+    });
+  };
+
   const fetchMeta = async () => {
     GetMeta().then((meta) => {
       setMeta(meta);
@@ -158,7 +170,26 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     names.names[selected].deleted = op === "delete" ? true : op === "remove" ? false : false;
   };
 
+  const changeChain = (newChain: string) => {
+    setChain(newChain);
+    // SetChain(newChain, address) // disables refresh
+    //   .then(() => {
+    //     fetchPortfolio(0, 15);
+    //     fetchHistory(0, 15);
+    //     fetchMonitors(0, 15);
+    //     fetchNames(0, 15);
+    //     fetchAbis(0, 15);
+    //     fetchIndexes(0, 15);
+    //     fetchManifests(0, 15);
+    //     fetchStatus(0, 15);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error setting chain:", error);
+    //   });
+  };
+
   useEffect(() => {
+    fetchChain();
     fetchMeta();
     fetchWizard();
     fetchStatus(0, 100);
@@ -166,6 +197,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   useEffect(() => {
     const handleRefresh = () => {
+      fetchChain();
       fetchMeta();
       fetchWizard();
       fetchStatus(0, 100);
@@ -194,6 +226,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const state = {
     address,
+    chain,
     portfolio,
     fetchPortfolio,
     history,
@@ -212,6 +245,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     status,
     fetchStatus,
     setAddress,
+    changeChain,
     isConfigured,
     wizardState,
     stepWizard,

@@ -16,6 +16,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 	"github.com/joho/godotenv"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -37,6 +38,7 @@ type App struct {
 	historyMap map[base.Address]types.HistoryContainer
 	balanceMap sync.Map
 	meta       coreTypes.MetaData
+	globals    sdk.Globals
 
 	// Summaries
 	abis              types.AbiContainer
@@ -67,6 +69,9 @@ func NewApp() *App {
 
 	// it's okay if it's not found
 	a.session.MustLoadSession()
+	a.globals = sdk.Globals{
+		Chain: a.session.Chain,
+	}
 
 	if err := godotenv.Load(); err != nil {
 		// a.Fatal("Error loading .env file")
