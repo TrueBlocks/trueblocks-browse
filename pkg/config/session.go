@@ -19,6 +19,7 @@ type Daemons struct {
 
 // Session stores ephemeral things such as last window position, last view, and recent file
 type Session struct {
+	Chain     string            `json:"chain"`
 	X         int               `json:"x"`
 	Y         int               `json:"y"`
 	Width     int               `json:"width"`
@@ -32,6 +33,7 @@ type Session struct {
 }
 
 var defaultSession = Session{
+	Chain:     "mainnet",
 	Width:     1024,
 	Height:    768,
 	Title:     "Browse by TrueBlocks",
@@ -60,6 +62,9 @@ func (s *Session) MustLoadSession() {
 	if contents := file.AsciiFileToString(fn); len(contents) > 0 {
 		if err := json.Unmarshal([]byte(contents), s); err == nil {
 			s.Wizard.State, s.LastRoute = checkWizard()
+			if s.Chain == "" {
+				s.Chain = "mainnet"
+			}
 			return
 		}
 	}

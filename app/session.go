@@ -8,13 +8,13 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-func (a *App) GetLast(which string) string {
+func (a *App) GetSessionVal(which string) string {
 	switch which {
 	case "route":
 		if !a.isConfigured() {
 			return "/wizard"
 		}
-		return a.GetSession().LastRoute + a.GetLastSub(a.GetSession().LastRoute)
+		return a.GetSession().LastRoute + a.GetSessionSubVal(a.GetSession().LastRoute)
 	case "wizard":
 		return a.GetSession().Wizard.State.String()
 	case "help":
@@ -23,7 +23,7 @@ func (a *App) GetLast(which string) string {
 	return "Unknown"
 }
 
-func (a *App) SetLast(which, value string) {
+func (a *App) SetSessionVal(which, value string) {
 	switch which {
 	case "route":
 		parts := strings.Split(value, "/")
@@ -36,13 +36,15 @@ func (a *App) SetLast(which, value string) {
 		} else {
 			a.GetSession().LastRoute = value
 		}
+	case "chain":
+		a.GetSession().Chain = value
 	case "help":
 		a.GetSession().LastHelp = strings.EqualFold(value, "true")
 	}
 	a.GetSession().Save()
 }
 
-func (a *App) GetLastSub(which string) string {
+func (a *App) GetSessionSubVal(which string) string {
 	val := a.GetSession().LastSub[which]
 	if val == "" {
 		return ""
@@ -50,7 +52,7 @@ func (a *App) GetLastSub(which string) string {
 	return "/" + val
 }
 
-func (a *App) GetLastDaemon(which string) bool {
+func (a *App) GetSessionDeamon(which string) bool {
 	switch which {
 	case "daemon-freshen":
 		return a.GetSession().Daemons.Freshen
@@ -59,15 +61,15 @@ func (a *App) GetLastDaemon(which string) bool {
 	case "daemon-ipfs":
 		return a.GetSession().Daemons.Ipfs
 	}
-	logger.Error("Should not happen in GetLastDaemon")
+	logger.Error("Should not happen in GetSessionDeamon")
 	return false
 }
 
-func (a *App) GetLastWizard() wizard.State {
+func (a *App) GetSessionWizard() wizard.State {
 	return a.GetSession().Wizard.State
 }
 
-func (a *App) SetLastDaemon(which string, value bool) {
+func (a *App) SetSessionDaemon(which string, value bool) {
 	switch which {
 	case "daemon-freshen":
 		a.GetSession().Daemons.Freshen = value

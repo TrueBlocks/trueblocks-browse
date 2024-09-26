@@ -39,13 +39,13 @@ export function GetDalle():Promise<string>;
 
 export function GetEnv(arg1:string):Promise<string>;
 
-export function GetLast(arg1:string):Promise<string>;
+export function GetSessionVal(arg1:string):Promise<string>;
 
-export function GetLastDaemon(arg1:string):Promise<boolean>;
+export function GetSessionDeamon(arg1:string):Promise<boolean>;
 
-export function GetLastSub(arg1:string):Promise<string>;
+export function GetSessionSubVal(arg1:string):Promise<string>;
 
-export function GetLastWizard():Promise<wizard.State>;
+export function GetSessionWizard():Promise<wizard.State>;
 
 export function GetMenus():Promise<menu.Menu>;
 
@@ -79,9 +79,9 @@ export function Reload(arg1:base.Address):Promise<void>;
 
 export function SetEnv(arg1:string,arg2:string):Promise<void>;
 
-export function SetLast(arg1:string,arg2:string):Promise<void>;
+export function SetSessionVal(arg1:string,arg2:string):Promise<void>;
 
-export function SetLastDaemon(arg1:string,arg2:boolean):Promise<void>;
+export function SetSessionDaemon(arg1:string,arg2:boolean):Promise<void>;
 
 export function StateToString(arg1:string):Promise<string>;
 

@@ -1,6 +1,6 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { SetLast } from "@gocode/app/App";
+import { SetSessionVal } from "@gocode/app/App";
 import { types, messages } from "@gocode/models";
 import { Page } from "@hooks";
 import { EventsEmit } from "@runtime";
@@ -13,7 +13,7 @@ export function MonitorsView() {
   const handleEnter = (page: Page) => {
     const record = page.selected - page.getOffset();
     const address = monitors.items[record].address;
-    SetLast("route", `/history/${address}`);
+    SetSessionVal("route", `/history/${address}`);
     EventsEmit(messages.Message.NAVIGATE, {
       route: `/history/${address}`,
     });

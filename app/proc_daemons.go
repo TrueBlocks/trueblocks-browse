@@ -29,15 +29,15 @@ func (a *App) ToggleDaemon(name string) error {
 	switch name {
 	case "freshen":
 		err := a.FreshenController.Toggle()
-		a.SetLastDaemon("daemon-freshen", a.FreshenController.State == daemons.Running)
+		a.SetSessionDaemon("daemon-freshen", a.FreshenController.State == daemons.Running)
 		return err
 	case "scraper":
 		err := a.ScraperController.Toggle()
-		a.SetLastDaemon("daemon-scraper", a.FreshenController.State == daemons.Running)
+		a.SetSessionDaemon("daemon-scraper", a.FreshenController.State == daemons.Running)
 		return err
 	case "ipfs":
 		err := a.IpfsController.Toggle()
-		a.SetLastDaemon("daemon-ipfs", a.FreshenController.State == daemons.Running)
+		a.SetSessionDaemon("daemon-ipfs", a.FreshenController.State == daemons.Running)
 		return err
 	default:
 		return fmt.Errorf("daemon %s not found in ToggleDaemon", name)

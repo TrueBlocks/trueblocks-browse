@@ -62,20 +62,20 @@ export function GetEnv(arg1) {
   return window['go']['app']['App']['GetEnv'](arg1);
 }
 
-export function GetLast(arg1) {
-  return window['go']['app']['App']['GetLast'](arg1);
+export function GetSessionVal(arg1) {
+  return window['go']['app']['App']['GetSessionVal'](arg1);
 }
 
-export function GetLastDaemon(arg1) {
-  return window['go']['app']['App']['GetLastDaemon'](arg1);
+export function GetSessionDeamon(arg1) {
+  return window['go']['app']['App']['GetSessionDeamon'](arg1);
 }
 
-export function GetLastSub(arg1) {
-  return window['go']['app']['App']['GetLastSub'](arg1);
+export function GetSessionSubVal(arg1) {
+  return window['go']['app']['App']['GetSessionSubVal'](arg1);
 }
 
-export function GetLastWizard() {
-  return window['go']['app']['App']['GetLastWizard']();
+export function GetSessionWizard() {
+  return window['go']['app']['App']['GetSessionWizard']();
 }
 
 export function GetMenus() {
@@ -142,12 +142,12 @@ export function SetEnv(arg1, arg2) {
   return window['go']['app']['App']['SetEnv'](arg1, arg2);
 }
 
-export function SetLast(arg1, arg2) {
-  return window['go']['app']['App']['SetLast'](arg1, arg2);
+export function SetSessionVal(arg1, arg2) {
+  return window['go']['app']['App']['SetSessionVal'](arg1, arg2);
 }
 
-export function SetLastDaemon(arg1, arg2) {
-  return window['go']['app']['App']['SetLastDaemon'](arg1, arg2);
+export function SetSessionDaemon(arg1, arg2) {
+  return window['go']['app']['App']['SetSessionDaemon'](arg1, arg2);
 }
 
 export function StateToString(arg1) {
