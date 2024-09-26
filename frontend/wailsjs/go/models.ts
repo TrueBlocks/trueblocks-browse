@@ -46,6 +46,7 @@ export namespace config {
 	    }
 	}
 	export class Session {
+	    chain: string;
 	    x: number;
 	    y: number;
 	    width: number;
@@ -63,6 +64,7 @@ export namespace config {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.chain = source["chain"];
 	        this.x = source["x"];
 	        this.y = source["y"];
 	        this.width = source["width"];

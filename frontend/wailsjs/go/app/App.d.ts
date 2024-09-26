@@ -4,9 +4,8 @@ import {types} from '../models';
 import {base} from '../models';
 import {menu} from '../models';
 import {context} from '../models';
-import {daemons} from '../models';
-import {wizard} from '../models';
 import {config} from '../models';
+import {wizard} from '../models';
 import {output} from '../models';
 
 export function AbiPage(arg1:number,arg2:number):Promise<types.AbiContainer>;
@@ -33,25 +32,25 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
 export function GetContext():Promise<context.Context>;
 
-export function GetDaemon(arg1:string):Promise<daemons.Daemon>;
+export function GetDaemonJson(arg1:string):Promise<string>;
 
 export function GetDalle():Promise<string>;
 
 export function GetEnv(arg1:string):Promise<string>;
-
-export function GetSessionVal(arg1:string):Promise<string>;
-
-export function GetSessionDeamon(arg1:string):Promise<boolean>;
-
-export function GetSessionSubVal(arg1:string):Promise<string>;
-
-export function GetSessionWizard():Promise<wizard.State>;
 
 export function GetMenus():Promise<menu.Menu>;
 
 export function GetMeta():Promise<types.MetaData>;
 
 export function GetSession():Promise<config.Session>;
+
+export function GetSessionDeamon(arg1:string):Promise<boolean>;
+
+export function GetSessionSubVal(arg1:string):Promise<string>;
+
+export function GetSessionVal(arg1:string):Promise<string>;
+
+export function GetSessionWizard():Promise<wizard.State>;
 
 export function GetWizardState():Promise<wizard.State>;
 
@@ -79,9 +78,9 @@ export function Reload(arg1:base.Address):Promise<void>;
 
 export function SetEnv(arg1:string,arg2:string):Promise<void>;
 
-export function SetSessionVal(arg1:string,arg2:string):Promise<void>;
-
 export function SetSessionDaemon(arg1:string,arg2:boolean):Promise<void>;
+
+export function SetSessionVal(arg1:string,arg2:string):Promise<void>;
 
 export function StateToString(arg1:string):Promise<string>;
 

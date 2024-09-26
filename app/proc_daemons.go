@@ -12,7 +12,48 @@ func (a *App) startDaemons() {
 	go a.IpfsController.Run()
 }
 
-func (a *App) GetDaemon(name string) *daemons.Daemon {
+func (a *App) GetDaemonJson(name string) string {
+	d := a.getDaemon(name)
+	if d == nil {
+		return "{}"
+	}
+	return d.String()
+}
+
+func (a *App) ToggleDaemon(name string) error {
+	if s := a.getDaemon(name); s == nil {
+		return fmt.Errorf("could not find daemon %s", name)
+	} else {
+		if err := s.Toggle(); err != nil {
+			return err
+		}
+		a.SetSessionDaemon("daemon-"+name, s.IsRunning())
+		return nil
+	}
+}
+
+func (a *App) StateToString(name string) string {
+	if s := a.getDaemon2(name); s == nil {
+		return "Daemon not found"
+	} else {
+		return s.GetState().String()
+	}
+}
+
+func (a *App) getDaemon2(name string) daemons.Daemoner {
+	switch name {
+	case "freshen":
+		return a.FreshenController
+	case "scraper":
+		return a.ScraperController
+	case "ipfs":
+		return a.IpfsController
+	default:
+		return nil
+	}
+}
+
+func (a *App) getDaemon(name string) *daemons.Daemon {
 	switch name {
 	case "freshen":
 		return &a.FreshenController.Daemon
@@ -23,31 +64,4 @@ func (a *App) GetDaemon(name string) *daemons.Daemon {
 	default:
 		return nil
 	}
-}
-
-func (a *App) ToggleDaemon(name string) error {
-	switch name {
-	case "freshen":
-		err := a.FreshenController.Toggle()
-		a.SetSessionDaemon("daemon-freshen", a.FreshenController.State == daemons.Running)
-		return err
-	case "scraper":
-		err := a.ScraperController.Toggle()
-		a.SetSessionDaemon("daemon-scraper", a.FreshenController.State == daemons.Running)
-		return err
-	case "ipfs":
-		err := a.IpfsController.Toggle()
-		a.SetSessionDaemon("daemon-ipfs", a.FreshenController.State == daemons.Running)
-		return err
-	default:
-		return fmt.Errorf("daemon %s not found in ToggleDaemon", name)
-	}
-}
-
-func (a *App) StateToString(name string) string {
-	s := a.GetDaemon(name)
-	if s == nil {
-		return "Daemon not found"
-	}
-	return s.State.String()
 }

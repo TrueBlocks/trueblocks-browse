@@ -50,8 +50,8 @@ export function GetContext() {
   return window['go']['app']['App']['GetContext']();
 }
 
-export function GetDaemon(arg1) {
-  return window['go']['app']['App']['GetDaemon'](arg1);
+export function GetDaemonJson(arg1) {
+  return window['go']['app']['App']['GetDaemonJson'](arg1);
 }
 
 export function GetDalle() {
@@ -60,22 +60,6 @@ export function GetDalle() {
 
 export function GetEnv(arg1) {
   return window['go']['app']['App']['GetEnv'](arg1);
-}
-
-export function GetSessionVal(arg1) {
-  return window['go']['app']['App']['GetSessionVal'](arg1);
-}
-
-export function GetSessionDeamon(arg1) {
-  return window['go']['app']['App']['GetSessionDeamon'](arg1);
-}
-
-export function GetSessionSubVal(arg1) {
-  return window['go']['app']['App']['GetSessionSubVal'](arg1);
-}
-
-export function GetSessionWizard() {
-  return window['go']['app']['App']['GetSessionWizard']();
 }
 
 export function GetMenus() {
@@ -88,6 +72,22 @@ export function GetMeta() {
 
 export function GetSession() {
   return window['go']['app']['App']['GetSession']();
+}
+
+export function GetSessionDeamon(arg1) {
+  return window['go']['app']['App']['GetSessionDeamon'](arg1);
+}
+
+export function GetSessionSubVal(arg1) {
+  return window['go']['app']['App']['GetSessionSubVal'](arg1);
+}
+
+export function GetSessionVal(arg1) {
+  return window['go']['app']['App']['GetSessionVal'](arg1);
+}
+
+export function GetSessionWizard() {
+  return window['go']['app']['App']['GetSessionWizard']();
 }
 
 export function GetWizardState() {
@@ -142,12 +142,12 @@ export function SetEnv(arg1, arg2) {
   return window['go']['app']['App']['SetEnv'](arg1, arg2);
 }
 
-export function SetSessionVal(arg1, arg2) {
-  return window['go']['app']['App']['SetSessionVal'](arg1, arg2);
-}
-
 export function SetSessionDaemon(arg1, arg2) {
   return window['go']['app']['App']['SetSessionDaemon'](arg1, arg2);
+}
+
+export function SetSessionVal(arg1, arg2) {
+  return window['go']['app']['App']['SetSessionVal'](arg1, arg2);
 }
 
 export function StateToString(arg1) {
