@@ -17,8 +17,6 @@ import { base, messages, types, wizard } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
 
 interface AppStateProps {
-  address: base.Address;
-
   portfolio: types.PortfolioContainer;
   fetchPortfolio: (currentItem: number, itemsPerPage: number) => void;
 
@@ -44,14 +42,15 @@ interface AppStateProps {
   status: types.StatusContainer;
   fetchStatus: (currentItem: number, itemsPerPage: number) => void;
 
+  address: base.Address;
   setAddress: (address: base.Address) => void;
+
+  meta: types.MetaData;
+  setMeta: (meta: types.MetaData) => void;
 
   isConfigured: boolean;
   wizardState: wizard.State;
   stepWizard: (step: wizard.Step) => void;
-
-  meta: types.MetaData;
-  setMeta: (meta: types.MetaData) => void;
 
   crudOperation(route: Route, selected: number, op: string): void;
 }
@@ -59,13 +58,6 @@ interface AppStateProps {
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
 export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => {
-  const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
-
-  const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.NOTOKAY);
-  const [isConfigured, setIsConfigured] = useState<boolean>(false);
-
-  const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
-
   const [portfolio, setPortfolio] = useState<types.PortfolioContainer>({} as types.PortfolioContainer);
   const [history, setHistory] = useState<types.HistoryContainer>({} as types.HistoryContainer);
   const [monitors, setMonitors] = useState<types.MonitorContainer>({} as types.MonitorContainer);
@@ -75,18 +67,11 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
 
-  const fetchMeta = async () => {
-    GetMeta().then((meta) => {
-      setMeta(meta);
-    });
-  };
+  const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
+  const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
 
-  const fetchWizard = async () => {
-    GetWizardState().then((state) => {
-      setWizardState(state);
-      setIsConfigured(state == wizard.State.OKAY);
-    });
-  };
+  const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.NOTOKAY);
+  const [isConfigured, setIsConfigured] = useState<boolean>(false);
 
   const fetchPortfolio = async (currentItem: number, itemsPerPage: number) => {
     PortfolioPage(currentItem, itemsPerPage).then((item: types.PortfolioContainer) => {
@@ -147,6 +132,19 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       if (item) {
         setStatus(item);
       }
+    });
+  };
+
+  const fetchMeta = async () => {
+    GetMeta().then((meta) => {
+      setMeta(meta);
+    });
+  };
+
+  const fetchWizard = async () => {
+    GetWizardState().then((state) => {
+      setWizardState(state);
+      setIsConfigured(state == wizard.State.OKAY);
     });
   };
 
