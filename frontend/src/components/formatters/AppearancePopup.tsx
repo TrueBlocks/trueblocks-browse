@@ -22,3 +22,5 @@ export const AppearancePopup = forwardRef<HTMLDivElement, AppearancePopupProps>(
     </Group>
   );
 });
+
+AppearancePopup.displayName = "AddressPopup";
