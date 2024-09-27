@@ -11,7 +11,7 @@ import (
 )
 
 type Freshener interface {
-	Refresh(which ...string)
+	Refresh(skipable bool, which ...string)
 	GetContext() context.Context
 }
 

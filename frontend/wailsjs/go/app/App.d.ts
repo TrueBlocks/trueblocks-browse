@@ -74,7 +74,7 @@ export function NamePage(arg1:number,arg2:number):Promise<types.NameContainer>;
 
 export function PortfolioPage(arg1:number,arg2:number):Promise<types.PortfolioContainer>;
 
-export function Refresh(arg1:Array<string>):Promise<void>;
+export function Refresh(arg1:boolean,arg2:Array<string>):Promise<void>;
 
 export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
 

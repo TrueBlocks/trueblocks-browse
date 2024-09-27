@@ -19,6 +19,8 @@ func (a *App) AbiPage(first, pageSize int) types.AbiContainer {
 	return copy
 }
 
+var abisChain = "mainnet"
+
 func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
@@ -33,6 +35,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	opts := sdk.AbisOptions{
 		Globals: a.globals,
 	}
+	opts.Globals.Chain = abisChain
 
 	messages.SendInfo(a.ctx, "Freshening abis")
 	if count, meta, err := opts.AbisCount(); err != nil {
