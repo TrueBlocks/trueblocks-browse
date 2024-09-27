@@ -4,14 +4,12 @@ import (
 	"encoding/json"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 type Document struct {
-	Dirty      bool                `json:"dirty"`
-	Filename   string              `json:"filename"`
-	LastUpdate base.Blknum         `json:"lastUpdate"`
-	Monitors   []coreTypes.Monitor `json:"monitors"`
+	Dirty      bool        `json:"dirty"`
+	Filename   string      `json:"filename"`
+	LastUpdate base.Blknum `json:"lastUpdate"`
 }
 
 func (s Document) String() string {

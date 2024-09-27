@@ -1,6 +1,6 @@
 import { Group, Title, Text } from "@mantine/core";
 import { useLocation } from "wouter";
-import { IndexStatus } from "./";
+import { IndexStatus, ChainSelector } from "./";
 
 export const Header = ({ title }: { title: string }) => {
   const [location] = useLocation();
@@ -8,6 +8,7 @@ export const Header = ({ title }: { title: string }) => {
     <Group w={"100%"} justify="space-between">
       <Title order={1}>{title}</Title>
       <Text>{`location: ${location}`}</Text>
+      <ChainSelector />
       <IndexStatus />
     </Group>
   );

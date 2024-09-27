@@ -18,3 +18,10 @@
   font-size: 14pt;
   font-family: monospace;
 }
+
+.blue {
+  background-color: black;
+  color: lightblue;
+  font-size: 14pt;
+  font-family: monospace;
+}

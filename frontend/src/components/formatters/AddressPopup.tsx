@@ -65,3 +65,5 @@ export const AddressPopup = forwardRef<HTMLDivElement, AddressPopupProps>(
     );
   }
 );
+
+AddressPopup.displayName = "AddressPopup";

@@ -62,9 +62,6 @@ func NewApp() *App {
 		historyMap: make(map[base.Address]types.HistoryContainer),
 		Documents:  make([]types.Document, 10),
 	}
-	a.globals = sdk.Globals{
-		Chain: "mainnet",
-	}
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
 	a.CurrentDoc = &a.Documents[0]
@@ -72,6 +69,9 @@ func NewApp() *App {
 
 	// it's okay if it's not found
 	a.session.MustLoadSession()
+	a.globals = sdk.Globals{
+		Chain: a.session.Chain,
+	}
 
 	if err := godotenv.Load(); err != nil {
 		// a.Fatal("Error loading .env file")
@@ -98,9 +98,9 @@ func (a *App) GetContext() context.Context {
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
-	a.FreshenController = daemons.NewFreshen(a, "freshen", 7000, a.GetLastDaemon("daemon-freshen"))
-	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetLastDaemon("daemon-scraper"))
-	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.GetLastDaemon("daemon-ipfs"))
+	a.FreshenController = daemons.NewFreshen(a, "freshen", 7000, a.GetSessionDeamon("daemon-freshen"))
+	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetSessionDeamon("daemon-scraper"))
+	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.GetSessionDeamon("daemon-ipfs"))
 	go a.startDaemons()
 
 	if startupError != nil {
@@ -108,9 +108,9 @@ func (a *App) Startup(ctx context.Context) {
 	}
 
 	logger.Info("Starting freshen process...")
-	a.Refresh(a.GetSession().LastRoute)
+	a.Refresh(false, a.GetSession().LastRoute)
 
-	if err := a.loadConfig(nil, nil); err != nil {
+	if err := a.loadConfig(); err != nil {
 		messages.SendError(a.ctx, err)
 	}
 }

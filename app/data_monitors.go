@@ -5,6 +5,7 @@ import (
 	"sort"
 	"sync"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -37,6 +38,8 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 			Chain:   a.globals.Chain,
 		},
 	}
+
+	messages.SendInfo(a.ctx, "Freshening monitors")
 	if monitors, meta, err := opts.MonitorsList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -64,6 +67,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 			return a.monitors.Items[i].NRecords < a.monitors.Items[j].NRecords
 		})
 		a.monitors.Summarize()
+		messages.SendInfo(a.ctx, "Finished loading monitors")
 	}
 	return nil
 }

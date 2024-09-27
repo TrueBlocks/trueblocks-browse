@@ -27,7 +27,7 @@ func (a *App) ToggleDaemon(name string) error {
 		if err := s.Toggle(); err != nil {
 			return err
 		}
-		a.SetLastDaemon("daemon-"+name, s.IsRunning())
+		a.SetSessionDaemon("daemon-"+name, s.IsRunning())
 		return nil
 	}
 }

@@ -11,18 +11,18 @@ import (
 )
 
 type Freshener interface {
-	Refresh(which ...string)
+	Refresh(skipable bool, which ...string)
 	GetContext() context.Context
 }
 
 type Daemoner interface {
+	String() string
+	GetState() State
+	IsRunning() bool
 	Run()
 	Stop() error
 	Pause() error
 	Tick(msg ...string) int
-	IsRunning() bool
-	String() string
-	GetState() State
 	Toggle() error
 }
 
@@ -41,8 +41,12 @@ func (s *Daemon) String() string {
 	return string(bytes)
 }
 
-func (s *Daemon) Instance() *Daemon {
-	return &Daemon{}
+func (s *Daemon) GetState() State {
+	return s.State
+}
+
+func (s *Daemon) IsRunning() bool {
+	return s.State == Running
 }
 
 func (s *Daemon) Run() {
@@ -87,10 +91,6 @@ func (s *Daemon) Tick(msg ...string) int {
 	return s.Ticks
 }
 
-func (s *Daemon) IsRunning() bool {
-	return s.State == Running
-}
-
-func (s *Daemon) GetState() State {
-	return s.State
+func (s *Daemon) Instance() *Daemon {
+	return &Daemon{}
 }

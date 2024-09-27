@@ -4,8 +4,8 @@ import {types} from '../models';
 import {base} from '../models';
 import {menu} from '../models';
 import {context} from '../models';
-import {wizard} from '../models';
 import {config} from '../models';
+import {wizard} from '../models';
 import {output} from '../models';
 
 export function AbiPage(arg1:number,arg2:number):Promise<types.AbiContainer>;
@@ -30,6 +30,10 @@ export function FileSave(arg1:menu.CallbackData):Promise<void>;
 
 export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
+export function GetChain():Promise<string>;
+
+export function GetChainList():Promise<Array<string>>;
+
 export function GetContext():Promise<context.Context>;
 
 export function GetDaemonJson(arg1:string):Promise<string>;
@@ -38,19 +42,19 @@ export function GetDalle():Promise<string>;
 
 export function GetEnv(arg1:string):Promise<string>;
 
-export function GetLast(arg1:string):Promise<string>;
-
-export function GetLastDaemon(arg1:string):Promise<boolean>;
-
-export function GetLastSub(arg1:string):Promise<string>;
-
-export function GetLastWizard():Promise<wizard.State>;
-
 export function GetMenus():Promise<menu.Menu>;
 
 export function GetMeta():Promise<types.MetaData>;
 
 export function GetSession():Promise<config.Session>;
+
+export function GetSessionDeamon(arg1:string):Promise<boolean>;
+
+export function GetSessionSubVal(arg1:string):Promise<string>;
+
+export function GetSessionVal(arg1:string):Promise<string>;
+
+export function GetSessionWizard():Promise<wizard.State>;
 
 export function GetWizardState():Promise<wizard.State>;
 
@@ -70,17 +74,19 @@ export function NamePage(arg1:number,arg2:number):Promise<types.NameContainer>;
 
 export function PortfolioPage(arg1:number,arg2:number):Promise<types.PortfolioContainer>;
 
-export function Refresh(arg1:Array<string>):Promise<void>;
+export function Refresh(arg1:boolean,arg2:Array<string>):Promise<void>;
 
 export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
 
 export function Reload(arg1:base.Address):Promise<void>;
 
+export function SetChain(arg1:string,arg2:base.Address):Promise<void>;
+
 export function SetEnv(arg1:string,arg2:string):Promise<void>;
 
-export function SetLast(arg1:string,arg2:string):Promise<void>;
+export function SetSessionDaemon(arg1:string,arg2:boolean):Promise<void>;
 
-export function SetLastDaemon(arg1:string,arg2:boolean):Promise<void>;
+export function SetSessionVal(arg1:string,arg2:string):Promise<void>;
 
 export function StateToString(arg1:string):Promise<string>;
 

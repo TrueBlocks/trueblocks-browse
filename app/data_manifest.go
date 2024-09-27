@@ -5,6 +5,7 @@ import (
 	"sort"
 	"sync"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -35,6 +36,8 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 			Chain:   a.globals.Chain,
 		},
 	}
+
+	messages.SendInfo(a.ctx, "Freshening manifest")
 	if manifests, meta, err := opts.ChunksManifest(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -55,6 +58,7 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 		sort.Slice(a.manifest.Items, func(i, j int) bool {
 			return a.manifest.Items[i].Range > a.manifest.Items[j].Range
 		})
+		messages.SendInfo(a.ctx, "Finished loading manifest")
 	}
 	return nil
 }

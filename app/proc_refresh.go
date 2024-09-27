@@ -11,21 +11,27 @@ import (
 )
 
 var freshenLock atomic.Uint32
+var freshenMutex sync.Mutex
 
 // Refresh when the app starts and then later by the daemons to instruct the backend and
 // by extension the frontend to update. We protect against updating too fast... Note
 // that this routine is called as a goroutine.
-func (a *App) Refresh(which ...string) {
+func (a *App) Refresh(skipable bool, which ...string) {
 	if !a.isConfigured() {
 		return
 	}
 
 	// Skip this update we're actively upgrading
-	if !freshenLock.CompareAndSwap(0, 1) {
-		// logger.Info(colors.Red, "Skipping update", colors.Off)
-		return
+	if skipable {
+		if !freshenLock.CompareAndSwap(0, 1) {
+			// logger.Info(colors.Red, "Skipping update", colors.Off)
+			return
+		}
+		defer freshenLock.CompareAndSwap(1, 0)
 	}
-	defer freshenLock.CompareAndSwap(1, 0)
+
+	freshenMutex.Lock()
+	defer freshenMutex.Unlock()
 
 	if !a.ScraperController.IsRunning() {
 		logger.Info(colors.Green, "Freshening...", colors.Off)

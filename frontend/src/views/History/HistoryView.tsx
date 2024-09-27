@@ -3,7 +3,7 @@ import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { useParams } from "wouter";
 import { ExploreButton, ExportButton, View, FormTable, DataTable, GroupDefinition } from "@components";
-import { GetLastSub, CancleContexts } from "@gocode/app/App";
+import { GetSessionSubVal, CancleContexts } from "@gocode/app/App";
 import { types, base } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./HistoryTable";
@@ -15,7 +15,7 @@ export function HistoryView() {
   useEffect(() => {
     CancleContexts();
     if (aa === ":address") {
-      GetLastSub("/history").then((subRoute) => {
+      GetSessionSubVal("/history").then((subRoute) => {
         subRoute = subRoute.replace("/", "");
         setAddress(subRoute as unknown as base.Address);
       });

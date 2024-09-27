@@ -4,6 +4,7 @@ import (
 	"sort"
 	"sync"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
@@ -18,10 +19,17 @@ func (a *App) PortfolioPage(first, pageSize int) types.PortfolioContainer {
 
 func (a *App) loadPortfolio(wg *sync.WaitGroup, errorChan chan error) error {
 	_ = errorChan // delint
-	if wg != nil {
-		defer wg.Done()
+	defer func() {
+		if wg != nil {
+			wg.Done()
+		}
+	}()
+
+	if !a.isConfigured() {
+		return nil
 	}
 
+	messages.SendInfo(a.ctx, "Freshening portfolio")
 	a.portfolio = types.PortfolioContainer{}
 	a.portfolio.MyCount = len(a.historyMap)
 	a.portfolio.NMonitors = len(a.monitors.Items)
@@ -44,6 +52,7 @@ func (a *App) loadPortfolio(wg *sync.WaitGroup, errorChan chan error) error {
 	sort.Slice(a.portfolio.Items, func(i, j int) bool {
 		return a.portfolio.Items[i].Address.Cmp(a.portfolio.Items[j].Address.Address) < 0
 	})
+	messages.SendInfo(a.ctx, "Finished loading portfolio")
 
 	return nil
 }

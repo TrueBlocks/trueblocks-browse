@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Route, Switch, useLocation } from "wouter";
 import { routeItems, RouteItem } from "@/Routes";
-import { GetLast } from "@gocode/app/App";
+import { GetSessionVal } from "@gocode/app/App";
 import { useAppState } from "@state";
 import classes from "@/App.module.css";
 
@@ -10,7 +10,7 @@ export const Routes = () => {
   const { isConfigured } = useAppState();
 
   useEffect(() => {
-    (GetLast("route") || "/").then((route) => {
+    (GetSessionVal("route") || "/").then((route) => {
       setLocation(route);
     });
   }, [setLocation]);

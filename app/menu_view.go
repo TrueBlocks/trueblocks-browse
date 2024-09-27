@@ -12,16 +12,16 @@ func (a *App) ViewPortfolio(cd *menu.CallbackData) {
 	if a.isConfigured() {
 		logger.Info("ViewPortfolio")
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
-		a.SetLast("route", "/")
+		a.SetSessionVal("route", "/")
 	}
 }
 
 func (a *App) ViewHistory(cd *menu.CallbackData) {
 	if a.isConfigured() {
 		logger.Info("ViewHistory")
-		subRoute := a.GetLastSub("/history")
+		subRoute := a.GetSessionSubVal("/history")
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/history"+subRoute))
-		a.SetLast("route", "/history"+subRoute)
+		a.SetSessionVal("route", "/history"+subRoute)
 	}
 }
 
@@ -29,7 +29,7 @@ func (a *App) ViewMonitors(cd *menu.CallbackData) {
 	if a.isConfigured() {
 		logger.Info("ViewMonitors")
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/monitors"))
-		a.SetLast("route", "/monitors")
+		a.SetSessionVal("route", "/monitors")
 	}
 }
 
@@ -37,7 +37,7 @@ func (a *App) ViewNames(cd *menu.CallbackData) {
 	if a.isConfigured() {
 		logger.Info("ViewNames")
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/names"))
-		a.SetLast("route", "/names")
+		a.SetSessionVal("route", "/names")
 	}
 }
 
@@ -45,7 +45,7 @@ func (a *App) ViewIndexes(cd *menu.CallbackData) {
 	if a.isConfigured() {
 		logger.Info("ViewIndexes")
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/indexes"))
-		a.SetLast("route", "/indexes")
+		a.SetSessionVal("route", "/indexes")
 	}
 }
 
@@ -53,7 +53,7 @@ func (a *App) ViewManifest(cd *menu.CallbackData) {
 	if a.isConfigured() {
 		logger.Info("ViewManifest")
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/manifest"))
-		a.SetLast("route", "/manifest")
+		a.SetSessionVal("route", "/manifest")
 	}
 }
 
@@ -61,7 +61,7 @@ func (a *App) ViewAbis(cd *menu.CallbackData) {
 	if a.isConfigured() {
 		logger.Info("ViewAbis")
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/abis"))
-		a.SetLast("route", "/abis")
+		a.SetSessionVal("route", "/abis")
 	}
 }
 
@@ -69,7 +69,7 @@ func (a *App) ViewStatus(cd *menu.CallbackData) {
 	if a.isConfigured() {
 		logger.Info("ViewStatus")
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/status"))
-		a.SetLast("route", "/status")
+		a.SetSessionVal("route", "/status")
 	}
 }
 
@@ -77,7 +77,7 @@ func (a *App) ViewDaemons(cd *menu.CallbackData) {
 	if a.isConfigured() {
 		logger.Info("ViewDaemons")
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/daemons"))
-		a.SetLast("route", "/daemons")
+		a.SetSessionVal("route", "/daemons")
 	}
 }
 
@@ -85,7 +85,7 @@ func (a *App) ViewSettings(cd *menu.CallbackData) {
 	if a.isConfigured() {
 		logger.Info("ViewSettings")
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/settings"))
-		a.SetLast("route", "/settings")
+		a.SetSessionVal("route", "/settings")
 	}
 }
 
@@ -93,5 +93,5 @@ func (a *App) ViewWizard(cd *menu.CallbackData) {
 	a.StepWizard(wizard.Reset)
 	logger.Info("ViewWizard")
 	messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/wizard"))
-	a.SetLast("route", "/wizard")
+	a.SetSessionVal("route", "/wizard")
 }
