@@ -40,12 +40,11 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
+	messages.SendInfo(a.ctx, "Freshening names")
 	if !a.names.NeedsUpdate() {
-		messages.SendInfo(a.ctx, "No need to reload")
 		return nil
 	}
 
-	messages.SendInfo(a.ctx, "Reloading names")
 	names.ClearCustomNames()
 
 	parts := coreTypes.Regular | coreTypes.Custom | coreTypes.Prefund | coreTypes.Baddress

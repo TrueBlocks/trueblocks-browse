@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Select } from "@mantine/core";
 import { GetChainList } from "@gocode/app/App";
 import { useAppState } from "@state";
 
@@ -21,21 +22,21 @@ export const ChainSelector = () => {
     });
   }, [chain, changeChain]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newChain = event.target.value;
-    changeChain(newChain);
+  const handleChange = (value: string | null) => {
+    if (value) {
+      changeChain(value);
+    }
   };
 
   return (
     <div>
-      <label htmlFor="chain-selector">Select Chain:</label>
-      <select id="chain-selector" value={chain} onChange={handleChange}>
-        {chainList.map((chain) => (
-          <option key={chain} value={chain}>
-            {chain}
-          </option>
-        ))}
-      </select>
+      <Select
+        id="chain-selector"
+        value={chain}
+        onChange={handleChange}
+        data={chainList.map((chain) => ({ value: chain, label: chain }))}
+        placeholder="Choose a chain"
+      />
     </div>
   );
 };

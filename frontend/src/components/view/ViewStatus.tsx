@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Text } from "@mantine/core";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import classes from "./ViewStatus.module.css";
 
 export function ViewStatus() {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [statusMessage, setStatusMessage] = useState<string>("");
   const [color, setColor] = useState<string>(classes.green);
 
@@ -22,17 +23,23 @@ export function ViewStatus() {
     const handleCompleted = (msg: messages.ProgressMsg) => {
       setStatusMessage(`Completed (${msg.address}): ${msg.have}/${msg.want}`);
       setColor(classes.green);
-      setTimeout(() => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
         setStatusMessage("");
-      }, 1000); // 1000ms = 1 second
+      }, 2000);
     };
 
     const handleCancel = (msg: messages.ProgressMsg) => {
       setStatusMessage(`Canceled (${msg.address})`);
       setColor(classes.green);
-      setTimeout(() => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
         setStatusMessage("");
-      }, 1000); // 1000ms = 1 second
+      }, 2000);
     };
 
     const handleWarning = (msg: messages.ErrorMsg) => {
@@ -46,8 +53,14 @@ export function ViewStatus() {
     };
 
     const handleInfo = (msg: messages.InfoMsg) => {
-      setStatusMessage(`Info: ${msg.message}`);
+      setStatusMessage(`Info [${new Date().toLocaleString()}]: ${msg.message}`);
       setColor(classes.blue);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setStatusMessage("");
+      }, 2000);
     };
 
     const { Message } = messages;
@@ -72,7 +85,7 @@ export function ViewStatus() {
 
   return (
     <Text size="lg">
-      <div className={color}>{statusMessage}</div>
+      <div className={color}>{statusMessage || "\u00A0"}</div>
     </Text>
   );
 }

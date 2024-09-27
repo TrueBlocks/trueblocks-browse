@@ -172,20 +172,11 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const changeChain = (newChain: string) => {
     setChain(newChain);
-    // SetChain(newChain, address) // disables refresh
-    //   .then(() => {
-    //     fetchPortfolio(0, 15);
-    //     fetchHistory(0, 15);
-    //     fetchMonitors(0, 15);
-    //     fetchNames(0, 15);
-    //     fetchAbis(0, 15);
-    //     fetchIndexes(0, 15);
-    //     fetchManifests(0, 15);
-    //     fetchStatus(0, 15);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error setting chain:", error);
-    //   });
+    SetChain(newChain, address) // disables refresh
+      .then(() => {})
+      .catch((error) => {
+        console.error("Error setting chain:", error);
+      });
   };
 
   useEffect(() => {

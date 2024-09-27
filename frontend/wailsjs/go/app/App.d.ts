@@ -4,10 +4,6 @@ import {types} from '../models';
 import {base} from '../models';
 import {menu} from '../models';
 import {context} from '../models';
-<<<<<<< HEAD
-=======
-import {wizard} from '../models';
->>>>>>> develop
 import {config} from '../models';
 import {wizard} from '../models';
 import {output} from '../models';
