@@ -52,7 +52,7 @@ type MonitorContainer struct {
 	MonitorMap map[base.Address]coreTypes.Monitor `json:"monitorMap"`
 }
 
-func (s MonitorContainer) String() string {
+func (s *MonitorContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }

@@ -1,5 +1,7 @@
 package types
 
+import "encoding/json"
+
 type PortfolioContainer struct {
 	Summary     HistoryContainer   `json:",inline"`
 	Items       []HistoryContainer `json:"items"`
@@ -13,17 +15,26 @@ type PortfolioContainer struct {
 	HistorySize int                `json:"historySize"`
 }
 
-func (h *PortfolioContainer) ShallowCopy() PortfolioContainer {
+func (h *PortfolioContainer) String() string {
+	bytes, _ := json.Marshal(h)
+	return string(bytes)
+}
+
+func (s *PortfolioContainer) ShallowCopy() PortfolioContainer {
 	ret := PortfolioContainer{}
-	ret.Summary = h.Summary.ShallowCopy()
+	ret.Summary = s.Summary.ShallowCopy()
 	// ret.Items = h.Items
-	ret.MyCount = h.MyCount
-	ret.NMonitors = h.NMonitors
-	ret.NNames = h.NNames
-	ret.NAbis = h.NAbis
-	ret.NIndexes = h.NIndexes
-	ret.NManifests = h.NManifests
-	ret.NCaches = h.NCaches
-	ret.HistorySize = h.HistorySize
+	ret.MyCount = s.MyCount
+	ret.NMonitors = s.NMonitors
+	ret.NNames = s.NNames
+	ret.NAbis = s.NAbis
+	ret.NIndexes = s.NIndexes
+	ret.NManifests = s.NManifests
+	ret.NCaches = s.NCaches
+	ret.HistorySize = s.HistorySize
 	return ret
+}
+
+func (s *PortfolioContainer) Summarize() {
+	// do nothing
 }

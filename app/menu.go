@@ -9,7 +9,7 @@ import (
 func (a *App) GetMenus() *menu.Menu {
 	appMenu := menu.NewMenu()
 
-	systemMenu := appMenu.AddSubmenu("DalleDress")
+	systemMenu := appMenu.AddSubmenu("System")
 	systemMenu.AddText("About", nil, a.SystemAbout)
 	systemMenu.AddText("Quit", keys.CmdOrCtrl("q"), a.SystemQuit)
 

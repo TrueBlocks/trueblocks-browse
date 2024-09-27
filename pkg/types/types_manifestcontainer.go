@@ -17,11 +17,6 @@ type ManifestContainer struct {
 	IndexSize          int                     `json:"indexSize"`
 }
 
-func (s ManifestContainer) String() string {
-	bytes, _ := json.Marshal(s)
-	return string(bytes)
-}
-
 func NewManifestContainer(manifest coreTypes.Manifest) ManifestContainer {
 	ret := ManifestContainer{
 		Manifest: manifest,
@@ -32,15 +27,9 @@ func NewManifestContainer(manifest coreTypes.Manifest) ManifestContainer {
 	return ret
 }
 
-func (s *ManifestContainer) Summarize() {
-	s.NItems = len(s.Items)
-	for _, item := range s.Items {
-		s.NBlooms++
-		s.BloomsSize += int(item.BloomSize)
-		s.NIndexes++
-		s.IndexSize += int(item.IndexSize)
-	}
-
+func (s *ManifestContainer) String() string {
+	bytes, _ := json.Marshal(s)
+	return string(bytes)
 }
 
 func (s *ManifestContainer) ShallowCopy() ManifestContainer {
@@ -57,4 +46,15 @@ func (s *ManifestContainer) ShallowCopy() ManifestContainer {
 		NIndexes:     s.NIndexes,
 		IndexSize:    s.IndexSize,
 	}
+}
+
+func (s *ManifestContainer) Summarize() {
+	s.NItems = len(s.Items)
+	for _, item := range s.Items {
+		s.NBlooms++
+		s.BloomsSize += int(item.BloomSize)
+		s.NIndexes++
+		s.IndexSize += int(item.IndexSize)
+	}
+
 }

@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"path/filepath"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
@@ -23,6 +24,41 @@ type NameContainer struct {
 	NPrefund   int                             `json:"nPrefund"`
 	NBaddress  int                             `json:"nBaddress"`
 	NDeleted   int                             `json:"nDeleted"`
+}
+
+func (a *NameContainer) String() string {
+	bytes, _ := json.Marshal(a)
+	return string(bytes)
+}
+
+func (s *NameContainer) NeedsUpdate() bool {
+	e := s.ShallowCopy()
+	s.Summarize()
+	return (e.NDeleted != s.NDeleted ||
+		e.NCustom != s.NCustom ||
+		e.SizeOnDisc != s.SizeOnDisc ||
+		e.NItems != s.NItems ||
+		e.NRegular != s.NRegular ||
+		e.NContracts != s.NContracts ||
+		e.NErc20s != s.NErc20s ||
+		e.NErc721s != s.NErc721s ||
+		e.NPrefund != s.NPrefund ||
+		e.NBaddress != s.NBaddress)
+}
+
+func (s *NameContainer) ShallowCopy() NameContainer {
+	return NameContainer{
+		NItems:     s.NItems,
+		SizeOnDisc: s.SizeOnDisc,
+		NContracts: s.NContracts,
+		NErc20s:    s.NErc20s,
+		NErc721s:   s.NErc721s,
+		NCustom:    s.NCustom,
+		NRegular:   s.NRegular,
+		NPrefund:   s.NPrefund,
+		NBaddress:  s.NBaddress,
+		NDeleted:   s.NDeleted,
+	}
 }
 
 func (s *NameContainer) Summarize() {
@@ -59,34 +95,4 @@ func (s *NameContainer) Summarize() {
 			s.NContracts++
 		}
 	}
-}
-
-func (s *NameContainer) ShallowCopy() NameContainer {
-	return NameContainer{
-		NItems:     s.NItems,
-		SizeOnDisc: s.SizeOnDisc,
-		NContracts: s.NContracts,
-		NErc20s:    s.NErc20s,
-		NErc721s:   s.NErc721s,
-		NCustom:    s.NCustom,
-		NRegular:   s.NRegular,
-		NPrefund:   s.NPrefund,
-		NBaddress:  s.NBaddress,
-		NDeleted:   s.NDeleted,
-	}
-}
-
-func (s *NameContainer) NeedsUpdate() bool {
-	e := s.ShallowCopy()
-	s.Summarize()
-	return (e.NDeleted != s.NDeleted ||
-		e.NCustom != s.NCustom ||
-		e.SizeOnDisc != s.SizeOnDisc ||
-		e.NItems != s.NItems ||
-		e.NRegular != s.NRegular ||
-		e.NContracts != s.NContracts ||
-		e.NErc20s != s.NErc20s ||
-		e.NErc721s != s.NErc721s ||
-		e.NPrefund != s.NPrefund ||
-		e.NBaddress != s.NBaddress)
 }

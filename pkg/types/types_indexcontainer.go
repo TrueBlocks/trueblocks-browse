@@ -24,9 +24,16 @@ func NewIndexContainer(items []coreTypes.ChunkStats) IndexContainer {
 	}
 }
 
-func (s IndexContainer) String() string {
+func (s *IndexContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
+}
+
+func (s *IndexContainer) ShallowCopy() IndexContainer {
+	return IndexContainer{
+		NItems:     s.NItems,
+		ChunkStats: s.ChunkStats,
+	}
 }
 
 func (s *IndexContainer) Summarize() {
@@ -47,12 +54,5 @@ func (s *IndexContainer) Summarize() {
 	}
 	if s.NBlocks > 0 {
 		s.AppsPerBlock = float64(s.NApps) / float64(s.NBlocks)
-	}
-}
-
-func (s *IndexContainer) ShallowCopy() IndexContainer {
-	return IndexContainer{
-		NItems:     s.NItems,
-		ChunkStats: s.ChunkStats,
 	}
 }

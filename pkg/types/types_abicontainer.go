@@ -30,9 +30,20 @@ func NewAbiContainer(items []coreTypes.Abi) AbiContainer {
 		},
 	}
 }
-func (s AbiContainer) String() string {
+
+func (s *AbiContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
+}
+
+func (s *AbiContainer) ShallowCopy() AbiContainer {
+	return AbiContainer{
+		Abi:           s.Abi,
+		NItems:        s.NItems,
+		LargestFile:   s.LargestFile,
+		MostFunctions: s.MostFunctions,
+		MostEvents:    s.MostEvents,
+	}
 }
 
 func (s *AbiContainer) Summarize() {
@@ -50,12 +61,21 @@ func (s *AbiContainer) Summarize() {
 	s.MostEvents = fmt.Sprintf("%s (%d events)", s.mE.Name, s.mE.Value)
 }
 
-func (s *AbiContainer) ShallowCopy() AbiContainer {
-	return AbiContainer{
-		Abi:           s.Abi,
-		NItems:        s.NItems,
-		LargestFile:   s.LargestFile,
-		MostFunctions: s.MostFunctions,
-		MostEvents:    s.MostEvents,
+type comparison struct {
+	Name  string `json:"name"`
+	Value int    `json:"value"`
+}
+
+func (c *comparison) MarkMax(name string, value int) {
+	if c.Value < value {
+		c.Name = name
+		c.Value = value
+	}
+}
+
+func (c *comparison) MarkMin(name string, value int) {
+	if c.Value > value {
+		c.Name = name
+		c.Value = value
 	}
 }

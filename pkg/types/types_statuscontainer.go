@@ -1,9 +1,11 @@
 package types
 
 import (
+	"encoding/json"
 	"time"
 
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/version"
 )
 
 type StatusContainer struct {
@@ -14,6 +16,21 @@ type StatusContainer struct {
 	NFolders         int                   `json:"nFolders"`
 	NFiles           int                   `json:"nFiles"`
 	NBytes           int                   `json:"nBytes"`
+}
+
+func NewStatusContainer(status coreTypes.Status) StatusContainer {
+	ret := StatusContainer{}
+	ret.Status = status
+	// TODO: This is a hack. We need to get the version from the core
+	ret.Version = version.LibraryVersion
+	ret.LatestUpdate = time.Now().Format(time.RFC3339)
+	ret.Items = status.Caches
+	return ret
+}
+
+func (s *StatusContainer) String() string {
+	bytes, _ := json.Marshal(s)
+	return string(bytes)
 }
 
 func (s *StatusContainer) ShallowCopy() StatusContainer {
