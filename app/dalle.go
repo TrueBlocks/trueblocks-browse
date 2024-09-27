@@ -10,7 +10,7 @@ import (
 )
 
 func (a *App) GetDalle() (string, error) {
-	addr := a.GetLastSub("/history")
+	addr := a.GetSessionSubVal("/history")
 	url := "http://192.34.63.136:8080/dalle/simple/" + addr
 
 	resp, err := http.Get(url)

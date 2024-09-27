@@ -6,7 +6,7 @@ import (
 )
 
 func (a *App) isConfigured() bool {
-	return a.GetLastWizard() == wizard.Okay
+	return a.GetSessionWizard() == wizard.Okay
 }
 
 func (a *App) GetWizardState() wizard.State {

@@ -46,6 +46,14 @@ export function FileSaveAs(arg1) {
   return window['go']['app']['App']['FileSaveAs'](arg1);
 }
 
+export function GetChain() {
+  return window['go']['app']['App']['GetChain']();
+}
+
+export function GetChainList() {
+  return window['go']['app']['App']['GetChainList']();
+}
+
 export function GetContext() {
   return window['go']['app']['App']['GetContext']();
 }
@@ -62,22 +70,6 @@ export function GetEnv(arg1) {
   return window['go']['app']['App']['GetEnv'](arg1);
 }
 
-export function GetLast(arg1) {
-  return window['go']['app']['App']['GetLast'](arg1);
-}
-
-export function GetLastDaemon(arg1) {
-  return window['go']['app']['App']['GetLastDaemon'](arg1);
-}
-
-export function GetLastSub(arg1) {
-  return window['go']['app']['App']['GetLastSub'](arg1);
-}
-
-export function GetLastWizard() {
-  return window['go']['app']['App']['GetLastWizard']();
-}
-
 export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
@@ -88,6 +80,22 @@ export function GetMeta() {
 
 export function GetSession() {
   return window['go']['app']['App']['GetSession']();
+}
+
+export function GetSessionDeamon(arg1) {
+  return window['go']['app']['App']['GetSessionDeamon'](arg1);
+}
+
+export function GetSessionSubVal(arg1) {
+  return window['go']['app']['App']['GetSessionSubVal'](arg1);
+}
+
+export function GetSessionVal(arg1) {
+  return window['go']['app']['App']['GetSessionVal'](arg1);
+}
+
+export function GetSessionWizard() {
+  return window['go']['app']['App']['GetSessionWizard']();
 }
 
 export function GetWizardState() {
@@ -126,8 +134,8 @@ export function PortfolioPage(arg1, arg2) {
   return window['go']['app']['App']['PortfolioPage'](arg1, arg2);
 }
 
-export function Refresh(arg1) {
-  return window['go']['app']['App']['Refresh'](arg1);
+export function Refresh(arg1, arg2) {
+  return window['go']['app']['App']['Refresh'](arg1, arg2);
 }
 
 export function RegisterCtx(arg1) {
@@ -138,16 +146,20 @@ export function Reload(arg1) {
   return window['go']['app']['App']['Reload'](arg1);
 }
 
+export function SetChain(arg1, arg2) {
+  return window['go']['app']['App']['SetChain'](arg1, arg2);
+}
+
 export function SetEnv(arg1, arg2) {
   return window['go']['app']['App']['SetEnv'](arg1, arg2);
 }
 
-export function SetLast(arg1, arg2) {
-  return window['go']['app']['App']['SetLast'](arg1, arg2);
+export function SetSessionDaemon(arg1, arg2) {
+  return window['go']['app']['App']['SetSessionDaemon'](arg1, arg2);
 }
 
-export function SetLastDaemon(arg1, arg2) {
-  return window['go']['app']['App']['SetLastDaemon'](arg1, arg2);
+export function SetSessionVal(arg1, arg2) {
+  return window['go']['app']['App']['SetSessionVal'](arg1, arg2);
 }
 
 export function StateToString(arg1) {

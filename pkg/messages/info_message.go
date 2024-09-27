@@ -1,6 +1,8 @@
 package messages
 
-import "context"
+import (
+	"context"
+)
 
 type InfoMsg struct {
 	Message string `json:"message"`
@@ -11,6 +13,7 @@ func NewInfoMessage(message string) *InfoMsg {
 }
 
 func SendInfo(ctx context.Context, msg string) {
+	// logger.Info(msg)
 	Send(ctx, Info, NewInfoMessage(msg))
 }
 

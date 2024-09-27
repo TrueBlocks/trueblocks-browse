@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 // TODO: This alias is wrong, can it not be @Routes See also @/App.module.css
 import { routeItems, RouteItem } from "@/Routes";
-import { GetLast, GetLastSub, SetLast } from "@gocode/app/App";
+import { GetSessionVal, GetSessionSubVal, SetSessionVal } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import { useAppState } from "@state";
@@ -14,7 +14,7 @@ export function Menu() {
   const { isConfigured } = useAppState();
 
   useEffect(() => {
-    (GetLast("route") || "/").then((route) => {
+    (GetSessionVal("route") || "/").then((route) => {
       if (route.startsWith("/history")) {
         setActiveRoute("/history/:address");
       } else {
@@ -39,14 +39,14 @@ export function Menu() {
   const handleRouteChange = (route: string) => {
     setActiveRoute(route);
     if (route.startsWith("/history")) {
-      GetLastSub("/history").then((subRoute) => {
+      GetSessionSubVal("/history").then((subRoute) => {
         route = route.replace("/:address", subRoute);
         setLocation(route);
       });
-      SetLast("route", route);
+      SetSessionVal("route", route);
       setActiveRoute("/history/:address");
     } else {
-      SetLast("route", route);
+      SetSessionVal("route", route);
       setActiveRoute(route);
     }
   };

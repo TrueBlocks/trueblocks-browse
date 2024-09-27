@@ -1,7 +1,6 @@
 package daemons
 
 import (
-	"encoding/json"
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -29,8 +28,15 @@ func NewIpfs(freshener Freshener, name string, sleep time.Duration, start bool) 
 }
 
 func (s *DaemonIpfs) String() string {
-	bytes, _ := json.Marshal(s.Daemon)
-	return string(bytes)
+	return s.Daemon.String()
+}
+
+func (s *DaemonIpfs) GetState() State {
+	return s.Daemon.GetState()
+}
+
+func (s *DaemonIpfs) IsRunning() bool {
+	return s.Daemon.IsRunning()
 }
 
 func (s *DaemonIpfs) Run() {
@@ -48,18 +54,10 @@ func (s *DaemonIpfs) Pause() error {
 	return s.Daemon.Pause()
 }
 
-func (s *DaemonIpfs) Toggle() error {
-	return s.Daemon.Toggle()
-}
-
 func (s *DaemonIpfs) Tick(msg ...string) int {
 	return s.Daemon.Tick(msg...)
 }
 
-func (s *DaemonIpfs) IsRunning() bool {
-	return s.Daemon.IsRunning()
-}
-
-func (s *DaemonIpfs) GetState() State {
-	return s.Daemon.GetState()
+func (s *DaemonIpfs) Toggle() error {
+	return s.Daemon.Toggle()
 }

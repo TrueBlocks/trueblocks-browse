@@ -27,6 +27,8 @@ func (a *App) NamePage(first, pageSize int) types.NameContainer {
 	return copy
 }
 
+var namesChain = "mainnet"
+
 func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
@@ -38,16 +40,15 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
+	messages.SendInfo(a.ctx, "Freshening names")
 	if !a.names.NeedsUpdate() {
-		messages.SendInfo(a.ctx, "No need to reload")
 		return nil
 	}
 
-	messages.SendInfo(a.ctx, "Reloading names")
 	names.ClearCustomNames()
 
 	parts := coreTypes.Regular | coreTypes.Custom | coreTypes.Prefund | coreTypes.Baddress
-	if namesMap, err := names.LoadNamesMap(a.globals.Chain, parts, nil); err != nil {
+	if namesMap, err := names.LoadNamesMap(namesChain, parts, nil); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -117,6 +118,7 @@ func (a *App) ModifyName(op string, address base.Address) error {
 		opts := sdk.NamesOptions{
 			Globals: a.globals,
 		}
+		opts.Globals.Chain = namesChain
 		if _, _, err := opts.ModifyName(opFromString(op), cd); err != nil {
 			messages.SendError(a.ctx, err)
 			return err

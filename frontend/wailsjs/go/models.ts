@@ -46,6 +46,7 @@ export namespace config {
 	    }
 	}
 	export class Session {
+	    chain: string;
 	    x: number;
 	    y: number;
 	    width: number;
@@ -63,6 +64,7 @@ export namespace config {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.chain = source["chain"];
 	        this.x = source["x"];
 	        this.y = source["y"];
 	        this.width = source["width"];
@@ -1693,6 +1695,12 @@ export namespace types {
 
 export namespace wizard {
 	
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
+	}
 	export enum State {
 	    NOTOKAY = "notOkay",
 	    TOMLOKAY = "tomlOkay",
@@ -1700,12 +1708,6 @@ export namespace wizard {
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
 	    OKAY = "okay",
-	}
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
 	}
 	export class Wizard {
 	    state: State;

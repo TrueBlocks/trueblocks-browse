@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { AppShell } from "@mantine/core";
 import { Aside, Header, Navbar, Routes, AppStatus } from "@components";
-import { GetLast, SetLast } from "@gocode/app/App";
+import { GetSessionVal, SetSessionVal } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import { AppStateProvider } from "@state";
@@ -11,14 +11,14 @@ function App() {
   const [showHelp, setShowHelp] = useState<boolean>(false);
 
   useEffect(() => {
-    GetLast("help").then((value) => {
+    GetSessionVal("help").then((value) => {
       setShowHelp(value === "true");
     });
 
     const toggleHelp = () => {
       setShowHelp((prevShowHelp) => {
         const newShowHelp = !prevShowHelp;
-        SetLast("help", `${newShowHelp ? "true" : "false"}`);
+        SetSessionVal("help", `${newShowHelp ? "true" : "false"}`);
         return newShowHelp;
       });
     };

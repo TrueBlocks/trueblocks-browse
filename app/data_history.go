@@ -21,7 +21,7 @@ func (a *App) Reload(addr base.Address) {
 	historyMutex.Unlock()
 	a.HistoryPage(addr.String(), 0, 15)
 	a.removeAddress(addr)
-	a.Refresh()
+	a.Refresh(false)
 }
 
 func (a *App) CancleContexts() {
