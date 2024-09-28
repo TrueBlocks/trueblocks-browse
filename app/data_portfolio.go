@@ -29,7 +29,6 @@ func (a *App) loadPortfolio(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
-	messages.SendInfo(a.ctx, "Freshening portfolio")
 	a.portfolio = types.PortfolioContainer{}
 	a.portfolio.MyCount = len(a.historyMap)
 	a.portfolio.NMonitors = len(a.monitors.Items)
@@ -52,7 +51,7 @@ func (a *App) loadPortfolio(wg *sync.WaitGroup, errorChan chan error) error {
 	sort.Slice(a.portfolio.Items, func(i, j int) bool {
 		return a.portfolio.Items[i].Address.Cmp(a.portfolio.Items[j].Address.Address) < 0
 	})
-	messages.SendInfo(a.ctx, "Finished loading portfolio")
+	messages.SendInfo(a.ctx, "Loaded portfolio")
 
 	return nil
 }

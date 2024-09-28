@@ -3,7 +3,9 @@ package types
 import (
 	"encoding/json"
 	"path/filepath"
+	"time"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -24,6 +26,18 @@ type NameContainer struct {
 	NPrefund   int                             `json:"nPrefund"`
 	NBaddress  int                             `json:"nBaddress"`
 	NDeleted   int                             `json:"nDeleted"`
+	LastUpdate time.Time                       `json:"lastUpdate"`
+	Chain      string                          `json:"chain"`
+}
+
+func NewNameContainer(chain string, namesMap map[base.Address]coreTypes.Name) NameContainer {
+	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(chain))
+	return NameContainer{
+		Names:      make([]coreTypes.Name, 0),
+		NamesMap:   namesMap,
+		LastUpdate: latest,
+		Chain:      chain,
+	}
 }
 
 func (a *NameContainer) String() string {
@@ -32,22 +46,16 @@ func (a *NameContainer) String() string {
 }
 
 func (s *NameContainer) NeedsUpdate() bool {
-	e := s.ShallowCopy()
-	s.Summarize()
-	return (e.NDeleted != s.NDeleted ||
-		e.NCustom != s.NCustom ||
-		e.SizeOnDisc != s.SizeOnDisc ||
-		e.NItems != s.NItems ||
-		e.NRegular != s.NRegular ||
-		e.NContracts != s.NContracts ||
-		e.NErc20s != s.NErc20s ||
-		e.NErc721s != s.NErc721s ||
-		e.NPrefund != s.NPrefund ||
-		e.NBaddress != s.NBaddress)
+	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(s.Chain))
+	if latest != s.LastUpdate {
+		s.LastUpdate = latest
+		return true
+	}
+	return false
 }
 
-func (s *NameContainer) ShallowCopy() NameContainer {
-	return NameContainer{
+func (s *NameContainer) ShallowCopy() Containerer {
+	return &NameContainer{
 		NItems:     s.NItems,
 		SizeOnDisc: s.SizeOnDisc,
 		NContracts: s.NContracts,
@@ -58,6 +66,8 @@ func (s *NameContainer) ShallowCopy() NameContainer {
 		NPrefund:   s.NPrefund,
 		NBaddress:  s.NBaddress,
 		NDeleted:   s.NDeleted,
+		LastUpdate: s.LastUpdate,
+		Chain:      s.Chain,
 	}
 }
 

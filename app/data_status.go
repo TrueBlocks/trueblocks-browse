@@ -41,7 +41,6 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		Globals: a.globals,
 	}
 
-	messages.SendInfo(a.ctx, "Freshening status")
 	if statusArray, meta, err := opts.StatusAll(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -60,7 +59,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 			return a.status.Items[i].SizeInBytes > a.status.Items[j].SizeInBytes
 		})
 		a.status.Summarize()
-		messages.SendInfo(a.ctx, "Finished loading status")
+		messages.SendInfo(a.ctx, "Loaded status")
 	}
 	return nil
 }

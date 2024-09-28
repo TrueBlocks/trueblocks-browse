@@ -37,7 +37,6 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 		},
 	}
 
-	messages.SendInfo(a.ctx, "Freshening indexes")
 	if chunks, meta, err := opts.ChunksStats(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -59,7 +58,7 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 			messages.SendError(a.ctx, err)
 		}
 		a.index.Summarize()
-		messages.SendInfo(a.ctx, "Finished loading indexes")
+		messages.SendInfo(a.ctx, "Loaded indexes")
 	}
 	return nil
 }

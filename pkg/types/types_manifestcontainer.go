@@ -2,7 +2,11 @@ package types
 
 import (
 	"encoding/json"
+	"path/filepath"
+	"time"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -15,13 +19,17 @@ type ManifestContainer struct {
 	BloomsSize         int                     `json:"bloomsSize"`
 	NIndexes           int                     `json:"nIndexes"`
 	IndexSize          int                     `json:"indexSize"`
+	LastUpdate         time.Time               `json:"lastUpdate"`
 }
 
-func NewManifestContainer(manifest coreTypes.Manifest) ManifestContainer {
+func NewManifestContainer(chain string, manifest coreTypes.Manifest) ManifestContainer {
+	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToIndex(chain), "finalized"))
 	ret := ManifestContainer{
-		Manifest: manifest,
-		Items:    manifest.Chunks,
+		Manifest:   manifest,
+		Items:      manifest.Chunks,
+		LastUpdate: latest,
 	}
+	ret.Chain = chain
 	ret.Summarize()
 
 	return ret
@@ -32,8 +40,17 @@ func (s *ManifestContainer) String() string {
 	return string(bytes)
 }
 
-func (s *ManifestContainer) ShallowCopy() ManifestContainer {
-	return ManifestContainer{
+func (s *ManifestContainer) NeedsUpdate() bool {
+	latest := utils.MustGetLatestFileTime(config.PathToManifest(s.Chain))
+	if latest != s.LastUpdate {
+		s.LastUpdate = latest
+		return true
+	}
+	return false
+}
+
+func (s *ManifestContainer) ShallowCopy() Containerer {
+	return &ManifestContainer{
 		Manifest: coreTypes.Manifest{
 			Chain:         s.Manifest.Chain,
 			Specification: s.Manifest.Specification,
@@ -45,6 +62,7 @@ func (s *ManifestContainer) ShallowCopy() ManifestContainer {
 		BloomsSize:   s.BloomsSize,
 		NIndexes:     s.NIndexes,
 		IndexSize:    s.IndexSize,
+		LastUpdate:   s.LastUpdate,
 	}
 }
 
@@ -56,5 +74,4 @@ func (s *ManifestContainer) Summarize() {
 		s.NIndexes++
 		s.IndexSize += int(item.IndexSize)
 	}
-
 }

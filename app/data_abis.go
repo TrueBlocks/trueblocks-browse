@@ -37,7 +37,6 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	opts.Globals.Chain = abisChain
 
-	messages.SendInfo(a.ctx, "Freshening abis")
 	if count, meta, err := opts.AbisCount(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -77,7 +76,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 				messages.SendError(a.ctx, err)
 			}
 			a.abis.Summarize()
-			messages.SendInfo(a.ctx, "Finished loading abis")
+			messages.SendInfo(a.ctx, "Loaded abis")
 		}
 	}
 	return nil

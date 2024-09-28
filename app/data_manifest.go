@@ -11,10 +11,10 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-func (a *App) ManifestPage(first, pageSize int) types.ManifestContainer {
+func (a *App) ManifestPage(first, pageSize int) *types.ManifestContainer {
 	first = base.Max(0, base.Min(first, len(a.manifest.Items)-1))
 	last := base.Min(len(a.manifest.Items), first+pageSize)
-	copy := a.manifest.ShallowCopy()
+	copy, _ := a.manifest.ShallowCopy().(*types.ManifestContainer)
 	copy.Items = a.manifest.Items[first:last]
 	return copy
 }
@@ -30,14 +30,18 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
+	chain := a.globals.Chain
+	if !a.manifest.NeedsUpdate() {
+		return nil
+	}
+
 	opts := sdk.ChunksOptions{
 		Globals: sdk.Globals{
 			Verbose: true,
-			Chain:   a.globals.Chain,
+			Chain:   chain,
 		},
 	}
 
-	messages.SendInfo(a.ctx, "Freshening manifest")
 	if manifests, meta, err := opts.ChunksManifest(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -54,11 +58,11 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 		if len(a.manifest.Items) == len(manifests[0].Chunks) {
 			return nil
 		}
-		a.manifest = types.NewManifestContainer(manifests[0])
+		a.manifest = types.NewManifestContainer(chain, manifests[0])
 		sort.Slice(a.manifest.Items, func(i, j int) bool {
 			return a.manifest.Items[i].Range > a.manifest.Items[j].Range
 		})
-		messages.SendInfo(a.ctx, "Finished loading manifest")
+		messages.SendInfo(a.ctx, "Loaded manifest")
 	}
 	return nil
 }

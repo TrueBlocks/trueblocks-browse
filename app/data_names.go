@@ -16,13 +16,13 @@ import (
 
 var nameMutex sync.Mutex
 
-func (a *App) NamePage(first, pageSize int) types.NameContainer {
+func (a *App) NamePage(first, pageSize int) *types.NameContainer {
 	nameMutex.Lock()
 	defer nameMutex.Unlock()
 
 	first = base.Max(0, base.Min(first, len(a.names.Names)-1))
 	last := base.Min(len(a.names.Names), first+pageSize)
-	copy := a.names.ShallowCopy()
+	copy, _ := a.names.ShallowCopy().(*types.NameContainer)
 	copy.Names = a.names.Names[first:last]
 	return copy
 }
@@ -40,7 +40,6 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
-	messages.SendInfo(a.ctx, "Freshening names")
 	if !a.names.NeedsUpdate() {
 		return nil
 	}
@@ -63,10 +62,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		nameMutex.Lock()
 		defer nameMutex.Unlock()
 
-		a.names = types.NameContainer{
-			NamesMap: namesMap,
-			Names:    []coreTypes.Name{},
-		}
+		a.names = types.NewNameContainer(namesChain, namesMap)
 		for _, name := range a.names.NamesMap {
 			a.names.Names = append(a.names.Names, name)
 		}
@@ -74,7 +70,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 			return compare(a.names.Names[i], a.names.Names[j])
 		})
 		a.names.Summarize()
-		messages.SendInfo(a.ctx, "Finished loading names")
+		messages.SendInfo(a.ctx, "Loaded names")
 		return nil
 	}
 }

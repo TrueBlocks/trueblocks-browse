@@ -18,6 +18,7 @@ func (a *App) GetChainList() []string {
 }
 
 func (a *App) SetChain(chain string, address base.Address) {
+	a.CancleContexts()
 	a.globals.Chain = chain
 	a.SetSessionVal("chain", chain)
 	a.abis = types.AbiContainer{}

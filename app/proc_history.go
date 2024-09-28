@@ -1,7 +1,6 @@
 package app
 
 import (
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
@@ -13,19 +12,6 @@ func (a *App) Reload(addr base.Address) {
 	a.HistoryPage(addr.String(), 0, 15)
 	a.removeAddress(addr)
 	a.Refresh(false)
-}
-
-func (a *App) CancleContexts() {
-	for address, ctxArrays := range a.renderCtxs {
-		for _, ctx := range ctxArrays {
-			messages.Send(a.ctx,
-				messages.Cancelled,
-				messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(len(a.historyMap[address].Items)), address),
-			)
-			ctx.Cancel()
-		}
-		delete(a.renderCtxs, address)
-	}
 }
 
 func (a *App) removeAddress(addr base.Address) {

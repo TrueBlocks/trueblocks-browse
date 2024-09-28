@@ -12,10 +12,10 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-func (a *App) MonitorPage(first, pageSize int) types.MonitorContainer {
+func (a *App) MonitorPage(first, pageSize int) *types.MonitorContainer {
 	first = base.Max(0, base.Min(first, len(a.monitors.Items)-1))
 	last := base.Min(len(a.monitors.Items), first+pageSize)
-	copy := a.monitors.ShallowCopy()
+	copy := a.monitors.ShallowCopy().(*types.MonitorContainer)
 	copy.Items = a.monitors.Items[first:last]
 	return copy
 }
@@ -39,7 +39,6 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		},
 	}
 
-	messages.SendInfo(a.ctx, "Freshening monitors")
 	if monitors, meta, err := opts.MonitorsList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -67,7 +66,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 			return a.monitors.Items[i].NRecords < a.monitors.Items[j].NRecords
 		})
 		a.monitors.Summarize()
-		messages.SendInfo(a.ctx, "Finished loading monitors")
+		messages.SendInfo(a.ctx, "Loaded monitors")
 	}
 	return nil
 }
