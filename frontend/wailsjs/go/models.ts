@@ -487,6 +487,9 @@ export namespace types {
 	    mostFunctions: string;
 	    mostEvents: string;
 	    sort: sdk.SortSpec;
+	    // Go type: time
+	    lastUpdate: any;
+	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new AbiContainer(source);
@@ -512,6 +515,8 @@ export namespace types {
 	        this.mostFunctions = source["mostFunctions"];
 	        this.mostEvents = source["mostEvents"];
 	        this.sort = this.convertValues(source["sort"], sdk.SortSpec);
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.chain = source["chain"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1158,6 +1163,9 @@ export namespace types {
 	    items: ChunkStats[];
 	    nItems: number;
 	    sort: sdk.SortSpec;
+	    // Go type: time
+	    lastUpdate: any;
+	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new IndexContainer(source);
@@ -1181,6 +1189,8 @@ export namespace types {
 	        this.items = this.convertValues(source["items"], ChunkStats);
 	        this.nItems = source["nItems"];
 	        this.sort = this.convertValues(source["sort"], sdk.SortSpec);
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.chain = source["chain"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1209,11 +1219,12 @@ export namespace types {
 	    version: string;
 	    items: ChunkRecord[];
 	    nItems: number;
-	    latestUpdate: string;
 	    nBlooms: number;
 	    bloomsSize: number;
 	    nIndexes: number;
 	    indexSize: number;
+	    // Go type: time
+	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new ManifestContainer(source);
@@ -1227,11 +1238,11 @@ export namespace types {
 	        this.version = source["version"];
 	        this.items = this.convertValues(source["items"], ChunkRecord);
 	        this.nItems = source["nItems"];
-	        this.latestUpdate = source["latestUpdate"];
 	        this.nBlooms = source["nBlooms"];
 	        this.bloomsSize = source["bloomsSize"];
 	        this.nIndexes = source["nIndexes"];
 	        this.indexSize = source["indexSize"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1339,6 +1350,9 @@ export namespace types {
 	    nStaged: number;
 	    nEmpty: number;
 	    monitorMap: {[key: string]: Monitor};
+	    // Go type: time
+	    lastUpdate: any;
+	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new MonitorContainer(source);
@@ -1361,6 +1375,8 @@ export namespace types {
 	        this.nStaged = source["nStaged"];
 	        this.nEmpty = source["nEmpty"];
 	        this.monitorMap = this.convertValues(source["monitorMap"], Monitor, true);
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.chain = source["chain"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1451,6 +1467,9 @@ export namespace types {
 	    nPrefund: number;
 	    nBaddress: number;
 	    nDeleted: number;
+	    // Go type: time
+	    lastUpdate: any;
+	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new NameContainer(source);
@@ -1470,6 +1489,8 @@ export namespace types {
 	        this.nPrefund = source["nPrefund"];
 	        this.nBaddress = source["nBaddress"];
 	        this.nDeleted = source["nDeleted"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.chain = source["chain"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1628,10 +1649,11 @@ export namespace types {
 	    diffs?: MetaData;
 	    items: CacheItem[];
 	    nItems: number;
-	    latestUpdate: string;
 	    nFolders: number;
 	    nFiles: number;
 	    nBytes: number;
+	    // Go type: time
+	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new StatusContainer(source);
@@ -1663,10 +1685,10 @@ export namespace types {
 	        this.diffs = this.convertValues(source["diffs"], MetaData);
 	        this.items = this.convertValues(source["items"], CacheItem);
 	        this.nItems = source["nItems"];
-	        this.latestUpdate = source["latestUpdate"];
 	        this.nFolders = source["nFolders"];
 	        this.nFiles = source["nFiles"];
 	        this.nBytes = source["nBytes"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1695,12 +1717,6 @@ export namespace types {
 
 export namespace wizard {
 	
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
-	}
 	export enum State {
 	    NOTOKAY = "notOkay",
 	    TOMLOKAY = "tomlOkay",
@@ -1708,6 +1724,12 @@ export namespace wizard {
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
 	    OKAY = "okay",
+	}
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
 	}
 	export class Wizard {
 	    state: State;

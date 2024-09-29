@@ -8,8 +8,12 @@ import (
 )
 
 func MustGetLatestFileTime(path string) time.Time {
-	if info, err := file.GetNewestInDirectory(path); err != nil {
-		logger.Error("error getting latest file time", "error", err)
+	if info, err := file.GetNewestInDirectory(path); err != nil || info == nil {
+		if info == nil {
+			logger.Warn("latest file time skipped", "error", err)
+		} else {
+			logger.Error("error getting latest file time:", err)
+		}
 		return time.Now()
 	} else {
 		return info.ModTime()

@@ -14,6 +14,10 @@ export function Model(arg1, arg2, arg3, arg4) {
   return window['go']['types']['MonitorContainer']['Model'](arg1, arg2, arg3, arg4);
 }
 
+export function NeedsUpdate() {
+  return window['go']['types']['MonitorContainer']['NeedsUpdate']();
+}
+
 export function ShallowCopy() {
   return window['go']['types']['MonitorContainer']['ShallowCopy']();
 }

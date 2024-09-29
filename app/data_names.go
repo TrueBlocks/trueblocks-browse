@@ -16,6 +16,7 @@ import (
 
 var nameMutex sync.Mutex
 
+// Find: NewViews
 func (a *App) NamePage(first, pageSize int) *types.NameContainer {
 	nameMutex.Lock()
 	defer nameMutex.Unlock()
@@ -59,6 +60,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else {
+		// a.meta = *meta
 		nameMutex.Lock()
 		defer nameMutex.Unlock()
 
@@ -71,8 +73,8 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		})
 		a.names.Summarize()
 		messages.SendInfo(a.ctx, "Loaded names")
-		return nil
 	}
+	return nil
 }
 
 func compare(nameI, nameJ coreTypes.Name) bool {

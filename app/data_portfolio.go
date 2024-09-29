@@ -9,12 +9,13 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
-func (a *App) PortfolioPage(first, pageSize int) types.PortfolioContainer {
+func (a *App) PortfolioPage(first, pageSize int) *types.PortfolioContainer {
 	first = base.Max(0, base.Min(first, len(a.portfolio.Items)-1))
 	last := base.Min(len(a.portfolio.Items), first+pageSize)
+	// copy, _ := a.portfolio.ShallowCopy().(*types.PortfolioContainer)
 	copy := a.portfolio.ShallowCopy()
 	copy.Items = a.portfolio.Items[first:last]
-	return copy
+	return &copy
 }
 
 func (a *App) loadPortfolio(wg *sync.WaitGroup, errorChan chan error) error {
@@ -26,6 +27,27 @@ func (a *App) loadPortfolio(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 
 	if !a.isConfigured() {
+		return nil
+	}
+
+	containers := []types.Containerer{
+		&a.abis,
+		// "HistoryContainer":   &HistoryContainer{},
+		&a.index,
+		&a.manifest,
+		&a.monitors,
+		&a.names,
+		&a.status,
+		// "PortfolioContainer": &PortfolioContainer{},
+	}
+	needsUpdate := false
+	for _, container := range containers {
+		if container.NeedsUpdate() {
+			needsUpdate = true
+			break
+		}
+	}
+	if !needsUpdate {
 		return nil
 	}
 

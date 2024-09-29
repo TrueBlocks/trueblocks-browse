@@ -5,3 +5,11 @@
 export function ShallowCopy() {
   return window['go']['types']['PortfolioContainer']['ShallowCopy']();
 }
+
+export function String() {
+  return window['go']['types']['PortfolioContainer']['String']();
+}
+
+export function Summarize() {
+  return window['go']['types']['PortfolioContainer']['Summarize']();
+}

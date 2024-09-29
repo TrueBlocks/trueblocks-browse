@@ -8,14 +8,14 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
+// Find: NewViews
 func (a *App) MonitorPage(first, pageSize int) *types.MonitorContainer {
 	first = base.Max(0, base.Min(first, len(a.monitors.Items)-1))
 	last := base.Min(len(a.monitors.Items), first+pageSize)
-	copy := a.monitors.ShallowCopy().(*types.MonitorContainer)
+	copy, _ := a.monitors.ShallowCopy().(*types.MonitorContainer)
 	copy.Items = a.monitors.Items[first:last]
 	return copy
 }
@@ -31,11 +31,15 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
+	if !a.monitors.NeedsUpdate() {
+		return nil
+	}
+
+	chain := a.globals.Chain
 	opts := sdk.MonitorsOptions{
-		Staged: true,
 		Globals: sdk.Globals{
 			Verbose: true,
-			Chain:   a.globals.Chain,
+			Chain:   chain,
 		},
 	}
 
@@ -52,16 +56,13 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		return err
 	} else {
 		a.meta = *meta
-		if len(a.monitors.Items) == len(monitors) {
-			return nil
-		}
-		a.monitors = types.MonitorContainer{}
-		a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
+		a.monitors = types.NewMonitorContainer(chain)
 		for _, mon := range monitors {
 			mon.Name = a.names.NamesMap[mon.Address].Name
 			a.monitors.Items = append(a.monitors.Items, mon)
 			a.monitors.MonitorMap[mon.Address] = mon
 		}
+		// TODO: Use core's sorting mechanism (see SortChunkStats for example)
 		sort.Slice(a.monitors.Items, func(i, j int) bool {
 			return a.monitors.Items[i].NRecords < a.monitors.Items[j].NRecords
 		})

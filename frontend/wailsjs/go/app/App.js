@@ -10,10 +10,6 @@ export function AddrToName(arg1) {
   return window['go']['app']['App']['AddrToName'](arg1);
 }
 
-export function Cancel(arg1) {
-  return window['go']['app']['App']['Cancel'](arg1);
-}
-
 export function CancleContexts() {
   return window['go']['app']['App']['CancleContexts']();
 }
@@ -60,10 +56,6 @@ export function GetContext() {
 
 export function GetDaemonJson(arg1) {
   return window['go']['app']['App']['GetDaemonJson'](arg1);
-}
-
-export function GetDalle() {
-  return window['go']['app']['App']['GetDalle']();
 }
 
 export function GetEnv(arg1) {

@@ -58,11 +58,11 @@ type MonitorContainer struct {
 	Chain      string                             `json:"chain"`
 }
 
-func NewMonitorContainer(chain string, items []coreTypes.Monitor) MonitorContainer {
+func NewMonitorContainer(chain string) MonitorContainer {
 	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(chain), "monitors"))
 	return MonitorContainer{
 		Chain:      chain,
-		Items:      items,
+		Items:      []coreTypes.Monitor{},
 		MonitorMap: make(map[base.Address]coreTypes.Monitor),
 		LastUpdate: latest,
 	}
@@ -84,13 +84,14 @@ func (s *MonitorContainer) NeedsUpdate() bool {
 
 func (s *MonitorContainer) ShallowCopy() Containerer {
 	return &MonitorContainer{
-		Monitor:  s.Monitor,
-		NNamed:   s.NNamed,
-		NStaged:  s.NStaged,
-		NEmpty:   s.NEmpty,
-		NDeleted: s.NDeleted,
-		NItems:   s.NItems,
-		Chain:    s.Chain,
+		Monitor:    s.Monitor,
+		NNamed:     s.NNamed,
+		NStaged:    s.NStaged,
+		NEmpty:     s.NEmpty,
+		NDeleted:   s.NDeleted,
+		NItems:     s.NItems,
+		LastUpdate: s.LastUpdate,
+		Chain:      s.Chain,
 	}
 }
 

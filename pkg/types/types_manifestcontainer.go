@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"path/filepath"
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
@@ -14,7 +13,6 @@ type ManifestContainer struct {
 	coreTypes.Manifest `json:",inline"`
 	Items              []coreTypes.ChunkRecord `json:"items"`
 	NItems             int                     `json:"nItems"`
-	LatestUpdate       string                  `json:"latestUpdate"`
 	NBlooms            int                     `json:"nBlooms"`
 	BloomsSize         int                     `json:"bloomsSize"`
 	NIndexes           int                     `json:"nIndexes"`
@@ -23,15 +21,13 @@ type ManifestContainer struct {
 }
 
 func NewManifestContainer(chain string, manifest coreTypes.Manifest) ManifestContainer {
-	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToIndex(chain), "finalized"))
+	latest := utils.MustGetLatestFileTime(config.PathToManifest(chain))
 	ret := ManifestContainer{
 		Manifest:   manifest,
 		Items:      manifest.Chunks,
 		LastUpdate: latest,
 	}
 	ret.Chain = chain
-	ret.Summarize()
-
 	return ret
 }
 
@@ -56,13 +52,12 @@ func (s *ManifestContainer) ShallowCopy() Containerer {
 			Specification: s.Manifest.Specification,
 			Version:       s.Manifest.Version,
 		},
-		LatestUpdate: s.LatestUpdate,
-		NItems:       s.NItems,
-		NBlooms:      s.NBlooms,
-		BloomsSize:   s.BloomsSize,
-		NIndexes:     s.NIndexes,
-		IndexSize:    s.IndexSize,
-		LastUpdate:   s.LastUpdate,
+		NItems:     s.NItems,
+		NBlooms:    s.NBlooms,
+		BloomsSize: s.BloomsSize,
+		NIndexes:   s.NIndexes,
+		IndexSize:  s.IndexSize,
+		LastUpdate: s.LastUpdate,
 	}
 }
 

@@ -3,3 +3,7 @@
 import {types} from '../models';
 
 export function ShallowCopy():Promise<types.PortfolioContainer>;
+
+export function String():Promise<string>;
+
+export function Summarize():Promise<void>;

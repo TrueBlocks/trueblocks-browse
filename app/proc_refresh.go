@@ -104,6 +104,7 @@ func (a *App) Refresh(skipable bool, which ...string) {
 			time.Sleep(500 * time.Millisecond)
 		}
 	} else {
+		// messages.SendInfo(a.ctx, "Freshened...")
 		messages.Send(a.ctx, messages.Daemon, messages.NewDaemonMsg(
 			a.FreshenController.Name,
 			"Freshening...",

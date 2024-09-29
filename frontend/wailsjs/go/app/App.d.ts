@@ -12,8 +12,6 @@ export function AbiPage(arg1:number,arg2:number):Promise<types.AbiContainer>;
 
 export function AddrToName(arg1:base.Address):Promise<string>;
 
-export function Cancel(arg1:base.Address):Promise<number|boolean>;
-
 export function CancleContexts():Promise<void>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
@@ -37,8 +35,6 @@ export function GetChainList():Promise<Array<string>>;
 export function GetContext():Promise<context.Context>;
 
 export function GetDaemonJson(arg1:string):Promise<string>;
-
-export function GetDalle():Promise<string>;
 
 export function GetEnv(arg1:string):Promise<string>;
 

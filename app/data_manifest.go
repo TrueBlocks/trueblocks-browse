@@ -11,6 +11,7 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
+// Find: NewViews
 func (a *App) ManifestPage(first, pageSize int) *types.ManifestContainer {
 	first = base.Max(0, base.Min(first, len(a.manifest.Items)-1))
 	last := base.Min(len(a.manifest.Items), first+pageSize)
@@ -30,11 +31,11 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
-	chain := a.globals.Chain
 	if !a.manifest.NeedsUpdate() {
 		return nil
 	}
 
+	chain := a.globals.Chain
 	opts := sdk.ChunksOptions{
 		Globals: sdk.Globals{
 			Verbose: true,
@@ -55,13 +56,12 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 		return err
 	} else {
 		a.meta = *meta
-		if len(a.manifest.Items) == len(manifests[0].Chunks) {
-			return nil
-		}
 		a.manifest = types.NewManifestContainer(chain, manifests[0])
+		// TODO: Use sorting mechanism from core (see SortChunkStats for example)
 		sort.Slice(a.manifest.Items, func(i, j int) bool {
 			return a.manifest.Items[i].Range > a.manifest.Items[j].Range
 		})
+		a.manifest.Summarize()
 		messages.SendInfo(a.ctx, "Loaded manifest")
 	}
 	return nil

@@ -58,7 +58,7 @@ function createStatusForm(table: any): GroupDefinition<theInstance>[] {
       title: "Statistics",
       colSpan: 5,
       fields: [
-        { label: "latestUpdate", type: "date", accessor: "latestUpdate" },
+        { label: "lastUpdate", type: "date", accessor: "lastUpdate" },
         { label: "nCaches", type: "int", accessor: "nItems" },
         { label: "nFiles", type: "int", accessor: "nFiles" },
         { label: "nFolders", type: "int", accessor: "nFolders" },

@@ -98,7 +98,7 @@ func (a *App) GetContext() context.Context {
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
-	a.FreshenController = daemons.NewFreshen(a, "freshen", 7000, a.GetSessionDeamon("daemon-freshen"))
+	a.FreshenController = daemons.NewFreshen(a, "freshen", 4000, a.GetSessionDeamon("daemon-freshen"))
 	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetSessionDeamon("daemon-scraper"))
 	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.GetSessionDeamon("daemon-ipfs"))
 	go a.startDaemons()
