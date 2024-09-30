@@ -15,12 +15,15 @@ import (
 var historyMutex sync.RWMutex
 
 func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContainer {
+	// logger.Info("Getting history page for", addr, "from", first, "to", first+pageSize)
 	if !a.isConfigured() {
+		// logger.Info("Not configured")
 		return types.HistoryContainer{}
 	}
 
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
+		// logger.Error("Invalid address: " + addr)
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
 		return types.HistoryContainer{}
 	}
@@ -29,6 +32,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 	_, exists := a.historyMap[address]
 	historyMutex.RUnlock()
 
+	// logger.Info("Address okay. Exists:", exists)
 	if !exists {
 		messages.Send(a.ctx,
 			messages.Progress,
@@ -77,14 +81,20 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 					}
 
 					historyMutex.Lock()
-					a.historyMap[address] = summary
+					if len(summary.Items) == 0 {
+						delete(a.historyMap, address)
+					} else {
+						a.historyMap[address] = summary
+					}
 					historyMutex.Unlock()
 
 				case err := <-opts.RenderCtx.ErrorChan:
+					// logger.Error("Error getting history 1: " + err.Error())
 					messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
 
 				default:
 					if opts.RenderCtx.WasCanceled() {
+						// logger.Warn("Load was canceled: " + address.Hex())
 						return
 					}
 				}
@@ -93,18 +103,24 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 
 		_, meta, err := opts.Export() // blocks until forever loop above finishes
 		if err != nil {
+			// logger.Error("Error getting history 2: " + err.Error())
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
 			return types.HistoryContainer{}
 		}
 		a.meta = *meta
 
+		// logger.Info("Finished export")
+
 		historyMutex.Lock()
-		sort.Slice(a.historyMap[address].Items, func(i, j int) bool {
-			if a.historyMap[address].Items[i].BlockNumber == a.historyMap[address].Items[j].BlockNumber {
-				return a.historyMap[address].Items[i].TransactionIndex > a.historyMap[address].Items[j].TransactionIndex
+		summary := a.historyMap[address]
+		sort.Slice(summary.Items, func(i, j int) bool {
+			if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
+				return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
 			}
-			return a.historyMap[address].Items[i].BlockNumber > a.historyMap[address].Items[j].BlockNumber
+			return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
 		})
+		summary.Summarize()
+		a.historyMap[address] = summary
 		historyMutex.Unlock()
 
 		messages.Send(a.ctx,
@@ -112,7 +128,13 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 			messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(len(a.historyMap[address].Items)), address),
 		)
 
+		// logger.Info("Loading portfolio")
 		a.loadPortfolio(nil, nil)
+	}
+
+	if first == -1 {
+		// logger.Info("Leaving...")
+		return types.HistoryContainer{}
 	}
 
 	historyMutex.RLock()
@@ -121,7 +143,6 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 	first = base.Max(0, base.Min(first, len(a.historyMap[address].Items)-1))
 	last := base.Min(len(a.historyMap[address].Items), first+pageSize)
 	sum := a.historyMap[address]
-	sum.Summarize()
 	copy := sum.ShallowCopy()
 	copy.Balance = a.getBalance(address)
 	copy.Items = a.historyMap[address].Items[first:last]

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"log"
 	"os"
+	"strings"
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
@@ -109,23 +110,21 @@ func (a *App) Startup(ctx context.Context) {
 	if err := a.loadConfig(); err != nil {
 		messages.SendError(a.ctx, err)
 	}
+
+	addr := strings.ReplaceAll(a.GetSessionSubVal("/history"), "/", "")
+	if len(addr) > 0 {
+		logger.Info("Loading history for address: ", addr)
+		go a.HistoryPage(addr, -1, 15)
+	}
 }
 
 func (a *App) DomReady(ctx context.Context) {
-	// Sometimes useful for debugging
-	if os.Getenv("TB_CMD_LINE") == "true" {
-		return
-	}
 	runtime.WindowSetPosition(a.ctx, a.session.Window.X, a.session.Window.Y)
 	runtime.WindowSetSize(a.ctx, a.session.Window.Width, a.session.Window.Height)
 	runtime.WindowShow(a.ctx)
 }
 
 func (a *App) Shutdown(ctx context.Context) {
-	// Sometimes useful for debugging
-	if os.Getenv("TB_CMD_LINE") == "true" {
-		return
-	}
 	a.session.Window.X, a.session.Window.Y = runtime.WindowGetPosition(a.ctx)
 	a.session.Window.Width, a.session.Window.Height = runtime.WindowGetSize(a.ctx)
 	a.session.Window.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed

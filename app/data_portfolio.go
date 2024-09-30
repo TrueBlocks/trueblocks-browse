@@ -26,7 +26,7 @@ func (a *App) loadPortfolio(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 	defer portfolioLock.CompareAndSwap(1, 0)
-	
+
 	_ = errorChan // delint
 	defer func() {
 		if wg != nil {
