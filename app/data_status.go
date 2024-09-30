@@ -5,11 +5,13 @@ import (
 	"io"
 	"sort"
 	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -22,7 +24,14 @@ func (a *App) StatusPage(first, pageSize int) *types.StatusContainer {
 	return copy
 }
 
+var statusLock atomic.Uint32
+
 func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
+	if !statusLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer statusLock.CompareAndSwap(1, 0)
+
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -44,6 +53,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 
 	chain := a.globals.Chain
 	opts := sdk.StatusOptions{
+		Chains:  true,
 		Globals: a.globals,
 	}
 
@@ -70,4 +80,13 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		messages.SendInfo(a.ctx, "Loaded status")
 	}
 	return nil
+}
+
+func (a *App) GetChainInfo(chain string) coreTypes.Chain {
+	for _, ch := range a.status.Chains {
+		if ch.Chain == chain {
+			return ch
+		}
+	}
+	return coreTypes.Chain{}
 }

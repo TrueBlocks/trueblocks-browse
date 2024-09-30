@@ -52,7 +52,7 @@ function createPortfolioForm(table: any): GroupDefinition<theInstance>[] {
     },
     {
       title: "Data 1",
-      colSpan: 3,
+      colSpan: 5,
       fields: [
         { label: "nMonitors", type: "int", accessor: "nMonitors" },
         { label: "nNames", type: "int", accessor: "nNames" },
@@ -61,12 +61,13 @@ function createPortfolioForm(table: any): GroupDefinition<theInstance>[] {
     },
     {
       title: "Data 2",
-      colSpan: 3,
+      colSpan: 5,
       fields: [
         { label: "nIndexes", type: "int", accessor: "nIndexes" },
         { label: "nManifests", type: "int", accessor: "nManifests" },
         { label: "nCaches", type: "int", accessor: "nCaches" },
         { label: "historySize", type: "bytes", accessor: "historySize" },
+        { label: "nOpen", type: "int", accessor: "myCount" },
       ],
     },
   ];

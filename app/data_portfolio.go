@@ -3,6 +3,7 @@ package app
 import (
 	"sort"
 	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -18,7 +19,14 @@ func (a *App) PortfolioPage(first, pageSize int) *types.PortfolioContainer {
 	return &copy
 }
 
+var portfolioLock atomic.Uint32
+
 func (a *App) loadPortfolio(wg *sync.WaitGroup, errorChan chan error) error {
+	if !portfolioLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer portfolioLock.CompareAndSwap(1, 0)
+	
 	_ = errorChan // delint
 	defer func() {
 		if wg != nil {
@@ -32,13 +40,13 @@ func (a *App) loadPortfolio(wg *sync.WaitGroup, errorChan chan error) error {
 
 	containers := []types.Containerer{
 		&a.abis,
-		// "HistoryContainer":   &HistoryContainer{},
+		// &HistoryContainer{},
 		&a.index,
 		&a.manifest,
 		&a.monitors,
 		&a.names,
 		&a.status,
-		// "PortfolioContainer": &PortfolioContainer{},
+		// &PortfolioContainer{},
 	}
 	needsUpdate := false
 	for _, container := range containers {
@@ -47,7 +55,7 @@ func (a *App) loadPortfolio(wg *sync.WaitGroup, errorChan chan error) error {
 			break
 		}
 	}
-	if !needsUpdate {
+	if !needsUpdate && len(a.historyMap) == a.portfolio.MyCount {
 		return nil
 	}
 

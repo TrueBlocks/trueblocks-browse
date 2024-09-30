@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -20,7 +21,14 @@ func (a *App) ManifestPage(first, pageSize int) *types.ManifestContainer {
 	return copy
 }
 
+var manifestLock atomic.Uint32
+
 func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
+	if !manifestLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer manifestLock.CompareAndSwap(1, 0)
+
 	defer func() {
 		if wg != nil {
 			wg.Done()

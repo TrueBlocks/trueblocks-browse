@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -20,8 +21,14 @@ func (a *App) AbiPage(first, pageSize int) *types.AbiContainer {
 }
 
 var abisChain = "mainnet"
+var abiLock atomic.Uint32
 
 func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
+	if !abiLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer abiLock.CompareAndSwap(1, 0)
+
 	defer func() {
 		if wg != nil {
 			wg.Done()

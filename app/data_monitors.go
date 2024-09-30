@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -20,7 +21,14 @@ func (a *App) MonitorPage(first, pageSize int) *types.MonitorContainer {
 	return copy
 }
 
+var monitorLock atomic.Uint32
+
 func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
+	if !monitorLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer monitorLock.CompareAndSwap(1, 0)
+
 	defer func() {
 		if wg != nil {
 			wg.Done()

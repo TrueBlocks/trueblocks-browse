@@ -1,8 +1,13 @@
 package types
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
+)
 
 type PortfolioContainer struct {
+	Session     config.Session     `json:"session"`
 	Summary     HistoryContainer   `json:",inline"`
 	Items       []HistoryContainer `json:"items"`
 	MyCount     int                `json:"myCount"`
@@ -13,6 +18,8 @@ type PortfolioContainer struct {
 	NManifests  int                `json:"nManifests"`
 	NCaches     int                `json:"nCaches"`
 	HistorySize int                `json:"historySize"`
+	Dirty       bool               `json:"dirty"`
+	Filename    string             `json:"filename"`
 }
 
 func (h *PortfolioContainer) String() string {
@@ -22,6 +29,7 @@ func (h *PortfolioContainer) String() string {
 
 func (s *PortfolioContainer) ShallowCopy() PortfolioContainer {
 	ret := PortfolioContainer{}
+	ret.Session = s.Session
 	ret.Summary = s.Summary.ShallowCopy()
 	// ret.Items = h.Items
 	ret.MyCount = s.MyCount
@@ -32,9 +40,27 @@ func (s *PortfolioContainer) ShallowCopy() PortfolioContainer {
 	ret.NManifests = s.NManifests
 	ret.NCaches = s.NCaches
 	ret.HistorySize = s.HistorySize
+	ret.Dirty = true
+	ret.Filename = "Untitled"
 	return ret
 }
 
 func (s *PortfolioContainer) Summarize() {
 	// do nothing
+}
+
+func (s *PortfolioContainer) Load() error {
+	return nil
+}
+
+func (s *PortfolioContainer) Save() error {
+	// if store, err := cache.NewStore(&cache.StoreOptions{
+	// 	Location: cache.FsCache,
+	// 	ReadOnly: false,
+	// }); err != nil {
+	// 	return err
+	// } else {
+	// 	return store.Write(s, nil)
+	// }
+	return nil
 }

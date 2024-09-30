@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -29,8 +30,14 @@ func (a *App) NamePage(first, pageSize int) *types.NameContainer {
 }
 
 var namesChain = "mainnet"
+var namesLock atomic.Uint32
 
 func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
+	if !namesLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer namesLock.CompareAndSwap(1, 0)
+
 	defer func() {
 		if wg != nil {
 			wg.Done()

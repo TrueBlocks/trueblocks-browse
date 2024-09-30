@@ -30,6 +30,8 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
 export function GetChain():Promise<string>;
 
+export function GetChainInfo(arg1:string):Promise<types.Chain>;
+
 export function GetChainList():Promise<Array<string>>;
 
 export function GetContext():Promise<context.Context>;

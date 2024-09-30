@@ -24,7 +24,6 @@ func (a *App) Refresh(skipable bool, which ...string) {
 	// Skip this update we're actively upgrading
 	if skipable {
 		if !freshenLock.CompareAndSwap(0, 1) {
-			// logger.Info(colors.Red, "Skipping update", colors.Off)
 			return
 		}
 		defer freshenLock.CompareAndSwap(1, 0)

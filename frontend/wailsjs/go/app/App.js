@@ -46,6 +46,10 @@ export function GetChain() {
   return window['go']['app']['App']['GetChain']();
 }
 
+export function GetChainInfo(arg1) {
+  return window['go']['app']['App']['GetChainInfo'](arg1);
+}
+
 export function GetChainList() {
   return window['go']['app']['App']['GetChainList']();
 }

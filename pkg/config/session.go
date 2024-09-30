@@ -17,30 +17,32 @@ type Daemons struct {
 	Ipfs    bool `json:"ipfs"`
 }
 
+type Window struct {
+	X      int    `json:"x"`
+	Y      int    `json:"y"`
+	Width  int    `json:"width"`
+	Height int    `json:"height"`
+	Title  string `json:"title"`
+}
+
 // Session stores ephemeral things such as last window position, last view, and recent file
 type Session struct {
 	Chain     string            `json:"chain"`
-	X         int               `json:"x"`
-	Y         int               `json:"y"`
-	Width     int               `json:"width"`
-	Height    int               `json:"height"`
-	Title     string            `json:"title"`
 	LastRoute string            `json:"lastRoute"`
 	LastSub   map[string]string `json:"lastSub"`
 	LastHelp  bool              `json:"lastHelp"`
 	Daemons   Daemons           `json:"daemons"`
+	Window    Window            `json:"window"`
 	Wizard    wizard.Wizard     `json:"wizard"`
 }
 
 var defaultSession = Session{
 	Chain:     "mainnet",
-	Width:     1024,
-	Height:    768,
-	Title:     "Browse by TrueBlocks",
 	Daemons:   Daemons{Freshen: true},
 	LastRoute: "/",
 	LastSub:   map[string]string{"/history": "trueblocks.eth"},
 	LastHelp:  true,
+	Window:    Window{X: 0, Y: 0, Width: 1024, Height: 768, Title: "Browse by TrueBlocks"},
 	Wizard:    wizard.Wizard{State: wizard.NotOkay},
 }
 

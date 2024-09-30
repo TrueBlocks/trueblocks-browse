@@ -27,9 +27,7 @@ var startupError error
 
 // Find: NewViews
 type App struct {
-	ctx        context.Context
-	Documents  []types.Document
-	CurrentDoc *types.Document
+	ctx context.Context
 
 	session    config.Session
 	apiKeys    map[string]string
@@ -60,12 +58,10 @@ func NewApp() *App {
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 		ensMap:     make(map[string]base.Address),
 		historyMap: make(map[base.Address]types.HistoryContainer),
-		Documents:  make([]types.Document, 10),
 	}
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
-	a.CurrentDoc = &a.Documents[0]
-	a.CurrentDoc.Filename = "Untitled"
+	a.portfolio.Filename = "Untitled"
 
 	// it's okay if it's not found
 	a.session.MustLoadSession()
@@ -120,8 +116,8 @@ func (a *App) DomReady(ctx context.Context) {
 	if os.Getenv("TB_CMD_LINE") == "true" {
 		return
 	}
-	runtime.WindowSetPosition(a.ctx, a.session.X, a.session.Y)
-	runtime.WindowSetSize(a.ctx, a.session.Width, a.session.Height)
+	runtime.WindowSetPosition(a.ctx, a.session.Window.X, a.session.Window.Y)
+	runtime.WindowSetSize(a.ctx, a.session.Window.Width, a.session.Window.Height)
 	runtime.WindowShow(a.ctx)
 }
 
@@ -130,9 +126,9 @@ func (a *App) Shutdown(ctx context.Context) {
 	if os.Getenv("TB_CMD_LINE") == "true" {
 		return
 	}
-	a.session.X, a.session.Y = runtime.WindowGetPosition(a.ctx)
-	a.session.Width, a.session.Height = runtime.WindowGetSize(a.ctx)
-	a.session.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
+	a.session.Window.X, a.session.Window.Y = runtime.WindowGetPosition(a.ctx)
+	a.session.Window.Width, a.session.Window.Height = runtime.WindowGetSize(a.ctx)
+	a.session.Window.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
 	a.session.Save()
 }
 

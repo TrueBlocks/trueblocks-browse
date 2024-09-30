@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -19,7 +20,14 @@ func (a *App) IndexPage(first, pageSize int) *types.IndexContainer {
 	return copy
 }
 
+var indexLock atomic.Uint32
+
 func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
+	if !indexLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer indexLock.CompareAndSwap(1, 0)
+
 	defer func() {
 		if wg != nil {
 			wg.Done()

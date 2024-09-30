@@ -32,9 +32,9 @@ func main() {
 	} else {
 		a := app.NewApp()
 		opts := options.App{
-			Title:            a.GetSession().Title,
-			Width:            a.GetSession().Width,
-			Height:           a.GetSession().Height,
+			Title:            a.GetSession().Window.Title,
+			Width:            a.GetSession().Window.Width,
+			Height:           a.GetSession().Window.Height,
 			OnStartup:        a.Startup,
 			OnDomReady:       a.DomReady,
 			OnShutdown:       a.Shutdown,
