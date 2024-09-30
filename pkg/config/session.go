@@ -40,7 +40,7 @@ var defaultSession = Session{
 	Chain:     "mainnet",
 	Daemons:   Daemons{Freshen: true},
 	LastRoute: "/",
-	LastSub:   map[string]string{"/history": "trueblocks.eth"},
+	LastSub:   map[string]string{"/history": "0xf503017d7baf7fbc0fff7492b751025c6a78179b"},
 	LastHelp:  true,
 	Window:    Window{X: 0, Y: 0, Width: 1024, Height: 768, Title: "Browse by TrueBlocks"},
 	Wizard:    wizard.Wizard{State: wizard.NotOkay},
