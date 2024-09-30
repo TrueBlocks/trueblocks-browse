@@ -3,5 +3,5 @@ import { useAppState } from "@state";
 
 export const AppStatus = () => {
   const { chain, status } = useAppState();
-  return <Text size={"sm"}>{`${status.clientVersion} / ${chain} / ${"not loaded"} / ${status.latestUpdate}`}</Text>;
+  return <Text size={"sm"}>{`${status.clientVersion} / ${chain} / ${"not loaded"} / ${status.lastUpdate}`}</Text>;
 };

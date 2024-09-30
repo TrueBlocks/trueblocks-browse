@@ -4,6 +4,8 @@ import {types} from '../models';
 
 export function NeedsUpdate():Promise<boolean>;
 
-export function ShallowCopy():Promise<types.NameContainer>;
+export function ShallowCopy():Promise<types.Containerer>;
+
+export function String():Promise<string>;
 
 export function Summarize():Promise<void>;

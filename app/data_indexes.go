@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -11,15 +12,22 @@ import (
 )
 
 // Find: NewViews
-func (a *App) IndexPage(first, pageSize int) types.IndexContainer {
+func (a *App) IndexPage(first, pageSize int) *types.IndexContainer {
 	first = base.Max(0, base.Min(first, len(a.index.Items)-1))
 	last := base.Min(len(a.index.Items), first+pageSize)
-	copy := a.index.ShallowCopy()
+	copy, _ := a.index.ShallowCopy().(*types.IndexContainer)
 	copy.Items = a.index.Items[first:last]
 	return copy
 }
 
+var indexLock atomic.Uint32
+
 func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
+	if !indexLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer indexLock.CompareAndSwap(1, 0)
+
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -30,14 +38,18 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
+	if !a.index.NeedsUpdate() {
+		return nil
+	}
+
+	chain := a.globals.Chain
 	opts := sdk.ChunksOptions{
 		Globals: sdk.Globals{
 			Verbose: true,
-			Chain:   a.globals.Chain,
+			Chain:   chain,
 		},
 	}
 
-	messages.SendInfo(a.ctx, "Freshening indexes")
 	if chunks, meta, err := opts.ChunksStats(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -51,15 +63,12 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 		return err
 	} else {
 		a.meta = *meta
-		if len(a.index.Items) == len(chunks) {
-			return nil
-		}
-		a.index = types.NewIndexContainer(chunks)
+		a.index = types.NewIndexContainer(chain, chunks)
 		if err := sdk.SortChunkStats(a.index.Items, a.index.Sorts); err != nil {
 			messages.SendError(a.ctx, err)
 		}
 		a.index.Summarize()
-		messages.SendInfo(a.ctx, "Finished loading indexes")
+		messages.SendInfo(a.ctx, "Loaded indexes")
 	}
 	return nil
 }

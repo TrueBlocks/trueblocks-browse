@@ -2,8 +2,12 @@ package types
 
 import (
 	"encoding/json"
+	"path/filepath"
+	"time"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -50,21 +54,44 @@ type MonitorContainer struct {
 	NStaged    int                                `json:"nStaged"`
 	NEmpty     int                                `json:"nEmpty"`
 	MonitorMap map[base.Address]coreTypes.Monitor `json:"monitorMap"`
+	LastUpdate time.Time                          `json:"lastUpdate"`
+	Chain      string                             `json:"chain"`
 }
 
-func (s MonitorContainer) String() string {
+func NewMonitorContainer(chain string) MonitorContainer {
+	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(chain), "monitors"))
+	return MonitorContainer{
+		Chain:      chain,
+		Items:      []coreTypes.Monitor{},
+		MonitorMap: make(map[base.Address]coreTypes.Monitor),
+		LastUpdate: latest,
+	}
+}
+
+func (s *MonitorContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-func (s *MonitorContainer) ShallowCopy() MonitorContainer {
-	return MonitorContainer{
-		Monitor:  s.Monitor,
-		NNamed:   s.NNamed,
-		NStaged:  s.NStaged,
-		NEmpty:   s.NEmpty,
-		NDeleted: s.NDeleted,
-		NItems:   s.NItems,
+func (s *MonitorContainer) NeedsUpdate() bool {
+	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "monitors"))
+	if latest != s.LastUpdate {
+		s.LastUpdate = latest
+		return true
+	}
+	return false
+}
+
+func (s *MonitorContainer) ShallowCopy() Containerer {
+	return &MonitorContainer{
+		Monitor:    s.Monitor,
+		NNamed:     s.NNamed,
+		NStaged:    s.NStaged,
+		NEmpty:     s.NEmpty,
+		NDeleted:   s.NDeleted,
+		NItems:     s.NItems,
+		LastUpdate: s.LastUpdate,
+		Chain:      s.Chain,
 	}
 }
 

@@ -3,32 +3,31 @@ package app
 import (
 	"sync"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 )
 
-var r sync.Mutex
+var ctxMutex sync.Mutex
 
 func (a *App) RegisterCtx(addr base.Address) *output.RenderCtx {
-	r.Lock()
-	defer r.Unlock()
+	ctxMutex.Lock()
+	defer ctxMutex.Unlock()
 
 	rCtx := output.NewStreamingContext()
 	a.renderCtxs[addr] = append(a.renderCtxs[addr], rCtx)
 	return rCtx
 }
 
-func (a *App) Cancel(addr base.Address) (int, bool) {
-	if len(a.renderCtxs) == 0 {
-		return 0, false
+func (a *App) CancleContexts() {
+	for address, ctxArrays := range a.renderCtxs {
+		for _, ctx := range ctxArrays {
+			messages.Send(a.ctx,
+				messages.Cancelled,
+				messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(len(a.historyMap[address].Items)), address),
+			)
+			ctx.Cancel()
+		}
+		delete(a.renderCtxs, address)
 	}
-	if a.renderCtxs[addr] == nil {
-		return 0, true
-	}
-	n := len(a.renderCtxs[addr])
-	for i := 0; i < len(a.renderCtxs[addr]); i++ {
-		a.renderCtxs[addr][i].Cancel()
-	}
-	a.renderCtxs[addr] = nil
-	return n, true
 }

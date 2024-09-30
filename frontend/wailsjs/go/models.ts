@@ -45,17 +45,33 @@ export namespace config {
 	        this.ipfs = source["ipfs"];
 	    }
 	}
-	export class Session {
-	    chain: string;
+	export class Window {
 	    x: number;
 	    y: number;
 	    width: number;
 	    height: number;
 	    title: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Window(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.x = source["x"];
+	        this.y = source["y"];
+	        this.width = source["width"];
+	        this.height = source["height"];
+	        this.title = source["title"];
+	    }
+	}
+	export class Session {
+	    chain: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
 	    lastHelp: boolean;
 	    daemons: Daemons;
+	    window: Window;
 	    wizard: wizard.Wizard;
 	
 	    static createFrom(source: any = {}) {
@@ -65,15 +81,11 @@ export namespace config {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.chain = source["chain"];
-	        this.x = source["x"];
-	        this.y = source["y"];
-	        this.width = source["width"];
-	        this.height = source["height"];
-	        this.title = source["title"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
 	        this.lastHelp = source["lastHelp"];
 	        this.daemons = this.convertValues(source["daemons"], Daemons);
+	        this.window = this.convertValues(source["window"], Window);
 	        this.wizard = this.convertValues(source["wizard"], wizard.Wizard);
 	    }
 	
@@ -487,6 +499,9 @@ export namespace types {
 	    mostFunctions: string;
 	    mostEvents: string;
 	    sort: sdk.SortSpec;
+	    // Go type: time
+	    lastUpdate: any;
+	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new AbiContainer(source);
@@ -512,6 +527,8 @@ export namespace types {
 	        this.mostFunctions = source["mostFunctions"];
 	        this.mostEvents = source["mostEvents"];
 	        this.sort = this.convertValues(source["sort"], sdk.SortSpec);
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.chain = source["chain"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -554,6 +571,30 @@ export namespace types {
 	        this.path = source["path"];
 	        this.sizeInBytes = source["sizeInBytes"];
 	        this.type = source["type"];
+	    }
+	}
+	export class Chain {
+	    chain: string;
+	    chainId: number;
+	    ipfsGateway: string;
+	    localExplorer: string;
+	    remoteExplorer: string;
+	    rpcProvider: string;
+	    symbol: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Chain(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.chain = source["chain"];
+	        this.chainId = source["chainId"];
+	        this.ipfsGateway = source["ipfsGateway"];
+	        this.localExplorer = source["localExplorer"];
+	        this.remoteExplorer = source["remoteExplorer"];
+	        this.rpcProvider = source["rpcProvider"];
+	        this.symbol = source["symbol"];
 	    }
 	}
 	export class RangeDates {
@@ -1158,6 +1199,9 @@ export namespace types {
 	    items: ChunkStats[];
 	    nItems: number;
 	    sort: sdk.SortSpec;
+	    // Go type: time
+	    lastUpdate: any;
+	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new IndexContainer(source);
@@ -1181,6 +1225,8 @@ export namespace types {
 	        this.items = this.convertValues(source["items"], ChunkStats);
 	        this.nItems = source["nItems"];
 	        this.sort = this.convertValues(source["sort"], sdk.SortSpec);
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.chain = source["chain"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1209,11 +1255,12 @@ export namespace types {
 	    version: string;
 	    items: ChunkRecord[];
 	    nItems: number;
-	    latestUpdate: string;
 	    nBlooms: number;
 	    bloomsSize: number;
 	    nIndexes: number;
 	    indexSize: number;
+	    // Go type: time
+	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new ManifestContainer(source);
@@ -1227,11 +1274,11 @@ export namespace types {
 	        this.version = source["version"];
 	        this.items = this.convertValues(source["items"], ChunkRecord);
 	        this.nItems = source["nItems"];
-	        this.latestUpdate = source["latestUpdate"];
 	        this.nBlooms = source["nBlooms"];
 	        this.bloomsSize = source["bloomsSize"];
 	        this.nIndexes = source["nIndexes"];
 	        this.indexSize = source["indexSize"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1339,6 +1386,9 @@ export namespace types {
 	    nStaged: number;
 	    nEmpty: number;
 	    monitorMap: {[key: string]: Monitor};
+	    // Go type: time
+	    lastUpdate: any;
+	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new MonitorContainer(source);
@@ -1361,6 +1411,8 @@ export namespace types {
 	        this.nStaged = source["nStaged"];
 	        this.nEmpty = source["nEmpty"];
 	        this.monitorMap = this.convertValues(source["monitorMap"], Monitor, true);
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.chain = source["chain"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1451,6 +1503,9 @@ export namespace types {
 	    nPrefund: number;
 	    nBaddress: number;
 	    nDeleted: number;
+	    // Go type: time
+	    lastUpdate: any;
+	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new NameContainer(source);
@@ -1470,6 +1525,8 @@ export namespace types {
 	        this.nPrefund = source["nPrefund"];
 	        this.nBaddress = source["nBaddress"];
 	        this.nDeleted = source["nDeleted"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.chain = source["chain"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1492,6 +1549,7 @@ export namespace types {
 	}
 	
 	export class PortfolioContainer {
+	    session: config.Session;
 	    items: HistoryContainer[];
 	    myCount: number;
 	    nMonitors: number;
@@ -1501,6 +1559,8 @@ export namespace types {
 	    nManifests: number;
 	    nCaches: number;
 	    historySize: number;
+	    dirty: boolean;
+	    filename: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new PortfolioContainer(source);
@@ -1508,6 +1568,7 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.session = this.convertValues(source["session"], config.Session);
 	        this.items = this.convertValues(source["items"], HistoryContainer);
 	        this.myCount = source["myCount"];
 	        this.nMonitors = source["nMonitors"];
@@ -1517,6 +1578,8 @@ export namespace types {
 	        this.nManifests = source["nManifests"];
 	        this.nCaches = source["nCaches"];
 	        this.historySize = source["historySize"];
+	        this.dirty = source["dirty"];
+	        this.filename = source["filename"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1579,30 +1642,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class Chain {
-	    chain: string;
-	    chainId: number;
-	    ipfsGateway: string;
-	    localExplorer: string;
-	    remoteExplorer: string;
-	    rpcProvider: string;
-	    symbol: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Chain(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.chain = source["chain"];
-	        this.chainId = source["chainId"];
-	        this.ipfsGateway = source["ipfsGateway"];
-	        this.localExplorer = source["localExplorer"];
-	        this.remoteExplorer = source["remoteExplorer"];
-	        this.rpcProvider = source["rpcProvider"];
-	        this.symbol = source["symbol"];
-	    }
-	}
 	export class StatusContainer {
 	    cachePath?: string;
 	    caches: CacheItem[];
@@ -1628,10 +1667,11 @@ export namespace types {
 	    diffs?: MetaData;
 	    items: CacheItem[];
 	    nItems: number;
-	    latestUpdate: string;
 	    nFolders: number;
 	    nFiles: number;
 	    nBytes: number;
+	    // Go type: time
+	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new StatusContainer(source);
@@ -1663,10 +1703,10 @@ export namespace types {
 	        this.diffs = this.convertValues(source["diffs"], MetaData);
 	        this.items = this.convertValues(source["items"], CacheItem);
 	        this.nItems = source["nItems"];
-	        this.latestUpdate = source["latestUpdate"];
 	        this.nFolders = source["nFolders"];
 	        this.nFiles = source["nFiles"];
 	        this.nBytes = source["nBytes"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1695,12 +1735,6 @@ export namespace types {
 
 export namespace wizard {
 	
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
-	}
 	export enum State {
 	    NOTOKAY = "notOkay",
 	    TOMLOKAY = "tomlOkay",
@@ -1708,6 +1742,12 @@ export namespace wizard {
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
 	    OKAY = "okay",
+	}
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
 	}
 	export class Wizard {
 	    state: State;

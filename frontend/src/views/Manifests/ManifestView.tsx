@@ -32,7 +32,7 @@ function createManifestForm(table: any): GroupDefinition<theInstance>[] {
         { label: "version", type: "text", accessor: "version" },
         { label: "chain", type: "text", accessor: "chain" },
         { label: "specification", type: "hash", accessor: "specification" },
-        { label: "latestUpdate", type: "date", accessor: "latestUpdate" },
+        { label: "lastUpdate", type: "date", accessor: "lastUpdate" },
       ],
     },
     {

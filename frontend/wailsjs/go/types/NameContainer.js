@@ -10,6 +10,10 @@ export function ShallowCopy() {
   return window['go']['types']['NameContainer']['ShallowCopy']();
 }
 
+export function String() {
+  return window['go']['types']['NameContainer']['String']();
+}
+
 export function Summarize() {
   return window['go']['types']['NameContainer']['Summarize']();
 }

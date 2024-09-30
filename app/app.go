@@ -6,6 +6,7 @@ import (
 	"errors"
 	"log"
 	"os"
+	"strings"
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
@@ -27,9 +28,7 @@ var startupError error
 
 // Find: NewViews
 type App struct {
-	ctx        context.Context
-	Documents  []types.Document
-	CurrentDoc *types.Document
+	ctx context.Context
 
 	session    config.Session
 	apiKeys    map[string]string
@@ -60,12 +59,10 @@ func NewApp() *App {
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 		ensMap:     make(map[string]base.Address),
 		historyMap: make(map[base.Address]types.HistoryContainer),
-		Documents:  make([]types.Document, 10),
 	}
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
-	a.CurrentDoc = &a.Documents[0]
-	a.CurrentDoc.Filename = "Untitled"
+	a.portfolio.Filename = "Untitled"
 
 	// it's okay if it's not found
 	a.session.MustLoadSession()
@@ -98,7 +95,7 @@ func (a *App) GetContext() context.Context {
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
-	a.FreshenController = daemons.NewFreshen(a, "freshen", 7000, a.GetSessionDeamon("daemon-freshen"))
+	a.FreshenController = daemons.NewFreshen(a, "freshen", 4000, a.GetSessionDeamon("daemon-freshen"))
 	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetSessionDeamon("daemon-scraper"))
 	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.GetSessionDeamon("daemon-ipfs"))
 	go a.startDaemons()
@@ -113,26 +110,24 @@ func (a *App) Startup(ctx context.Context) {
 	if err := a.loadConfig(); err != nil {
 		messages.SendError(a.ctx, err)
 	}
+
+	addr := strings.ReplaceAll(a.GetSessionSubVal("/history"), "/", "")
+	if len(addr) > 0 {
+		logger.Info("Loading history for address: ", addr)
+		go a.HistoryPage(addr, -1, 15)
+	}
 }
 
 func (a *App) DomReady(ctx context.Context) {
-	// Sometimes useful for debugging
-	if os.Getenv("TB_CMD_LINE") == "true" {
-		return
-	}
-	runtime.WindowSetPosition(a.ctx, a.session.X, a.session.Y)
-	runtime.WindowSetSize(a.ctx, a.session.Width, a.session.Height)
+	runtime.WindowSetPosition(a.ctx, a.session.Window.X, a.session.Window.Y)
+	runtime.WindowSetSize(a.ctx, a.session.Window.Width, a.session.Window.Height)
 	runtime.WindowShow(a.ctx)
 }
 
 func (a *App) Shutdown(ctx context.Context) {
-	// Sometimes useful for debugging
-	if os.Getenv("TB_CMD_LINE") == "true" {
-		return
-	}
-	a.session.X, a.session.Y = runtime.WindowGetPosition(a.ctx)
-	a.session.Width, a.session.Height = runtime.WindowGetSize(a.ctx)
-	a.session.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
+	a.session.Window.X, a.session.Window.Y = runtime.WindowGetPosition(a.ctx)
+	a.session.Window.Width, a.session.Window.Height = runtime.WindowGetSize(a.ctx)
+	a.session.Window.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
 	a.session.Save()
 }
 

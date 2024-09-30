@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -11,15 +12,23 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-func (a *App) ManifestPage(first, pageSize int) types.ManifestContainer {
+// Find: NewViews
+func (a *App) ManifestPage(first, pageSize int) *types.ManifestContainer {
 	first = base.Max(0, base.Min(first, len(a.manifest.Items)-1))
 	last := base.Min(len(a.manifest.Items), first+pageSize)
-	copy := a.manifest.ShallowCopy()
+	copy, _ := a.manifest.ShallowCopy().(*types.ManifestContainer)
 	copy.Items = a.manifest.Items[first:last]
 	return copy
 }
 
+var manifestLock atomic.Uint32
+
 func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
+	if !manifestLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer manifestLock.CompareAndSwap(1, 0)
+
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -30,14 +39,18 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
+	if !a.manifest.NeedsUpdate() {
+		return nil
+	}
+
+	chain := a.globals.Chain
 	opts := sdk.ChunksOptions{
 		Globals: sdk.Globals{
 			Verbose: true,
-			Chain:   a.globals.Chain,
+			Chain:   chain,
 		},
 	}
 
-	messages.SendInfo(a.ctx, "Freshening manifest")
 	if manifests, meta, err := opts.ChunksManifest(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -51,14 +64,13 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 		return err
 	} else {
 		a.meta = *meta
-		if len(a.manifest.Items) == len(manifests[0].Chunks) {
-			return nil
-		}
-		a.manifest = types.NewManifestContainer(manifests[0])
+		a.manifest = types.NewManifestContainer(chain, manifests[0])
+		// TODO: Use sorting mechanism from core (see SortChunkStats for example)
 		sort.Slice(a.manifest.Items, func(i, j int) bool {
 			return a.manifest.Items[i].Range > a.manifest.Items[j].Range
 		})
-		messages.SendInfo(a.ctx, "Finished loading manifest")
+		a.manifest.Summarize()
+		messages.SendInfo(a.ctx, "Loaded manifest")
 	}
 	return nil
 }

@@ -10,10 +10,6 @@ export function AddrToName(arg1) {
   return window['go']['app']['App']['AddrToName'](arg1);
 }
 
-export function Cancel(arg1) {
-  return window['go']['app']['App']['Cancel'](arg1);
-}
-
 export function CancleContexts() {
   return window['go']['app']['App']['CancleContexts']();
 }
@@ -50,6 +46,10 @@ export function GetChain() {
   return window['go']['app']['App']['GetChain']();
 }
 
+export function GetChainInfo(arg1) {
+  return window['go']['app']['App']['GetChainInfo'](arg1);
+}
+
 export function GetChainList() {
   return window['go']['app']['App']['GetChainList']();
 }
@@ -60,10 +60,6 @@ export function GetContext() {
 
 export function GetDaemonJson(arg1) {
   return window['go']['app']['App']['GetDaemonJson'](arg1);
-}
-
-export function GetDalle() {
-  return window['go']['app']['App']['GetDalle']();
 }
 
 export function GetEnv(arg1) {

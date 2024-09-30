@@ -2,6 +2,8 @@ package messages
 
 import (
 	"context"
+
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 type InfoMsg struct {
@@ -13,7 +15,7 @@ func NewInfoMessage(message string) *InfoMsg {
 }
 
 func SendInfo(ctx context.Context, msg string) {
-	// logger.Info(msg)
+	logger.Info(msg)
 	Send(ctx, Info, NewInfoMessage(msg))
 }
 

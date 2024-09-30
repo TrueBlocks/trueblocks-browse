@@ -9,7 +9,9 @@ export function MarshalCache(arg1:io.Writer):Promise<void>;
 
 export function Model(arg1:string,arg2:string,arg3:boolean,arg4:{[key: string]: any}):Promise<types.Model>;
 
-export function ShallowCopy():Promise<types.MonitorContainer>;
+export function NeedsUpdate():Promise<boolean>;
+
+export function ShallowCopy():Promise<types.Containerer>;
 
 export function String():Promise<string>;
 

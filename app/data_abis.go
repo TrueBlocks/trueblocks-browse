@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -11,17 +12,23 @@ import (
 )
 
 // Find: NewViews
-func (a *App) AbiPage(first, pageSize int) types.AbiContainer {
+func (a *App) AbiPage(first, pageSize int) *types.AbiContainer {
 	first = base.Max(0, base.Min(first, len(a.abis.Items)-1))
 	last := base.Min(len(a.abis.Items), first+pageSize)
-	copy := a.abis.ShallowCopy()
+	copy, _ := a.abis.ShallowCopy().(*types.AbiContainer)
 	copy.Items = a.abis.Items[first:last]
 	return copy
 }
 
 var abisChain = "mainnet"
+var abiLock atomic.Uint32
 
 func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
+	if !abiLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer abiLock.CompareAndSwap(1, 0)
+
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -32,18 +39,22 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
+	if !a.abis.NeedsUpdate() {
+		return nil
+	}
+
 	opts := sdk.AbisOptions{
 		Globals: a.globals,
 	}
 	opts.Globals.Chain = abisChain
 
-	messages.SendInfo(a.ctx, "Freshening abis")
-	if count, meta, err := opts.AbisCount(); err != nil {
+	opts.Globals.Verbose = true
+	if abis, meta, err := opts.AbisList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (len(count) == 0) || (count[0].Count == 0) {
+	} else if (abis == nil) || (len(abis) == 0) {
 		err = fmt.Errorf("no abis found")
 		if errorChan != nil {
 			errorChan <- err
@@ -51,34 +62,12 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		return err
 	} else {
 		a.meta = *meta
-		if a.abis.NItems == int(count[0].Count) {
-			return nil
+		a.abis = types.NewAbiContainer(abisChain, abis)
+		if err := sdk.SortAbis(a.abis.Items, a.abis.Sorts); err != nil {
+			messages.SendError(a.ctx, err)
 		}
-
-		opts.Globals.Verbose = true
-		if abis, meta, err := opts.AbisList(); err != nil {
-			if errorChan != nil {
-				errorChan <- err
-			}
-			return err
-		} else if (abis == nil) || (len(abis) == 0) {
-			err = fmt.Errorf("no status found")
-			if errorChan != nil {
-				errorChan <- err
-			}
-			return err
-		} else {
-			a.meta = *meta
-			if len(a.abis.Items) == len(abis) {
-				return nil
-			}
-			a.abis = types.NewAbiContainer(abis)
-			if err := sdk.SortAbis(a.abis.Items, a.abis.Sorts); err != nil {
-				messages.SendError(a.ctx, err)
-			}
-			a.abis.Summarize()
-			messages.SendInfo(a.ctx, "Finished loading abis")
-		}
+		a.abis.Summarize()
+		messages.SendInfo(a.ctx, "Loaded abis")
 	}
 	return nil
 }

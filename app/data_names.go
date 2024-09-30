@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -16,20 +17,27 @@ import (
 
 var nameMutex sync.Mutex
 
-func (a *App) NamePage(first, pageSize int) types.NameContainer {
+// Find: NewViews
+func (a *App) NamePage(first, pageSize int) *types.NameContainer {
 	nameMutex.Lock()
 	defer nameMutex.Unlock()
 
 	first = base.Max(0, base.Min(first, len(a.names.Names)-1))
 	last := base.Min(len(a.names.Names), first+pageSize)
-	copy := a.names.ShallowCopy()
+	copy, _ := a.names.ShallowCopy().(*types.NameContainer)
 	copy.Names = a.names.Names[first:last]
 	return copy
 }
 
 var namesChain = "mainnet"
+var namesLock atomic.Uint32
 
 func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
+	if !namesLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer namesLock.CompareAndSwap(1, 0)
+
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -40,7 +48,6 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
-	messages.SendInfo(a.ctx, "Freshening names")
 	if !a.names.NeedsUpdate() {
 		return nil
 	}
@@ -60,13 +67,11 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else {
+		// a.meta = *meta
 		nameMutex.Lock()
 		defer nameMutex.Unlock()
 
-		a.names = types.NameContainer{
-			NamesMap: namesMap,
-			Names:    []coreTypes.Name{},
-		}
+		a.names = types.NewNameContainer(namesChain, namesMap)
 		for _, name := range a.names.NamesMap {
 			a.names.Names = append(a.names.Names, name)
 		}
@@ -74,9 +79,9 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 			return compare(a.names.Names[i], a.names.Names[j])
 		})
 		a.names.Summarize()
-		messages.SendInfo(a.ctx, "Finished loading names")
-		return nil
+		messages.SendInfo(a.ctx, "Loaded names")
 	}
+	return nil
 }
 
 func compare(nameI, nameJ coreTypes.Name) bool {

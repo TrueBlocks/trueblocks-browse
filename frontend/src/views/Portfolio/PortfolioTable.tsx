@@ -42,9 +42,4 @@ export const tableColumns: CustomColumnDef<types.HistoryContainer, any>[] = [
     ),
     meta: { className: "wide cell" },
   }),
-  columnHelper.accessor("nItems", {
-    header: () => "Items",
-    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
-    meta: { className: "small cell" },
-  }),
 ];

@@ -23,15 +23,15 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 			{DisplayName: "Monitor Groups", Pattern: "*.tbx"},
 		},
 	})
-	a.CurrentDoc.Filename = file
-	// a.CurrentDoc.Load()
-	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.CurrentDoc.Filename, "Opened"))
+	a.portfolio.Filename = file
+	a.portfolio.Load()
+	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.portfolio.Filename, "Opened"))
 }
 
 func (a *App) FileSave(cd *menu.CallbackData) {
-	a.CurrentDoc.Filename, _ = runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
+	a.portfolio.Filename, _ = runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
 		DefaultDirectory:           "/Users/jrush/Documents/",
-		DefaultFilename:            a.CurrentDoc.Filename,
+		DefaultFilename:            a.portfolio.Filename,
 		Title:                      "Save File",
 		CanCreateDirectories:       true,
 		ShowHiddenFiles:            false,
@@ -40,8 +40,8 @@ func (a *App) FileSave(cd *menu.CallbackData) {
 			{DisplayName: "Monitor Groups", Pattern: "*.tbx"},
 		},
 	})
-	a.CurrentDoc.Save()
-	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.CurrentDoc.Filename, "Saved"))
+	a.portfolio.Save()
+	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.portfolio.Filename, "Saved"))
 }
 
 func (a *App) FileSaveAs(cd *menu.CallbackData) {

@@ -2,7 +2,10 @@ package types
 
 import (
 	"encoding/json"
+	"time"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -10,26 +13,52 @@ type ManifestContainer struct {
 	coreTypes.Manifest `json:",inline"`
 	Items              []coreTypes.ChunkRecord `json:"items"`
 	NItems             int                     `json:"nItems"`
-	LatestUpdate       string                  `json:"latestUpdate"`
 	NBlooms            int                     `json:"nBlooms"`
 	BloomsSize         int                     `json:"bloomsSize"`
 	NIndexes           int                     `json:"nIndexes"`
 	IndexSize          int                     `json:"indexSize"`
+	LastUpdate         time.Time               `json:"lastUpdate"`
 }
 
-func (s ManifestContainer) String() string {
+func NewManifestContainer(chain string, manifest coreTypes.Manifest) ManifestContainer {
+	latest := utils.MustGetLatestFileTime(config.PathToManifest(chain))
+	ret := ManifestContainer{
+		Manifest:   manifest,
+		Items:      manifest.Chunks,
+		LastUpdate: latest,
+	}
+	ret.Chain = chain
+	return ret
+}
+
+func (s *ManifestContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-func NewManifestContainer(manifest coreTypes.Manifest) ManifestContainer {
-	ret := ManifestContainer{
-		Manifest: manifest,
-		Items:    manifest.Chunks,
+func (s *ManifestContainer) NeedsUpdate() bool {
+	latest := utils.MustGetLatestFileTime(config.PathToManifest(s.Chain))
+	if latest != s.LastUpdate {
+		s.LastUpdate = latest
+		return true
 	}
-	ret.Summarize()
+	return false
+}
 
-	return ret
+func (s *ManifestContainer) ShallowCopy() Containerer {
+	return &ManifestContainer{
+		Manifest: coreTypes.Manifest{
+			Chain:         s.Manifest.Chain,
+			Specification: s.Manifest.Specification,
+			Version:       s.Manifest.Version,
+		},
+		NItems:     s.NItems,
+		NBlooms:    s.NBlooms,
+		BloomsSize: s.BloomsSize,
+		NIndexes:   s.NIndexes,
+		IndexSize:  s.IndexSize,
+		LastUpdate: s.LastUpdate,
+	}
 }
 
 func (s *ManifestContainer) Summarize() {
@@ -39,22 +68,5 @@ func (s *ManifestContainer) Summarize() {
 		s.BloomsSize += int(item.BloomSize)
 		s.NIndexes++
 		s.IndexSize += int(item.IndexSize)
-	}
-
-}
-
-func (s *ManifestContainer) ShallowCopy() ManifestContainer {
-	return ManifestContainer{
-		Manifest: coreTypes.Manifest{
-			Chain:         s.Manifest.Chain,
-			Specification: s.Manifest.Specification,
-			Version:       s.Manifest.Version,
-		},
-		LatestUpdate: s.LatestUpdate,
-		NItems:       s.NItems,
-		NBlooms:      s.NBlooms,
-		BloomsSize:   s.BloomsSize,
-		NIndexes:     s.NIndexes,
-		IndexSize:    s.IndexSize,
 	}
 }

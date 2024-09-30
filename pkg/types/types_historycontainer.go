@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"unsafe"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
@@ -18,6 +19,23 @@ type HistoryContainer struct {
 	NErrors int                     `json:"nErrors"`
 }
 
+func (s *HistoryContainer) String() string {
+	bytes, _ := json.Marshal(s)
+	return string(bytes)
+}
+
+func (s *HistoryContainer) ShallowCopy() HistoryContainer {
+	return HistoryContainer{
+		Address: s.Address,
+		Name:    s.Name,
+		Balance: s.Balance,
+		NLogs:   s.NLogs,
+		NTokens: s.NTokens,
+		NErrors: s.NErrors,
+		NItems:  s.NItems,
+	}
+}
+
 func (s *HistoryContainer) Summarize() {
 	s.NItems = len(s.Items)
 	for _, tx := range s.Items {
@@ -30,18 +48,6 @@ func (s *HistoryContainer) Summarize() {
 		if tx.IsError {
 			s.NErrors++
 		}
-	}
-}
-
-func (s *HistoryContainer) ShallowCopy() HistoryContainer {
-	return HistoryContainer{
-		Address: s.Address,
-		Name:    s.Name,
-		Balance: s.Balance,
-		NLogs:   s.NLogs,
-		NTokens: s.NTokens,
-		NErrors: s.NErrors,
-		NItems:  s.NItems,
 	}
 }
 
