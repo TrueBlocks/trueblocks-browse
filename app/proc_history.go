@@ -5,7 +5,7 @@ import (
 )
 
 func (a *App) Reload(addr base.Address) {
-	a.CancleContexts()
+	a.CancelContexts()
 	historyMutex.Lock()
 	delete(a.historyMap, addr)
 	historyMutex.Unlock()

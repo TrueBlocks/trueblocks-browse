@@ -10,8 +10,8 @@ export function AddrToName(arg1) {
   return window['go']['app']['App']['AddrToName'](arg1);
 }
 
-export function CancleContexts() {
-  return window['go']['app']['App']['CancleContexts']();
+export function CancelContexts() {
+  return window['go']['app']['App']['CancelContexts']();
 }
 
 export function ConvertToAddress(arg1) {
