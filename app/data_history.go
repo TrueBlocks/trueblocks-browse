@@ -128,8 +128,8 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 			messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(len(a.historyMap[address].Items)), address),
 		)
 
-		// logger.Info("Loading portfolio")
-		a.loadPortfolio(nil, nil)
+		// logger.Info("Loading project")
+		a.loadProject(nil, nil)
 	}
 
 	if first == -1 {

@@ -66,7 +66,7 @@ func (a *App) Refresh(skipable bool, which ...string) {
 			))
 		}
 	}
-	// a.loadPortfolio(nil, nil)
+	// a.loadProject(nil, nil)
 
 	// And then update everything else in the fullness of time
 	wg := sync.WaitGroup{}
@@ -92,7 +92,7 @@ func (a *App) Refresh(skipable bool, which ...string) {
 		}
 	}
 
-	a.loadPortfolio(nil, nil)
+	a.loadProject(nil, nil)
 
 	if len(errors) > 0 {
 		// Handle errors, e.g., wait 1/2 second between each error message

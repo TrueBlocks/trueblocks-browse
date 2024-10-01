@@ -6,7 +6,7 @@ export function Load():Promise<void>;
 
 export function Save():Promise<void>;
 
-export function ShallowCopy():Promise<types.PortfolioContainer>;
+export function ShallowCopy():Promise<types.ProjectContainer>;
 
 export function String():Promise<string>;
 

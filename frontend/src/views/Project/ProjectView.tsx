@@ -5,14 +5,14 @@ import { types, messages } from "@gocode/models";
 import { Page } from "@hooks";
 import { EventsEmit } from "@runtime";
 import { useAppState, ViewStateProvider } from "@state";
-import { tableColumns } from "./PortfolioTable";
+import { tableColumns } from "./ProjectTable";
 
-export function PortfolioView() {
-  const { portfolio, fetchPortfolio } = useAppState();
+export function ProjectView() {
+  const { project, fetchProject } = useAppState();
 
   const handleEnter = (page: Page) => {
     const record = page.selected - page.getOffset();
-    const address = portfolio.items[record].address;
+    const address = project.items[record].address;
     SetSessionVal("route", `/history/${address}`);
     EventsEmit(messages.Message.NAVIGATE, {
       route: `/history/${address}`,
@@ -24,22 +24,22 @@ export function PortfolioView() {
   //   }
 
   const table = useReactTable({
-    data: portfolio.items || [],
+    data: project.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
-    <ViewStateProvider route={""} nItems={portfolio.myCount} fetchFn={fetchPortfolio} onEnter={handleEnter}>
+    <ViewStateProvider route={""} nItems={project.myCount} fetchFn={fetchProject} onEnter={handleEnter}>
       <View>
-        <FormTable data={portfolio} definition={createPortfolioForm(table)} />
+        <FormTable data={project} definition={createProjectForm(table)} />
       </View>
     </ViewStateProvider>
   );
 }
 
-type theInstance = InstanceType<typeof types.PortfolioContainer>;
-function createPortfolioForm(table: any): GroupDefinition<theInstance>[] {
+type theInstance = InstanceType<typeof types.ProjectContainer>;
+function createProjectForm(table: any): GroupDefinition<theInstance>[] {
   return [
     {
       title: "Open Monitors",

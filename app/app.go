@@ -46,7 +46,7 @@ type App struct {
 	monitors          types.MonitorContainer
 	names             types.NameContainer
 	status            types.StatusContainer
-	portfolio         types.PortfolioContainer
+	project           types.ProjectContainer
 	ScraperController *daemons.DaemonScraper
 	FreshenController *daemons.DaemonFreshen
 	IpfsController    *daemons.DaemonIpfs
@@ -62,7 +62,7 @@ func NewApp() *App {
 	}
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
-	a.portfolio.Filename = "Untitled"
+	a.project.Filename = "Untitled"
 
 	// it's okay if it's not found
 	a.session.MustLoadSession()

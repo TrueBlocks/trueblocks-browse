@@ -11,7 +11,7 @@ import {
   ManifestPage,
   MonitorPage,
   NamePage,
-  PortfolioPage,
+  ProjectPage,
   StatusPage,
   StepWizard,
 } from "@gocode/app/App";
@@ -19,8 +19,8 @@ import { base, messages, types, wizard } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
 
 interface AppStateProps {
-  portfolio: types.PortfolioContainer;
-  fetchPortfolio: (currentItem: number, itemsPerPage: number) => void;
+  project: types.ProjectContainer;
+  fetchProject: (currentItem: number, itemsPerPage: number) => void;
 
   history: types.HistoryContainer;
   fetchHistory: (currentItem: number, itemsPerPage: number) => void;
@@ -63,7 +63,7 @@ interface AppStateProps {
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
 export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => {
-  const [portfolio, setPortfolio] = useState<types.PortfolioContainer>({} as types.PortfolioContainer);
+  const [project, setProject] = useState<types.ProjectContainer>({} as types.ProjectContainer);
   const [history, setHistory] = useState<types.HistoryContainer>({} as types.HistoryContainer);
   const [monitors, setMonitors] = useState<types.MonitorContainer>({} as types.MonitorContainer);
   const [names, setNames] = useState<types.NameContainer>({} as types.NameContainer);
@@ -79,10 +79,10 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.NOTOKAY);
   const [isConfigured, setIsConfigured] = useState<boolean>(false);
 
-  const fetchPortfolio = async (currentItem: number, itemsPerPage: number) => {
-    PortfolioPage(currentItem, itemsPerPage).then((item: types.PortfolioContainer) => {
+  const fetchProject = async (currentItem: number, itemsPerPage: number) => {
+    ProjectPage(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
       if (item) {
-        setPortfolio(item);
+        setProject(item);
       }
     });
   };
@@ -218,8 +218,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const state = {
     address,
     chain,
-    portfolio,
-    fetchPortfolio,
+    project,
+    fetchProject,
     history,
     fetchHistory,
     setHistory,

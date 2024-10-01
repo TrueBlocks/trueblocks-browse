@@ -1,5 +1,5 @@
 // Find: NewViews-React
-export * from "./Portfolio/PortfolioView";
+export * from "./Project/ProjectView";
 export * from "./History/HistoryView";
 export * from "./Monitors/MonitorsView";
 export * from "./Names/NamesView";

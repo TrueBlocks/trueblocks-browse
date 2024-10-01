@@ -6,7 +6,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
 )
 
-type PortfolioContainer struct {
+type ProjectContainer struct {
 	Session     config.Session     `json:"session"`
 	Summary     HistoryContainer   `json:",inline"`
 	Items       []HistoryContainer `json:"items"`
@@ -22,13 +22,13 @@ type PortfolioContainer struct {
 	Filename    string             `json:"filename"`
 }
 
-func (h *PortfolioContainer) String() string {
+func (h *ProjectContainer) String() string {
 	bytes, _ := json.Marshal(h)
 	return string(bytes)
 }
 
-func (s *PortfolioContainer) ShallowCopy() PortfolioContainer {
-	ret := PortfolioContainer{}
+func (s *ProjectContainer) ShallowCopy() ProjectContainer {
+	ret := ProjectContainer{}
 	ret.Session = s.Session
 	if copy, ok := s.Summary.ShallowCopy().(*HistoryContainer); ok {
 		ret.Summary = *copy
@@ -47,15 +47,15 @@ func (s *PortfolioContainer) ShallowCopy() PortfolioContainer {
 	return ret
 }
 
-func (s *PortfolioContainer) Summarize() {
+func (s *ProjectContainer) Summarize() {
 	// do nothing
 }
 
-func (s *PortfolioContainer) Load() error {
+func (s *ProjectContainer) Load() error {
 	return nil
 }
 
-func (s *PortfolioContainer) Save() error {
+func (s *ProjectContainer) Save() error {
 	// if store, err := cache.NewStore(&cache.StoreOptions{
 	// 	Location: cache.FsCache,
 	// 	ReadOnly: false,

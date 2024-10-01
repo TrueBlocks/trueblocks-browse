@@ -1553,7 +1553,7 @@ export namespace types {
 		}
 	}
 	
-	export class PortfolioContainer {
+	export class ProjectContainer {
 	    session: config.Session;
 	    items: HistoryContainer[];
 	    myCount: number;
@@ -1568,7 +1568,7 @@ export namespace types {
 	    filename: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new PortfolioContainer(source);
+	        return new ProjectContainer(source);
 	    }
 	
 	    constructor(source: any = {}) {

@@ -70,7 +70,7 @@ export function MonitorPage(arg1:number,arg2:number):Promise<types.MonitorContai
 
 export function NamePage(arg1:number,arg2:number):Promise<types.NameContainer>;
 
-export function PortfolioPage(arg1:number,arg2:number):Promise<types.PortfolioContainer>;
+export function ProjectPage(arg1:number,arg2:number):Promise<types.ProjectContainer>;
 
 export function Refresh(arg1:boolean,arg2:Array<string>):Promise<void>;
 
@@ -114,7 +114,7 @@ export function ViewMonitors(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewNames(arg1:menu.CallbackData):Promise<void>;
 
-export function ViewPortfolio(arg1:menu.CallbackData):Promise<void>;
+export function ViewProject(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewSettings(arg1:menu.CallbackData):Promise<void>;
 

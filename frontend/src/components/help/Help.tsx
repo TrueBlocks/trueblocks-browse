@@ -20,7 +20,7 @@ export function Help(): JSX.Element {
 
   useEffect(() => {
     const baseRoute = location.split("/")[1];
-    const helpFileName: string = `${baseRoute === "" ? "portfolio" : baseRoute}.md`;
+    const helpFileName: string = `${baseRoute === "" ? "project" : baseRoute}.md`;
     const filePath = Object.keys(helpFiles).find((key) => key.endsWith(`/help/${helpFileName}`));
 
     const loadMarkdown = async (): Promise<void> => {

@@ -12,13 +12,14 @@ func (a *App) Reload(addr base.Address) {
 	a.HistoryPage(addr.String(), 0, 15)
 	a.removeAddress(addr)
 	a.Refresh(false)
+	a.loadProject(nil, nil)
 }
 
 func (a *App) removeAddress(addr base.Address) {
-	for i, item := range a.portfolio.Items {
+	for i, item := range a.project.Items {
 		if item.Address == addr {
-			a.portfolio.Items = append(a.portfolio.Items[:i], a.portfolio.Items[i+1:]...)
-			// a.portfolio.MyCount--
+			a.project.Items = append(a.project.Items[:i], a.project.Items[i+1:]...)
+			// a.project.MyCount--
 			break
 		}
 	}

@@ -42,7 +42,7 @@ func main() {
 			&messages.NavigateMsg{},
 			&messages.HelpMsg{},
 			&types.AbiContainer{},
-			&types.PortfolioContainer{},
+			&types.ProjectContainer{},
 			&types.IndexContainer{},
 			&types.ManifestContainer{},
 			&types.MonitorContainer{},

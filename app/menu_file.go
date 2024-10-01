@@ -23,15 +23,15 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 			{DisplayName: "Monitor Groups", Pattern: "*.tbx"},
 		},
 	})
-	a.portfolio.Filename = file
-	a.portfolio.Load()
-	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.portfolio.Filename, "Opened"))
+	a.project.Filename = file
+	a.project.Load()
+	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.project.Filename, "Opened"))
 }
 
 func (a *App) FileSave(cd *menu.CallbackData) {
-	a.portfolio.Filename, _ = runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
+	a.project.Filename, _ = runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
 		DefaultDirectory:           "/Users/jrush/Documents/",
-		DefaultFilename:            a.portfolio.Filename,
+		DefaultFilename:            a.project.Filename,
 		Title:                      "Save File",
 		CanCreateDirectories:       true,
 		ShowHiddenFiles:            false,
@@ -40,8 +40,8 @@ func (a *App) FileSave(cd *menu.CallbackData) {
 			{DisplayName: "Monitor Groups", Pattern: "*.tbx"},
 		},
 	})
-	a.portfolio.Save()
-	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.portfolio.Filename, "Saved"))
+	a.project.Save()
+	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.project.Filename, "Saved"))
 }
 
 func (a *App) FileSaveAs(cd *menu.CallbackData) {

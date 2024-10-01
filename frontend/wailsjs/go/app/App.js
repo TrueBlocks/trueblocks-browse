@@ -126,8 +126,8 @@ export function NamePage(arg1, arg2) {
   return window['go']['app']['App']['NamePage'](arg1, arg2);
 }
 
-export function PortfolioPage(arg1, arg2) {
-  return window['go']['app']['App']['PortfolioPage'](arg1, arg2);
+export function ProjectPage(arg1, arg2) {
+  return window['go']['app']['App']['ProjectPage'](arg1, arg2);
 }
 
 export function Refresh(arg1, arg2) {
@@ -214,8 +214,8 @@ export function ViewNames(arg1) {
   return window['go']['app']['App']['ViewNames'](arg1);
 }
 
-export function ViewPortfolio(arg1) {
-  return window['go']['app']['App']['ViewPortfolio'](arg1);
+export function ViewProject(arg1) {
+  return window['go']['app']['App']['ViewProject'](arg1);
 }
 
 export function ViewSettings(arg1) {
