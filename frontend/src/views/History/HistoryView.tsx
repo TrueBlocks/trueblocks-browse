@@ -13,7 +13,6 @@ export function HistoryView() {
 
   const aa = useParams().address;
   useEffect(() => {
-    CancelContexts();
     if (aa === ":address") {
       GetSessionSubVal("/history").then((subRoute) => {
         subRoute = subRoute.replace("/", "");

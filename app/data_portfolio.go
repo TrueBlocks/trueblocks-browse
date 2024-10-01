@@ -75,7 +75,9 @@ func (a *App) loadPortfolio(wg *sync.WaitGroup, errorChan chan error) error {
 		a.portfolio.Summary.NErrors += m.NErrors
 		a.portfolio.Summary.NTokens += m.NTokens
 		m.Summarize()
-		a.portfolio.Items = append(a.portfolio.Items, m.ShallowCopy())
+		if copy, ok := m.ShallowCopy().(*types.HistoryContainer); ok {
+			a.portfolio.Items = append(a.portfolio.Items, *copy)
+		}
 		a.portfolio.HistorySize += m.SizeOf()
 	}
 	sort.Slice(a.portfolio.Items, func(i, j int) bool {

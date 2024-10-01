@@ -30,7 +30,9 @@ func (h *PortfolioContainer) String() string {
 func (s *PortfolioContainer) ShallowCopy() PortfolioContainer {
 	ret := PortfolioContainer{}
 	ret.Session = s.Session
-	ret.Summary = s.Summary.ShallowCopy()
+	if copy, ok := s.Summary.ShallowCopy().(*HistoryContainer); ok {
+		ret.Summary = *copy
+	}
 	// ret.Items = h.Items
 	ret.MyCount = s.MyCount
 	ret.NMonitors = s.NMonitors

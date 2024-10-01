@@ -14,18 +14,18 @@ import (
 
 var historyMutex sync.RWMutex
 
-func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContainer {
+func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContainer {
 	// logger.Info("Getting history page for", addr, "from", first, "to", first+pageSize)
 	if !a.isConfigured() {
 		// logger.Info("Not configured")
-		return types.HistoryContainer{}
+		return &types.HistoryContainer{}
 	}
 
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
 		// logger.Error("Invalid address: " + addr)
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
-		return types.HistoryContainer{}
+		return &types.HistoryContainer{}
 	}
 
 	historyMutex.RLock()
@@ -105,7 +105,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 		if err != nil {
 			// logger.Error("Error getting history 2: " + err.Error())
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
-			return types.HistoryContainer{}
+			return &types.HistoryContainer{}
 		}
 		a.meta = *meta
 
@@ -134,7 +134,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 
 	if first == -1 {
 		// logger.Info("Leaving...")
-		return types.HistoryContainer{}
+		return &types.HistoryContainer{}
 	}
 
 	historyMutex.RLock()
@@ -143,9 +143,11 @@ func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContain
 	first = base.Max(0, base.Min(first, len(a.historyMap[address].Items)-1))
 	last := base.Min(len(a.historyMap[address].Items), first+pageSize)
 	sum := a.historyMap[address]
-	copy := sum.ShallowCopy()
+	sum.Summarize()
+	copy := sum.ShallowCopy().(*types.HistoryContainer)
 	copy.Balance = a.getBalance(address)
 	copy.Items = a.historyMap[address].Items[first:last]
+	// logger.Info("Returning history page for", addr, "from", first, "to", last)
 	return copy
 }
 

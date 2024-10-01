@@ -1147,6 +1147,9 @@ export namespace types {
 	    nLogs: number;
 	    nTokens: number;
 	    nErrors: number;
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new HistoryContainer(source);
@@ -1162,6 +1165,8 @@ export namespace types {
 	        this.nLogs = source["nLogs"];
 	        this.nTokens = source["nTokens"];
 	        this.nErrors = source["nErrors"];
+	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

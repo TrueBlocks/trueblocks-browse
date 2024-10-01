@@ -7,13 +7,13 @@ type Containerer interface {
 	NeedsUpdate() bool
 }
 
-// var containers = []Containerer{
-// 	&AbiContainer{},
-// 	// "HistoryContainer":   &HistoryContainer{},
-// 	&IndexContainer{},
-// 	&ManifestContainer{},
-// 	&MonitorContainer{},
-// 	&NameContainer{},
-// 	&StatusContainer{},
-// 	// "PortfolioContainer": &PortfolioContainer{},
-// }
+var containers = []Containerer{
+	&AbiContainer{},
+	&HistoryContainer{},
+	&IndexContainer{},
+	&ManifestContainer{},
+	&MonitorContainer{},
+	&NameContainer{},
+	&StatusContainer{},
+	// "ProjectContainer": &ProjectContainer{},
+}
