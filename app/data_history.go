@@ -3,7 +3,6 @@ package app
 import (
 	"fmt"
 	"sort"
-	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -11,8 +10,6 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
-
-var historyMutex sync.RWMutex
 
 func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContainer {
 	// logger.Info("Getting history page for", addr, "from", first, "to", first+pageSize)
@@ -28,9 +25,9 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 		return &types.HistoryContainer{}
 	}
 
-	historyMutex.RLock()
-	_, exists := a.historyMap[address]
-	historyMutex.RUnlock()
+	// historyMutex.RLock()
+	_, exists := a.historyMap.Load(address)
+	// historyMutex.RUnlock()
 
 	// logger.Info("Address okay. Exists:", exists)
 	if !exists {
@@ -60,9 +57,9 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 					if !ok {
 						continue
 					}
-					historyMutex.RLock()
-					summary := a.historyMap[address]
-					historyMutex.RUnlock()
+					// historyMutex.RLock()
+					summary, _ := a.historyMap.Load(address)
+					// historyMutex.RUnlock()
 
 					summary.Address = address
 					summary.Name = a.names.NamesMap[address].Name
@@ -80,13 +77,13 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 						)
 					}
 
-					historyMutex.Lock()
+					// historyMutex.Lock()
 					if len(summary.Items) == 0 {
-						delete(a.historyMap, address)
+						a.historyMap.Delete(address)
 					} else {
-						a.historyMap[address] = summary
+						a.historyMap.Store(address, summary)
 					}
-					historyMutex.Unlock()
+					// historyMutex.Unlock()
 
 				case err := <-opts.RenderCtx.ErrorChan:
 					// logger.Error("Error getting history 1: " + err.Error())
@@ -111,8 +108,8 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 
 		// logger.Info("Finished export")
 
-		historyMutex.Lock()
-		summary := a.historyMap[address]
+		// historyMutex.Lock()
+		summary, _ := a.historyMap.Load(address)
 		sort.Slice(summary.Items, func(i, j int) bool {
 			if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
 				return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
@@ -120,12 +117,11 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 			return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
 		})
 		summary.Summarize()
-		a.historyMap[address] = summary
-		historyMutex.Unlock()
+		a.historyMap.Store(address, summary)
 
 		messages.Send(a.ctx,
 			messages.Completed,
-			messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(len(a.historyMap[address].Items)), address),
+			messages.NewProgressMsg(int64(a.txCount(address)), int64(a.txCount(address)), address),
 		)
 
 		// logger.Info("Loading project")
@@ -137,28 +133,21 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 		return &types.HistoryContainer{}
 	}
 
-	historyMutex.RLock()
-	defer historyMutex.RUnlock()
+	// historyMutex.RLock()
+	// defer historyMutex.RUnlock()
 
-	first = base.Max(0, base.Min(first, len(a.historyMap[address].Items)-1))
-	last := base.Min(len(a.historyMap[address].Items), first+pageSize)
-	sum := a.historyMap[address]
+	first = base.Max(0, base.Min(first, a.txCount(address)-1))
+	last := base.Min(a.txCount(address), first+pageSize)
+	sum, _ := a.historyMap.Load(address)
 	sum.Summarize()
 	copy := sum.ShallowCopy().(*types.HistoryContainer)
 	copy.Balance = a.getBalance(address)
-	copy.Items = a.historyMap[address].Items[first:last]
+	copy.Items = sum.Items[first:last]
 	// logger.Info("Returning history page for", addr, "from", first, "to", last)
 	return copy
 }
 
 func (a *App) getHistoryCnt(address base.Address) int {
-	historyMutex.RLock()
-	l := len(a.historyMap[address].Items)
-	historyMutex.RUnlock()
-	if l > 0 {
-		return l
-	}
-
 	opts := sdk.ListOptions{
 		Addrs:   []string{address.Hex()},
 		Globals: a.globals,
@@ -176,9 +165,8 @@ func (a *App) getHistoryCnt(address base.Address) int {
 }
 
 func (a *App) forEveryTx(address base.Address, process func(coreTypes.Transaction) bool) bool {
-	a.historyMutex.RLock()
-	defer a.historyMutex.RUnlock()
-	for _, item := range a.historyMap[address].Items {
+	historyContainer, _ := a.historyMap.Load(address)
+	for _, item := range historyContainer.Items {
 		if !process(item) {
 			return false
 		}
@@ -187,36 +175,37 @@ func (a *App) forEveryTx(address base.Address, process func(coreTypes.Transactio
 }
 
 func (a *App) forEveryHistory(process func(*types.HistoryContainer) bool) bool {
-	a.historyMutex.RLock()
-	defer a.historyMutex.RUnlock()
-	for _, history := range a.historyMap {
-		if !process(&history) {
-			return false
+	a.historyMap.Range(func(key base.Address, value types.HistoryContainer) bool {
+		if !process(&value) {
+			return false // Stop if process returns false
 		}
-	}
+		return true // Continue to next entry
+	})
 	return true
 }
 
 func (a *App) isFileOpen(address base.Address) bool {
-	historyMutex.RLock()
-	defer historyMutex.RUnlock()
-	_, isOpen := a.historyMap[address]
+	_, isOpen := a.historyMap.Load(address)
 	return isOpen
 }
 
 func (a *App) openFileCnt() int {
-	return len(a.historyMap)
+	count := 0
+	a.historyMap.Range(func(key base.Address, value types.HistoryContainer) bool {
+		count++
+		return true
+	})
+	return count
 }
 
 func (a *App) closeFile(address base.Address) {
-	historyMutex.Lock()
-	defer historyMutex.Unlock()
-	delete(a.historyMap, address)
+	a.historyMap.Delete(address)
 }
 
 func (a *App) txCount(address base.Address) int {
 	if a.isFileOpen(address) {
-		return len(a.historyMap[address].Items)
+		history, _ := a.historyMap.Load(address)
+		return len(history.Items)
 	} else {
 		return 0
 	}

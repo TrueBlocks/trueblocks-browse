@@ -30,15 +30,14 @@ var startupError error
 type App struct {
 	ctx context.Context
 
-	session      config.Session
-	apiKeys      map[string]string
-	ensMap       map[string]base.Address
-	renderCtxs   map[base.Address][]*output.RenderCtx
-	historyMap   map[base.Address]types.HistoryContainer
-	historyMutex sync.RWMutex
-	balanceMap   sync.Map
-	meta         coreTypes.MetaData
-	globals      sdk.Globals
+	session    config.Session
+	apiKeys    map[string]string
+	ensMap     map[string]base.Address
+	renderCtxs map[base.Address][]*output.RenderCtx
+	historyMap types.HistorySyncMap
+	balanceMap sync.Map
+	meta       coreTypes.MetaData
+	globals    sdk.Globals
 
 	// Summaries
 	abis              types.AbiContainer
@@ -59,7 +58,6 @@ func NewApp() *App {
 		apiKeys:    make(map[string]string),
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 		ensMap:     make(map[string]base.Address),
-		historyMap: make(map[base.Address]types.HistoryContainer),
 	}
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)

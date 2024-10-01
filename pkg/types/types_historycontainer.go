@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/json"
 	"path/filepath"
+	"sync"
 	"time"
 	"unsafe"
 
@@ -83,4 +84,30 @@ func (s *HistoryContainer) SizeOf() int {
 		size += unsafe.Sizeof(record)
 	}
 	return int(size)
+}
+
+type HistorySyncMap struct {
+	internal sync.Map
+}
+
+func (h *HistorySyncMap) Store(address base.Address, historyContainer HistoryContainer) {
+	h.internal.Store(address, historyContainer)
+}
+
+func (h *HistorySyncMap) Load(address base.Address) (HistoryContainer, bool) {
+	value, ok := h.internal.Load(address)
+	if !ok {
+		return HistoryContainer{}, false
+	}
+	return value.(HistoryContainer), true
+}
+
+func (h *HistorySyncMap) Delete(address base.Address) {
+	h.internal.Delete(address)
+}
+
+func (h *HistorySyncMap) Range(f func(address base.Address, historyContainer HistoryContainer) bool) {
+	h.internal.Range(func(key, value interface{}) bool {
+		return f(key.(base.Address), value.(HistoryContainer))
+	})
 }
