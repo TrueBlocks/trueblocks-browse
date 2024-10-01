@@ -30,14 +30,15 @@ var startupError error
 type App struct {
 	ctx context.Context
 
-	session    config.Session
-	apiKeys    map[string]string
-	ensMap     map[string]base.Address
-	renderCtxs map[base.Address][]*output.RenderCtx
-	historyMap map[base.Address]types.HistoryContainer
-	balanceMap sync.Map
-	meta       coreTypes.MetaData
-	globals    sdk.Globals
+	session      config.Session
+	apiKeys      map[string]string
+	ensMap       map[string]base.Address
+	renderCtxs   map[base.Address][]*output.RenderCtx
+	historyMap   map[base.Address]types.HistoryContainer
+	historyMutex sync.RWMutex
+	balanceMap   sync.Map
+	meta         coreTypes.MetaData
+	globals      sdk.Globals
 
 	// Summaries
 	abis              types.AbiContainer

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { SetSessionVal } from "@gocode/app/App";
@@ -9,6 +10,7 @@ import { tableColumns } from "./ProjectTable";
 
 export function ProjectView() {
   const { project, fetchProject } = useAppState();
+  // const [filtered, setFiltered] = useState<types.HistoryContainer[]>([]);
 
   const handleEnter = (page: Page) => {
     const record = page.selected - page.getOffset();
@@ -24,7 +26,7 @@ export function ProjectView() {
   //   }
 
   const table = useReactTable({
-    data: project.items || [],
+    data: project.items ?? [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });

@@ -55,31 +55,31 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	// 		break
 	// 	}
 	// }
-	// if !needsUpdate && a.OpenFileCnt() == a.project.NOpenFiles {
+	// if !needsUpdate && a.openFileCnt() == a.project.NOpenFiles {
 	// 	return nil
 	// }
 
 	a.project = types.ProjectContainer{}
-	a.project.NOpenFiles = a.OpenFileCnt()
+	a.project.NOpenFiles = a.openFileCnt()
 	a.project.NMonitors = len(a.monitors.Items)
 	a.project.NNames = len(a.names.Names)
 	a.project.NAbis = len(a.abis.Items)
 	a.project.NIndexes = len(a.index.Items)
 	a.project.NManifests = len(a.manifest.Items)
 	a.project.NCaches = len(a.status.Items)
-	a.project.HistorySize = 0
-	for _, m := range a.historyMap {
-		a.project.Summary.Balance += m.Balance
-		a.project.Summary.NItems += m.NItems
-		a.project.Summary.NLogs += m.NLogs
-		a.project.Summary.NErrors += m.NErrors
-		a.project.Summary.NTokens += m.NTokens
-		m.Summarize()
-		if copy, ok := m.ShallowCopy().(*types.HistoryContainer); ok {
+	_ = a.forEveryHistory(func(item *types.HistoryContainer) bool {
+		a.project.Summary.Balance += item.Balance
+		a.project.Summary.NItems += item.NItems
+		a.project.Summary.NLogs += item.NLogs
+		a.project.Summary.NErrors += item.NErrors
+		a.project.Summary.NTokens += item.NTokens
+		item.Summarize()
+		if copy, ok := item.ShallowCopy().(*types.HistoryContainer); ok {
 			a.project.Items = append(a.project.Items, *copy)
 		}
-		a.project.HistorySize += m.SizeOf()
-	}
+		a.project.HistorySize += item.SizeOf()
+		return true
+	})
 	sort.Slice(a.project.Items, func(i, j int) bool {
 		return a.project.Items[i].Address.Cmp(a.project.Items[j].Address.Address) < 0
 	})

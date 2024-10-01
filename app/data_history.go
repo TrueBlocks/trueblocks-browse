@@ -52,7 +52,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 		}
 
 		go func() {
-			nItems := a.getHistoryCnt(addr)
+			nItems := a.getHistoryCnt(address)
 			for {
 				select {
 				case model := <-opts.RenderCtx.ModelChan:
@@ -151,13 +151,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 	return copy
 }
 
-func (a *App) getHistoryCnt(addr string) int {
-	address, ok := a.ConvertToAddress(addr)
-	if !ok {
-		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
-		return 0
-	}
-
+func (a *App) getHistoryCnt(address base.Address) int {
 	historyMutex.RLock()
 	l := len(a.historyMap[address].Items)
 	historyMutex.RUnlock()
@@ -166,7 +160,7 @@ func (a *App) getHistoryCnt(addr string) int {
 	}
 
 	opts := sdk.ListOptions{
-		Addrs:   []string{addr},
+		Addrs:   []string{address.Hex()},
 		Globals: a.globals,
 	}
 	appearances, meta, err := opts.ListCount()
@@ -181,19 +175,47 @@ func (a *App) getHistoryCnt(addr string) int {
 	}
 }
 
-func (a *App) IsOpen(address base.Address) bool {
-	historyMutex.RLock()
-	_, exists := a.historyMap[address]
-	historyMutex.RUnlock()
-	return exists
+func (a *App) forEveryTx(address base.Address, process func(coreTypes.Transaction) bool) bool {
+	a.historyMutex.RLock()
+	defer a.historyMutex.RUnlock()
+	for _, item := range a.historyMap[address].Items {
+		if !process(item) {
+			return false
+		}
+	}
+	return true
 }
 
-func (a *App) OpenFileCnt() int {
+func (a *App) forEveryHistory(process func(*types.HistoryContainer) bool) bool {
+	a.historyMutex.RLock()
+	defer a.historyMutex.RUnlock()
+	for _, history := range a.historyMap {
+		if !process(&history) {
+			return false
+		}
+	}
+	return true
+}
+
+func (a *App) isFileOpen(address base.Address) bool {
+	historyMutex.RLock()
+	defer historyMutex.RUnlock()
+	_, isOpen := a.historyMap[address]
+	return isOpen
+}
+
+func (a *App) openFileCnt() int {
 	return len(a.historyMap)
 }
 
-func (a *App) TxCount(address base.Address) int {
-	if a.IsOpen(address) {
+func (a *App) closeFile(address base.Address) {
+	historyMutex.Lock()
+	defer historyMutex.Unlock()
+	delete(a.historyMap, address)
+}
+
+func (a *App) txCount(address base.Address) int {
+	if a.isFileOpen(address) {
 		return len(a.historyMap[address].Items)
 	} else {
 		return 0
