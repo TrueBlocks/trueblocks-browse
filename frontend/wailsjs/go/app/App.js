@@ -110,6 +110,10 @@ export function IndexPage(arg1, arg2) {
   return window['go']['app']['App']['IndexPage'](arg1, arg2);
 }
 
+export function IsOpen(arg1) {
+  return window['go']['app']['App']['IsOpen'](arg1);
+}
+
 export function ManifestPage(arg1, arg2) {
   return window['go']['app']['App']['ManifestPage'](arg1, arg2);
 }
@@ -124,6 +128,10 @@ export function MonitorPage(arg1, arg2) {
 
 export function NamePage(arg1, arg2) {
   return window['go']['app']['App']['NamePage'](arg1, arg2);
+}
+
+export function OpenFileCnt() {
+  return window['go']['app']['App']['OpenFileCnt']();
 }
 
 export function ProjectPage(arg1, arg2) {
@@ -184,6 +192,10 @@ export function SystemQuit(arg1) {
 
 export function ToggleDaemon(arg1) {
   return window['go']['app']['App']['ToggleDaemon'](arg1);
+}
+
+export function TxCount(arg1) {
+  return window['go']['app']['App']['TxCount'](arg1);
 }
 
 export function ViewAbis(arg1) {

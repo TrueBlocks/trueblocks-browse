@@ -180,3 +180,22 @@ func (a *App) getHistoryCnt(addr string) int {
 		return int(appearances[0].NRecords)
 	}
 }
+
+func (a *App) IsOpen(address base.Address) bool {
+	historyMutex.RLock()
+	_, exists := a.historyMap[address]
+	historyMutex.RUnlock()
+	return exists
+}
+
+func (a *App) OpenFileCnt() int {
+	return len(a.historyMap)
+}
+
+func (a *App) TxCount(address base.Address) int {
+	if a.IsOpen(address) {
+		return len(a.historyMap[address].Items)
+	} else {
+		return 0
+	}
+}

@@ -1556,7 +1556,7 @@ export namespace types {
 	export class ProjectContainer {
 	    session: config.Session;
 	    items: HistoryContainer[];
-	    myCount: number;
+	    nOpenFiles: number;
 	    nMonitors: number;
 	    nNames: number;
 	    nAbis: number;
@@ -1575,7 +1575,7 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.session = this.convertValues(source["session"], config.Session);
 	        this.items = this.convertValues(source["items"], HistoryContainer);
-	        this.myCount = source["myCount"];
+	        this.nOpenFiles = source["nOpenFiles"];
 	        this.nMonitors = source["nMonitors"];
 	        this.nNames = source["nNames"];
 	        this.nAbis = source["nAbis"];

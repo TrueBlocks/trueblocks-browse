@@ -30,7 +30,7 @@ export function ProjectView() {
   });
 
   return (
-    <ViewStateProvider route={""} nItems={project.myCount} fetchFn={fetchProject} onEnter={handleEnter}>
+    <ViewStateProvider route={""} nItems={project.nOpenFiles} fetchFn={fetchProject} onEnter={handleEnter}>
       <View>
         <FormTable data={project} definition={createProjectForm(table)} />
       </View>
@@ -67,7 +67,7 @@ function createProjectForm(table: any): GroupDefinition<theInstance>[] {
         { label: "nManifests", type: "int", accessor: "nManifests" },
         { label: "nCaches", type: "int", accessor: "nCaches" },
         { label: "historySize", type: "bytes", accessor: "historySize" },
-        { label: "nOpen", type: "int", accessor: "myCount" },
+        { label: "nOpen", type: "int", accessor: "nOpenFiles" },
       ],
     },
   ];

@@ -62,6 +62,8 @@ export function HistoryPage(arg1:string,arg2:number,arg3:number):Promise<types.H
 
 export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>;
 
+export function IsOpen(arg1:base.Address):Promise<boolean>;
+
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
 
 export function ModifyName(arg1:string,arg2:base.Address):Promise<void>;
@@ -69,6 +71,8 @@ export function ModifyName(arg1:string,arg2:base.Address):Promise<void>;
 export function MonitorPage(arg1:number,arg2:number):Promise<types.MonitorContainer>;
 
 export function NamePage(arg1:number,arg2:number):Promise<types.NameContainer>;
+
+export function OpenFileCnt():Promise<number>;
 
 export function ProjectPage(arg1:number,arg2:number):Promise<types.ProjectContainer>;
 
@@ -99,6 +103,8 @@ export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
 
 export function ToggleDaemon(arg1:string):Promise<void>;
+
+export function TxCount(arg1:base.Address):Promise<number>;
 
 export function ViewAbis(arg1:menu.CallbackData):Promise<void>;
 

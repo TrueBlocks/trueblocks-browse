@@ -19,7 +19,7 @@ func (a *App) removeAddress(addr base.Address) {
 	for i, item := range a.project.Items {
 		if item.Address == addr {
 			a.project.Items = append(a.project.Items[:i], a.project.Items[i+1:]...)
-			// a.project.MyCount--
+			// a.project.NOpenFiles--
 			break
 		}
 	}

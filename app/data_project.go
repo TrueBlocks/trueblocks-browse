@@ -55,12 +55,12 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	// 		break
 	// 	}
 	// }
-	// if !needsUpdate && len(a.historyMap) == a.project.MyCount {
+	// if !needsUpdate && a.OpenFileCnt() == a.project.NOpenFiles {
 	// 	return nil
 	// }
 
 	a.project = types.ProjectContainer{}
-	a.project.MyCount = len(a.historyMap)
+	a.project.NOpenFiles = a.OpenFileCnt()
 	a.project.NMonitors = len(a.monitors.Items)
 	a.project.NNames = len(a.names.Names)
 	a.project.NAbis = len(a.abis.Items)

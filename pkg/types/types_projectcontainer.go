@@ -10,7 +10,7 @@ type ProjectContainer struct {
 	Session     config.Session     `json:"session"`
 	Summary     HistoryContainer   `json:",inline"`
 	Items       []HistoryContainer `json:"items"`
-	MyCount     int                `json:"myCount"`
+	NOpenFiles  int                `json:"nOpenFiles"`
 	NMonitors   int                `json:"nMonitors"`
 	NNames      int                `json:"nNames"`
 	NAbis       int                `json:"nAbis"`
@@ -34,7 +34,7 @@ func (s *ProjectContainer) ShallowCopy() ProjectContainer {
 		ret.Summary = *copy
 	}
 	// ret.Items = h.Items
-	ret.MyCount = s.MyCount
+	ret.NOpenFiles = s.NOpenFiles
 	ret.NMonitors = s.NMonitors
 	ret.NNames = s.NNames
 	ret.NAbis = s.NAbis

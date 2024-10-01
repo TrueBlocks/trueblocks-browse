@@ -24,7 +24,7 @@ func (a *App) CancelContexts() {
 		for _, ctx := range ctxArrays {
 			messages.Send(a.ctx,
 				messages.Cancelled,
-				messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(len(a.historyMap[address].Items)), address),
+				messages.NewProgressMsg(int64(a.TxCount(address)), int64(a.TxCount(address)), address),
 			)
 			ctx.Cancel()
 		}
