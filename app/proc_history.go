@@ -6,16 +6,16 @@ import (
 
 func (a *App) Reload(addr base.Address) {
 	a.CancelContexts()
-	historyMutex.Lock()
-	delete(a.historyMap, addr)
-	historyMutex.Unlock()
-	a.HistoryPage(addr.String(), 0, 15)
 	a.removeAddress(addr)
+	a.HistoryPage(addr.String(), 0, 15)
 	a.Refresh(false)
 	a.loadProject(nil, nil)
 }
 
 func (a *App) removeAddress(addr base.Address) {
+	historyMutex.Lock()
+	delete(a.historyMap, addr)
+	historyMutex.Unlock()
 	for i, item := range a.project.Items {
 		if item.Address == addr {
 			a.project.Items = append(a.project.Items[:i], a.project.Items[i+1:]...)
@@ -23,11 +23,11 @@ func (a *App) removeAddress(addr base.Address) {
 			break
 		}
 	}
-	for i, item := range a.monitors.Items {
-		if item.Address == addr {
-			a.monitors.Items = append(a.monitors.Items[:i], a.monitors.Items[i+1:]...)
-			// a.monitors.NItems--
-			break
-		}
-	}
+	// for i, item := range a.monitors.Items {
+	// 	if item.Address == addr {
+	// 		a.monitors.Items = append(a.monitors.Items[:i], a.monitors.Items[i+1:]...)
+	// 		// a.monitors.NItems--
+	// 		break
+	// 	}
+	// }
 }
