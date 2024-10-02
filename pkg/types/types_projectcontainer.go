@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
 )
@@ -10,6 +11,8 @@ type ProjectContainer struct {
 	Session     config.Session     `json:"session"`
 	Summary     HistoryContainer   `json:",inline"`
 	Items       []HistoryContainer `json:"items"`
+	HistoryMap  *HistorySyncMap    `json:"historyMap"`
+	BalanceMap  *sync.Map          `json:"balanceMap"`
 	NOpenFiles  int                `json:"nOpenFiles"`
 	NMonitors   int                `json:"nMonitors"`
 	NNames      int                `json:"nNames"`
@@ -27,7 +30,11 @@ func (h *ProjectContainer) String() string {
 	return string(bytes)
 }
 
-func (s *ProjectContainer) ShallowCopy() ProjectContainer {
+func (s *ProjectContainer) NeedsUpdate() bool {
+	return false
+}
+
+func (s *ProjectContainer) ShallowCopy() Containerer {
 	ret := ProjectContainer{}
 	ret.Session = s.Session
 	if copy, ok := s.Summary.ShallowCopy().(*HistoryContainer); ok {
@@ -44,7 +51,7 @@ func (s *ProjectContainer) ShallowCopy() ProjectContainer {
 	ret.HistorySize = s.HistorySize
 	ret.Dirty = true
 	ret.Filename = "Untitled"
-	return ret
+	return &ret
 }
 
 func (s *ProjectContainer) Summarize() {

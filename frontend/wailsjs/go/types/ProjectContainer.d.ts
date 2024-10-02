@@ -4,9 +4,11 @@ import {types} from '../models';
 
 export function Load():Promise<void>;
 
+export function NeedsUpdate():Promise<boolean>;
+
 export function Save():Promise<void>;
 
-export function ShallowCopy():Promise<types.ProjectContainer>;
+export function ShallowCopy():Promise<types.Containerer>;
 
 export function String():Promise<string>;
 

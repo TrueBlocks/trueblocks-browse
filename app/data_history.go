@@ -26,7 +26,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 	}
 
 	// historyMutex.RLock()
-	_, exists := a.historyMap.Load(address)
+	_, exists := a.project.HistoryMap.Load(address)
 	// historyMutex.RUnlock()
 
 	// logger.Info("Address okay. Exists:", exists)
@@ -57,10 +57,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 					if !ok {
 						continue
 					}
-					// historyMutex.RLock()
-					summary, _ := a.historyMap.Load(address)
-					// historyMutex.RUnlock()
-
+					summary, _ := a.project.HistoryMap.Load(address)
 					summary.Address = address
 					summary.Name = a.names.NamesMap[address].Name
 					summary.Items = append(summary.Items, *tx)
@@ -77,13 +74,11 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 						)
 					}
 
-					// historyMutex.Lock()
 					if len(summary.Items) == 0 {
-						a.historyMap.Delete(address)
+						a.project.HistoryMap.Delete(address)
 					} else {
-						a.historyMap.Store(address, summary)
+						a.project.HistoryMap.Store(address, summary)
 					}
-					// historyMutex.Unlock()
 
 				case err := <-opts.RenderCtx.ErrorChan:
 					// logger.Error("Error getting history 1: " + err.Error())
@@ -108,8 +103,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 
 		// logger.Info("Finished export")
 
-		// historyMutex.Lock()
-		summary, _ := a.historyMap.Load(address)
+		summary, _ := a.project.HistoryMap.Load(address)
 		sort.Slice(summary.Items, func(i, j int) bool {
 			if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
 				return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
@@ -117,7 +111,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 			return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
 		})
 		summary.Summarize()
-		a.historyMap.Store(address, summary)
+		a.project.HistoryMap.Store(address, summary)
 
 		messages.Send(a.ctx,
 			messages.Completed,
@@ -133,12 +127,9 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 		return &types.HistoryContainer{}
 	}
 
-	// historyMutex.RLock()
-	// defer historyMutex.RUnlock()
-
 	first = base.Max(0, base.Min(first, a.txCount(address)-1))
 	last := base.Min(a.txCount(address), first+pageSize)
-	sum, _ := a.historyMap.Load(address)
+	sum, _ := a.project.HistoryMap.Load(address)
 	sum.Summarize()
 	copy := sum.ShallowCopy().(*types.HistoryContainer)
 	copy.Balance = a.getBalance(address)
@@ -165,7 +156,7 @@ func (a *App) getHistoryCnt(address base.Address) int {
 }
 
 func (a *App) forEveryTx(address base.Address, process func(coreTypes.Transaction) bool) bool {
-	historyContainer, _ := a.historyMap.Load(address)
+	historyContainer, _ := a.project.HistoryMap.Load(address)
 	for _, item := range historyContainer.Items {
 		if !process(item) {
 			return false
@@ -175,23 +166,23 @@ func (a *App) forEveryTx(address base.Address, process func(coreTypes.Transactio
 }
 
 func (a *App) forEveryHistory(process func(*types.HistoryContainer) bool) bool {
-	a.historyMap.Range(func(key base.Address, value types.HistoryContainer) bool {
+	a.project.HistoryMap.Range(func(key base.Address, value types.HistoryContainer) bool {
 		if !process(&value) {
-			return false // Stop if process returns false
+			return false
 		}
-		return true // Continue to next entry
+		return true
 	})
 	return true
 }
 
 func (a *App) isFileOpen(address base.Address) bool {
-	_, isOpen := a.historyMap.Load(address)
+	_, isOpen := a.project.HistoryMap.Load(address)
 	return isOpen
 }
 
 func (a *App) openFileCnt() int {
 	count := 0
-	a.historyMap.Range(func(key base.Address, value types.HistoryContainer) bool {
+	a.project.HistoryMap.Range(func(key base.Address, value types.HistoryContainer) bool {
 		count++
 		return true
 	})
@@ -199,12 +190,12 @@ func (a *App) openFileCnt() int {
 }
 
 func (a *App) closeFile(address base.Address) {
-	a.historyMap.Delete(address)
+	a.project.HistoryMap.Delete(address)
 }
 
 func (a *App) txCount(address base.Address) int {
 	if a.isFileOpen(address) {
-		history, _ := a.historyMap.Load(address)
+		history, _ := a.project.HistoryMap.Load(address)
 		return len(history.Items)
 	} else {
 		return 0

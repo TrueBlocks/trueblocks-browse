@@ -1556,6 +1556,10 @@ export namespace types {
 	export class ProjectContainer {
 	    session: config.Session;
 	    items: HistoryContainer[];
+	    // Go type: HistorySyncMap
+	    historyMap?: any;
+	    // Go type: sync
+	    balanceMap?: any;
 	    nOpenFiles: number;
 	    nMonitors: number;
 	    nNames: number;
@@ -1575,6 +1579,8 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.session = this.convertValues(source["session"], config.Session);
 	        this.items = this.convertValues(source["items"], HistoryContainer);
+	        this.historyMap = this.convertValues(source["historyMap"], null);
+	        this.balanceMap = this.convertValues(source["balanceMap"], null);
 	        this.nOpenFiles = source["nOpenFiles"];
 	        this.nMonitors = source["nMonitors"];
 	        this.nNames = source["nNames"];
@@ -1740,6 +1746,12 @@ export namespace types {
 
 export namespace wizard {
 	
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
+	}
 	export enum State {
 	    NOTOKAY = "notOkay",
 	    TOMLOKAY = "tomlOkay",
@@ -1747,12 +1759,6 @@ export namespace wizard {
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
 	    OKAY = "okay",
-	}
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
 	}
 	export class Wizard {
 	    state: State;

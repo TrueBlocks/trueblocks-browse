@@ -13,10 +13,9 @@ import (
 func (a *App) ProjectPage(first, pageSize int) *types.ProjectContainer {
 	first = base.Max(0, base.Min(first, len(a.project.Items)-1))
 	last := base.Min(len(a.project.Items), first+pageSize)
-	// copy, _ := a.project.ShallowCopy().(*types.ProjectContainer)
-	copy := a.project.ShallowCopy()
+	copy, _ := a.project.ShallowCopy().(*types.ProjectContainer)
 	copy.Items = a.project.Items[first:last]
-	return &copy
+	return copy
 }
 
 var projectLock atomic.Uint32
@@ -59,7 +58,10 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	// 	return nil
 	// }
 
-	a.project = types.ProjectContainer{}
+	a.project = types.ProjectContainer{
+		HistoryMap: a.project.HistoryMap,
+		BalanceMap: a.project.BalanceMap,
+	}
 	a.project.NOpenFiles = a.openFileCnt()
 	a.project.NMonitors = len(a.monitors.Items)
 	a.project.NNames = len(a.names.Names)

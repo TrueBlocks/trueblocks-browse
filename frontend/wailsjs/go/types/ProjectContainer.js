@@ -6,6 +6,10 @@ export function Load() {
   return window['go']['types']['ProjectContainer']['Load']();
 }
 
+export function NeedsUpdate() {
+  return window['go']['types']['ProjectContainer']['NeedsUpdate']();
+}
+
 export function Save() {
   return window['go']['types']['ProjectContainer']['Save']();
 }

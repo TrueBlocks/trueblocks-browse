@@ -34,8 +34,6 @@ type App struct {
 	apiKeys    map[string]string
 	ensMap     map[string]base.Address
 	renderCtxs map[base.Address][]*output.RenderCtx
-	historyMap types.HistorySyncMap
-	balanceMap sync.Map
 	meta       coreTypes.MetaData
 	globals    sdk.Globals
 
@@ -62,6 +60,8 @@ func NewApp() *App {
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
 	a.project.Filename = "Untitled"
+	a.project.HistoryMap = &types.HistorySyncMap{}
+	a.project.BalanceMap = &sync.Map{}
 
 	// it's okay if it's not found
 	a.session.MustLoadSession()
