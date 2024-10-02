@@ -1560,6 +1560,8 @@ export namespace types {
 	    historyMap?: any;
 	    // Go type: sync
 	    balanceMap?: any;
+	    // Go type: sync
+	    ensMap?: any;
 	    nOpenFiles: number;
 	    nMonitors: number;
 	    nNames: number;
@@ -1581,6 +1583,7 @@ export namespace types {
 	        this.items = this.convertValues(source["items"], HistoryContainer);
 	        this.historyMap = this.convertValues(source["historyMap"], null);
 	        this.balanceMap = this.convertValues(source["balanceMap"], null);
+	        this.ensMap = this.convertValues(source["ensMap"], null);
 	        this.nOpenFiles = source["nOpenFiles"];
 	        this.nMonitors = source["nMonitors"];
 	        this.nNames = source["nNames"];
@@ -1746,12 +1749,6 @@ export namespace types {
 
 export namespace wizard {
 	
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
-	}
 	export enum State {
 	    NOTOKAY = "notOkay",
 	    TOMLOKAY = "tomlOkay",
@@ -1759,6 +1756,12 @@ export namespace wizard {
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
 	    OKAY = "okay",
+	}
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
 	}
 	export class Wizard {
 	    state: State;

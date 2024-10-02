@@ -167,10 +167,7 @@ func (a *App) forEveryTx(address base.Address, process func(coreTypes.Transactio
 
 func (a *App) forEveryHistory(process func(*types.HistoryContainer) bool) bool {
 	a.project.HistoryMap.Range(func(key base.Address, value types.HistoryContainer) bool {
-		if !process(&value) {
-			return false
-		}
-		return true
+		return process(&value)
 	})
 	return true
 }

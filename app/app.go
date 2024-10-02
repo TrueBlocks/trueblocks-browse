@@ -32,7 +32,6 @@ type App struct {
 
 	session    config.Session
 	apiKeys    map[string]string
-	ensMap     map[string]base.Address
 	renderCtxs map[base.Address][]*output.RenderCtx
 	meta       coreTypes.MetaData
 	globals    sdk.Globals
@@ -55,13 +54,13 @@ func NewApp() *App {
 	a := App{
 		apiKeys:    make(map[string]string),
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
-		ensMap:     make(map[string]base.Address),
 	}
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
 	a.project.Filename = "Untitled"
 	a.project.HistoryMap = &types.HistorySyncMap{}
 	a.project.BalanceMap = &sync.Map{}
+	a.project.EnsMap = &sync.Map{}
 
 	// it's okay if it's not found
 	a.session.MustLoadSession()

@@ -2,9 +2,11 @@ package types
 
 import (
 	"encoding/json"
+	"fmt"
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 )
 
 type ProjectContainer struct {
@@ -13,6 +15,7 @@ type ProjectContainer struct {
 	Items       []HistoryContainer `json:"items"`
 	HistoryMap  *HistorySyncMap    `json:"historyMap"`
 	BalanceMap  *sync.Map          `json:"balanceMap"`
+	EnsMap      *sync.Map          `json:"ensMap"`
 	NOpenFiles  int                `json:"nOpenFiles"`
 	NMonitors   int                `json:"nMonitors"`
 	NNames      int                `json:"nNames"`
@@ -59,10 +62,16 @@ func (s *ProjectContainer) Summarize() {
 }
 
 func (s *ProjectContainer) Load() error {
+	str := file.AsciiFileToString(s.Filename)
+	json.Unmarshal([]byte(str), s)
 	return nil
 }
 
 func (s *ProjectContainer) Save() error {
+	bytes, _ := json.MarshalIndent(s, "", "  ")
+	fmt.Println("Saving:", s.Filename)
+	fmt.Println("Len:", len(bytes))
+	file.StringToAsciiFile(s.Filename, string(bytes))
 	// if store, err := cache.NewStore(&cache.StoreOptions{
 	// 	Location: cache.FsCache,
 	// 	ReadOnly: false,

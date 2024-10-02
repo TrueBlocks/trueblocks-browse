@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -23,8 +24,16 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 			{DisplayName: "Monitor Groups", Pattern: "*.tbx"},
 		},
 	})
+	a.project = types.ProjectContainer{}
 	a.project.Filename = file
 	a.project.Load()
+	for i, history := range a.project.Items {
+		if i == 0 {
+			a.project.Session.LastSub = map[string]string{"/history": history.Address.Hex()}
+		}
+		a.HistoryPage(history.Address.Hex(), 0, 15)
+	}
+	a.session = a.project.Session
 	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.project.Filename, "Opened"))
 }
 
@@ -40,6 +49,7 @@ func (a *App) FileSave(cd *menu.CallbackData) {
 			{DisplayName: "Monitor Groups", Pattern: "*.tbx"},
 		},
 	})
+	a.project.Session = a.session
 	a.project.Save()
 	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.project.Filename, "Saved"))
 }
