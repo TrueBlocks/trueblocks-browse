@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"fmt"
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
@@ -26,6 +25,17 @@ type ProjectContainer struct {
 	HistorySize int                `json:"historySize"`
 	Dirty       bool               `json:"dirty"`
 	Filename    string             `json:"filename"`
+}
+
+func NewProjectContainer(filename string, historyMap *HistorySyncMap, balMap, ensMap *sync.Map) ProjectContainer {
+	return ProjectContainer{
+		Items:      []HistoryContainer{},
+		HistoryMap: historyMap,
+		BalanceMap: balMap,
+		EnsMap:     ensMap,
+		Dirty:      false,
+		Filename:   filename,
+	}
 }
 
 func (h *ProjectContainer) String() string {
@@ -69,8 +79,8 @@ func (s *ProjectContainer) Load() error {
 
 func (s *ProjectContainer) Save() error {
 	bytes, _ := json.MarshalIndent(s, "", "  ")
-	fmt.Println("Saving:", s.Filename)
-	fmt.Println("Len:", len(bytes))
+	// fmt.Println("Saving:", s.Filename)
+	// fmt.Println("Len:", len(bytes))
 	file.StringToAsciiFile(s.Filename, string(bytes))
 	// if store, err := cache.NewStore(&cache.StoreOptions{
 	// 	Location: cache.FsCache,

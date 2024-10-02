@@ -31,11 +31,6 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 
 	// logger.Info("Address okay. Exists:", exists)
 	if !exists {
-		messages.Send(a.ctx,
-			messages.Progress,
-			messages.NewProgressMsg(0, 0, address),
-		)
-
 		rCtx := a.RegisterCtx(address)
 		opts := sdk.ExportOptions{
 			Addrs:     []string{addr},
@@ -58,6 +53,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 						continue
 					}
 					summary, _ := a.project.HistoryMap.Load(address)
+					summary.NTotal = nItems
 					summary.Address = address
 					summary.Name = a.names.NamesMap[address].Name
 					summary.Items = append(summary.Items, *tx)

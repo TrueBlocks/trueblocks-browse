@@ -57,10 +57,7 @@ func NewApp() *App {
 	}
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
-	a.project.Filename = "Untitled"
-	a.project.HistoryMap = &types.HistorySyncMap{}
-	a.project.BalanceMap = &sync.Map{}
-	a.project.EnsMap = &sync.Map{}
+	a.project = types.NewProjectContainer("Untitled.tbx", &types.HistorySyncMap{}, &sync.Map{}, &sync.Map{})
 
 	// it's okay if it's not found
 	a.session.MustLoadSession()
@@ -93,7 +90,7 @@ func (a *App) GetContext() context.Context {
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
-	a.FreshenController = daemons.NewFreshen(a, "freshen", 4000, a.GetSessionDeamon("daemon-freshen"))
+	a.FreshenController = daemons.NewFreshen(a, "freshen", 3000, a.GetSessionDeamon("daemon-freshen"))
 	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetSessionDeamon("daemon-scraper"))
 	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.GetSessionDeamon("daemon-ipfs"))
 	go a.startDaemons()

@@ -1,6 +1,8 @@
 package app
 
 import (
+	"sync"
+
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -9,7 +11,8 @@ import (
 )
 
 func (a *App) FileNew(cd *menu.CallbackData) {
-	logger.Info("File New")
+	a.project = types.NewProjectContainer("Untitled.tbx", &types.HistorySyncMap{}, &sync.Map{}, &sync.Map{})
+	messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
 }
 
 func (a *App) FileOpen(cd *menu.CallbackData) {
@@ -24,17 +27,30 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 			{DisplayName: "Monitor Groups", Pattern: "*.tbx"},
 		},
 	})
-	a.project = types.ProjectContainer{}
-	a.project.Filename = file
-	a.project.Load()
-	for i, history := range a.project.Items {
-		if i == 0 {
-			a.project.Session.LastSub = map[string]string{"/history": history.Address.Hex()}
+
+	if len(file) > 0 {
+		newProject := types.ProjectContainer{
+			Filename: file,
 		}
-		a.HistoryPage(history.Address.Hex(), 0, 15)
+		newProject.Load()
+		a.session = newProject.Session
+		for _, history := range newProject.Items {
+			history.Balance = a.getBalance(history.Address)
+			if loaded, ok := a.project.HistoryMap.Load(history.Address); ok && loaded.NItems == loaded.NTotal {
+				history.Items = loaded.Items
+				newProject.HistoryMap.Store(history.Address, history)
+				messages.Send(a.ctx,
+					messages.Completed,
+					messages.NewProgressMsg(int64(a.txCount(history.Address)), int64(a.txCount(history.Address)), history.Address),
+				)
+			} else {
+				go a.HistoryPage(history.Address.Hex(), -1, 15)
+			}
+		}
+
+		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
+		messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.project.Filename, "Opened"))
 	}
-	a.session = a.project.Session
-	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.project.Filename, "Opened"))
 }
 
 func (a *App) FileSave(cd *menu.CallbackData) {

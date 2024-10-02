@@ -13,6 +13,12 @@ export function ViewStatus() {
     const handleDocument = (msg: messages.DocumentMsg) => {
       setStatusMessage(`${msg.msg} ${msg.filename}`);
       setColor(classes.green);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setStatusMessage("");
+      }, 2000);
     };
 
     const handleProgress = (msg: messages.ProgressMsg) => {

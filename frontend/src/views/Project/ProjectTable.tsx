@@ -11,24 +11,17 @@ export const tableColumns: CustomColumnDef<types.HistoryContainer, any>[] = [
     cell: (info) => <Formatter type="address-editor" value={info.renderValue()} />,
     meta: { className: "wide cell" },
   }),
+  columnHelper.accessor("nItems", {
+    header: () => "Loaded",
+    cell: (info) => {
+      const { nItems, nTotal } = info.row.original;
+      return <Formatter type="progress" value={nItems} value2={nTotal} />;
+    },
+    meta: { className: "medium cell" },
+  }),
   columnHelper.accessor("balance", {
     header: () => "Balance",
     cell: (info) => <Formatter type="ether" value={info.renderValue()} />,
-    meta: { className: "medium cell" },
-  }),
-  columnHelper.accessor("nItems", {
-    header: () => "nItems",
-    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
-    meta: { className: "medium cell" },
-  }),
-  columnHelper.accessor("nLogs", {
-    header: () => "nLogs",
-    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
-    meta: { className: "medium cell" },
-  }),
-  columnHelper.accessor("nErrors", {
-    header: () => "nErrors",
-    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("address", {

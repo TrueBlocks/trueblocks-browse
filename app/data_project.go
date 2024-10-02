@@ -5,7 +5,6 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
@@ -58,11 +57,12 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	// 	return nil
 	// }
 
-	a.project = types.ProjectContainer{
-		HistoryMap: a.project.HistoryMap,
-		BalanceMap: a.project.BalanceMap,
-		EnsMap:     a.project.EnsMap,
-	}
+	a.project = types.NewProjectContainer(
+		a.project.Filename,
+		a.project.HistoryMap,
+		a.project.BalanceMap,
+		a.project.EnsMap,
+	)
 	a.project.NOpenFiles = a.openFileCnt()
 	a.project.NMonitors = len(a.monitors.Items)
 	a.project.NNames = len(a.names.Names)
@@ -73,6 +73,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	_ = a.forEveryHistory(func(item *types.HistoryContainer) bool {
 		a.project.Summary.Balance += item.Balance
 		a.project.Summary.NItems += item.NItems
+		a.project.Summary.NTotal += item.NTotal
 		a.project.Summary.NLogs += item.NLogs
 		a.project.Summary.NErrors += item.NErrors
 		a.project.Summary.NTokens += item.NTokens
@@ -86,7 +87,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	sort.Slice(a.project.Items, func(i, j int) bool {
 		return a.project.Items[i].Address.Cmp(a.project.Items[j].Address.Address) < 0
 	})
-	messages.SendInfo(a.ctx, "Loaded project")
+	// messages.SendInfo(a.ctx, "Loaded project")
 
 	return nil
 }
