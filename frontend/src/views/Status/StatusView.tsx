@@ -8,7 +8,7 @@ export function StatusView() {
   const { status, fetchStatus } = useAppState();
 
   const table = useReactTable({
-    data: status.items || [],
+    data: status.caches || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });

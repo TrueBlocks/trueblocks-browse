@@ -61,12 +61,12 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 		a.project.EnsMap,
 	)
 	a.project.NOpenFiles = a.openFileCnt()
-	a.project.NMonitors = len(a.monitors.Items)
+	a.project.NMonitors = len(a.monitors.Monitors)
 	a.project.NNames = len(a.names.Names)
 	a.project.NAbis = len(a.abis.Items)
 	a.project.NIndexes = len(a.index.Items)
 	a.project.NManifests = len(a.manifest.Chunks)
-	a.project.NCaches = len(a.status.Items)
+	a.project.NCaches = len(a.status.Caches)
 	_ = a.forEveryHistory(func(item *types.HistoryContainer) bool {
 		a.project.Summary.Balance += item.Balance
 		a.project.Summary.NItems += item.NItems

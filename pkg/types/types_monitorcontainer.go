@@ -43,8 +43,8 @@ func (m *MonitorContainer) Filter(f func(*coreTypes.Monitor) bool) []int {
 
 type MonitorContainer struct {
 	coreTypes.Monitor
-	Items  []coreTypes.Monitor `json:"items"`
-	NItems int                 `json:"nItems"`
+	Monitors  []coreTypes.Monitor `json:"items"`
+	NMonitors int                 `json:"nItems"`
 
 	// FilteredItems []int         `json:"filteresdItems"`
 	// MonitorFilter MonitorFilter `json:"filter"`
@@ -62,7 +62,7 @@ func NewMonitorContainer(chain string) MonitorContainer {
 	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(chain), "monitors"))
 	return MonitorContainer{
 		Chain:      chain,
-		Items:      []coreTypes.Monitor{},
+		Monitors:   []coreTypes.Monitor{},
 		MonitorMap: make(map[base.Address]coreTypes.Monitor),
 		LastUpdate: latest,
 	}
@@ -89,15 +89,15 @@ func (s *MonitorContainer) ShallowCopy() Containerer {
 		NStaged:    s.NStaged,
 		NEmpty:     s.NEmpty,
 		NDeleted:   s.NDeleted,
-		NItems:     s.NItems,
+		NMonitors:  s.NMonitors,
 		LastUpdate: s.LastUpdate,
 		Chain:      s.Chain,
 	}
 }
 
 func (s *MonitorContainer) Summarize() {
-	s.NItems = len(s.Items)
-	for _, mon := range s.Items {
+	s.NMonitors = len(s.Monitors)
+	for _, mon := range s.Monitors {
 		if mon.Deleted {
 			s.NDeleted++
 		}

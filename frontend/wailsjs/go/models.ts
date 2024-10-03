@@ -549,30 +549,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class CacheItem {
-	    items: any[];
-	    lastCached?: string;
-	    nFiles: number;
-	    nFolders: number;
-	    path: string;
-	    sizeInBytes: number;
-	    type: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new CacheItem(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.items = source["items"];
-	        this.lastCached = source["lastCached"];
-	        this.nFiles = source["nFiles"];
-	        this.nFolders = source["nFolders"];
-	        this.path = source["path"];
-	        this.sizeInBytes = source["sizeInBytes"];
-	        this.type = source["type"];
-	    }
-	}
 	export class Chain {
 	    chain: string;
 	    chainId: number;
@@ -1656,6 +1632,30 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class CacheItem {
+	    items: any[];
+	    lastCached?: string;
+	    nFiles: number;
+	    nFolders: number;
+	    path: string;
+	    sizeInBytes: number;
+	    type: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new CacheItem(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.items = source["items"];
+	        this.lastCached = source["lastCached"];
+	        this.nFiles = source["nFiles"];
+	        this.nFolders = source["nFolders"];
+	        this.path = source["path"];
+	        this.sizeInBytes = source["sizeInBytes"];
+	        this.type = source["type"];
+	    }
+	}
 	export class StatusContainer {
 	    cachePath?: string;
 	    caches: CacheItem[];
@@ -1679,7 +1679,6 @@ export namespace types {
 	    version?: string;
 	    meta?: MetaData;
 	    diffs?: MetaData;
-	    items: CacheItem[];
 	    nItems: number;
 	    nFolders: number;
 	    nFiles: number;
@@ -1715,7 +1714,6 @@ export namespace types {
 	        this.version = source["version"];
 	        this.meta = this.convertValues(source["meta"], MetaData);
 	        this.diffs = this.convertValues(source["diffs"], MetaData);
-	        this.items = this.convertValues(source["items"], CacheItem);
 	        this.nItems = source["nItems"];
 	        this.nFolders = source["nFolders"];
 	        this.nFiles = source["nFiles"];
@@ -1749,6 +1747,12 @@ export namespace types {
 
 export namespace wizard {
 	
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
+	}
 	export enum State {
 	    NOTOKAY = "notOkay",
 	    TOMLOKAY = "tomlOkay",
@@ -1756,12 +1760,6 @@ export namespace wizard {
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
 	    OKAY = "okay",
-	}
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
 	}
 	export class Wizard {
 	    state: State;

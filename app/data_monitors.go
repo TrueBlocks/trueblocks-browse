@@ -14,10 +14,10 @@ import (
 
 // Find: NewViews
 func (a *App) MonitorPage(first, pageSize int) *types.MonitorContainer {
-	first = base.Max(0, base.Min(first, len(a.monitors.Items)-1))
-	last := base.Min(len(a.monitors.Items), first+pageSize)
+	first = base.Max(0, base.Min(first, len(a.monitors.Monitors)-1))
+	last := base.Min(len(a.monitors.Monitors), first+pageSize)
 	copy, _ := a.monitors.ShallowCopy().(*types.MonitorContainer)
-	copy.Items = a.monitors.Items[first:last]
+	copy.Monitors = a.monitors.Monitors[first:last]
 	return copy
 }
 
@@ -63,12 +63,12 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		a.monitors = types.NewMonitorContainer(chain)
 		for _, mon := range monitors {
 			mon.Name = a.names.NamesMap[mon.Address].Name
-			a.monitors.Items = append(a.monitors.Items, mon)
+			a.monitors.Monitors = append(a.monitors.Monitors, mon)
 			a.monitors.MonitorMap[mon.Address] = mon
 		}
 		// TODO: Use core's sorting mechanism (see SortChunkStats for example)
-		sort.Slice(a.monitors.Items, func(i, j int) bool {
-			return a.monitors.Items[i].NRecords < a.monitors.Items[j].NRecords
+		sort.Slice(a.monitors.Monitors, func(i, j int) bool {
+			return a.monitors.Monitors[i].NRecords < a.monitors.Monitors[j].NRecords
 		})
 		a.monitors.Summarize()
 		messages.SendInfo(a.ctx, "Loaded monitors")
