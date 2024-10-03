@@ -24,20 +24,16 @@ func (a *App) ManifestPage(first, pageSize int) *types.ManifestContainer {
 var manifestLock atomic.Uint32
 
 func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
-	if !manifestLock.CompareAndSwap(0, 1) {
-		return nil
-	}
-	defer manifestLock.CompareAndSwap(1, 0)
-
 	defer func() {
 		if wg != nil {
 			wg.Done()
 		}
 	}()
 
-	if !a.isConfigured() {
+	if !manifestLock.CompareAndSwap(0, 1) {
 		return nil
 	}
+	defer manifestLock.CompareAndSwap(1, 0)
 
 	if !a.manifest.NeedsUpdate() {
 		return nil

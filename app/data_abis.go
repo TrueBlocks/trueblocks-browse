@@ -24,20 +24,16 @@ var abisChain = "mainnet"
 var abiLock atomic.Uint32
 
 func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
-	if !abiLock.CompareAndSwap(0, 1) {
-		return nil
-	}
-	defer abiLock.CompareAndSwap(1, 0)
-
 	defer func() {
 		if wg != nil {
 			wg.Done()
 		}
 	}()
 
-	if !a.isConfigured() {
+	if !abiLock.CompareAndSwap(0, 1) {
 		return nil
 	}
+	defer abiLock.CompareAndSwap(1, 0)
 
 	if !a.abis.NeedsUpdate() {
 		return nil

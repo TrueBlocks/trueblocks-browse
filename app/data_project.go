@@ -20,21 +20,18 @@ func (a *App) ProjectPage(first, pageSize int) *types.ProjectContainer {
 var projectLock atomic.Uint32
 
 func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
-	if !projectLock.CompareAndSwap(0, 1) {
-		return nil
-	}
-	defer projectLock.CompareAndSwap(1, 0)
-
 	_ = errorChan // delint
+
 	defer func() {
 		if wg != nil {
 			wg.Done()
 		}
 	}()
 
-	if !a.isConfigured() {
+	if !projectLock.CompareAndSwap(0, 1) {
 		return nil
 	}
+	defer projectLock.CompareAndSwap(1, 0)
 
 	// containers := []types.Containerer{
 	// 	&a.abis,

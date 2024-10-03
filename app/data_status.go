@@ -27,20 +27,16 @@ func (a *App) StatusPage(first, pageSize int) *types.StatusContainer {
 var statusLock atomic.Uint32
 
 func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
-	if !statusLock.CompareAndSwap(0, 1) {
-		return nil
-	}
-	defer statusLock.CompareAndSwap(1, 0)
-
 	defer func() {
 		if wg != nil {
 			wg.Done()
 		}
 	}()
 
-	if !a.isConfigured() {
+	if !statusLock.CompareAndSwap(0, 1) {
 		return nil
 	}
+	defer statusLock.CompareAndSwap(1, 0)
 
 	if !a.status.NeedsUpdate() {
 		return nil

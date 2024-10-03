@@ -33,20 +33,16 @@ var namesChain = "mainnet"
 var namesLock atomic.Uint32
 
 func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
-	if !namesLock.CompareAndSwap(0, 1) {
-		return nil
-	}
-	defer namesLock.CompareAndSwap(1, 0)
-
 	defer func() {
 		if wg != nil {
 			wg.Done()
 		}
 	}()
 
-	if !a.isConfigured() {
+	if !namesLock.CompareAndSwap(0, 1) {
 		return nil
 	}
+	defer namesLock.CompareAndSwap(1, 0)
 
 	if !a.names.NeedsUpdate() {
 		return nil
