@@ -8,7 +8,7 @@ export function ManifestView() {
   const { manifests, fetchManifests } = useAppState();
 
   const table = useReactTable({
-    data: manifests.items || [],
+    data: manifests.chunks || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });

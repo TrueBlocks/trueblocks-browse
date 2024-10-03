@@ -6,14 +6,3 @@ type Containerer interface {
 	Summarize()
 	NeedsUpdate() bool
 }
-
-var containers = []Containerer{
-	&AbiContainer{},
-	&HistoryContainer{},
-	&IndexContainer{},
-	&ManifestContainer{},
-	&MonitorContainer{},
-	&NameContainer{},
-	&StatusContainer{},
-	// "ProjectContainer": &ProjectContainer{},
-}

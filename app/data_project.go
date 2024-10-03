@@ -65,7 +65,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	a.project.NNames = len(a.names.Names)
 	a.project.NAbis = len(a.abis.Items)
 	a.project.NIndexes = len(a.index.Items)
-	a.project.NManifests = len(a.manifest.Items)
+	a.project.NManifests = len(a.manifest.Chunks)
 	a.project.NCaches = len(a.status.Items)
 	_ = a.forEveryHistory(func(item *types.HistoryContainer) bool {
 		a.project.Summary.Balance += item.Balance
