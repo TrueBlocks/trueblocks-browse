@@ -130,8 +130,8 @@ export function ProjectPage(arg1, arg2) {
   return window['go']['app']['App']['ProjectPage'](arg1, arg2);
 }
 
-export function Refresh(arg1, arg2) {
-  return window['go']['app']['App']['Refresh'](arg1, arg2);
+export function Refresh(arg1) {
+  return window['go']['app']['App']['Refresh'](arg1);
 }
 
 export function RegisterCtx(arg1) {

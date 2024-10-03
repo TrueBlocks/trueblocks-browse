@@ -16,18 +16,15 @@ var freshenMutex sync.Mutex
 // Refresh when the app starts and then later by the daemons to instruct the backend and
 // by extension the frontend to update. We protect against updating too fast... Note
 // that this routine is called as a goroutine.
-func (a *App) Refresh(skipable bool, which ...string) {
+func (a *App) Refresh(which ...string) {
 	if !a.isConfigured() {
 		return
 	}
 
-	// Skip this update we're actively upgrading
-	if skipable {
-		if !freshenLock.CompareAndSwap(0, 1) {
-			return
-		}
-		defer freshenLock.CompareAndSwap(1, 0)
+	if !freshenLock.CompareAndSwap(0, 1) {
+		return
 	}
+	defer freshenLock.CompareAndSwap(1, 0)
 
 	freshenMutex.Lock()
 	defer freshenMutex.Unlock()

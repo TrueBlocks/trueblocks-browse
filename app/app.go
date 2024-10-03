@@ -100,7 +100,7 @@ func (a *App) Startup(ctx context.Context) {
 	}
 
 	logger.Info("Starting freshen process...")
-	a.Refresh(false, a.GetSession().LastRoute)
+	a.Refresh(a.GetSession().LastRoute)
 
 	if err := a.loadConfig(); err != nil {
 		messages.SendError(a.ctx, err)

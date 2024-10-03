@@ -8,7 +8,7 @@ func (a *App) Reload(address base.Address) {
 	a.CancelContexts()
 	a.removeAddress(address)
 	a.HistoryPage(address.Hex(), 0, 15)
-	a.Refresh(false)
+	a.Refresh()
 	a.loadProject(nil, nil)
 }
 
