@@ -13,7 +13,7 @@ export function AbiPage(arg1:number,arg2:number):Promise<types.AbiContainer>;
 
 export function AddrToName(arg1:base.Address):Promise<string>;
 
-export function CancelContexts():Promise<void>;
+export function CancelAllContexts():Promise<void>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 

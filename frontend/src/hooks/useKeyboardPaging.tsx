@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Route } from "@/Routes";
 import { Pager, EmptyPager } from "@components";
-import { CancelContexts, Reload } from "@gocode/app/App";
+import { CancelAllContexts, Reload } from "@gocode/app/App";
 import { useAppState } from "@state";
 
 export type Page = {
@@ -78,7 +78,7 @@ export function useKeyboardPaging(
 
   useHotkeys("esc", (e) => {
     e.preventDefault();
-    CancelContexts();
+    CancelAllContexts();
   });
   useHotkeys("mod+r", (e) => {
     e.preventDefault();

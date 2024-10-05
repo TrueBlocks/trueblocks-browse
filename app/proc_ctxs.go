@@ -19,7 +19,7 @@ func (a *App) RegisterCtx(address base.Address) *output.RenderCtx {
 	return rCtx
 }
 
-func (a *App) CancelContexts() {
+func (a *App) CancelAllContexts() {
 	for address, ctxArrays := range a.renderCtxs {
 		for _, ctx := range ctxArrays {
 			messages.Send(a.ctx,

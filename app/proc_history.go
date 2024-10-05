@@ -5,7 +5,7 @@ import (
 )
 
 func (a *App) Reload(address base.Address) {
-	a.CancelContexts()
+	a.CancelAllContexts()
 	a.removeAddress(address)
 	a.HistoryPage(address.Hex(), 0, 15)
 	a.Refresh()
