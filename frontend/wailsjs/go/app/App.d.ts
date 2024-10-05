@@ -6,6 +6,7 @@ import {menu} from '../models';
 import {context} from '../models';
 import {config} from '../models';
 import {wizard} from '../models';
+import {app} from '../models';
 import {output} from '../models';
 
 export function AbiPage(arg1:number,arg2:number):Promise<types.AbiContainer>;
@@ -65,6 +66,8 @@ export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
 
 export function ModifyName(arg1:string,arg2:base.Address):Promise<void>;
+
+export function ModifyNoop(arg1:app.ModifyData):Promise<void>;
 
 export function MonitorPage(arg1:number,arg2:number):Promise<types.MonitorContainer>;
 

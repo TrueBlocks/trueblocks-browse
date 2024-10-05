@@ -1,6 +1,6 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { SetSessionVal } from "@gocode/app/App";
+import { SetSessionVal, ModifyNoop } from "@gocode/app/App";
 import { types, messages } from "@gocode/models";
 import { Page } from "@hooks";
 import { EventsEmit } from "@runtime";
@@ -26,7 +26,13 @@ export function NamesView() {
   });
 
   return (
-    <ViewStateProvider route={"names"} nItems={names.nItems} fetchFn={fetchNames} onEnter={handleEnter}>
+    <ViewStateProvider
+      route={"names"}
+      nItems={names.nItems}
+      fetchFn={fetchNames}
+      onEnter={handleEnter}
+      modifyFn={ModifyNoop}
+    >
       <View>
         <FormTable data={names} definition={createNameForm(table)} />
       </View>

@@ -1,6 +1,7 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { SimpleGrid, Fieldset } from "@mantine/core";
 import { View } from "@components";
+import { ModifyNoop } from "@gocode/app/App";
 import { GetDaemonJson, ToggleDaemon } from "@gocode/app/App";
 import { daemons, messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
@@ -62,7 +63,7 @@ export function DaemonsView() {
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    <ViewStateProvider route="daemons" fetchFn={(_unused1: number, _unused2: number) => {}}>
+    <ViewStateProvider route="daemons" fetchFn={(_unused1: number, _unused2: number) => {}} modifyFn={ModifyNoop}>
       <View>
         <Fieldset legend={"Daemons"} bg={"white"}>
           <SimpleGrid cols={2}>

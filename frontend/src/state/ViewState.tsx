@@ -2,11 +2,12 @@ import { createContext, useEffect, useContext, ReactNode } from "react";
 import { Route } from "@/Routes";
 import { Pager } from "@components";
 import { HistoryPage } from "@gocode/app/App";
-import { types, messages } from "@gocode/models";
+import { types, messages, app } from "@gocode/models";
 import { Page, useKeyboardPaging } from "@hooks";
 import { EventsOn, EventsOff } from "@runtime";
 import { useAppState } from "@state";
 
+type ModifyFnType = (arg1: app.ModifyData) => Promise<void>;
 type FetchFnType = (selected: number, perPage: number) => void;
 
 interface ViewStateProps {
@@ -14,6 +15,7 @@ interface ViewStateProps {
   nItems: number;
   pager: Pager;
   fetchFn: FetchFnType;
+  modifyFn: ModifyFnType;
 }
 
 const ViewContext = createContext<ViewStateProps | undefined>(undefined);
@@ -22,6 +24,7 @@ type ViewContextType = {
   route: Route;
   nItems?: number;
   fetchFn: FetchFnType;
+  modifyFn: ModifyFnType;
   onEnter?: (page: Page) => void;
   children: ReactNode;
 };
@@ -30,9 +33,10 @@ export const ViewStateProvider: React.FC<{
   route: Route;
   nItems?: number;
   fetchFn: FetchFnType;
+  modifyFn: ModifyFnType;
   onEnter?: (page: Page) => void;
   children: ReactNode;
-}> = ({ route, nItems = -1, fetchFn, onEnter, children }: ViewContextType) => {
+}> = ({ route, nItems = -1, fetchFn, modifyFn, onEnter, children }: ViewContextType) => {
   const { address, setHistory } = useAppState();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -78,6 +82,7 @@ export const ViewStateProvider: React.FC<{
     nItems,
     pager,
     fetchFn,
+    modifyFn,
   };
 
   return <ViewContext.Provider value={state}>{children}</ViewContext.Provider>;

@@ -3,7 +3,7 @@ import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { useParams } from "wouter";
 import { ExploreButton, ExportButton, View, FormTable, DataTable, GroupDefinition } from "@components";
-import { GetSessionSubVal, CancelContexts } from "@gocode/app/App";
+import { GetSessionSubVal, CancelContexts, ModifyNoop } from "@gocode/app/App";
 import { types, base } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./HistoryTable";
@@ -30,7 +30,7 @@ export function HistoryView() {
   });
 
   return (
-    <ViewStateProvider route={"history"} nItems={history.nItems} fetchFn={fetchHistory}>
+    <ViewStateProvider route={"history"} nItems={history.nItems} fetchFn={fetchHistory} modifyFn={ModifyNoop}>
       <View>
         <FormTable data={history} definition={CreateHistoryForm(table)} />
       </View>

@@ -118,6 +118,10 @@ export function ModifyName(arg1, arg2) {
   return window['go']['app']['App']['ModifyName'](arg1, arg2);
 }
 
+export function ModifyNoop(arg1) {
+  return window['go']['app']['App']['ModifyNoop'](arg1);
+}
+
 export function MonitorPage(arg1, arg2) {
   return window['go']['app']['App']['MonitorPage'](arg1, arg2);
 }

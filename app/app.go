@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -167,4 +168,16 @@ func (a *App) SetEnv(key, value string) {
 
 func (a *App) GetMeta() coreTypes.MetaData {
 	return a.meta
+}
+
+type ModifyData struct {
+	Operation string       `json:"operation"`
+	Address   base.Address `json:"address"`
+	Value     string       `json:"value"`
+}
+
+func (a *App) ModifyNoop(modData *ModifyData) error {
+	route := a.GetSessionVal("route")
+	messages.Send(a.ctx, messages.Info, messages.NewInfoMessage(fmt.Sprintf("%s modify %s: %s", route, modData.Operation, modData.Address.Hex())))
+	return nil
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { SetSessionVal } from "@gocode/app/App";
+import { SetSessionVal, ModifyNoop } from "@gocode/app/App";
 import { types, messages } from "@gocode/models";
 import { Page } from "@hooks";
 import { EventsEmit } from "@runtime";
@@ -32,7 +32,13 @@ export function ProjectView() {
   });
 
   return (
-    <ViewStateProvider route={""} nItems={project.nOpenFiles} fetchFn={fetchProject} onEnter={handleEnter}>
+    <ViewStateProvider
+      route={""}
+      nItems={project.nOpenFiles}
+      fetchFn={fetchProject}
+      onEnter={handleEnter}
+      modifyFn={ModifyNoop}
+    >
       <View>
         <FormTable data={project} definition={createProjectForm(table)} />
       </View>
