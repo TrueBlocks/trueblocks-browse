@@ -114,8 +114,8 @@ export function ManifestPage(arg1, arg2) {
   return window['go']['app']['App']['ManifestPage'](arg1, arg2);
 }
 
-export function ModifyName(arg1, arg2) {
-  return window['go']['app']['App']['ModifyName'](arg1, arg2);
+export function ModifyName(arg1) {
+  return window['go']['app']['App']['ModifyName'](arg1);
 }
 
 export function ModifyNoop(arg1) {

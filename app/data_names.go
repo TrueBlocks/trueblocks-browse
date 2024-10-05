@@ -98,11 +98,7 @@ func compare(nameI, nameJ coreTypes.Name) bool {
 	return ti < tj
 }
 
-func (a *App) ModifyName(op string, address base.Address) error {
-	if !a.isConfigured() {
-		return nil
-	}
-
+func (a *App) ModifyName(modData *ModifyData) error {
 	opFromString := func(op string) crud.Operation {
 		m := map[string]crud.Operation{
 			"delete":   crud.Delete,
@@ -112,13 +108,19 @@ func (a *App) ModifyName(op string, address base.Address) error {
 		return m[op]
 	}
 
-	cd := crud.CrudFromAddress(address)
+	op := modData.Operation
+	nm := coreTypes.Name{
+		Address: modData.Address,
+		Name:    modData.Value,
+	}
+	cd := crud.CrudFromName(nm)
 	messages.SendInfo(a.ctx, fmt.Sprintf("%s-%v", opFromString(op), *cd))
 
-	if _, ok := a.names.NamesMap[address]; ok {
+	if _, ok := a.names.NamesMap[modData.Address]; ok {
 		opts := sdk.NamesOptions{
 			Globals: a.globals,
 		}
+
 		opts.Globals.Chain = namesChain
 		if _, _, err := opts.ModifyName(opFromString(op), cd); err != nil {
 			messages.SendError(a.ctx, err)
@@ -129,7 +131,7 @@ func (a *App) ModifyName(op string, address base.Address) error {
 		defer nameMutex.Unlock()
 		newArray := []coreTypes.Name{}
 		for _, n := range a.names.Names {
-			if n.IsCustom && n.Address == address {
+			if n.IsCustom && n.Address == modData.Address {
 				switch opFromString(op) {
 				case crud.Delete:
 					n.Deleted = true
@@ -138,7 +140,7 @@ func (a *App) ModifyName(op string, address base.Address) error {
 				case crud.Remove:
 					continue
 				}
-				a.names.NamesMap[address] = n
+				a.names.NamesMap[modData.Address] = n
 			}
 			newArray = append(newArray, n)
 		}

@@ -49,11 +49,11 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
     meta: { className: "small center cell" },
   }),
   columnHelper.accessor("deleted", {
-    header: () => "",
+    header: () => "Crud Buttons",
     cell: (info) => {
       const { deleted, isCustom, address } = info.row.original;
       return isCustom ? <Formatter type="crud" value={address} value2={deleted} /> : <></>;
     },
-    meta: { className: "medium center cell" },
+    meta: { className: "small center cell" },
   }),
 ];
