@@ -57,7 +57,7 @@ func NewApp() *App {
 	}
 	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
-	a.project = types.NewProjectContainer("Untitled.tbx", &types.HistorySyncMap{}, &sync.Map{}, &sync.Map{})
+	a.project = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
 
 	// it's okay if it's not found
 	a.session.MustLoadSession()

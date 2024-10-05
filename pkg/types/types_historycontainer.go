@@ -88,15 +88,15 @@ func (s *HistoryContainer) SizeOf() int {
 	return int(size)
 }
 
-type HistorySyncMap struct {
+type HistoryMap struct {
 	internal sync.Map
 }
 
-func (h *HistorySyncMap) Store(address base.Address, historyContainer HistoryContainer) {
+func (h *HistoryMap) Store(address base.Address, historyContainer HistoryContainer) {
 	h.internal.Store(address, historyContainer)
 }
 
-func (h *HistorySyncMap) Load(address base.Address) (HistoryContainer, bool) {
+func (h *HistoryMap) Load(address base.Address) (HistoryContainer, bool) {
 	value, ok := h.internal.Load(address)
 	if !ok {
 		return HistoryContainer{}, false
@@ -104,11 +104,11 @@ func (h *HistorySyncMap) Load(address base.Address) (HistoryContainer, bool) {
 	return value.(HistoryContainer), true
 }
 
-func (h *HistorySyncMap) Delete(address base.Address) {
+func (h *HistoryMap) Delete(address base.Address) {
 	h.internal.Delete(address)
 }
 
-func (h *HistorySyncMap) Range(f func(address base.Address, historyContainer HistoryContainer) bool) {
+func (h *HistoryMap) Range(f func(address base.Address, historyContainer HistoryContainer) bool) {
 	h.internal.Range(func(key, value interface{}) bool {
 		return f(key.(base.Address), value.(HistoryContainer))
 	})

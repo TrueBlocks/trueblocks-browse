@@ -1532,7 +1532,7 @@ export namespace types {
 	export class ProjectContainer {
 	    session: config.Session;
 	    items: HistoryContainer[];
-	    // Go type: HistorySyncMap
+	    // Go type: HistoryMap
 	    historyMap?: any;
 	    // Go type: sync
 	    balanceMap?: any;
@@ -1775,4 +1775,3 @@ export namespace wizard {
 	}
 
 }
-

@@ -11,7 +11,7 @@ import (
 )
 
 func (a *App) FileNew(cd *menu.CallbackData) {
-	a.project = types.NewProjectContainer("Untitled.tbx", &types.HistorySyncMap{}, &sync.Map{}, &sync.Map{})
+	a.project = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
 	messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
 }
 

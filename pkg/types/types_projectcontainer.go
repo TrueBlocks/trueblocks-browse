@@ -12,7 +12,7 @@ type ProjectContainer struct {
 	Session     config.Session     `json:"session"`
 	Summary     HistoryContainer   `json:",inline"`
 	Items       []HistoryContainer `json:"items"`
-	HistoryMap  *HistorySyncMap    `json:"historyMap"`
+	HistoryMap  *HistoryMap        `json:"historyMap"`
 	BalanceMap  *sync.Map          `json:"balanceMap"`
 	EnsMap      *sync.Map          `json:"ensMap"`
 	NOpenFiles  int                `json:"nOpenFiles"`
@@ -27,7 +27,7 @@ type ProjectContainer struct {
 	Filename    string             `json:"filename"`
 }
 
-func NewProjectContainer(filename string, historyMap *HistorySyncMap, balMap, ensMap *sync.Map) ProjectContainer {
+func NewProjectContainer(filename string, historyMap *HistoryMap, balMap, ensMap *sync.Map) ProjectContainer {
 	return ProjectContainer{
 		Items:      []HistoryContainer{},
 		HistoryMap: historyMap,
