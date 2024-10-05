@@ -3,7 +3,7 @@ import { IconCircleCheck } from "@tabler/icons-react";
 import {
   AddressFormatter,
   AppearanceFormatter,
-  CrudButton,
+  DeleteButton,
   DateFormatter,
   TagFormatter,
   TextFormatter,
@@ -105,7 +105,7 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
     case "progress":
       return <LoadProgress value={pct} value2={n2} />;
     case "crud":
-      return <CrudButton size="xs" value={value} isDeleted={bool} />;
+      return <DeleteButton size="xs" value={value} isDeleted={bool} />;
     case "address-editor":
       return (
         <AddressFormatter type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.All} />

@@ -6,13 +6,13 @@ import { ModifyName } from "@gocode/app/App";
 import { base } from "@gocode/models";
 import { useAppState, useViewState } from "@state";
 
-export interface CrudButtonProps extends ButtonProps {
+export interface DeleteButtonProps extends ButtonProps {
   isDeleted: boolean;
 }
 
 //  crudOperation(route: Route, selected: number, op: string): void;
 
-export const CrudButton = ({ value, size, isDeleted, onClick }: CrudButtonProps) => {
+export const DeleteButton = ({ value, size, isDeleted, onClick }: DeleteButtonProps) => {
   const [address, setAddress] = useState<base.Address>(value as unknown as base.Address);
   const { fetchNames, crudOperation } = useAppState();
   const { pager } = useViewState();
