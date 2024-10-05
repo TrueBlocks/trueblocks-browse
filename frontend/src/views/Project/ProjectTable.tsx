@@ -26,13 +26,16 @@ export const tableColumns: CustomColumnDef<types.HistoryContainer, any>[] = [
   }),
   columnHelper.accessor("address", {
     header: () => " ",
-    cell: (info) => (
-      <Group wrap={"nowrap"}>
-        <ExploreButton size="xs" noText endpoint="address" value={info.renderValue()} />
-        <ViewButton size="xs" noText value={info.renderValue()} />
-        <ExportButton size="xs" noText value={info.renderValue()} />
-      </Group>
-    ),
+    cell: (info) => {
+      const { address } = info.row.original;
+      return (
+        <Group wrap={"nowrap"}>
+          <ExploreButton size="sm" noText endpoint="address" value={info.renderValue()} />
+          <ViewButton size="sm" noText value={info.renderValue()} />
+          <ExportButton size="sm" noText value={info.renderValue()} />
+        </Group>
+      );
+    },
     meta: { className: "wide cell" },
   }),
 ];

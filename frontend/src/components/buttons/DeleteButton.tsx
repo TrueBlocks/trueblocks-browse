@@ -1,21 +1,18 @@
 import { useState, useEffect } from "react";
-import { ActionIcon } from "@mantine/core";
+import { ActionIcon, Group } from "@mantine/core";
 import { IconTrash, IconTrashX, IconArrowBackUp } from "@tabler/icons-react";
 import { ButtonProps } from "@components";
-import { ModifyName } from "@gocode/app/App";
-import { base } from "@gocode/models";
+import { base, app } from "@gocode/models";
 import { useAppState, useViewState } from "@state";
 
 export interface DeleteButtonProps extends ButtonProps {
   isDeleted: boolean;
 }
 
-//  crudOperation(route: Route, selected: number, op: string): void;
-
 export const DeleteButton = ({ value, size, isDeleted, onClick }: DeleteButtonProps) => {
   const [address, setAddress] = useState<base.Address>(value as unknown as base.Address);
-  const { fetchNames, crudOperation } = useAppState();
-  const { pager } = useViewState();
+  const { deleteOperation } = useAppState();
+  const { route, fetchFn, modifyFn, pager } = useViewState();
   const { selected } = pager;
 
   useEffect(() => {
@@ -24,9 +21,18 @@ export const DeleteButton = ({ value, size, isDeleted, onClick }: DeleteButtonPr
 
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    ModifyName("delete", address).then(() => {});
-    fetchNames(pager.getOffset(), pager.perPage);
-    crudOperation("names", selected, "delete");
+    const op = "delete";
+    deleteOperation(route, selected, op);
+    if (modifyFn) {
+      const modData = app.ModifyData.createFrom({
+        operation: op,
+        address: address,
+        value: "",
+      });
+      modifyFn(modData).then(() => {
+        fetchFn(pager.getOffset(), pager.perPage);
+      });
+    }
     if (onClick) {
       onClick();
     }
@@ -34,9 +40,18 @@ export const DeleteButton = ({ value, size, isDeleted, onClick }: DeleteButtonPr
 
   const handleUndelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    ModifyName("undelete", address).then(() => {});
-    fetchNames(pager.getOffset(), pager.perPage);
-    crudOperation("names", selected, "undelete");
+    const op = "undelete";
+    deleteOperation(route, selected, op);
+    if (modifyFn) {
+      const modData = app.ModifyData.createFrom({
+        operation: op,
+        address: address,
+        value: "",
+      });
+      modifyFn(modData).then(() => {
+        fetchFn(pager.getOffset(), pager.perPage);
+      });
+    }
     if (onClick) {
       onClick();
     }
@@ -44,11 +59,18 @@ export const DeleteButton = ({ value, size, isDeleted, onClick }: DeleteButtonPr
 
   const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    ModifyName("remove", address).then(() => {});
-    fetchNames(pager.getOffset(), pager.perPage);
-    // setRecord(0);
-    // setRecord(selected);
-    crudOperation("names", selected, "remove");
+    const op = "remove";
+    deleteOperation(route, selected, op);
+    if (modifyFn) {
+      const modData = app.ModifyData.createFrom({
+        operation: op,
+        address: address,
+        value: "",
+      });
+      modifyFn(modData).then(() => {
+        fetchFn(pager.getOffset(), pager.perPage);
+      });
+    }
     if (onClick) {
       onClick();
     }
@@ -56,24 +78,22 @@ export const DeleteButton = ({ value, size, isDeleted, onClick }: DeleteButtonPr
 
   if (isDeleted) {
     return (
-      <>
-        {selected}
-        <ActionIcon c="red" size={size} variant="outline" onClick={handleUndelete} title="Delete">
-          <IconArrowBackUp />
-        </ActionIcon>
-        <ActionIcon c="red" size={size} variant="outline" onClick={handleRemove} title="Delete">
+      <Group justify="flex-end">
+        <ActionIcon size={size} onClick={handleRemove} title="Remove">
           <IconTrashX />
         </ActionIcon>
-      </>
+        <ActionIcon size={size} onClick={handleUndelete} title="Undelete">
+          <IconArrowBackUp />
+        </ActionIcon>
+      </Group>
     );
   }
 
   return (
-    <>
-      {selected}
-      <ActionIcon size={size} variant="outline" onClick={handleDelete} title="Delete">
+    <Group justify="flex-end">
+      <ActionIcon size={size} onClick={handleDelete} title="Delete">
         <IconTrash />
       </ActionIcon>
-    </>
+    </Group>
   );
 };

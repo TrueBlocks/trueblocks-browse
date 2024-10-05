@@ -57,7 +57,7 @@ interface AppStateProps {
   wizardState: wizard.State;
   stepWizard: (step: wizard.Step) => void;
 
-  crudOperation(route: Route, selected: number, op: string): void;
+  deleteOperation(route: Route, selected: number, op: string): void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -160,13 +160,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const crudOperation = (route: Route, selected: number, op: string) => {
-    console.log(
-      "crudOperation",
-      route,
-      selected,
-      op === "delete" ? "should delete" : op === "remove" ? "should remove" : "should undelete"
-    );
+  const deleteOperation = (route: Route, selected: number, op: string) => {
     names.names[selected].deleted = op === "delete" ? true : op === "remove" ? false : false;
   };
 
@@ -242,7 +236,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     stepWizard,
     meta,
     setMeta,
-    crudOperation,
+    deleteOperation,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;
