@@ -7,10 +7,13 @@ import { Page, useKeyboardPaging } from "@hooks";
 import { EventsOn, EventsOff } from "@runtime";
 import { useAppState } from "@state";
 
+type FetchFnType = (selected: number, perPage: number) => void;
+
 interface ViewStateProps {
   route: Route;
   nItems: number;
   pager: Pager;
+  fetchFn: FetchFnType;
 }
 
 const ViewContext = createContext<ViewStateProps | undefined>(undefined);
@@ -18,7 +21,7 @@ const ViewContext = createContext<ViewStateProps | undefined>(undefined);
 type ViewContextType = {
   route: Route;
   nItems?: number;
-  fetchFn: (selected: number, perPage: number) => void;
+  fetchFn: FetchFnType;
   onEnter?: (page: Page) => void;
   children: ReactNode;
 };
@@ -26,7 +29,7 @@ type ViewContextType = {
 export const ViewStateProvider: React.FC<{
   route: Route;
   nItems?: number;
-  fetchFn: (selected: number, perPage: number) => void;
+  fetchFn: FetchFnType;
   onEnter?: (page: Page) => void;
   children: ReactNode;
 }> = ({ route, nItems = -1, fetchFn, onEnter, children }: ViewContextType) => {
@@ -74,6 +77,7 @@ export const ViewStateProvider: React.FC<{
     route,
     nItems,
     pager,
+    fetchFn,
   };
 
   return <ViewContext.Provider value={state}>{children}</ViewContext.Provider>;

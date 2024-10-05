@@ -103,8 +103,8 @@ func (a *App) ModifyName(op string, address base.Address) error {
 		return nil
 	}
 
-	opFromString := func(op string) crud.NameOperation {
-		m := map[string]crud.NameOperation{
+	opFromString := func(op string) crud.Operation {
+		m := map[string]crud.Operation{
 			"delete":   crud.Delete,
 			"undelete": crud.Undelete,
 			"remove":   crud.Remove,
