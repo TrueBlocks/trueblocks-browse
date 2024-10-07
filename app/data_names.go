@@ -16,6 +16,8 @@ import (
 )
 
 var nameMutex sync.Mutex
+var namesChain = "mainnet"
+var namesLock atomic.Uint32
 
 // Find: NewViews
 func (a *App) NamePage(first, pageSize int) *types.NameContainer {
@@ -28,9 +30,6 @@ func (a *App) NamePage(first, pageSize int) *types.NameContainer {
 	copy.Names = a.names.Names[first:last]
 	return copy
 }
-
-var namesChain = "mainnet"
-var namesLock atomic.Uint32
 
 func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
@@ -101,6 +100,7 @@ func compare(nameI, nameJ coreTypes.Name) bool {
 func (a *App) ModifyName(modData *ModifyData) error {
 	opFromString := func(op string) crud.Operation {
 		m := map[string]crud.Operation{
+			"update":   crud.Update,
 			"delete":   crud.Delete,
 			"undelete": crud.Undelete,
 			"remove":   crud.Remove,
