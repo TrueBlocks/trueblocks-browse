@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
@@ -51,7 +50,6 @@ type MonitorContainer struct {
 	NDeleted   int                 `json:"nDeleted"`
 	NStaged    int                 `json:"nStaged"`
 	NEmpty     int                 `json:"nEmpty"`
-	MonitorMap map[base.Address]coreTypes.Monitor `json:"monitorMap"`
 	LastUpdate time.Time           `json:"lastUpdate"`
 	Chain      string              `json:"chain"`
 }
@@ -61,7 +59,6 @@ func NewMonitorContainer(chain string) MonitorContainer {
 	return MonitorContainer{
 		Chain:      chain,
 		Monitors:   []coreTypes.Monitor{},
-		MonitorMap: make(map[base.Address]coreTypes.Monitor),
 		LastUpdate: latest,
 	}
 }

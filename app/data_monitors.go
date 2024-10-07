@@ -64,7 +64,6 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		for _, mon := range monitors {
 			mon.Name = a.names.NamesMap[mon.Address].Name
 			a.monitors.Monitors = append(a.monitors.Monitors, mon)
-			a.monitors.MonitorMap[mon.Address] = mon
 		}
 		// TODO: Use core's sorting mechanism (see SortChunkStats for example)
 		sort.Slice(a.monitors.Monitors, func(i, j int) bool {

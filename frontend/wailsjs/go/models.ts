@@ -1405,7 +1405,6 @@ export namespace types {
 	    nDeleted: number;
 	    nStaged: number;
 	    nEmpty: number;
-	    monitorMap: {[key: string]: Monitor};
 	    // Go type: time
 	    lastUpdate: any;
 	    chain: string;
@@ -1430,7 +1429,6 @@ export namespace types {
 	        this.nDeleted = source["nDeleted"];
 	        this.nStaged = source["nStaged"];
 	        this.nEmpty = source["nEmpty"];
-	        this.monitorMap = this.convertValues(source["monitorMap"], Monitor, true);
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.chain = source["chain"];
 	    }
