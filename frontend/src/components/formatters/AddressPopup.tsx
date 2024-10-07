@@ -50,8 +50,8 @@ export const AddressPopup = forwardRef<HTMLDivElement, AddressPopupProps>(
               autoFocus
             />
             <Group>
-              <ExploreButton size="xs" endpoint="address" value={address} onClick={handleButtonClick} />
-              <ViewButton size="xs" value={address} onClick={handleButtonClick} />
+              <ExploreButton value={address} onClick={handleButtonClick} endpoint="address" />
+              <ViewButton value={address} onClick={handleButtonClick} />
               <Button size="xs" type="submit">
                 Save
               </Button>

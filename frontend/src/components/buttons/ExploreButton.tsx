@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button } from "@mantine/core";
+import { ActionIcon, Button } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
 import { ButtonProps } from "@components";
 import { GetChainInfo } from "@gocode/app/App";
@@ -7,11 +7,11 @@ import { types } from "@gocode/models";
 import { BrowserOpenURL } from "@runtime";
 import { useAppState } from "@state";
 
-export interface ExploreButtonProps extends ButtonProps {
+export interface ExploreButtonProps extends Omit<ButtonProps, "size"> {
   endpoint: string;
 }
 
-export const ExploreButton = ({ endpoint, value, noText, size, onClick }: ExploreButtonProps) => {
+export const ExploreButton = ({ endpoint, value, noText, onClick }: ExploreButtonProps) => {
   const { chain } = useAppState();
   const [chainInfo, setChainInfo] = useState<types.Chain>({} as types.Chain);
 
@@ -22,15 +22,25 @@ export const ExploreButton = ({ endpoint, value, noText, size, onClick }: Explor
   }, [chain]);
 
   const handleClick = () => {
-    BrowserOpenURL(`${chainInfo.remoteExplorer}/${endpoint}/${value}`);
+    const url = `${chainInfo.remoteExplorer}/${endpoint}/${value}`.replace(/\/\//g, "/");
+    BrowserOpenURL(url);
     if (onClick) {
       onClick();
     }
   };
 
+  const size = "sm";
+  if (noText) {
+    return (
+      <ActionIcon size={size} onClick={handleClick} title="Explore">
+        <IconExternalLink />
+      </ActionIcon>
+    );
+  }
+
   return (
     <Button size={size} onClick={handleClick} leftSection={<IconExternalLink />}>
-      {noText ? null : "Explore"}
+      {"Explore"}
     </Button>
   );
 };

@@ -69,8 +69,8 @@ function CreateHistoryForm(table: Table<types.Transaction>): GroupDefinition<the
         {
           component: (
             <Stack>
-              <ExploreButton size="sm" endpoint="address" value={address as unknown as string} />
-              <ExportButton size="sm" value={address as unknown as string} />
+              <ExploreButton value={address as unknown as string} endpoint="address" />
+              <ExportButton value={address as unknown as string} />
             </Stack>
           ),
         },

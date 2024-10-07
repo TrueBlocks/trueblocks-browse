@@ -1,11 +1,11 @@
 import { Group } from "@mantine/core";
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef, Formatter, ExploreButton, ExportButton, ViewButton } from "@components";
+import { CustomColumnDef, Formatter, ExploreButton, ExportButton, ViewButton, DeleteButton } from "@components";
 import { types } from "@gocode/models";
 
 const columnHelper = createColumnHelper<types.HistoryContainer>();
 
-export const tableColumns: CustomColumnDef<types.HistoryContainer, any>[] = [
+const baseColumns: CustomColumnDef<types.HistoryContainer, any>[] = [
   columnHelper.accessor("address", {
     header: () => "Address",
     cell: (info) => <Formatter type="address-editor" value={info.renderValue()} />,
@@ -24,15 +24,38 @@ export const tableColumns: CustomColumnDef<types.HistoryContainer, any>[] = [
     cell: (info) => <Formatter type="ether" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
+];
+
+export const withDelete: CustomColumnDef<types.HistoryContainer, any>[] = [
+  ...baseColumns,
   columnHelper.accessor("address", {
     header: () => " ",
     cell: (info) => {
       const { address } = info.row.original;
+      const addr = address as unknown as string;
       return (
         <Group wrap={"nowrap"}>
-          <ExploreButton size="sm" noText endpoint="address" value={info.renderValue()} />
-          <ViewButton size="sm" noText value={info.renderValue()} />
-          <ExportButton size="sm" noText value={info.renderValue()} />
+          <ExploreButton noText endpoint="address" value={info.renderValue()} />
+          <ViewButton noText value={info.renderValue()} />
+          <ExportButton noText value={info.renderValue()} />
+          <DeleteButton value={addr} isDeleted={false} />
+        </Group>
+      );
+    },
+    meta: { className: "wide cell" },
+  }),
+];
+
+export const withoutDelete: CustomColumnDef<types.HistoryContainer, any>[] = [
+  ...baseColumns,
+  columnHelper.accessor("address", {
+    header: () => " ",
+    cell: (info) => {
+      return (
+        <Group wrap={"nowrap"}>
+          <ExploreButton noText endpoint="address" value={info.renderValue()} />
+          <ViewButton noText value={info.renderValue()} />
+          <ExportButton noText value={info.renderValue()} />
         </Group>
       );
     },

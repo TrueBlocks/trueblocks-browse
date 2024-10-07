@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { SetSessionVal, ModifyNoop } from "@gocode/app/App";
@@ -6,7 +6,7 @@ import { types, messages } from "@gocode/models";
 import { Page } from "@hooks";
 import { EventsEmit } from "@runtime";
 import { useAppState, ViewStateProvider } from "@state";
-import { tableColumns } from "./ProjectTable";
+import { withoutDelete, withDelete } from "./ProjectTable";
 
 export function ProjectView() {
   const { project, fetchProject } = useAppState();
@@ -21,13 +21,10 @@ export function ProjectView() {
     });
   };
 
-  //   if (!address) {
-  //     return <Text>Address not found</Text>;
-  //   }
-
+  const modColumns = project.items?.length < 2 ? withoutDelete : withDelete;
   const table = useReactTable({
     data: project.items ?? [],
-    columns: tableColumns,
+    columns: modColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 

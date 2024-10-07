@@ -1,5 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef, Formatter } from "@components";
+import { CustomColumnDef, Formatter, DeleteButton } from "@components";
 import { types } from "@gocode/models";
 import { NameTags } from "./NameTag";
 
@@ -52,7 +52,9 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
     header: () => "Crud Buttons",
     cell: (info) => {
       const { deleted, isCustom, address } = info.row.original;
-      return isCustom ? <Formatter type="crud" value={address} value2={deleted} /> : <></>;
+      const addr = address as unknown as string;
+      const del = deleted ? true : false;
+      return isCustom ? <DeleteButton value={addr} isDeleted={del} /> : <></>;
     },
     meta: { className: "small center cell" },
   }),

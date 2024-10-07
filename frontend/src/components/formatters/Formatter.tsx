@@ -24,7 +24,6 @@ export type knownType =
   | "boolean"
   | "bytes"
   | "check"
-  | "crud"
   | "date"
   | "error"
   | "ether"
@@ -104,8 +103,6 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
       break;
     case "progress":
       return <LoadProgress value={pct} value2={n2} />;
-    case "crud":
-      return <DeleteButton value={value} isDeleted={bool} />;
     case "address-editor":
       return (
         <AddressFormatter type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.All} />
