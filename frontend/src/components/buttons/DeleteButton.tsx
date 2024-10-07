@@ -5,11 +5,11 @@ import { ButtonProps } from "@components";
 import { base, app } from "@gocode/models";
 import { useAppState, useViewState } from "@state";
 
-export interface DeleteButtonProps extends ButtonProps {
+export interface DeleteButtonProps extends Omit<Omit<ButtonProps, "onClick">, "size"> {
   isDeleted: boolean;
 }
 
-export const DeleteButton = ({ value, size, isDeleted, onClick }: DeleteButtonProps) => {
+export const DeleteButton = ({ value, isDeleted }: DeleteButtonProps) => {
   const [address, setAddress] = useState<base.Address>(value as unknown as base.Address);
   const { deleteOperation } = useAppState();
   const { route, fetchFn, modifyFn, pager } = useViewState();
@@ -23,59 +23,45 @@ export const DeleteButton = ({ value, size, isDeleted, onClick }: DeleteButtonPr
     e.preventDefault();
     const op = "delete";
     deleteOperation(route, selected, op);
-    if (modifyFn) {
-      const modData = app.ModifyData.createFrom({
-        operation: op,
-        address: address,
-        value: "",
-      });
-      modifyFn(modData).then(() => {
-        fetchFn(pager.getOffset(), pager.perPage);
-      });
-    }
-    if (onClick) {
-      onClick();
-    }
+    const modData = app.ModifyData.createFrom({
+      operation: op,
+      address: address,
+      value: "",
+    });
+    modifyFn(modData).then(() => {
+      fetchFn(pager.getOffset(), pager.perPage);
+    });
   };
 
   const handleUndelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const op = "undelete";
     deleteOperation(route, selected, op);
-    if (modifyFn) {
-      const modData = app.ModifyData.createFrom({
-        operation: op,
-        address: address,
-        value: "",
-      });
-      modifyFn(modData).then(() => {
-        fetchFn(pager.getOffset(), pager.perPage);
-      });
-    }
-    if (onClick) {
-      onClick();
-    }
+    const modData = app.ModifyData.createFrom({
+      operation: op,
+      address: address,
+      value: "",
+    });
+    modifyFn(modData).then(() => {
+      fetchFn(pager.getOffset(), pager.perPage);
+    });
   };
 
   const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const op = "remove";
     deleteOperation(route, selected, op);
-    if (modifyFn) {
-      const modData = app.ModifyData.createFrom({
-        operation: op,
-        address: address,
-        value: "",
-      });
-      modifyFn(modData).then(() => {
-        fetchFn(pager.getOffset(), pager.perPage);
-      });
-    }
-    if (onClick) {
-      onClick();
-    }
+    const modData = app.ModifyData.createFrom({
+      operation: op,
+      address: address,
+      value: "",
+    });
+    modifyFn(modData).then(() => {
+      fetchFn(pager.getOffset(), pager.perPage);
+    });
   };
 
+  const size = "sm";
   if (isDeleted) {
     return (
       <Group justify="flex-end">
