@@ -57,6 +57,7 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
   const n2 = value2 as number;
   const bool = value2 as boolean;
   const from = value2 as unknown as base.Address;
+  const hash = value2 as base.Hash;
   const pct = n2 !== 0 ? (n / n2) * 100 : 0;
 
   switch (type) {
@@ -94,7 +95,7 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
       value = formatInteger(n);
       break;
     case "appearance":
-      return <AppearanceFormatter value={value} value2={value2} size={size} className={cn} />;
+      return <AppearanceFormatter value={value} value2={hash} className={cn} />;
     case "hash":
     case "path":
     case "range":
@@ -104,17 +105,11 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
     case "progress":
       return <LoadProgress value={pct} value2={n2} />;
     case "address-editor":
-      return (
-        <AddressFormatter type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.All} />
-      );
+      return <AddressFormatter type={type} className={cn} value={value} value2={value2} mode={EdMode.All} />;
     case "address-address-only":
-      return (
-        <AddressFormatter type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.Address} />
-      );
+      return <AddressFormatter type={type} className={cn} value={value} value2={value2} mode={EdMode.Address} />;
     case "address-name-only":
-      return (
-        <AddressFormatter type={type} className={"cn"} size={size} value={value} value2={value2} mode={EdMode.Name} />
-      );
+      return <AddressFormatter type={type} className={"cn"} value={value} value2={value2} mode={EdMode.Name} />;
     case "address-line1":
       return <TextFormatter value={value} size={size} type={type} className={cn} />;
     case "address-line2":

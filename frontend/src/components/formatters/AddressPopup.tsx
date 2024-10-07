@@ -1,7 +1,6 @@
 import { useState, forwardRef, useCallback, useEffect } from "react";
-import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
-import { IconCopy } from "@tabler/icons-react";
-import { ExploreButton, ViewButton, PopupProps } from "@components";
+import { Button, Group, Stack, TextInput } from "@mantine/core";
+import { ExploreButton, ViewButton, PopupProps, CopyButton } from "@components";
 
 export interface AddressPopupProps extends PopupProps {
   address: string;
@@ -25,7 +24,6 @@ export const AddressPopup = forwardRef<HTMLDivElement, AddressPopupProps>(
       onClose();
     }, [onClose]);
 
-    // Close the popup when clicking outside
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
         if (ref && "current" in ref && ref.current && !ref.current.contains(event.target as Node)) {
@@ -39,6 +37,7 @@ export const AddressPopup = forwardRef<HTMLDivElement, AddressPopupProps>(
       };
     }, [ref, onClose]);
 
+    const size = "sm";
     return (
       <div ref={ref}>
         <form onSubmit={submitForm}>
@@ -52,12 +51,10 @@ export const AddressPopup = forwardRef<HTMLDivElement, AddressPopupProps>(
             <Group>
               <ExploreButton value={address} onClick={handleButtonClick} endpoint="address" />
               <ViewButton value={address} onClick={handleButtonClick} />
-              <Button size="xs" type="submit">
+              <Button size={size} type="submit">
                 Save
               </Button>
-              <ActionIcon variant="outline" onClick={onCopy} title="Copy to clipboard">
-                <IconCopy />
-              </ActionIcon>
+              <CopyButton onClick={onCopy} />
             </Group>
           </Stack>
         </form>

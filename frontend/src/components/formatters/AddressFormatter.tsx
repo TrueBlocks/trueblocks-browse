@@ -15,7 +15,7 @@ interface AddressEditorProps extends FormatterProps {
   mode?: EdMode;
 }
 
-export const AddressFormatter = ({ value, value2, className, size = "md", mode = EdMode.All }: AddressEditorProps) => {
+export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }: Omit<AddressEditorProps, "size">) => {
   const { address } = useAppState();
 
   const [line1, setLine1] = useState<string>("");
@@ -80,7 +80,6 @@ export const AddressFormatter = ({ value, value2, className, size = "md", mode =
       onCopy={copyAddress}
       onClose={() => setPopupOpen(false)}
       onSubmit={(newValue: string) => {
-        console.log(newValue);
         setPopupOpen(false);
       }}
     />
@@ -92,8 +91,8 @@ export const AddressFormatter = ({ value, value2, className, size = "md", mode =
   return (
     <Popup editor={editor}>
       <div onClick={() => setPopupOpen(true)}>
-        <Formatter className={line1Class} size={size} type={line1Type} value={line1} />
-        {line2 ? <Formatter className={className} size={size} type={line2Type} value={line2} /> : null}
+        <Formatter className={line1Class} type={line1Type} value={line1} />
+        {line2 ? <Formatter className={className} type={line2Type} value={line2} /> : null}
       </div>
     </Popup>
   );
