@@ -21,7 +21,7 @@ export function ProjectView() {
     });
   };
 
-  const modColumns = project.items?.length < 2 ? withoutDelete : withDelete;
+  const modColumns = project.nOpenFiles < 2 ? withoutDelete : withDelete;
   const table = useReactTable({
     data: project.items ?? [],
     columns: modColumns,
