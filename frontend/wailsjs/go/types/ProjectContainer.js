@@ -6,8 +6,8 @@ export function Load() {
   return window['go']['types']['ProjectContainer']['Load']();
 }
 
-export function NeedsUpdate() {
-  return window['go']['types']['ProjectContainer']['NeedsUpdate']();
+export function NeedsUpdate(arg1) {
+  return window['go']['types']['ProjectContainer']['NeedsUpdate'](arg1);
 }
 
 export function Save() {

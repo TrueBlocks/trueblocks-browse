@@ -35,7 +35,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer abiLock.CompareAndSwap(1, 0)
 
-	if !a.abis.NeedsUpdate() {
+	if !a.abis.NeedsUpdate(false) {
 		return nil
 	}
 

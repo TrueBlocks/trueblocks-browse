@@ -34,9 +34,9 @@ func (s *ManifestContainer) String() string {
 	return string(bytes)
 }
 
-func (s *ManifestContainer) NeedsUpdate() bool {
+func (s *ManifestContainer) NeedsUpdate(force bool) bool {
 	latest := utils.MustGetLatestFileTime(config.PathToManifest(s.Chain))
-	if latest != s.LastUpdate {
+	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
 		return true
 	}

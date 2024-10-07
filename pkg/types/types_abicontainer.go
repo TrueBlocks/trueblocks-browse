@@ -42,9 +42,9 @@ func (s *AbiContainer) String() string {
 	return string(bytes)
 }
 
-func (s *AbiContainer) NeedsUpdate() bool {
+func (s *AbiContainer) NeedsUpdate(force bool) bool {
 	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "abis"))
-	if latest != s.LastUpdate {
+	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
 		return true
 	}

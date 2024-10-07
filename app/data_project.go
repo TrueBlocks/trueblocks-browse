@@ -45,7 +45,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	// }
 	// needsUpdate := false
 	// for _, container := range containers {
-	// 	if container.NeedsUpdate() {
+	// 	if container.NeedsUpdate(false) {
 	// 		needsUpdate = true
 	// 		break
 	// 	}

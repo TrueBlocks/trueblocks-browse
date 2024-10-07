@@ -42,20 +42,18 @@ func (m *MonitorContainer) Filter(f func(*coreTypes.Monitor) bool) []int {
 */
 
 type MonitorContainer struct {
-	coreTypes.Monitor
-	Monitors  []coreTypes.Monitor `json:"items"`
-	NMonitors int                 `json:"nItems"`
-
 	// FilteredItems []int         `json:"filteresdItems"`
 	// MonitorFilter MonitorFilter `json:"filter"`
-
-	NNamed     int                                `json:"nNamed"`
-	NDeleted   int                                `json:"nDeleted"`
-	NStaged    int                                `json:"nStaged"`
-	NEmpty     int                                `json:"nEmpty"`
+	coreTypes.Monitor
+	Monitors   []coreTypes.Monitor `json:"items"`
+	NMonitors  int                 `json:"nItems"`
+	NNamed     int                 `json:"nNamed"`
+	NDeleted   int                 `json:"nDeleted"`
+	NStaged    int                 `json:"nStaged"`
+	NEmpty     int                 `json:"nEmpty"`
 	MonitorMap map[base.Address]coreTypes.Monitor `json:"monitorMap"`
-	LastUpdate time.Time                          `json:"lastUpdate"`
-	Chain      string                             `json:"chain"`
+	LastUpdate time.Time           `json:"lastUpdate"`
+	Chain      string              `json:"chain"`
 }
 
 func NewMonitorContainer(chain string) MonitorContainer {
@@ -73,9 +71,9 @@ func (s *MonitorContainer) String() string {
 	return string(bytes)
 }
 
-func (s *MonitorContainer) NeedsUpdate() bool {
+func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "monitors"))
-	if latest != s.LastUpdate {
+	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
 		return true
 	}

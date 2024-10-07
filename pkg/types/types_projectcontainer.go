@@ -43,8 +43,8 @@ func (h *ProjectContainer) String() string {
 	return string(bytes)
 }
 
-func (s *ProjectContainer) NeedsUpdate() bool {
-	return false
+func (s *ProjectContainer) NeedsUpdate(force bool) bool {
+	return force
 }
 
 func (s *ProjectContainer) ShallowCopy() Containerer {

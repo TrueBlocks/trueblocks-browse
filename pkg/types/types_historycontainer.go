@@ -41,9 +41,9 @@ func (s *HistoryContainer) String() string {
 	return string(bytes)
 }
 
-func (s *HistoryContainer) NeedsUpdate() bool {
+func (s *HistoryContainer) NeedsUpdate(force bool) bool {
 	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "monitors", s.Address.Hex()+".mon.bin"))
-	if latest != s.LastUpdate {
+	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
 		return true
 	}

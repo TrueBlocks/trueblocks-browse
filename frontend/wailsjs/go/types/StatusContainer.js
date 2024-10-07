@@ -10,8 +10,8 @@ export function Model(arg1, arg2, arg3, arg4) {
   return window['go']['types']['StatusContainer']['Model'](arg1, arg2, arg3, arg4);
 }
 
-export function NeedsUpdate() {
-  return window['go']['types']['StatusContainer']['NeedsUpdate']();
+export function NeedsUpdate(arg1) {
+  return window['go']['types']['StatusContainer']['NeedsUpdate'](arg1);
 }
 
 export function ShallowCopy() {

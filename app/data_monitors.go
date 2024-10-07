@@ -35,7 +35,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer monitorLock.CompareAndSwap(1, 0)
 
-	if !a.monitors.NeedsUpdate() {
+	if !a.monitors.NeedsUpdate(false) {
 		return nil
 	}
 

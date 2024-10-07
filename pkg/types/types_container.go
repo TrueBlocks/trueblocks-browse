@@ -4,5 +4,5 @@ type Containerer interface {
 	String() string
 	ShallowCopy() Containerer
 	Summarize()
-	NeedsUpdate() bool
+	NeedsUpdate(force bool) bool
 }

@@ -4,7 +4,7 @@ import {types} from '../models';
 
 export function Load():Promise<void>;
 
-export function NeedsUpdate():Promise<boolean>;
+export function NeedsUpdate(arg1:boolean):Promise<boolean>;
 
 export function Save():Promise<void>;
 

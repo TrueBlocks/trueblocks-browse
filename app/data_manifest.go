@@ -35,7 +35,7 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer manifestLock.CompareAndSwap(1, 0)
 
-	if !a.manifest.NeedsUpdate() {
+	if !a.manifest.NeedsUpdate(false) {
 		return nil
 	}
 

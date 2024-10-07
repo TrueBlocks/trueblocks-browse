@@ -34,7 +34,7 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer indexLock.CompareAndSwap(1, 0)
 
-	if !a.index.NeedsUpdate() {
+	if !a.index.NeedsUpdate(false) {
 		return nil
 	}
 

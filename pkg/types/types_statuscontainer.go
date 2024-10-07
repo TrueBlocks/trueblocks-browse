@@ -33,12 +33,13 @@ func (s *StatusContainer) String() string {
 	return string(bytes)
 }
 
-func (s *StatusContainer) NeedsUpdate() bool {
+func (s *StatusContainer) NeedsUpdate(force bool) bool {
 	elapsed := time.Now().After(s.LastUpdate.Add(time.Minute * 2))
-	if elapsed {
+	if force || elapsed {
 		s.LastUpdate = time.Now()
+		return true
 	}
-	return elapsed
+	return false
 }
 
 func (s *StatusContainer) ShallowCopy() Containerer {

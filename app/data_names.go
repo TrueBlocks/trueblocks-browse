@@ -44,7 +44,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer namesLock.CompareAndSwap(1, 0)
 
-	if !a.names.NeedsUpdate() {
+	if !a.names.NeedsUpdate(false) {
 		return nil
 	}
 
@@ -114,7 +114,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 		Name:    modData.Value,
 	}
 	cd := crud.CrudFromName(nm)
-	messages.SendInfo(a.ctx, fmt.Sprintf("%s-%v", opFromString(op), *cd))
+	// messages.SendInfo(a.ctx, fmt.Sprintf("%s-%v", opFromString(op), *cd))
 
 	if _, ok := a.names.NamesMap[modData.Address]; ok {
 		opts := sdk.NamesOptions{
