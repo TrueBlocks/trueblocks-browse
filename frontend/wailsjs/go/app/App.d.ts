@@ -15,6 +15,8 @@ export function AddrToName(arg1:base.Address):Promise<string>;
 
 export function CancelAllContexts():Promise<void>;
 
+export function CancelContext(arg1:base.Address):Promise<void>;
+
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
 export function ExportToCsv(arg1:string):Promise<void>;
@@ -68,6 +70,8 @@ export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestCont
 export function ModifyName(arg1:app.ModifyData):Promise<void>;
 
 export function ModifyNoop(arg1:app.ModifyData):Promise<void>;
+
+export function ModifyProject(arg1:app.ModifyData):Promise<void>;
 
 export function MonitorPage(arg1:number,arg2:number):Promise<types.MonitorContainer>;
 

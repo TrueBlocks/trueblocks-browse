@@ -14,6 +14,10 @@ export function CancelAllContexts() {
   return window['go']['app']['App']['CancelAllContexts']();
 }
 
+export function CancelContext(arg1) {
+  return window['go']['app']['App']['CancelContext'](arg1);
+}
+
 export function ConvertToAddress(arg1) {
   return window['go']['app']['App']['ConvertToAddress'](arg1);
 }
@@ -120,6 +124,10 @@ export function ModifyName(arg1) {
 
 export function ModifyNoop(arg1) {
   return window['go']['app']['App']['ModifyNoop'](arg1);
+}
+
+export function ModifyProject(arg1) {
+  return window['go']['app']['App']['ModifyProject'](arg1);
 }
 
 export function MonitorPage(arg1, arg2) {

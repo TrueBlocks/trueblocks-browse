@@ -19,15 +19,20 @@ func (a *App) RegisterCtx(address base.Address) *output.RenderCtx {
 	return rCtx
 }
 
-func (a *App) CancelAllContexts() {
-	for address, ctxArrays := range a.renderCtxs {
+func (a *App) CancelContext(address base.Address) {
+	ctxMutex.Lock()
+	defer ctxMutex.Unlock()
+	if ctxArrays, ok := a.renderCtxs[address]; ok {
 		for _, ctx := range ctxArrays {
-			messages.Send(a.ctx,
-				messages.Cancelled,
-				messages.NewProgressMsg(int64(a.txCount(address)), int64(a.txCount(address)), address),
-			)
+			messages.Send(a.ctx, messages.Cancelled, messages.NewProgressMsg(-1, -1, address))
 			ctx.Cancel()
 		}
 		delete(a.renderCtxs, address)
+	}
+}
+
+func (a *App) CancelAllContexts() {
+	for address := range a.renderCtxs {
+		a.CancelContext(address)
 	}
 }

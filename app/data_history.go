@@ -182,10 +182,6 @@ func (a *App) openFileCnt() int {
 	return count
 }
 
-func (a *App) closeFile(address base.Address) {
-	a.project.HistoryMap.Delete(address)
-}
-
 func (a *App) txCount(address base.Address) int {
 	if a.isFileOpen(address) {
 		history, _ := a.project.HistoryMap.Load(address)
