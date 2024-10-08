@@ -8,7 +8,9 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -98,6 +100,11 @@ func compare(nameI, nameJ coreTypes.Name) bool {
 }
 
 func (a *App) ModifyName(modData *ModifyData) error {
+	if !namesLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer namesLock.CompareAndSwap(1, 0)
+
 	opFromString := func(op string) crud.Operation {
 		m := map[string]crud.Operation{
 			"update":   crud.Update,
@@ -109,43 +116,64 @@ func (a *App) ModifyName(modData *ModifyData) error {
 	}
 
 	op := modData.Operation
-	nm := coreTypes.Name{
-		Address: modData.Address,
-		Name:    modData.Value,
+	newName := coreTypes.Name{
+		Address:  modData.Address,
+		Name:     modData.Value,
+		IsCustom: true,
+		Source:   "TrueBlocks Browse",
+		Tags:     "99-User-Defined",
 	}
-	cd := crud.CrudFromName(nm)
-	// messages.SendInfo(a.ctx, fmt.Sprintf("%s-%v", opFromString(op), *cd))
-
-	if _, ok := a.names.NamesMap[modData.Address]; ok {
-		opts := sdk.NamesOptions{
-			Globals: a.globals,
+	if existing, ok := a.names.NamesMap[modData.Address]; ok {
+		if existing.IsCustom {
+			// We preserve the tags if it's already customized
+			newName.Tags = existing.Tags
 		}
+	}
 
-		opts.Globals.Chain = namesChain
-		if _, _, err := opts.ModifyName(opFromString(op), cd); err != nil {
-			messages.SendError(a.ctx, err)
-			return err
-		}
+	cd := crud.CrudFromName(newName)
+	opts := sdk.NamesOptions{
+		Globals: a.globals,
+	}
+	opts.Globals.Chain = namesChain
 
-		nameMutex.Lock()
-		defer nameMutex.Unlock()
-		newArray := []coreTypes.Name{}
-		for _, n := range a.names.Names {
-			if n.IsCustom && n.Address == modData.Address {
-				switch opFromString(op) {
-				case crud.Delete:
-					n.Deleted = true
-				case crud.Undelete:
-					n.Deleted = false
-				case crud.Remove:
-					continue
+	if _, _, err := opts.ModifyName(opFromString(op), cd); err != nil {
+		messages.SendError(a.ctx, err)
+		return err
+	}
+
+	newArray := []coreTypes.Name{}
+	for _, name := range a.names.Names {
+		if name.Address == modData.Address {
+			switch opFromString(op) {
+			case crud.Update:
+				name = newName
+			default:
+				if name.IsCustom {
+					// we can only delete if it's custom already
+					switch opFromString(op) {
+					case crud.Delete:
+						name.Deleted = true
+					case crud.Undelete:
+						name.Deleted = false
+					case crud.Remove:
+						continue
+					}
 				}
-				a.names.NamesMap[modData.Address] = n
 			}
-			newArray = append(newArray, n)
+			nameMutex.Lock()
+			a.names.NamesMap[modData.Address] = name
+			nameMutex.Unlock()
 		}
-		a.names.Names = newArray
+		newArray = append(newArray, name)
 	}
+	nameMutex.Lock()
+	a.names.Names = newArray
+	nameMutex.Unlock()
 
 	return nil
+}
+
+func (a *App) nameChange() bool {
+	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(namesChain))
+	return latest != a.names.LastUpdate
 }

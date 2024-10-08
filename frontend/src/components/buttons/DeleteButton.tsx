@@ -3,7 +3,7 @@ import { ActionIcon, Group } from "@mantine/core";
 import { IconTrash, IconTrashX, IconArrowBackUp } from "@tabler/icons-react";
 import { ButtonProps } from "@components";
 import { base, app } from "@gocode/models";
-import { useAppState, useViewState } from "@state";
+import { useViewState } from "@state";
 
 export interface DeleteButtonProps extends Omit<Omit<ButtonProps, "onClick">, "size"> {
   isDeleted: boolean;
@@ -11,9 +11,7 @@ export interface DeleteButtonProps extends Omit<Omit<ButtonProps, "onClick">, "s
 
 export const DeleteButton = ({ value, isDeleted }: DeleteButtonProps) => {
   const [address, setAddress] = useState<base.Address>(value as unknown as base.Address);
-  const { deleteOperation } = useAppState();
-  const { route, fetchFn, modifyFn, pager } = useViewState();
-  const { selected } = pager;
+  const { fetchFn, modifyFn, pager } = useViewState();
 
   useEffect(() => {
     setAddress(value as unknown as base.Address);
@@ -22,7 +20,6 @@ export const DeleteButton = ({ value, isDeleted }: DeleteButtonProps) => {
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const op = "delete";
-    deleteOperation(route, selected, op);
     const modData = app.ModifyData.createFrom({
       operation: op,
       address: address,
@@ -36,7 +33,6 @@ export const DeleteButton = ({ value, isDeleted }: DeleteButtonProps) => {
   const handleUndelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const op = "undelete";
-    deleteOperation(route, selected, op);
     const modData = app.ModifyData.createFrom({
       operation: op,
       address: address,
@@ -50,7 +46,6 @@ export const DeleteButton = ({ value, isDeleted }: DeleteButtonProps) => {
   const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const op = "remove";
-    deleteOperation(route, selected, op);
     const modData = app.ModifyData.createFrom({
       operation: op,
       address: address,
