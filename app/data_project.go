@@ -45,7 +45,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	// }
 	// needsUpdate := false
 	// for _, container := range containers {
-	// 	if container.NeedsUpdate(false) {
+	// 	if container.NeedsUpdate(a.nameChange()) {
 	// 		needsUpdate = true
 	// 		break
 	// 	}

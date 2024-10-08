@@ -56,8 +56,6 @@ interface AppStateProps {
   isConfigured: boolean;
   wizardState: wizard.State;
   stepWizard: (step: wizard.Step) => void;
-
-  deleteOperation(route: Route, selected: number, op: string): void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -160,20 +158,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const deleteOperation = (route: Route, selected: number, op: string) => {
-    switch (route) {
-      case "names":
-        deleteOperationNames(names, selected, op);
-        break;
-      case "abis":
-        deleteOperationAbis(abis, selected, op);
-        break;
-      case "":
-        deleteOperationProject(project, selected, op);
-        break;
-    }
-  };
-
   const changeChain = (newChain: string) => {
     setChain(newChain);
     SetChain(newChain, address) // disables refresh
@@ -246,7 +230,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     stepWizard,
     meta,
     setMeta,
-    deleteOperation,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;
@@ -258,31 +241,4 @@ export const useAppState = () => {
     throw new Error("useAppState must be used within a AppStateProvider");
   }
   return context;
-};
-
-const deleteOperationNames = (names: types.NameContainer, selected: number, op: string) => {
-  switch (op) {
-    case "delete":
-      names.names[selected].deleted = true;
-      names.nDeleted++;
-      break;
-    case "undelete":
-      names.names[selected].deleted = false;
-      names.nDeleted--;
-      break;
-    case "remove":
-      names.names[selected].deleted = false;
-      names.nDeleted--;
-      names.nItems--;
-      names.nCustom--;
-      break;
-  }
-};
-
-const deleteOperationAbis = (abis: types.AbiContainer, selected: number, unused: string) => {
-  abis.items.splice(selected, 1);
-};
-
-const deleteOperationProject = (project: types.ProjectContainer, selected: number, unused: string) => {
-  project.items.splice(selected, 1);
 };

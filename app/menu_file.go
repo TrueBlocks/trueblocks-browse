@@ -29,6 +29,9 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 	})
 
 	if len(file) > 0 {
+		save := a.FreshenController.Sleep
+		defer func() { a.FreshenController.Sleep = save }()
+		a.FreshenController.Sleep = 1000
 		newProject := types.ProjectContainer{
 			Filename: file,
 		}
