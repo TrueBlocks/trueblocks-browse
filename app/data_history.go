@@ -3,10 +3,14 @@ package app
 import (
 	"fmt"
 	"sort"
+	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -20,22 +24,16 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
-		// logger.Error("Invalid address: " + addr)
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
 		return &types.HistoryContainer{}
 	}
 
-	// historyMutex.RLock()
 	_, exists := a.project.HistoryMap.Load(address)
-	// historyMutex.RUnlock()
-
-	// logger.Info("Address okay. Exists:", exists)
 	if !exists {
 		rCtx := a.RegisterCtx(address)
 		opts := sdk.ExportOptions{
 			Addrs:     []string{addr},
 			RenderCtx: rCtx,
-			// Articulate: true,
 			Globals: sdk.Globals{
 				Cache: true,
 				Ether: true,
@@ -77,12 +75,10 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 					}
 
 				case err := <-opts.RenderCtx.ErrorChan:
-					// logger.Error("Error getting history 1: " + err.Error())
 					messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
 
 				default:
 					if opts.RenderCtx.WasCanceled() {
-						// logger.Warn("Load was canceled: " + address.Hex())
 						return
 					}
 				}
@@ -91,13 +87,10 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 
 		_, meta, err := opts.Export() // blocks until forever loop above finishes
 		if err != nil {
-			// logger.Error("Error getting history 2: " + err.Error())
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
 			return &types.HistoryContainer{}
 		}
 		a.meta = *meta
-
-		// logger.Info("Finished export")
 
 		summary, _ := a.project.HistoryMap.Load(address)
 		sort.Slice(summary.Items, func(i, j int) bool {
@@ -108,18 +101,15 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 		})
 		summary.Summarize()
 		a.project.HistoryMap.Store(address, summary)
-
 		messages.Send(a.ctx,
 			messages.Completed,
 			messages.NewProgressMsg(int64(a.txCount(address)), int64(a.txCount(address)), address),
 		)
 
-		// logger.Info("Loading project")
 		a.loadProject(nil, nil)
 	}
 
 	if first == -1 {
-		// logger.Info("Leaving...")
 		return &types.HistoryContainer{}
 	}
 
@@ -130,7 +120,6 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 	copy := sum.ShallowCopy().(*types.HistoryContainer)
 	copy.Balance = a.getBalance(address)
 	copy.Items = sum.Items[first:last]
-	// logger.Info("Returning history page for", addr, "from", first, "to", last)
 	return copy
 }
 
@@ -189,4 +178,28 @@ func (a *App) txCount(address base.Address) int {
 	} else {
 		return 0
 	}
+}
+
+var historyLock atomic.Uint32
+
+func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan chan error) error {
+	if wg != nil {
+		defer wg.Done()
+	}
+
+	if !historyLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer historyLock.CompareAndSwap(1, 0)
+
+	history, exists := a.project.HistoryMap.Load(address)
+	if exists {
+		if !history.NeedsUpdate(a.nameChange()) {
+			return nil
+		}
+	}
+
+	logger.Info(colors.Red+"Would have updated", colors.Off)
+
+	return nil
 }

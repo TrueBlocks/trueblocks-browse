@@ -84,7 +84,6 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	sort.Slice(a.project.Items, func(i, j int) bool {
 		return a.project.Items[i].Address.Cmp(a.project.Items[j].Address.Address) < 0
 	})
-	// messages.SendInfo(a.ctx, "Loaded project")
 
 	return nil
 }

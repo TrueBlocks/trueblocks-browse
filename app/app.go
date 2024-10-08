@@ -111,6 +111,7 @@ func (a *App) Startup(ctx context.Context) {
 		logger.Info("Loading history for address: ", addr)
 		go a.HistoryPage(addr, -1, 15)
 	}
+	// go a.loadHistory(a.GetLastAddress(), nil, nil)
 }
 
 func (a *App) DomReady(ctx context.Context) {

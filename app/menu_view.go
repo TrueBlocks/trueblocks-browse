@@ -19,9 +19,9 @@ func (a *App) ViewProject(cd *menu.CallbackData) {
 func (a *App) ViewHistory(cd *menu.CallbackData) {
 	if a.isConfigured() {
 		logger.Info("ViewHistory")
-		subRoute := a.GetSessionSubVal("/history")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/history"+subRoute))
-		a.SetSessionVal("route", "/history"+subRoute)
+		address := a.GetLastAddress()
+		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/history"+address.Hex()))
+		a.SetSessionVal("route", "/history"+address.Hex())
 	}
 }
 

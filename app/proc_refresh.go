@@ -63,7 +63,6 @@ func (a *App) Refresh(which ...string) {
 			))
 		}
 	}
-	// a.loadProject(nil, nil)
 
 	// And then update everything else in the fullness of time
 	wg := sync.WaitGroup{}
