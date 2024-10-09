@@ -4,16 +4,5 @@ type Containerer interface {
 	String() string
 	ShallowCopy() Containerer
 	Summarize()
-	NeedsUpdate() bool
+	NeedsUpdate(force bool) bool
 }
-
-// var containers = []Containerer{
-// 	&AbiContainer{},
-// 	// "HistoryContainer":   &HistoryContainer{},
-// 	&IndexContainer{},
-// 	&ManifestContainer{},
-// 	&MonitorContainer{},
-// 	&NameContainer{},
-// 	&StatusContainer{},
-// 	// "PortfolioContainer": &PortfolioContainer{},
-// }

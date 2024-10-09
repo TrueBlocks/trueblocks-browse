@@ -37,7 +37,7 @@ export function FormTable<T>({ data, definition }: FormTableProps<T>) {
                   const value = <Formatter type={field.type} value={data[field.accessor]} />;
                   return (
                     <Flex key={fieldIndex} gap="md" align="center">
-                      <Text className={classes.fieldPrompt}>{field.label}</Text>
+                      {field.label.length > 0 ? <Text className={classes.fieldPrompt}>{field.label}</Text> : <></>}
                       <Text>{value}</Text>
                     </Flex>
                   );

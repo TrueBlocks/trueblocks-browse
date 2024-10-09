@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Checkbox, InputLabel } from "@mantine/core";
 import { View } from "@components";
-import { GetSession } from "@gocode/app/App";
+import { GetSession, ModifyNoop } from "@gocode/app/App";
 import { config } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 
@@ -15,7 +15,7 @@ export function SettingsView() {
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    <ViewStateProvider route="settings" fetchFn={(_unused1: number, _unused2: number) => {}}>
+    <ViewStateProvider route="settings" fetchFn={(_unused1: number, _unused2: number) => {}} modifyFn={ModifyNoop}>
       <View>
         <InputLabel>
           <Checkbox label={"A checkbox"} />

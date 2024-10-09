@@ -4,9 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"os"
-	"strings"
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
@@ -32,10 +32,7 @@ type App struct {
 
 	session    config.Session
 	apiKeys    map[string]string
-	ensMap     map[string]base.Address
 	renderCtxs map[base.Address][]*output.RenderCtx
-	historyMap map[base.Address]types.HistoryContainer
-	balanceMap sync.Map
 	meta       coreTypes.MetaData
 	globals    sdk.Globals
 
@@ -46,7 +43,7 @@ type App struct {
 	monitors          types.MonitorContainer
 	names             types.NameContainer
 	status            types.StatusContainer
-	portfolio         types.PortfolioContainer
+	project           types.ProjectContainer
 	ScraperController *daemons.DaemonScraper
 	FreshenController *daemons.DaemonFreshen
 	IpfsController    *daemons.DaemonIpfs
@@ -57,12 +54,9 @@ func NewApp() *App {
 	a := App{
 		apiKeys:    make(map[string]string),
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
-		ensMap:     make(map[string]base.Address),
-		historyMap: make(map[base.Address]types.HistoryContainer),
 	}
-	a.monitors.MonitorMap = make(map[base.Address]coreTypes.Monitor)
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
-	a.portfolio.Filename = "Untitled"
+	a.project = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
 
 	// it's okay if it's not found
 	a.session.MustLoadSession()
@@ -95,7 +89,7 @@ func (a *App) GetContext() context.Context {
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
-	a.FreshenController = daemons.NewFreshen(a, "freshen", 4000, a.GetSessionDeamon("daemon-freshen"))
+	a.FreshenController = daemons.NewFreshen(a, "freshen", 3000, a.GetSessionDeamon("daemon-freshen"))
 	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetSessionDeamon("daemon-scraper"))
 	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.GetSessionDeamon("daemon-ipfs"))
 	go a.startDaemons()
@@ -105,17 +99,13 @@ func (a *App) Startup(ctx context.Context) {
 	}
 
 	logger.Info("Starting freshen process...")
-	a.Refresh(false, a.GetSession().LastRoute)
+	a.Refresh(a.GetSession().LastRoute)
 
 	if err := a.loadConfig(); err != nil {
 		messages.SendError(a.ctx, err)
 	}
 
-	addr := strings.ReplaceAll(a.GetSessionSubVal("/history"), "/", "")
-	if len(addr) > 0 {
-		logger.Info("Loading history for address: ", addr)
-		go a.HistoryPage(addr, -1, 15)
-	}
+	go a.loadHistory(a.GetLastAddress(), nil, nil)
 }
 
 func (a *App) DomReady(ctx context.Context) {
@@ -172,4 +162,16 @@ func (a *App) SetEnv(key, value string) {
 
 func (a *App) GetMeta() coreTypes.MetaData {
 	return a.meta
+}
+
+type ModifyData struct {
+	Operation string       `json:"operation"`
+	Address   base.Address `json:"address"`
+	Value     string       `json:"value"`
+}
+
+func (a *App) ModifyNoop(modData *ModifyData) error {
+	route := a.GetSessionVal("route")
+	messages.Send(a.ctx, messages.Info, messages.NewInfoMessage(fmt.Sprintf("%s modify %s: %s", route, modData.Operation, modData.Address.Hex())))
+	return nil
 }

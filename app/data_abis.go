@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -24,22 +26,18 @@ var abisChain = "mainnet"
 var abiLock atomic.Uint32
 
 func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
-	if !abiLock.CompareAndSwap(0, 1) {
-		return nil
-	}
-	defer abiLock.CompareAndSwap(1, 0)
-
 	defer func() {
 		if wg != nil {
 			wg.Done()
 		}
 	}()
 
-	if !a.isConfigured() {
+	if !abiLock.CompareAndSwap(0, 1) {
 		return nil
 	}
+	defer abiLock.CompareAndSwap(1, 0)
 
-	if !a.abis.NeedsUpdate() {
+	if !a.abis.NeedsUpdate(a.nameChange()) {
 		return nil
 	}
 
@@ -70,4 +68,32 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		messages.SendInfo(a.ctx, "Loaded abis")
 	}
 	return nil
+}
+
+func (a *App) ModifyAbi(modData *ModifyData) error {
+	opts := sdk.AbisOptions{
+		Addrs:   []string{modData.Address.Hex()},
+		Globals: a.globals,
+	}
+	opts.Globals.Decache = true
+
+	if _, _, err := opts.Abis(); err != nil {
+		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, modData.Address))
+		return err
+	} else {
+		newAbis := make([]coreTypes.Abi, 0, len(a.abis.Items))
+		for _, abi := range a.abis.Items {
+			if abi.Address == modData.Address {
+				a.abis.NItems--
+				a.abis.NEvents -= abi.NEvents
+				a.abis.NFunctions -= abi.NFunctions
+				continue
+			}
+			newAbis = append(newAbis, abi)
+		}
+		a.abis.LastUpdate = time.Time{}
+		a.abis.Items = newAbis
+		messages.Send(a.ctx, messages.Info, messages.NewInfoMessage(fmt.Sprintf("ModifyAbi delete: %s", modData.Address.Hex())))
+		return nil
+	}
 }

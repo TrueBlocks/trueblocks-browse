@@ -23,22 +23,18 @@ func (a *App) IndexPage(first, pageSize int) *types.IndexContainer {
 var indexLock atomic.Uint32
 
 func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
-	if !indexLock.CompareAndSwap(0, 1) {
-		return nil
-	}
-	defer indexLock.CompareAndSwap(1, 0)
-
 	defer func() {
 		if wg != nil {
 			wg.Done()
 		}
 	}()
 
-	if !a.isConfigured() {
+	if !indexLock.CompareAndSwap(0, 1) {
 		return nil
 	}
+	defer indexLock.CompareAndSwap(1, 0)
 
-	if !a.index.NeedsUpdate() {
+	if !a.index.NeedsUpdate(false) {
 		return nil
 	}
 

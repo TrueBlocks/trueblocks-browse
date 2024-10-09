@@ -11,7 +11,7 @@ import {
   IconSettings,
 } from "@tabler/icons-react";
 
-export const PortfolioIcon = <IconHome />;
+export const ProjectIcon = <IconHome />;
 export const HistoryIcon = <IconBuildingMonument />;
 export const MonitorIcon = <IconDeviceDesktop />;
 export const NamesIcon = <IconTag />;

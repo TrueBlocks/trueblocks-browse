@@ -1,5 +1,6 @@
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { ModifyAbi } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./AbisTable";
@@ -14,7 +15,7 @@ export function AbisView() {
   });
 
   return (
-    <ViewStateProvider route={"abis"} nItems={abis.nItems} fetchFn={fetchAbis}>
+    <ViewStateProvider route={"abis"} nItems={abis.nItems} fetchFn={fetchAbis} modifyFn={ModifyAbi}>
       <View>
         <FormTable data={abis} definition={createAbisForm(table)} />
       </View>

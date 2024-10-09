@@ -45,9 +45,9 @@ func (a *NameContainer) String() string {
 	return string(bytes)
 }
 
-func (s *NameContainer) NeedsUpdate() bool {
+func (s *NameContainer) NeedsUpdate(force bool) bool {
 	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(s.Chain))
-	if latest != s.LastUpdate {
+	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
 		return true
 	}

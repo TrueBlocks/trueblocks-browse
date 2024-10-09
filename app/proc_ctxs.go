@@ -10,24 +10,29 @@ import (
 
 var ctxMutex sync.Mutex
 
-func (a *App) RegisterCtx(addr base.Address) *output.RenderCtx {
+func (a *App) RegisterCtx(address base.Address) *output.RenderCtx {
 	ctxMutex.Lock()
 	defer ctxMutex.Unlock()
 
 	rCtx := output.NewStreamingContext()
-	a.renderCtxs[addr] = append(a.renderCtxs[addr], rCtx)
+	a.renderCtxs[address] = append(a.renderCtxs[address], rCtx)
 	return rCtx
 }
 
-func (a *App) CancleContexts() {
-	for address, ctxArrays := range a.renderCtxs {
+func (a *App) CancelContext(address base.Address) {
+	ctxMutex.Lock()
+	defer ctxMutex.Unlock()
+	if ctxArrays, ok := a.renderCtxs[address]; ok {
 		for _, ctx := range ctxArrays {
-			messages.Send(a.ctx,
-				messages.Cancelled,
-				messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(len(a.historyMap[address].Items)), address),
-			)
+			messages.Send(a.ctx, messages.Cancelled, messages.NewProgressMsg(-1, -1, address))
 			ctx.Cancel()
 		}
 		delete(a.renderCtxs, address)
+	}
+}
+
+func (a *App) CancelAllContexts() {
+	for address := range a.renderCtxs {
+		a.CancelContext(address)
 	}
 }

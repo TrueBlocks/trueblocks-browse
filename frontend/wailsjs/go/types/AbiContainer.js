@@ -10,8 +10,8 @@ export function Model(arg1, arg2, arg3, arg4) {
   return window['go']['types']['AbiContainer']['Model'](arg1, arg2, arg3, arg4);
 }
 
-export function NeedsUpdate() {
-  return window['go']['types']['AbiContainer']['NeedsUpdate']();
+export function NeedsUpdate(arg1) {
+  return window['go']['types']['AbiContainer']['NeedsUpdate'](arg1);
 }
 
 export function ShallowCopy() {

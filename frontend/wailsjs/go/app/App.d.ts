@@ -6,17 +6,20 @@ import {menu} from '../models';
 import {context} from '../models';
 import {config} from '../models';
 import {wizard} from '../models';
+import {app} from '../models';
 import {output} from '../models';
 
 export function AbiPage(arg1:number,arg2:number):Promise<types.AbiContainer>;
 
 export function AddrToName(arg1:base.Address):Promise<string>;
 
-export function CancleContexts():Promise<void>;
+export function CancelAllContexts():Promise<void>;
+
+export function CancelContext(arg1:base.Address):Promise<void>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
-export function ExportToCsv(arg1:string):Promise<void>;
+export function ExportToCsv(arg1:base.Address):Promise<void>;
 
 export function Fatal(arg1:string):Promise<void>;
 
@@ -39,6 +42,10 @@ export function GetContext():Promise<context.Context>;
 export function GetDaemonJson(arg1:string):Promise<string>;
 
 export function GetEnv(arg1:string):Promise<string>;
+
+export function GetExploreUrl(arg1:string,arg2:boolean,arg3:boolean):Promise<string>;
+
+export function GetLastAddress():Promise<base.Address>;
 
 export function GetMenus():Promise<menu.Menu>;
 
@@ -64,15 +71,21 @@ export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>
 
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
 
-export function ModifyName(arg1:string,arg2:base.Address):Promise<void>;
+export function ModifyAbi(arg1:app.ModifyData):Promise<void>;
+
+export function ModifyName(arg1:app.ModifyData):Promise<void>;
+
+export function ModifyNoop(arg1:app.ModifyData):Promise<void>;
+
+export function ModifyProject(arg1:app.ModifyData):Promise<void>;
 
 export function MonitorPage(arg1:number,arg2:number):Promise<types.MonitorContainer>;
 
 export function NamePage(arg1:number,arg2:number):Promise<types.NameContainer>;
 
-export function PortfolioPage(arg1:number,arg2:number):Promise<types.PortfolioContainer>;
+export function ProjectPage(arg1:number,arg2:number):Promise<types.ProjectContainer>;
 
-export function Refresh(arg1:boolean,arg2:Array<string>):Promise<void>;
+export function Refresh(arg1:Array<string>):Promise<void>;
 
 export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
 
@@ -98,6 +111,8 @@ export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
 
+export function Thing(arg1:base.Address,arg2:number):Promise<void>;
+
 export function ToggleDaemon(arg1:string):Promise<void>;
 
 export function ViewAbis(arg1:menu.CallbackData):Promise<void>;
@@ -114,7 +129,7 @@ export function ViewMonitors(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewNames(arg1:menu.CallbackData):Promise<void>;
 
-export function ViewPortfolio(arg1:menu.CallbackData):Promise<void>;
+export function ViewProject(arg1:menu.CallbackData):Promise<void>;
 
 export function ViewSettings(arg1:menu.CallbackData):Promise<void>;
 

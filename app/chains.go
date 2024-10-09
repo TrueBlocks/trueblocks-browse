@@ -18,7 +18,7 @@ func (a *App) GetChainList() []string {
 }
 
 func (a *App) SetChain(chain string, address base.Address) {
-	a.CancleContexts() // cancel what's happening on the old chain
+	a.CancelAllContexts() // cancel what's happening on the old chain
 	a.globals.Chain = chain
 	a.SetSessionVal("chain", chain)
 	a.Reload(address)
@@ -26,5 +26,5 @@ func (a *App) SetChain(chain string, address base.Address) {
 	a.index = types.IndexContainer{}
 	a.manifest = types.ManifestContainer{}
 	a.monitors = types.MonitorContainer{}
-	a.Refresh(false)
+	a.Refresh()
 }

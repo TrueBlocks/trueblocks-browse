@@ -17,32 +17,28 @@ import (
 
 // Find: NewViews
 func (a *App) StatusPage(first, pageSize int) *types.StatusContainer {
-	first = base.Max(0, base.Min(first, len(a.status.Items)-1))
-	last := base.Min(len(a.status.Items), first+pageSize)
+	first = base.Max(0, base.Min(first, len(a.status.Caches)-1))
+	last := base.Min(len(a.status.Caches), first+pageSize)
 	copy, _ := a.status.ShallowCopy().(*types.StatusContainer)
-	copy.Items = a.status.Items[first:last]
+	copy.Caches = a.status.Caches[first:last]
 	return copy
 }
 
 var statusLock atomic.Uint32
 
 func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
-	if !statusLock.CompareAndSwap(0, 1) {
-		return nil
-	}
-	defer statusLock.CompareAndSwap(1, 0)
-
 	defer func() {
 		if wg != nil {
 			wg.Done()
 		}
 	}()
 
-	if !a.isConfigured() {
+	if !statusLock.CompareAndSwap(0, 1) {
 		return nil
 	}
+	defer statusLock.CompareAndSwap(1, 0)
 
-	if !a.status.NeedsUpdate() {
+	if !a.status.NeedsUpdate(false) {
 		return nil
 	}
 
@@ -72,8 +68,8 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.status = types.NewStatusContainer(chain, statusArray[0])
 		// TODO: Use the core's sorting mechanism (see SortChunkStats for example)
-		sort.Slice(a.status.Items, func(i, j int) bool {
-			return a.status.Items[i].SizeInBytes > a.status.Items[j].SizeInBytes
+		sort.Slice(a.status.Caches, func(i, j int) bool {
+			return a.status.Caches[i].SizeInBytes > a.status.Caches[j].SizeInBytes
 		})
 		a.status.Summarize()
 		logger.SetLoggerWriter(w)

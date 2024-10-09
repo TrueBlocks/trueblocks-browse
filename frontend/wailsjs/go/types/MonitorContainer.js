@@ -14,8 +14,8 @@ export function Model(arg1, arg2, arg3, arg4) {
   return window['go']['types']['MonitorContainer']['Model'](arg1, arg2, arg3, arg4);
 }
 
-export function NeedsUpdate() {
-  return window['go']['types']['MonitorContainer']['NeedsUpdate']();
+export function NeedsUpdate(arg1) {
+  return window['go']['types']['MonitorContainer']['NeedsUpdate'](arg1);
 }
 
 export function ShallowCopy() {

@@ -4,167 +4,53 @@ import (
 	"fmt"
 	"sort"
 	"sync"
+	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-var historyMutex sync.RWMutex
-
-func (a *App) HistoryPage(addr string, first, pageSize int) types.HistoryContainer {
-	// logger.Info("Getting history page for", addr, "from", first, "to", first+pageSize)
+func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContainer {
 	if !a.isConfigured() {
-		// logger.Info("Not configured")
-		return types.HistoryContainer{}
+		return &types.HistoryContainer{}
 	}
 
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
-		// logger.Error("Invalid address: " + addr)
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
-		return types.HistoryContainer{}
+		return &types.HistoryContainer{}
 	}
 
-	historyMutex.RLock()
-	_, exists := a.historyMap[address]
-	historyMutex.RUnlock()
-
-	// logger.Info("Address okay. Exists:", exists)
+	_, exists := a.project.HistoryMap.Load(address)
 	if !exists {
-		messages.Send(a.ctx,
-			messages.Progress,
-			messages.NewProgressMsg(0, 0, address),
-		)
-
-		rCtx := a.RegisterCtx(address)
-		opts := sdk.ExportOptions{
-			Addrs:     []string{addr},
-			RenderCtx: rCtx,
-			// Articulate: true,
-			Globals: sdk.Globals{
-				Cache: true,
-				Ether: true,
-				Chain: a.globals.Chain,
-			},
-		}
-
-		go func() {
-			nItems := a.getHistoryCnt(addr)
-			for {
-				select {
-				case model := <-opts.RenderCtx.ModelChan:
-					tx, ok := model.(*coreTypes.Transaction)
-					if !ok {
-						continue
-					}
-					historyMutex.RLock()
-					summary := a.historyMap[address]
-					historyMutex.RUnlock()
-
-					summary.Address = address
-					summary.Name = a.names.NamesMap[address].Name
-					summary.Items = append(summary.Items, *tx)
-					if len(summary.Items)%base.Max(pageSize, 1) == 0 {
-						sort.Slice(summary.Items, func(i, j int) bool {
-							if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
-								return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
-							}
-							return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
-						})
-						messages.Send(a.ctx,
-							messages.Progress,
-							messages.NewProgressMsg(int64(len(summary.Items)), int64(nItems), address),
-						)
-					}
-
-					historyMutex.Lock()
-					if len(summary.Items) == 0 {
-						delete(a.historyMap, address)
-					} else {
-						a.historyMap[address] = summary
-					}
-					historyMutex.Unlock()
-
-				case err := <-opts.RenderCtx.ErrorChan:
-					// logger.Error("Error getting history 1: " + err.Error())
-					messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
-
-				default:
-					if opts.RenderCtx.WasCanceled() {
-						// logger.Warn("Load was canceled: " + address.Hex())
-						return
-					}
-				}
-			}
-		}()
-
-		_, meta, err := opts.Export() // blocks until forever loop above finishes
-		if err != nil {
-			// logger.Error("Error getting history 2: " + err.Error())
+		if err := a.Thing(address, base.Max(pageSize, 1)); err != nil {
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
-			return types.HistoryContainer{}
+			return &types.HistoryContainer{}
 		}
-		a.meta = *meta
-
-		// logger.Info("Finished export")
-
-		historyMutex.Lock()
-		summary := a.historyMap[address]
-		sort.Slice(summary.Items, func(i, j int) bool {
-			if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
-				return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
-			}
-			return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
-		})
-		summary.Summarize()
-		a.historyMap[address] = summary
-		historyMutex.Unlock()
-
-		messages.Send(a.ctx,
-			messages.Completed,
-			messages.NewProgressMsg(int64(len(a.historyMap[address].Items)), int64(len(a.historyMap[address].Items)), address),
-		)
-
-		// logger.Info("Loading portfolio")
-		a.loadPortfolio(nil, nil)
+		a.loadProject(nil, nil)
 	}
 
 	if first == -1 {
-		// logger.Info("Leaving...")
-		return types.HistoryContainer{}
+		return &types.HistoryContainer{}
 	}
 
-	historyMutex.RLock()
-	defer historyMutex.RUnlock()
-
-	first = base.Max(0, base.Min(first, len(a.historyMap[address].Items)-1))
-	last := base.Min(len(a.historyMap[address].Items), first+pageSize)
-	sum := a.historyMap[address]
-	copy := sum.ShallowCopy()
+	first = base.Max(0, base.Min(first, a.txCount(address)-1))
+	last := base.Min(a.txCount(address), first+pageSize)
+	history, _ := a.project.HistoryMap.Load(address)
+	history.Summarize()
+	copy := history.ShallowCopy().(*types.HistoryContainer)
 	copy.Balance = a.getBalance(address)
-	copy.Items = a.historyMap[address].Items[first:last]
+	copy.Items = history.Items[first:last]
 	return copy
 }
 
-func (a *App) getHistoryCnt(addr string) int {
-	address, ok := a.ConvertToAddress(addr)
-	if !ok {
-		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
-		return 0
-	}
-
-	historyMutex.RLock()
-	l := len(a.historyMap[address].Items)
-	historyMutex.RUnlock()
-	if l > 0 {
-		return l
-	}
-
+func (a *App) getHistoryCnt(address base.Address) int {
 	opts := sdk.ListOptions{
-		Addrs:   []string{addr},
+		Addrs:   []string{address.Hex()},
 		Globals: a.globals,
 	}
 	appearances, meta, err := opts.ListCount()
@@ -177,4 +63,156 @@ func (a *App) getHistoryCnt(addr string) int {
 		a.meta = *meta
 		return int(appearances[0].NRecords)
 	}
+}
+
+func (a *App) forEveryTx(address base.Address, process func(coreTypes.Transaction) bool) bool {
+	historyContainer, _ := a.project.HistoryMap.Load(address)
+	for _, item := range historyContainer.Items {
+		if !process(item) {
+			return false
+		}
+	}
+	return true
+}
+
+func (a *App) forEveryHistory(process func(*types.HistoryContainer) bool) bool {
+	a.project.HistoryMap.Range(func(key base.Address, value types.HistoryContainer) bool {
+		return process(&value)
+	})
+	return true
+}
+
+func (a *App) isFileOpen(address base.Address) bool {
+	_, isOpen := a.project.HistoryMap.Load(address)
+	return isOpen
+}
+
+func (a *App) openFileCnt() int {
+	count := 0
+	a.project.HistoryMap.Range(func(key base.Address, value types.HistoryContainer) bool {
+		count++
+		return true
+	})
+	return count
+}
+
+func (a *App) txCount(address base.Address) int {
+	if a.isFileOpen(address) {
+		history, _ := a.project.HistoryMap.Load(address)
+		return len(history.Items)
+	} else {
+		return 0
+	}
+}
+
+var historyLock atomic.Uint32
+
+func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan chan error) error {
+	// if wg != nil {
+	// 	defer wg.Done()
+	// }
+
+	if address.IsZero() {
+		return nil
+	}
+
+	// if !historyLock.CompareAndSwap(0, 1) {
+	// 	return nil
+	// }
+	// defer historyLock.CompareAndSwap(1, 0)
+
+	// history, exists := a.project.HistoryMap.Load(address)
+	// if exists {
+	// 	if !history.NeedsUpdate(a.nameChange()) {
+	// 		return nil
+	// 	}
+	// }
+
+	logger.Info("Loading history for address: ", address.Hex())
+	// _ = a.HistoryPage(address.Hex(), -1, 15)
+	if err := a.Thing(address, 15); err != nil {
+		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
+		return err
+	}
+	a.loadProject(nil, nil)
+
+	return nil
+}
+
+func (a *App) Thing(address base.Address, freq int) error {
+	rCtx := a.RegisterCtx(address)
+	opts := sdk.ExportOptions{
+		Addrs:     []string{address.Hex()},
+		RenderCtx: rCtx,
+		Globals: sdk.Globals{
+			Cache: true,
+			Ether: true,
+			Chain: a.globals.Chain,
+		},
+	}
+
+	go func() {
+		nItems := a.getHistoryCnt(address)
+		for {
+			select {
+			case model := <-opts.RenderCtx.ModelChan:
+				tx, ok := model.(*coreTypes.Transaction)
+				if !ok {
+					continue
+				}
+				summary, _ := a.project.HistoryMap.Load(address)
+				summary.NTotal = nItems
+				summary.Address = address
+				summary.Name = a.names.NamesMap[address].Name
+				summary.Items = append(summary.Items, *tx)
+				if len(summary.Items)%freq == 0 {
+					sort.Slice(summary.Items, func(i, j int) bool {
+						if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
+							return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
+						}
+						return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
+					})
+					messages.Send(a.ctx,
+						messages.Progress,
+						messages.NewProgressMsg(int64(len(summary.Items)), int64(nItems), address),
+					)
+				}
+
+				if len(summary.Items) == 0 {
+					a.project.HistoryMap.Delete(address)
+				} else {
+					a.project.HistoryMap.Store(address, summary)
+				}
+
+			case err := <-opts.RenderCtx.ErrorChan:
+				messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
+
+			default:
+				if opts.RenderCtx.WasCanceled() {
+					return
+				}
+			}
+		}
+	}()
+
+	_, meta, err := opts.Export() // blocks until forever loop above finishes
+	if err != nil {
+		return err
+	}
+	a.meta = *meta
+
+	summary, _ := a.project.HistoryMap.Load(address)
+	sort.Slice(summary.Items, func(i, j int) bool {
+		if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
+			return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
+		}
+		return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
+	})
+	summary.Summarize()
+	a.project.HistoryMap.Store(address, summary)
+	messages.Send(a.ctx,
+		messages.Completed,
+		messages.NewProgressMsg(int64(a.txCount(address)), int64(a.txCount(address)), address),
+	)
+	return nil
 }

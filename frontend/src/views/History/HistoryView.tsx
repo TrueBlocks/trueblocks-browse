@@ -2,8 +2,17 @@ import { useEffect } from "react";
 import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { useParams } from "wouter";
-import { ExploreButton, ExportButton, View, FormTable, DataTable, GroupDefinition } from "@components";
-import { GetSessionSubVal, CancleContexts } from "@gocode/app/App";
+import {
+  ExploreButton,
+  ExportButton,
+  View,
+  FormTable,
+  DataTable,
+  GroupDefinition,
+  DalleButton,
+  GoogleButton,
+} from "@components";
+import { GetSessionSubVal, ModifyNoop } from "@gocode/app/App";
 import { types, base } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./HistoryTable";
@@ -13,7 +22,6 @@ export function HistoryView() {
 
   const aa = useParams().address;
   useEffect(() => {
-    CancleContexts();
     if (aa === ":address") {
       GetSessionSubVal("/history").then((subRoute) => {
         subRoute = subRoute.replace("/", "");
@@ -31,7 +39,7 @@ export function HistoryView() {
   });
 
   return (
-    <ViewStateProvider route={"history"} nItems={history.nItems} fetchFn={fetchHistory}>
+    <ViewStateProvider route={"history"} nItems={history.nItems} fetchFn={fetchHistory} modifyFn={ModifyNoop}>
       <View>
         <FormTable data={history} definition={CreateHistoryForm(table)} />
       </View>
@@ -44,18 +52,17 @@ function CreateHistoryForm(table: Table<types.Transaction>): GroupDefinition<the
   const { address } = useAppState();
   return [
     {
+      title: "DalleDress",
+      colSpan: 4,
+      fields: [{ label: "", type: "dalle", accessor: "address" }],
+    },
+    {
       title: "Transaction Data",
       colSpan: 6,
       fields: [
         { label: "address", type: "address-address-only", accessor: "address" },
         { label: "name", type: "address-name-only", accessor: "address" },
         { label: "balance", type: "ether", accessor: "balance" },
-      ],
-    },
-    {
-      title: "Data 0",
-      colSpan: 4,
-      fields: [
         { label: "nTransactions", type: "int", accessor: "nItems" },
         { label: "nLogs", type: "int", accessor: "nLogs" },
         { label: "nTokens", type: "int", accessor: "nTokens" },
@@ -70,8 +77,10 @@ function CreateHistoryForm(table: Table<types.Transaction>): GroupDefinition<the
         {
           component: (
             <Stack>
-              <ExploreButton size="sm" endpoint="address" value={address as unknown as string} />
-              <ExportButton size="sm" value={address as unknown as string} />
+              <ExploreButton value={address} />
+              <DalleButton value={address} />
+              <GoogleButton value={address} />
+              <ExportButton value={address} />
             </Stack>
           ),
         },

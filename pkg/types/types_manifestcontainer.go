@@ -11,20 +11,18 @@ import (
 
 type ManifestContainer struct {
 	coreTypes.Manifest `json:",inline"`
-	Items              []coreTypes.ChunkRecord `json:"items"`
-	NItems             int                     `json:"nItems"`
-	NBlooms            int                     `json:"nBlooms"`
-	BloomsSize         int                     `json:"bloomsSize"`
-	NIndexes           int                     `json:"nIndexes"`
-	IndexSize          int                     `json:"indexSize"`
-	LastUpdate         time.Time               `json:"lastUpdate"`
+	NItems             int       `json:"nItems"`
+	NBlooms            int       `json:"nBlooms"`
+	BloomsSize         int       `json:"bloomsSize"`
+	NIndexes           int       `json:"nIndexes"`
+	IndexSize          int       `json:"indexSize"`
+	LastUpdate         time.Time `json:"lastUpdate"`
 }
 
 func NewManifestContainer(chain string, manifest coreTypes.Manifest) ManifestContainer {
 	latest := utils.MustGetLatestFileTime(config.PathToManifest(chain))
 	ret := ManifestContainer{
 		Manifest:   manifest,
-		Items:      manifest.Chunks,
 		LastUpdate: latest,
 	}
 	ret.Chain = chain
@@ -36,9 +34,9 @@ func (s *ManifestContainer) String() string {
 	return string(bytes)
 }
 
-func (s *ManifestContainer) NeedsUpdate() bool {
+func (s *ManifestContainer) NeedsUpdate(force bool) bool {
 	latest := utils.MustGetLatestFileTime(config.PathToManifest(s.Chain))
-	if latest != s.LastUpdate {
+	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
 		return true
 	}
@@ -62,8 +60,8 @@ func (s *ManifestContainer) ShallowCopy() Containerer {
 }
 
 func (s *ManifestContainer) Summarize() {
-	s.NItems = len(s.Items)
-	for _, item := range s.Items {
+	s.NItems = len(s.Chunks)
+	for _, item := range s.Chunks {
 		s.NBlooms++
 		s.BloomsSize += int(item.BloomSize)
 		s.NIndexes++

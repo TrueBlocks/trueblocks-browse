@@ -37,9 +37,9 @@ func (s *IndexContainer) String() string {
 	return string(bytes)
 }
 
-func (s *IndexContainer) NeedsUpdate() bool {
+func (s *IndexContainer) NeedsUpdate(force bool) bool {
 	latest := utils.MustGetLatestFileTime(config.PathToIndex(s.Chain))
-	if latest != s.LastUpdate {
+	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
 		return true
 	}

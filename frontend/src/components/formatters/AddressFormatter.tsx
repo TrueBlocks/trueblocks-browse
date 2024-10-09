@@ -1,8 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import { Formatter, FormatterProps, knownType, Popup, AddressPopup } from "@components";
-import { AddrToName } from "@gocode/app/App";
+import { AddrToName, ModifyName } from "@gocode/app/App";
+import { app } from "@gocode/models";
 import { ClipboardSetText } from "@runtime";
-import { useAppState } from "@state";
+import { useAppState, useViewState } from "@state";
 import classes from "./Formatter.module.css";
 
 export enum EdMode {
@@ -15,8 +16,9 @@ interface AddressEditorProps extends FormatterProps {
   mode?: EdMode;
 }
 
-export const AddressFormatter = ({ value, value2, className, size = "md", mode = EdMode.All }: AddressEditorProps) => {
-  const { address } = useAppState();
+export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }: Omit<AddressEditorProps, "size">) => {
+  const { address, fetchNames } = useAppState();
+  const { pager } = useViewState();
 
   const [line1, setLine1] = useState<string>("");
   const [line2, setLine2] = useState<string>("");
@@ -80,8 +82,15 @@ export const AddressFormatter = ({ value, value2, className, size = "md", mode =
       onCopy={copyAddress}
       onClose={() => setPopupOpen(false)}
       onSubmit={(newValue: string) => {
-        console.log(newValue);
         setPopupOpen(false);
+        const modData = app.ModifyData.createFrom({
+          operation: "update",
+          address: givenAddress,
+          value: newValue,
+        });
+        ModifyName(modData).then(() => {
+          fetchNames(pager.getOffset(), pager.perPage);
+        });
       }}
     />
   ) : null;
@@ -92,8 +101,8 @@ export const AddressFormatter = ({ value, value2, className, size = "md", mode =
   return (
     <Popup editor={editor}>
       <div onClick={() => setPopupOpen(true)}>
-        <Formatter className={line1Class} size={size} type={line1Type} value={line1} />
-        {line2 ? <Formatter className={className} size={size} type={line2Type} value={line2} /> : null}
+        <Formatter className={line1Class} type={line1Type} value={line1} />
+        {line2 ? <Formatter className={className} type={line2Type} value={line2} /> : null}
       </div>
     </Popup>
   );

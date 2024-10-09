@@ -14,4 +14,9 @@
     "prettier.bracketSpacing": true,
     "prettier.arrowParens": "always",
     "prettier.endOfLine": "lf",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "typescript.suggest.autoImports": true,
+    "javascript.suggest.autoImports": true,
+    "editor.acceptSuggestionOnEnter": "on"
 }

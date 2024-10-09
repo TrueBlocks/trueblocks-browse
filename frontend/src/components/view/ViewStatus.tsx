@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { Text } from "@mantine/core";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import classes from "./ViewStatus.module.css";
 
-export function ViewStatus() {
+export const ViewStatus = function () {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [statusMessage, setStatusMessage] = useState<string>("");
   const [color, setColor] = useState<string>(classes.green);
@@ -13,6 +12,12 @@ export function ViewStatus() {
     const handleDocument = (msg: messages.DocumentMsg) => {
       setStatusMessage(`${msg.msg} ${msg.filename}`);
       setColor(classes.green);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setStatusMessage("");
+      }, 2000);
     };
 
     const handleProgress = (msg: messages.ProgressMsg) => {
@@ -83,9 +88,5 @@ export function ViewStatus() {
     };
   }, []);
 
-  return (
-    <Text size="lg">
-      <div className={color}>{statusMessage || "\u00A0"}</div>
-    </Text>
-  );
-}
+  return <div className={color}>{statusMessage || "\u00A0"}</div>;
+};

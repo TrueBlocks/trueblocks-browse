@@ -1,13 +1,14 @@
-import { TextProps } from "@mantine/core";
+import { TextProps, Image } from "@mantine/core";
 import { IconCircleCheck } from "@tabler/icons-react";
 import {
+  DalleImage,
   AddressFormatter,
   AppearanceFormatter,
-  CrudButton,
   DateFormatter,
   TagFormatter,
   TextFormatter,
   EdMode,
+  LoadProgress,
 } from "@components";
 import { base } from "@gocode/models";
 import { useAppState } from "@state";
@@ -23,7 +24,8 @@ export type knownType =
   | "boolean"
   | "bytes"
   | "check"
-  | "crud"
+  | "dalle"
+  | "dalle-small"
   | "date"
   | "error"
   | "ether"
@@ -32,6 +34,7 @@ export type knownType =
   | "hash"
   | "int"
   | "path"
+  | "progress"
   | "range"
   | "tag"
   | "text"
@@ -42,7 +45,7 @@ export type knownType =
 export type FormatterProps = {
   type: knownType;
   value: any;
-  value2?: boolean | base.Hash | base.Address | string | undefined;
+  value2?: boolean | base.Hash | base.Address | string | number | undefined;
   className?: string;
   size?: TextProps["size"];
 };
@@ -53,8 +56,11 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
   const cn = GetDebugColor(type) || className;
   const n = value as number;
   const bi = value as bigint;
+  const n2 = value2 as number;
   const bool = value2 as boolean;
   const from = value2 as unknown as base.Address;
+  const hash = value2 as base.Hash;
+  const pct = n2 !== 0 ? (n / n2) * 100 : 0;
 
   switch (type) {
     case "boolean":
@@ -91,27 +97,25 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
       value = formatInteger(n);
       break;
     case "appearance":
-      return <AppearanceFormatter value={value} value2={value2} size={size} className={cn} />;
+      return <AppearanceFormatter value={value} value2={hash} className={cn} />;
+    case "dalle":
+      return <DalleImage value={value} />;
+    case "dalle-small":
+      return <DalleImage height={40} value={value} />;
     case "hash":
     case "path":
     case "range":
     case "text":
     case "url":
       break;
-    case "crud":
-      return <CrudButton size="xs" value={value} isDeleted={bool} />;
+    case "progress":
+      return <LoadProgress value={pct} value2={n2} />;
     case "address-editor":
-      return (
-        <AddressFormatter type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.All} />
-      );
+      return <AddressFormatter type={type} className={cn} value={value} value2={value2} mode={EdMode.All} />;
     case "address-address-only":
-      return (
-        <AddressFormatter type={type} className={cn} size={size} value={value} value2={value2} mode={EdMode.Address} />
-      );
+      return <AddressFormatter type={type} className={cn} value={value} value2={value2} mode={EdMode.Address} />;
     case "address-name-only":
-      return (
-        <AddressFormatter type={type} className={"cn"} size={size} value={value} value2={value2} mode={EdMode.Name} />
-      );
+      return <AddressFormatter type={type} className={"cn"} value={value} value2={value2} mode={EdMode.Name} />;
     case "address-line1":
       return <TextFormatter value={value} size={size} type={type} className={cn} />;
     case "address-line2":

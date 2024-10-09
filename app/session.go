@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
@@ -42,6 +43,11 @@ func (a *App) SetSessionVal(which, value string) {
 		a.GetSession().LastHelp = strings.EqualFold(value, "true")
 	}
 	a.GetSession().Save()
+}
+
+func (a *App) GetLastAddress() base.Address {
+	val := a.GetSessionSubVal("/history")
+	return base.HexToAddress(strings.ReplaceAll(val, "/", ""))
 }
 
 func (a *App) GetSessionSubVal(which string) string {

@@ -2,14 +2,11 @@ package app
 
 import (
 	"strings"
-	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
-
-var e sync.Mutex
 
 func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
 	if !a.isConfigured() {
@@ -21,12 +18,9 @@ func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
 		return ret, ret != base.ZeroAddr
 	}
 
-	e.Lock()
-	ensAddr, exists := a.ensMap[addr]
-	e.Unlock()
-
+	ensAddr, exists := a.project.EnsMap.Load(addr)
 	if exists {
-		return ensAddr, true
+		return ensAddr.(base.Address), true
 	}
 
 	// Try to get an ENS or return the same input
@@ -40,9 +34,7 @@ func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
 	} else {
 		a.meta = *meta
 		if len(names) > 0 {
-			e.Lock()
-			defer e.Unlock()
-			a.ensMap[addr] = names[0].Address
+			a.project.EnsMap.Store(addr, names[0].Address)
 			return names[0].Address, true
 		} else {
 			ret := base.HexToAddress(addr)
@@ -51,8 +43,8 @@ func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
 	}
 }
 
-func (a *App) AddrToName(addr base.Address) string {
-	if name, exists := a.names.NamesMap[addr]; exists {
+func (a *App) AddrToName(address base.Address) string {
+	if name, exists := a.names.NamesMap[address]; exists {
 		return name.Name
 	}
 	return ""

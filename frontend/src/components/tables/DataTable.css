@@ -48,12 +48,6 @@ th {
   border: 1px solid darkblue !important;
 }
 
-/*
-tr:hover {
-  background-color: #ffffe0; /* Light yellow
-}
-*/
-
 .bumper {
   display: flex;
   justify-content: flex-end;

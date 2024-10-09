@@ -1,5 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef, Formatter } from "@components";
+import { CustomColumnDef, Formatter, DeleteButton } from "@components";
 import { types } from "@gocode/models";
 
 const columnHelper = createColumnHelper<types.Abi>();
@@ -53,5 +53,14 @@ export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
     header: () => "lastModDate",
     cell: (info) => <Formatter type="date" value={info.renderValue()} />,
     meta: { className: "medium cell" },
+  }),
+  columnHelper.accessor("address", {
+    header: () => "Crud Buttons",
+    cell: (info) => {
+      const { address, isKnown } = info.row.original;
+      const addr = address as unknown as string;
+      return isKnown ? <></> : <DeleteButton value={addr} isDeleted={false} />;
+    },
+    meta: { className: "small center cell" },
   }),
 ];

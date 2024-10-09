@@ -10,8 +10,12 @@ export function AddrToName(arg1) {
   return window['go']['app']['App']['AddrToName'](arg1);
 }
 
-export function CancleContexts() {
-  return window['go']['app']['App']['CancleContexts']();
+export function CancelAllContexts() {
+  return window['go']['app']['App']['CancelAllContexts']();
+}
+
+export function CancelContext(arg1) {
+  return window['go']['app']['App']['CancelContext'](arg1);
 }
 
 export function ConvertToAddress(arg1) {
@@ -66,6 +70,14 @@ export function GetEnv(arg1) {
   return window['go']['app']['App']['GetEnv'](arg1);
 }
 
+export function GetExploreUrl(arg1, arg2, arg3) {
+  return window['go']['app']['App']['GetExploreUrl'](arg1, arg2, arg3);
+}
+
+export function GetLastAddress() {
+  return window['go']['app']['App']['GetLastAddress']();
+}
+
 export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
@@ -114,8 +126,20 @@ export function ManifestPage(arg1, arg2) {
   return window['go']['app']['App']['ManifestPage'](arg1, arg2);
 }
 
-export function ModifyName(arg1, arg2) {
-  return window['go']['app']['App']['ModifyName'](arg1, arg2);
+export function ModifyAbi(arg1) {
+  return window['go']['app']['App']['ModifyAbi'](arg1);
+}
+
+export function ModifyName(arg1) {
+  return window['go']['app']['App']['ModifyName'](arg1);
+}
+
+export function ModifyNoop(arg1) {
+  return window['go']['app']['App']['ModifyNoop'](arg1);
+}
+
+export function ModifyProject(arg1) {
+  return window['go']['app']['App']['ModifyProject'](arg1);
 }
 
 export function MonitorPage(arg1, arg2) {
@@ -126,12 +150,12 @@ export function NamePage(arg1, arg2) {
   return window['go']['app']['App']['NamePage'](arg1, arg2);
 }
 
-export function PortfolioPage(arg1, arg2) {
-  return window['go']['app']['App']['PortfolioPage'](arg1, arg2);
+export function ProjectPage(arg1, arg2) {
+  return window['go']['app']['App']['ProjectPage'](arg1, arg2);
 }
 
-export function Refresh(arg1, arg2) {
-  return window['go']['app']['App']['Refresh'](arg1, arg2);
+export function Refresh(arg1) {
+  return window['go']['app']['App']['Refresh'](arg1);
 }
 
 export function RegisterCtx(arg1) {
@@ -182,6 +206,10 @@ export function SystemQuit(arg1) {
   return window['go']['app']['App']['SystemQuit'](arg1);
 }
 
+export function Thing(arg1, arg2) {
+  return window['go']['app']['App']['Thing'](arg1, arg2);
+}
+
 export function ToggleDaemon(arg1) {
   return window['go']['app']['App']['ToggleDaemon'](arg1);
 }
@@ -214,8 +242,8 @@ export function ViewNames(arg1) {
   return window['go']['app']['App']['ViewNames'](arg1);
 }
 
-export function ViewPortfolio(arg1) {
-  return window['go']['app']['App']['ViewPortfolio'](arg1);
+export function ViewProject(arg1) {
+  return window['go']['app']['App']['ViewProject'](arg1);
 }
 
 export function ViewSettings(arg1) {
