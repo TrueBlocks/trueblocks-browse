@@ -6,7 +6,7 @@ export interface AppearancePopupProps extends PopupProps {
   hash: string;
 }
 
-export const AppearancePopup = forwardRef<HTMLDivElement, AppearancePopupProps>(({ hash, onClose, onCopy }) => {
+export const AppearancePopup = forwardRef<HTMLDivElement, AppearancePopupProps>(({ hash, onCopy, onClose }, ref) => {
   const handleButtonClick = useCallback(() => {
     onClose();
   }, [onClose]);
