@@ -6,6 +6,7 @@ import js from "@eslint/js";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import * as tsParser from "@typescript-eslint/parser";
 import eslintPluginImportX from "eslint-plugin-import-x";
+import prettier from "eslint-plugin-prettier";
 import react from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import globals from "globals";
@@ -35,6 +36,7 @@ export default [
       "@typescript-eslint": typescriptEslint,
       "import-x": eslintPluginImportX,
       "react-hooks": fixupPluginRules(reactHooksPlugin),
+      prettier: prettier,
     },
 
     languageOptions: {
@@ -87,12 +89,14 @@ export default [
 
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/no-explicit-any": "off",
       "import-x/no-unresolved": "error",
       "import-x/named": "error",
       "import-x/namespace": "error",
       "import-x/default": "error",
       "import-x/export": "error",
       "react/react-in-jsx-scope": "off",
+      "prettier/prettier": "error",
     },
   },
 ];

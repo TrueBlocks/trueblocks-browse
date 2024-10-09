@@ -43,6 +43,8 @@ export function GetDaemonJson(arg1:string):Promise<string>;
 
 export function GetEnv(arg1:string):Promise<string>;
 
+export function GetLastAddress():Promise<base.Address>;
+
 export function GetMenus():Promise<menu.Menu>;
 
 export function GetMeta():Promise<types.MetaData>;

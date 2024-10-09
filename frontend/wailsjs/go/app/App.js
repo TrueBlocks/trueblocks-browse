@@ -70,6 +70,10 @@ export function GetEnv(arg1) {
   return window['go']['app']['App']['GetEnv'](arg1);
 }
 
+export function GetLastAddress() {
+  return window['go']['app']['App']['GetLastAddress']();
+}
+
 export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
