@@ -1,7 +1,7 @@
 // Find: NewViews-React
 import {
   // Icons
-  PortfolioIcon,
+  ProjectIcon,
   HistoryIcon,
   MonitorIcon,
   NamesIcon,
@@ -13,7 +13,7 @@ import {
   SettingsIcon,
   WizardIcon,
   // Views
-  PortfolioView,
+  ProjectView,
   HistoryView,
   NamesView,
   MonitorsView,
@@ -131,8 +131,8 @@ export const routeItems: RouteItem[] = [
   {
     order: 0,
     route: asFull(""),
-    label: "Portfolio",
-    icon: PortfolioIcon,
-    component: PortfolioView,
+    label: "Project",
+    icon: ProjectIcon,
+    component: ProjectView,
   },
 ];

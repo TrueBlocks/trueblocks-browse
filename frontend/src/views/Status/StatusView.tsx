@@ -1,5 +1,6 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { ModifyNoop } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./StatusTable";
@@ -8,13 +9,13 @@ export function StatusView() {
   const { status, fetchStatus } = useAppState();
 
   const table = useReactTable({
-    data: status.items || [],
+    data: status.caches || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
-    <ViewStateProvider route={"status"} nItems={status.nItems} fetchFn={fetchStatus}>
+    <ViewStateProvider route={"status"} nItems={status.nItems} fetchFn={fetchStatus} modifyFn={ModifyNoop}>
       <View>
         <FormTable data={status} definition={createStatusForm(table)} />
       </View>

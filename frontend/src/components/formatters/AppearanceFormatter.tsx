@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { Formatter, FormatterProps, Popup, AppearancePopup } from "@components";
 import { ClipboardSetText } from "@runtime";
 
-export const AppearanceFormatter = ({ value, value2, className, size = "md" }: Omit<FormatterProps, "type">) => {
+export const AppearanceFormatter = ({ value, value2, className }: Omit<Omit<FormatterProps, "type">, "size">) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   const copyHash = useCallback(() => {
@@ -16,7 +16,7 @@ export const AppearanceFormatter = ({ value, value2, className, size = "md" }: O
       hash={String(value2)}
       onSubmit={() => setPopupOpen(false)}
       onClose={() => setPopupOpen(false)}
-      onCopy={() => copyHash}
+      onCopy={copyHash}
     />
   );
 
@@ -24,7 +24,7 @@ export const AppearanceFormatter = ({ value, value2, className, size = "md" }: O
   return (
     <Popup editor={editor}>
       <div onClick={() => setPopupOpen(true)}>
-        <Formatter className={className} size={size} type="text" value={value} />
+        <Formatter className={className} type="text" value={value} />
       </div>
     </Popup>
   );

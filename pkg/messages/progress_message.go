@@ -9,13 +9,13 @@ type ProgressMsg struct {
 }
 
 func NewProgressMsg(have int64, want int64, addrs ...base.Address) *ProgressMsg {
-	addr := base.ZeroAddr
+	address := base.ZeroAddr
 	if len(addrs) > 0 {
-		addr = addrs[0]
+		address = addrs[0]
 	}
 
 	return &ProgressMsg{
-		Address: addr,
+		Address: address,
 		Have:    have,
 		Want:    want,
 	}

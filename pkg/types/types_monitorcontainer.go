@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
@@ -42,28 +41,24 @@ func (m *MonitorContainer) Filter(f func(*coreTypes.Monitor) bool) []int {
 */
 
 type MonitorContainer struct {
-	coreTypes.Monitor
-	Items  []coreTypes.Monitor `json:"items"`
-	NItems int                 `json:"nItems"`
-
 	// FilteredItems []int         `json:"filteresdItems"`
 	// MonitorFilter MonitorFilter `json:"filter"`
-
-	NNamed     int                                `json:"nNamed"`
-	NDeleted   int                                `json:"nDeleted"`
-	NStaged    int                                `json:"nStaged"`
-	NEmpty     int                                `json:"nEmpty"`
-	MonitorMap map[base.Address]coreTypes.Monitor `json:"monitorMap"`
-	LastUpdate time.Time                          `json:"lastUpdate"`
-	Chain      string                             `json:"chain"`
+	coreTypes.Monitor
+	Monitors   []coreTypes.Monitor `json:"items"`
+	NMonitors  int                 `json:"nItems"`
+	NNamed     int                 `json:"nNamed"`
+	NDeleted   int                 `json:"nDeleted"`
+	NStaged    int                 `json:"nStaged"`
+	NEmpty     int                 `json:"nEmpty"`
+	LastUpdate time.Time           `json:"lastUpdate"`
+	Chain      string              `json:"chain"`
 }
 
 func NewMonitorContainer(chain string) MonitorContainer {
 	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(chain), "monitors"))
 	return MonitorContainer{
 		Chain:      chain,
-		Items:      []coreTypes.Monitor{},
-		MonitorMap: make(map[base.Address]coreTypes.Monitor),
+		Monitors:   []coreTypes.Monitor{},
 		LastUpdate: latest,
 	}
 }
@@ -73,9 +68,9 @@ func (s *MonitorContainer) String() string {
 	return string(bytes)
 }
 
-func (s *MonitorContainer) NeedsUpdate() bool {
+func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "monitors"))
-	if latest != s.LastUpdate {
+	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
 		return true
 	}
@@ -89,15 +84,15 @@ func (s *MonitorContainer) ShallowCopy() Containerer {
 		NStaged:    s.NStaged,
 		NEmpty:     s.NEmpty,
 		NDeleted:   s.NDeleted,
-		NItems:     s.NItems,
+		NMonitors:  s.NMonitors,
 		LastUpdate: s.LastUpdate,
 		Chain:      s.Chain,
 	}
 }
 
 func (s *MonitorContainer) Summarize() {
-	s.NItems = len(s.Items)
-	for _, mon := range s.Items {
+	s.NMonitors = len(s.Monitors)
+	for _, mon := range s.Monitors {
 		if mon.Deleted {
 			s.NDeleted++
 		}

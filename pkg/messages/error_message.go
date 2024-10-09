@@ -12,13 +12,13 @@ type ErrorMsg struct {
 }
 
 func NewErrorMsg(err error, addrs ...base.Address) *ErrorMsg {
-	addr := base.ZeroAddr
+	address := base.ZeroAddr
 	if len(addrs) > 0 {
-		addr = addrs[0]
+		address = addrs[0]
 	}
 
 	return &ErrorMsg{
-		Address: addr,
+		Address: address,
 		ErrStr:  err.Error(),
 	}
 }

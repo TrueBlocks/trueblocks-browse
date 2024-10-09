@@ -1,7 +1,6 @@
 import { useState, forwardRef, useCallback, useEffect } from "react";
-import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
-import { IconCopy } from "@tabler/icons-react";
-import { ExploreButton, ViewButton, PopupProps } from "@components";
+import { Button, Group, Stack, TextInput } from "@mantine/core";
+import { ExploreButton, ViewButton, PopupProps, CopyButton, DalleButton, GoogleButton } from "@components";
 
 export interface AddressPopupProps extends PopupProps {
   address: string;
@@ -25,7 +24,6 @@ export const AddressPopup = forwardRef<HTMLDivElement, AddressPopupProps>(
       onClose();
     }, [onClose]);
 
-    // Close the popup when clicking outside
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
         if (ref && "current" in ref && ref.current && !ref.current.contains(event.target as Node)) {
@@ -39,6 +37,7 @@ export const AddressPopup = forwardRef<HTMLDivElement, AddressPopupProps>(
       };
     }, [ref, onClose]);
 
+    const size = "sm";
     return (
       <div ref={ref}>
         <form onSubmit={submitForm}>
@@ -50,14 +49,14 @@ export const AddressPopup = forwardRef<HTMLDivElement, AddressPopupProps>(
               autoFocus
             />
             <Group>
-              <ExploreButton size="xs" endpoint="address" value={address} onClick={handleButtonClick} />
-              <ViewButton size="xs" value={address} onClick={handleButtonClick} />
-              <Button size="xs" type="submit">
+              <ExploreButton noText value={address} onClick={handleButtonClick} />
+              <DalleButton noText value={address} onClick={handleButtonClick} />
+              <GoogleButton noText value={address} onClick={handleButtonClick} />
+              <ViewButton value={address} onClick={handleButtonClick} />
+              <Button size={size} type="submit">
                 Save
               </Button>
-              <ActionIcon variant="outline" onClick={onCopy} title="Copy to clipboard">
-                <IconCopy />
-              </ActionIcon>
+              <CopyButton onClick={onCopy} />
             </Group>
           </Stack>
         </form>

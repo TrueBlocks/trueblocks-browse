@@ -45,10 +45,10 @@ interface TablePartProps<T> {
 function TableHeader<T>({ table }: TablePartProps<T>) {
   return (
     <Table.Thead>
-      {table.getHeaderGroups().map((headerGroup) => (
-        <Table.Tr key={headerGroup.id}>
-          {headerGroup.headers.map((header) => (
-            <Table.Th key={header.id} className="centered">
+      {table.getHeaderGroups().map((headerGroup, headerGroupIndex) => (
+        <Table.Tr key={`headerGroup-${headerGroupIndex}`}>
+          {headerGroup.headers.map((header, headerIndex) => (
+            <Table.Th key={`header-${header.id}-${headerIndex}`} className="centered">
               {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
             </Table.Th>
           ))}
@@ -80,33 +80,5 @@ function TableBody<T>({ table, selectedRow }: TablePartProps<T>) {
       </Table.Tr>
     );
   });
-  /*
-  // Dawid: This memoization is not needed. Every time the user hits a key, the pager and
-  // Dawid: probably the selectedRow changes and therefore an unneeded copy is being created.
-  // Dawid: Maybe imagining it, but it feels like it slows down
-  const inner = useMemo(() => {
-  return (
-      {table.getRowModel().rows.map((row, rowIndex) => {
-        const rowKey = `row-${rowIndex}-${row.id}`;
-        return (
-          <Table.Tr
-            key={rowKey}
-            className={rowIndex === selectedRow ? "selected-row" : ""}
-            onClick={() => pager.setRecord(pager.getOffset() + rowIndex)}
-          >
-            {row.getVisibleCells().map((cell, cellIndex) => {
-              const cellKey = `cell-${rowIndex}-${cellIndex}-${cell.id}`;
-              const meta = cell.column.columnDef.meta as CustomMeta;
-              return (
-                <Table.Td key={cellKey} className={meta?.className}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Table.Td>
-              );
-            })}
-          </Table.Tr>
-        );
-      );
-  }, [pager, selectedRow, table]);
-  */
   return <Table.Tbody>{inner}</Table.Tbody>;
 }

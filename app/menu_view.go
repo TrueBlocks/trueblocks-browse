@@ -8,9 +8,9 @@ import (
 )
 
 // Find: NewViews
-func (a *App) ViewPortfolio(cd *menu.CallbackData) {
+func (a *App) ViewProject(cd *menu.CallbackData) {
 	if a.isConfigured() {
-		logger.Info("ViewPortfolio")
+		logger.Info("ViewProject")
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
 		a.SetSessionVal("route", "/")
 	}
@@ -19,9 +19,9 @@ func (a *App) ViewPortfolio(cd *menu.CallbackData) {
 func (a *App) ViewHistory(cd *menu.CallbackData) {
 	if a.isConfigured() {
 		logger.Info("ViewHistory")
-		subRoute := a.GetSessionSubVal("/history")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/history"+subRoute))
-		a.SetSessionVal("route", "/history"+subRoute)
+		address := a.GetLastAddress()
+		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/history/"+address.Hex()))
+		a.SetSessionVal("route", "/history/"+address.Hex())
 	}
 }
 

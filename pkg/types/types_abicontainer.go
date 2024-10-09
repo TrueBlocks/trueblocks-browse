@@ -19,9 +19,6 @@ type AbiContainer struct {
 	LargestFile   string          `json:"largestFile"`
 	MostFunctions string          `json:"mostFunctions"`
 	MostEvents    string          `json:"mostEvents"`
-	lF            comparison      `json:"-"`
-	mF            comparison      `json:"-"`
-	mE            comparison      `json:"-"`
 	Sorts         sdk.SortSpec    `json:"sort"`
 	LastUpdate    time.Time       `json:"lastUpdate"`
 	Chain         string          `json:"chain"`
@@ -45,9 +42,9 @@ func (s *AbiContainer) String() string {
 	return string(bytes)
 }
 
-func (s *AbiContainer) NeedsUpdate() bool {
+func (s *AbiContainer) NeedsUpdate(force bool) bool {
 	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "abis"))
-	if latest != s.LastUpdate {
+	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
 		return true
 	}
@@ -67,18 +64,21 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 }
 
 func (s *AbiContainer) Summarize() {
+	var lF comparison
+	var mF comparison
+	var mE comparison
 	s.NItems = len(s.Items)
 	for _, file := range s.Items {
 		s.NFunctions += file.NFunctions
 		s.NEvents += file.NEvents
 		s.FileSize += file.FileSize
-		s.lF.MarkMax(file.Name, int(file.FileSize))
-		s.mF.MarkMax(file.Name, int(file.NFunctions))
-		s.mE.MarkMax(file.Name, int(file.NEvents))
+		lF.MarkMax(file.Name, int(file.FileSize))
+		mF.MarkMax(file.Name, int(file.NFunctions))
+		mE.MarkMax(file.Name, int(file.NEvents))
 	}
-	s.LargestFile = fmt.Sprintf("%s (%d bytes)", s.lF.Name, s.lF.Value)
-	s.MostFunctions = fmt.Sprintf("%s (%d functions)", s.mF.Name, s.mF.Value)
-	s.MostEvents = fmt.Sprintf("%s (%d events)", s.mE.Name, s.mE.Value)
+	s.LargestFile = fmt.Sprintf("%s (%d bytes)", lF.Name, lF.Value)
+	s.MostFunctions = fmt.Sprintf("%s (%d functions)", mF.Name, mF.Value)
+	s.MostEvents = fmt.Sprintf("%s (%d events)", mE.Name, mE.Value)
 }
 
 type comparison struct {
