@@ -2,7 +2,16 @@ import { useEffect } from "react";
 import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { useParams } from "wouter";
-import { ExploreButton, ExportButton, View, FormTable, DataTable, GroupDefinition } from "@components";
+import {
+  ExploreButton,
+  ExportButton,
+  View,
+  FormTable,
+  DataTable,
+  GroupDefinition,
+  DalleButton,
+  GoogleButton,
+} from "@components";
 import { GetSessionSubVal, ModifyNoop } from "@gocode/app/App";
 import { types, base } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
@@ -43,18 +52,17 @@ function CreateHistoryForm(table: Table<types.Transaction>): GroupDefinition<the
   const { address } = useAppState();
   return [
     {
+      title: "DalleDress",
+      colSpan: 4,
+      fields: [{ label: "", type: "dalle", accessor: "address" }],
+    },
+    {
       title: "Transaction Data",
       colSpan: 6,
       fields: [
         { label: "address", type: "address-address-only", accessor: "address" },
         { label: "name", type: "address-name-only", accessor: "address" },
         { label: "balance", type: "ether", accessor: "balance" },
-      ],
-    },
-    {
-      title: "Data 0",
-      colSpan: 4,
-      fields: [
         { label: "nTransactions", type: "int", accessor: "nItems" },
         { label: "nLogs", type: "int", accessor: "nLogs" },
         { label: "nTokens", type: "int", accessor: "nTokens" },
@@ -69,8 +77,10 @@ function CreateHistoryForm(table: Table<types.Transaction>): GroupDefinition<the
         {
           component: (
             <Stack>
-              <ExploreButton value={address as unknown as string} endpoint="address" />
-              <ExportButton value={address as unknown as string} />
+              <ExploreButton value={address} />
+              <DalleButton value={address} />
+              <GoogleButton value={address} />
+              <ExportButton value={address} />
             </Stack>
           ),
         },

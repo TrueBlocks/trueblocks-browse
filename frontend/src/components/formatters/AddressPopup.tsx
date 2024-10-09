@@ -1,6 +1,6 @@
 import { useState, forwardRef, useCallback, useEffect } from "react";
 import { Button, Group, Stack, TextInput } from "@mantine/core";
-import { ExploreButton, ViewButton, PopupProps, CopyButton } from "@components";
+import { ExploreButton, ViewButton, PopupProps, CopyButton, DalleButton, GoogleButton } from "@components";
 
 export interface AddressPopupProps extends PopupProps {
   address: string;
@@ -49,7 +49,9 @@ export const AddressPopup = forwardRef<HTMLDivElement, AddressPopupProps>(
               autoFocus
             />
             <Group>
-              <ExploreButton value={address} onClick={handleButtonClick} endpoint="address" />
+              <ExploreButton noText value={address} onClick={handleButtonClick} />
+              <DalleButton noText value={address} onClick={handleButtonClick} />
+              <GoogleButton noText value={address} onClick={handleButtonClick} />
               <ViewButton value={address} onClick={handleButtonClick} />
               <Button size={size} type="submit">
                 Save

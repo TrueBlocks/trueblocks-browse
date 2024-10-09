@@ -46,7 +46,7 @@ export const EmptyPager: Pager = {
   perPage: 0,
   pageNumber: 0,
   lastPage: 0,
-  setPage: (_unused: number) => {},
-  setRecord: (_unused: number) => {},
+  setPage: () => {},
+  setRecord: () => {},
   getOffset: () => 0,
 };

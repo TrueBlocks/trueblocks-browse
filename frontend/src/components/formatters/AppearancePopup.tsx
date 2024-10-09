@@ -6,14 +6,14 @@ export interface AppearancePopupProps extends PopupProps {
   hash: string;
 }
 
-export const AppearancePopup = forwardRef<HTMLDivElement, AppearancePopupProps>(({ hash, onClose, onCopy }, ref) => {
+export const AppearancePopup = forwardRef<HTMLDivElement, AppearancePopupProps>(({ hash, onClose, onCopy }) => {
   const handleButtonClick = useCallback(() => {
     onClose();
   }, [onClose]);
 
   return (
     <Group>
-      <ExploreButton value={hash} onClick={handleButtonClick} endpoint="tx" />
+      <ExploreButton value={hash} onClick={handleButtonClick} />
       <CopyButton onClick={onCopy} />
     </Group>
   );

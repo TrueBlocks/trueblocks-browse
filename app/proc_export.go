@@ -5,19 +5,13 @@ import (
 	"strings"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
-func (a *App) ExportToCsv(addr string) {
-	address, ok := a.ConvertToAddress(addr)
-	if !ok {
-		err := fmt.Errorf("Invalid address: " + addr)
-		messages.SendError(a.ctx, err)
-		return
-	}
-
+func (a *App) ExportToCsv(address base.Address) {
 	isOpen := a.isFileOpen(address)
 	if !isOpen {
 		return

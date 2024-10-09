@@ -70,6 +70,10 @@ export function GetEnv(arg1) {
   return window['go']['app']['App']['GetEnv'](arg1);
 }
 
+export function GetExploreUrl(arg1, arg2, arg3) {
+  return window['go']['app']['App']['GetExploreUrl'](arg1, arg2, arg3);
+}
+
 export function GetLastAddress() {
   return window['go']['app']['App']['GetLastAddress']();
 }
@@ -200,6 +204,10 @@ export function SystemAbout(arg1) {
 
 export function SystemQuit(arg1) {
   return window['go']['app']['App']['SystemQuit'](arg1);
+}
+
+export function Thing(arg1, arg2) {
+  return window['go']['app']['App']['Thing'](arg1, arg2);
 }
 
 export function ToggleDaemon(arg1) {

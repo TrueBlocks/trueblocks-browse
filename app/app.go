@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
@@ -106,12 +105,7 @@ func (a *App) Startup(ctx context.Context) {
 		messages.SendError(a.ctx, err)
 	}
 
-	addr := strings.ReplaceAll(a.GetSessionSubVal("/history"), "/", "")
-	if len(addr) > 0 {
-		logger.Info("Loading history for address: ", addr)
-		go a.HistoryPage(addr, -1, 15)
-	}
-	// go a.loadHistory(a.GetLastAddress(), nil, nil)
+	go a.loadHistory(a.GetLastAddress(), nil, nil)
 }
 
 func (a *App) DomReady(ctx context.Context) {

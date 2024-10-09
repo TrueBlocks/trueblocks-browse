@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { Text } from "@mantine/core";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import classes from "./ViewStatus.module.css";

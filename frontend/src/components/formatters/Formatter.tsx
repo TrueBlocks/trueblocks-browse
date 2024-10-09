@@ -1,9 +1,9 @@
-import { TextProps } from "@mantine/core";
+import { TextProps, Image } from "@mantine/core";
 import { IconCircleCheck } from "@tabler/icons-react";
 import {
+  DalleImage,
   AddressFormatter,
   AppearanceFormatter,
-  DeleteButton,
   DateFormatter,
   TagFormatter,
   TextFormatter,
@@ -24,6 +24,8 @@ export type knownType =
   | "boolean"
   | "bytes"
   | "check"
+  | "dalle"
+  | "dalle-small"
   | "date"
   | "error"
   | "ether"
@@ -96,6 +98,10 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
       break;
     case "appearance":
       return <AppearanceFormatter value={value} value2={hash} className={cn} />;
+    case "dalle":
+      return <DalleImage value={value} />;
+    case "dalle-small":
+      return <DalleImage height={40} value={value} />;
     case "hash":
     case "path":
     case "range":

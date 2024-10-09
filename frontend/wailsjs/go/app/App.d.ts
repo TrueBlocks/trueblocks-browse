@@ -19,7 +19,7 @@ export function CancelContext(arg1:base.Address):Promise<void>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
-export function ExportToCsv(arg1:string):Promise<void>;
+export function ExportToCsv(arg1:base.Address):Promise<void>;
 
 export function Fatal(arg1:string):Promise<void>;
 
@@ -42,6 +42,8 @@ export function GetContext():Promise<context.Context>;
 export function GetDaemonJson(arg1:string):Promise<string>;
 
 export function GetEnv(arg1:string):Promise<string>;
+
+export function GetExploreUrl(arg1:string,arg2:boolean,arg3:boolean):Promise<string>;
 
 export function GetLastAddress():Promise<base.Address>;
 
@@ -108,6 +110,8 @@ export function String():Promise<string>;
 export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
+
+export function Thing(arg1:base.Address,arg2:number):Promise<void>;
 
 export function ToggleDaemon(arg1:string):Promise<void>;
 

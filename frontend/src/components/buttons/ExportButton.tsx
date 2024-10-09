@@ -2,10 +2,11 @@ import { Button, ActionIcon } from "@mantine/core";
 import { IconFileExport } from "@tabler/icons-react";
 import { ButtonProps } from "@components";
 import { ExportToCsv } from "@gocode/app/App";
+import { base } from "@gocode/models";
 
 export const ExportButton = ({ value, noText, onClick }: Omit<ButtonProps, "size">) => {
   const handleClick = () => {
-    ExportToCsv(value);
+    ExportToCsv(value as base.Address);
     if (onClick) {
       onClick();
     }

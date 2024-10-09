@@ -9,16 +9,13 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContainer {
-	// logger.Info("Getting history page for", addr, "from", first, "to", first+pageSize)
 	if !a.isConfigured() {
-		// logger.Info("Not configured")
 		return &types.HistoryContainer{}
 	}
 
@@ -30,82 +27,10 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 
 	_, exists := a.project.HistoryMap.Load(address)
 	if !exists {
-		rCtx := a.RegisterCtx(address)
-		opts := sdk.ExportOptions{
-			Addrs:     []string{addr},
-			RenderCtx: rCtx,
-			Globals: sdk.Globals{
-				Cache: true,
-				Ether: true,
-				Chain: a.globals.Chain,
-			},
-		}
-
-		go func() {
-			nItems := a.getHistoryCnt(address)
-			for {
-				select {
-				case model := <-opts.RenderCtx.ModelChan:
-					tx, ok := model.(*coreTypes.Transaction)
-					if !ok {
-						continue
-					}
-					summary, _ := a.project.HistoryMap.Load(address)
-					summary.NTotal = nItems
-					summary.Address = address
-					summary.Name = a.names.NamesMap[address].Name
-					summary.Items = append(summary.Items, *tx)
-					if len(summary.Items)%base.Max(pageSize, 1) == 0 {
-						sort.Slice(summary.Items, func(i, j int) bool {
-							if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
-								return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
-							}
-							return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
-						})
-						messages.Send(a.ctx,
-							messages.Progress,
-							messages.NewProgressMsg(int64(len(summary.Items)), int64(nItems), address),
-						)
-					}
-
-					if len(summary.Items) == 0 {
-						a.project.HistoryMap.Delete(address)
-					} else {
-						a.project.HistoryMap.Store(address, summary)
-					}
-
-				case err := <-opts.RenderCtx.ErrorChan:
-					messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
-
-				default:
-					if opts.RenderCtx.WasCanceled() {
-						return
-					}
-				}
-			}
-		}()
-
-		_, meta, err := opts.Export() // blocks until forever loop above finishes
-		if err != nil {
+		if err := a.Thing(address, base.Max(pageSize, 1)); err != nil {
 			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
 			return &types.HistoryContainer{}
 		}
-		a.meta = *meta
-
-		summary, _ := a.project.HistoryMap.Load(address)
-		sort.Slice(summary.Items, func(i, j int) bool {
-			if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
-				return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
-			}
-			return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
-		})
-		summary.Summarize()
-		a.project.HistoryMap.Store(address, summary)
-		messages.Send(a.ctx,
-			messages.Completed,
-			messages.NewProgressMsg(int64(a.txCount(address)), int64(a.txCount(address)), address),
-		)
-
 		a.loadProject(nil, nil)
 	}
 
@@ -115,11 +40,11 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 
 	first = base.Max(0, base.Min(first, a.txCount(address)-1))
 	last := base.Min(a.txCount(address), first+pageSize)
-	sum, _ := a.project.HistoryMap.Load(address)
-	sum.Summarize()
-	copy := sum.ShallowCopy().(*types.HistoryContainer)
+	history, _ := a.project.HistoryMap.Load(address)
+	history.Summarize()
+	copy := history.ShallowCopy().(*types.HistoryContainer)
 	copy.Balance = a.getBalance(address)
-	copy.Items = sum.Items[first:last]
+	copy.Items = history.Items[first:last]
 	return copy
 }
 
@@ -183,23 +108,111 @@ func (a *App) txCount(address base.Address) int {
 var historyLock atomic.Uint32
 
 func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan chan error) error {
-	if wg != nil {
-		defer wg.Done()
-	}
+	// if wg != nil {
+	// 	defer wg.Done()
+	// }
 
-	if !historyLock.CompareAndSwap(0, 1) {
+	if address.IsZero() {
 		return nil
 	}
-	defer historyLock.CompareAndSwap(1, 0)
 
-	history, exists := a.project.HistoryMap.Load(address)
-	if exists {
-		if !history.NeedsUpdate(a.nameChange()) {
-			return nil
-		}
+	// if !historyLock.CompareAndSwap(0, 1) {
+	// 	return nil
+	// }
+	// defer historyLock.CompareAndSwap(1, 0)
+
+	// history, exists := a.project.HistoryMap.Load(address)
+	// if exists {
+	// 	if !history.NeedsUpdate(a.nameChange()) {
+	// 		return nil
+	// 	}
+	// }
+
+	logger.Info("Loading history for address: ", address.Hex())
+	// _ = a.HistoryPage(address.Hex(), -1, 15)
+	if err := a.Thing(address, 15); err != nil {
+		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
+		return err
+	}
+	a.loadProject(nil, nil)
+
+	return nil
+}
+
+func (a *App) Thing(address base.Address, freq int) error {
+	rCtx := a.RegisterCtx(address)
+	opts := sdk.ExportOptions{
+		Addrs:     []string{address.Hex()},
+		RenderCtx: rCtx,
+		Globals: sdk.Globals{
+			Cache: true,
+			Ether: true,
+			Chain: a.globals.Chain,
+		},
 	}
 
-	logger.Info(colors.Red+"Would have updated", colors.Off)
+	go func() {
+		nItems := a.getHistoryCnt(address)
+		for {
+			select {
+			case model := <-opts.RenderCtx.ModelChan:
+				tx, ok := model.(*coreTypes.Transaction)
+				if !ok {
+					continue
+				}
+				summary, _ := a.project.HistoryMap.Load(address)
+				summary.NTotal = nItems
+				summary.Address = address
+				summary.Name = a.names.NamesMap[address].Name
+				summary.Items = append(summary.Items, *tx)
+				if len(summary.Items)%freq == 0 {
+					sort.Slice(summary.Items, func(i, j int) bool {
+						if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
+							return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
+						}
+						return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
+					})
+					messages.Send(a.ctx,
+						messages.Progress,
+						messages.NewProgressMsg(int64(len(summary.Items)), int64(nItems), address),
+					)
+				}
 
+				if len(summary.Items) == 0 {
+					a.project.HistoryMap.Delete(address)
+				} else {
+					a.project.HistoryMap.Store(address, summary)
+				}
+
+			case err := <-opts.RenderCtx.ErrorChan:
+				messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
+
+			default:
+				if opts.RenderCtx.WasCanceled() {
+					return
+				}
+			}
+		}
+	}()
+
+	_, meta, err := opts.Export() // blocks until forever loop above finishes
+	if err != nil {
+		return err
+	}
+	a.meta = *meta
+
+	summary, _ := a.project.HistoryMap.Load(address)
+	sort.Slice(summary.Items, func(i, j int) bool {
+		if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
+			return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
+		}
+		return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
+	})
+	summary.Summarize()
+	a.project.HistoryMap.Store(address, summary)
+	messages.Send(a.ctx,
+		messages.Completed,
+		messages.NewProgressMsg(int64(a.txCount(address)), int64(a.txCount(address)), address),
+	)
 	return nil
 }

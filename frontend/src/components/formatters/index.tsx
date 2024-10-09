@@ -10,3 +10,4 @@ export * from "./Popup";
 export * from "./AddressPopup";
 export * from "./AppearancePopup";
 export * from "./Debug";
+export * from "./DalleImage";
