@@ -79,7 +79,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-func (a *App) ModifyMonitor(modData *ModifyData) error {
+func (a *App) ModifyMonitors(modData *ModifyData) error {
 	if !monitorLock.CompareAndSwap(0, 1) {
 		return nil
 	}
@@ -126,5 +126,6 @@ func (a *App) ModifyMonitor(modData *ModifyData) error {
 	defer monitorMutex.Unlock()
 
 	a.monitors.Monitors = newArray
+	a.monitors.Summarize()
 	return nil
 }

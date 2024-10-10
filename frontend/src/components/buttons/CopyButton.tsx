@@ -1,9 +1,9 @@
 import { showNotification } from "@mantine/notifications";
 import { IconCopy, IconCheck } from "@tabler/icons-react";
-import { BaseButton, ButtonProps } from "@components";
+import { BaseButton, ButtonProps, ButtonMouseEvent } from "@components";
 
 export const CopyButton = ({ value, onClick, ...props }: ButtonProps) => {
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (e: ButtonMouseEvent) => {
     if (onClick) {
       onClick(e);
     }
@@ -20,5 +20,5 @@ export const CopyButton = ({ value, onClick, ...props }: ButtonProps) => {
     console.log("Copied to clipboard");
   };
 
-  return <BaseButton tip="Copy to clipboard" onClick={handleClick} leftSection={<IconCopy />} {...props} />;
+  return <BaseButton {...props} tip="Copy to clipboard" onClick={handleClick} leftSection={<IconCopy />} />;
 };

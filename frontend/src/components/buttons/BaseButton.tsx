@@ -2,11 +2,13 @@ import { Button, ButtonProps as MantineButtonProps, ActionIcon } from "@mantine/
 import { base } from "@gocode/models";
 import classes from "./BaseButton.module.css";
 
+export type ButtonMouseEvent = React.MouseEvent<HTMLButtonElement>;
+
 export interface ButtonProps extends MantineButtonProps {
   tip?: string;
   value?: string | base.Address;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onClose?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: ButtonMouseEvent) => void;
+  onClose?: (e: ButtonMouseEvent) => void;
 }
 
 export const BaseButton = ({
@@ -21,7 +23,7 @@ export const BaseButton = ({
   const baseProps: MantineButtonProps = { ...props };
   const hasChilren: boolean = children !== undefined;
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (e: ButtonMouseEvent) => {
     if (onClick) {
       onClick(e);
     }

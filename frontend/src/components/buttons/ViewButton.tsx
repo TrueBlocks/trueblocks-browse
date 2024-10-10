@@ -14,5 +14,5 @@ export const ViewButton = ({ value, ...props }: ButtonProps) => {
     });
   };
 
-  return <BaseButton tip="View" onClick={handleClick} leftSection={icon} {...props} />;
+  return <BaseButton {...props} tip="View" onClick={handleClick} leftSection={icon} />;
 };

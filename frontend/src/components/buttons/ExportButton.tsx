@@ -10,5 +10,5 @@ export const ExportButton = ({ value, ...props }: ButtonProps) => {
     ExportToCsv(value as base.Address);
   };
 
-  return <BaseButton tip="Export" onClick={handleClick} leftSection={icon} {...props} />;
+  return <BaseButton {...props} tip="Export" onClick={handleClick} leftSection={icon} />;
 };
