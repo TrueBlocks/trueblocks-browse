@@ -11,14 +11,9 @@ export const AppearanceFormatter = ({ value, value2, className }: Omit<Omit<Form
     });
   }, [value2]);
 
-  const appPopup = (
-    <AppearancePopup
-      hash={String(value2)}
-      onSubmit={() => setPopupOpen(false)}
-      onClose={() => setPopupOpen(false)}
-      onCopy={onCopy}
-    />
-  );
+  const onClose = useCallback(() => setPopupOpen(false), []);
+
+  const appPopup = <AppearancePopup hash={String(value2)} onSubmit={onClose} onClose={onClose} onCopy={onCopy} />;
 
   const editor = isPopupOpen ? appPopup : null;
   return (

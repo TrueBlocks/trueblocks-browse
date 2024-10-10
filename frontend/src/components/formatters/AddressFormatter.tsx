@@ -75,12 +75,14 @@ export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }
     });
   }, [givenAddress]);
 
+  const onClose = useCallback(() => setPopupOpen(false), []);
+
   const editor = isPopupOpen ? (
     <AddressPopup
       address={value}
       name={line1}
       onCopy={onCopy}
-      onClose={() => setPopupOpen(false)}
+      onClose={onClose}
       onSubmit={(newValue: string) => {
         setPopupOpen(false);
         const modData = app.ModifyData.createFrom({

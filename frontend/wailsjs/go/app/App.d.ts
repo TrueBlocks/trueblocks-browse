@@ -73,7 +73,7 @@ export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestCont
 
 export function ModifyAbi(arg1:app.ModifyData):Promise<void>;
 
-export function ModifyMonitor(arg1:app.ModifyData):Promise<void>;
+export function ModifyMonitors(arg1:app.ModifyData):Promise<void>;
 
 export function ModifyName(arg1:app.ModifyData):Promise<void>;
 

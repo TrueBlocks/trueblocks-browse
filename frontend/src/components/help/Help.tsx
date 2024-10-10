@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Title } from "@mantine/core";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -21,9 +21,9 @@ export function Help(): JSX.Element {
   const [error, setError] = useState<boolean>(false);
   const viewName = useViewName();
 
-  const onClose = () => {
+  const onClose = useCallback(() => {
     EventsEmit(messages.Message.TOGGLEHELP, {});
-  };
+  }, []);
 
   useEffect(() => {
     const baseRoute = location.split("/")[1];
