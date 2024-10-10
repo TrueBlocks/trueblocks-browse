@@ -32,24 +32,21 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 		save := a.FreshenController.Sleep
 		defer func() { a.FreshenController.Sleep = save }()
 		a.FreshenController.Sleep = 1000
+		a.SetSessionVal("file", file)
+
+		a.CancelAllContexts()
+		a.project = types.NewProjectContainer(file, &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
 		newProject := types.ProjectContainer{
 			Filename: file,
 		}
 		newProject.Load()
 		a.session = newProject.Session
+		var wg sync.WaitGroup
 		for _, history := range newProject.Items {
-			history.Balance = a.getBalance(history.Address)
-			if loaded, ok := a.project.HistoryMap.Load(history.Address); ok && loaded.NItems == loaded.NTotal {
-				history.Items = loaded.Items
-				newProject.HistoryMap.Store(history.Address, history)
-				messages.Send(a.ctx,
-					messages.Completed,
-					messages.NewProgressMsg(int64(a.txCount(history.Address)), int64(a.txCount(history.Address)), history.Address),
-				)
-			} else {
-				go a.HistoryPage(history.Address.Hex(), -1, 15)
-			}
+			wg.Add(1)
+			go a.loadHistory(history.Address, &wg, nil)
 		}
+		wg.Wait()
 
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
 		messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.project.Filename, "Opened"))

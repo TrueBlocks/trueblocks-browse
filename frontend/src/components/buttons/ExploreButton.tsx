@@ -1,69 +1,43 @@
 import { useState, useEffect } from "react";
-import { ActionIcon, Button } from "@mantine/core";
-import { IconExternalLink, IconBrandGoogle, IconBrandOpenai } from "@tabler/icons-react";
-import { ButtonProps } from "@components";
+import { IconExternalLink, IconBrandOpenai, IconBrandGoogle } from "@tabler/icons-react";
+import { ButtonProps, BaseButton } from "@components";
 import { GetExploreUrl } from "@gocode/app/App";
 import { BrowserOpenURL } from "@runtime";
 
-export enum UrlType {
-  Google = "google",
-  Dalle = "dalle",
-  Regular = "regular",
+export interface ExploreButtonProps extends ButtonProps {
+  type?: "explore" | "google" | "dalle";
 }
 
-interface ExploreButtonProps extends Omit<ButtonProps, "size"> {
-  urlType?: UrlType; // Add the UrlType prop
-}
-
-export const ExploreButton = ({ value, noText, urlType = UrlType.Regular, onClick }: ExploreButtonProps) => {
+export const ExploreButton = ({ type = "explore", value, ...props }: ExploreButtonProps) => {
   const [url, setUrl] = useState("");
   const [icon, setIcon] = useState(<IconExternalLink />);
-  const [text, setText] = useState("Explore");
+  const [tip, setTip] = useState("Explore");
 
   useEffect(() => {
-    const isGoogle = urlType === UrlType.Google;
-    const isDalle = urlType === UrlType.Dalle;
-    if (isGoogle) {
-      setIcon(<IconBrandGoogle />);
-      setText("Google");
-    } else if (isDalle) {
-      setIcon(<IconBrandOpenai />);
-      setText("Dalle");
-    }
-    GetExploreUrl(value as string, isGoogle, isDalle).then((url) => {
-      url = url.replace("/simple/", "/five-tone-postal-protozoa/");
-      url = url.replace("http://", "https://");
+    const google = type === "google";
+    const dalle = type === "dalle";
+    GetExploreUrl(value as string, google, dalle).then((url) => {
       setUrl(url);
     });
-  }, [value, urlType]);
+    switch (type) {
+      case "explore":
+        setTip("Explore");
+        setIcon(<IconExternalLink />);
+        break;
+      case "google":
+        setTip("Google");
+        setIcon(<IconBrandGoogle />);
+        break;
+      case "dalle":
+        setTip("Dalle");
+        setIcon(<IconBrandOpenai />);
+        break;
+    }
+  }, [value, type]);
 
   const handleClick = () => {
     BrowserOpenURL(url);
-    if (onClick) {
-      onClick();
-    }
   };
 
-  const size = "sm";
-  if (noText) {
-    return (
-      <ActionIcon size={size} onClick={handleClick} title={text}>
-        {icon}
-      </ActionIcon>
-    );
-  }
-
-  return (
-    <Button size={size} onClick={handleClick} leftSection={icon}>
-      {text}
-    </Button>
-  );
-};
-
-export const DalleButton = ({ value, noText, onClick }: ExploreButtonProps) => {
-  return <ExploreButton value={value} noText={noText} urlType={UrlType.Dalle} onClick={onClick} />;
-};
-
-export const GoogleButton = ({ value, noText, onClick }: ExploreButtonProps) => {
-  return <ExploreButton value={value} noText={noText} urlType={UrlType.Google} onClick={onClick} />;
+  return <BaseButton tip={tip} onClick={handleClick} leftSection={icon} {...props} />;
 };

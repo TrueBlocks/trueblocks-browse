@@ -5,7 +5,7 @@ import { ClipboardSetText } from "@runtime";
 export const AppearanceFormatter = ({ value, value2, className }: Omit<Omit<FormatterProps, "type">, "size">) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
 
-  const copyHash = useCallback(() => {
+  const onCopy = useCallback(() => {
     ClipboardSetText(String(value2)).then(() => {
       setPopupOpen(false);
     });
@@ -16,7 +16,7 @@ export const AppearanceFormatter = ({ value, value2, className }: Omit<Omit<Form
       hash={String(value2)}
       onSubmit={() => setPopupOpen(false)}
       onClose={() => setPopupOpen(false)}
-      onCopy={copyHash}
+      onCopy={onCopy}
     />
   );
 

@@ -105,7 +105,7 @@ func (a *App) Reload(address base.Address) {
 		Operation: "reload",
 		Address:   address,
 	})
-	a.HistoryPage(address.Hex(), 0, 15)
+	a.loadHistory(a.GetLastAddress(), nil, nil)
 	a.Refresh()
 	a.loadProject(nil, nil)
 }

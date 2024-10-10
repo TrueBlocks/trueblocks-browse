@@ -58,8 +58,7 @@ export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
     header: () => "Crud Buttons",
     cell: (info) => {
       const { address, isKnown } = info.row.original;
-      const addr = address as unknown as string;
-      return isKnown ? <></> : <DeleteButton value={addr} isDeleted={false} />;
+      return isKnown ? <></> : <DeleteButton value={address} isDeleted={false} />;
     },
     meta: { className: "small center cell" },
   }),

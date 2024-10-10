@@ -130,6 +130,10 @@ export function ModifyAbi(arg1) {
   return window['go']['app']['App']['ModifyAbi'](arg1);
 }
 
+export function ModifyMonitor(arg1) {
+  return window['go']['app']['App']['ModifyMonitor'](arg1);
+}
+
 export function ModifyName(arg1) {
   return window['go']['app']['App']['ModifyName'](arg1);
 }
@@ -204,10 +208,6 @@ export function SystemAbout(arg1) {
 
 export function SystemQuit(arg1) {
   return window['go']['app']['App']['SystemQuit'](arg1);
-}
-
-export function Thing(arg1, arg2) {
-  return window['go']['app']['App']['Thing'](arg1, arg2);
 }
 
 export function ToggleDaemon(arg1) {

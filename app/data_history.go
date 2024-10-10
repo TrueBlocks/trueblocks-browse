@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"sort"
 	"sync"
-	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -15,10 +14,6 @@ import (
 )
 
 func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContainer {
-	if !a.isConfigured() {
-		return &types.HistoryContainer{}
-	}
-
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
@@ -27,14 +22,6 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 
 	_, exists := a.project.HistoryMap.Load(address)
 	if !exists {
-		if err := a.Thing(address, base.Max(pageSize, 1)); err != nil {
-			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
-			return &types.HistoryContainer{}
-		}
-		a.loadProject(nil, nil)
-	}
-
-	if first == -1 {
 		return &types.HistoryContainer{}
 	}
 
@@ -105,12 +92,12 @@ func (a *App) txCount(address base.Address) int {
 	}
 }
 
-var historyLock atomic.Uint32
+// var historyLock atomic.Uint32
 
 func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan chan error) error {
-	// if wg != nil {
-	// 	defer wg.Done()
-	// }
+	if wg != nil {
+		defer wg.Done()
+	}
 
 	if address.IsZero() {
 		return nil
@@ -121,16 +108,15 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	// }
 	// defer historyLock.CompareAndSwap(1, 0)
 
-	// history, exists := a.project.HistoryMap.Load(address)
-	// if exists {
-	// 	if !history.NeedsUpdate(a.nameChange()) {
-	// 		return nil
-	// 	}
-	// }
+	history, exists := a.project.HistoryMap.Load(address)
+	if exists {
+		if !history.NeedsUpdate(a.nameChange()) {
+			return nil
+		}
+	}
 
 	logger.Info("Loading history for address: ", address.Hex())
-	// _ = a.HistoryPage(address.Hex(), -1, 15)
-	if err := a.Thing(address, 15); err != nil {
+	if err := a.thing(address, 15); err != nil {
 		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
 		return err
 	}
@@ -139,7 +125,7 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	return nil
 }
 
-func (a *App) Thing(address base.Address, freq int) error {
+func (a *App) thing(address base.Address, freq int) error {
 	rCtx := a.RegisterCtx(address)
 	opts := sdk.ExportOptions{
 		Addrs:     []string{address.Hex()},
@@ -174,7 +160,7 @@ func (a *App) Thing(address base.Address, freq int) error {
 					})
 					messages.Send(a.ctx,
 						messages.Progress,
-						messages.NewProgressMsg(int64(len(summary.Items)), int64(nItems), address),
+						messages.NewProgressMsg(len(summary.Items), nItems, address),
 					)
 				}
 
@@ -201,18 +187,18 @@ func (a *App) Thing(address base.Address, freq int) error {
 	}
 	a.meta = *meta
 
-	summary, _ := a.project.HistoryMap.Load(address)
-	sort.Slice(summary.Items, func(i, j int) bool {
-		if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
-			return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
+	history, _ := a.project.HistoryMap.Load(address)
+	sort.Slice(history.Items, func(i, j int) bool {
+		if history.Items[i].BlockNumber == history.Items[j].BlockNumber {
+			return history.Items[i].TransactionIndex > history.Items[j].TransactionIndex
 		}
-		return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
+		return history.Items[i].BlockNumber > history.Items[j].BlockNumber
 	})
-	summary.Summarize()
-	a.project.HistoryMap.Store(address, summary)
+	history.Summarize()
+	a.project.HistoryMap.Store(address, history)
 	messages.Send(a.ctx,
 		messages.Completed,
-		messages.NewProgressMsg(int64(a.txCount(address)), int64(a.txCount(address)), address),
+		messages.NewProgressMsg(a.txCount(address), a.txCount(address), address),
 	)
 	return nil
 }

@@ -69,7 +69,7 @@ export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }
   const line1Type: knownType = "address-line1";
   const line2Type: knownType = "address-line2";
 
-  const copyAddress = useCallback(() => {
+  const onCopy = useCallback(() => {
     ClipboardSetText(givenAddress).then(() => {
       setPopupOpen(false);
     });
@@ -79,7 +79,7 @@ export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }
     <AddressPopup
       address={value}
       name={line1}
-      onCopy={copyAddress}
+      onCopy={onCopy}
       onClose={() => setPopupOpen(false)}
       onSubmit={(newValue: string) => {
         setPopupOpen(false);

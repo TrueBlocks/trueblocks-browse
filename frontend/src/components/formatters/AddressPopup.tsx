@@ -20,10 +20,6 @@ export const AddressPopup = forwardRef<HTMLDivElement, AddressPopupProps>(
       [inputValue, onSubmit, onClose]
     );
 
-    const handleButtonClick = useCallback(() => {
-      onClose();
-    }, [onClose]);
-
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
         if (ref && "current" in ref && ref.current && !ref.current.contains(event.target as Node)) {
@@ -49,14 +45,14 @@ export const AddressPopup = forwardRef<HTMLDivElement, AddressPopupProps>(
               autoFocus
             />
             <Group>
-              <ExploreButton noText value={address} onClick={handleButtonClick} />
-              <DalleButton noText value={address} onClick={handleButtonClick} />
-              <GoogleButton noText value={address} onClick={handleButtonClick} />
-              <ViewButton value={address} onClick={handleButtonClick} />
+              <ExploreButton value={address} onClose={onClose} />
+              <DalleButton value={address} onClose={onClose} />
+              <GoogleButton value={address} onClose={onClose} />
+              <ViewButton value={address} onClose={onClose} />
               <Button size={size} type="submit">
                 Save
               </Button>
-              <CopyButton onClick={onCopy} />
+              <CopyButton value={address} onClick={onCopy} onClose={onClose} />
             </Group>
           </Stack>
         </form>

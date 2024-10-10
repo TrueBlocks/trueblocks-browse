@@ -4,11 +4,15 @@ import "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 
 type ProgressMsg struct {
 	Address base.Address `json:"address"`
-	Have    int64        `json:"have"`
-	Want    int64        `json:"want"`
+	Have    int          `json:"have"`
+	Want    int          `json:"want"`
 }
 
-func NewProgressMsg(have int64, want int64, addrs ...base.Address) *ProgressMsg {
+func NewCancelMsg(addrs ...base.Address) *ProgressMsg {
+	return NewProgressMsg(-1, -1, addrs...)
+}
+
+func NewProgressMsg(have int, want int, addrs ...base.Address) *ProgressMsg {
 	address := base.ZeroAddr
 	if len(addrs) > 0 {
 		address = addrs[0]

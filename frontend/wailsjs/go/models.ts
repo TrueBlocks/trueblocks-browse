@@ -106,6 +106,7 @@ export namespace config {
 	}
 	export class Session {
 	    chain: string;
+	    lastFile: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
 	    lastHelp: boolean;
@@ -120,6 +121,7 @@ export namespace config {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.chain = source["chain"];
+	        this.lastFile = source["lastFile"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
 	        this.lastHelp = source["lastHelp"];

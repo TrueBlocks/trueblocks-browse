@@ -1,0 +1,20 @@
+.baseButton {
+  background-color: red !important;
+  width: 8rem !important;
+}
+
+.actionButton {
+  background-color: green !important;
+}
+
+.closeButton {
+  background-color: transparent !important;
+  color: white !important;
+  border: none !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+}

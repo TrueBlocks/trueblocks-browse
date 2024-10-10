@@ -1,33 +1,18 @@
-import { Button, ActionIcon } from "@mantine/core";
 import { IconLink } from "@tabler/icons-react";
-import { ButtonProps } from "@components";
+import { BaseButton, ButtonProps } from "@components";
 import { SetSessionVal } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { EventsEmit } from "@runtime";
 
-export const ViewButton = ({ value, noText, onClick }: Omit<ButtonProps, "size">) => {
+export const ViewButton = ({ value, ...props }: ButtonProps) => {
+  const icon = <IconLink />;
+
   const handleClick = () => {
     SetSessionVal("route", `/history/${value}`);
     EventsEmit(messages.Message.NAVIGATE, {
       route: `/history/${value}`,
     });
-    if (onClick) {
-      onClick();
-    }
   };
 
-  const size = "sm";
-  if (noText) {
-    return (
-      <ActionIcon size={size} onClick={handleClick} title="View">
-        <IconLink />
-      </ActionIcon>
-    );
-  }
-
-  return (
-    <Button size={size} onClick={handleClick} leftSection={<IconLink />}>
-      {"View"}
-    </Button>
-  );
+  return <BaseButton tip="View" onClick={handleClick} leftSection={icon} {...props} />;
 };

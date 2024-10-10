@@ -8,13 +8,11 @@ export interface DalleImageProps extends Omit<FormatterProps, "type"> {
   height?: number;
 }
 
-export function DalleImage({ value, height = 175 }: DalleImageProps) {
+export function DalleImage({ value, height = 125 }: DalleImageProps) {
   const [url, setUrl] = useState(value);
 
   useEffect(() => {
     GetExploreUrl(value as string, false, true).then((url) => {
-      url = url.replace("/simple/", "/five-tone-postal-protozoa/");
-      url = url.replace("http://", "https://");
       setUrl(url);
     });
   }, [value]);
@@ -26,14 +24,9 @@ export function DalleImage({ value, height = 175 }: DalleImageProps) {
     }
   };
 
-  return (
-    <Image
-      onClick={handleImageClick}
-      style={{ cursor: "pointer" }}
-      src={url}
-      alt={url}
-      height={height}
-      fit={"contain"}
-    />
-  );
+  const s =
+    height === 125
+      ? { cursor: "pointer", marginTop: -10, marginBottom: -10 }
+      : { cursor: "pointer", marginTop: 0, marginBottom: 0 };
+  return <Image onClick={handleImageClick} style={s} src={url} alt={url} height={height} fit={"contain"} />;
 }

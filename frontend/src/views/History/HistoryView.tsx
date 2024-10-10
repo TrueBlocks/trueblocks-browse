@@ -84,12 +84,12 @@ function CreateHistoryForm(table: Table<types.Transaction>): GroupDefinition<the
           component: (
             <Stack>
               <Group>
-                <ExploreButton value={address} />
-                <DalleButton value={address} />
+                <ExploreButton value={address}>Explore</ExploreButton>
+                <DalleButton value={address}>Dalle</DalleButton>
               </Group>
               <Group>
-                <GoogleButton value={address} />
-                <ExportButton value={address} />
+                <GoogleButton value={address}>Google</GoogleButton>
+                <ExportButton value={address}>Export</ExportButton>
               </Group>
             </Stack>
           ),
