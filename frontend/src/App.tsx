@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { AppShell } from "@mantine/core";
-import { Aside, Header, Navbar, Routes, AppStatus } from "@components";
+import { AppShell, Stack, Flex } from "@mantine/core";
+import { Aside, Header, Navbar, Routes, AppStatus, ViewStatus } from "@components";
 import { GetSessionVal, SetSessionVal } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import { AppStateProvider } from "@state";
-import classes from "@/App.module.css";
+// import classes from "@/App.module.css";
+import classes from "./components/view/View.module.css";
 
 function App() {
   const [showHelp, setShowHelp] = useState<boolean>(false);
@@ -44,8 +45,28 @@ function App() {
         <AppShell.Navbar>
           <Navbar />
         </AppShell.Navbar>
-        <AppShell.Main className={classes.mainContent}>
-          <Routes />
+        <AppShell.Main style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              flexGrow: 1,
+              overflowY: "auto",
+              backgroundColor: "red",
+              padding: "1em",
+            }}
+          >
+            <Routes />
+          </div>
+          <div
+            className={classes.viewStatus}
+            style={{
+              height: "2rem",
+              backgroundColor: "transparent",
+              position: "sticky",
+              bottom: 0,
+            }}
+          >
+            <ViewStatus />
+          </div>
         </AppShell.Main>
         <AppShell.Aside>
           <Aside />

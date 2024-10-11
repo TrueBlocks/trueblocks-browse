@@ -38,7 +38,7 @@ export const ViewStateProvider: React.FC<{
   children: ReactNode;
 }> = ({ route, nItems = -1, fetchFn, modifyFn, onEnter, children }: ViewContextType) => {
   const { address, setHistory } = useAppState();
-  const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
+  const lines = route === "status" ? 6 : route === "names" || route === "abis" ? 9 : 10;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const ignoreEnter = (_unused: Page) => {};
   const pager = useKeyboardPaging(route, nItems, lines, onEnter ? onEnter : ignoreEnter);

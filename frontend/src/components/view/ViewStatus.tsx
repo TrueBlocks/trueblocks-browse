@@ -1,17 +1,18 @@
 import { useState, useEffect, useRef } from "react";
+import { Text } from "@mantine/core";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
-import classes from "./ViewStatus.module.css";
+import classes from "./View.module.css";
 
 export const ViewStatus = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [statusMessage, setStatusMessage] = useState<string>("");
-  const [color, setColor] = useState<string>(classes.green);
+  const [color, setColor] = useState<string>("green");
 
   useEffect(() => {
     const handleDocument = (msg: messages.DocumentMsg) => {
       setStatusMessage(`${msg.msg} ${msg.filename}`);
-      setColor(classes.green);
+      setColor("green");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -22,12 +23,12 @@ export const ViewStatus = () => {
 
     const handleProgress = (msg: messages.ProgressMsg) => {
       setStatusMessage(`Progress (${msg.address}): ${msg.have}/${msg.want}`);
-      setColor(classes.green);
+      setColor("green");
     };
 
     const handleCompleted = (msg: messages.ProgressMsg) => {
       setStatusMessage(`Completed (${msg.address}): ${msg.have}/${msg.want}`);
-      setColor(classes.green);
+      setColor("green");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -38,7 +39,7 @@ export const ViewStatus = () => {
 
     const handleCancel = (msg: messages.ProgressMsg) => {
       setStatusMessage(`Canceled (${msg.address})`);
-      setColor(classes.green);
+      setColor("green");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -49,17 +50,17 @@ export const ViewStatus = () => {
 
     const handleWarning = (msg: messages.ErrorMsg) => {
       setStatusMessage(`Warning: ${msg.errStr} ${msg.address}`);
-      setColor(classes.yellow);
+      setColor("yellow");
     };
 
     const handleError = (msg: messages.ErrorMsg) => {
       setStatusMessage(`Error: ${msg.errStr} ${msg.address}`);
-      setColor(classes.red);
+      setColor("red");
     };
 
     const handleInfo = (msg: messages.InfoMsg) => {
       setStatusMessage(`Info [${new Date().toLocaleString()}]: ${msg.message}`);
-      setColor(classes.blue);
+      setColor("blue");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -89,5 +90,9 @@ export const ViewStatus = () => {
   }, []);
 
   const blankSpace = "\u00A0";
-  return <div className={`${color}`}>{statusMessage || blankSpace}</div>;
+  return (
+    <Text size="lg" c={color}>
+      {statusMessage || blankSpace}
+    </Text>
+  );
 };
