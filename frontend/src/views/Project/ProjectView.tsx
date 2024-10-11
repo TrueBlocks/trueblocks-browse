@@ -59,20 +59,21 @@ function createProjectForm(table: any): GroupDefinition<theInstance>[] {
       colSpan: 6,
       fields: [
         { label: "fileName", type: "text", accessor: "filename" },
-        { label: "nIndexes", type: "int", accessor: "nIndexes" },
-        { label: "nManifests", type: "int", accessor: "nManifests" },
-        { label: "nCaches", type: "int", accessor: "nCaches" },
+        { label: "nHistories", type: "int", accessor: "nOpenFiles" },
         { label: "historySize", type: "bytes", accessor: "historySize" },
-        { label: "nOpen", type: "int", accessor: "nOpenFiles" },
+        { label: "dirty", type: "boolean", accessor: "dirty" },
       ],
     },
     {
       title: "Data 2",
-      colSpan: 3,
+      colSpan: 6,
       fields: [
         { label: "nMonitors", type: "int", accessor: "nMonitors" },
+        { label: "nIndexes", type: "int", accessor: "nIndexes" },
+        { label: "nManifests", type: "int", accessor: "nManifests" },
         { label: "nNames", type: "int", accessor: "nNames" },
         { label: "nAbis", type: "int", accessor: "nAbis" },
+        { label: "nCaches", type: "int", accessor: "nCaches" },
       ],
     },
   ];
