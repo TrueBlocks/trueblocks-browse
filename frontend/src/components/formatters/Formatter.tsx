@@ -99,9 +99,9 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
     case "appearance":
       return <AppearanceFormatter value={value} value2={hash} className={cn} />;
     case "dalle":
-      return <DalleImage value={address} />;
+      return <DalleImage value={value} />;
     case "dalle-small":
-      return <DalleImage height={40} value={address} />;
+      return <DalleImage height={40} value={value} />;
     case "hash":
     case "path":
     case "range":
