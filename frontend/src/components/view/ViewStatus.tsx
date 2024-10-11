@@ -3,7 +3,7 @@ import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import classes from "./ViewStatus.module.css";
 
-export const ViewStatus = function () {
+export const ViewStatus = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [statusMessage, setStatusMessage] = useState<string>("");
   const [color, setColor] = useState<string>(classes.green);
