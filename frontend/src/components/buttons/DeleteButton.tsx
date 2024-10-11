@@ -8,6 +8,10 @@ export interface DeleteButtonProps extends ButtonProps {
   isDeleted: boolean;
 }
 
+// DeleteButton deletes, undeletes, or removes the pointed to items. This component
+// always operates on an address, but it picks up its modifyFn and fetchFn from
+// the useModifyFn hook. This allows different views (MonitorsView, AbisView, etc.)
+// to use delete buttons without having to know the details of how to delete items.
 export const DeleteButton = ({ value, isDeleted, ...props }: DeleteButtonProps) => {
   const { deleteItem, undeleteItem, removeItem } = useModifyFn(value as base.Address);
 
