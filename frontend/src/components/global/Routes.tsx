@@ -3,7 +3,6 @@ import { Route, Switch, useLocation } from "wouter";
 import { routeItems, RouteItem } from "@/Routes";
 import { GetSessionVal } from "@gocode/app/App";
 import { useAppState } from "@state";
-import classes from "@/App.module.css";
 
 export const Routes = () => {
   const [, setLocation] = useLocation();
@@ -21,14 +20,12 @@ export const Routes = () => {
     .sort((a, b) => a.order - b.order);
 
   return (
-    <div className={classes.mainContent}>
-      <Switch>
-        {routes.map((item) => (
-          <Route key={item.route} path={item.route}>
-            <item.component />
-          </Route>
-        ))}
-      </Switch>
-    </div>
+    <Switch>
+      {routes.map((item) => (
+        <Route key={item.route} path={item.route}>
+          <item.component />
+        </Route>
+      ))}
+    </Switch>
   );
 };
