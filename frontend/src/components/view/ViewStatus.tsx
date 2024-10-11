@@ -88,5 +88,6 @@ export const ViewStatus = function () {
     };
   }, []);
 
-  return <div className={color}>{statusMessage || "\u00A0"}</div>;
+  const blankSpace = "\u00A0";
+  return <div className={`${color}`}>{statusMessage || blankSpace}</div>;
 };

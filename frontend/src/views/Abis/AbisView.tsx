@@ -1,5 +1,5 @@
-import { getCoreRowModel, useReactTable, Table, ColumnDef } from "@tanstack/react-table";
-import { View, FormTable, DataTable, GroupDefinition, EditableTable } from "@components";
+import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
+import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { ModifyAbi } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
