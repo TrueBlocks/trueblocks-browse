@@ -56,15 +56,7 @@ function App() {
           >
             <Routes />
           </div>
-          <div
-            className={classes.viewStatus}
-            style={{
-              height: "2rem",
-              backgroundColor: "transparent",
-              position: "sticky",
-              bottom: 0,
-            }}
-          >
+          <div className={classes.viewStatus}>
             <ViewStatus />
           </div>
         </AppShell.Main>
