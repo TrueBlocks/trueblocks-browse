@@ -4,6 +4,7 @@ import { SetSessionVal } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { EventsEmit } from "@runtime";
 
+// ViewButton opens the history page for a given address.
 export const ViewButton = ({ value, ...props }: ButtonProps) => {
   const icon = <IconLink />;
 

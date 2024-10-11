@@ -8,6 +8,8 @@ export interface ExploreButtonProps extends ButtonProps {
   type?: "explore" | "google" | "dalle";
 }
 
+// ExploreButton opens a browser window to an explorer. It's also the basis
+// for the DalleButton and GoogleButton components.
 export const ExploreButton = ({ type = "explore", value, ...props }: ExploreButtonProps) => {
   const [url, setUrl] = useState("");
   const [icon, setIcon] = useState(<IconExternalLink />);

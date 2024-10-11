@@ -11,6 +11,8 @@ export interface ButtonProps extends MantineButtonProps {
   onClose?: (e: ButtonMouseEvent) => void;
 }
 
+// BaseButton is a generic button that can have a loading spinner, a tip, and a
+// left section. It can also be used as an action icon if it has no children.
 export const BaseButton = ({
   loading = false,
   tip = "",

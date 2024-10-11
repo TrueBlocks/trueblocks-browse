@@ -2,6 +2,7 @@ import { showNotification } from "@mantine/notifications";
 import { IconCopy, IconCheck } from "@tabler/icons-react";
 import { BaseButton, ButtonProps, ButtonMouseEvent } from "@components";
 
+// CopyButton copies the address of the row to the clipboard.
 export const CopyButton = ({ value, onClick, ...props }: ButtonProps) => {
   const handleClick = (e: ButtonMouseEvent) => {
     if (onClick) {
