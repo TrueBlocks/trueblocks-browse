@@ -56,9 +56,7 @@ function App() {
           >
             <Routes />
           </div>
-          <div className={classes.viewStatus}>
-            <ViewStatus />
-          </div>
+          <ViewStatus />
         </AppShell.Main>
         <AppShell.Aside>
           <Aside />
