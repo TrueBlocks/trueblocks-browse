@@ -91,8 +91,10 @@ export const ViewStatus = () => {
 
   const blankSpace = "\u00A0";
   return (
-    <Text size="lg" c={color}>
-      {statusMessage || blankSpace}
-    </Text>
+    <div className={classes.viewStatus}>
+      <Text size="lg" c={color}>
+        {statusMessage || blankSpace}
+      </Text>
+    </div>
   );
 };
