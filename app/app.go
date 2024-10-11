@@ -89,23 +89,22 @@ func (a *App) GetContext() context.Context {
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
+	if err := a.loadConfig(); err != nil {
+		messages.SendError(a.ctx, err)
+	}
+
+	go a.loadHistory(a.GetLastAddress(), nil, nil)
+
 	a.FreshenController = daemons.NewFreshen(a, "freshen", 3000, a.GetSessionDeamon("daemon-freshen"))
 	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetSessionDeamon("daemon-scraper"))
 	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.GetSessionDeamon("daemon-ipfs"))
 	go a.startDaemons()
-
 	if startupError != nil {
 		a.Fatal(startupError.Error())
 	}
 
 	logger.Info("Starting freshen process...")
 	a.Refresh(a.GetSession().LastRoute)
-
-	if err := a.loadConfig(); err != nil {
-		messages.SendError(a.ctx, err)
-	}
-
-	go a.loadHistory(a.GetLastAddress(), nil, nil)
 }
 
 func (a *App) DomReady(ctx context.Context) {
@@ -172,6 +171,6 @@ type ModifyData struct {
 
 func (a *App) ModifyNoop(modData *ModifyData) error {
 	route := a.GetSessionVal("route")
-	messages.Send(a.ctx, messages.Info, messages.NewInfoMessage(fmt.Sprintf("%s modify %s: %s", route, modData.Operation, modData.Address.Hex())))
+	messages.Send(a.ctx, messages.Info, messages.NewInfoMessage(fmt.Sprintf("%s modify NO-OP %s: %s", route, modData.Operation, modData.Address.Hex())))
 	return nil
 }

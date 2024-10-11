@@ -1,8 +1,9 @@
-import { useState, useEffect, CSSProperties } from "react";
-import { Title, Button } from "@mantine/core"; // Assuming you're using Mantine's Button component
+import { useState, useEffect, useCallback } from "react";
+import { Title } from "@mantine/core";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useLocation } from "wouter";
+import { CloseButton } from "@components";
 import { messages } from "@gocode/models";
 import { useViewName } from "@hooks";
 import { EventsEmit } from "@runtime";
@@ -20,10 +21,9 @@ export function Help(): JSX.Element {
   const [error, setError] = useState<boolean>(false);
   const viewName = useViewName();
 
-  // Close button function
-  const onClose = () => {
+  const onClose = useCallback(() => {
     EventsEmit(messages.Message.TOGGLEHELP, {});
-  };
+  }, []);
 
   useEffect(() => {
     const baseRoute = location.split("/")[1];
@@ -50,37 +50,11 @@ export function Help(): JSX.Element {
 
   return (
     <div className={classes.helpPanel}>
-      {/* Close button at the top-right corner */}
-      <CloseButton onClose={onClose} style={{ position: "absolute", top: "10px", right: "10px" }} />
-
+      <CloseButton onClose={onClose} />
       <Title order={4} className={classes.header}>
         {viewName}
       </Title>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{error ? "error" : markdown}</ReactMarkdown>
     </div>
-  );
-}
-
-interface CloseButtonProps {
-  onClose: () => void;
-  style?: CSSProperties;
-}
-
-export function CloseButton({ onClose, style }: CloseButtonProps): JSX.Element {
-  return (
-    <Button
-      onClick={onClose}
-      style={{
-        backgroundColor: "transparent",
-        color: "white",
-        border: "none",
-        fontSize: "16px",
-        cursor: "pointer",
-        padding: 0,
-        ...style, // Allow overriding styles via props
-      }}
-    >
-      X
-    </Button>
   );
 }

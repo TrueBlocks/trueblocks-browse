@@ -52,9 +52,7 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
     header: () => "Crud Buttons",
     cell: (info) => {
       const { deleted, isCustom, address } = info.row.original;
-      const addr = address as unknown as string;
-      const del = deleted ? true : false;
-      return isCustom ? <DeleteButton value={addr} isDeleted={del} /> : <></>;
+      return isCustom ? <DeleteButton value={address} isDeleted={deleted as boolean} /> : <></>;
     },
     meta: { className: "small center cell" },
   }),

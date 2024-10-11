@@ -73,6 +73,8 @@ export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestCont
 
 export function ModifyAbi(arg1:app.ModifyData):Promise<void>;
 
+export function ModifyMonitors(arg1:app.ModifyData):Promise<void>;
+
 export function ModifyName(arg1:app.ModifyData):Promise<void>;
 
 export function ModifyNoop(arg1:app.ModifyData):Promise<void>;
@@ -110,8 +112,6 @@ export function String():Promise<string>;
 export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
-
-export function Thing(arg1:base.Address,arg2:number):Promise<void>;
 
 export function ToggleDaemon(arg1:string):Promise<void>;
 

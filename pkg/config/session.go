@@ -28,6 +28,7 @@ type Window struct {
 // Session stores ephemeral things such as last window position, last view, and recent file
 type Session struct {
 	Chain     string            `json:"chain"`
+	LastFile  string            `json:"lastFile"`
 	LastRoute string            `json:"lastRoute"`
 	LastSub   map[string]string `json:"lastSub"`
 	LastHelp  bool              `json:"lastHelp"`
@@ -39,6 +40,7 @@ type Session struct {
 var defaultSession = Session{
 	Chain:     "mainnet",
 	Daemons:   Daemons{Freshen: true},
+	LastFile:  "Untitled.tbx",
 	LastRoute: "/",
 	LastSub:   map[string]string{"/history": "0xf503017d7baf7fbc0fff7492b751025c6a78179b"},
 	LastHelp:  true,
@@ -66,6 +68,9 @@ func (s *Session) MustLoadSession() {
 			s.Wizard.State, s.LastRoute = checkWizard()
 			if s.Chain == "" {
 				s.Chain = "mainnet"
+			}
+			if s.LastFile == "" {
+				s.LastFile = "Untitled.tbx"
 			}
 			return
 		}

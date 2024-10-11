@@ -69,18 +69,20 @@ export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }
   const line1Type: knownType = "address-line1";
   const line2Type: knownType = "address-line2";
 
-  const copyAddress = useCallback(() => {
+  const onCopy = useCallback(() => {
     ClipboardSetText(givenAddress).then(() => {
       setPopupOpen(false);
     });
   }, [givenAddress]);
 
+  const onClose = useCallback(() => setPopupOpen(false), []);
+
   const editor = isPopupOpen ? (
     <AddressPopup
       address={value}
       name={line1}
-      onCopy={copyAddress}
-      onClose={() => setPopupOpen(false)}
+      onCopy={onCopy}
+      onClose={onClose}
       onSubmit={(newValue: string) => {
         setPopupOpen(false);
         const modData = app.ModifyData.createFrom({

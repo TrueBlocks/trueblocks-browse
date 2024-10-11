@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Stack } from "@mantine/core";
+import { Group, Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { useParams } from "wouter";
 import {
@@ -53,16 +53,22 @@ function CreateHistoryForm(table: Table<types.Transaction>): GroupDefinition<the
   return [
     {
       title: "DalleDress",
-      colSpan: 4,
+      colSpan: 2,
       fields: [{ label: "", type: "dalle", accessor: "address" }],
     },
     {
       title: "Transaction Data",
-      colSpan: 6,
+      colSpan: 5,
       fields: [
         { label: "address", type: "address-address-only", accessor: "address" },
         { label: "name", type: "address-name-only", accessor: "address" },
         { label: "balance", type: "ether", accessor: "balance" },
+      ],
+    },
+    {
+      title: "Transaction Data",
+      colSpan: 2,
+      fields: [
         { label: "nTransactions", type: "int", accessor: "nItems" },
         { label: "nLogs", type: "int", accessor: "nLogs" },
         { label: "nTokens", type: "int", accessor: "nTokens" },
@@ -71,16 +77,20 @@ function CreateHistoryForm(table: Table<types.Transaction>): GroupDefinition<the
     },
     {
       title: "Buttons",
-      colSpan: 2,
+      colSpan: 3,
       fields: [],
       components: [
         {
           component: (
             <Stack>
-              <ExploreButton value={address} />
-              <DalleButton value={address} />
-              <GoogleButton value={address} />
-              <ExportButton value={address} />
+              <Group>
+                <ExploreButton value={address}>Explore</ExploreButton>
+                <DalleButton value={address}>Dalle</DalleButton>
+              </Group>
+              <Group>
+                <GoogleButton value={address}>Google</GoogleButton>
+                <ExportButton value={address}>Export</ExportButton>
+              </Group>
             </Stack>
           ),
         },

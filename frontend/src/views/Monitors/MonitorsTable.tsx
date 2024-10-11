@@ -1,5 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef, Formatter } from "@components";
+import { CustomColumnDef, Formatter, DeleteButton } from "@components";
 import { types } from "@gocode/models";
 
 const columnHelper = createColumnHelper<types.Monitor>();
@@ -41,5 +41,13 @@ export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
     header: () => "Deleted",
     cell: (info) => <Formatter type="check" value={info.renderValue()} />,
     meta: { className: "medium cell" },
+  }),
+  columnHelper.accessor("deleted", {
+    header: () => "Crud Buttons",
+    cell: (info) => {
+      const { deleted, address } = info.row.original;
+      return <DeleteButton value={address} isDeleted={deleted} />;
+    },
+    meta: { className: "small center cell" },
   }),
 ];

@@ -11,6 +11,8 @@ import (
 
 func (a *App) GetSessionVal(which string) string {
 	switch which {
+	case "file":
+		return a.GetSession().LastFile
 	case "route":
 		if !a.isConfigured() {
 			return "/wizard"
@@ -26,6 +28,8 @@ func (a *App) GetSessionVal(which string) string {
 
 func (a *App) SetSessionVal(which, value string) {
 	switch which {
+	case "file":
+		a.GetSession().LastFile = value
 	case "route":
 		parts := strings.Split(value, "/")
 		if len(parts) > 2 {
