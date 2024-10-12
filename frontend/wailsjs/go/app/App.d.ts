@@ -57,8 +57,6 @@ export function GetSessionSubVal(arg1:string):Promise<string>;
 
 export function GetSessionVal(arg1:string):Promise<string>;
 
-export function GetSessionWizard():Promise<wizard.State>;
-
 export function GetWindow():Promise<config.Window>;
 
 export function GetWizardState():Promise<wizard.State>;
