@@ -10,7 +10,7 @@ replace (
 require (
 	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20240923025630-c4c09cafc138
 	github.com/TrueBlocks/trueblocks-sdk/v3 v3.5.0
-	github.com/wailsapp/wails/v2 v2.9.2
+	github.com/wailsapp/wails/v2 v2.8.2
 )
 
 require (

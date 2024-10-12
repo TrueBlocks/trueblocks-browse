@@ -21,8 +21,6 @@ export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
 export function ExportToCsv(arg1:base.Address):Promise<void>;
 
-export function Fatal(arg1:string):Promise<void>;
-
 export function FileNew(arg1:menu.CallbackData):Promise<void>;
 
 export function FileOpen(arg1:menu.CallbackData):Promise<void>;
@@ -60,6 +58,8 @@ export function GetSessionSubVal(arg1:string):Promise<string>;
 export function GetSessionVal(arg1:string):Promise<string>;
 
 export function GetSessionWizard():Promise<wizard.State>;
+
+export function GetWindow():Promise<config.Window>;
 
 export function GetWizardState():Promise<wizard.State>;
 

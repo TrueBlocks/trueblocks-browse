@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"os"
 	"sync"
 
@@ -12,6 +11,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -22,6 +22,7 @@ import (
 // ---------------------------------------------------------------
 type App struct {
 	ctx context.Context
+	cfg coreConfig.ConfigFile
 
 	session    config.Session
 	renderCtxs map[base.Address][]*output.RenderCtx
@@ -51,12 +52,6 @@ func NewApp() *App {
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
 	a.project = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
 
-	// it's okay if it's not found
-	a.session.MustLoadSession()
-	a.globals = sdk.Globals{
-		Chain: a.session.Chain,
-	}
-
 	return &a
 }
 
@@ -69,9 +64,14 @@ func (a *App) String() string {
 // ---------------------------------------------------------------
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
-
-	if err := a.loadConfig(); err != nil {
+	path := "/Users/jrush/Library/Application Support/TrueBlocks/trueBlocks.toml"
+	if err := coreConfig.ReadToml(path, &a.cfg); err != nil {
 		messages.SendError(a.ctx, err)
+	}
+
+	a.session.MustLoadSession()
+	a.globals = sdk.Globals{
+		Chain: a.session.Chain,
 	}
 
 	go a.loadHistory(a.GetLastAddress(), nil, nil)
@@ -87,8 +87,8 @@ func (a *App) Startup(ctx context.Context) {
 
 // ---------------------------------------------------------------
 func (a *App) DomReady(ctx context.Context) {
-	runtime.WindowSetPosition(a.ctx, a.session.Window.X, a.session.Window.Y)
-	runtime.WindowSetSize(a.ctx, a.session.Window.Width, a.session.Window.Height)
+	runtime.WindowSetPosition(a.ctx, a.GetWindow().X, a.GetWindow().Y)
+	runtime.WindowSetSize(a.ctx, a.GetWindow().Width, a.GetWindow().Height)
 	runtime.WindowShow(a.ctx)
 }
 
@@ -126,4 +126,9 @@ func (a *App) GetMeta() coreTypes.MetaData {
 // ---------------------------------------------------------------
 func (a *App) GetContext() context.Context {
 	return a.ctx
+}
+
+// ---------------------------------------------------------------
+func (a *App) GetWindow() config.Window {
+	return a.session.Window
 }

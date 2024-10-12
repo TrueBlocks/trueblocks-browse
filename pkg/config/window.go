@@ -1,4 +1,4 @@
-package app
+package config
 
 type Window struct {
 	X      int    `json:"x"`
@@ -6,8 +6,4 @@ type Window struct {
 	Width  int    `json:"width"`
 	Height int    `json:"height"`
 	Title  string `json:"title"`
-}
-
-func (a *App) Window() Window {
-	return a.session.Window
 }
