@@ -71,7 +71,7 @@ func (a *App) Startup(ctx context.Context) {
 		messages.SendError(a.ctx, err)
 	}
 
-	a.LoadSession()
+	a.loadSession()
 
 	go a.loadHistory(a.GetLastAddress(), nil, nil)
 
@@ -86,17 +86,15 @@ func (a *App) Startup(ctx context.Context) {
 
 // ---------------------------------------------------------------
 func (a *App) DomReady(ctx context.Context) {
-	runtime.WindowSetPosition(a.ctx, a.GetWindow().X, a.GetWindow().Y)
-	runtime.WindowSetSize(a.ctx, a.GetWindow().Width, a.GetWindow().Height)
+	win := a.GetWindow()
+	runtime.WindowSetPosition(a.ctx, win.X, win.Y)
+	runtime.WindowSetSize(a.ctx, win.Width, win.Height)
 	runtime.WindowShow(a.ctx)
 }
 
 // ---------------------------------------------------------------
 func (a *App) Shutdown(ctx context.Context) {
-	a.GetWindow().X, a.GetWindow().Y = runtime.WindowGetPosition(a.ctx)
-	a.GetWindow().Width, a.GetWindow().Height = runtime.WindowGetSize(a.ctx)
-	a.GetWindow().Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
-	a.SaveSession()
+	a.saveSession()
 }
 
 // ---------------------------------------------------------------
@@ -130,13 +128,16 @@ func (a *App) GetWindow() *config.Window {
 }
 
 // ---------------------------------------------------------------
-func (a *App) SaveSession() {
+func (a *App) saveSession() {
+	a.session.Window.X, a.session.Window.Y = runtime.WindowGetPosition(a.ctx)
+	a.session.Window.Width, a.session.Window.Height = runtime.WindowGetSize(a.ctx)
+	a.session.Window.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
 	a.session.Save()
 }
 
 // ----------------------------------------------------------------
-func (a *App) LoadSession() {
-	a.session.MustLoadSession()
+func (a *App) loadSession() {
+	a.session.Load()
 	a.globals = sdk.Globals{
 		Chain: a.session.Chain,
 	}

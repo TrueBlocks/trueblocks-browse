@@ -122,10 +122,6 @@ export function IndexPage(arg1, arg2) {
   return window['go']['app']['App']['IndexPage'](arg1, arg2);
 }
 
-export function LoadSession() {
-  return window['go']['app']['App']['LoadSession']();
-}
-
 export function ManifestPage(arg1, arg2) {
   return window['go']['app']['App']['ManifestPage'](arg1, arg2);
 }
@@ -158,6 +154,10 @@ export function NamePage(arg1, arg2) {
   return window['go']['app']['App']['NamePage'](arg1, arg2);
 }
 
+export function Navigate(arg1, arg2) {
+  return window['go']['app']['App']['Navigate'](arg1, arg2);
+}
+
 export function ProjectPage(arg1, arg2) {
   return window['go']['app']['App']['ProjectPage'](arg1, arg2);
 }
@@ -172,10 +172,6 @@ export function RegisterCtx(arg1) {
 
 export function Reload(arg1) {
   return window['go']['app']['App']['Reload'](arg1);
-}
-
-export function SaveSession() {
-  return window['go']['app']['App']['SaveSession']();
 }
 
 export function SetChain(arg1, arg2) {

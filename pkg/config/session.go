@@ -11,7 +11,8 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-// Session stores ephemeral things such as last window position, last view, and recent file
+// Session stores ephemeral things such as last window position,
+// last view, and recent file list.
 type Session struct {
 	Chain     string            `json:"chain"`
 	LastFile  string            `json:"lastFile"`
@@ -36,9 +37,27 @@ var defaultSession = Session{
 	Wizard:    wizard.Wizard{State: wizard.NotOkay},
 }
 
+// getSessionFn returns the session file name.
+func getSessionFn() string {
+	if configDir, err := utils.GetConfigDir("TrueBlocks/browse"); err != nil {
+		logger.Error("utils.GetConfigDir returned an error", err)
+		return "./session.json"
+	} else {
+		return filepath.Join(configDir, "session.json")
+	}
+}
+
+// Save saves the session to the configuration folder.
+func (s *Session) Save() {
+	fn := getSessionFn()
+	if contents, _ := json.MarshalIndent(s, "", "  "); len(contents) > 0 {
+		file.StringToAsciiFile(fn, string(contents))
+	}
+}
+
 // Load loads the session from the configuration folder. If the file contains
 // data, we return true. False otherwise.
-func (s *Session) MustLoadSession() {
+func (s *Session) Load() {
 	checkWizard := func() (wizard.State, string) {
 		if os.Getenv("TB_BAD_CONFIG") == "true" {
 			s.Wizard.State = wizard.NotOkay
@@ -66,22 +85,4 @@ func (s *Session) MustLoadSession() {
 	*s = defaultSession
 	s.Wizard.State, s.LastRoute = checkWizard()
 	s.Save()
-}
-
-// Save saves the session to the configuration folder.
-func (s *Session) Save() {
-	fn := getSessionFn()
-	if contents, _ := json.MarshalIndent(s, "", "  "); len(contents) > 0 {
-		file.StringToAsciiFile(fn, string(contents))
-	}
-}
-
-// getSessionFn returns the session file name.
-func getSessionFn() string {
-	if configDir, err := utils.GetConfigDir("TrueBlocks/browse"); err != nil {
-		logger.Error("utils.GetConfigDir returned an error", err)
-		return "./session.json"
-	} else {
-		return filepath.Join(configDir, "session.json")
-	}
 }

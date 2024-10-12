@@ -1,97 +1,64 @@
 package app
 
 import (
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
 
-// Find: NewViews
 func (a *App) ViewProject(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewProject")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
-		a.SetSessionVal("route", "/")
-	}
+	logger.Info("ViewProject")
+	a.Navigate("/", "")
 }
 
 func (a *App) ViewHistory(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewHistory")
-		address := a.GetLastAddress()
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/history/"+address.Hex()))
-		a.SetSessionVal("route", "/history/"+address.Hex())
-	}
+	address := a.GetLastAddress()
+	logger.Info("ViewHistory")
+	a.Navigate("/history", address.Hex())
 }
 
 func (a *App) ViewMonitors(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewMonitors")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/monitors"))
-		a.SetSessionVal("route", "/monitors")
-	}
+	logger.Info("ViewMonitors")
+	a.Navigate("/monitors", "")
 }
 
 func (a *App) ViewNames(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewNames")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/names"))
-		a.SetSessionVal("route", "/names")
-	}
+	logger.Info("ViewNames")
+	a.Navigate("/names", "")
 }
 
 func (a *App) ViewIndexes(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewIndexes")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/indexes"))
-		a.SetSessionVal("route", "/indexes")
-	}
+	logger.Info("ViewIndexes")
+	a.Navigate("/indexes", "")
 }
 
 func (a *App) ViewManifest(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewManifest")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/manifest"))
-		a.SetSessionVal("route", "/manifest")
-	}
+	logger.Info("ViewManifest")
+	a.Navigate("/manifest", "")
 }
 
 func (a *App) ViewAbis(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewAbis")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/abis"))
-		a.SetSessionVal("route", "/abis")
-	}
+	logger.Info("ViewAbis")
+	a.Navigate("/abis", "")
 }
 
 func (a *App) ViewStatus(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewStatus")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/status"))
-		a.SetSessionVal("route", "/status")
-	}
+	logger.Info("ViewStatus")
+	a.Navigate("/status", "")
 }
 
 func (a *App) ViewDaemons(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewDaemons")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/daemons"))
-		a.SetSessionVal("route", "/daemons")
-	}
+	logger.Info("ViewDaemons")
+	a.Navigate("/daemons", "")
 }
 
 func (a *App) ViewSettings(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewSettings")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/settings"))
-		a.SetSessionVal("route", "/settings")
-	}
+	logger.Info("ViewSettings")
+	a.Navigate("/settings", "")
 }
 
 func (a *App) ViewWizard(cd *menu.CallbackData) {
 	a.StepWizard(wizard.Reset)
 	logger.Info("ViewWizard")
-	messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/wizard"))
-	a.SetSessionVal("route", "/wizard")
+	a.Navigate("/wizard", "")
 }
