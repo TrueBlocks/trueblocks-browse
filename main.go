@@ -31,7 +31,6 @@ func main() {
 		BackgroundColour: nil,
 		LogLevel:         wLogger.ERROR,
 		Menu:             a.GetMenus(),
-		// Find: NewViews
 		Bind: []interface{}{
 			a,
 			&messages.DocumentMsg{},
@@ -61,9 +60,6 @@ func main() {
 		StartHidden: true,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
-		},
-		Debug: options.Debug{
-			OpenInspectorOnStartup: a.GetEnv("TB_DEBUG") == "true",
 		},
 	}
 
