@@ -98,10 +98,6 @@ export function GetSessionVal(arg1) {
   return window['go']['app']['App']['GetSessionVal'](arg1);
 }
 
-export function GetSessionWizard() {
-  return window['go']['app']['App']['GetSessionWizard']();
-}
-
 export function GetWindow() {
   return window['go']['app']['App']['GetWindow']();
 }

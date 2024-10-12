@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
+// ------------------------------------------------------------------------
 func (a *App) GetSessionVal(which string) string {
 	switch which {
 	case "file":
@@ -26,6 +26,7 @@ func (a *App) GetSessionVal(which string) string {
 	return "Unknown"
 }
 
+// ------------------------------------------------------------------------
 func (a *App) SetSessionVal(which, value string) {
 	switch which {
 	case "file":
@@ -49,11 +50,7 @@ func (a *App) SetSessionVal(which, value string) {
 	a.session.Save()
 }
 
-func (a *App) GetLastAddress() base.Address {
-	val := a.GetSessionSubVal("/history")
-	return base.HexToAddress(strings.ReplaceAll(val, "/", ""))
-}
-
+// ------------------------------------------------------------------------
 func (a *App) GetSessionSubVal(which string) string {
 	val := a.session.LastSub[which]
 	if val == "" {
@@ -62,6 +59,7 @@ func (a *App) GetSessionSubVal(which string) string {
 	return "/" + val
 }
 
+// ------------------------------------------------------------------------
 func (a *App) GetSessionDeamon(which string) bool {
 	switch which {
 	case "daemon-freshen":
@@ -75,10 +73,7 @@ func (a *App) GetSessionDeamon(which string) bool {
 	return false
 }
 
-func (a *App) GetSessionWizard() wizard.State {
-	return a.session.Wizard.State
-}
-
+// ------------------------------------------------------------------------
 func (a *App) SetSessionDaemon(which string, value bool) {
 	switch which {
 	case "daemon-freshen":
@@ -89,4 +84,10 @@ func (a *App) SetSessionDaemon(which string, value bool) {
 		a.session.Daemons.Ipfs = value
 	}
 	a.session.Save()
+}
+
+// ------------------------------------------------------------------------
+func (a *App) GetLastAddress() base.Address {
+	val := a.GetSessionSubVal("/history")
+	return base.HexToAddress(strings.ReplaceAll(val, "/", ""))
 }
