@@ -12,16 +12,16 @@ import (
 func (a *App) GetSessionVal(which string) string {
 	switch which {
 	case "file":
-		return a.GetSession().LastFile
+		return a.session.LastFile
 	case "route":
 		if !a.isConfigured() {
 			return "/wizard"
 		}
-		return a.GetSession().LastRoute + a.GetSessionSubVal(a.GetSession().LastRoute)
+		return a.session.LastRoute + a.GetSessionSubVal(a.session.LastRoute)
 	case "wizard":
-		return a.GetSession().Wizard.State.String()
+		return a.session.Wizard.State.String()
 	case "help":
-		return fmt.Sprintf("%t", a.GetSession().LastHelp)
+		return fmt.Sprintf("%t", a.session.LastHelp)
 	}
 	return "Unknown"
 }
@@ -29,24 +29,24 @@ func (a *App) GetSessionVal(which string) string {
 func (a *App) SetSessionVal(which, value string) {
 	switch which {
 	case "file":
-		a.GetSession().LastFile = value
+		a.session.LastFile = value
 	case "route":
 		parts := strings.Split(value, "/")
 		if len(parts) > 2 {
 			if !strings.HasPrefix(parts[2], ":") {
 				route := "/" + parts[1]
-				a.GetSession().LastRoute = route
-				a.GetSession().LastSub[route] = parts[2]
+				a.session.LastRoute = route
+				a.session.LastSub[route] = parts[2]
 			}
 		} else {
-			a.GetSession().LastRoute = value
+			a.session.LastRoute = value
 		}
 	case "chain":
-		a.GetSession().Chain = value
+		a.session.Chain = value
 	case "help":
-		a.GetSession().LastHelp = strings.EqualFold(value, "true")
+		a.session.LastHelp = strings.EqualFold(value, "true")
 	}
-	a.GetSession().Save()
+	a.session.Save()
 }
 
 func (a *App) GetLastAddress() base.Address {
@@ -55,7 +55,7 @@ func (a *App) GetLastAddress() base.Address {
 }
 
 func (a *App) GetSessionSubVal(which string) string {
-	val := a.GetSession().LastSub[which]
+	val := a.session.LastSub[which]
 	if val == "" {
 		return ""
 	}
@@ -65,28 +65,28 @@ func (a *App) GetSessionSubVal(which string) string {
 func (a *App) GetSessionDeamon(which string) bool {
 	switch which {
 	case "daemon-freshen":
-		return a.GetSession().Daemons.Freshen
+		return a.session.Daemons.Freshen
 	case "daemon-scraper":
-		return a.GetSession().Daemons.Scraper
+		return a.session.Daemons.Scraper
 	case "daemon-ipfs":
-		return a.GetSession().Daemons.Ipfs
+		return a.session.Daemons.Ipfs
 	}
 	logger.Error("Should not happen in GetSessionDeamon")
 	return false
 }
 
 func (a *App) GetSessionWizard() wizard.State {
-	return a.GetSession().Wizard.State
+	return a.session.Wizard.State
 }
 
 func (a *App) SetSessionDaemon(which string, value bool) {
 	switch which {
 	case "daemon-freshen":
-		a.GetSession().Daemons.Freshen = value
+		a.session.Daemons.Freshen = value
 	case "daemon-scraper":
-		a.GetSession().Daemons.Scraper = value
+		a.session.Daemons.Scraper = value
 	case "daemon-ipfs":
-		a.GetSession().Daemons.Ipfs = value
+		a.session.Daemons.Ipfs = value
 	}
-	a.GetSession().Save()
+	a.session.Save()
 }

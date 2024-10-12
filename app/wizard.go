@@ -10,12 +10,12 @@ func (a *App) isConfigured() bool {
 }
 
 func (a *App) GetWizardState() wizard.State {
-	return a.GetSession().Wizard.State
+	return a.session.Wizard.State
 }
 
 func (a *App) StepWizard(step wizard.Step) wizard.State {
-	a.GetSession().Wizard.Step(step)
-	a.GetSession().Save()
+	a.session.Wizard.Step(step)
+	a.session.Save()
 	if a.isConfigured() {
 		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
 	}

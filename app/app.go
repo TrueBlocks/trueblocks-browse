@@ -24,7 +24,8 @@ type App struct {
 	ctx context.Context
 	cfg coreConfig.ConfigFile
 
-	session    config.Session
+	session config.Session
+
 	renderCtxs map[base.Address][]*output.RenderCtx
 	meta       coreTypes.MetaData
 	globals    sdk.Globals
@@ -51,6 +52,7 @@ func NewApp() *App {
 	}
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
 	a.project = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
+	a.session.LastSub = make(map[string]string)
 
 	return &a
 }
@@ -69,10 +71,7 @@ func (a *App) Startup(ctx context.Context) {
 		messages.SendError(a.ctx, err)
 	}
 
-	a.session.MustLoadSession()
-	a.globals = sdk.Globals{
-		Chain: a.session.Chain,
-	}
+	a.LoadSession()
 
 	go a.loadHistory(a.GetLastAddress(), nil, nil)
 
@@ -82,7 +81,7 @@ func (a *App) Startup(ctx context.Context) {
 	go a.startDaemons()
 
 	logger.Info("Starting freshen process...")
-	a.Refresh(a.GetSession().LastRoute)
+	a.Refresh(a.session.LastRoute)
 }
 
 // ---------------------------------------------------------------
@@ -94,18 +93,20 @@ func (a *App) DomReady(ctx context.Context) {
 
 // ---------------------------------------------------------------
 func (a *App) Shutdown(ctx context.Context) {
-	a.session.Window.X, a.session.Window.Y = runtime.WindowGetPosition(a.ctx)
-	a.session.Window.Width, a.session.Window.Height = runtime.WindowGetSize(a.ctx)
-	a.session.Window.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
-	a.session.Save()
+	a.GetWindow().X, a.GetWindow().Y = runtime.WindowGetPosition(a.ctx)
+	a.GetWindow().Width, a.GetWindow().Height = runtime.WindowGetSize(a.ctx)
+	a.GetWindow().Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
+	a.SaveSession()
 }
 
 // ---------------------------------------------------------------
 func (a *App) GetSession() *config.Session {
-	if a.session.LastSub == nil {
-		a.session.LastSub = make(map[string]string)
-	}
 	return &a.session
+}
+
+// ---------------------------------------------------------------
+func (a *App) GetContext() context.Context {
+	return a.ctx
 }
 
 // ---------------------------------------------------------------
@@ -124,11 +125,19 @@ func (a *App) GetMeta() coreTypes.MetaData {
 }
 
 // ---------------------------------------------------------------
-func (a *App) GetContext() context.Context {
-	return a.ctx
+func (a *App) GetWindow() *config.Window {
+	return &a.session.Window
 }
 
 // ---------------------------------------------------------------
-func (a *App) GetWindow() config.Window {
-	return a.session.Window
+func (a *App) SaveSession() {
+	a.session.Save()
+}
+
+// ----------------------------------------------------------------
+func (a *App) LoadSession() {
+	a.session.MustLoadSession()
+	a.globals = sdk.Globals{
+		Chain: a.session.Chain,
+	}
 }
