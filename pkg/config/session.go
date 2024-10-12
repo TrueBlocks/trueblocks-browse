@@ -29,6 +29,8 @@ type Session struct {
 	Wizard    wizard.Wizard     `json:"wizard"`
 }
 
+const theTitle = "Browse by TrueBlocks"
+
 var defaultSession = Session{
 	Chain:     "mainnet",
 	Daemons:   Daemons{Freshen: true},
@@ -36,7 +38,7 @@ var defaultSession = Session{
 	LastRoute: "/",
 	LastSub:   map[string]string{"/history": "0xf503017d7baf7fbc0fff7492b751025c6a78179b"},
 	LastHelp:  true,
-	Window:    Window{X: 0, Y: 0, Width: 1024, Height: 768, Title: "Browse by TrueBlocks"},
+	Window:    Window{X: 0, Y: 0, Width: 1024, Height: 768, Title: theTitle},
 	Wizard:    wizard.Wizard{State: wizard.NotOkay},
 }
 

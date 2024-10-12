@@ -26,10 +26,6 @@ export function ExportToCsv(arg1) {
   return window['go']['app']['App']['ExportToCsv'](arg1);
 }
 
-export function Fatal(arg1) {
-  return window['go']['app']['App']['Fatal'](arg1);
-}
-
 export function FileNew(arg1) {
   return window['go']['app']['App']['FileNew'](arg1);
 }
@@ -104,6 +100,10 @@ export function GetSessionVal(arg1) {
 
 export function GetSessionWizard() {
   return window['go']['app']['App']['GetSessionWizard']();
+}
+
+export function GetWindow() {
+  return window['go']['app']['App']['GetWindow']();
 }
 
 export function GetWizardState() {
