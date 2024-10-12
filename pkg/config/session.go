@@ -2,9 +2,9 @@ package config
 
 import (
 	"encoding/json"
-	"os"
 	"path/filepath"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -19,8 +19,8 @@ type Session struct {
 	LastRoute string            `json:"lastRoute"`
 	LastSub   map[string]string `json:"lastSub"`
 	LastHelp  bool              `json:"lastHelp"`
-	Daemons   Daemons           `json:"daemons"`
 	Window    Window            `json:"window"`
+	Daemons   daemons.Toggles   `json:"daemons"`
 	Wizard    wizard.Wizard     `json:"wizard"`
 }
 
@@ -28,13 +28,15 @@ const theTitle = "Browse by TrueBlocks"
 
 var defaultSession = Session{
 	Chain:     "mainnet",
-	Daemons:   Daemons{Freshen: true},
 	LastFile:  "Untitled.tbx",
 	LastRoute: "/",
 	LastSub:   map[string]string{"/history": "0xf503017d7baf7fbc0fff7492b751025c6a78179b"},
 	LastHelp:  true,
 	Window:    Window{X: 0, Y: 0, Width: 1024, Height: 768, Title: theTitle},
-	Wizard:    wizard.Wizard{State: wizard.NotOkay},
+	Daemons: daemons.Toggles{
+		Freshen: true,
+	},
+	Wizard: wizard.Wizard{State: wizard.NotOkay},
 }
 
 // getSessionFn returns the session file name.
@@ -59,10 +61,7 @@ func (s *Session) Save() {
 // data, we return true. False otherwise.
 func (s *Session) Load() {
 	checkWizard := func() (wizard.State, string) {
-		if os.Getenv("TB_BAD_CONFIG") == "true" {
-			s.Wizard.State = wizard.NotOkay
-			s.Save()
-		} else if s.Wizard.State == wizard.Okay && s.LastRoute == "/wizard" {
+		if s.Wizard.State == wizard.Okay && s.LastRoute == "/wizard" {
 			s.LastRoute = "/"
 			s.Save()
 		}

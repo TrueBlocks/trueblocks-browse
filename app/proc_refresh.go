@@ -17,7 +17,7 @@ var freshenMutex sync.Mutex
 // by extension the frontend to update. We protect against updating too fast... Note
 // that this routine is called as a goroutine.
 func (a *App) Refresh(which ...string) {
-	if !a.isConfigured() {
+	if !a.IsConfigured() {
 		return
 	}
 

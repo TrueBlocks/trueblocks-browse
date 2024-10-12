@@ -69,6 +69,8 @@ export function HistoryPage(arg1:string,arg2:number,arg3:number):Promise<types.H
 
 export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>;
 
+export function IsConfigured():Promise<boolean>;
+
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
 
 export function ModifyAbi(arg1:app.ModifyData):Promise<void>;

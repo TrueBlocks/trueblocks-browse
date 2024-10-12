@@ -8,7 +8,7 @@ import { EventsOn, EventsOff } from "@runtime";
 import { useAppState } from "@state";
 import { StyledNavLink } from ".";
 
-export function Menu() {
+export const Menu = () => {
   const [activeRoute, setActiveRoute] = useState("/");
   const [_, setLocation] = useLocation();
   const { isConfigured } = useAppState();
