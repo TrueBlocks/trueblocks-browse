@@ -3,7 +3,7 @@
         "dev": "wails dev --debounce 2000",
         "start": "wails dev --debounce 2000"
     },
-    "name": "trueblocks-miniDapp",
+    "name": "trueblocks-browse",
     "version": "1.0.0",
     "license": "GPL-3.0",
     "devDependencies": {
