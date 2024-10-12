@@ -68,22 +68,6 @@ export namespace base {
 
 export namespace config {
 	
-	export class Daemons {
-	    freshen: boolean;
-	    scraper: boolean;
-	    ipfs: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new Daemons(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.freshen = source["freshen"];
-	        this.scraper = source["scraper"];
-	        this.ipfs = source["ipfs"];
-	    }
-	}
 	export class Window {
 	    x: number;
 	    y: number;
@@ -110,8 +94,8 @@ export namespace config {
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
 	    lastHelp: boolean;
-	    daemons: Daemons;
 	    window: Window;
+	    daemons: daemons.Toggles;
 	    wizard: wizard.Wizard;
 	
 	    static createFrom(source: any = {}) {
@@ -125,8 +109,8 @@ export namespace config {
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
 	        this.lastHelp = source["lastHelp"];
-	        this.daemons = this.convertValues(source["daemons"], Daemons);
 	        this.window = this.convertValues(source["window"], Window);
+	        this.daemons = this.convertValues(source["daemons"], daemons.Toggles);
 	        this.wizard = this.convertValues(source["wizard"], wizard.Wizard);
 	    }
 	
@@ -198,6 +182,22 @@ export namespace daemons {
 		    }
 		    return a;
 		}
+	}
+	export class Toggles {
+	    freshen: boolean;
+	    scraper: boolean;
+	    ipfs: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Toggles(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.freshen = source["freshen"];
+	        this.scraper = source["scraper"];
+	        this.ipfs = source["ipfs"];
+	    }
 	}
 
 }

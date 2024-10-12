@@ -9,7 +9,7 @@ import (
 )
 
 func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
-	if !a.isConfigured() {
+	if !a.IsConfigured() {
 		return base.ZeroAddr, false
 	}
 

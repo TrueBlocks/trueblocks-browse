@@ -122,6 +122,10 @@ export function IndexPage(arg1, arg2) {
   return window['go']['app']['App']['IndexPage'](arg1, arg2);
 }
 
+export function IsConfigured() {
+  return window['go']['app']['App']['IsConfigured']();
+}
+
 export function ManifestPage(arg1, arg2) {
   return window['go']['app']['App']['ManifestPage'](arg1, arg2);
 }

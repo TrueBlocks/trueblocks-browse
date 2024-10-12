@@ -6,7 +6,7 @@ import (
 )
 
 func (a *App) getBalance(address base.Address) string {
-	if !a.isConfigured() {
+	if !a.IsConfigured() {
 		return "0"
 	}
 

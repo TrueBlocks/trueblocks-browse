@@ -14,7 +14,7 @@ func (a *App) GetSessionVal(which string) string {
 	case "file":
 		return a.session.LastFile
 	case "route":
-		if !a.isConfigured() {
+		if !a.IsConfigured() {
 			return "/wizard"
 		}
 		return a.session.LastRoute + a.GetSessionSubVal(a.session.LastRoute)

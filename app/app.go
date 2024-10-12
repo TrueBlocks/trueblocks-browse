@@ -26,9 +26,10 @@ type App struct {
 
 	session config.Session
 
+	meta    coreTypes.MetaData
+	globals sdk.Globals
+
 	renderCtxs map[base.Address][]*output.RenderCtx
-	meta       coreTypes.MetaData
-	globals    sdk.Globals
 
 	// Containers
 	abis     types.AbiContainer

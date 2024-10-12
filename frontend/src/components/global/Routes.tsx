@@ -14,7 +14,6 @@ export const Routes = () => {
     });
   }, [setLocation]);
 
-  // item.route !== "/wizard"
   const routes = routeItems
     .filter((item: RouteItem) => (isConfigured ? true : item.route === "/wizard"))
     .sort((a, b) => a.order - b.order);
