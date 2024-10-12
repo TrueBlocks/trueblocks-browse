@@ -11,12 +11,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-type Daemons struct {
-	Freshen bool `json:"freshen"`
-	Scraper bool `json:"scraper"`
-	Ipfs    bool `json:"ipfs"`
-}
-
 // Session stores ephemeral things such as last window position, last view, and recent file
 type Session struct {
 	Chain     string            `json:"chain"`

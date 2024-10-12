@@ -69,6 +69,8 @@ export function HistoryPage(arg1:string,arg2:number,arg3:number):Promise<types.H
 
 export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>;
 
+export function LoadSession():Promise<void>;
+
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
 
 export function ModifyAbi(arg1:app.ModifyData):Promise<void>;
@@ -92,6 +94,8 @@ export function Refresh(arg1:Array<string>):Promise<void>;
 export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
 
 export function Reload(arg1:base.Address):Promise<void>;
+
+export function SaveSession():Promise<void>;
 
 export function SetChain(arg1:string,arg2:base.Address):Promise<void>;
 

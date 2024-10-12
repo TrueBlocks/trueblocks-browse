@@ -1,5 +1,6 @@
 package config
 
+// Window stores the last position and title of the window
 type Window struct {
 	X      int    `json:"x"`
 	Y      int    `json:"y"`
