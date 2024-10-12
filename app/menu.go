@@ -5,7 +5,6 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 )
 
-// NewViews
 func (a *App) GetMenus() *menu.Menu {
 	appMenu := menu.NewMenu()
 
