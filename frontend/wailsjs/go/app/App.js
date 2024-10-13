@@ -42,6 +42,10 @@ export function FileSaveAs(arg1) {
   return window['go']['app']['App']['FileSaveAs'](arg1);
 }
 
+export function FooterToggle(arg1) {
+  return window['go']['app']['App']['FooterToggle'](arg1);
+}
+
 export function GetChain() {
   return window['go']['app']['App']['GetChain']();
 }
@@ -110,6 +114,10 @@ export function GoToHistory(arg1) {
   return window['go']['app']['App']['GoToHistory'](arg1);
 }
 
+export function HeaderToggle(arg1) {
+  return window['go']['app']['App']['HeaderToggle'](arg1);
+}
+
 export function HelpToggle(arg1) {
   return window['go']['app']['App']['HelpToggle'](arg1);
 }
@@ -126,8 +134,16 @@ export function IsConfigured() {
   return window['go']['app']['App']['IsConfigured']();
 }
 
+export function IsShowing(arg1) {
+  return window['go']['app']['App']['IsShowing'](arg1);
+}
+
 export function ManifestPage(arg1, arg2) {
   return window['go']['app']['App']['ManifestPage'](arg1, arg2);
+}
+
+export function MenuToggle(arg1) {
+  return window['go']['app']['App']['MenuToggle'](arg1);
 }
 
 export function ModifyAbi(arg1) {
@@ -192,6 +208,10 @@ export function SetSessionDaemon(arg1, arg2) {
 
 export function SetSessionVal(arg1, arg2) {
   return window['go']['app']['App']['SetSessionVal'](arg1, arg2);
+}
+
+export function SetShowing(arg1, arg2) {
+  return window['go']['app']['App']['SetShowing'](arg1, arg2);
 }
 
 export function StateToString(arg1) {
