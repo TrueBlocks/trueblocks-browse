@@ -1,9 +1,8 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { SetSessionVal, ModifyProject } from "@gocode/app/App";
-import { types, messages } from "@gocode/models";
+import { GoToHistory, ModifyProject } from "@gocode/app/App";
+import { types } from "@gocode/models";
 import { Page } from "@hooks";
-import { EventsEmit } from "@runtime";
 import { useAppState, ViewStateProvider } from "@state";
 import { withoutDelete, withDelete } from "./ProjectTable";
 
@@ -14,10 +13,7 @@ export function ProjectView() {
   const handleEnter = (page: Page) => {
     const record = page.selected - page.getOffset();
     const address = project.items[record].address;
-    SetSessionVal("route", `/history/${address}`);
-    EventsEmit(messages.Message.NAVIGATE, {
-      route: `/history/${address}`,
-    });
+    GoToHistory(address).then(() => {});
   };
 
   const modColumns = project.nOpenFiles < 2 ? withoutDelete : withDelete;

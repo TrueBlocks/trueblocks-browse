@@ -61,6 +61,8 @@ export function GetWindow():Promise<config.Window>;
 
 export function GetWizardState():Promise<wizard.State>;
 
+export function GoToHistory(arg1:base.Address):Promise<void>;
+
 export function HelpToggle(arg1:menu.CallbackData):Promise<void>;
 
 export function HistoryPage(arg1:string,arg2:number,arg3:number):Promise<types.HistoryContainer>;

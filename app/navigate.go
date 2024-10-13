@@ -5,17 +5,18 @@ import (
 )
 
 func (a *App) Navigate(route, subRoute string) {
+	sep := ""
+	if len(subRoute) > 0 {
+		sep = "/"
+	}
+
 	if route != "/wizard" && !a.IsConfigured() {
 		route, subRoute = "/wizard", ""
-	} else {
-		if len(subRoute) > 0 {
-			subRoute = "/" + subRoute
-		}
 	}
 
 	a.session.SetRoute(route, subRoute)
 	a.saveSession()
 
 	debugMsg("Message sent", route, subRoute)
-	messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg(route+subRoute))
+	messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg(route+sep+subRoute))
 }
