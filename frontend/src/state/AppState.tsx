@@ -70,7 +70,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
-  const [chain, setChain] = useState<string>("");
+  const [chain, setChain] = useState<string>("mainnet");
   const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
 
   const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.NOTOKAY);

@@ -29,6 +29,8 @@ export function FileSave(arg1:menu.CallbackData):Promise<void>;
 
 export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
+export function FooterToggle(arg1:menu.CallbackData):Promise<void>;
+
 export function GetChain():Promise<string>;
 
 export function GetChainInfo(arg1:string):Promise<types.Chain>;
@@ -63,6 +65,8 @@ export function GetWizardState():Promise<wizard.State>;
 
 export function GoToHistory(arg1:base.Address):Promise<void>;
 
+export function HeaderToggle(arg1:menu.CallbackData):Promise<void>;
+
 export function HelpToggle(arg1:menu.CallbackData):Promise<void>;
 
 export function HistoryPage(arg1:string,arg2:number,arg3:number):Promise<types.HistoryContainer>;
@@ -71,7 +75,11 @@ export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>
 
 export function IsConfigured():Promise<boolean>;
 
+export function IsShowing(arg1:string):Promise<boolean>;
+
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
+
+export function MenuToggle(arg1:menu.CallbackData):Promise<void>;
 
 export function ModifyAbi(arg1:app.ModifyData):Promise<void>;
 
@@ -104,6 +112,8 @@ export function SetEnv(arg1:string,arg2:string):Promise<void>;
 export function SetSessionDaemon(arg1:string,arg2:boolean):Promise<void>;
 
 export function SetSessionVal(arg1:string,arg2:string):Promise<void>;
+
+export function SetShowing(arg1:string,arg2:boolean):Promise<void>;
 
 export function StateToString(arg1:string):Promise<string>;
 

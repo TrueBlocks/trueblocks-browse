@@ -88,12 +88,30 @@ export namespace config {
 	        this.title = source["title"];
 	    }
 	}
+	export class Toggles {
+	    header: boolean;
+	    menu: boolean;
+	    help: boolean;
+	    footer: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Toggles(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.header = source["header"];
+	        this.menu = source["menu"];
+	        this.help = source["help"];
+	        this.footer = source["footer"];
+	    }
+	}
 	export class Session {
 	    chain: string;
 	    lastFile: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
-	    lastHelp: boolean;
+	    toggles: Toggles;
 	    window: Window;
 	    daemons: daemons.Toggles;
 	    wizard: wizard.Wizard;
@@ -108,7 +126,7 @@ export namespace config {
 	        this.lastFile = source["lastFile"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
-	        this.lastHelp = source["lastHelp"];
+	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	        this.window = this.convertValues(source["window"], Window);
 	        this.daemons = this.convertValues(source["daemons"], daemons.Toggles);
 	        this.wizard = this.convertValues(source["wizard"], wizard.Wizard);
@@ -132,6 +150,7 @@ export namespace config {
 		    return a;
 		}
 	}
+	
 
 }
 
@@ -215,7 +234,7 @@ export namespace messages {
 	    DOCUMENT = "Document",
 	    NAVIGATE = "Navigate",
 	    RELOAD = "Reload",
-	    HELP = "Help",
+	    TOGGLE = "Toggle",
 	}
 	export class CancelMsg {
 	    address: base.Address;
@@ -366,6 +385,18 @@ export namespace messages {
 		    }
 		    return a;
 		}
+	}
+	export class ToggleMsg {
+	    component: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ToggleMsg(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.component = source["component"];
+	    }
 	}
 
 }
