@@ -69,7 +69,7 @@ func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 	path := "/Users/jrush/Library/Application Support/TrueBlocks/trueBlocks.toml"
 	if err := coreConfig.ReadToml(path, &a.cfg); err != nil {
-		messages.SendError(a.ctx, err)
+		messages.EmitError(a.ctx, err)
 	}
 
 	a.loadSession()

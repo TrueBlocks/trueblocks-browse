@@ -62,10 +62,10 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.abis = types.NewAbiContainer(abisChain, abis)
 		if err := sdk.SortAbis(a.abis.Items, a.abis.Sorts); err != nil {
-			messages.SendError(a.ctx, err)
+			messages.EmitError(a.ctx, err)
 		}
 		a.abis.Summarize()
-		messages.SendInfo(a.ctx, "Loaded abis")
+		messages.EmitInfo(a.ctx, "Loaded abis")
 	}
 	return nil
 }
@@ -78,7 +78,7 @@ func (a *App) ModifyAbi(modData *ModifyData) error {
 	opts.Globals.Decache = true
 
 	if _, _, err := opts.Abis(); err != nil {
-		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, modData.Address))
+		messages.EmitError(a.ctx, err, modData.Address)
 		return err
 	} else {
 		newAbis := make([]coreTypes.Abi, 0, len(a.abis.Items))
@@ -93,7 +93,8 @@ func (a *App) ModifyAbi(modData *ModifyData) error {
 		}
 		a.abis.LastUpdate = time.Time{}
 		a.abis.Items = newAbis
-		messages.Send(a.ctx, messages.Info, messages.NewInfoMsg(fmt.Sprintf("ModifyAbi delete: %s", modData.Address.Hex())))
+		msg := fmt.Sprintf("ModifyAbi delete: %s", modData.Address.Hex())
+		messages.EmitInfo(a.ctx, msg)
 		return nil
 	}
 }

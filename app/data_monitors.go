@@ -74,7 +74,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 			return a.monitors.Monitors[i].NRecords < a.monitors.Monitors[j].NRecords
 		})
 		a.monitors.Summarize()
-		messages.SendInfo(a.ctx, "Loaded monitors")
+		messages.EmitInfo(a.ctx, "Loaded monitors")
 	}
 	return nil
 }
@@ -104,7 +104,7 @@ func (a *App) ModifyMonitors(modData *ModifyData) error {
 	}
 
 	if _, _, err := opts.Monitors(); err != nil {
-		messages.SendError(a.ctx, err)
+		messages.EmitError(a.ctx, err)
 		return err
 	}
 

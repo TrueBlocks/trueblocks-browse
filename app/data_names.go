@@ -76,7 +76,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 			return compare(a.names.Names[i], a.names.Names[j])
 		})
 		a.names.Summarize()
-		messages.SendInfo(a.ctx, "Loaded names")
+		messages.EmitInfo(a.ctx, "Loaded names")
 	}
 	return nil
 }
@@ -137,7 +137,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 	opts.Globals.Chain = namesChain
 
 	if _, _, err := opts.ModifyName(opFromString(op), cd); err != nil {
-		messages.SendError(a.ctx, err)
+		messages.EmitError(a.ctx, err)
 		return err
 	}
 
