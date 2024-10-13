@@ -9,24 +9,19 @@ import (
 type Message string
 
 const (
-	Completed  Message = "Completed"
-	Cancelled  Message = "Cancelled"
-	Error      Message = "Error"
-	Warn       Message = "Warn"
-	Info       Message = "Info"
-	Progress   Message = "Progress"
-	Daemon     Message = "Daemon"
-	Document   Message = "Document"
-	Navigate   Message = "Navigate"
-	Reload     Message = "Reload"
-	ToggleHelp Message = "ToggleHelp"
+	Completed Message = "Completed"
+	Cancelled Message = "Cancelled"
+	Error     Message = "Error"
+	Warn      Message = "Warn"
+	Info      Message = "Info"
+	Progress  Message = "Progress"
+	Daemon    Message = "Daemon"
+	Document  Message = "Document"
+	Navigate  Message = "Navigate"
+	Reload    Message = "Reload"
+	Help      Message = "Help"
 )
 
-type MessageData interface {
-	string | ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg | NavigateMsg | ReloadMsg | HelpMsg | InfoMsg
-}
-
-// AllMessages - all possible messages for the frontend codegen
 var AllMessages = []struct {
 	Value  Message `json:"value"`
 	TSName string  `json:"tsname"`
@@ -41,7 +36,11 @@ var AllMessages = []struct {
 	{Document, "DOCUMENT"},
 	{Navigate, "NAVIGATE"},
 	{Reload, "RELOAD"},
-	{ToggleHelp, "TOGGLEHELP"},
+	{Help, "HELP"},
+}
+
+type MessageData interface {
+	string | ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg | NavigateMsg | HelpMsg | InfoMsg
 }
 
 func Send[T MessageData](ctx context.Context, msg Message, data *T) {

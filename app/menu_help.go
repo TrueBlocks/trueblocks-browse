@@ -8,5 +8,5 @@ import (
 
 func (a *App) HelpToggle(cd *menu.CallbackData) {
 	logger.Info("Help Toggle")
-	messages.Send(a.ctx, messages.ToggleHelp, messages.NewHelpMsg())
+	messages.Send(a.ctx, messages.Help, messages.NewHelpMsg())
 }
