@@ -33,7 +33,7 @@ export function GetChain():Promise<string>;
 
 export function GetChainInfo(arg1:string):Promise<types.Chain>;
 
-export function GetChainList():Promise<Array<string>>;
+export function GetChains():Promise<Array<string>>;
 
 export function GetContext():Promise<context.Context>;
 

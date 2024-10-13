@@ -9,12 +9,12 @@ func (a *App) GetChain() string {
 	return a.globals.Chain
 }
 
-func (a *App) GetChainList() []string {
-	return []string{
-		"mainnet",
-		"sepolia",
-		"gnosis",
+func (a *App) GetChains() []string {
+	ret := []string{}
+	for _, chain := range a.cfg.Chains {
+		ret = append(ret, chain.Chain)
 	}
+	return ret
 }
 
 func (a *App) SetChain(chain string, address base.Address) {

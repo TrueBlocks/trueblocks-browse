@@ -70,22 +70,22 @@ export const ViewStatus = () => {
     };
 
     const { Message } = messages;
-    EventsOn(Message.DOCUMENT, handleDocument);
-    EventsOn(Message.PROGRESS, handleProgress);
-    EventsOn(Message.COMPLETED, handleCompleted);
     EventsOn(Message.CANCELLED, handleCancel);
-    EventsOn(Message.WARNING, handleWarning);
+    EventsOn(Message.COMPLETED, handleCompleted);
+    EventsOn(Message.DOCUMENT, handleDocument);
     EventsOn(Message.ERROR, handleError);
     EventsOn(Message.INFO, handleInfo);
+    EventsOn(Message.PROGRESS, handleProgress);
+    EventsOn(Message.WARNING, handleWarning);
 
     return () => {
-      EventsOff(Message.DOCUMENT);
-      EventsOff(Message.PROGRESS);
-      EventsOff(Message.COMPLETED);
       EventsOff(Message.CANCELLED);
-      EventsOff(Message.WARNING);
+      EventsOff(Message.COMPLETED);
+      EventsOff(Message.DOCUMENT);
       EventsOff(Message.ERROR);
       EventsOff(Message.INFO);
+      EventsOff(Message.PROGRESS);
+      EventsOff(Message.WARNING);
     };
   }, []);
 
