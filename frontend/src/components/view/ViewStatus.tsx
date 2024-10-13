@@ -37,7 +37,7 @@ export const ViewStatus = () => {
       }, 2000);
     };
 
-    const handleCancel = (msg: messages.ProgressMsg) => {
+    const handleCancel = (msg: messages.CancelMsg) => {
       setStatusMessage(`Canceled (${msg.address})`);
       setColor("green");
       if (timeoutRef.current) {

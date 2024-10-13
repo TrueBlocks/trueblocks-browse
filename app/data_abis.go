@@ -93,7 +93,7 @@ func (a *App) ModifyAbi(modData *ModifyData) error {
 		}
 		a.abis.LastUpdate = time.Time{}
 		a.abis.Items = newAbis
-		messages.Send(a.ctx, messages.Info, messages.NewInfoMessage(fmt.Sprintf("ModifyAbi delete: %s", modData.Address.Hex())))
+		messages.Send(a.ctx, messages.Info, messages.NewInfoMsg(fmt.Sprintf("ModifyAbi delete: %s", modData.Address.Hex())))
 		return nil
 	}
 }

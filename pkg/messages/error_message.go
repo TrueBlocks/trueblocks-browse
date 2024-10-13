@@ -27,7 +27,6 @@ func SendError(ctx context.Context, err error, addrs ...base.Address) {
 	Send(ctx, Error, NewErrorMsg(err, addrs...))
 }
 
-// This function is required for Wails to generate the binding code.
 func (m *ErrorMsg) Instance() ErrorMsg {
 	return ErrorMsg{}
 }
