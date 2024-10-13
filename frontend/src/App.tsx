@@ -24,9 +24,9 @@ export const App = () => {
     };
 
     const { Message } = messages;
-    EventsOn(Message.TOGGLEHELP, toggleHelp);
+    EventsOn(Message.HELP, toggleHelp);
     return () => {
-      EventsOff(Message.TOGGLEHELP);
+      EventsOff(Message.HELP);
     };
   }, []);
 
