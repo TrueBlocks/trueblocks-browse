@@ -58,7 +58,7 @@ func (a *App) ExportToCsv(address base.Address) {
 	})
 
 	if !completed {
-		messages.SendError(a.ctx, fmt.Errorf("export interrupted for address: %s", address.Hex()))
+		messages.EmitError(a.ctx, fmt.Errorf("export interrupted for address: %s", address.Hex()))
 		return
 	}
 

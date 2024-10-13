@@ -115,5 +115,5 @@ func (a *App) GoToHistory(address base.Address) {
 	route := "/history/" + address.Hex()
 	a.SetSessionVal("route", route)
 	a.Reload(address)
-	messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg(route))
+	messages.EmitNavigate(a.ctx, route)
 }

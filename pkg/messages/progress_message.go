@@ -8,12 +8,7 @@ type ProgressMsg struct {
 	Want    int          `json:"want"`
 }
 
-func NewProgressMsg(have int, want int, addrs ...base.Address) *ProgressMsg {
-	address := base.ZeroAddr
-	if len(addrs) > 0 {
-		address = addrs[0]
-	}
-
+func NewProgressMsg(address base.Address, have int, want int) *ProgressMsg {
 	return &ProgressMsg{
 		Address: address,
 		Have:    have,

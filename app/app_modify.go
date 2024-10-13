@@ -17,6 +17,7 @@ type ModifyData struct {
 // ---------------------------------------------------------------
 func (a *App) ModifyNoop(modData *ModifyData) error {
 	route := a.GetSessionVal("route")
-	messages.Send(a.ctx, messages.Info, messages.NewInfoMsg(fmt.Sprintf("%s modify NO-OP %s: %s", route, modData.Operation, modData.Address.Hex())))
+	msg := fmt.Sprintf("%s modify NO-OP %s: %s", route, modData.Operation, modData.Address.Hex())
+	messages.EmitInfo(a.ctx, msg)
 	return nil
 }

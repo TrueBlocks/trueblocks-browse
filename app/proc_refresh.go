@@ -36,10 +36,7 @@ func (a *App) Refresh(which ...string) {
 	// We always load names first since we need them everywhere
 	err := a.loadNames(nil, nil)
 	if err != nil {
-		// we report the error, but proceed anyway
-		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(
-			err,
-		))
+		messages.EmitError(a.ctx, err)
 	}
 
 	// We want to update the route we last used first if there is one...
@@ -57,10 +54,7 @@ func (a *App) Refresh(which ...string) {
 			err = a.loadStatus(nil, nil)
 		}
 		if err != nil {
-			// we report the error, but proceed anyway
-			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(
-				err,
-			))
+			messages.EmitError(a.ctx, err)
 		}
 	}
 
@@ -92,17 +86,10 @@ func (a *App) Refresh(which ...string) {
 	if len(errors) > 0 {
 		// Handle errors, e.g., wait 1/2 second between each error message
 		for _, err := range errors {
-			messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(
-				err,
-			))
+			messages.EmitError(a.ctx, err)
 			time.Sleep(500 * time.Millisecond)
 		}
 	} else {
-		// messages.SendInfo(a.ctx, "Freshened...")
-		messages.Send(a.ctx, messages.Daemon, messages.NewDaemonMsg(
-			a.FreshenController.Name,
-			"Freshening...",
-			a.FreshenController.Color,
-		))
+		messages.EmitDaemon(a.ctx, a.FreshenController.Name, "Freshening...", a.FreshenController.Color)
 	}
 }

@@ -1,11 +1,5 @@
 package messages
 
-import (
-	"context"
-
-	"github.com/wailsapp/wails/v2/pkg/runtime"
-)
-
 type Message string
 
 const (
@@ -37,12 +31,4 @@ var AllMessages = []struct {
 	{Navigate, "NAVIGATE"},
 	{Reload, "RELOAD"},
 	{Help, "HELP"},
-}
-
-type MessageData interface {
-	string | ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg | NavigateMsg | HelpMsg | InfoMsg | CancelMsg
-}
-
-func Send[T MessageData](ctx context.Context, msg Message, data *T) {
-	runtime.EventsEmit(ctx, string(msg), data)
 }

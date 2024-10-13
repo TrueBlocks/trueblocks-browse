@@ -13,7 +13,8 @@ import (
 func (a *App) FileNew(cd *menu.CallbackData) {
 	logger.Info("File New")
 	a.project = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
-	messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
+	messages.EmitNavigate(a.ctx, "/")
+	messages.EmitDocument(a.ctx, a.project.Filename, "Opened")
 }
 
 func (a *App) FileOpen(cd *menu.CallbackData) {
@@ -50,8 +51,8 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 		}
 		wg.Wait()
 
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
-		messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.project.Filename, "Opened"))
+		messages.EmitNavigate(a.ctx, "/")
+		messages.EmitDocument(a.ctx, a.project.Filename, "Opened")
 	}
 }
 
@@ -71,7 +72,7 @@ func (a *App) FileSave(cd *menu.CallbackData) {
 	})
 	a.project.Session = a.session
 	a.project.Save()
-	messages.Send(a.ctx, messages.Document, messages.NewDocumentMsg(a.project.Filename, "Saved"))
+	messages.EmitDocument(a.ctx, a.project.Filename, "Saved")
 }
 
 func (a *App) FileSaveAs(cd *menu.CallbackData) {

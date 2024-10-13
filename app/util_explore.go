@@ -25,10 +25,10 @@ func (a *App) GetExploreUrl(term string, google, dalle bool) string {
 	// TODO: Expose this to the user and/or put it in trueBlocks.toml
 	os.Setenv("TB_DALLE_SERIES", "five-tone-postal-protozoa")
 	if result, meta, err := opts.Explore(); err != nil {
-		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err))
+		messages.EmitError(a.ctx, err)
 		return ""
 	} else if (result == nil) || (len(result) == 0) {
-		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("url not found")))
+		messages.EmitError(a.ctx, fmt.Errorf("url not found"))
 		return ""
 	} else {
 		a.meta = *meta
