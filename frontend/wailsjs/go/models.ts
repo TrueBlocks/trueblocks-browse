@@ -309,7 +309,6 @@ export namespace messages {
 		    return a;
 		}
 	}
-	
 	export class InfoMsg {
 	    message: string;
 	

@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
@@ -20,8 +19,6 @@ func (a *App) GetSessionVal(which string) string {
 		return a.session.LastRoute + a.GetSessionSubVal(a.session.LastRoute)
 	case "wizard":
 		return a.session.Wizard.State.String()
-	case "help":
-		return fmt.Sprintf("%t", a.session.LastHelp)
 	}
 	return "Unknown"
 }
@@ -44,8 +41,6 @@ func (a *App) SetSessionVal(which, value string) {
 		}
 	case "chain":
 		a.session.Chain = value
-	case "help":
-		a.session.LastHelp = strings.EqualFold(value, "true")
 	}
 	a.session.Save()
 }

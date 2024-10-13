@@ -32,7 +32,10 @@ func (a *App) GetMenus() *menu.Menu {
 	viewMenu.AddText("Wizard", keys.CmdOrCtrl("w"), a.ViewWizard)
 
 	helpMenu := appMenu.AddSubmenu("Help")
+	helpMenu.AddText("Show Header", keys.CmdOrCtrl("e"), a.HeaderToggle)
+	helpMenu.AddText("Show Menu", keys.CmdOrCtrl("m"), a.MenuToggle)
 	helpMenu.AddText("Show Help", keys.CmdOrCtrl("h"), a.HelpToggle)
+	helpMenu.AddText("Show Footer", keys.CmdOrCtrl("f"), a.FooterToggle)
 
 	return appMenu
 }

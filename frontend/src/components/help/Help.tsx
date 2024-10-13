@@ -22,7 +22,7 @@ export function Help(): JSX.Element {
   const viewName = useViewName();
 
   const onClose = useCallback(() => {
-    EventsEmit(messages.Message.HELP, {});
+    EventsEmit(messages.Message.TOGGLE, { Component: "help" });
   }, []);
 
   useEffect(() => {
