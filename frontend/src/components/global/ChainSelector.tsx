@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Select } from "@mantine/core";
-import { GetChainList } from "@gocode/app/App";
+import { GetChains } from "@gocode/app/App";
 import { useAppState } from "@state";
 
 export const ChainSelector = () => {
@@ -8,13 +8,13 @@ export const ChainSelector = () => {
   const [chainList, setChainList] = useState<string[]>([]);
 
   useEffect(() => {
-    GetChainList().then((chains) => {
+    GetChains().then((chains) => {
       setChainList(chains);
     });
   }, []);
 
   useEffect(() => {
-    GetChainList().then((chains) => {
+    GetChains().then((chains) => {
       setChainList(chains);
       if (!chains.includes(chain)) {
         changeChain(chains[0]);

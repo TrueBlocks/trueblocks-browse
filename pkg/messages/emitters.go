@@ -8,7 +8,14 @@ import (
 )
 
 type MessageData interface {
-	ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg | NavigateMsg | HelpMsg | InfoMsg | CancelMsg
+	CancelMsg |
+		DaemonMsg |
+		DocumentMsg |
+		ErrorMsg |
+		InfoMsg |
+		NavigateMsg |
+		ProgressMsg |
+		ToggleMsg
 }
 
 func emitMsg[T MessageData](ctx context.Context, msg Message, data *T) {
@@ -40,8 +47,8 @@ func EmitNavigate(ctx context.Context, route string) {
 	emitMsg(ctx, Navigate, NewNavigateMsg(route))
 }
 
-func EmitHelp(ctx context.Context) {
-	emitMsg(ctx, Help, NewHelpMsg())
+func EmitToggle(ctx context.Context, comp string) {
+	emitMsg(ctx, Toggle, NewToggleMsg(comp))
 }
 
 func EmitInfo(ctx context.Context, msg string) {

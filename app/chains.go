@@ -1,6 +1,8 @@
 package app
 
 import (
+	"sort"
+
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
@@ -14,6 +16,7 @@ func (a *App) GetChains() []string {
 	for _, chain := range a.cfg.Chains {
 		ret = append(ret, chain.Chain)
 	}
+	sort.Strings(ret)
 	return ret
 }
 
