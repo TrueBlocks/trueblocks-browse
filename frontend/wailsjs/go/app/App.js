@@ -106,6 +106,10 @@ export function GetWizardState() {
   return window['go']['app']['App']['GetWizardState']();
 }
 
+export function GoToHistory(arg1) {
+  return window['go']['app']['App']['GoToHistory'](arg1);
+}
+
 export function HelpToggle(arg1) {
   return window['go']['app']['App']['HelpToggle'](arg1);
 }

@@ -5,6 +5,7 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
@@ -108,4 +109,11 @@ func (a *App) Reload(address base.Address) {
 	a.loadHistory(a.GetLastAddress(), nil, nil)
 	a.Refresh()
 	a.loadProject(nil, nil)
+}
+
+func (a *App) GoToHistory(address base.Address) {
+	route := "/history/" + address.Hex()
+	a.SetSessionVal("route", route)
+	a.Reload(address)
+	messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg(route))
 }
