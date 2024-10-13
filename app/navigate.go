@@ -11,7 +11,7 @@ func (a *App) Navigate(route, subRoute string) {
 	}
 
 	if route != "/wizard" && !a.IsConfigured() {
-		route, subRoute = "/wizard", ""
+		route, subRoute, sep = "/wizard", "", ""
 	}
 
 	a.session.SetRoute(route, subRoute)
