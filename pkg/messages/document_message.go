@@ -12,7 +12,6 @@ func NewDocumentMsg(filename string, msg string) *DocumentMsg {
 	}
 }
 
-// This function is required for Wails to generate the binding code.
 func (m *DocumentMsg) Instance() DocumentMsg {
 	return DocumentMsg{}
 }

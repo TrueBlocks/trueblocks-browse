@@ -40,6 +40,7 @@ func main() {
 			&messages.DaemonMsg{},
 			&messages.NavigateMsg{},
 			&messages.HelpMsg{},
+			&messages.CancelMsg{},
 			&types.AbiContainer{},
 			&types.ProjectContainer{},
 			&types.IndexContainer{},

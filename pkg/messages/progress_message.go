@@ -8,10 +8,6 @@ type ProgressMsg struct {
 	Want    int          `json:"want"`
 }
 
-func NewCancelMsg(addrs ...base.Address) *ProgressMsg {
-	return NewProgressMsg(-1, -1, addrs...)
-}
-
 func NewProgressMsg(have int, want int, addrs ...base.Address) *ProgressMsg {
 	address := base.ZeroAddr
 	if len(addrs) > 0 {
@@ -25,7 +21,6 @@ func NewProgressMsg(have int, want int, addrs ...base.Address) *ProgressMsg {
 	}
 }
 
-// This function is required for Wails to generate the binding code.
 func (m *ProgressMsg) Instance() ProgressMsg {
 	return ProgressMsg{}
 }

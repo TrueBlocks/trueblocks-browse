@@ -40,7 +40,7 @@ var AllMessages = []struct {
 }
 
 type MessageData interface {
-	string | ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg | NavigateMsg | HelpMsg | InfoMsg
+	string | ProgressMsg | DaemonMsg | ErrorMsg | DocumentMsg | NavigateMsg | HelpMsg | InfoMsg | CancelMsg
 }
 
 func Send[T MessageData](ctx context.Context, msg Message, data *T) {
