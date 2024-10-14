@@ -12,7 +12,7 @@ import {
   DalleButton,
   GoogleButton,
 } from "@components";
-import { GetSessionSubVal, ModifyNoop } from "@gocode/app/App";
+import { GetAddress, ModifyNoop } from "@gocode/app/App";
 import { types, base } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./HistoryTable";
@@ -23,9 +23,8 @@ export function HistoryView() {
   const aa = useParams().address;
   useEffect(() => {
     if (aa === ":address") {
-      GetSessionSubVal("/history").then((subRoute) => {
-        subRoute = subRoute.replace("/", "");
-        setAddress(subRoute as unknown as base.Address);
+      GetAddress().then((address) => {
+        setAddress(address);
       });
     } else {
       setAddress(aa as unknown as base.Address);

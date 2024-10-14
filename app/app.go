@@ -74,7 +74,7 @@ func (a *App) Startup(ctx context.Context) {
 
 	a.loadSession()
 
-	go a.loadHistory(a.GetLastAddress(), nil, nil)
+	go a.loadHistory(a.GetAddress(), nil, nil)
 
 	a.FreshenController = daemons.NewFreshen(a, "freshen", 3000, a.GetSessionDeamon("daemon-freshen"))
 	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetSessionDeamon("daemon-scraper"))

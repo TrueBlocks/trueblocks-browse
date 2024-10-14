@@ -106,14 +106,15 @@ func (a *App) Reload(address base.Address) {
 		Operation: "reload",
 		Address:   address,
 	})
-	a.loadHistory(a.GetLastAddress(), nil, nil)
+	a.loadHistory(a.GetAddress(), nil, nil)
 	a.Refresh()
 	a.loadProject(nil, nil)
 }
 
 func (a *App) GoToHistory(address base.Address) {
-	route := "/history/" + address.Hex()
-	a.SetSessionVal("route", route)
+	a.SetRoute("/history", address.Hex())
 	a.Reload(address)
+
+	route := "/history/" + address.Hex()
 	messages.EmitNavigate(a.ctx, route)
 }

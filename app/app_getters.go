@@ -3,6 +3,7 @@ package app
 import (
 	"os"
 
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -36,9 +37,17 @@ func (a *App) GetRoute() string {
 	if !a.IsConfigured() {
 		return "/wizard"
 	}
+
 	route := a.session.LastRoute
 	if len(a.session.LastSub) > 0 {
 		route += "/" + a.session.LastSub[route]
 	}
+
 	return route
+}
+
+// ------------------------------------------------------------------------
+func (a *App) GetAddress() base.Address {
+	addr := a.session.LastSub["/history"]
+	return base.HexToAddress(addr)
 }

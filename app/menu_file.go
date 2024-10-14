@@ -35,7 +35,8 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 		save := a.FreshenController.Sleep
 		defer func() { a.FreshenController.Sleep = save }()
 		a.FreshenController.Sleep = 1000
-		a.SetSessionVal("file", file)
+		a.session.LastFile = file
+		a.saveSession()
 
 		a.CancelAllContexts()
 		a.project = types.NewProjectContainer(file, &types.HistoryMap{}, &sync.Map{}, &sync.Map{})

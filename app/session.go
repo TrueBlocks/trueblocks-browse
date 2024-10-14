@@ -1,42 +1,8 @@
 package app
 
 import (
-	"strings"
-
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
-
-// ------------------------------------------------------------------------
-func (a *App) SetSessionVal(which, value string) {
-	switch which {
-	case "file":
-		a.session.LastFile = value
-	case "route":
-		parts := strings.Split(value, "/")
-		if len(parts) > 2 {
-			if !strings.HasPrefix(parts[2], ":") {
-				route := "/" + parts[1]
-				a.session.LastRoute = route
-				a.session.LastSub[route] = parts[2]
-			}
-		} else {
-			a.session.LastRoute = value
-		}
-	case "chain":
-		a.session.Chain = value
-	}
-	a.session.Save()
-}
-
-// ------------------------------------------------------------------------
-func (a *App) GetSessionSubVal(which string) string {
-	val := a.session.LastSub[which]
-	if val == "" {
-		return ""
-	}
-	return "/" + val
-}
 
 // ------------------------------------------------------------------------
 func (a *App) GetSessionDeamon(which string) bool {
@@ -62,11 +28,5 @@ func (a *App) SetSessionDaemon(which string, value bool) {
 	case "daemon-ipfs":
 		a.session.Daemons.Ipfs = value
 	}
-	a.session.Save()
-}
-
-// ------------------------------------------------------------------------
-func (a *App) GetLastAddress() base.Address {
-	val := a.GetSessionSubVal("/history")
-	return base.HexToAddress(strings.ReplaceAll(val, "/", ""))
+	a.saveSession()
 }

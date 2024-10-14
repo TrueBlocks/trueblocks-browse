@@ -33,7 +33,8 @@ func (a *App) GetChainInfo(chain string) coreTypes.Chain {
 func (a *App) SetChain(chain string, address base.Address) {
 	a.CancelAllContexts() // cancel what's happening on the old chain
 	a.globals.Chain = chain
-	a.SetSessionVal("chain", chain)
+	a.session.Chain = chain
+	a.saveSession()
 	a.Reload(address)
 	a.abis = types.AbiContainer{}
 	a.index = types.IndexContainer{}
