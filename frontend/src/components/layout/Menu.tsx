@@ -6,7 +6,7 @@ import { GetSessionVal, GetSessionSubVal, SetSessionVal } from "@gocode/app/App"
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import { useAppState } from "@state";
-import { StyledNavLink } from ".";
+import { StyledNavLink } from "@components";
 
 export const Menu = () => {
   const [activeRoute, setActiveRoute] = useState("/");
@@ -71,4 +71,4 @@ export const Menu = () => {
       })}
     </div>
   );
-}
+};

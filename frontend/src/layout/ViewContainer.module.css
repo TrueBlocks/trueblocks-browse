@@ -1,12 +1,3 @@
-.viewStatus {
-  font-size: 14pt;
-  font-family: monospace;
-  height: 2rem;
-  background-color: transparent;
-  position: sticky;
-  bottom: 0;
-}
-
 .viewContainer {
   overflow-y: auto;
   padding: 1em;

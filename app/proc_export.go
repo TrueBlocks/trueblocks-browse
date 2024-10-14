@@ -11,7 +11,9 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
-func (a *App) ExportToCsv(address base.Address) {
+// TODO: If this uses chifra export, it could be much expanded to include
+// TODO: all the options that chifra export has.
+func (a *App) ExportAddress(address base.Address) {
 	isOpen := a.isFileOpen(address)
 	if !isOpen {
 		return

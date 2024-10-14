@@ -1,5 +1,5 @@
-import { Routes } from "../global";
-import classes from "./View.module.css";
+import { Routes } from ".";
+import classes from "./ViewContainer.module.css";
 
 export const ViewContainer = () => {
   return (

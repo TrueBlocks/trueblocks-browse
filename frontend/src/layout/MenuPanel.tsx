@@ -1,7 +1,7 @@
 import { Stack } from "@mantine/core";
-import { Menu, DaemonStatus } from "./";
+import { Menu, DaemonStatus } from "@components";
 
-export function Navbar() {
+export const MenuPanel = () => {
   return (
     <Stack h={"100%"} justify="space-between">
       <Menu />

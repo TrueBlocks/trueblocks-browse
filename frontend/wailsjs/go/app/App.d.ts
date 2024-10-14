@@ -19,7 +19,7 @@ export function CancelContext(arg1:base.Address):Promise<void>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
-export function ExportToCsv(arg1:base.Address):Promise<void>;
+export function ExportAddress(arg1:base.Address):Promise<void>;
 
 export function FileNew(arg1:menu.CallbackData):Promise<void>;
 

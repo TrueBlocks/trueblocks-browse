@@ -1,11 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
 import { AppShell } from "@mantine/core";
-import { Aside, Header, Navbar, ViewContainer, ViewStatus, AppStatus } from "@components";
+import { ViewStatus } from "@components";
 import { IsShowing, SetShowing } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import { AppStateProvider } from "@state";
 import classes from "./App.module.css";
+import { Header, MenuPanel, ViewContainer, HelpPanel, Footer } from "./layout";
 
 export const App = () => {
   const [showHeader, setShowHeader] = useState<boolean>(true);
@@ -58,16 +59,16 @@ export const App = () => {
       >
         <AppShell.Header>{showHeader ? <Header title="TrueBlocks Browse" /> : <></>}</AppShell.Header>
         <AppShell.Navbar>
-          <Navbar />
+          <MenuPanel />
         </AppShell.Navbar>
         <AppShell.Main className={classes.mainContent}>
           <ViewContainer />
           <ViewStatus />
         </AppShell.Main>
         <AppShell.Aside>
-          <Aside />
+          <HelpPanel />
         </AppShell.Aside>
-        <AppShell.Footer>{showFooter ? <AppStatus /> : <></>}</AppShell.Footer>
+        <AppShell.Footer>{showFooter ? <Footer /> : <></>}</AppShell.Footer>
       </AppShell>
     </AppStateProvider>
   );

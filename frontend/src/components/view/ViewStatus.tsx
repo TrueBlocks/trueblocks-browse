@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Text } from "@mantine/core";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
-import classes from "./View.module.css";
+import classes from "./ViewStatus.module.css";
 
 export const ViewStatus = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);

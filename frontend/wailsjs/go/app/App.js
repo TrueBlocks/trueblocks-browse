@@ -22,8 +22,8 @@ export function ConvertToAddress(arg1) {
   return window['go']['app']['App']['ConvertToAddress'](arg1);
 }
 
-export function ExportToCsv(arg1) {
-  return window['go']['app']['App']['ExportToCsv'](arg1);
+export function ExportAddress(arg1) {
+  return window['go']['app']['App']['ExportAddress'](arg1);
 }
 
 export function FileNew(arg1) {
