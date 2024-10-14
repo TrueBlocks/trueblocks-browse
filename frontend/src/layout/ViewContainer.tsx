@@ -1,5 +1,5 @@
+import classes from "../components/view/View.module.css";
 import { Routes } from ".";
-import classes from "./ViewContainer.module.css";
 
 export const ViewContainer = () => {
   return (

@@ -18,7 +18,7 @@ import {
   NamesView,
   MonitorsView,
   IndexesView,
-  ManifestView,
+  ManifestsView,
   AbisView,
   DaemonsView,
   StatusView,
@@ -98,7 +98,7 @@ export const routeItems: RouteItem[] = [
     route: asFull("manifest"),
     label: "Manifest",
     icon: ManifestIcon,
-    component: ManifestView,
+    component: ManifestsView,
   },
   {
     order: 70,
