@@ -46,6 +46,10 @@ export function FooterToggle(arg1) {
   return window['go']['app']['App']['FooterToggle'](arg1);
 }
 
+export function GetAddress() {
+  return window['go']['app']['App']['GetAddress']();
+}
+
 export function GetAppTitle() {
   return window['go']['app']['App']['GetAppTitle']();
 }
@@ -78,10 +82,6 @@ export function GetExploreUrl(arg1, arg2, arg3) {
   return window['go']['app']['App']['GetExploreUrl'](arg1, arg2, arg3);
 }
 
-export function GetLastAddress() {
-  return window['go']['app']['App']['GetLastAddress']();
-}
-
 export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
@@ -100,10 +100,6 @@ export function GetSession() {
 
 export function GetSessionDeamon(arg1) {
   return window['go']['app']['App']['GetSessionDeamon'](arg1);
-}
-
-export function GetSessionSubVal(arg1) {
-  return window['go']['app']['App']['GetSessionSubVal'](arg1);
 }
 
 export function GetWindow() {
@@ -206,12 +202,12 @@ export function SetEnv(arg1, arg2) {
   return window['go']['app']['App']['SetEnv'](arg1, arg2);
 }
 
-export function SetSessionDaemon(arg1, arg2) {
-  return window['go']['app']['App']['SetSessionDaemon'](arg1, arg2);
+export function SetRoute(arg1, arg2) {
+  return window['go']['app']['App']['SetRoute'](arg1, arg2);
 }
 
-export function SetSessionVal(arg1, arg2) {
-  return window['go']['app']['App']['SetSessionVal'](arg1, arg2);
+export function SetSessionDaemon(arg1, arg2) {
+  return window['go']['app']['App']['SetSessionDaemon'](arg1, arg2);
 }
 
 export function SetShowing(arg1, arg2) {

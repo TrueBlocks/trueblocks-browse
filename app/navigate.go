@@ -14,8 +14,7 @@ func (a *App) Navigate(route, subRoute string) {
 		route, subRoute, sep = "/wizard", "", ""
 	}
 
-	a.session.SetRoute(route, subRoute)
-	a.saveSession()
+	a.SetRoute(route, subRoute)
 
 	debugMsg("Message sent", route, subRoute)
 	messages.EmitNavigate(a.ctx, route+sep+subRoute)

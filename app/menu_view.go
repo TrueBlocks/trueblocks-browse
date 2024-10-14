@@ -13,7 +13,7 @@ func (a *App) ViewProject(cd *menu.CallbackData) {
 func (a *App) ViewHistory(cd *menu.CallbackData) {
 	debugMsg("ViewHistory")
 
-	address := a.GetLastAddress()
+	address := a.GetAddress()
 	a.Navigate("/history", address.Hex())
 }
 

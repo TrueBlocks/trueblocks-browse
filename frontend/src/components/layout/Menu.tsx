@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { StyledNavLink } from "@components";
-import { GetRoute, GetSessionSubVal, SetSessionVal } from "@gocode/app/App";
+import { GetRoute, GetAddress, SetRoute } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { routeItems, RouteItem } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
@@ -38,14 +38,15 @@ export const Menu = () => {
   const handleRouteChange = (route: string) => {
     setActiveRoute(route);
     if (route.startsWith("/history")) {
-      GetSessionSubVal("/history").then((subRoute) => {
-        route = route.replace("/:address", subRoute);
+      GetAddress().then((address) => {
+        const addr = address as unknown as string;
+        route = route.replace(":address", addr);
         setLocation(route);
+        SetRoute(route, addr);
       });
-      SetSessionVal("route", route);
       setActiveRoute("/history/:address");
     } else {
-      SetSessionVal("route", route);
+      SetRoute(route, "");
       setActiveRoute(route);
     }
   };

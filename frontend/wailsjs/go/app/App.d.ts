@@ -31,6 +31,8 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
 export function FooterToggle(arg1:menu.CallbackData):Promise<void>;
 
+export function GetAddress():Promise<base.Address>;
+
 export function GetAppTitle():Promise<string>;
 
 export function GetChain():Promise<string>;
@@ -47,8 +49,6 @@ export function GetEnv(arg1:string):Promise<string>;
 
 export function GetExploreUrl(arg1:string,arg2:boolean,arg3:boolean):Promise<string>;
 
-export function GetLastAddress():Promise<base.Address>;
-
 export function GetMenus():Promise<menu.Menu>;
 
 export function GetMeta():Promise<types.MetaData>;
@@ -58,8 +58,6 @@ export function GetRoute():Promise<string>;
 export function GetSession():Promise<config.Session>;
 
 export function GetSessionDeamon(arg1:string):Promise<boolean>;
-
-export function GetSessionSubVal(arg1:string):Promise<string>;
 
 export function GetWindow():Promise<config.Window>;
 
@@ -111,9 +109,9 @@ export function SetChain(arg1:string,arg2:base.Address):Promise<void>;
 
 export function SetEnv(arg1:string,arg2:string):Promise<void>;
 
-export function SetSessionDaemon(arg1:string,arg2:boolean):Promise<void>;
+export function SetRoute(arg1:string,arg2:string):Promise<void>;
 
-export function SetSessionVal(arg1:string,arg2:string):Promise<void>;
+export function SetSessionDaemon(arg1:string,arg2:boolean):Promise<void>;
 
 export function SetShowing(arg1:string,arg2:boolean):Promise<void>;
 
