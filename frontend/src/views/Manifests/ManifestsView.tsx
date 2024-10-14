@@ -3,9 +3,9 @@ import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { ModifyNoop } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
-import { tableColumns } from "./ManifestTable";
+import { tableColumns } from "./ManifestsTable";
 
-export function ManifestView() {
+export function ManifestsView() {
   const { manifests, fetchManifests } = useAppState();
 
   const table = useReactTable({
