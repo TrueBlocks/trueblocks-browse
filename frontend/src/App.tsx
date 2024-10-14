@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { AppShell } from "@mantine/core";
 import { ViewStatus } from "@components";
-import { IsShowing, SetShowing } from "@gocode/app/App";
+import { IsShowing, SetShowing, GetAppTitle } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import { AppStateProvider } from "@state";
@@ -13,6 +13,14 @@ export const App = () => {
   const [showMenu, setShowMenu] = useState<boolean>(true);
   const [showHelp, setShowHelp] = useState<boolean>(true);
   const [showFooter, setShowFooter] = useState<boolean>(true);
+  const [title, setTitle] = useState<string>("");
+
+  useEffect(() => {
+    GetAppTitle().then((title) => {
+      setTitle(title);
+    });
+  }, []);
+
   const toggles = useMemo(
     () => [
       { component: "header", setter: setShowHeader },
@@ -57,7 +65,7 @@ export const App = () => {
         aside={{ collapsed: { desktop: !showHelp }, width: "20rem", breakpoint: 0 }}
         footer={{ height: showFooter ? "2rem" : "0" }}
       >
-        <AppShell.Header>{showHeader ? <Header title="TrueBlocks Browse" /> : <></>}</AppShell.Header>
+        <AppShell.Header>{showHeader ? <Header title={title} /> : <></>}</AppShell.Header>
         <AppShell.Navbar>
           <MenuPanel />
         </AppShell.Navbar>

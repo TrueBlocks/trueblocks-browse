@@ -1,4 +1,4 @@
-import { Group, Title, Text } from "@mantine/core";
+import { Group, Title } from "@mantine/core";
 import { IndexStatus, ChainSelector } from "@components";
 
 export const Header = ({ title }: { title: string }) => {

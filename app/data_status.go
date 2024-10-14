@@ -11,11 +11,9 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-// Find: NewViews
 func (a *App) StatusPage(first, pageSize int) *types.StatusContainer {
 	first = base.Max(0, base.Min(first, len(a.status.Caches)-1))
 	last := base.Min(len(a.status.Caches), first+pageSize)
@@ -76,13 +74,4 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		messages.EmitInfo(a.ctx, "Loaded status")
 	}
 	return nil
-}
-
-func (a *App) GetChainInfo(chain string) coreTypes.Chain {
-	for _, ch := range a.status.Chains {
-		if ch.Chain == chain {
-			return ch
-		}
-	}
-	return coreTypes.Chain{}
 }

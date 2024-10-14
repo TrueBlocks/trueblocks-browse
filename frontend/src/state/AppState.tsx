@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { useState, useEffect, useContext, createContext, ReactNode } from "react";
 import {
   AbiPage,
   GetMeta,
@@ -47,7 +47,7 @@ interface AppStateProps {
   setAddress: (address: base.Address) => void;
 
   chain: string;
-  changeChain: (newChain: string) => void;
+  selectChain: (newChain: string) => void;
 
   meta: types.MetaData;
   setMeta: (meta: types.MetaData) => void;
@@ -73,8 +73,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [chain, setChain] = useState<string>("mainnet");
   const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
 
-  const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.NOTOKAY);
   const [isConfigured, setIsConfigured] = useState<boolean>(false);
+  const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.NOTOKAY);
 
   const fetchProject = async (currentItem: number, itemsPerPage: number) => {
     ProjectPage(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
@@ -157,7 +157,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const changeChain = (newChain: string) => {
+  const selectChain = (newChain: string) => {
     setChain(newChain);
     SetChain(newChain, address) // disables refresh
       .then(() => {})
@@ -223,12 +223,12 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     status,
     fetchStatus,
     setAddress,
-    changeChain,
+    selectChain,
+    meta,
+    setMeta,
     isConfigured,
     wizardState,
     stepWizard,
-    meta,
-    setMeta,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;

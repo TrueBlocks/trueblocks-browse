@@ -4,7 +4,7 @@ import { GetChains } from "@gocode/app/App";
 import { useAppState } from "@state";
 
 export const ChainSelector = () => {
-  const { chain, changeChain } = useAppState();
+  const { chain, selectChain } = useAppState();
   const [chainList, setChainList] = useState<string[]>([]);
 
   useEffect(() => {
@@ -17,14 +17,14 @@ export const ChainSelector = () => {
     GetChains().then((chains) => {
       setChainList(chains);
       if (!chains.includes(chain)) {
-        changeChain(chains[0]);
+        selectChain(chains[0]);
       }
     });
-  }, [chain, changeChain]);
+  }, [chain, selectChain]);
 
   const handleChange = (value: string | null) => {
     if (value) {
-      changeChain(value);
+      selectChain(value);
     }
   };
 

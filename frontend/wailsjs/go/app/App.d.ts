@@ -31,6 +31,8 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
 export function FooterToggle(arg1:menu.CallbackData):Promise<void>;
 
+export function GetAppTitle():Promise<string>;
+
 export function GetChain():Promise<string>;
 
 export function GetChainInfo(arg1:string):Promise<types.Chain>;
