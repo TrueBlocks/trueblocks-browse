@@ -5,6 +5,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 func (a *App) GetChain() string {
@@ -18,6 +19,15 @@ func (a *App) GetChains() []string {
 	}
 	sort.Strings(ret)
 	return ret
+}
+
+func (a *App) GetChainInfo(chain string) coreTypes.Chain {
+	for _, ch := range a.status.Chains {
+		if ch.Chain == chain {
+			return ch
+		}
+	}
+	return coreTypes.Chain{}
 }
 
 func (a *App) SetChain(chain string, address base.Address) {

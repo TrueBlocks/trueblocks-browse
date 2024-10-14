@@ -32,13 +32,13 @@ type App struct {
 	renderCtxs map[base.Address][]*output.RenderCtx
 
 	// Containers
+	project  types.ProjectContainer
 	abis     types.AbiContainer
 	index    types.IndexContainer
 	manifest types.ManifestContainer
 	monitors types.MonitorContainer
 	names    types.NameContainer
 	status   types.StatusContainer
-	project  types.ProjectContainer
 
 	// Controllers
 	ScraperController *daemons.DaemonScraper

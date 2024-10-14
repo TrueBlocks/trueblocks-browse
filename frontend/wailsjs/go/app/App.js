@@ -46,6 +46,10 @@ export function FooterToggle(arg1) {
   return window['go']['app']['App']['FooterToggle'](arg1);
 }
 
+export function GetAppTitle() {
+  return window['go']['app']['App']['GetAppTitle']();
+}
+
 export function GetChain() {
   return window['go']['app']['App']['GetChain']();
 }
