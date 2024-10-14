@@ -1,5 +1,7 @@
 package app
 
+import "os"
+
 func (a *App) SetShowing(which string, onOff bool) {
 	switch which {
 	case "header":
@@ -12,4 +14,8 @@ func (a *App) SetShowing(which string, onOff bool) {
 		a.session.Toggles.Footer = onOff
 	}
 	a.saveSession()
+}
+
+func (a *App) SetEnv(key, value string) {
+	os.Setenv(key, value)
 }

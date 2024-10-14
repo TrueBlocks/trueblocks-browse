@@ -1,9 +1,9 @@
 import { createContext, useEffect, useContext, ReactNode } from "react";
-import { Route } from "@/Routes";
 import { Pager } from "@components";
 import { HistoryPage } from "@gocode/app/App";
 import { types, messages, app } from "@gocode/models";
 import { Page, useKeyboardPaging } from "@hooks";
+import { Route } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
 import { useAppState } from "@state";
 

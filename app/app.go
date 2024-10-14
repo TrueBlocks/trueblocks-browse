@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"encoding/json"
-	"os"
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
@@ -38,7 +37,8 @@ type App struct {
 	manifest types.ManifestContainer
 	monitors types.MonitorContainer
 	names    types.NameContainer
-	status   types.StatusContainer
+
+	status types.StatusContainer
 
 	// Controllers
 	ScraperController *daemons.DaemonScraper
@@ -106,21 +106,6 @@ func (a *App) GetSession() *config.Session {
 // ---------------------------------------------------------------
 func (a *App) GetContext() context.Context {
 	return a.ctx
-}
-
-// ---------------------------------------------------------------
-func (a *App) GetEnv(key string) string {
-	return os.Getenv(key)
-}
-
-// ---------------------------------------------------------------
-func (a *App) SetEnv(key, value string) {
-	os.Setenv(key, value)
-}
-
-// ---------------------------------------------------------------
-func (a *App) GetMeta() coreTypes.MetaData {
-	return a.meta
 }
 
 // ---------------------------------------------------------------

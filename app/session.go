@@ -8,22 +8,6 @@ import (
 )
 
 // ------------------------------------------------------------------------
-func (a *App) GetSessionVal(which string) string {
-	switch which {
-	case "file":
-		return a.session.LastFile
-	case "route":
-		if !a.IsConfigured() {
-			return "/wizard"
-		}
-		return a.session.LastRoute + a.GetSessionSubVal(a.session.LastRoute)
-	case "wizard":
-		return a.session.Wizard.State.String()
-	}
-	return "Unknown"
-}
-
-// ------------------------------------------------------------------------
 func (a *App) SetSessionVal(which, value string) {
 	switch which {
 	case "file":

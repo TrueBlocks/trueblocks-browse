@@ -3,10 +3,10 @@ import { AppShell } from "@mantine/core";
 import { ViewStatus } from "@components";
 import { IsShowing, SetShowing, GetAppTitle } from "@gocode/app/App";
 import { messages } from "@gocode/models";
+import { Header, MenuPanel, ViewContainer, HelpPanel, Footer } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
 import { AppStateProvider } from "@state";
 import classes from "./App.module.css";
-import { Header, MenuPanel, ViewContainer, HelpPanel, Footer } from "./layout";
 
 export const App = () => {
   const [showHeader, setShowHeader] = useState<boolean>(true);

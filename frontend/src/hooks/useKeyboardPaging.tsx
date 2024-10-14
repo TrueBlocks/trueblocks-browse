@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { Route } from "@/Routes";
 import { Pager, EmptyPager } from "@components";
 import { CancelAllContexts, Reload } from "@gocode/app/App";
+import { Route } from "@layout";
 import { useAppState } from "@state";
 
 export type Page = {

@@ -53,13 +53,13 @@ export function GetMenus():Promise<menu.Menu>;
 
 export function GetMeta():Promise<types.MetaData>;
 
+export function GetRoute():Promise<string>;
+
 export function GetSession():Promise<config.Session>;
 
 export function GetSessionDeamon(arg1:string):Promise<boolean>;
 
 export function GetSessionSubVal(arg1:string):Promise<string>;
-
-export function GetSessionVal(arg1:string):Promise<string>;
 
 export function GetWindow():Promise<config.Window>;
 
