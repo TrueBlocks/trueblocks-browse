@@ -41,6 +41,7 @@ func main() {
 			&messages.NavigateMsg{},
 			&messages.ProgressMsg{},
 			&messages.ToggleMsg{},
+			&messages.WizardMsg{},
 			&types.AbiContainer{},
 			&types.ProjectContainer{},
 			&types.IndexContainer{},

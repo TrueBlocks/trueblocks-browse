@@ -3,6 +3,7 @@ package messages
 import (
 	"context"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -15,7 +16,8 @@ type MessageData interface {
 		InfoMsg |
 		NavigateMsg |
 		ProgressMsg |
-		ToggleMsg
+		ToggleMsg |
+		WizardMsg
 }
 
 func emitMsg[T MessageData](ctx context.Context, msg Message, data *T) {
@@ -45,6 +47,10 @@ func EmitDocument(ctx context.Context, fileName, msg string) {
 
 func EmitNavigate(ctx context.Context, route string) {
 	emitMsg(ctx, Navigate, NewNavigateMsg(route))
+}
+
+func EmitWizard(ctx context.Context, state wizard.State) {
+	emitMsg(ctx, Wizard, NewWizardMsg(state))
 }
 
 func EmitToggle(ctx context.Context, comp string) {

@@ -1,18 +1,18 @@
 import { useState, useEffect, useContext, createContext, ReactNode } from "react";
 import {
-  AbiPage,
-  GetMeta,
-  GetChain,
-  SetChain,
-  GetWizardState,
+  ProjectPage,
   HistoryPage,
-  IndexPage,
-  ManifestPage,
   MonitorPage,
   NamePage,
-  ProjectPage,
-  StatusPage,
+  AbiPage,
+  IndexPage,
+  ManifestPage,
+  GetChain,
+  SetChain,
+  GetMeta,
+  GetWizardState,
   StepWizard,
+  StatusPage
 } from "@gocode/app/App";
 import { base, messages, types, wizard } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
@@ -54,7 +54,7 @@ interface AppStateProps {
 
   isConfigured: boolean;
   wizardState: wizard.State;
-  stepWizard: (step: wizard.Step) => void;
+  setWizardState: (state: wizard.State) => void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -150,10 +150,13 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
+  useEffect(() => {
+    setIsConfigured(wizardState == wizard.State.OKAY);
+  }, [wizardState]);
+
   const fetchWizard = async () => {
     GetWizardState().then((state) => {
       setWizardState(state);
-      setIsConfigured(state == wizard.State.OKAY);
     });
   };
 
@@ -165,6 +168,13 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
         console.error("Error setting chain:", error);
       });
   };
+
+  useEffect(() => {
+    fetchHistory(0, 15);
+    HistoryPage(address as unknown as string, 0, 15).then((item: types.HistoryContainer) => {
+      setHistory(item);
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     fetchChain();
@@ -189,18 +199,16 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   useEffect(() => {
-    fetchHistory(0, 15);
-    HistoryPage(address as unknown as string, 0, 15).then((item: types.HistoryContainer) => {
-      setHistory(item);
-    });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    const handleWizard = () => {
+      fetchWizard();
+    };
 
-  const stepWizard = (step: wizard.Step) => {
-    StepWizard(step).then((state) => {
-      setWizardState(state);
-      setIsConfigured(state == wizard.State.OKAY);
-    });
-  };
+    const { Message } = messages;
+    EventsOn(Message.WIZARD, handleWizard);
+    return () => {
+      EventsOff(Message.WIZARD);
+    };
+  }, []);
 
   const state = {
     address,
@@ -228,7 +236,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     setMeta,
     isConfigured,
     wizardState,
-    stepWizard,
+    setWizardState,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;

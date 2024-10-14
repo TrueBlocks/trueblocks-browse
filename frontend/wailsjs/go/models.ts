@@ -235,6 +235,7 @@ export namespace messages {
 	    NAVIGATE = "Navigate",
 	    RELOAD = "Reload",
 	    TOGGLE = "Toggle",
+	    WIZARD = "Wizard",
 	}
 	export class CancelMsg {
 	    address: base.Address;
@@ -396,6 +397,18 @@ export namespace messages {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.component = source["component"];
+	    }
+	}
+	export class WizardMsg {
+	    state: wizard.State;
+	
+	    static createFrom(source: any = {}) {
+	        return new WizardMsg(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.state = source["state"];
 	    }
 	}
 

@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
 )
 
@@ -20,6 +21,7 @@ func (a *App) StepWizard(step wizard.Step) wizard.State {
 		if a.IsConfigured() {
 			a.Navigate("/", "")
 		}
+		messages.EmitWizard(a.ctx, a.session.Wizard.State)
 	}()
 
 	a.session.Wizard.Step(step)
