@@ -1,0 +1,8 @@
+.viewStatus {
+  font-size: 14pt;
+  font-family: monospace;
+  height: 2rem;
+  background-color: transparent;
+  position: sticky;
+  bottom: 0;
+}

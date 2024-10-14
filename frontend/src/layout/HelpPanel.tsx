@@ -1,5 +1,5 @@
 import { Help } from "@components";
 
-export function Aside() {
+export function HelpPanel() {
   return <Help />;
 }
