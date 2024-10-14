@@ -1,5 +1,5 @@
-import { app, base } from "../../wailsjs/go/models";
-import { useViewState } from "../state";
+import { app, base } from "@gocode/models";
+import { useViewState } from "@state";
 
 export const useModifyFn = (address: base.Address) => {
   const { fetchFn, modifyFn, pager } = useViewState();

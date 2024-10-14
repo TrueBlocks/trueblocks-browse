@@ -1,5 +1,5 @@
 import { Pagination } from "@mantine/core";
-import { Route } from "@/Routes";
+import { Route } from "@layout";
 import classes from "./Paginator.module.css";
 
 export type Pager = {

@@ -90,6 +90,10 @@ export function GetMeta() {
   return window['go']['app']['App']['GetMeta']();
 }
 
+export function GetRoute() {
+  return window['go']['app']['App']['GetRoute']();
+}
+
 export function GetSession() {
   return window['go']['app']['App']['GetSession']();
 }
@@ -100,10 +104,6 @@ export function GetSessionDeamon(arg1) {
 
 export function GetSessionSubVal(arg1) {
   return window['go']['app']['App']['GetSessionSubVal'](arg1);
-}
-
-export function GetSessionVal(arg1) {
-  return window['go']['app']['App']['GetSessionVal'](arg1);
 }
 
 export function GetWindow() {

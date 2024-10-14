@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
-// TODO: This alias is wrong, can it not be @Routes See also @/App.module.css
-import { routeItems, RouteItem } from "@/Routes";
-import { GetSessionVal, GetSessionSubVal, SetSessionVal } from "@gocode/app/App";
+import { StyledNavLink } from "@components";
+import { GetRoute, GetSessionSubVal, SetSessionVal } from "@gocode/app/App";
 import { messages } from "@gocode/models";
+import { routeItems, RouteItem } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
 import { useAppState } from "@state";
-import { StyledNavLink } from "@components";
 
 export const Menu = () => {
   const [activeRoute, setActiveRoute] = useState("/");
@@ -14,7 +13,7 @@ export const Menu = () => {
   const { isConfigured } = useAppState();
 
   useEffect(() => {
-    (GetSessionVal("route") || "/").then((route) => {
+    GetRoute().then((route) => {
       if (route.startsWith("/history")) {
         setActiveRoute("/history/:address");
       } else {
