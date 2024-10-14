@@ -1,24 +1,34 @@
 import { Button } from "@mantine/core";
+import { StepWizard } from "@gocode/app/App";
 import { wizard } from "@gocode/models";
 import { useAppState } from "@state";
 
 export function WizardView() {
-  const { isConfigured, wizardState } = useAppState();
+  const { isConfigured, wizardState, setWizardState } = useAppState();
+  const stepWizard = (step: wizard.Step) => {
+    StepWizard(step).then((state) => {
+      setWizardState(state);
+    });
+  };
 
   return (
     <div>
       <div>{`wizardState: ${wizardState}`}</div>
       <div>{`isConfigured: ${isConfigured}`}</div>
-      <ResetWizard />
-      <StepWizard back />
-      <StepWizard />
-      <FinishWizard />
+      <ResetWizard stepWizard={stepWizard} />
+      <BumpWizard stepWizard={stepWizard} back />
+      <BumpWizard stepWizard={stepWizard} />
+      <FinishWizard stepWizard={stepWizard} />
     </div>
   );
 }
 
-export function ResetWizard() {
-  const { stepWizard } = useAppState();
+type StepProps = {
+  stepWizard: (step: wizard.Step) => void;
+  back?: boolean;
+};
+
+export function ResetWizard({ stepWizard }: StepProps) {
   return (
     <Button size={"xs"} onClick={() => stepWizard(wizard.Step.RESET)}>
       Reset
@@ -26,8 +36,7 @@ export function ResetWizard() {
   );
 }
 
-export function StepWizard({ back = false }: { back?: boolean }) {
-  const { stepWizard } = useAppState();
+export function BumpWizard({ stepWizard, back = false }: StepProps) {
   return (
     <Button size={"xs"} onClick={() => stepWizard(back ? wizard.Step.PREVIOUS : wizard.Step.NEXT)}>
       {back ? "Back" : "Next"}
@@ -35,8 +44,7 @@ export function StepWizard({ back = false }: { back?: boolean }) {
   );
 }
 
-export function FinishWizard() {
-  const { stepWizard } = useAppState();
+export function FinishWizard({ stepWizard }: StepProps) {
   return (
     <Button size={"xs"} onClick={() => stepWizard(wizard.Step.FINISH)}>
       Finish

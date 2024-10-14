@@ -14,6 +14,7 @@ const (
 	Navigate  Message = "Navigate"
 	Reload    Message = "Reload"
 	Toggle    Message = "Toggle"
+	Wizard    Message = "Wizard"
 )
 
 var AllMessages = []struct {
@@ -31,4 +32,5 @@ var AllMessages = []struct {
 	{Navigate, "NAVIGATE"},
 	{Reload, "RELOAD"},
 	{Toggle, "TOGGLE"},
+	{Wizard, "WIZARD"},
 }

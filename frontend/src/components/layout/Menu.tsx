@@ -10,6 +10,7 @@ import { useAppState } from "@state";
 export const Menu = () => {
   const [activeRoute, setActiveRoute] = useState("/");
   const [_, setLocation] = useLocation();
+  const [filteredMenu, setFilteredMenu] = useState<RouteItem[]>([]);
   const { isConfigured } = useAppState();
 
   useEffect(() => {
@@ -51,13 +52,17 @@ export const Menu = () => {
     }
   };
 
-  const routes = routeItems
-    .filter((item: RouteItem) => (isConfigured ? item.route !== "/wizard" : item.route === "/wizard"))
-    .sort((a, b) => a.order - b.order);
+  useEffect(() => {
+    setFilteredMenu(
+      routeItems
+        .filter((item: RouteItem) => (isConfigured ? item.route !== "/wizard" : item.route === "/wizard"))
+        .sort((a, b) => a.order - b.order)
+    );
+  }, [isConfigured]);
 
   return (
     <div style={{ flexGrow: 1 }}>
-      {routes.map((item) => {
+      {filteredMenu.map((item) => {
         return (
           <StyledNavLink
             key={item.route}
