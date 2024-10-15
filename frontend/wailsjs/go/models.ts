@@ -1623,7 +1623,7 @@ export namespace types {
 	    nCustom: number;
 	    nRegular: number;
 	    nPrefund: number;
-	    nBaddress: number;
+	    nSystem: number;
 	    nDeleted: number;
 	    // Go type: time
 	    lastUpdate: any;
@@ -1645,7 +1645,7 @@ export namespace types {
 	        this.nCustom = source["nCustom"];
 	        this.nRegular = source["nRegular"];
 	        this.nPrefund = source["nPrefund"];
-	        this.nBaddress = source["nBaddress"];
+	        this.nSystem = source["nSystem"];
 	        this.nDeleted = source["nDeleted"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.chain = source["chain"];
