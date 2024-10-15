@@ -9,7 +9,7 @@ import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./NamesTable";
 
-export function NamesView() {
+export const NamesView = () => {
   const { names, fetchNames } = useAppState();
   const [showEditor, setShowEditor] = useState(false);
 
