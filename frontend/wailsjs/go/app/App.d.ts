@@ -6,6 +6,7 @@ import {menu} from '../models';
 import {context} from '../models';
 import {config} from '../models';
 import {wizard} from '../models';
+import {editors} from '../models';
 import {app} from '../models';
 import {output} from '../models';
 
@@ -77,6 +78,8 @@ export function IsConfigured():Promise<boolean>;
 
 export function IsShowing(arg1:string):Promise<boolean>;
 
+export function LoadName(arg1:string):Promise<editors.Name>;
+
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
 
 export function MenuToggle(arg1:menu.CallbackData):Promise<void>;
@@ -104,6 +107,8 @@ export function Refresh(arg1:Array<string>):Promise<void>;
 export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
 
 export function Reload(arg1:base.Address):Promise<void>;
+
+export function SaveName(arg1:editors.Name):Promise<void>;
 
 export function SetChain(arg1:string,arg2:base.Address):Promise<void>;
 

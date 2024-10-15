@@ -16,7 +16,7 @@ func (a *App) GetMenus() *menu.Menu {
 	fileMenu.AddText("New File", keys.CmdOrCtrl("n"), a.FileNew)
 	fileMenu.AddText("Open File", keys.CmdOrCtrl("o"), a.FileOpen)
 	fileMenu.AddText("Save File", keys.CmdOrCtrl("s"), a.FileSave)
-	fileMenu.AddText("Save As File", keys.CmdOrCtrl("a"), a.FileSaveAs)
+	fileMenu.AddText("Save As File", nil, a.FileSaveAs)
 
 	viewMenu := appMenu.AddSubmenu("View")
 	viewMenu.AddText("Project", keys.CmdOrCtrl("1"), a.ViewProject)

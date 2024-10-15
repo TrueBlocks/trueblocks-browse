@@ -138,6 +138,10 @@ export function IsShowing(arg1) {
   return window['go']['app']['App']['IsShowing'](arg1);
 }
 
+export function LoadName(arg1) {
+  return window['go']['app']['App']['LoadName'](arg1);
+}
+
 export function ManifestPage(arg1, arg2) {
   return window['go']['app']['App']['ManifestPage'](arg1, arg2);
 }
@@ -192,6 +196,10 @@ export function RegisterCtx(arg1) {
 
 export function Reload(arg1) {
   return window['go']['app']['App']['Reload'](arg1);
+}
+
+export function SaveName(arg1) {
+  return window['go']['app']['App']['SaveName'](arg1);
 }
 
 export function SetChain(arg1, arg2) {
