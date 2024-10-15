@@ -3,10 +3,11 @@ import { createColumnHelper } from "@tanstack/react-table";
 import {
   CustomColumnDef,
   Formatter,
+  EditButton,
   ExploreButton,
   ExportButton,
   ViewButton,
-  DeleteButton,
+  CrudButton,
   DalleButton,
   GoogleButton,
   CopyButton,
@@ -50,6 +51,7 @@ const defButtons = (address: base.Address) => {
       <ViewButton value={address} />
       <ExportButton value={address} />
       <CopyButton value={address} />
+      <EditButton value={address} />
     </Group>
   );
 };
@@ -63,7 +65,7 @@ export const withDelete: CustomColumnDef<types.HistoryContainer, any>[] = [
       return (
         <Group wrap={"nowrap"}>
           {defButtons(address)}
-          <DeleteButton value={address} isDeleted={false} />
+          <CrudButton value={address} />
         </Group>
       );
     },
