@@ -3,7 +3,7 @@ import { StepWizard } from "@gocode/app/App";
 import { wizard } from "@gocode/models";
 import { useAppState } from "@state";
 
-export function WizardView() {
+export const WizardView = () => {
   const { isConfigured, wizardState, setWizardState } = useAppState();
   const stepWizard = (step: wizard.Step) => {
     StepWizard(step).then((state) => {
@@ -21,33 +21,33 @@ export function WizardView() {
       <FinishWizard stepWizard={stepWizard} />
     </div>
   );
-}
+};
 
 type StepProps = {
   stepWizard: (step: wizard.Step) => void;
   back?: boolean;
 };
 
-export function ResetWizard({ stepWizard }: StepProps) {
+export const ResetWizard = ({ stepWizard }: StepProps) => {
   return (
     <Button size={"xs"} onClick={() => stepWizard(wizard.Step.RESET)}>
       Reset
     </Button>
   );
-}
+};
 
-export function BumpWizard({ stepWizard, back = false }: StepProps) {
+export const BumpWizard = ({ stepWizard, back = false }: StepProps) => {
   return (
     <Button size={"xs"} onClick={() => stepWizard(back ? wizard.Step.PREVIOUS : wizard.Step.NEXT)}>
       {back ? "Back" : "Next"}
     </Button>
   );
-}
+};
 
-export function FinishWizard({ stepWizard }: StepProps) {
+export const FinishWizard = ({ stepWizard }: StepProps) => {
   return (
     <Button size={"xs"} onClick={() => stepWizard(wizard.Step.FINISH)}>
       Finish
     </Button>
   );
-}
+};

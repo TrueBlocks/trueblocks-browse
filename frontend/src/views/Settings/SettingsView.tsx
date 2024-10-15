@@ -5,7 +5,7 @@ import { GetSession, ModifyNoop } from "@gocode/app/App";
 import { config } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 
-export function SettingsView() {
+export const SettingsView = () => {
   const [session, setSession] = useState<config.Session | null>(null);
   const { status } = useAppState();
 
@@ -25,4 +25,4 @@ export function SettingsView() {
       </View>
     </ViewStateProvider>
   );
-}
+};

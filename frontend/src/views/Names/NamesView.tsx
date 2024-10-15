@@ -45,7 +45,7 @@ export const NamesView = () => {
 };
 
 type theInstance = InstanceType<typeof types.NameContainer>;
-function createNameForm(table: any): GroupDefinition<theInstance>[] {
+const createNameForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
       title: "Name Data",
@@ -79,4 +79,4 @@ function createNameForm(table: any): GroupDefinition<theInstance>[] {
       ],
     },
   ];
-}
+};

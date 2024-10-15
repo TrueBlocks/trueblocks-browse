@@ -5,7 +5,7 @@ import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./StatusTable";
 
-export function StatusView() {
+export const StatusView = () => {
   const { status, fetchStatus } = useAppState();
 
   const table = useReactTable({
@@ -21,10 +21,10 @@ export function StatusView() {
       </View>
     </ViewStateProvider>
   );
-}
+};
 
 type theInstance = InstanceType<typeof types.StatusContainer>;
-function createStatusForm(table: any): GroupDefinition<theInstance>[] {
+const createStatusForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
       title: "System Data",
@@ -76,4 +76,4 @@ function createStatusForm(table: any): GroupDefinition<theInstance>[] {
       ],
     },
   ];
-}
+};

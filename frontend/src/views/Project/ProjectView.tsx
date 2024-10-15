@@ -6,7 +6,7 @@ import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { withoutDelete, withDelete } from "./ProjectTable";
 
-export function ProjectView() {
+export const ProjectView = () => {
   const { project, fetchProject } = useAppState();
   // const [filtered, setFiltered] = useState<types.HistoryContainer[]>([]);
 
@@ -36,10 +36,10 @@ export function ProjectView() {
       </View>
     </ViewStateProvider>
   );
-}
+};
 
 type theInstance = InstanceType<typeof types.ProjectContainer>;
-function createProjectForm(table: any): GroupDefinition<theInstance>[] {
+const createProjectForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
       title: "Open Monitors",
@@ -73,4 +73,4 @@ function createProjectForm(table: any): GroupDefinition<theInstance>[] {
       ],
     },
   ];
-}
+};

@@ -10,7 +10,7 @@ import { DaemonCard, DaemonLog } from ".";
 
 const empty = {} as daemons.Daemon;
 
-export function DaemonsView() {
+export const DaemonsView = () => {
   const [scraper, setScraper] = useState<daemons.Daemon>(empty);
   const [freshen, setFreshen] = useState<daemons.Daemon>(empty);
   const [ipfs, setIpfs] = useState<daemons.Daemon>(empty);
@@ -78,4 +78,4 @@ export function DaemonsView() {
       </View>
     </ViewStateProvider>
   );
-}
+};
