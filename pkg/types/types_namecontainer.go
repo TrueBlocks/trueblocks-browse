@@ -24,7 +24,7 @@ type NameContainer struct {
 	NCustom    int                             `json:"nCustom"`
 	NRegular   int                             `json:"nRegular"`
 	NPrefund   int                             `json:"nPrefund"`
-	NBaddress  int                             `json:"nBaddress"`
+	NSystem    int                             `json:"nSystem"`
 	NDeleted   int                             `json:"nDeleted"`
 	LastUpdate time.Time                       `json:"lastUpdate"`
 	Chain      string                          `json:"chain"`
@@ -64,7 +64,7 @@ func (s *NameContainer) ShallowCopy() Containerer {
 		NCustom:    s.NCustom,
 		NRegular:   s.NRegular,
 		NPrefund:   s.NPrefund,
-		NBaddress:  s.NBaddress,
+		NSystem:    s.NSystem,
 		NDeleted:   s.NDeleted,
 		LastUpdate: s.LastUpdate,
 		Chain:      s.Chain,
@@ -90,7 +90,7 @@ func (s *NameContainer) Summarize() {
 			s.NPrefund++
 		}
 		if name.Parts&coreTypes.Baddress > 0 {
-			s.NBaddress++
+			s.NSystem++
 		}
 		if name.Deleted {
 			s.NDeleted++

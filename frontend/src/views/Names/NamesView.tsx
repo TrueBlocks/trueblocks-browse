@@ -42,7 +42,7 @@ export const NamesView = () => {
       </View>
     </ViewStateProvider>
   );
-}
+};
 
 type theInstance = InstanceType<typeof types.NameContainer>;
 function createNameForm(table: any): GroupDefinition<theInstance>[] {
@@ -66,7 +66,7 @@ function createNameForm(table: any): GroupDefinition<theInstance>[] {
         { label: "nCustom", type: "int", accessor: "nCustom" },
         { label: "nRegular", type: "int", accessor: "nRegular" },
         { label: "nPrefund", type: "int", accessor: "nPrefund" },
-        { label: "nBaddress", type: "int", accessor: "nBaddress" },
+        { label: "nSystem", type: "int", accessor: "nSystem" },
       ],
     },
     {
