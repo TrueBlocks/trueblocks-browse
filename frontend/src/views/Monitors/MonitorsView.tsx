@@ -6,7 +6,7 @@ import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./MonitorsTable";
 
-export function MonitorsView() {
+export const MonitorsView = () => {
   const { monitors, fetchMonitors } = useAppState();
 
   const handleEnter = (page: Page) => {
@@ -34,10 +34,10 @@ export function MonitorsView() {
       </View>
     </ViewStateProvider>
   );
-}
+};
 
 type theInstance = InstanceType<typeof types.MonitorContainer>;
-function createMonitorForm(table: any): GroupDefinition<theInstance>[] {
+const createMonitorForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
       title: "Monitor Data",
@@ -68,4 +68,4 @@ function createMonitorForm(table: any): GroupDefinition<theInstance>[] {
       ],
     },
   ];
-}
+};

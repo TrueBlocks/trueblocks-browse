@@ -5,7 +5,7 @@ import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./ManifestsTable";
 
-export function ManifestsView() {
+export const ManifestsView = () => {
   const { manifests, fetchManifests } = useAppState();
 
   const table = useReactTable({
@@ -15,16 +15,16 @@ export function ManifestsView() {
   });
 
   return (
-    <ViewStateProvider route={"manifest"} nItems={manifests.nItems} fetchFn={fetchManifests} modifyFn={ModifyNoop}>
+    <ViewStateProvider route={"manifests"} nItems={manifests.nItems} fetchFn={fetchManifests} modifyFn={ModifyNoop}>
       <View>
         <FormTable data={manifests} definition={createManifestForm(table)} />
       </View>
     </ViewStateProvider>
   );
-}
+};
 
 type theInstance = InstanceType<typeof types.ManifestContainer>;
-function createManifestForm(table: any): GroupDefinition<theInstance>[] {
+const createManifestForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
       title: "Manifest Data",
@@ -56,4 +56,4 @@ function createManifestForm(table: any): GroupDefinition<theInstance>[] {
       ],
     },
   ];
-}
+};

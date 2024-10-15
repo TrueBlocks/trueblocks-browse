@@ -34,7 +34,7 @@ func (a *App) ViewIndexes(cd *menu.CallbackData) {
 
 func (a *App) ViewManifest(cd *menu.CallbackData) {
 	debugMsg("ViewManifest")
-	a.Navigate("/manifest", "")
+	a.Navigate("/manifests", "")
 }
 
 func (a *App) ViewAbis(cd *menu.CallbackData) {

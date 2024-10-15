@@ -36,7 +36,7 @@ export type Route =
   | "names"
   | "abis"
   | "indexes"
-  | "manifest"
+  | "manifests"
   | "status"
   | "settings"
   | "daemons"
@@ -96,7 +96,7 @@ export const routeItems: RouteItem[] = [
   },
   {
     order: 60,
-    route: expandRoute("manifest"),
+    route: expandRoute("manifests"),
     label: "Manifest",
     icon: ManifestIcon,
     component: ManifestsView,

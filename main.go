@@ -6,6 +6,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/app"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/editors"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
@@ -50,6 +51,7 @@ func main() {
 			&types.NameContainer{},
 			&types.StatusContainer{},
 			&wizard.Wizard{},
+			&editors.Name{},
 			&coreTypes.Transaction{},
 			&daemons.Daemon{},
 		},

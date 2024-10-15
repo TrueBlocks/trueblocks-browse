@@ -17,19 +17,13 @@ import { types, base } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./HistoryTable";
 
-export function HistoryView() {
+export const HistoryView = () => {
   const { setAddress, history, fetchHistory } = useAppState();
 
-  const aa = useParams().address;
+  const address = useParams().address as unknown as base.Address;
   useEffect(() => {
-    if (aa === ":address") {
-      GetAddress().then((address) => {
-        setAddress(address);
-      });
-    } else {
-      setAddress(aa as unknown as base.Address);
-    }
-  }, [aa]);
+    setAddress(address);
+  }, [address, setAddress]);
 
   const table = useReactTable({
     data: history.items || [],
@@ -40,15 +34,14 @@ export function HistoryView() {
   return (
     <ViewStateProvider route={"history"} nItems={history.nItems} fetchFn={fetchHistory} modifyFn={ModifyNoop}>
       <View>
-        <FormTable data={history} definition={CreateHistoryForm(table)} />
+        <FormTable data={history} definition={createHistoryForm(address, table)} />
       </View>
     </ViewStateProvider>
   );
-}
+};
 
 type theInstance = InstanceType<typeof types.HistoryContainer>;
-function CreateHistoryForm(table: Table<types.Transaction>): GroupDefinition<theInstance>[] {
-  const { address } = useAppState();
+const createHistoryForm = (address: base.Address, table: Table<types.Transaction>): GroupDefinition<theInstance>[] => {
   return [
     {
       title: "DalleDress",
@@ -105,4 +98,4 @@ function CreateHistoryForm(table: Table<types.Transaction>): GroupDefinition<the
       ],
     },
   ];
-}
+};

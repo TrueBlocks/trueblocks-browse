@@ -5,7 +5,7 @@ import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./IndexesTable";
 
-export function IndexesView() {
+export const IndexesView = () => {
   const { indexes, fetchIndexes } = useAppState();
 
   const table = useReactTable({
@@ -21,10 +21,10 @@ export function IndexesView() {
       </View>
     </ViewStateProvider>
   );
-}
+};
 
 type theInstance = InstanceType<typeof types.IndexContainer>;
-function createIndexForm(table: any): GroupDefinition<theInstance>[] {
+const createIndexForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
       title: "Index Data",
@@ -58,4 +58,4 @@ function createIndexForm(table: any): GroupDefinition<theInstance>[] {
       ],
     },
   ];
-}
+};

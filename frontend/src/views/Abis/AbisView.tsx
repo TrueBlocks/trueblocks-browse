@@ -5,7 +5,7 @@ import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./AbisTable";
 
-export function AbisView() {
+export const AbisView = () => {
   const { abis, fetchAbis } = useAppState();
 
   const table = useReactTable({
@@ -21,10 +21,10 @@ export function AbisView() {
       </View>
     </ViewStateProvider>
   );
-}
+};
 
 type theInstance = InstanceType<typeof types.AbiContainer>;
-function createAbisForm(table: Table<types.Abi>): GroupDefinition<theInstance>[] {
+const createAbisForm = (table: Table<types.Abi>): GroupDefinition<theInstance>[] => {
   return [
     {
       title: "Abi Data",
@@ -55,4 +55,4 @@ function createAbisForm(table: Table<types.Abi>): GroupDefinition<theInstance>[]
       ],
     },
   ];
-}
+};
