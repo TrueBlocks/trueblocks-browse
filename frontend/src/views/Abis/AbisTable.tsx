@@ -1,5 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnDef, Formatter, DeleteButton } from "@components";
+import { CustomColumnDef, Formatter, CrudButton } from "@components";
 import { types } from "@gocode/models";
 
 const columnHelper = createColumnHelper<types.Abi>();
@@ -58,7 +58,7 @@ export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
     header: () => "Crud Buttons",
     cell: (info) => {
       const { address, isKnown } = info.row.original;
-      return isKnown ? <></> : <DeleteButton value={address} isDeleted={false} />;
+      return isKnown ? <></> : <CrudButton value={address} />;
     },
     meta: { className: "small center cell" },
   }),
