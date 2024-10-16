@@ -14,8 +14,7 @@ export const NamesView = () => {
   const [showEditor, setShowEditor] = useState(false);
 
   const handleEnter = (page: Page) => {
-    const record = page.selected - page.getOffset();
-    const address = names.names[record].address;
+    const address = names.names[page.getRecord()].address;
     GoToHistory(address).then(() => {});
   };
 
@@ -34,10 +33,6 @@ export const NamesView = () => {
       modifyFn={ModifyName}
     >
       <View>
-        <Stack justify="space-between">
-          <BaseButton onClick={() => setShowEditor(!showEditor)}>{showEditor ? "Hide" : "Show"}</BaseButton>
-          {showEditor ? <NameEditor /> : <></>}
-        </Stack>
         <FormTable data={names} definition={createNameForm(table)} />
       </View>
     </ViewStateProvider>

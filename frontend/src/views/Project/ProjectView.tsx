@@ -11,8 +11,7 @@ export const ProjectView = () => {
   // const [filtered, setFiltered] = useState<types.HistoryContainer[]>([]);
 
   const handleEnter = (page: Page) => {
-    const record = page.selected - page.getOffset();
-    const address = project.items[record].address;
+    const address = project.items[page.getRecord()].address;
     GoToHistory(address).then(() => {});
   };
 

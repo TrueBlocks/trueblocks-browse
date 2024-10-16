@@ -10,8 +10,7 @@ export const MonitorsView = () => {
   const { monitors, fetchMonitors } = useAppState();
 
   const handleEnter = (page: Page) => {
-    const record = page.selected - page.getOffset();
-    const address = monitors.items[record].address;
+    const address = monitors.items[page.getRecord()].address;
     GoToHistory(address).then(() => {});
   };
 
