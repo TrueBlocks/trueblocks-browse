@@ -8,14 +8,14 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 )
 
-// GetConfigDir returns the user's (OS-specific) configuration folder. If the folder
+// GetConfigFn returns the user's (OS-specific) configuration folder. If the folder
 // is not found, an error is returned. If appDir is not empty, it is appended to
 // the configDir and if the resulting folder does not exist, it is created.
-func GetConfigDir(appDir string) (string, error) {
+func GetConfigFn(appDir, fn string) (string, error) {
 	if configPath, err := os.UserConfigDir(); err != nil {
 		return "", err
 	} else {
-		path := filepath.Join(configPath, appDir)
+		path := filepath.Join(configPath, "TrueBlocks", appDir, fn)
 		if !file.FolderExists(path) {
 			_ = file.EstablishFolder(path)
 		}

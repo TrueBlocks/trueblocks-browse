@@ -5,5 +5,5 @@ func (s *Session) SetRoute(route, subRoute string) {
 	if len(subRoute) > 0 {
 		s.LastSub[route] = subRoute
 	}
-	s.Save()
+	_ = s.Save()
 }
