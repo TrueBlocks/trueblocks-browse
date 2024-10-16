@@ -12,7 +12,7 @@ import {
   GetMeta,
   GetWizardState,
   StepWizard,
-  StatusPage
+  StatusPage,
 } from "@gocode/app/App";
 import { base, messages, types, wizard } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";

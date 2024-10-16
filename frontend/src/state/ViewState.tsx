@@ -50,16 +50,6 @@ export const ViewStateProvider: React.FC<{
   useEffect(() => {
     const handleRefresh = () => {
       fetchFn(pager.getOffset(), pager.perPage);
-      /*
-      // Dawid: This doesn't really work. It ignores, for example, when the data is
-      // Dawid: with the latest data at the end. Plus, it has no effect on performance
-      // Fetch page only if it makes sense: the current page is the first page
-      // (showing the latest transactions) and is incomplete.
-      // Otherwise we get into constant rerendering
-      if (pager.pageNumber === 1 && nItems < pager.perPage) {
-        fetchFn(pager.getOffset(), pager.perPage);
-      }
-      */
     };
 
     const { Message } = messages;

@@ -1,5 +1,5 @@
-export * from "./FormTable";
 export * from "./CustomMeta";
 export * from "./DataTable";
-export * from "./Paginator";
 export * from "./EditableTable";
+export * from "./FormTable";
+export * from "./Paginator";

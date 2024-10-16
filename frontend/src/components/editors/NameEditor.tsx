@@ -1,6 +1,6 @@
 import { Editor, FormField, EditorProps, requiredString, validAddress } from "@components";
-import { editors } from "@gocode/models";
 import { SaveName } from "@gocode/app/App";
+import { editors } from "@gocode/models";
 
 export const NameEditor = ({ source, onCancel }: EditorProps<editors.Name>) => {
   const fields: Array<FormField<editors.Name>> = [
