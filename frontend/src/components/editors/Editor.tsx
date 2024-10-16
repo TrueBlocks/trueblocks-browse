@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, TextInput, Grid, Group, Fieldset, Loader } from "@mantine/core";
+import { Button, TextInput, Grid, Group, Loader } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { notifySuccess, notifyError } from "@components";
 import { showNotification } from "@mantine/notifications";
-import classes from "./Editor.module.css";
+import { notifySuccess, notifyError, FieldsetWrapper } from "@components";
 
 export interface FormField<T> {
   name: keyof T;
@@ -72,17 +71,17 @@ export const Editor = <T extends object>({
     setLoading(true);
     saveData(values)
       .then(() => {
-      notifySuccess("Data saved successfully!");
+        notifySuccess("Data saved successfully!");
         setLoading(false);
       })
       .catch((error) => {
-      notifyError((error as Error).message || "Failed to save data!");
+        notifyError((error as Error).message || "Failed to save data!");
         setLoading(false);
       });
   };
 
   return (
-    <Fieldset bg="white" className={classes.fieldSet} legend={legend}>
+    <FieldsetWrapper legend={legend}>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Grid>
           {fields.map((field) => (
@@ -103,6 +102,6 @@ export const Editor = <T extends object>({
           </Button>
         </Group>
       </form>
-    </Fieldset>
+    </FieldsetWrapper>
   );
 };
