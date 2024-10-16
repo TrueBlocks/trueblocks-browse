@@ -7,6 +7,7 @@ import { useAppState } from "@state";
 
 export type Page = {
   selected: number;
+  getRecord: () => number;
   getOffset: () => number;
 };
 
@@ -40,6 +41,7 @@ export function useKeyboardPaging(
   };
 
   const getOffset = () => (pageNumber - 1) * perPage;
+  const getRecord = () => selected - getOffset();
 
   // keyboard shortcuts
   useHotkeys("up", (e) => {
@@ -91,6 +93,7 @@ export function useKeyboardPaging(
       e.preventDefault();
       onEnter({
         selected,
+        getRecord,
         getOffset,
       });
     },

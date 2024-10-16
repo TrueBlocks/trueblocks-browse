@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, TextInput, Grid, Group, Loader } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { showNotification } from "@mantine/notifications";
 import { notifySuccess, notifyError, FieldsetWrapper } from "@components";
 
 export interface FormField<T> {
@@ -13,30 +12,32 @@ export interface FormField<T> {
 }
 
 export interface EditorProps<T> {
-  initialValues: T;
+  source: T;
+  onCancel: () => void;
+}
+
+export interface editProps<T> extends EditorProps<T> {
   fields: FormField<T>[];
-  validateSchema: (values: T) => Record<string, string | null>;
-  loadData: () => Promise<T>;
   saveData: (values: T) => Promise<void>;
   legend: string;
 }
 
-export const Editor = <T extends object>({
-  initialValues,
-  fields,
-  validateSchema,
-  loadData,
-  saveData,
-  legend,
-}: EditorProps<T>) => {
-  const [loading, setLoading] = useState(false);
+export const Editor = <T extends object>({ source, fields, saveData, onCancel, legend }: editProps<T>) => {
+  const [saving, setSaving] = useState(false);
   const form = useForm<T>({
-    initialValues,
-    validate: validateSchema,
+    initialValues: source,
+    validate: fields
+      .filter((field) => field.validate)
+      .reduce(
+        (acc, field) => ({
+          ...acc,
+          [field.name]: field.validate!,
+        }),
+        {}
+      ),
     validateInputOnChange: true,
   });
 
-  const formRef = useRef(form);
   useEffect(() => {
     const handleSelectAll = (event: KeyboardEvent) => {
       const activeElement = document.activeElement;
@@ -46,59 +47,47 @@ export const Editor = <T extends object>({
       }
     };
 
-    const fetchData = async () => {
-      try {
-        const data = await loadData();
-        formRef.current.setValues(data);
-      } catch (error) {
-        showNotification({
-          title: "Error",
-          message: `Failed to load data ${error}`,
-          color: "red",
-        });
-      }
-    };
-
-    fetchData();
     window.addEventListener("keydown", handleSelectAll);
-
     return () => {
       window.removeEventListener("keydown", handleSelectAll);
     };
-  }, [loadData]);
+  }, []);
 
-  const handleSubmit = (values: T) => {
-    setLoading(true);
-    saveData(values)
-      .then(() => {
-        notifySuccess("Data saved successfully!");
-        setLoading(false);
-      })
-      .catch((error) => {
-        notifyError((error as Error).message || "Failed to save data!");
-        setLoading(false);
-      });
+  const handleSubmit = async (values: T) => {
+    setSaving(true);
+    try {
+      await saveData(values);
+      notifySuccess("Data saved successfully!");
+    } catch (error) {
+      notifyError((error as Error).message || "Failed to save data!");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
     <FieldsetWrapper legend={legend}>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Grid>
-          {fields.map((field) => (
-            <Grid.Col span={6} key={String(field.name)}>
-              <TextInput
-                label={field.label}
-                placeholder={field.placeholder || `Enter ${String(field.name)}`}
-                {...form.getInputProps(field.name)}
-                error={form.errors[field.name]}
-                {...field.inputProps}
-              />
-            </Grid.Col>
-          ))}
+          {fields.map((field) => {
+            return (
+              <Grid.Col span={6} key={String(field.name)}>
+                <TextInput
+                  label={field.label}
+                  placeholder={field.placeholder || `Enter ${String(field.name)}`}
+                  {...form.getInputProps(field.name)}
+                  {...field.inputProps}
+                />
+              </Grid.Col>
+            );
+          })}
         </Grid>
         <Group justify="flex-end" mt="md">
-          <Button type="submit" disabled={loading}>
-            {loading ? <Loader size="sm" /> : "Submit"}
+          <Button variant="default" onClick={onCancel} disabled={saving}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={saving}>
+            {saving ? <Loader size="sm" /> : "Submit"}
           </Button>
         </Group>
       </form>
