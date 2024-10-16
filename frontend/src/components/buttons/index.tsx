@@ -1,4 +1,5 @@
 export * from "./BaseButton";
+export * from "./CleanButton";
 export * from "./CloseButton";
 export * from "./CopyButton";
 export * from "./CrudButton";
@@ -8,6 +9,10 @@ export * from "./EditButton";
 export * from "./ExploreButton";
 export * from "./ExportButton";
 export * from "./GoogleButton";
+export * from "./PinButton";
+export * from "./PublishButton";
 export * from "./RemoveButton";
+export * from "./ShareButton";
+export * from "./SpecButton";
 export * from "./UndeleteButton";
 export * from "./ViewButton";

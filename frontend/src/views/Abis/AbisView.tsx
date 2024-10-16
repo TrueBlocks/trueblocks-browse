@@ -1,5 +1,6 @@
+import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
-import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { View, FormTable, DataTable, GroupDefinition, ShareButton, CleanButton } from "@components";
 import { ModifyAbi } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
@@ -28,7 +29,7 @@ const createAbisForm = (table: Table<types.Abi>): GroupDefinition<theInstance>[]
   return [
     {
       title: "Abi Data",
-      colSpan: 6,
+      colSpan: 5,
       fields: [
         { label: "nItems", type: "int", accessor: "nItems" },
         { label: "nFunctions", type: "int", accessor: "nFunctions" },
@@ -38,7 +39,7 @@ const createAbisForm = (table: Table<types.Abi>): GroupDefinition<theInstance>[]
     },
     {
       title: "Bounds",
-      colSpan: 6,
+      colSpan: 5,
       fields: [
         { label: "largestFile", type: "text", accessor: "largestFile" },
         { label: "mostFunctions", type: "text", accessor: "mostFunctions" },
@@ -46,8 +47,21 @@ const createAbisForm = (table: Table<types.Abi>): GroupDefinition<theInstance>[]
       ],
     },
     {
+      title: "Buttons",
+      colSpan: 2,
+      components: [
+        {
+          component: (
+            <Stack>
+              <ShareButton value={"https://trueblocks.io"}>Share</ShareButton>
+              <CleanButton value={"https://trueblocks.io"}>Clean</CleanButton>
+            </Stack>
+          ),
+        },
+      ],
+    },
+    {
       title: "Files",
-      fields: [],
       components: [
         {
           component: <DataTable<types.Abi> table={table} loading={false} />,

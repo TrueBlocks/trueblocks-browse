@@ -5,7 +5,7 @@ import { GetExploreUrl } from "@gocode/app/App";
 import { BrowserOpenURL } from "@runtime";
 
 export interface ExploreButtonProps extends ButtonProps {
-  type?: "explore" | "google" | "dalle";
+  type?: "explore" | "google" | "dalle" | "url";
 }
 
 // ExploreButton opens a browser window to an explorer. It's also the basis
@@ -16,24 +16,30 @@ export const ExploreButton = ({ type = "explore", value, ...props }: ExploreButt
   const [tip, setTip] = useState("Explore");
 
   useEffect(() => {
-    const google = type === "google";
-    const dalle = type === "dalle";
-    GetExploreUrl(value as string, google, dalle).then((url) => {
-      setUrl(url);
-    });
-    switch (type) {
-      case "explore":
-        setTip("Explore");
-        setIcon(<IconExternalLink />);
-        break;
-      case "google":
-        setTip("Google");
-        setIcon(<IconBrandGoogle />);
-        break;
-      case "dalle":
-        setTip("Dalle");
-        setIcon(<IconBrandOpenai />);
-        break;
+    if (type == "url") {
+      setTip("Spec");
+      setIcon(<IconExternalLink />);
+      setUrl(value as string);
+    } else {
+      const google = type === "google";
+      const dalle = type === "dalle";
+      GetExploreUrl(value as string, google, dalle).then((url) => {
+        setUrl(url);
+      });
+      switch (type) {
+        case "explore":
+          setTip("Explore");
+          setIcon(<IconExternalLink />);
+          break;
+        case "google":
+          setTip("Google");
+          setIcon(<IconBrandGoogle />);
+          break;
+        case "dalle":
+          setTip("Dalle");
+          setIcon(<IconBrandOpenai />);
+          break;
+      }
     }
   }, [value, type]);
 

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Group, Stack } from "@mantine/core";
+import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { useParams } from "wouter";
 import {
@@ -59,7 +59,7 @@ const createHistoryForm = (address: base.Address, table: Table<types.Transaction
     },
     {
       title: "Transaction Data",
-      colSpan: 2,
+      colSpan: 3,
       fields: [
         { label: "nTransactions", type: "int", accessor: "nItems" },
         { label: "nLogs", type: "int", accessor: "nLogs" },
@@ -69,20 +69,14 @@ const createHistoryForm = (address: base.Address, table: Table<types.Transaction
     },
     {
       title: "Buttons",
-      colSpan: 3,
-      fields: [],
+      colSpan: 2,
       components: [
         {
           component: (
             <Stack>
-              <Group>
-                <ExploreButton value={address}>Explore</ExploreButton>
-                <DalleButton value={address}>Dalle</DalleButton>
-              </Group>
-              <Group>
-                <GoogleButton value={address}>Google</GoogleButton>
-                <ExportButton value={address}>Export</ExportButton>
-              </Group>
+              <ExploreButton value={address}>Explore</ExploreButton>
+              <GoogleButton value={address}>Google</GoogleButton>
+              <ExportButton value={address}>Export</ExportButton>
             </Stack>
           ),
         },
@@ -90,7 +84,6 @@ const createHistoryForm = (address: base.Address, table: Table<types.Transaction
     },
     {
       title: "Transaction History",
-      fields: [],
       components: [
         {
           component: <DataTable<types.Transaction> table={table} loading={false} />,
