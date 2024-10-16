@@ -15,7 +15,7 @@ type CustomComponentDefinition = {
 
 export type GroupDefinition<T> = {
   title: string;
-  fields: FieldDefinition<T>[]; // Optional to allow custom components without fields
+  fields?: FieldDefinition<T>[]; // Optional to allow custom components without fields
   colSpan?: number;
   components?: CustomComponentDefinition[]; // New field for custom components
 };

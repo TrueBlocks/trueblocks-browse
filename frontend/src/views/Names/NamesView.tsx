@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { View, FormTable, DataTable, GroupDefinition, CleanButton, ShareButton } from "@components";
 import { GoToHistory, ModifyName } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { Page } from "@hooks";
@@ -41,7 +41,7 @@ const createNameForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
       title: "Name Data",
-      colSpan: 6,
+      colSpan: 5,
       fields: [
         { label: "nNames", type: "int", accessor: "nItems" },
         { label: "nContracts", type: "int", accessor: "nContracts" },
@@ -52,7 +52,7 @@ const createNameForm = (table: any): GroupDefinition<theInstance>[] => {
     },
     {
       title: "Database Parts",
-      colSpan: 6,
+      colSpan: 5,
       fields: [
         { label: "sizeOnDisc", type: "bytes", accessor: "sizeOnDisc" },
         { label: "nCustom", type: "int", accessor: "nCustom" },
@@ -62,8 +62,21 @@ const createNameForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
+      title: "Buttons",
+      colSpan: 2,
+      components: [
+        {
+          component: (
+            <Stack>
+              <ShareButton value={"https://trueblocks.io"}>Share</ShareButton>
+              <CleanButton value={"https://trueblocks.io"}>Clean</CleanButton>
+            </Stack>
+          ),
+        },
+      ],
+    },
+    {
       title: "Names",
-      fields: [],
       components: [
         {
           component: <DataTable<types.Name> table={table} loading={false} />,

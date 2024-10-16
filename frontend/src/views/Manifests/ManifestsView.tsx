@@ -1,5 +1,6 @@
+import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { View, FormTable, DataTable, GroupDefinition, SpecButton, PublishButton } from "@components";
 import { ModifyNoop } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
@@ -28,7 +29,7 @@ const createManifestForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
       title: "Manifest Data",
-      colSpan: 6,
+      colSpan: 5,
       fields: [
         { label: "version", type: "text", accessor: "version" },
         { label: "chain", type: "text", accessor: "chain" },
@@ -38,7 +39,7 @@ const createManifestForm = (table: any): GroupDefinition<theInstance>[] => {
     },
     {
       title: "Statistics",
-      colSpan: 6,
+      colSpan: 5,
       fields: [
         { label: "nBlooms", type: "int", accessor: "nBlooms" },
         { label: "bloomsSize", type: "bytes", accessor: "bloomsSize" },
@@ -47,8 +48,23 @@ const createManifestForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
+      title: "Buttons",
+      colSpan: 2,
+      components: [
+        {
+          component: (
+            <Stack>
+              <PublishButton value="https://trueblocks.io">Publish</PublishButton>
+              <SpecButton value="https://trueblocks.io/papers/2023/specification-for-the-unchained-index-v2.0.0-release.pdf">
+                Spec
+              </SpecButton>
+            </Stack>
+          ),
+        },
+      ],
+    },
+    {
       title: "Chunks",
-      fields: [],
       components: [
         {
           component: <DataTable<types.ChunkRecord> table={table} loading={false} />,

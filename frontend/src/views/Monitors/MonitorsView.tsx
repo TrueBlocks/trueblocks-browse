@@ -1,5 +1,6 @@
+import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { View, FormTable, DataTable, GroupDefinition, CleanButton } from "@components";
 import { GoToHistory, ModifyMonitors } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { Page } from "@hooks";
@@ -40,7 +41,7 @@ const createMonitorForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
       title: "Monitor Data",
-      colSpan: 6,
+      colSpan: 5,
       fields: [
         { label: "nMonitors", type: "int", accessor: "nItems" },
         { label: "nRecords", type: "int", accessor: "nRecords" },
@@ -50,7 +51,7 @@ const createMonitorForm = (table: any): GroupDefinition<theInstance>[] => {
     },
     {
       title: "Other",
-      colSpan: 6,
+      colSpan: 5,
       fields: [
         { label: "nEmpty", type: "int", accessor: "nEmpty" },
         { label: "nStaged", type: "int", accessor: "nStaged" },
@@ -58,8 +59,20 @@ const createMonitorForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
+      title: "Buttons",
+      colSpan: 2,
+      components: [
+        {
+          component: (
+            <Stack>
+              <CleanButton value={"https://trueblocks.io"}>Clean</CleanButton>
+            </Stack>
+          ),
+        },
+      ],
+    },
+    {
       title: "Available Monitors",
-      fields: [],
       components: [
         {
           component: <DataTable<types.Monitor> table={table} loading={false} />,
