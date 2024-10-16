@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { NameEditor, BaseButton } from "@components";
 import { View, FormTable, DataTable, GroupDefinition } from "@components";
 import { GoToHistory, ModifyName } from "@gocode/app/App";
 import { types } from "@gocode/models";
@@ -11,7 +9,6 @@ import { tableColumns } from "./NamesTable";
 
 export const NamesView = () => {
   const { names, fetchNames } = useAppState();
-  const [showEditor, setShowEditor] = useState(false);
 
   const handleEnter = (page: Page) => {
     const address = names.names[page.getRecord()].address;

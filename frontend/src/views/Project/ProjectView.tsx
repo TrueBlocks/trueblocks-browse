@@ -24,7 +24,7 @@ export const ProjectView = () => {
 
   return (
     <ViewStateProvider
-      route={""}
+      route=""
       nItems={project.nOpenFiles}
       fetchFn={fetchProject}
       onEnter={handleEnter}
