@@ -11,17 +11,21 @@ import (
 )
 
 func (a *App) LoadName(addr string) editors.Name {
-	name := coreTypes.Name{
-		Name:     "My Name",
-		Address:  base.HexToAddress("0xf503017d7baf7fbc0fff7492b751025c6a78179b"),
-		Tags:     "99-User-Defined",
-		Source:   "TrueBlocks",
-		Symbol:   "",
-		Decimals: 18,
-		Deleted:  false,
+	if name, ok := a.names.NamesMap[base.HexToAddress(addr)]; ok {
+		logger.Info("Found name for ", name.Address.Hex())
+		return editors.CoreToName(name)
+	} else {
+		logger.Info("Could not find name for ", name.Address.Hex())
+		return editors.CoreToName(coreTypes.Name{
+			Name:     "Unnamed",
+			Address:  base.HexToAddress("0x0"),
+			Tags:     "99-User-Defined",
+			Source:   "TrueBlocks Browse",
+			Symbol:   "",
+			Decimals: 18,
+			Deleted:  false,
+		})
 	}
-
-	return editors.CoreToName(name)
 }
 
 func (a *App) SaveName(name editors.Name) error {
