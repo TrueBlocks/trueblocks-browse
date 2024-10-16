@@ -29,6 +29,6 @@ func (a *App) SaveName(name editors.Name) error {
 	if name.Name == "Error" {
 		return fmt.Errorf("not implemented")
 	}
-	time.Sleep(100 * time.Millisecond)
+	time.Sleep(200 * time.Millisecond)
 	return nil
 }

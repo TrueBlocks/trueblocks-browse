@@ -9,6 +9,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -67,11 +68,6 @@ func (a *App) String() string {
 // ---------------------------------------------------------------
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
-	path := "/Users/jrush/Library/Application Support/TrueBlocks/trueBlocks.toml"
-	if err := coreConfig.ReadToml(path, &a.cfg); err != nil {
-		messages.EmitError(a.ctx, err)
-	}
-
 	a.loadSession()
 
 	go a.loadHistory(a.GetAddress(), nil, nil)
@@ -91,6 +87,14 @@ func (a *App) DomReady(ctx context.Context) {
 	runtime.WindowSetPosition(a.ctx, win.X, win.Y)
 	runtime.WindowSetSize(a.ctx, win.Width, win.Height)
 	runtime.WindowShow(a.ctx)
+
+	if path, err := utils.GetConfigFn("", "trueBlocks.toml"); err != nil {
+		messages.EmitError(a.ctx, err)
+	} else {
+		if err := coreConfig.ReadToml(path, &a.cfg); err != nil {
+			messages.EmitError(a.ctx, err)
+		}
+	}
 }
 
 // ---------------------------------------------------------------
@@ -118,12 +122,12 @@ func (a *App) saveSession() {
 	a.session.Window.X, a.session.Window.Y = runtime.WindowGetPosition(a.ctx)
 	a.session.Window.Width, a.session.Window.Height = runtime.WindowGetSize(a.ctx)
 	a.session.Window.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
-	a.session.Save()
+	_ = a.session.Save()
 }
 
 // ----------------------------------------------------------------
 func (a *App) loadSession() {
-	a.session.Load()
+	_ = a.session.Load()
 	a.globals = sdk.Globals{
 		Chain: a.session.Chain,
 	}
