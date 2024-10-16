@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, TextInput, Grid, Group, Fieldset, Loader } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { notifySuccess, notifyError } from "@components";
 import { showNotification } from "@mantine/notifications";
 import classes from "./Editor.module.css";
 
@@ -71,19 +72,11 @@ export const Editor = <T extends object>({
     setLoading(true);
     saveData(values)
       .then(() => {
-        showNotification({
-          title: "Success",
-          message: "Data saved successfully!",
-          color: "green",
-        });
+      notifySuccess("Data saved successfully!");
         setLoading(false);
       })
       .catch((error) => {
-        showNotification({
-          title: "Error",
-          message: error.message || "Failed to save data!",
-          color: "red",
-        });
+      notifyError((error as Error).message || "Failed to save data!");
         setLoading(false);
       });
   };
