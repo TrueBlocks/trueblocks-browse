@@ -12,7 +12,6 @@ export * from "./GoogleButton";
 export * from "./PinButton";
 export * from "./PublishButton";
 export * from "./RemoveButton";
-export * from "./ShareButton";
 export * from "./SpecButton";
 export * from "./UndeleteButton";
 export * from "./ViewButton";

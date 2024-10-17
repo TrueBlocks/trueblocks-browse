@@ -41,7 +41,7 @@ type theInstance = InstanceType<typeof types.ProjectContainer>;
 const createProjectForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
-      title: "Open Monitors",
+      legend: "Open Monitors",
       fields: [],
       components: [
         {
@@ -50,7 +50,7 @@ const createProjectForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Data 1",
+      legend: "Data 1",
       colSpan: 6,
       fields: [
         { label: "fileName", type: "text", accessor: "filename" },
@@ -60,7 +60,7 @@ const createProjectForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Data 2",
+      legend: "Data 2",
       colSpan: 6,
       fields: [
         { label: "nMonitors", type: "int", accessor: "nMonitors" },

@@ -14,10 +14,10 @@ type CustomComponentDefinition = {
 };
 
 export type GroupDefinition<T> = {
-  title: string;
-  fields?: FieldDefinition<T>[]; // Optional to allow custom components without fields
+  legend: string;
   colSpan?: number;
-  components?: CustomComponentDefinition[]; // New field for custom components
+  fields?: FieldDefinition<T>[];
+  components?: CustomComponentDefinition[];
 };
 
 type FormTableProps<T> = {
@@ -30,9 +30,9 @@ export function FormTable<T>({ data, definition }: FormTableProps<T>) {
     <Container style={{ maxWidth: "95%", paddingRight: "5%" }}>
       <Grid>
         {definition.map((group, index) => (
-          <Grid.Col span={group.colSpan || 12} key={index}>
+          <Grid.Col key={index} span={group.colSpan || 12}>
             <Stack>
-              <Fieldset legend={group.title} bg="white" className={classes.fieldSet}>
+              <Fieldset legend={group.legend} className={classes.fieldSet}>
                 {group.fields?.map((field, fieldIndex) => {
                   const value = <Formatter type={field.type} value={data[field.accessor]} />;
                   return (

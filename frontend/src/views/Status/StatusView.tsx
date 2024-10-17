@@ -27,7 +27,7 @@ type theInstance = InstanceType<typeof types.StatusContainer>;
 const createStatusForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
-      title: "System Data",
+      legend: "System Data",
       colSpan: 7,
       fields: [
         { label: "trueblocks", type: "text", accessor: "version" },
@@ -37,7 +37,7 @@ const createStatusForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "API Keys",
+      legend: "API Keys",
       colSpan: 5,
       fields: [
         { label: "hasEsKey", type: "boolean", accessor: "hasEsKey" },
@@ -46,7 +46,7 @@ const createStatusForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Configuration Paths",
+      legend: "Configuration Paths",
       colSpan: 7,
       fields: [
         { label: "rootConfig", type: "path", accessor: "rootConfig" },
@@ -56,7 +56,7 @@ const createStatusForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Statistics",
+      legend: "Statistics",
       colSpan: 5,
       fields: [
         { label: "lastUpdate", type: "date", accessor: "lastUpdate" },
@@ -67,7 +67,7 @@ const createStatusForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Caches",
+      legend: "Caches",
       fields: [],
       components: [
         {

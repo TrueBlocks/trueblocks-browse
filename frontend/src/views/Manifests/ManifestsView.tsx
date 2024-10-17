@@ -28,7 +28,7 @@ type theInstance = InstanceType<typeof types.ManifestContainer>;
 const createManifestForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
-      title: "Manifest Data",
+      legend: "Manifest Data",
       colSpan: 5,
       fields: [
         { label: "version", type: "text", accessor: "version" },
@@ -38,7 +38,7 @@ const createManifestForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Statistics",
+      legend: "Statistics",
       colSpan: 5,
       fields: [
         { label: "nBlooms", type: "int", accessor: "nBlooms" },
@@ -48,7 +48,7 @@ const createManifestForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Buttons",
+      legend: "Buttons",
       colSpan: 2,
       components: [
         {
@@ -64,7 +64,7 @@ const createManifestForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Chunks",
+      legend: "Chunks",
       components: [
         {
           component: <DataTable<types.ChunkRecord> table={table} loading={false} />,
