@@ -28,7 +28,7 @@ type theInstance = InstanceType<typeof types.IndexContainer>;
 const createIndexForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
-      title: "Index Data",
+      legend: "Index Data",
       colSpan: 5,
       fields: [
         { label: "bloomSz", type: "bytes", accessor: "bloomSz" },
@@ -40,7 +40,7 @@ const createIndexForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Statistics",
+      legend: "Statistics",
       colSpan: 5,
       fields: [
         { label: "nItems", type: "int", accessor: "nItems" },
@@ -50,7 +50,7 @@ const createIndexForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Buttons",
+      legend: "Buttons",
       colSpan: 2,
       components: [
         {
@@ -66,7 +66,7 @@ const createIndexForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Chunks",
+      legend: "Chunks",
       components: [
         {
           component: <DataTable<types.ChunkStats> table={table} loading={false} />,

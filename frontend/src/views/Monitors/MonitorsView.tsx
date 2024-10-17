@@ -40,7 +40,7 @@ type theInstance = InstanceType<typeof types.MonitorContainer>;
 const createMonitorForm = (table: any): GroupDefinition<theInstance>[] => {
   return [
     {
-      title: "Monitor Data",
+      legend: "Monitor Data",
       colSpan: 5,
       fields: [
         { label: "nMonitors", type: "int", accessor: "nItems" },
@@ -50,7 +50,7 @@ const createMonitorForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Other",
+      legend: "Other",
       colSpan: 5,
       fields: [
         { label: "nEmpty", type: "int", accessor: "nEmpty" },
@@ -59,7 +59,7 @@ const createMonitorForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Buttons",
+      legend: "Buttons",
       colSpan: 2,
       components: [
         {
@@ -72,7 +72,7 @@ const createMonitorForm = (table: any): GroupDefinition<theInstance>[] => {
       ],
     },
     {
-      title: "Available Monitors",
+      legend: "Available Monitors",
       components: [
         {
           component: <DataTable<types.Monitor> table={table} loading={false} />,

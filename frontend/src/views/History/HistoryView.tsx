@@ -44,12 +44,12 @@ type theInstance = InstanceType<typeof types.HistoryContainer>;
 const createHistoryForm = (address: base.Address, table: Table<types.Transaction>): GroupDefinition<theInstance>[] => {
   return [
     {
-      title: "DalleDress",
+      legend: "DalleDress",
       colSpan: 2,
       fields: [{ label: "", type: "dalle", accessor: "address" }],
     },
     {
-      title: "Transaction Data",
+      legend: "Transaction Data",
       colSpan: 5,
       fields: [
         { label: "address", type: "address-address-only", accessor: "address" },
@@ -58,7 +58,7 @@ const createHistoryForm = (address: base.Address, table: Table<types.Transaction
       ],
     },
     {
-      title: "Transaction Data",
+      legend: "Transaction Data",
       colSpan: 3,
       fields: [
         { label: "nTransactions", type: "int", accessor: "nItems" },
@@ -68,7 +68,7 @@ const createHistoryForm = (address: base.Address, table: Table<types.Transaction
       ],
     },
     {
-      title: "Buttons",
+      legend: "Buttons",
       colSpan: 2,
       components: [
         {
@@ -83,7 +83,7 @@ const createHistoryForm = (address: base.Address, table: Table<types.Transaction
       ],
     },
     {
-      title: "Transaction History",
+      legend: "Transaction History",
       components: [
         {
           component: <DataTable<types.Transaction> table={table} loading={false} />,
