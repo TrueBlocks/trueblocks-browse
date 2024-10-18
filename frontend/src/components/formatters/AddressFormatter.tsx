@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Formatter, FormatterProps, knownType, Popup, AddressPopup } from "@components";
+import { Formatter, FormatterProps, CellType, Popup, AddressPopup } from "@components";
 import { AddrToName, ModifyName } from "@gocode/app/App";
 import { app } from "@gocode/models";
 import { ClipboardSetText } from "@runtime";
@@ -66,8 +66,8 @@ export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }
     formatAddress();
   }, [value, value2, mode]);
 
-  const line1Type: knownType = "address-line1";
-  const line2Type: knownType = "address-line2";
+  const line1Type: CellType = "address-line1";
+  const line2Type: CellType = "address-line2";
 
   const onCopy = useCallback(() => {
     ClipboardSetText(givenAddress).then(() => {

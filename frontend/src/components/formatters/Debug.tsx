@@ -1,8 +1,8 @@
+import { CellType } from "@components";
 import { useEnvironment } from "@hooks";
 import classes from "./Formatter.module.css";
-import { knownType } from ".";
 
-export const GetDebugColor = (type: knownType): string => {
+export const GetDebugColor = (type: CellType): string => {
   const debug = useEnvironment("TB_DEBUG_DISPLAY");
 
   let ret: string = "";
