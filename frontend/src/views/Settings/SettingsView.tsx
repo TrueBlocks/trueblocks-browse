@@ -13,9 +13,10 @@ export const SettingsView = () => {
     GetSession().then((s) => setSession(s));
   }, []);
 
+  const route = "settings";
   return (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    <ViewStateProvider route="settings" fetchFn={(_unused1: number, _unused2: number) => {}} modifyFn={ModifyNoop}>
+    <ViewStateProvider route={route} fetchFn={(_unused1: number, _unused2: number) => {}} modifyFn={ModifyNoop}>
       <View>
         <InputLabel>
           <Checkbox label={"A checkbox"} />

@@ -61,9 +61,10 @@ export const DaemonsView = () => {
     ToggleDaemon(name);
   };
 
+  const route = "daemons";
   return (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    <ViewStateProvider route="daemons" fetchFn={(_unused1: number, _unused2: number) => {}} modifyFn={ModifyNoop}>
+    <ViewStateProvider route={route} fetchFn={(_unused1: number, _unused2: number) => {}} modifyFn={ModifyNoop}>
       <View>
         <Fieldset legend={"Daemons"} bg={"white"}>
           <SimpleGrid cols={2}>

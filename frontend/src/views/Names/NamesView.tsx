@@ -1,6 +1,6 @@
 import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, GroupDefinition, CleanButton, PublishButton } from "@components";
+import { View, FormTable, DataTable, FieldGroup, CleanButton, PublishButton } from "@components";
 import { GoToHistory, ModifyName } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { Page } from "@hooks";
@@ -21,23 +21,24 @@ export const NamesView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const route = "names";
   return (
     <ViewStateProvider
-      route={"names"}
+      route={route}
       nItems={names.nItems}
       fetchFn={fetchNames}
       onEnter={handleEnter}
       modifyFn={ModifyName}
     >
       <View>
-        <FormTable data={names} definition={createNameForm(table)} />
+        <FormTable data={names} groups={createNameForm(table)} />
       </View>
     </ViewStateProvider>
   );
 };
 
 type theInstance = InstanceType<typeof types.NameContainer>;
-const createNameForm = (table: any): GroupDefinition<theInstance>[] => {
+const createNameForm = (table: any): FieldGroup<theInstance>[] => {
   return [
     {
       legend: "Name Data",
@@ -67,7 +68,7 @@ const createNameForm = (table: any): GroupDefinition<theInstance>[] => {
       components: [
         {
           component: (
-            <Stack>
+            <Stack align="center">
               <PublishButton value={"https://trueblocks.io"}>Publish</PublishButton>
               <CleanButton value={"https://trueblocks.io"}>Clean</CleanButton>
             </Stack>
@@ -77,6 +78,7 @@ const createNameForm = (table: any): GroupDefinition<theInstance>[] => {
     },
     {
       legend: "Names",
+      collapsable: false,
       components: [
         {
           component: <DataTable<types.Name> table={table} loading={false} />,

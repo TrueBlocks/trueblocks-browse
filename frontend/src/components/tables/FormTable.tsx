@@ -1,55 +1,49 @@
-import { ReactNode } from "react";
-import { Fieldset, Container, Grid, Flex, Text, Stack } from "@mantine/core";
-import { Formatter, CellType } from "@components";
+import { Container, Fieldset, Grid, Accordion } from "@mantine/core";
+import { FieldRenderer, FieldGroup } from "@components";
+import { useViewState } from "@state";
 import classes from "./FormTable.module.css";
-
-type FieldDefinition<T> = {
-  type: CellType;
-  label: string;
-  accessor: keyof T;
-};
-
-type CustomComponentDefinition = {
-  component: ReactNode;
-};
-
-export type GroupDefinition<T> = {
-  legend: string;
-  colSpan?: number;
-  fields?: FieldDefinition<T>[];
-  components?: CustomComponentDefinition[];
-};
 
 type FormTableProps<T> = {
   data: Partial<T>;
-  definition: GroupDefinition<T>[];
+  groups: FieldGroup<T>[];
 };
 
-export function FormTable<T>({ data, definition }: FormTableProps<T>) {
+export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
+  const { collapsed, handleCollapse } = useViewState();
+  const collapsableGroups = groups.filter((group) => group.collapsable ?? true);
+  const nonCollapsableGroups = groups.filter((group) => group.collapsable === false);
+
   return (
-    <Container style={{ maxWidth: "95%", paddingRight: "5%" }}>
+    <Container styles={{ root: { minWidth: "95%" } }}>
+      <Accordion defaultValue={collapsed ? null : "header"} onChange={handleCollapse}>
+        <Accordion.Item value={"header"}>
+          <Accordion.Control bg="white"></Accordion.Control>
+          <Accordion.Panel>
+            <Grid bg="white">
+              {collapsableGroups.map((group) => {
+                return (
+                  <Grid.Col bg="white" key={group.legend} span={group.colSpan ?? 12}>
+                    <Fieldset bg="white" className={classes.fieldSet}>
+                      {group.fields?.map((fld) => <FieldRenderer key={String(fld.accessor)} field={fld} data={data} />)}
+                      {group.components?.map((cmp, index) => <div key={index}>{cmp.component ?? null}</div>)}
+                    </Fieldset>
+                  </Grid.Col>
+                );
+              })}
+            </Grid>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
       <Grid>
-        {definition.map((group, index) => (
-          <Grid.Col key={index} span={group.colSpan || 12}>
-            <Stack>
-              <Fieldset legend={group.legend} className={classes.fieldSet}>
-                {group.fields?.map((field, fieldIndex) => {
-                  const value = <Formatter type={field.type} value={data[field.accessor]} />;
-                  return (
-                    <Flex key={fieldIndex} gap="md" align="center">
-                      {field.label.length > 0 ? <Text className={classes.fieldPrompt}>{field.label}</Text> : <></>}
-                      <Text>{value}</Text>
-                    </Flex>
-                  );
-                })}
-                {group.components?.map((customComponent, componentIndex) => (
-                  <div key={componentIndex}>{customComponent.component}</div>
-                ))}
-              </Fieldset>
-            </Stack>
+        {nonCollapsableGroups.map((group) => (
+          <Grid.Col key={group.legend} span={group.colSpan ?? 12}>
+            <Fieldset legend={group.legend} bg="white" className={classes.fieldSet}>
+              {group.fields?.map((fld) => <FieldRenderer key={String(fld.accessor)} field={fld} data={data} />)}
+              {group.components?.map((cmp, index) => <div key={index}>{cmp.component ?? null}</div>)}
+            </Fieldset>
           </Grid.Col>
         ))}
       </Grid>
     </Container>
   );
-}
+};

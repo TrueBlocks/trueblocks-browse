@@ -1,6 +1,6 @@
 import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { DataTable, FormTable, GroupDefinition, View, SpecButton, PinButton } from "@components";
+import { DataTable, FormTable, FieldGroup, View, SpecButton, PinButton } from "@components";
 import { ModifyNoop } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
@@ -15,17 +15,18 @@ export const IndexesView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const route = "indexes";
   return (
-    <ViewStateProvider route={"indexes"} nItems={indexes.nItems} fetchFn={fetchIndexes} modifyFn={ModifyNoop}>
+    <ViewStateProvider route={route} nItems={indexes.nItems} fetchFn={fetchIndexes} modifyFn={ModifyNoop}>
       <View>
-        <FormTable data={indexes} definition={createIndexForm(table)} />
+        <FormTable data={indexes} groups={createIndexForm(table)} />
       </View>
     </ViewStateProvider>
   );
 };
 
 type theInstance = InstanceType<typeof types.IndexContainer>;
-const createIndexForm = (table: any): GroupDefinition<theInstance>[] => {
+const createIndexForm = (table: any): FieldGroup<theInstance>[] => {
   return [
     {
       legend: "Index Data",
@@ -55,7 +56,7 @@ const createIndexForm = (table: any): GroupDefinition<theInstance>[] => {
       components: [
         {
           component: (
-            <Stack>
+            <Stack align="center">
               <PinButton value="https://trueblocks.io">Pin</PinButton>
               <SpecButton value="https://trueblocks.io/papers/2023/specification-for-the-unchained-index-v2.0.0-release.pdf">
                 Spec
@@ -67,6 +68,7 @@ const createIndexForm = (table: any): GroupDefinition<theInstance>[] => {
     },
     {
       legend: "Chunks",
+      collapsable: false,
       components: [
         {
           component: <DataTable<types.ChunkStats> table={table} loading={false} />,

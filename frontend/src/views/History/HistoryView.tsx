@@ -2,17 +2,8 @@ import { useEffect } from "react";
 import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { useParams } from "wouter";
-import {
-  ExploreButton,
-  ExportButton,
-  View,
-  FormTable,
-  DataTable,
-  GroupDefinition,
-  DalleButton,
-  GoogleButton,
-} from "@components";
-import { GetAddress, ModifyNoop } from "@gocode/app/App";
+import { ExploreButton, ExportButton, View, FormTable, DataTable, FieldGroup, GoogleButton } from "@components";
+import { ModifyNoop } from "@gocode/app/App";
 import { types, base } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./HistoryTable";
@@ -31,17 +22,18 @@ export const HistoryView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const route = "history";
   return (
-    <ViewStateProvider route={"history"} nItems={history.nItems} fetchFn={fetchHistory} modifyFn={ModifyNoop}>
+    <ViewStateProvider route={route} nItems={history.nItems} fetchFn={fetchHistory} modifyFn={ModifyNoop}>
       <View>
-        <FormTable data={history} definition={createHistoryForm(address, table)} />
+        <FormTable data={history} groups={createHistoryForm(address, table)} />
       </View>
     </ViewStateProvider>
   );
 };
 
 type theInstance = InstanceType<typeof types.HistoryContainer>;
-const createHistoryForm = (address: base.Address, table: Table<types.Transaction>): GroupDefinition<theInstance>[] => {
+const createHistoryForm = (address: base.Address, table: Table<types.Transaction>): FieldGroup<theInstance>[] => {
   return [
     {
       legend: "DalleDress",
@@ -73,7 +65,7 @@ const createHistoryForm = (address: base.Address, table: Table<types.Transaction
       components: [
         {
           component: (
-            <Stack>
+            <Stack align="center">
               <ExploreButton value={address}>Explore</ExploreButton>
               <GoogleButton value={address}>Google</GoogleButton>
               <ExportButton value={address}>Export</ExportButton>
@@ -84,6 +76,7 @@ const createHistoryForm = (address: base.Address, table: Table<types.Transaction
     },
     {
       legend: "Transaction History",
+      collapsable: false,
       components: [
         {
           component: <DataTable<types.Transaction> table={table} loading={false} />,

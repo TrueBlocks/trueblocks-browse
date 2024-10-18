@@ -1,5 +1,5 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { View, FormTable, DataTable, FieldGroup } from "@components";
 import { ModifyNoop } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
@@ -14,17 +14,18 @@ export const StatusView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const route = "status";
   return (
-    <ViewStateProvider route={"status"} nItems={status.nItems} fetchFn={fetchStatus} modifyFn={ModifyNoop}>
+    <ViewStateProvider route={route} nItems={status.nItems} fetchFn={fetchStatus} modifyFn={ModifyNoop}>
       <View>
-        <FormTable data={status} definition={createStatusForm(table)} />
+        <FormTable data={status} groups={createStatusForm(table)} />
       </View>
     </ViewStateProvider>
   );
 };
 
 type theInstance = InstanceType<typeof types.StatusContainer>;
-const createStatusForm = (table: any): GroupDefinition<theInstance>[] => {
+const createStatusForm = (table: any): FieldGroup<theInstance>[] => {
   return [
     {
       legend: "System Data",
@@ -69,6 +70,7 @@ const createStatusForm = (table: any): GroupDefinition<theInstance>[] => {
     {
       legend: "Caches",
       fields: [],
+      collapsable: false,
       components: [
         {
           component: <DataTable<types.CacheItem> table={table} loading={false} />,
