@@ -43,7 +43,7 @@ export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("deleted", {
-    header: () => "Crud Buttons",
+    header: () => "Buttons",
     cell: (info) => {
       const { deleted, address } = info.row.original;
       return <CrudButton value={address} withEdit isDeleted={deleted} />;
