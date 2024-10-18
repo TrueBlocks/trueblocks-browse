@@ -1,6 +1,6 @@
 import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, GroupDefinition, CleanButton } from "@components";
+import { View, FormTable, DataTable, FieldGroup, CleanButton } from "@components";
 import { GoToHistory, ModifyMonitors } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { Page } from "@hooks";
@@ -21,23 +21,24 @@ export const MonitorsView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const route = "monitors";
   return (
     <ViewStateProvider
-      route="monitors"
+      route={route}
       nItems={monitors.nItems}
       fetchFn={fetchMonitors}
       onEnter={handleEnter}
       modifyFn={ModifyMonitors}
     >
       <View>
-        <FormTable data={monitors} definition={createMonitorForm(table)} />
+        <FormTable data={monitors} groups={createMonitorForm(table)} />
       </View>
     </ViewStateProvider>
   );
 };
 
 type theInstance = InstanceType<typeof types.MonitorContainer>;
-const createMonitorForm = (table: any): GroupDefinition<theInstance>[] => {
+const createMonitorForm = (table: any): FieldGroup<theInstance>[] => {
   return [
     {
       legend: "Monitor Data",
@@ -64,7 +65,7 @@ const createMonitorForm = (table: any): GroupDefinition<theInstance>[] => {
       components: [
         {
           component: (
-            <Stack>
+            <Stack align="center">
               <CleanButton value={"https://trueblocks.io"}>Clean</CleanButton>
             </Stack>
           ),
@@ -73,6 +74,7 @@ const createMonitorForm = (table: any): GroupDefinition<theInstance>[] => {
     },
     {
       legend: "Available Monitors",
+      collapsable: false,
       components: [
         {
           component: <DataTable<types.Monitor> table={table} loading={false} />,

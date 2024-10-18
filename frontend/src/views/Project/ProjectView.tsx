@@ -1,5 +1,5 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, GroupDefinition } from "@components";
+import { View, FormTable, DataTable, FieldGroup } from "@components";
 import { GoToHistory, ModifyProject } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { Page } from "@hooks";
@@ -22,27 +22,29 @@ export const ProjectView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const route = "";
   return (
     <ViewStateProvider
-      route=""
+      route={route}
       nItems={project.nOpenFiles}
       fetchFn={fetchProject}
       onEnter={handleEnter}
       modifyFn={ModifyProject}
     >
       <View>
-        <FormTable data={project} definition={createProjectForm(table)} />
+        <FormTable data={project} groups={createProjectForm(table)} />
       </View>
     </ViewStateProvider>
   );
 };
 
 type theInstance = InstanceType<typeof types.ProjectContainer>;
-const createProjectForm = (table: any): GroupDefinition<theInstance>[] => {
+const createProjectForm = (table: any): FieldGroup<theInstance>[] => {
   return [
     {
       legend: "Open Monitors",
       fields: [],
+      collapsable: false,
       components: [
         {
           component: <DataTable<types.HistoryContainer> table={table} loading={false} />,

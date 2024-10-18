@@ -1,6 +1,6 @@
 import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, GroupDefinition, SpecButton, PublishButton } from "@components";
+import { View, FormTable, DataTable, FieldGroup, SpecButton, PublishButton } from "@components";
 import { ModifyNoop } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
@@ -15,17 +15,18 @@ export const ManifestsView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const route = "manifests";
   return (
-    <ViewStateProvider route={"manifests"} nItems={manifests.nItems} fetchFn={fetchManifests} modifyFn={ModifyNoop}>
+    <ViewStateProvider route={route} nItems={manifests.nItems} fetchFn={fetchManifests} modifyFn={ModifyNoop}>
       <View>
-        <FormTable data={manifests} definition={createManifestForm(table)} />
+        <FormTable data={manifests} groups={createManifestForm(table)} />
       </View>
     </ViewStateProvider>
   );
 };
 
 type theInstance = InstanceType<typeof types.ManifestContainer>;
-const createManifestForm = (table: any): GroupDefinition<theInstance>[] => {
+const createManifestForm = (table: any): FieldGroup<theInstance>[] => {
   return [
     {
       legend: "Manifest Data",
@@ -53,7 +54,7 @@ const createManifestForm = (table: any): GroupDefinition<theInstance>[] => {
       components: [
         {
           component: (
-            <Stack>
+            <Stack align="center">
               <PublishButton value="https://trueblocks.io">Publish</PublishButton>
               <SpecButton value="https://trueblocks.io/papers/2023/specification-for-the-unchained-index-v2.0.0-release.pdf">
                 Spec
@@ -65,6 +66,7 @@ const createManifestForm = (table: any): GroupDefinition<theInstance>[] => {
     },
     {
       legend: "Chunks",
+      collapsable: false,
       components: [
         {
           component: <DataTable<types.ChunkRecord> table={table} loading={false} />,
