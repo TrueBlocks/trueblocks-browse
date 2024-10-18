@@ -49,7 +49,7 @@ export const tableColumns: CustomColumnDef<types.Name, any>[] = [
     meta: { className: "small center cell" },
   }),
   columnHelper.accessor("deleted", {
-    header: () => "Crud Buttons",
+    header: () => "Buttons",
     cell: (info) => {
       const { deleted, isCustom, address } = info.row.original;
       return isCustom ? <CrudButton value={address} withEdit isDeleted={deleted as boolean} /> : <></>;

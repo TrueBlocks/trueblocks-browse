@@ -16,10 +16,10 @@ type Session struct {
 	LastFile  string            `json:"lastFile"`
 	LastRoute string            `json:"lastRoute"`
 	LastSub   map[string]string `json:"lastSub"`
-	Toggles   Toggles           `json:"toggles"`
 	Window    Window            `json:"window"`
 	Daemons   daemons.Toggles   `json:"daemons"`
 	Wizard    wizard.Wizard     `json:"wizard"`
+	Toggles   ToggleMap         `json:"toggles"`
 }
 
 const theTitle = "Browse by TrueBlocks"
@@ -29,12 +29,6 @@ var defaultSession = Session{
 	LastFile:  "Untitled.tbx",
 	LastRoute: "/wizard",
 	LastSub:   map[string]string{"/history": "0xf503017d7baf7fbc0fff7492b751025c6a78179b"},
-	Toggles: Toggles{
-		Header: true,
-		Menu:   true,
-		Help:   true,
-		Footer: true,
-	},
 	Window: Window{
 		X:      0,
 		Y:      0,
@@ -46,6 +40,21 @@ var defaultSession = Session{
 		Freshen: true,
 	},
 	Wizard: wizard.Wizard{State: wizard.NotOkay},
+	Toggles: ToggleMap{
+		"header":    true,
+		"menu":      true,
+		"help":      true,
+		"footer":    true,
+		"":          true,
+		"history":   true,
+		"monitors":  true,
+		"names":     true,
+		"abis":      true,
+		"indexes":   true,
+		"manifests": true,
+		"status":    true,
+		"settings":  true,
+	},
 }
 
 // Save saves the session to the configuration folder.

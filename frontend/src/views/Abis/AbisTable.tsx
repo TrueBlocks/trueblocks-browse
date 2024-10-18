@@ -55,7 +55,7 @@ export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("address", {
-    header: () => "Crud Buttons",
+    header: () => "Buttons",
     cell: (info) => {
       const { address, isKnown } = info.row.original;
       return isKnown ? <></> : <CrudButton value={address} />;
