@@ -54,7 +54,13 @@ func EmitWizard(ctx context.Context, state wizard.State) {
 }
 
 func EmitToggle(ctx context.Context, comp, route string) {
-	emitMsg(ctx, Toggle, NewToggleMsg(comp, route))
+	if comp != "" {
+		emitMsg(ctx, ToggleLayout, NewToggleMsg(comp, ""))
+	}
+	// do not collapse
+	if route != "" {
+		emitMsg(ctx, ToggleHeader, NewToggleMsg("", route))
+	}
 }
 
 func EmitInfo(ctx context.Context, msg string) {

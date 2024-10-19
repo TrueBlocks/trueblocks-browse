@@ -36,6 +36,7 @@ func (a *App) GetMenus() *menu.Menu {
 	helpMenu.AddText("Show Menu", keys.CmdOrCtrl("m"), a.MenuToggle)
 	helpMenu.AddText("Show Help", keys.CmdOrCtrl("h"), a.HelpToggle)
 	helpMenu.AddText("Show Footer", keys.CmdOrCtrl("f"), a.FooterToggle)
+	helpMenu.AddText("Show Accordion", keys.CmdOrCtrl("x"), a.AccordionToggle)
 
 	return appMenu
 }

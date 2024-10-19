@@ -3,18 +3,19 @@ package messages
 type Message string
 
 const (
-	Completed Message = "Completed"
-	Cancelled Message = "Cancelled"
-	Error     Message = "Error"
-	Warn      Message = "Warn"
-	Info      Message = "Info"
-	Progress  Message = "Progress"
-	Daemon    Message = "Daemon"
-	Document  Message = "Document"
-	Navigate  Message = "Navigate"
-	Reload    Message = "Reload"
-	Toggle    Message = "Toggle"
-	Wizard    Message = "Wizard"
+	Completed    Message = "Completed"
+	Cancelled    Message = "Cancelled"
+	Error        Message = "Error"
+	Warn         Message = "Warn"
+	Info         Message = "Info"
+	Progress     Message = "Progress"
+	Daemon       Message = "Daemon"
+	Document     Message = "Document"
+	Navigate     Message = "Navigate"
+	Reload       Message = "Reload"
+	ToggleLayout Message = "ToggleLayout"
+	ToggleHeader Message = "ToggleHeader"
+	Wizard       Message = "Wizard"
 )
 
 var AllMessages = []struct {
@@ -31,6 +32,7 @@ var AllMessages = []struct {
 	{Document, "DOCUMENT"},
 	{Navigate, "NAVIGATE"},
 	{Reload, "RELOAD"},
-	{Toggle, "TOGGLE"},
+	{ToggleLayout, "TOGGLELAYOUT"},
+	{ToggleHeader, "TOGGLEHEADER"},
 	{Wizard, "WIZARD"},
 }
