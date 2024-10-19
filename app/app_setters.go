@@ -5,7 +5,7 @@ import (
 )
 
 func (a *App) SetShowing(which string, onOff bool) {
-	a.session.Toggles[which] = onOff
+	a.session.Toggles.SetState(which, onOff)
 	a.saveSession()
 }
 

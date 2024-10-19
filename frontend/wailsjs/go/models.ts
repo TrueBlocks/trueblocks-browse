@@ -68,6 +68,84 @@ export namespace base {
 
 export namespace config {
 	
+	export class Headers {
+	    project: boolean;
+	    history: boolean;
+	    monitors: boolean;
+	    names: boolean;
+	    abis: boolean;
+	    indexes: boolean;
+	    manifests: boolean;
+	    status: boolean;
+	    settings: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Headers(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.project = source["project"];
+	        this.history = source["history"];
+	        this.monitors = source["monitors"];
+	        this.names = source["names"];
+	        this.abis = source["abis"];
+	        this.indexes = source["indexes"];
+	        this.manifests = source["manifests"];
+	        this.status = source["status"];
+	        this.settings = source["settings"];
+	    }
+	}
+	export class Layout {
+	    header: boolean;
+	    menu: boolean;
+	    help: boolean;
+	    footer: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Layout(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.header = source["header"];
+	        this.menu = source["menu"];
+	        this.help = source["help"];
+	        this.footer = source["footer"];
+	    }
+	}
+	export class Togglers {
+	    layout: Layout;
+	    headers: Headers;
+	
+	    static createFrom(source: any = {}) {
+	        return new Togglers(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.layout = this.convertValues(source["layout"], Layout);
+	        this.headers = this.convertValues(source["headers"], Headers);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class Window {
 	    x: number;
 	    y: number;
@@ -96,7 +174,7 @@ export namespace config {
 	    window: Window;
 	    daemons: daemons.Toggles;
 	    wizard: wizard.Wizard;
-	    toggles: {[key: string]: boolean};
+	    toggles: Togglers;
 	
 	    static createFrom(source: any = {}) {
 	        return new Session(source);
@@ -111,7 +189,7 @@ export namespace config {
 	        this.window = this.convertValues(source["window"], Window);
 	        this.daemons = this.convertValues(source["daemons"], daemons.Toggles);
 	        this.wizard = this.convertValues(source["wizard"], wizard.Wizard);
-	        this.toggles = source["toggles"];
+	        this.toggles = this.convertValues(source["toggles"], Togglers);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -132,6 +210,7 @@ export namespace config {
 		    return a;
 		}
 	}
+	
 
 }
 
@@ -1869,12 +1948,6 @@ export namespace types {
 
 export namespace wizard {
 	
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
-	}
 	export enum State {
 	    NOTOKAY = "notOkay",
 	    TOMLOKAY = "tomlOkay",
@@ -1882,6 +1955,12 @@ export namespace wizard {
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
 	    OKAY = "okay",
+	}
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
 	}
 	export class Wizard {
 	    state: State;

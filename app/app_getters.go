@@ -2,13 +2,14 @@ package app
 
 import (
 	"os"
+	"strings"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 func (a *App) IsShowing(which string) bool {
-	return a.session.Toggles[which]
+	return a.session.Toggles.IsOn(which)
 }
 
 func (a *App) GetEnv(key string) string {
@@ -21,6 +22,13 @@ func (a *App) GetMeta() coreTypes.MetaData {
 
 func (a *App) GetAppTitle() string {
 	return a.session.Window.Title
+}
+
+func (a *App) GetRawRoute() string {
+	route := a.GetRoute()
+	route = strings.TrimPrefix(route, "/")
+	parts := strings.Split(route, "/")
+	return parts[0]
 }
 
 func (a *App) GetRoute() string {
