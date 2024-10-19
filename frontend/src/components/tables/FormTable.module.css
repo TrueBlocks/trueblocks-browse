@@ -3,3 +3,15 @@
   margin-bottom: 1rem;
   overflow: hidden;
 }
+
+.chevron {
+  &[data-rotate] {
+    transform: rotate(45deg);
+  }
+}
+
+.icon {
+  color: black;
+  width: 16px;
+  height: 16px;
+}

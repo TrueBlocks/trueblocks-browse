@@ -12,14 +12,14 @@ import (
 // is not found, an error is returned. If appDir is not empty, it is appended to
 // the configDir and if the resulting folder does not exist, it is created.
 func GetConfigFn(appDir, fn string) (string, error) {
-	if configPath, err := os.UserConfigDir(); err != nil {
+	if userConfig, err := os.UserConfigDir(); err != nil {
 		return "", err
 	} else {
-		path := filepath.Join(configPath, "TrueBlocks", appDir, fn)
-		if !file.FolderExists(path) {
-			_ = file.EstablishFolder(path)
+		configFolder := filepath.Join(userConfig, "TrueBlocks", appDir)
+		if !file.FolderExists(configFolder) {
+			_ = file.EstablishFolder(configFolder)
 		}
-		return path, nil
+		return filepath.Join(configFolder, fn), nil
 	}
 }
 

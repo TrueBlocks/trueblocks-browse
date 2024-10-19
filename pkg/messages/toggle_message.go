@@ -1,12 +1,12 @@
 package messages
 
 type ToggleMsg struct {
-	Component string `json:"component"`
+	Layout string `json:"layout"`
 }
 
 func NewToggleMsg(comp string) *ToggleMsg {
 	return &ToggleMsg{
-		Component: comp,
+		Layout: comp,
 	}
 }
 
