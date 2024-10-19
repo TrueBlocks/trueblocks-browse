@@ -19,10 +19,29 @@ type Session struct {
 	Window    Window            `json:"window"`
 	Daemons   daemons.Toggles   `json:"daemons"`
 	Wizard    wizard.Wizard     `json:"wizard"`
-	Toggles   ToggleMap         `json:"toggles"`
+	Toggles   Togglers          `json:"toggles"`
 }
 
 const theTitle = "Browse by TrueBlocks"
+
+var defLayout = Layout{
+	Header: true,
+	Menu:   true,
+	Help:   true,
+	Footer: true,
+}
+
+var defHeader = Headers{
+	Project:   false,
+	History:   true,
+	Monitors:  false,
+	Names:     false,
+	Abis:      false,
+	Indexes:   false,
+	Manifests: false,
+	Status:    true,
+	Settings:  true,
+}
 
 var defaultSession = Session{
 	Chain:     "mainnet",
@@ -40,20 +59,9 @@ var defaultSession = Session{
 		Freshen: true,
 	},
 	Wizard: wizard.Wizard{State: wizard.NotOkay},
-	Toggles: ToggleMap{
-		"header":    true,
-		"menu":      true,
-		"help":      true,
-		"footer":    true,
-		"":          false,
-		"history":   false,
-		"monitors":  false,
-		"names":     false,
-		"abis":      false,
-		"indexes":   false,
-		"manifests": false,
-		"status":    false,
-		"settings":  false,
+	Toggles: Togglers{
+		Layout:  defLayout,
+		Headers: defHeader,
 	},
 }
 
