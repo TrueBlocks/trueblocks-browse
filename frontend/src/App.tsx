@@ -23,17 +23,17 @@ export const App = () => {
 
   const toggles = useMemo(
     () => [
-      { component: "header", setter: setShowHeader },
-      { component: "menu", setter: setShowMenu },
-      { component: "help", setter: setShowHelp },
-      { component: "footer", setter: setShowFooter },
+      { layout: "header", setter: setShowHeader },
+      { layout: "menu", setter: setShowMenu },
+      { layout: "help", setter: setShowHelp },
+      { layout: "footer", setter: setShowFooter },
     ],
     [setShowHeader, setShowMenu, setShowHelp, setShowFooter]
   );
 
   useEffect(() => {
-    toggles.forEach(({ component, setter }) => {
-      IsShowing(component).then((show) => {
+    toggles.forEach(({ layout, setter }) => {
+      IsShowing(layout).then((show) => {
         setter(show);
       });
     });
@@ -41,11 +41,12 @@ export const App = () => {
 
   useEffect(() => {
     const handleToggle = (msg: messages.ToggleMsg) => {
-      const toggle = toggles.find((t) => t.component === msg.component);
+      console.log("App.handleToggle", msg);
+      const toggle = toggles.find((t) => t.layout === msg.layout);
       if (toggle) {
         toggle.setter((prev) => {
           const show = !prev;
-          SetShowing(msg.component, show);
+          SetShowing(msg.layout, !prev);
           return show;
         });
       }
