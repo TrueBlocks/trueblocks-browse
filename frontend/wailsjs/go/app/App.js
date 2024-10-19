@@ -6,6 +6,10 @@ export function AbiPage(arg1, arg2) {
   return window['go']['app']['App']['AbiPage'](arg1, arg2);
 }
 
+export function AccordionToggle(arg1) {
+  return window['go']['app']['App']['AccordionToggle'](arg1);
+}
+
 export function AddrToName(arg1) {
   return window['go']['app']['App']['AddrToName'](arg1);
 }

@@ -29,3 +29,9 @@ func (a *App) FooterToggle(cd *menu.CallbackData) {
 	which := "footer"
 	messages.EmitToggle(a.ctx, which, "")
 }
+
+func (a *App) AccordionToggle(cd *menu.CallbackData) {
+	logger.Info("AccordionToggle")
+	which := a.GetRawRoute()
+	messages.EmitToggle(a.ctx, "", which)
+}

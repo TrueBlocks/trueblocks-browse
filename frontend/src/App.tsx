@@ -40,8 +40,7 @@ export const App = () => {
   }, [toggles]);
 
   useEffect(() => {
-    const handleToggle = (msg: messages.ToggleMsg) => {
-      console.log("App.handleToggle", msg);
+    const handleToggleLayout = (msg: messages.ToggleMsg) => {
       const toggle = toggles.find((t) => t.layout === msg.layout);
       if (toggle) {
         toggle.setter((prev) => {
@@ -52,9 +51,9 @@ export const App = () => {
       }
     };
 
-    EventsOn(messages.Message.TOGGLE, handleToggle);
+    EventsOn(messages.Message.TOGGLELAYOUT, handleToggleLayout);
     return () => {
-      EventsOff(messages.Message.TOGGLE);
+      EventsOff(messages.Message.TOGGLELAYOUT);
     };
   }, [toggles]);
 

@@ -1,5 +1,4 @@
 import { useState, createContext, useEffect, useContext, ReactNode } from "react";
-import { useLocation } from "wouter";
 import { Pager } from "@components";
 import { HistoryPage, IsShowing, SetShowing } from "@gocode/app/App";
 import { types, messages, app } from "@gocode/models";
@@ -14,7 +13,7 @@ type FetchFnType = (selected: number, perPage: number) => void;
 interface ViewStateProps {
   route: Route;
   nItems: number;
-  collapsed: boolean;
+  headerShows: boolean | null;
   handleCollapse: (value: string | null) => void;
   pager: Pager;
   fetchFn: FetchFnType;
@@ -33,27 +32,41 @@ type ViewContextType = {
 };
 
 export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnter, children }: ViewContextType) => {
-  const [collapsed, setCollapsed] = useState<boolean>(false);
-  const [location] = useLocation();
-
+  const [headerShows, setHeaderShows] = useState<boolean | null>(null);
   const { address, setHistory } = useAppState();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const ignoreEnter = (_unused: Page) => {};
   const pager = useKeyboardPaging(route, nItems, lines, onEnter ? onEnter : ignoreEnter);
 
-  useEffect(() => {
-    IsShowing(route).then((showing) => {
-      setCollapsed(showing);
+  const handleCollapse = (newState: string | null) => {
+    const isShowing = newState === "header";
+    SetShowing(route, isShowing).then(() => {
+      setHeaderShows(isShowing);
     });
-  }, [route, location]);
+  };
 
-  function handleCollapse(newState: string | null) {
-    const isCollapsed = newState ? false : true;
-    SetShowing(route, isCollapsed).then(() => {
-      setCollapsed(isCollapsed ? true : false);
+  useEffect(() => {
+    IsShowing(route).then((onOff) => {
+      setHeaderShows(onOff);
     });
-  }
+  }, [route]);
+
+  useEffect(() => {
+    const handleToggle = (msg: messages.ToggleMsg) => {
+      if (msg.layout === "" && route === msg.route) {
+        IsShowing(route).then((onOff) => {
+          SetShowing(route, !onOff).then(() => {
+            setHeaderShows(!onOff);
+          });
+        });
+      }
+    };
+    EventsOn(messages.Message.TOGGLEHEADER, handleToggle);
+    return () => {
+      EventsOff(messages.Message.TOGGLEHEADER);
+    };
+  }, [route]);
 
   useEffect(() => {
     fetchFn(pager.getOffset(), pager.perPage);
@@ -82,7 +95,7 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
   const state = {
     route,
     nItems,
-    collapsed,
+    headerShows,
     handleCollapse,
     pager,
     fetchFn,
