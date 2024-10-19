@@ -56,8 +56,6 @@ export function GetMenus():Promise<menu.Menu>;
 
 export function GetMeta():Promise<types.MetaData>;
 
-export function GetRawRoute():Promise<string>;
-
 export function GetRoute():Promise<string>;
 
 export function GetSession():Promise<config.Session>;

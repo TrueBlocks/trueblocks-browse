@@ -54,9 +54,10 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
 
   useEffect(() => {
     const handleToggle = (msg: messages.ToggleMsg) => {
-      if (msg.layout === "" && route === msg.route) {
-        IsShowing(route).then((onOff) => {
-          SetShowing(route, !onOff).then(() => {
+      const cmp = route === "" ? "project" : route;
+      if (msg.layout === "" && cmp === msg.route) {
+        IsShowing(cmp).then((onOff) => {
+          SetShowing(cmp, !onOff).then(() => {
             setHeaderShows(!onOff);
           });
         });
