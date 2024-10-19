@@ -2,11 +2,13 @@ package messages
 
 type ToggleMsg struct {
 	Layout string `json:"layout"`
+	Route  string `json:"route"`
 }
 
-func NewToggleMsg(comp string) *ToggleMsg {
+func NewToggleMsg(comp, route string) *ToggleMsg {
 	return &ToggleMsg{
 		Layout: comp,
+		Route:  route,
 	}
 }
 

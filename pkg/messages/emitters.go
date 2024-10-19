@@ -53,8 +53,8 @@ func EmitWizard(ctx context.Context, state wizard.State) {
 	emitMsg(ctx, Wizard, NewWizardMsg(state))
 }
 
-func EmitToggle(ctx context.Context, comp string) {
-	emitMsg(ctx, Toggle, NewToggleMsg(comp))
+func EmitToggle(ctx context.Context, comp, route string) {
+	emitMsg(ctx, Toggle, NewToggleMsg(comp, route))
 }
 
 func EmitInfo(ctx context.Context, msg string) {
