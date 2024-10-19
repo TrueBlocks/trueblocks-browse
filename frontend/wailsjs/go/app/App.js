@@ -94,10 +94,6 @@ export function GetMeta() {
   return window['go']['app']['App']['GetMeta']();
 }
 
-export function GetRawRoute() {
-  return window['go']['app']['App']['GetRawRoute']();
-}
-
 export function GetRoute() {
   return window['go']['app']['App']['GetRoute']();
 }

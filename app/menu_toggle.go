@@ -1,6 +1,8 @@
 package app
 
 import (
+	"strings"
+
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/menu"
@@ -32,6 +34,12 @@ func (a *App) FooterToggle(cd *menu.CallbackData) {
 
 func (a *App) AccordionToggle(cd *menu.CallbackData) {
 	logger.Info("AccordionToggle")
-	which := a.GetRawRoute()
-	messages.EmitToggle(a.ctx, "", which)
+	route := a.GetRoute()
+	route = strings.TrimPrefix(route, "/")
+	parts := strings.Split(route, "/")
+	route = parts[0]
+	if route == "" {
+		route = "project"
+	}
+	messages.EmitToggle(a.ctx, "", route)
 }
