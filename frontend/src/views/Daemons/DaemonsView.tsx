@@ -95,28 +95,20 @@ export const DaemonsView = () => {
 const createDaemonForm = (data: Nope): FieldGroup<Nope>[] => {
   return [
     {
-      legend: "Daemons",
+      label: "Daemons",
       collapsable: false,
       components: [
-        {
-          component: (
-            <SimpleGrid cols={2}>
-              <DaemonCard daemon={data.scraper} toggle={data.toggleDaemon} />
-              <DaemonCard daemon={data.freshen} toggle={data.toggleDaemon} />
-              <DaemonCard daemon={data.ipfs} toggle={data.toggleDaemon} />
-            </SimpleGrid>
-          ),
-        },
-        {
-          component: (
-            <Stack>
-              <Box />
-              <FieldsetWrapper legend="Logs">
-                <DaemonLog logMessages={data.logMessages} />
-              </FieldsetWrapper>
-            </Stack>
-          ),
-        },
+        <SimpleGrid key={"cards"} cols={2}>
+          <DaemonCard daemon={data.scraper} toggle={data.toggleDaemon} />
+          <DaemonCard daemon={data.freshen} toggle={data.toggleDaemon} />
+          <DaemonCard daemon={data.ipfs} toggle={data.toggleDaemon} />
+        </SimpleGrid>,
+        <Stack key={"logs"}>
+          <Box />
+          <FieldsetWrapper legend="Logs">
+            <DaemonLog logMessages={data.logMessages} />
+          </FieldsetWrapper>
+        </Stack>,
       ],
     },
   ];

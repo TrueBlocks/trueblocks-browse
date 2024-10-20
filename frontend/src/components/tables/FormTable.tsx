@@ -25,6 +25,7 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
     <Container styles={{ root: { minWidth: "95%" } }}>
       <Accordion
         classNames={{ chevron: classes.chevron }}
+        data-rotate={headerShows ? "true" : "false"}
         styles={{ root: { marginBottom: "-20px", marginTop: "-15px" } }}
         value={headerShows ? "header" : null}
         onChange={handleCollapse}
@@ -38,10 +39,10 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
             <Grid>
               {collapsableGroups.map((group) => {
                 return (
-                  <Grid.Col key={group.legend} span={group.colSpan ?? 12}>
+                  <Grid.Col key={group.label} span={group.colSpan ?? 12}>
                     <Fieldset bg="white" className={classes.fieldSet}>
                       {group.fields?.map((fld) => <FieldRenderer key={String(fld.accessor)} field={fld} data={data} />)}
-                      {group.components?.map((cmp, index) => <div key={index}>{cmp.component ?? null}</div>)}
+                      {group.components?.map((cmp) => cmp)}
                     </Fieldset>
                   </Grid.Col>
                 );
@@ -52,10 +53,10 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
       </Accordion>
       <Grid>
         {nonCollapsableGroups.map((group) => (
-          <Grid.Col key={group.legend} span={group.colSpan ?? 12}>
-            <Fieldset legend={group.legend} bg="white" className={classes.fieldSet}>
+          <Grid.Col key={group.label} span={group.colSpan ?? 12}>
+            <Fieldset legend={group.label} bg="white" className={classes.fieldSet}>
               {group.fields?.map((fld) => <FieldRenderer key={String(fld.accessor)} field={fld} data={data} />)}
-              {group.components?.map((cmp, index) => <div key={index}>{cmp.component ?? null}</div>)}
+              {group.components?.map((cmp) => cmp)}
             </Fieldset>
           </Grid.Col>
         ))}

@@ -41,7 +41,7 @@ export const ProjectView = () => {
 const createProjectForm = (table: any): FieldGroup<types.ProjectContainer>[] => {
   return [
     {
-      legend: "Data 1",
+      label: "Data 1",
       colSpan: 6,
       fields: [
         { label: "fileName", type: "text", accessor: "filename" },
@@ -51,7 +51,7 @@ const createProjectForm = (table: any): FieldGroup<types.ProjectContainer>[] => 
       ],
     },
     {
-      legend: "Data 2",
+      label: "Data 2",
       colSpan: 6,
       fields: [
         { label: "nMonitors", type: "int", accessor: "nMonitors" },
@@ -63,18 +63,14 @@ const createProjectForm = (table: any): FieldGroup<types.ProjectContainer>[] => 
       ],
     },
     {
-      legend: "Buttons",
+      label: "Buttons",
       buttons: [<AddButton key={"add"} value={"https://trueblocks.io"} />],
     },
     {
-      legend: "Open Monitors",
+      label: "Open Monitors",
       fields: [],
       collapsable: false,
-      components: [
-        {
-          component: <DataTable<types.HistoryContainer> table={table} loading={false} />,
-        },
-      ],
+      components: [<DataTable<types.HistoryContainer> key={"dataTable"} table={table} loading={false} />],
     },
   ];
 };

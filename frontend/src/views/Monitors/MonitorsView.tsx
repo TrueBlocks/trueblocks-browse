@@ -39,7 +39,7 @@ export const MonitorsView = () => {
 const createMonitorForm = (table: any): FieldGroup<types.MonitorContainer>[] => {
   return [
     {
-      legend: "Monitor Data",
+      label: "Monitor Data",
       colSpan: 6,
       fields: [
         { label: "nMonitors", type: "int", accessor: "nItems" },
@@ -49,7 +49,7 @@ const createMonitorForm = (table: any): FieldGroup<types.MonitorContainer>[] => 
       ],
     },
     {
-      legend: "Other",
+      label: "Other",
       colSpan: 6,
       fields: [
         { label: "nEmpty", type: "int", accessor: "nEmpty" },
@@ -58,20 +58,16 @@ const createMonitorForm = (table: any): FieldGroup<types.MonitorContainer>[] => 
       ],
     },
     {
-      legend: "Buttons",
+      label: "Buttons",
       buttons: [
         <AddButton key={"add"} value={"https://trueblocks.io"} />,
         <CleanButton key={"clean"} value={"https://trueblocks.io"} />,
       ],
     },
     {
-      legend: "Available Monitors",
+      label: "Available Monitors",
       collapsable: false,
-      components: [
-        {
-          component: <DataTable<types.Monitor> table={table} loading={false} />,
-        },
-      ],
+      components: [<DataTable<types.Monitor> key={"dataTable"} table={table} loading={false} />],
     },
   ];
 };

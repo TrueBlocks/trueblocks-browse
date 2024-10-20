@@ -37,12 +37,12 @@ const createHistoryForm = (
 ): FieldGroup<types.HistoryContainer>[] => {
   return [
     {
-      legend: "DalleDress",
+      label: "DalleDress",
       colSpan: 2,
       fields: [{ label: "", type: "dalle", accessor: "address" }],
     },
     {
-      legend: "Transaction Data",
+      label: "Transaction Data",
       colSpan: 7,
       fields: [
         { label: "address", type: "address-address-only", accessor: "address" },
@@ -51,7 +51,7 @@ const createHistoryForm = (
       ],
     },
     {
-      legend: "Transaction Data",
+      label: "Transaction Data",
       colSpan: 3,
       fields: [
         { label: "nTransactions", type: "int", accessor: "nItems" },
@@ -61,7 +61,7 @@ const createHistoryForm = (
       ],
     },
     {
-      legend: "Buttons",
+      label: "Buttons",
       buttons: [
         <ExploreButton key={"explore"} value={address} />,
         <GoogleButton key={"google"} value={address} />,
@@ -69,13 +69,9 @@ const createHistoryForm = (
       ],
     },
     {
-      legend: "Transaction History",
+      label: "Transaction History",
       collapsable: false,
-      components: [
-        {
-          component: <DataTable<types.Transaction> table={table} loading={false} />,
-        },
-      ],
+      components: [<DataTable<types.Transaction> key={"dataTable"} table={table} loading={false} />],
     },
   ];
 };

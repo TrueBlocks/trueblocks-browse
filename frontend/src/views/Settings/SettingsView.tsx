@@ -31,7 +31,7 @@ export const SettingsView = () => {
 const createSettingsForm = (): FieldGroup<config.Session>[] => {
   return [
     {
-      legend: "Session Data 1",
+      label: "Session Data 1",
       colSpan: 6,
       collapsable: false,
       fields: [
@@ -41,7 +41,7 @@ const createSettingsForm = (): FieldGroup<config.Session>[] => {
       ],
     },
     {
-      legend: "Session Data 2",
+      label: "Session Data 2",
       colSpan: 6,
       collapsable: false,
       fields: [
