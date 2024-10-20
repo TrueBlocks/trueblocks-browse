@@ -70,6 +70,10 @@ export function GetChains() {
   return window['go']['app']['App']['GetChains']();
 }
 
+export function GetConfig() {
+  return window['go']['app']['App']['GetConfig']();
+}
+
 export function GetContext() {
   return window['go']['app']['App']['GetContext']();
 }

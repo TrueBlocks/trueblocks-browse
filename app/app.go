@@ -103,21 +103,6 @@ func (a *App) Shutdown(ctx context.Context) {
 }
 
 // ---------------------------------------------------------------
-func (a *App) GetSession() *config.Session {
-	return &a.session
-}
-
-// ---------------------------------------------------------------
-func (a *App) GetContext() context.Context {
-	return a.ctx
-}
-
-// ---------------------------------------------------------------
-func (a *App) GetWindow() *config.Window {
-	return &a.session.Window
-}
-
-// ---------------------------------------------------------------
 func (a *App) saveSession() {
 	a.session.Window.X, a.session.Window.Y = runtime.WindowGetPosition(a.ctx)
 	a.session.Window.Width, a.session.Window.Height = runtime.WindowGetSize(a.ctx)
@@ -128,6 +113,7 @@ func (a *App) saveSession() {
 // ----------------------------------------------------------------
 func (a *App) loadSession() {
 	_ = a.session.Load()
+	a.session.CleanWindowSize(a.ctx)
 	a.globals = sdk.Globals{
 		Chain: a.session.Chain,
 	}

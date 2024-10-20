@@ -1,12 +1,15 @@
 package config
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // Session stores ephemeral things such as last window position,
@@ -51,8 +54,8 @@ var defaultSession = Session{
 	Window: Window{
 		X:      0,
 		Y:      0,
-		Width:  1024,
-		Height: 768,
+		Width:  0,
+		Height: 0,
 		Title:  theTitle,
 	},
 	Daemons: daemons.Toggles{
@@ -63,6 +66,46 @@ var defaultSession = Session{
 		Layout:  defLayout,
 		Headers: defHeader,
 	},
+}
+
+func (s *Session) CleanWindowSize(ctx context.Context) {
+	if s.Window.Width != 0 && s.Window.Height != 0 {
+		logger.Info("Leaving early", s.Window.String())
+		// already set
+		return
+	}
+
+	def := Window{Width: 1024, Height: 768}
+	defer func() {
+		if s.Window.Width == 0 || s.Window.Height == 0 {
+			logger.Info("Fixing", s.Window.String())
+			s.Window = def
+		}
+		_ = s.Save()
+	}()
+
+	if screens, err := runtime.ScreenGetAll(ctx); err != nil {
+		logger.Error("Error getting screens", err)
+		return
+	} else {
+		fullScreen := def
+		for _, screen := range screens {
+			if screen.IsCurrent || screen.IsPrimary {
+				fullScreen.Width = screen.Size.Width
+				fullScreen.Height = screen.Size.Height
+				break
+			}
+		}
+
+		portions := 12
+		wScale := 10
+		wPortion := fullScreen.Width / portions
+		hPortion := fullScreen.Height / portions
+		s.Window.X = wPortion
+		s.Window.Y = hPortion
+		s.Window.Width = wScale * wPortion
+		s.Window.Height = wScale * hPortion
+	}
 }
 
 // Save saves the session to the configuration folder.
