@@ -10,6 +10,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/wailsapp/wails/v2"
 	wLogger "github.com/wailsapp/wails/v2/pkg/logger"
@@ -53,6 +54,7 @@ func main() {
 			&wizard.Wizard{},
 			&editors.Name{},
 			&coreTypes.Transaction{},
+			&config.ConfigFile{},
 			&daemons.Daemon{},
 		},
 		EnumBind: []interface{}{

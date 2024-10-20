@@ -3,8 +3,8 @@
 import {types} from '../models';
 import {menu} from '../models';
 import {base} from '../models';
-import {context} from '../models';
 import {config} from '../models';
+import {context} from '../models';
 import {wizard} from '../models';
 import {editors} from '../models';
 import {app} from '../models';
@@ -43,6 +43,8 @@ export function GetChain():Promise<string>;
 export function GetChainInfo(arg1:string):Promise<types.Chain>;
 
 export function GetChains():Promise<Array<string>>;
+
+export function GetConfig():Promise<config.ConfigFile>;
 
 export function GetContext():Promise<context.Context>;
 
