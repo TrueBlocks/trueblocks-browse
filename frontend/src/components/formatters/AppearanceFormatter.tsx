@@ -14,10 +14,8 @@ export const AppearanceFormatter = ({ value, value2, className }: Omit<Omit<Form
   const onClose = useCallback(() => setPopupOpen(false), []);
 
   const appPopup = <AppearancePopup hash={String(value2)} onSubmit={onClose} onClose={onClose} onCopy={onCopy} />;
-
-  const editor = isPopupOpen ? appPopup : null;
   return (
-    <Popup editor={editor}>
+    <Popup editor={isPopupOpen ? appPopup : null}>
       <div onClick={() => setPopupOpen(true)}>
         <Formatter className={className} type="text" value={value} />
       </div>
