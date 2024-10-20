@@ -4,7 +4,8 @@
 }
 
 .actionButton {
-  background-color: green !important;
+  background-color: transparent !important;
+  color: darkblue !important;
 }
 
 .closeButton {

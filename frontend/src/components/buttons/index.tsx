@@ -1,3 +1,4 @@
+export * from "./AddButton";
 export * from "./BaseButton";
 export * from "./CleanButton";
 export * from "./CloseButton";
