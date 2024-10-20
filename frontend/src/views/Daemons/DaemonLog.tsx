@@ -3,7 +3,7 @@ import { messages } from "@gocode/models";
 
 export const DaemonLog = ({ logMessages }: { logMessages: messages.DaemonMsg[] }) => {
   return (
-    <Card style={{ maxHeight: "16rem", overflowY: "auto" }}>
+    <Card style={{ width: "100%", maxHeight: "16rem", overflowY: "auto" }}>
       {logMessages.map((log, index) => (
         <Text c={log.color} key={index}>
           {log.message}
