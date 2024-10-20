@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { useParams } from "wouter";
 import { ExploreButton, ExportButton, View, FormTable, DataTable, FieldGroup, GoogleButton } from "@components";
@@ -32,8 +31,10 @@ export const HistoryView = () => {
   );
 };
 
-type theInstance = InstanceType<typeof types.HistoryContainer>;
-const createHistoryForm = (address: base.Address, table: Table<types.Transaction>): FieldGroup<theInstance>[] => {
+const createHistoryForm = (
+  address: base.Address,
+  table: Table<types.Transaction>
+): FieldGroup<types.HistoryContainer>[] => {
   return [
     {
       legend: "DalleDress",
@@ -42,7 +43,7 @@ const createHistoryForm = (address: base.Address, table: Table<types.Transaction
     },
     {
       legend: "Transaction Data",
-      colSpan: 5,
+      colSpan: 7,
       fields: [
         { label: "address", type: "address-address-only", accessor: "address" },
         { label: "name", type: "address-name-only", accessor: "address" },
@@ -61,17 +62,10 @@ const createHistoryForm = (address: base.Address, table: Table<types.Transaction
     },
     {
       legend: "Buttons",
-      colSpan: 2,
-      components: [
-        {
-          component: (
-            <Stack align="center">
-              <ExploreButton value={address}>Explore</ExploreButton>
-              <GoogleButton value={address}>Google</GoogleButton>
-              <ExportButton value={address}>Export</ExportButton>
-            </Stack>
-          ),
-        },
+      buttons: [
+        <ExploreButton key={"explore"} value={address} />,
+        <GoogleButton key={"google"} value={address} />,
+        <ExportButton key={"export"} value={address} />,
       ],
     },
     {

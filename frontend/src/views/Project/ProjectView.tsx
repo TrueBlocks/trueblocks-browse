@@ -1,5 +1,5 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, FieldGroup } from "@components";
+import { View, FormTable, DataTable, FieldGroup, AddButton } from "@components";
 import { GoToHistory, ModifyProject } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { Page } from "@hooks";
@@ -38,19 +38,8 @@ export const ProjectView = () => {
   );
 };
 
-type theInstance = InstanceType<typeof types.ProjectContainer>;
-const createProjectForm = (table: any): FieldGroup<theInstance>[] => {
+const createProjectForm = (table: any): FieldGroup<types.ProjectContainer>[] => {
   return [
-    {
-      legend: "Open Monitors",
-      fields: [],
-      collapsable: false,
-      components: [
-        {
-          component: <DataTable<types.HistoryContainer> table={table} loading={false} />,
-        },
-      ],
-    },
     {
       legend: "Data 1",
       colSpan: 6,
@@ -71,6 +60,20 @@ const createProjectForm = (table: any): FieldGroup<theInstance>[] => {
         { label: "nNames", type: "int", accessor: "nNames" },
         { label: "nAbis", type: "int", accessor: "nAbis" },
         { label: "nCaches", type: "int", accessor: "nCaches" },
+      ],
+    },
+    {
+      legend: "Buttons",
+      buttons: [<AddButton key={"add"} value={"https://trueblocks.io"} />],
+    },
+    {
+      legend: "Open Monitors",
+      fields: [],
+      collapsable: false,
+      components: [
+        {
+          component: <DataTable<types.HistoryContainer> table={table} loading={false} />,
+        },
       ],
     },
   ];

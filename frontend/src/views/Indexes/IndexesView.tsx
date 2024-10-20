@@ -1,4 +1,3 @@
-import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { DataTable, FormTable, FieldGroup, View, SpecButton, PinButton } from "@components";
 import { ModifyNoop } from "@gocode/app/App";
@@ -25,12 +24,11 @@ export const IndexesView = () => {
   );
 };
 
-type theInstance = InstanceType<typeof types.IndexContainer>;
-const createIndexForm = (table: any): FieldGroup<theInstance>[] => {
+const createIndexForm = (table: any): FieldGroup<types.IndexContainer>[] => {
   return [
     {
       legend: "Index Data",
-      colSpan: 5,
+      colSpan: 6,
       fields: [
         { label: "bloomSz", type: "bytes", accessor: "bloomSz" },
         { label: "chunkSz", type: "bytes", accessor: "chunkSz" },
@@ -42,7 +40,7 @@ const createIndexForm = (table: any): FieldGroup<theInstance>[] => {
     },
     {
       legend: "Statistics",
-      colSpan: 5,
+      colSpan: 6,
       fields: [
         { label: "nItems", type: "int", accessor: "nItems" },
         { label: "addrsPerBlock", type: "float", accessor: "addrsPerBlock" },
@@ -52,18 +50,12 @@ const createIndexForm = (table: any): FieldGroup<theInstance>[] => {
     },
     {
       legend: "Buttons",
-      colSpan: 2,
-      components: [
-        {
-          component: (
-            <Stack align="center">
-              <PinButton value="https://trueblocks.io">Pin</PinButton>
-              <SpecButton value="https://trueblocks.io/papers/2023/specification-for-the-unchained-index-v2.0.0-release.pdf">
-                Spec
-              </SpecButton>
-            </Stack>
-          ),
-        },
+      buttons: [
+        <PinButton key={"pin"} value="https://trueblocks.io" />,
+        <SpecButton
+          key={"spec"}
+          value="https://trueblocks.io/papers/2023/specification-for-the-unchained-index-v2.0.0-release.pdf"
+        />,
       ],
     },
     {

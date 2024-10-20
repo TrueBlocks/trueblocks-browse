@@ -1,4 +1,3 @@
-import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, FieldGroup, SpecButton, PublishButton } from "@components";
 import { ModifyNoop } from "@gocode/app/App";
@@ -25,12 +24,11 @@ export const ManifestsView = () => {
   );
 };
 
-type theInstance = InstanceType<typeof types.ManifestContainer>;
-const createManifestForm = (table: any): FieldGroup<theInstance>[] => {
+const createManifestForm = (table: any): FieldGroup<types.ManifestContainer>[] => {
   return [
     {
       legend: "Manifest Data",
-      colSpan: 5,
+      colSpan: 6,
       fields: [
         { label: "version", type: "text", accessor: "version" },
         { label: "chain", type: "text", accessor: "chain" },
@@ -40,7 +38,7 @@ const createManifestForm = (table: any): FieldGroup<theInstance>[] => {
     },
     {
       legend: "Statistics",
-      colSpan: 5,
+      colSpan: 6,
       fields: [
         { label: "nBlooms", type: "int", accessor: "nBlooms" },
         { label: "bloomsSize", type: "bytes", accessor: "bloomsSize" },
@@ -50,18 +48,12 @@ const createManifestForm = (table: any): FieldGroup<theInstance>[] => {
     },
     {
       legend: "Buttons",
-      colSpan: 2,
-      components: [
-        {
-          component: (
-            <Stack align="center">
-              <PublishButton value="https://trueblocks.io">Publish</PublishButton>
-              <SpecButton value="https://trueblocks.io/papers/2023/specification-for-the-unchained-index-v2.0.0-release.pdf">
-                Spec
-              </SpecButton>
-            </Stack>
-          ),
-        },
+      buttons: [
+        <PublishButton key={"publish"} value="https://trueblocks.io" />,
+        <SpecButton
+          key={"publish"}
+          value="https://trueblocks.io/papers/2023/specification-for-the-unchained-index-v2.0.0-release.pdf"
+        />,
       ],
     },
     {

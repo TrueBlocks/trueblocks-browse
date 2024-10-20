@@ -1,6 +1,5 @@
-import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
-import { View, FormTable, DataTable, FieldGroup, PublishButton, CleanButton } from "@components";
+import { View, FormTable, DataTable, FieldGroup, PublishButton, CleanButton, AddButton } from "@components";
 import { ModifyAbi } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
@@ -25,12 +24,11 @@ export const AbisView = () => {
   );
 };
 
-type theInstance = InstanceType<typeof types.AbiContainer>;
-const createAbisForm = (table: Table<types.Abi>): FieldGroup<theInstance>[] => {
+const createAbisForm = (table: Table<types.Abi>): FieldGroup<types.AbiContainer>[] => {
   return [
     {
       legend: "Abi Data",
-      colSpan: 5,
+      colSpan: 6,
       fields: [
         { label: "nItems", type: "int", accessor: "nItems" },
         { label: "nFunctions", type: "int", accessor: "nFunctions" },
@@ -40,7 +38,7 @@ const createAbisForm = (table: Table<types.Abi>): FieldGroup<theInstance>[] => {
     },
     {
       legend: "Bounds",
-      colSpan: 5,
+      colSpan: 6,
       fields: [
         { label: "largestFile", type: "text", accessor: "largestFile" },
         { label: "mostFunctions", type: "text", accessor: "mostFunctions" },
@@ -49,16 +47,10 @@ const createAbisForm = (table: Table<types.Abi>): FieldGroup<theInstance>[] => {
     },
     {
       legend: "Buttons",
-      colSpan: 2,
-      components: [
-        {
-          component: (
-            <Stack align="center">
-              <PublishButton value={"https://trueblocks.io"}>Publish</PublishButton>
-              <CleanButton value={"https://trueblocks.io"}>Clean</CleanButton>
-            </Stack>
-          ),
-        },
+      buttons: [
+        <AddButton key={"add"} value={"https://trueblocks.io"} />,
+        <PublishButton key={"publish"} value={"https://trueblocks.io"} />,
+        <CleanButton key={"clean"} value={"https://trueblocks.io"} />,
       ],
     },
     {

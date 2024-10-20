@@ -19,7 +19,16 @@ export type FieldGroup<T> = {
   colSpan?: number;
   fields?: field<T>[];
   components?: component[];
+  buttons?: ReactNode[];
   collapsable?: boolean;
+};
+
+export const isCollapsable = <T,>(group: FieldGroup<T>): boolean => {
+  return group.collapsable ?? true;
+};
+
+export const isButton = <T,>(group: FieldGroup<T>): boolean => {
+  return Boolean(group.buttons);
 };
 
 type FieldRendererProps<T> = {
