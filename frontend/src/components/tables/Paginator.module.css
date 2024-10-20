@@ -1,27 +1,27 @@
 .paginator {
   display: flex;
   justify-content: flex-end;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .root {
-  background-color: white !important;
-  color: black !important;
+  background-color: white;
+  color: black;
 }
 
 .control {
-  background-color: white !important;
-  border-color: white !important;
-  color: black !important;
+  background-color: white;
+  color: black;
 }
 
 .control[data-active] {
   font-weight: bold;
-  color: black !important;
+  color: black;
   font-size: 1.1rem;
 }
 
 .control:hover {
   font-weight: bold;
-  color: darkolivegreen !important;
+  background-color: white;
+  font-size: 1.1rem;
 }

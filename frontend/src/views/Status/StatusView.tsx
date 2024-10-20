@@ -1,5 +1,5 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, FieldGroup } from "@components";
+import { View, FormTable, DataTable, FieldGroup, CleanButton } from "@components";
 import { ModifyNoop } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
@@ -24,8 +24,7 @@ export const StatusView = () => {
   );
 };
 
-type theInstance = InstanceType<typeof types.StatusContainer>;
-const createStatusForm = (table: any): FieldGroup<theInstance>[] => {
+const createStatusForm = (table: any): FieldGroup<types.StatusContainer>[] => {
   return [
     {
       legend: "System Data",
@@ -66,6 +65,10 @@ const createStatusForm = (table: any): FieldGroup<theInstance>[] => {
         { label: "nFolders", type: "int", accessor: "nFolders" },
         { label: "sizeInBytes", type: "bytes", accessor: "nBytes" },
       ],
+    },
+    {
+      legend: "Buttons",
+      buttons: [<CleanButton key={"clean"} value={"https://trueblocks.io"} />],
     },
     {
       legend: "Caches",

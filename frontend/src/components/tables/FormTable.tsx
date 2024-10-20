@@ -1,6 +1,6 @@
 import { Container, Fieldset, Grid, Accordion } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import { FieldRenderer, FieldGroup } from "@components";
+import { FieldRenderer, FieldGroup, isCollapsable, isButton, ButtonTray } from "@components";
 import { useViewState } from "@state";
 import classes from "./FormTable.module.css";
 
@@ -11,8 +11,10 @@ type FormTableProps<T> = {
 
 export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
   const { headerShows, handleCollapse } = useViewState();
-  const collapsableGroups = groups.filter((group) => group.collapsable ?? true);
-  const nonCollapsableGroups = groups.filter((group) => group.collapsable === false);
+
+  const collapsableGroups = groups.filter((group) => isCollapsable(group) && !isButton(group));
+  const nonCollapsableGroups = groups.filter((group) => !isCollapsable(group));
+  const buttonGroup = groups.find((group) => isButton(group)) || null;
 
   if (headerShows == null) {
     // avoids flashing
@@ -29,7 +31,9 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
         chevron={<IconPlus className={classes.icon} />}
       >
         <Accordion.Item value="header">
-          <Accordion.Control bg="white"></Accordion.Control>
+          <Accordion.Control c={"black"} bg="white">
+            <ButtonTray buttonGroup={buttonGroup} />
+          </Accordion.Control>
           <Accordion.Panel>
             <Grid>
               {collapsableGroups.map((group) => {

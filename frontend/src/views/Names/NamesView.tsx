@@ -1,6 +1,5 @@
-import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, FieldGroup, CleanButton, PublishButton } from "@components";
+import { View, FormTable, DataTable, FieldGroup, CleanButton, PublishButton, AddButton } from "@components";
 import { GoToHistory, ModifyName } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { Page } from "@hooks";
@@ -37,12 +36,11 @@ export const NamesView = () => {
   );
 };
 
-type theInstance = InstanceType<typeof types.NameContainer>;
-const createNameForm = (table: any): FieldGroup<theInstance>[] => {
+const createNameForm = (table: any): FieldGroup<types.NameContainer>[] => {
   return [
     {
       legend: "Name Data",
-      colSpan: 5,
+      colSpan: 6,
       fields: [
         { label: "nNames", type: "int", accessor: "nItems" },
         { label: "nContracts", type: "int", accessor: "nContracts" },
@@ -53,7 +51,7 @@ const createNameForm = (table: any): FieldGroup<theInstance>[] => {
     },
     {
       legend: "Database Parts",
-      colSpan: 5,
+      colSpan: 6,
       fields: [
         { label: "sizeOnDisc", type: "bytes", accessor: "sizeOnDisc" },
         { label: "nCustom", type: "int", accessor: "nCustom" },
@@ -64,16 +62,10 @@ const createNameForm = (table: any): FieldGroup<theInstance>[] => {
     },
     {
       legend: "Buttons",
-      colSpan: 2,
-      components: [
-        {
-          component: (
-            <Stack align="center">
-              <PublishButton value={"https://trueblocks.io"}>Publish</PublishButton>
-              <CleanButton value={"https://trueblocks.io"}>Clean</CleanButton>
-            </Stack>
-          ),
-        },
+      buttons: [
+        <AddButton key={"add"} value={"https://trueblocks.io"} />,
+        <PublishButton key={"publish"} value={"https://trueblocks.io"} />,
+        <CleanButton key={"clean"} value={"https://trueblocks.io"} />,
       ],
     },
     {

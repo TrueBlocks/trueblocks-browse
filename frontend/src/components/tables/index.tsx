@@ -1,3 +1,4 @@
+export * from "./ButtonTray";
 export * from "./CellType";
 export * from "./CustomMeta";
 export * from "./DataTable";

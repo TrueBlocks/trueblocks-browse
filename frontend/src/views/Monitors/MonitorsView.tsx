@@ -1,6 +1,5 @@
-import { Stack } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, FieldGroup, CleanButton } from "@components";
+import { View, FormTable, DataTable, FieldGroup, CleanButton, AddButton } from "@components";
 import { GoToHistory, ModifyMonitors } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { Page } from "@hooks";
@@ -37,12 +36,11 @@ export const MonitorsView = () => {
   );
 };
 
-type theInstance = InstanceType<typeof types.MonitorContainer>;
-const createMonitorForm = (table: any): FieldGroup<theInstance>[] => {
+const createMonitorForm = (table: any): FieldGroup<types.MonitorContainer>[] => {
   return [
     {
       legend: "Monitor Data",
-      colSpan: 5,
+      colSpan: 6,
       fields: [
         { label: "nMonitors", type: "int", accessor: "nItems" },
         { label: "nRecords", type: "int", accessor: "nRecords" },
@@ -52,7 +50,7 @@ const createMonitorForm = (table: any): FieldGroup<theInstance>[] => {
     },
     {
       legend: "Other",
-      colSpan: 5,
+      colSpan: 6,
       fields: [
         { label: "nEmpty", type: "int", accessor: "nEmpty" },
         { label: "nStaged", type: "int", accessor: "nStaged" },
@@ -61,15 +59,9 @@ const createMonitorForm = (table: any): FieldGroup<theInstance>[] => {
     },
     {
       legend: "Buttons",
-      colSpan: 2,
-      components: [
-        {
-          component: (
-            <Stack align="center">
-              <CleanButton value={"https://trueblocks.io"}>Clean</CleanButton>
-            </Stack>
-          ),
-        },
+      buttons: [
+        <AddButton key={"add"} value={"https://trueblocks.io"} />,
+        <CleanButton key={"clean"} value={"https://trueblocks.io"} />,
       ],
     },
     {

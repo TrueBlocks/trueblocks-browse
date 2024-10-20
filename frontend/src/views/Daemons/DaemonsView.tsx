@@ -1,6 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { SimpleGrid, Fieldset } from "@mantine/core";
-import { View } from "@components";
+import { SimpleGrid, Stack, Box } from "@mantine/core";
+import { FieldGroup, FieldsetWrapper, FormTable, View } from "@components";
 import { ModifyNoop } from "@gocode/app/App";
 import { GetDaemonJson, ToggleDaemon } from "@gocode/app/App";
 import { daemons, messages } from "@gocode/models";
@@ -9,6 +9,14 @@ import { ViewStateProvider } from "@state";
 import { DaemonCard, DaemonLog } from ".";
 
 const empty = {} as daemons.Daemon;
+
+interface Nope {
+  scraper: daemons.Daemon;
+  freshen: daemons.Daemon;
+  ipfs: daemons.Daemon;
+  logMessages: messages.DaemonMsg[];
+  toggleDaemon: (name: string) => void;
+}
 
 export const DaemonsView = () => {
   const [scraper, setScraper] = useState<daemons.Daemon>(empty);
@@ -62,21 +70,54 @@ export const DaemonsView = () => {
   };
 
   const route = "daemons";
+  const data: Nope = {
+    toggleDaemon,
+    scraper,
+    freshen,
+    ipfs,
+    logMessages,
+  };
+
   return (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    <ViewStateProvider route={route} fetchFn={(_unused1: number, _unused2: number) => {}} modifyFn={ModifyNoop}>
+    <ViewStateProvider
+      route={route}
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      fetchFn={(_unused1: number, _unused2: number) => {}}
+      modifyFn={ModifyNoop}
+    >
       <View>
-        <Fieldset legend={"Daemons"} bg={"white"}>
-          <SimpleGrid cols={2}>
-            <DaemonCard daemon={scraper} toggle={toggleDaemon} />
-            <DaemonCard daemon={freshen} toggle={toggleDaemon} />
-            <DaemonCard daemon={ipfs} toggle={toggleDaemon} />
-          </SimpleGrid>
-        </Fieldset>
-        <Fieldset legend={"Logs"} bg={"white"}>
-          <DaemonLog logMessages={logMessages} />
-        </Fieldset>
+        <FormTable data={data} groups={createDaemonForm(data)} />
       </View>
     </ViewStateProvider>
   );
+};
+
+const createDaemonForm = (data: Nope): FieldGroup<Nope>[] => {
+  return [
+    {
+      legend: "Daemons",
+      collapsable: false,
+      components: [
+        {
+          component: (
+            <SimpleGrid cols={2}>
+              <DaemonCard daemon={data.scraper} toggle={data.toggleDaemon} />
+              <DaemonCard daemon={data.freshen} toggle={data.toggleDaemon} />
+              <DaemonCard daemon={data.ipfs} toggle={data.toggleDaemon} />
+            </SimpleGrid>
+          ),
+        },
+        {
+          component: (
+            <Stack>
+              <Box />
+              <FieldsetWrapper legend="Logs">
+                <DaemonLog logMessages={data.logMessages} />
+              </FieldsetWrapper>
+            </Stack>
+          ),
+        },
+      ],
+    },
+  ];
 };
