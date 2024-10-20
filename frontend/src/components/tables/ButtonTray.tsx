@@ -12,9 +12,7 @@ export const ButtonTray = ({ buttonGroup }: ButtonTrayProps) => {
 
   return (
     <Group justify="flex-end">
-      {buttonGroup.buttons.map((button, bbIndex) => (
-        <div key={bbIndex}>{button}</div>
-      ))}
+      {buttonGroup.buttons.map((button) => button)}
       <div>{/*spacer*/}</div>
     </Group>
   );

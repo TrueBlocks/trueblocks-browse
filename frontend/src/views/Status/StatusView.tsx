@@ -27,7 +27,7 @@ export const StatusView = () => {
 const createStatusForm = (table: any): FieldGroup<types.StatusContainer>[] => {
   return [
     {
-      legend: "System Data",
+      label: "System Data",
       colSpan: 7,
       fields: [
         { label: "trueblocks", type: "text", accessor: "version" },
@@ -37,7 +37,7 @@ const createStatusForm = (table: any): FieldGroup<types.StatusContainer>[] => {
       ],
     },
     {
-      legend: "API Keys",
+      label: "API Keys",
       colSpan: 5,
       fields: [
         { label: "hasEsKey", type: "boolean", accessor: "hasEsKey" },
@@ -46,7 +46,7 @@ const createStatusForm = (table: any): FieldGroup<types.StatusContainer>[] => {
       ],
     },
     {
-      legend: "Configuration Paths",
+      label: "Configuration Paths",
       colSpan: 7,
       fields: [
         { label: "rootConfig", type: "path", accessor: "rootConfig" },
@@ -56,7 +56,7 @@ const createStatusForm = (table: any): FieldGroup<types.StatusContainer>[] => {
       ],
     },
     {
-      legend: "Statistics",
+      label: "Statistics",
       colSpan: 5,
       fields: [
         { label: "lastUpdate", type: "date", accessor: "lastUpdate" },
@@ -67,18 +67,14 @@ const createStatusForm = (table: any): FieldGroup<types.StatusContainer>[] => {
       ],
     },
     {
-      legend: "Buttons",
+      label: "Buttons",
       buttons: [<CleanButton key={"clean"} value={"https://trueblocks.io"} />],
     },
     {
-      legend: "Caches",
+      label: "Caches",
       fields: [],
       collapsable: false,
-      components: [
-        {
-          component: <DataTable<types.CacheItem> table={table} loading={false} />,
-        },
-      ],
+      components: [<DataTable<types.CacheItem> key={"dataTable"} table={table} loading={false} />],
     },
   ];
 };

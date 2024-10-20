@@ -39,7 +39,7 @@ export const NamesView = () => {
 const createNameForm = (table: any): FieldGroup<types.NameContainer>[] => {
   return [
     {
-      legend: "Name Data",
+      label: "Name Data",
       colSpan: 6,
       fields: [
         { label: "nNames", type: "int", accessor: "nItems" },
@@ -50,7 +50,7 @@ const createNameForm = (table: any): FieldGroup<types.NameContainer>[] => {
       ],
     },
     {
-      legend: "Database Parts",
+      label: "Database Parts",
       colSpan: 6,
       fields: [
         { label: "sizeOnDisc", type: "bytes", accessor: "sizeOnDisc" },
@@ -61,7 +61,7 @@ const createNameForm = (table: any): FieldGroup<types.NameContainer>[] => {
       ],
     },
     {
-      legend: "Buttons",
+      label: "Buttons",
       buttons: [
         <AddButton key={"add"} value={"https://trueblocks.io"} />,
         <PublishButton key={"publish"} value={"https://trueblocks.io"} />,
@@ -69,13 +69,9 @@ const createNameForm = (table: any): FieldGroup<types.NameContainer>[] => {
       ],
     },
     {
-      legend: "Names",
+      label: "Names",
       collapsable: false,
-      components: [
-        {
-          component: <DataTable<types.Name> table={table} loading={false} />,
-        },
-      ],
+      components: [<DataTable<types.Name> key={"dataTable"} table={table} loading={false} />],
     },
   ];
 };

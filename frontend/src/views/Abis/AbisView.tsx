@@ -27,7 +27,7 @@ export const AbisView = () => {
 const createAbisForm = (table: Table<types.Abi>): FieldGroup<types.AbiContainer>[] => {
   return [
     {
-      legend: "Abi Data",
+      label: "Abi Data",
       colSpan: 6,
       fields: [
         { label: "nItems", type: "int", accessor: "nItems" },
@@ -37,7 +37,7 @@ const createAbisForm = (table: Table<types.Abi>): FieldGroup<types.AbiContainer>
       ],
     },
     {
-      legend: "Bounds",
+      label: "Bounds",
       colSpan: 6,
       fields: [
         { label: "largestFile", type: "text", accessor: "largestFile" },
@@ -46,7 +46,7 @@ const createAbisForm = (table: Table<types.Abi>): FieldGroup<types.AbiContainer>
       ],
     },
     {
-      legend: "Buttons",
+      label: "Buttons",
       buttons: [
         <AddButton key={"add"} value={"https://trueblocks.io"} />,
         <PublishButton key={"publish"} value={"https://trueblocks.io"} />,
@@ -54,13 +54,9 @@ const createAbisForm = (table: Table<types.Abi>): FieldGroup<types.AbiContainer>
       ],
     },
     {
-      legend: "Files",
+      label: "Files",
       collapsable: false,
-      components: [
-        {
-          component: <DataTable<types.Abi> table={table} loading={false} />,
-        },
-      ],
+      components: [<DataTable<types.Abi> key={"dataTable"} table={table} loading={false} />],
     },
   ];
 };

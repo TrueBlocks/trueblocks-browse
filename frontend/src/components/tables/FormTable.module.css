@@ -5,7 +5,8 @@
 }
 
 .chevron {
-  &[data-rotate] {
+  transition: transform 0.3s ease; /* Smooth transition */
+  &[data-rotate="true"] {
     transform: rotate(45deg);
   }
 }

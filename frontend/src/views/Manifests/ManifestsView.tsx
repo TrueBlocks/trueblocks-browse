@@ -27,7 +27,7 @@ export const ManifestsView = () => {
 const createManifestForm = (table: any): FieldGroup<types.ManifestContainer>[] => {
   return [
     {
-      legend: "Manifest Data",
+      label: "Manifest Data",
       colSpan: 6,
       fields: [
         { label: "version", type: "text", accessor: "version" },
@@ -37,7 +37,7 @@ const createManifestForm = (table: any): FieldGroup<types.ManifestContainer>[] =
       ],
     },
     {
-      legend: "Statistics",
+      label: "Statistics",
       colSpan: 6,
       fields: [
         { label: "nBlooms", type: "int", accessor: "nBlooms" },
@@ -47,7 +47,7 @@ const createManifestForm = (table: any): FieldGroup<types.ManifestContainer>[] =
       ],
     },
     {
-      legend: "Buttons",
+      label: "Buttons",
       buttons: [
         <PublishButton key={"publish"} value="https://trueblocks.io" />,
         <SpecButton
@@ -57,13 +57,9 @@ const createManifestForm = (table: any): FieldGroup<types.ManifestContainer>[] =
       ],
     },
     {
-      legend: "Chunks",
+      label: "Chunks",
       collapsable: false,
-      components: [
-        {
-          component: <DataTable<types.ChunkRecord> table={table} loading={false} />,
-        },
-      ],
+      components: [<DataTable<types.ChunkRecord> key={"dataTable"} table={table} loading={false} />],
     },
   ];
 };

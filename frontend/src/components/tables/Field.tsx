@@ -3,22 +3,20 @@ import { Flex, Text } from "@mantine/core";
 import { CellType, Formatter } from "@components";
 import classes from "./Field.module.css";
 
-type field<T> = {
+type BaseField = {
   label?: string;
+};
+
+type Field<T> = BaseField & {
   type: CellType;
   accessor: keyof T;
 };
 
-type component = {
-  label?: string;
-  component: ReactNode;
-};
-
 export type FieldGroup<T> = {
-  legend: string;
+  label: string;
   colSpan?: number;
-  fields?: field<T>[];
-  components?: component[];
+  fields?: Field<T>[];
+  components?: ReactNode[];
   buttons?: ReactNode[];
   collapsable?: boolean;
 };
@@ -32,7 +30,7 @@ export const isButton = <T,>(group: FieldGroup<T>): boolean => {
 };
 
 type FieldRendererProps<T> = {
-  field: field<T>;
+  field: Field<T>;
   data: Partial<T>;
 };
 

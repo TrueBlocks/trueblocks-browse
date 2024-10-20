@@ -27,7 +27,7 @@ export const IndexesView = () => {
 const createIndexForm = (table: any): FieldGroup<types.IndexContainer>[] => {
   return [
     {
-      legend: "Index Data",
+      label: "Index Data",
       colSpan: 6,
       fields: [
         { label: "bloomSz", type: "bytes", accessor: "bloomSz" },
@@ -39,7 +39,7 @@ const createIndexForm = (table: any): FieldGroup<types.IndexContainer>[] => {
       ],
     },
     {
-      legend: "Statistics",
+      label: "Statistics",
       colSpan: 6,
       fields: [
         { label: "nItems", type: "int", accessor: "nItems" },
@@ -49,7 +49,7 @@ const createIndexForm = (table: any): FieldGroup<types.IndexContainer>[] => {
       ],
     },
     {
-      legend: "Buttons",
+      label: "Buttons",
       buttons: [
         <PinButton key={"pin"} value="https://trueblocks.io" />,
         <SpecButton
@@ -59,13 +59,9 @@ const createIndexForm = (table: any): FieldGroup<types.IndexContainer>[] => {
       ],
     },
     {
-      legend: "Chunks",
+      label: "Chunks",
       collapsable: false,
-      components: [
-        {
-          component: <DataTable<types.ChunkStats> table={table} loading={false} />,
-        },
-      ],
+      components: [<DataTable<types.ChunkStats> key={"dataTable"} table={table} loading={false} />],
     },
   ];
 };
