@@ -9,7 +9,7 @@ import { useAppState } from "@state";
 
 export const Menu = () => {
   const [activeRoute, setActiveRoute] = useState("/");
-  const [_, setLocation] = useLocation();
+  const [, setLocation] = useLocation();
   const [filteredMenu, setFilteredMenu] = useState<RouteItem[]>([]);
   const { isConfigured } = useAppState();
 

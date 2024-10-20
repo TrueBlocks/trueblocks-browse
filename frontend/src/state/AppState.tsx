@@ -11,7 +11,6 @@ import {
   SetChain,
   GetMeta,
   GetWizardState,
-  StepWizard,
   StatusPage,
 } from "@gocode/app/App";
 import { base, messages, types, wizard } from "@gocode/models";
