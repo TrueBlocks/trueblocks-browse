@@ -19,7 +19,6 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-// ---------------------------------------------------------------
 type App struct {
 	ctx context.Context
 	cfg coreConfig.ConfigFile
@@ -47,7 +46,6 @@ type App struct {
 	IpfsController    *daemons.DaemonIpfs
 }
 
-// ---------------------------------------------------------------
 func NewApp() *App {
 	a := App{
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
@@ -59,13 +57,11 @@ func NewApp() *App {
 	return &a
 }
 
-// ---------------------------------------------------------------
 func (a *App) String() string {
 	bytes, _ := json.MarshalIndent(a, "", "  ")
 	return string(bytes)
 }
 
-// ---------------------------------------------------------------
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 	a.loadSession()
@@ -81,7 +77,6 @@ func (a *App) Startup(ctx context.Context) {
 	a.Refresh(a.session.LastRoute)
 }
 
-// ---------------------------------------------------------------
 func (a *App) DomReady(ctx context.Context) {
 	win := a.GetWindow()
 	runtime.WindowSetPosition(a.ctx, win.X, win.Y)
@@ -97,12 +92,10 @@ func (a *App) DomReady(ctx context.Context) {
 	}
 }
 
-// ---------------------------------------------------------------
 func (a *App) Shutdown(ctx context.Context) {
 	a.saveSession()
 }
 
-// ---------------------------------------------------------------
 func (a *App) saveSession() {
 	a.session.Window.X, a.session.Window.Y = runtime.WindowGetPosition(a.ctx)
 	a.session.Window.Width, a.session.Window.Height = runtime.WindowGetSize(a.ctx)
@@ -110,7 +103,6 @@ func (a *App) saveSession() {
 	_ = a.session.Save()
 }
 
-// ----------------------------------------------------------------
 func (a *App) loadSession() {
 	_ = a.session.Load()
 	a.session.CleanWindowSize(a.ctx)

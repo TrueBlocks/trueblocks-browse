@@ -5,7 +5,7 @@ type Wizard struct {
 }
 
 var stateOrder = []State{
-	NotOkay,
+	Welcome,
 	TomlOkay,
 	RpcOkay,
 	BloomsOkay,
@@ -16,7 +16,7 @@ var stateOrder = []State{
 func (w *Wizard) Step(step Step) {
 	switch step {
 	case Reset:
-		w.State = NotOkay
+		w.State = Welcome
 	case Previous:
 		for i := range stateOrder {
 			if stateOrder[i] == w.State && i > 0 {
