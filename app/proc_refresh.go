@@ -17,7 +17,7 @@ var freshenMutex sync.Mutex
 // Refresh when the app starts and then later by the daemons to instruct the backend and
 // by extension the frontend to update. We protect against updating too fast... Note
 // that this routine is called as a goroutine.
-func (a *App) Refresh(which ...string) error {
+func (a *App) Refresh() error {
 	if !a.IsConfigured() {
 		return fmt.Errorf("App not configured")
 	}
@@ -38,25 +38,6 @@ func (a *App) Refresh(which ...string) error {
 	err := a.loadNames(nil, nil)
 	if err != nil {
 		messages.EmitError(a.ctx, err)
-	}
-
-	// We want to update the route we last used first if there is one...
-	if len(which) > 0 {
-		switch which[0] {
-		case "/abis":
-			err = a.loadAbis(nil, nil)
-		case "/manifest":
-			err = a.loadManifest(nil, nil)
-		case "/monitors":
-			err = a.loadMonitors(nil, nil)
-		case "/index":
-			err = a.loadIndex(nil, nil)
-		case "/status":
-			err = a.loadStatus(nil, nil)
-		}
-		if err != nil {
-			messages.EmitError(a.ctx, err)
-		}
 	}
 
 	// And then update everything else in the fullness of time

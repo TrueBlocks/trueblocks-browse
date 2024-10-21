@@ -82,6 +82,10 @@ export function GetDaemon(arg1) {
   return window['go']['app']['App']['GetDaemon'](arg1);
 }
 
+export function GetDaemonState(arg1) {
+  return window['go']['app']['App']['GetDaemonState'](arg1);
+}
+
 export function GetEnv(arg1) {
   return window['go']['app']['App']['GetEnv'](arg1);
 }
@@ -190,8 +194,8 @@ export function ProjectPage(arg1, arg2) {
   return window['go']['app']['App']['ProjectPage'](arg1, arg2);
 }
 
-export function Refresh(arg1) {
-  return window['go']['app']['App']['Refresh'](arg1);
+export function Refresh() {
+  return window['go']['app']['App']['Refresh']();
 }
 
 export function RegisterCtx(arg1) {
@@ -220,10 +224,6 @@ export function SetRoute(arg1, arg2) {
 
 export function SetShowing(arg1, arg2) {
   return window['go']['app']['App']['SetShowing'](arg1, arg2);
-}
-
-export function GetDaemonState(arg1) {
-  return window['go']['app']['App']['GetDaemonState'](arg1);
 }
 
 export function StatusPage(arg1, arg2) {

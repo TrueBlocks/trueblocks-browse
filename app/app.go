@@ -73,9 +73,8 @@ func (a *App) Startup(ctx context.Context) {
 	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.IsShowing("ipfs"))
 	go a.startDaemons()
 
-	// TODO BOGUS: Should this really be sending a string. It's weird and complicated
 	logger.Info("Starting freshen process...")
-	_ = a.Refresh(a.session.LastRoute)
+	_ = a.Refresh()
 }
 
 func (a *App) DomReady(ctx context.Context) {

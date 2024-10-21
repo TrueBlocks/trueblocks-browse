@@ -50,6 +50,8 @@ export function GetContext():Promise<context.Context>;
 
 export function GetDaemon(arg1:string):Promise<string>;
 
+export function GetDaemonState(arg1:string):Promise<string>;
+
 export function GetEnv(arg1:string):Promise<string>;
 
 export function GetExploreUrl(arg1:string,arg2:boolean,arg3:boolean):Promise<string>;
@@ -104,7 +106,7 @@ export function Navigate(arg1:string,arg2:string):Promise<void>;
 
 export function ProjectPage(arg1:number,arg2:number):Promise<types.ProjectContainer>;
 
-export function Refresh(arg1:Array<string>):Promise<void>;
+export function Refresh():Promise<void>;
 
 export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
 
@@ -119,8 +121,6 @@ export function SetEnv(arg1:string,arg2:string):Promise<void>;
 export function SetRoute(arg1:string,arg2:string):Promise<void>;
 
 export function SetShowing(arg1:string,arg2:boolean):Promise<void>;
-
-export function GetDaemonState(arg1:string):Promise<string>;
 
 export function StatusPage(arg1:number,arg2:number):Promise<types.StatusContainer>;
 
