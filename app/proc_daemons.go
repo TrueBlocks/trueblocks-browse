@@ -1,9 +1,8 @@
 package app
 
 import (
-	"fmt"
-
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 func (a *App) startDaemons() {
@@ -12,35 +11,25 @@ func (a *App) startDaemons() {
 	go a.IpfsController.Run()
 }
 
-func (a *App) GetDaemon(name string) string {
-	d := a.getDaemon(name)
-	if d == nil {
-		return "{}"
-	}
-	return d.String()
-}
-
 func (a *App) ToggleDaemon(name string) error {
-	if s := a.getDaemon(name); s == nil {
-		return fmt.Errorf("could not find daemon %s", name)
-	} else {
-		if err := s.Toggle(); err != nil {
-			return err
-		}
-		a.SetSessionDaemon("daemon-"+name, s.IsRunning())
-		return nil
+	d := a.getDaemon(name)
+	if err := d.Toggle(); err != nil {
+		return err
 	}
+	a.SetShowing(name, d.IsRunning())
+	return nil
 }
 
+func (a *App) GetDaemon(name string) string {
+	return a.getDaemon(name).String()
+}
+
+// TODO BOGUS: Is the needed? Can't we just use the enum?
 func (a *App) GetDaemonState(name string) string {
-	if s := a.getDaemon2(name); s == nil {
-		return "Daemon not found"
-	} else {
-		return s.GetState().String()
-	}
+	return a.getDaemon(name).GetState().String()
 }
 
-func (a *App) getDaemon2(name string) daemons.Daemoner {
+func (a *App) getDaemon(name string) daemons.Daemoner {
 	switch name {
 	case "freshen":
 		return a.FreshenController
@@ -49,19 +38,7 @@ func (a *App) getDaemon2(name string) daemons.Daemoner {
 	case "ipfs":
 		return a.IpfsController
 	default:
-		return nil
-	}
-}
-
-func (a *App) getDaemon(name string) *daemons.Daemon {
-	switch name {
-	case "freshen":
-		return &a.FreshenController.Daemon
-	case "scraper":
-		return &a.ScraperController.Daemon
-	case "ipfs":
-		return &a.IpfsController.Daemon
-	default:
+		logger.Fatal("getDaemon", "should not happen", name)
 		return nil
 	}
 }

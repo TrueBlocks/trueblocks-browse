@@ -62,8 +62,6 @@ export function GetRoute():Promise<string>;
 
 export function GetSession():Promise<config.Session>;
 
-export function GetSessionDeamon(arg1:string):Promise<boolean>;
-
 export function GetWindow():Promise<config.Window>;
 
 export function GetWizardState():Promise<wizard.State>;
@@ -119,8 +117,6 @@ export function SetChain(arg1:string,arg2:base.Address):Promise<void>;
 export function SetEnv(arg1:string,arg2:string):Promise<void>;
 
 export function SetRoute(arg1:string,arg2:string):Promise<void>;
-
-export function SetSessionDaemon(arg1:string,arg2:boolean):Promise<void>;
 
 export function SetShowing(arg1:string,arg2:boolean):Promise<void>;
 

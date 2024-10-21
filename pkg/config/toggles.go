@@ -19,9 +19,16 @@ type Headers struct {
 	Settings  bool `json:"settings"`
 }
 
+type Daemons struct {
+	Freshen bool `json:"freshen"`
+	Scraper bool `json:"scraper"`
+	Ipfs    bool `json:"ipfs"`
+}
+
 type Togglers struct {
 	Layout  Layout  `json:"layout"`
 	Headers Headers `json:"headers"`
+	Daemons Daemons `json:"daemons"`
 }
 
 func (t *Togglers) IsOn(which string) bool {
@@ -55,6 +62,12 @@ func (t *Togglers) IsOn(which string) bool {
 		return t.Headers.Status
 	case "settings":
 		return t.Headers.Settings
+	case "freshen":
+		return t.Daemons.Freshen
+	case "scraper":
+		return t.Daemons.Scraper
+	case "ipfs":
+		return t.Daemons.Ipfs
 	}
 	return false
 }
@@ -90,5 +103,11 @@ func (t *Togglers) SetState(which string, onOff bool) {
 		t.Headers.Status = onOff
 	case "settings":
 		t.Headers.Settings = onOff
+	case "freshen":
+		t.Daemons.Freshen = onOff
+	case "scraper":
+		t.Daemons.Scraper = onOff
+	case "ipfs":
+		t.Daemons.Ipfs = onOff
 	}
 }
