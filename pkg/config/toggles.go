@@ -25,13 +25,13 @@ type Daemons struct {
 	Ipfs    bool `json:"ipfs"`
 }
 
-type Togglers struct {
+type Toggles struct {
 	Layout  Layout  `json:"layout"`
 	Headers Headers `json:"headers"`
 	Daemons Daemons `json:"daemons"`
 }
 
-func (t *Togglers) IsOn(which string) bool {
+func (t *Toggles) IsOn(which string) bool {
 	if which == "" {
 		which = "project"
 	}
@@ -72,7 +72,7 @@ func (t *Togglers) IsOn(which string) bool {
 	return false
 }
 
-func (t *Togglers) SetState(which string, onOff bool) {
+func (t *Toggles) SetState(which string, onOff bool) {
 	if which == "" {
 		which = "project"
 	}
