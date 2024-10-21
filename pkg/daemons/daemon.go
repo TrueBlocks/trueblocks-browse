@@ -11,7 +11,7 @@ import (
 )
 
 type Freshener interface {
-	Refresh(which ...string)
+	Refresh(which ...string) error
 	GetContext() context.Context
 }
 

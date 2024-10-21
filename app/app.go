@@ -74,7 +74,7 @@ func (a *App) Startup(ctx context.Context) {
 	go a.startDaemons()
 
 	logger.Info("Starting freshen process...")
-	a.Refresh(a.session.LastRoute)
+	_ = a.Refresh(a.session.LastRoute)
 }
 
 func (a *App) DomReady(ctx context.Context) {

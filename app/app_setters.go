@@ -31,5 +31,5 @@ func (a *App) SetChain(chain string, address base.Address) {
 	a.index = types.IndexContainer{}
 	a.manifest = types.ManifestContainer{}
 	a.monitors = types.MonitorContainer{}
-	a.Refresh()
+	_ = a.Refresh()
 }

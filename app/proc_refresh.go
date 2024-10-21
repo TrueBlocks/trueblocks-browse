@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -16,13 +17,13 @@ var freshenMutex sync.Mutex
 // Refresh when the app starts and then later by the daemons to instruct the backend and
 // by extension the frontend to update. We protect against updating too fast... Note
 // that this routine is called as a goroutine.
-func (a *App) Refresh(which ...string) {
+func (a *App) Refresh(which ...string) error {
 	if !a.IsConfigured() {
-		return
+		return fmt.Errorf("App not configured")
 	}
 
 	if !freshenLock.CompareAndSwap(0, 1) {
-		return
+		return nil // it's okay to skip a refresh if one is already in progress
 	}
 	defer freshenLock.CompareAndSwap(1, 0)
 
@@ -92,4 +93,6 @@ func (a *App) Refresh(which ...string) {
 	} else {
 		messages.EmitDaemon(a.ctx, a.FreshenController.Name, "Freshening...", a.FreshenController.Color)
 	}
+
+	return nil
 }

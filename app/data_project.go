@@ -107,7 +107,7 @@ func (a *App) Reload(address base.Address) {
 		Address:   address,
 	})
 	a.loadHistory(a.GetAddress(), nil, nil)
-	a.Refresh()
+	_ = a.Refresh()
 	a.loadProject(nil, nil)
 }
 
