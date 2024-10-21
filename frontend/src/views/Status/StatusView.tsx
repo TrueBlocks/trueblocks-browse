@@ -1,11 +1,12 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, FieldGroup, CleanButton } from "@components";
-import { ModifyNoop } from "@gocode/app/App";
 import { types } from "@gocode/models";
+import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./StatusTable";
 
 export const StatusView = () => {
+  const { modifyNoop } = useNoops();
   const { status, fetchStatus } = useAppState();
 
   const table = useReactTable({
@@ -16,7 +17,7 @@ export const StatusView = () => {
 
   const route = "status";
   return (
-    <ViewStateProvider route={route} nItems={status.nItems} fetchFn={fetchStatus} modifyFn={ModifyNoop}>
+    <ViewStateProvider route={route} nItems={status.nItems} fetchFn={fetchStatus} modifyFn={modifyNoop}>
       <View>
         <FormTable data={status} groups={createStatusForm(table)} />
       </View>

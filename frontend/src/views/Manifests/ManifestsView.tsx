@@ -1,11 +1,12 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, FieldGroup, SpecButton, PublishButton } from "@components";
-import { ModifyNoop } from "@gocode/app/App";
 import { types } from "@gocode/models";
+import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./ManifestsTable";
 
 export const ManifestsView = () => {
+  const { modifyNoop } = useNoops();
   const { manifests, fetchManifests } = useAppState();
 
   const table = useReactTable({
@@ -16,7 +17,7 @@ export const ManifestsView = () => {
 
   const route = "manifests";
   return (
-    <ViewStateProvider route={route} nItems={manifests.nItems} fetchFn={fetchManifests} modifyFn={ModifyNoop}>
+    <ViewStateProvider route={route} nItems={manifests.nItems} fetchFn={fetchManifests} modifyFn={modifyNoop}>
       <View>
         <FormTable data={manifests} groups={createManifestForm(table)} />
       </View>

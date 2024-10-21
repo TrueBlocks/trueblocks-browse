@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { FieldGroup, FormTable, View } from "@components";
-import { GetSession, ModifyNoop } from "@gocode/app/App";
+import { GetSession } from "@gocode/app/App";
 import { config } from "@gocode/models";
 import { ViewStateProvider } from "@state";
+import { useNoops } from "../../hooks";
 
 export const SettingsView = () => {
+  const { fetchNoop, modifyNoop } = useNoops();
+  // TODO BOGUS: This state should be in the AppState
   const [session, setSession] = useState<config.Session | null>(null);
   // const [config, setConfig] = useState<config.ConfigFile | null>(null);
 
@@ -19,8 +22,7 @@ export const SettingsView = () => {
   const route = "settings";
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    <ViewStateProvider route={route} fetchFn={(_unused1: number, _unused2: number) => {}} modifyFn={ModifyNoop}>
+    <ViewStateProvider route={route} fetchFn={fetchNoop} modifyFn={modifyNoop}>
       <View>
         <FormTable data={session} groups={createSettingsForm()} />
       </View>

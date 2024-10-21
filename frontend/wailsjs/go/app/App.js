@@ -170,10 +170,6 @@ export function ModifyName(arg1) {
   return window['go']['app']['App']['ModifyName'](arg1);
 }
 
-export function ModifyNoop(arg1) {
-  return window['go']['app']['App']['ModifyNoop'](arg1);
-}
-
 export function ModifyProject(arg1) {
   return window['go']['app']['App']['ModifyProject'](arg1);
 }
