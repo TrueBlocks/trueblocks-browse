@@ -61,7 +61,7 @@ var defaultSession = Session{
 	Daemons: daemons.Toggles{
 		Freshen: true,
 	},
-	Wizard: wizard.Wizard{State: wizard.NotOkay},
+	Wizard: wizard.Wizard{State: wizard.Welcome},
 	Toggles: Togglers{
 		Layout:  defLayout,
 		Headers: defHeader,

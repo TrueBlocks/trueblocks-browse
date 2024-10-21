@@ -15,22 +15,18 @@ func (a *App) IsShowing(which string) bool {
 	return a.session.Toggles.IsOn(which)
 }
 
-// ---------------------------------------------------------------
 func (a *App) GetConfig() *coreConfig.ConfigFile {
 	return &a.cfg
 }
 
-// ---------------------------------------------------------------
 func (a *App) GetSession() *config.Session {
 	return &a.session
 }
 
-// ---------------------------------------------------------------
 func (a *App) GetContext() context.Context {
 	return a.ctx
 }
 
-// ---------------------------------------------------------------
 func (a *App) GetWindow() *config.Window {
 	return &a.session.Window
 }

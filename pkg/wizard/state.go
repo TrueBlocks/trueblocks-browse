@@ -3,7 +3,7 @@ package wizard
 type State string
 
 const (
-	NotOkay    State = "notOkay"
+	Welcome    State = "welcome"
 	TomlOkay   State = "tomlOkay"
 	RpcOkay    State = "rpcOkay"
 	BloomsOkay State = "bloomsOkay"
@@ -21,7 +21,7 @@ var AllStates = []struct {
 	Value  State  `json:"value"`
 	TSName string `json:"tsName"`
 }{
-	{NotOkay, "NOTOKAY"},
+	{Welcome, "WELCOME"},
 	{TomlOkay, "TOMLOKAY"},
 	{RpcOkay, "RPCOKAY"},
 	{BloomsOkay, "BLOOMSOKAY"},
