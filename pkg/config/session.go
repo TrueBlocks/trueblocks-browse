@@ -20,7 +20,7 @@ type Session struct {
 	LastSub   map[string]string `json:"lastSub"`
 	Window    Window            `json:"window"`
 	Wizard    wizard.Wizard     `json:"wizard"`
-	Toggles   Togglers          `json:"toggles"`
+	Toggles   Toggles           `json:"toggles"`
 }
 
 const theTitle = "Browse by TrueBlocks"
@@ -61,7 +61,7 @@ var defaultSession = Session{
 		Title:  theTitle,
 	},
 	Wizard: wizard.Wizard{State: wizard.Welcome},
-	Toggles: Togglers{
+	Toggles: Toggles{
 		Layout:  defLayout,
 		Headers: defHeader,
 		Daemons: defDaemons,
