@@ -1,9 +1,9 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { SimpleGrid, Stack, Box } from "@mantine/core";
 import { FieldGroup, FieldsetWrapper, FormTable, View } from "@components";
-import { ModifyNoop } from "@gocode/app/App";
 import { GetDaemon, ToggleDaemon } from "@gocode/app/App";
 import { daemons, messages } from "@gocode/models";
+import { useNoops } from "@hooks";
 import { EventsOn, EventsOff } from "@runtime";
 import { ViewStateProvider } from "@state";
 import { DaemonCard, DaemonLog } from ".";
@@ -19,6 +19,7 @@ interface Nope {
 }
 
 export const DaemonsView = () => {
+  const { fetchNoop, modifyNoop } = useNoops();
   const [scraper, setScraper] = useState<daemons.Daemon>(empty);
   const [freshen, setFreshen] = useState<daemons.Daemon>(empty);
   const [ipfs, setIpfs] = useState<daemons.Daemon>(empty);
@@ -78,12 +79,7 @@ export const DaemonsView = () => {
   };
 
   return (
-    <ViewStateProvider
-      route={route}
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      fetchFn={(_unused1: number, _unused2: number) => {}}
-      modifyFn={ModifyNoop}
-    >
+    <ViewStateProvider route={route} fetchFn={fetchNoop} modifyFn={modifyNoop}>
       <View>
         <FormTable data={data} groups={createDaemonForm(data)} />
       </View>

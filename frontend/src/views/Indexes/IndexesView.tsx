@@ -1,11 +1,12 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { DataTable, FormTable, FieldGroup, View, SpecButton, PinButton } from "@components";
-import { ModifyNoop } from "@gocode/app/App";
 import { types } from "@gocode/models";
+import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./IndexesTable";
 
 export const IndexesView = () => {
+  const { modifyNoop } = useNoops();
   const { indexes, fetchIndexes } = useAppState();
 
   const table = useReactTable({
@@ -16,7 +17,7 @@ export const IndexesView = () => {
 
   const route = "indexes";
   return (
-    <ViewStateProvider route={route} nItems={indexes.nItems} fetchFn={fetchIndexes} modifyFn={ModifyNoop}>
+    <ViewStateProvider route={route} nItems={indexes.nItems} fetchFn={fetchIndexes} modifyFn={modifyNoop}>
       <View>
         <FormTable data={indexes} groups={createIndexForm(table)} />
       </View>
