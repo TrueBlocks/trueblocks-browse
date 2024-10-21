@@ -68,7 +68,7 @@ func (s *DaemonScraper) Pause() error {
 }
 
 func (s *DaemonScraper) Tick(msg ...string) int {
-	go s.freshener.Refresh()
+	s.freshener.Refresh()
 	s.Ticks++
 	return s.Ticks // we don't use the Daemon's Tick since Freshen notifies if it runs
 }
