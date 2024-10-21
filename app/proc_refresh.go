@@ -93,6 +93,5 @@ func (a *App) Refresh(which ...string) error {
 	} else {
 		messages.EmitDaemon(a.ctx, a.FreshenController.Name, "Freshening...", a.FreshenController.Color)
 	}
-
 	return nil
 }

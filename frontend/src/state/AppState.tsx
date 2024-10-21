@@ -67,6 +67,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [indexes, setIndexes] = useState<types.IndexContainer>({} as types.IndexContainer);
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
+  // TODO BOGUS: This should carry the daemons so we can show their status
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
   const [chain, setChain] = useState<string>("mainnet");

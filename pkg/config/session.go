@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -20,7 +19,6 @@ type Session struct {
 	LastRoute string            `json:"lastRoute"`
 	LastSub   map[string]string `json:"lastSub"`
 	Window    Window            `json:"window"`
-	Daemons   daemons.Toggles   `json:"daemons"`
 	Wizard    wizard.Wizard     `json:"wizard"`
 	Toggles   Togglers          `json:"toggles"`
 }
@@ -46,6 +44,10 @@ var defHeader = Headers{
 	Settings:  true,
 }
 
+var defDaemons = Daemons{
+	Freshen: true,
+}
+
 var defaultSession = Session{
 	Chain:     "mainnet",
 	LastFile:  "Untitled.tbx",
@@ -58,13 +60,11 @@ var defaultSession = Session{
 		Height: 0,
 		Title:  theTitle,
 	},
-	Daemons: daemons.Toggles{
-		Freshen: true,
-	},
 	Wizard: wizard.Wizard{State: wizard.Welcome},
 	Toggles: Togglers{
 		Layout:  defLayout,
 		Headers: defHeader,
+		Daemons: defDaemons,
 	},
 }
 

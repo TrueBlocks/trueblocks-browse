@@ -68,11 +68,12 @@ func (a *App) Startup(ctx context.Context) {
 
 	go a.loadHistory(a.GetAddress(), nil, nil)
 
-	a.FreshenController = daemons.NewFreshen(a, "freshen", 3000, a.GetSessionDeamon("daemon-freshen"))
-	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.GetSessionDeamon("daemon-scraper"))
-	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.GetSessionDeamon("daemon-ipfs"))
+	a.FreshenController = daemons.NewFreshen(a, "freshen", 3000, a.IsShowing("freshen"))
+	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.IsShowing("scraper"))
+	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.IsShowing("ipfs"))
 	go a.startDaemons()
 
+	// TODO BOGUS: Should this really be sending a string. It's weird and complicated
 	logger.Info("Starting freshen process...")
 	_ = a.Refresh(a.session.LastRoute)
 }

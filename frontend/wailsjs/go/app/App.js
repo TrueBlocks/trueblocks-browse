@@ -106,10 +106,6 @@ export function GetSession() {
   return window['go']['app']['App']['GetSession']();
 }
 
-export function GetSessionDeamon(arg1) {
-  return window['go']['app']['App']['GetSessionDeamon'](arg1);
-}
-
 export function GetWindow() {
   return window['go']['app']['App']['GetWindow']();
 }
@@ -220,10 +216,6 @@ export function SetEnv(arg1, arg2) {
 
 export function SetRoute(arg1, arg2) {
   return window['go']['app']['App']['SetRoute'](arg1, arg2);
-}
-
-export function SetSessionDaemon(arg1, arg2) {
-  return window['go']['app']['App']['SetSessionDaemon'](arg1, arg2);
 }
 
 export function SetShowing(arg1, arg2) {
