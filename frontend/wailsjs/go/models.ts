@@ -69,6 +69,22 @@ export namespace base {
 export namespace config {
 	
 	
+	export class Daemons {
+	    freshen: boolean;
+	    scraper: boolean;
+	    ipfs: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Daemons(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.freshen = source["freshen"];
+	        this.scraper = source["scraper"];
+	        this.ipfs = source["ipfs"];
+	    }
+	}
 	export class Headers {
 	    project: boolean;
 	    history: boolean;
@@ -115,18 +131,20 @@ export namespace config {
 	        this.footer = source["footer"];
 	    }
 	}
-	export class Togglers {
+	export class Toggles {
 	    layout: Layout;
 	    headers: Headers;
+	    daemons: Daemons;
 	
 	    static createFrom(source: any = {}) {
-	        return new Togglers(source);
+	        return new Toggles(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.layout = this.convertValues(source["layout"], Layout);
 	        this.headers = this.convertValues(source["headers"], Headers);
+	        this.daemons = this.convertValues(source["daemons"], Daemons);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -173,9 +191,8 @@ export namespace config {
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
 	    window: Window;
-	    daemons: daemons.Toggles;
 	    wizard: wizard.Wizard;
-	    toggles: Togglers;
+	    toggles: Toggles;
 	
 	    static createFrom(source: any = {}) {
 	        return new Session(source);
@@ -188,9 +205,8 @@ export namespace config {
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
 	        this.window = this.convertValues(source["window"], Window);
-	        this.daemons = this.convertValues(source["daemons"], daemons.Toggles);
 	        this.wizard = this.convertValues(source["wizard"], wizard.Wizard);
-	        this.toggles = this.convertValues(source["toggles"], Togglers);
+	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -262,22 +278,6 @@ export namespace daemons {
 		    }
 		    return a;
 		}
-	}
-	export class Toggles {
-	    freshen: boolean;
-	    scraper: boolean;
-	    ipfs: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new Toggles(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.freshen = source["freshen"];
-	        this.scraper = source["scraper"];
-	        this.ipfs = source["ipfs"];
-	    }
 	}
 
 }
