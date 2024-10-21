@@ -48,7 +48,7 @@ export function GetConfig():Promise<config.ConfigFile>;
 
 export function GetContext():Promise<context.Context>;
 
-export function GetDaemonJson(arg1:string):Promise<string>;
+export function GetDaemon(arg1:string):Promise<string>;
 
 export function GetEnv(arg1:string):Promise<string>;
 
@@ -124,7 +124,7 @@ export function SetSessionDaemon(arg1:string,arg2:boolean):Promise<void>;
 
 export function SetShowing(arg1:string,arg2:boolean):Promise<void>;
 
-export function StateToString(arg1:string):Promise<string>;
+export function GetDaemonState(arg1:string):Promise<string>;
 
 export function StatusPage(arg1:number,arg2:number):Promise<types.StatusContainer>;
 

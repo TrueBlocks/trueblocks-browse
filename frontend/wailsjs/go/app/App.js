@@ -78,8 +78,8 @@ export function GetContext() {
   return window['go']['app']['App']['GetContext']();
 }
 
-export function GetDaemonJson(arg1) {
-  return window['go']['app']['App']['GetDaemonJson'](arg1);
+export function GetDaemon(arg1) {
+  return window['go']['app']['App']['GetDaemon'](arg1);
 }
 
 export function GetEnv(arg1) {
@@ -230,8 +230,8 @@ export function SetShowing(arg1, arg2) {
   return window['go']['app']['App']['SetShowing'](arg1, arg2);
 }
 
-export function StateToString(arg1) {
-  return window['go']['app']['App']['StateToString'](arg1);
+export function GetDaemonState(arg1) {
+  return window['go']['app']['App']['GetDaemonState'](arg1);
 }
 
 export function StatusPage(arg1, arg2) {

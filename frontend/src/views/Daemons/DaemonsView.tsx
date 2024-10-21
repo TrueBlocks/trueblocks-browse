@@ -2,7 +2,7 @@ import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { SimpleGrid, Stack, Box } from "@mantine/core";
 import { FieldGroup, FieldsetWrapper, FormTable, View } from "@components";
 import { ModifyNoop } from "@gocode/app/App";
-import { GetDaemonJson, ToggleDaemon } from "@gocode/app/App";
+import { GetDaemon, ToggleDaemon } from "@gocode/app/App";
 import { daemons, messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import { ViewStateProvider } from "@state";
@@ -25,9 +25,8 @@ export const DaemonsView = () => {
   const [logMessages, setLogMessages] = useState<messages.DaemonMsg[]>([]);
 
   const updateDaemon = (daemon: string, setDaemon: Dispatch<SetStateAction<daemons.Daemon>>) => {
-    GetDaemonJson(daemon).then((jsonStr: string) => {
-      const d = daemons.Daemon.createFrom(jsonStr);
-      setDaemon(d);
+    GetDaemon(daemon).then((json: string) => {
+      setDaemon(daemons.Daemon.createFrom(json));
     });
   };
 

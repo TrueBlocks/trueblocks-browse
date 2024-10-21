@@ -1952,19 +1952,19 @@ export namespace types {
 
 export namespace wizard {
 	
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
-	}
 	export enum State {
-	    NOTOKAY = "notOkay",
+	    WELCOME = "welcome",
 	    TOMLOKAY = "tomlOkay",
 	    RPCOKAY = "rpcOkay",
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
 	    OKAY = "okay",
+	}
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
 	}
 	export class Wizard {
 	    state: State;
