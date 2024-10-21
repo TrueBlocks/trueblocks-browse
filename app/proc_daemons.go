@@ -12,7 +12,7 @@ func (a *App) startDaemons() {
 	go a.IpfsController.Run()
 }
 
-func (a *App) GetDaemonJson(name string) string {
+func (a *App) GetDaemon(name string) string {
 	d := a.getDaemon(name)
 	if d == nil {
 		return "{}"
@@ -32,7 +32,7 @@ func (a *App) ToggleDaemon(name string) error {
 	}
 }
 
-func (a *App) StateToString(name string) string {
+func (a *App) GetDaemonState(name string) string {
 	if s := a.getDaemon2(name); s == nil {
 		return "Daemon not found"
 	} else {
