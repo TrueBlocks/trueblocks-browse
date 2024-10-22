@@ -68,7 +68,6 @@ export namespace base {
 
 export namespace config {
 	
-	
 	export class Daemons {
 	    freshen: boolean;
 	    scraper: boolean;
@@ -227,6 +226,237 @@ export namespace config {
 		    return a;
 		}
 	}
+	
+
+}
+
+export namespace configtypes {
+	
+	export class ScrapeSettings {
+	    appsPerChunk: number;
+	    snapToGrid: number;
+	    firstSnap: number;
+	    unripeDist: number;
+	    allowMissing?: boolean;
+	    channelCount?: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ScrapeSettings(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.appsPerChunk = source["appsPerChunk"];
+	        this.snapToGrid = source["snapToGrid"];
+	        this.firstSnap = source["firstSnap"];
+	        this.unripeDist = source["unripeDist"];
+	        this.allowMissing = source["allowMissing"];
+	        this.channelCount = source["channelCount"];
+	    }
+	}
+	export class ChainGroup {
+	    chain: string;
+	    chainId: string;
+	    ipfsGateway: string;
+	    keyEndpoint: string;
+	    localExplorer: string;
+	    removeExplorer: string;
+	    rpcProvider: string;
+	    symbol: string;
+	    scrape: ScrapeSettings;
+	
+	    static createFrom(source: any = {}) {
+	        return new ChainGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.chain = source["chain"];
+	        this.chainId = source["chainId"];
+	        this.ipfsGateway = source["ipfsGateway"];
+	        this.keyEndpoint = source["keyEndpoint"];
+	        this.localExplorer = source["localExplorer"];
+	        this.removeExplorer = source["removeExplorer"];
+	        this.rpcProvider = source["rpcProvider"];
+	        this.symbol = source["symbol"];
+	        this.scrape = this.convertValues(source["scrape"], ScrapeSettings);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class UnchainedGroup {
+	    preferredPublisher: string;
+	    smartContract: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new UnchainedGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.preferredPublisher = source["preferredPublisher"];
+	        this.smartContract = source["smartContract"];
+	    }
+	}
+	export class PinningGroup {
+	    gatewayUrl: string;
+	    localPinUrl: string;
+	    remotePinUrl: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new PinningGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.gatewayUrl = source["gatewayUrl"];
+	        this.localPinUrl = source["localPinUrl"];
+	        this.remotePinUrl = source["remotePinUrl"];
+	    }
+	}
+	export class KeyGroup {
+	    license: string;
+	    apiKey: string;
+	    secret: string;
+	    jwt: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new KeyGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.license = source["license"];
+	        this.apiKey = source["apiKey"];
+	        this.secret = source["secret"];
+	        this.jwt = source["jwt"];
+	    }
+	}
+	export class NotifyGroup {
+	    url?: string;
+	    author?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new NotifyGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.url = source["url"];
+	        this.author = source["author"];
+	    }
+	}
+	export class SettingsGroup {
+	    cachePath: string;
+	    indexPath: string;
+	    defaultChain: string;
+	    defaultGateway: string;
+	    notify: NotifyGroup;
+	
+	    static createFrom(source: any = {}) {
+	        return new SettingsGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.cachePath = source["cachePath"];
+	        this.indexPath = source["indexPath"];
+	        this.defaultChain = source["defaultChain"];
+	        this.defaultGateway = source["defaultGateway"];
+	        this.notify = this.convertValues(source["notify"], NotifyGroup);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class VersionGroup {
+	    current: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new VersionGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.current = source["current"];
+	    }
+	}
+	export class Config {
+	    version: VersionGroup;
+	    settings: SettingsGroup;
+	    keys: {[key: string]: KeyGroup};
+	    pinning: PinningGroup;
+	    unchained: UnchainedGroup;
+	    chains: {[key: string]: ChainGroup};
+	
+	    static createFrom(source: any = {}) {
+	        return new Config(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = this.convertValues(source["version"], VersionGroup);
+	        this.settings = this.convertValues(source["settings"], SettingsGroup);
+	        this.keys = this.convertValues(source["keys"], KeyGroup, true);
+	        this.pinning = this.convertValues(source["pinning"], PinningGroup);
+	        this.unchained = this.convertValues(source["unchained"], UnchainedGroup);
+	        this.chains = this.convertValues(source["chains"], ChainGroup, true);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
+	
+	
+	
+	
 	
 
 }
@@ -1947,6 +2177,29 @@ export namespace types {
 	
 	
 	
+
+}
+
+export namespace version {
+	
+	export class Version {
+	    major: number;
+	    minor: number;
+	    build: number;
+	    aspect: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Version(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.major = source["major"];
+	        this.minor = source["minor"];
+	        this.build = source["build"];
+	        this.aspect = source["aspect"];
+	    }
+	}
 
 }
 

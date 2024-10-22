@@ -3,8 +3,9 @@
 import {types} from '../models';
 import {menu} from '../models';
 import {base} from '../models';
-import {config} from '../models';
+import {configtypes} from '../models';
 import {context} from '../models';
+import {config} from '../models';
 import {wizard} from '../models';
 import {editors} from '../models';
 import {app} from '../models';
@@ -44,7 +45,7 @@ export function GetChainInfo(arg1:string):Promise<types.Chain>;
 
 export function GetChains():Promise<Array<string>>;
 
-export function GetConfig():Promise<config.ConfigFile>;
+export function GetConfig():Promise<configtypes.Config>;
 
 export function GetContext():Promise<context.Context>;
 
