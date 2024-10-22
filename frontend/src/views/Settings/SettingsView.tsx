@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Tabs } from "@mantine/core";
 import { FieldGroup, FormTable, PublishButton, SpecButton, View } from "@components";
 import { config as browseConfig, configtypes, messages } from "@gocode/models";
-import { EventsOn, EventsOff, EventsEmit } from "@runtime";
+import { EventsOn, EventsOff } from "@runtime";
 import { ViewStateProvider, useAppState } from "@state";
 import { useNoops } from "../../hooks";
 import classes from "./SettingsView.module.css";
@@ -17,22 +17,16 @@ export const SettingsView = () => {
     const handleSwitchTab = (msg: messages.SwitchTabMsg) => {
       const { dest } = msg;
       switch (dest) {
-        case "home":
-          setActiveTab(tabs[0]);
-          break;
-        case "end":
-          setActiveTab(tabs[tabs.length - 1]);
+        case "prev":
+          setActiveTab((prevTab) => {
+            const currentIndex = tabs.indexOf(prevTab);
+            return currentIndex > 0 ? tabs[currentIndex - 1] : tabs[tabs.length - 1];
+          });
           break;
         case "next":
           setActiveTab((prevTab) => {
             const currentIndex = tabs.indexOf(prevTab);
-            return currentIndex < tabs.length - 1 ? tabs[currentIndex + 1] : prevTab;
-          });
-          break;
-        case "previous":
-          setActiveTab((prevTab) => {
-            const currentIndex = tabs.indexOf(prevTab);
-            return currentIndex > 0 ? tabs[currentIndex - 1] : prevTab;
+            return currentIndex < tabs.length - 1 ? tabs[currentIndex + 1] : tabs[0];
           });
           break;
         default:
