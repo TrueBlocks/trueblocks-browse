@@ -7,6 +7,7 @@ import {
   AbiPage,
   IndexPage,
   ManifestPage,
+  SettingsPage,
   GetChain,
   SetChain,
   GetMeta,
@@ -42,6 +43,9 @@ interface AppStateProps {
   status: types.StatusContainer;
   fetchStatus: (currentItem: number, itemsPerPage: number) => void;
 
+  settings: types.SettingsContainer;
+  fetchSettings: (currentItem: number, itemsPerPage: number) => void;
+
   address: base.Address;
   setAddress: (address: base.Address) => void;
 
@@ -67,6 +71,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [indexes, setIndexes] = useState<types.IndexContainer>({} as types.IndexContainer);
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
+  const [settings, setSettings] = useState<types.SettingsContainer>({} as types.SettingsContainer);
   // TODO BOGUS: The daemon state should be in the AppState
   // TODO BOGUS: The settings state should be in the AppState
 
@@ -135,6 +140,14 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
       if (item) {
         setStatus(item);
+      }
+    });
+  };
+
+  const fetchSettings = async (currentItem: number, itemsPerPage: number) => {
+    SettingsPage(currentItem, itemsPerPage).then((item: types.SettingsContainer) => {
+      if (item) {
+        setSettings(item);
       }
     });
   };
@@ -231,6 +244,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchManifests,
     status,
     fetchStatus,
+    settings,
+    fetchSettings,
     setAddress,
     selectChain,
     meta,

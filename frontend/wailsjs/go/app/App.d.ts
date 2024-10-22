@@ -121,6 +121,8 @@ export function SetRoute(arg1:string,arg2:string):Promise<void>;
 
 export function SetShowing(arg1:string,arg2:boolean):Promise<void>;
 
+export function SettingsPage(arg1:number,arg2:number):Promise<types.SettingsContainer>;
+
 export function StatusPage(arg1:number,arg2:number):Promise<types.StatusContainer>;
 
 export function StepWizard(arg1:wizard.Step):Promise<wizard.State>;

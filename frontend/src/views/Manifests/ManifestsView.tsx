@@ -52,7 +52,7 @@ const createManifestForm = (table: any): FieldGroup<types.ManifestContainer>[] =
       buttons: [
         <PublishButton key={"publish"} value="https://trueblocks.io" />,
         <SpecButton
-          key={"publish"}
+          key={"spec"}
           value="https://trueblocks.io/papers/2023/specification-for-the-unchained-index-v2.0.0-release.pdf"
         />,
       ],
