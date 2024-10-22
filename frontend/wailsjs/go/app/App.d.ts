@@ -129,6 +129,14 @@ export function StepWizard(arg1:wizard.Step):Promise<wizard.State>;
 
 export function String():Promise<string>;
 
+export function SwithTabEnd(arg1:menu.CallbackData):Promise<void>;
+
+export function SwithTabHome(arg1:menu.CallbackData):Promise<void>;
+
+export function SwithTabNext(arg1:menu.CallbackData):Promise<void>;
+
+export function SwithTabPrev(arg1:menu.CallbackData):Promise<void>;
+
 export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;

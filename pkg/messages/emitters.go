@@ -14,6 +14,7 @@ type MessageData interface {
 		DocumentMsg |
 		ErrorMsg |
 		InfoMsg |
+		SwitchTabMsg |
 		NavigateMsg |
 		ProgressMsg |
 		ToggleMsg |
@@ -65,6 +66,10 @@ func EmitToggle(ctx context.Context, comp, route string) {
 
 func EmitInfo(ctx context.Context, msg string) {
 	emitMsg(ctx, Info, NewInfoMsg(msg))
+}
+
+func EmitSwitchTab(ctx context.Context, msg string) {
+	emitMsg(ctx, SwitchTab, NewSwitchTabMsg(msg))
 }
 
 func EmitCancel(ctx context.Context, addrs ...base.Address) {
