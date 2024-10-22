@@ -1,6 +1,10 @@
 package messages
 
-import "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+import (
+	"context"
+
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+)
 
 type ProgressMsg struct {
 	Address base.Address `json:"address"`
@@ -14,6 +18,15 @@ func NewProgressMsg(address base.Address, have int, want int) *ProgressMsg {
 		Have:    have,
 		Want:    want,
 	}
+}
+
+func EmitCompleted(ctx context.Context, address base.Address, total int) {
+	emitMsg(ctx, Completed, NewProgressMsg(address, total, total))
+}
+
+func EmitProgress(ctx context.Context, address base.Address, have, want int) {
+	emitMsg(ctx, Progress, NewProgressMsg(address, have, want))
+
 }
 
 func (m *ProgressMsg) Instance() ProgressMsg {

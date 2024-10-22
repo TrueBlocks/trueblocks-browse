@@ -1,5 +1,11 @@
 package messages
 
+import (
+	"context"
+
+	"github.com/wailsapp/wails/v2/pkg/runtime"
+)
+
 type Message string
 
 const (
@@ -37,4 +43,21 @@ var AllMessages = []struct {
 	{ToggleLayout, "TOGGLELAYOUT"},
 	{ToggleHeader, "TOGGLEHEADER"},
 	{Wizard, "WIZARD"},
+}
+
+type MessageData interface {
+	CancelMsg |
+		DaemonMsg |
+		DocumentMsg |
+		ErrorMsg |
+		InfoMsg |
+		SwitchTabMsg |
+		NavigateMsg |
+		ProgressMsg |
+		ToggleMsg |
+		WizardMsg
+}
+
+func emitMsg[T MessageData](ctx context.Context, msg Message, data *T) {
+	runtime.EventsEmit(ctx, string(msg), data)
 }
