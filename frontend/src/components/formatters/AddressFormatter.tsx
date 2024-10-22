@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback } from "react";
 import { Formatter, FormatterProps, CellType, Popup, AddressPopup } from "@components";
 import { AddrToName, ModifyName } from "@gocode/app/App";
 import { app } from "@gocode/models";
-import { ClipboardSetText } from "@runtime";
 import { useAppState, useViewState } from "@state";
 import classes from "./Formatter.module.css";
 
@@ -69,19 +68,12 @@ export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }
   const line1Type: CellType = "address-line1";
   const line2Type: CellType = "address-line2";
 
-  const onCopy = useCallback(() => {
-    ClipboardSetText(givenAddress).then(() => {
-      setPopupOpen(false);
-    });
-  }, [givenAddress]);
-
   const onClose = useCallback(() => setPopupOpen(false), []);
 
   const editor = isPopupOpen ? (
     <AddressPopup
       address={value}
       name={line1}
-      onCopy={onCopy}
       onClose={onClose}
       onSubmit={(newValue: string) => {
         setPopupOpen(false);

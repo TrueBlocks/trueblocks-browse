@@ -3,7 +3,6 @@ import { Popover } from "@mantine/core";
 
 export type PopupProps = {
   onClose: () => void;
-  onCopy: () => void;
   onSubmit: (value: string) => void;
 };
 

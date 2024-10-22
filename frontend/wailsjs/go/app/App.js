@@ -82,10 +82,6 @@ export function GetDaemon(arg1) {
   return window['go']['app']['App']['GetDaemon'](arg1);
 }
 
-export function GetState(arg1) {
-  return window['go']['app']['App']['GetState'](arg1);
-}
-
 export function GetEnv(arg1) {
   return window['go']['app']['App']['GetEnv'](arg1);
 }
@@ -108,6 +104,10 @@ export function GetRoute() {
 
 export function GetSession() {
   return window['go']['app']['App']['GetSession']();
+}
+
+export function GetState(arg1) {
+  return window['go']['app']['App']['GetState'](arg1);
 }
 
 export function GetWindow() {
