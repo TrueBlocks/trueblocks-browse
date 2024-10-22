@@ -8,8 +8,8 @@ replace (
 )
 
 require (
-	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20240923025630-c4c09cafc138
-	github.com/TrueBlocks/trueblocks-sdk/v3 v3.5.0
+	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20241022031540-b362680128f7
+	github.com/TrueBlocks/trueblocks-sdk/v3 v3.5.5
 	github.com/wailsapp/wails/v2 v2.8.2
 )
 
@@ -68,7 +68,7 @@ require (
 	github.com/multiformats/go-multihash v0.2.3 // indirect
 	github.com/multiformats/go-multistream v0.4.1 // indirect
 	github.com/multiformats/go-varint v0.0.7 // indirect
-	github.com/panjf2000/ants/v2 v2.7.0 // indirect
+	github.com/panjf2000/ants/v2 v2.10.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
