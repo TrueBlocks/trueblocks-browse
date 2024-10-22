@@ -51,6 +51,7 @@ func main() {
 			&types.MonitorContainer{},
 			&types.NameContainer{},
 			&types.StatusContainer{},
+			&types.SettingsContainer{},
 			&wizard.Wizard{},
 			&editors.Name{},
 			&daemons.Daemon{},

@@ -23,6 +23,11 @@ type Session struct {
 	Toggles   Toggles           `json:"toggles"`
 }
 
+func (s *Session) String() string {
+	bytes, _ := json.Marshal(s)
+	return string(bytes)
+}
+
 const theTitle = "Browse by TrueBlocks"
 
 var defLayout = Layout{

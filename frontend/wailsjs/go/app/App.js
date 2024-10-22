@@ -222,6 +222,10 @@ export function SetShowing(arg1, arg2) {
   return window['go']['app']['App']['SetShowing'](arg1, arg2);
 }
 
+export function SettingsPage(arg1, arg2) {
+  return window['go']['app']['App']['SettingsPage'](arg1, arg2);
+}
+
 export function StatusPage(arg1, arg2) {
   return window['go']['app']['App']['StatusPage'](arg1, arg2);
 }
