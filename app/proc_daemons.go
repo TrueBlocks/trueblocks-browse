@@ -24,8 +24,7 @@ func (a *App) GetDaemon(name string) string {
 	return a.getDaemon(name).String()
 }
 
-// TODO BOGUS: Is the needed? Can't we just use the enum?
-func (a *App) GetDaemonState(name string) string {
+func (a *App) GetState(name string) string {
 	return a.getDaemon(name).GetState().String()
 }
 

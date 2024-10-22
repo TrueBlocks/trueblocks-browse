@@ -20,6 +20,7 @@ interface Nope {
 
 export const DaemonsView = () => {
   const { fetchNoop, modifyNoop } = useNoops();
+  // TODO BOGUS: The daemon state should be in the AppState
   const [scraper, setScraper] = useState<daemons.Daemon>(empty);
   const [freshen, setFreshen] = useState<daemons.Daemon>(empty);
   const [ipfs, setIpfs] = useState<daemons.Daemon>(empty);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, Text, Group, Badge, Title } from "@mantine/core";
-import { GetDaemonState } from "@gocode/app/App";
+import { GetState } from "@gocode/app/App";
 import { daemons } from "@gocode/models";
 
 export const DaemonCard = ({ daemon, toggle }: { daemon: daemons.Daemon; toggle: (name: string) => void }) => {
@@ -8,7 +8,7 @@ export const DaemonCard = ({ daemon, toggle }: { daemon: daemons.Daemon; toggle:
   const { name, sleep, started, color, ticks } = daemon;
 
   useEffect(() => {
-    GetDaemonState(name).then((s) => {
+    GetState(name).then((s) => {
       setStateStr(s);
     });
   }, [name, daemon]);
