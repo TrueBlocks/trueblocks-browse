@@ -7,7 +7,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
@@ -39,7 +39,7 @@ func (a *App) ExportAddress(address base.Address) {
 		"Input",
 		"TransactionType"))
 
-	completed := a.forEveryTx(address, func(item types.Transaction) bool {
+	completed := a.forEveryTx(address, func(item coreTypes.Transaction) bool {
 		lines = append(lines, fmt.Sprintf("%d,%d,%s,%d,%s,%s,%d,%d,%d,%d,%s,%s,%d,%s,%s",
 			item.BlockNumber,
 			item.TransactionIndex,
