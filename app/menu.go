@@ -37,10 +37,8 @@ func (a *App) GetMenus() *menu.Menu {
 	helpMenu.AddText("Show Help", keys.CmdOrCtrl("h"), a.HelpToggle)
 	helpMenu.AddText("Show Footer", keys.CmdOrCtrl("f"), a.FooterToggle)
 	helpMenu.AddText("Show Accordion", keys.CmdOrCtrl("x"), a.AccordionToggle)
-	helpMenu.AddText("Tab 1", keys.Control("1"), a.SwithTabHome)
-	helpMenu.AddText("Tab 3", keys.Control("2"), a.SwithTabPrev)
-	helpMenu.AddText("Tab 2", keys.Control("3"), a.SwithTabNext)
-	helpMenu.AddText("Tab 4", keys.Control("4"), a.SwithTabEnd)
+	helpMenu.AddText("Prev Tab", keys.Control("1"), a.SwitchTabPrev)
+	helpMenu.AddText("Next Tab", keys.Control("2"), a.SwitchTabNext)
 
 	return appMenu
 }
