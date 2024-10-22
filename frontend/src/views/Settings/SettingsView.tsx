@@ -1,41 +1,67 @@
-import { useState, useEffect } from "react";
-import { FieldGroup, FormTable, View } from "@components";
-import { GetSession } from "@gocode/app/App";
-import { config } from "@gocode/models";
-import { ViewStateProvider } from "@state";
+import { useEffect, useState } from "react";
+import { Tabs } from "@mantine/core";
+import { FieldGroup, FormTable, PublishButton, SpecButton, View } from "@components";
+import { config as browseConfig, configtypes, messages } from "@gocode/models";
+// import { EventsOn, EventsOff, EventsEmit } from "@runtime";
+import { ViewStateProvider, useAppState } from "@state";
 import { useNoops } from "../../hooks";
+import classes from "./SettingsView.module.css";
 
 export const SettingsView = () => {
-  const { fetchNoop, modifyNoop } = useNoops();
-  // TODO BOGUS: The settings state should be in the AppState
-  const [session, setSession] = useState<config.Session | null>(null);
-  // const [config, setConfig] = useState<config.ConfigFile | null>(null);
+  const { modifyNoop } = useNoops();
+  const { settings, fetchSettings } = useAppState();
+  const [activeTab, setActiveTab] = useState("session");
 
-  useEffect(() => {
-    GetSession().then((s) => setSession(s));
-  }, []);
+  // useEffect(() => {
+  //   GetSession().then((s) => setSession(s));
+  // }, []);
 
-  if (!session) {
+  if (!settings) {
     return <div>Loading...</div>;
   }
 
-  const route = "settings";
+  const session = settings.session ?? browseConfig.Session.createFrom({});
+  const config = settings.config ?? configtypes.Config.createFrom({});
 
+  const route = "settings";
   return (
-    <ViewStateProvider route={route} fetchFn={fetchNoop} modifyFn={modifyNoop}>
+    <ViewStateProvider route={route} fetchFn={fetchSettings} modifyFn={modifyNoop}>
       <View>
-        <FormTable data={session} groups={createSettingsForm()} />
+        <Tabs
+          value={activeTab}
+          onChange={(value) => {
+            if (value !== null) {
+              setActiveTab(value);
+            }
+          }}
+        >
+          <Tabs.List>
+            <Tabs.Tab className={classes.tab} value="session">
+              Session
+            </Tabs.Tab>
+            <Tabs.Tab className={classes.tab} value="config">
+              Config
+            </Tabs.Tab>
+          </Tabs.List>
+
+          <Tabs.Panel value="session">
+            <FormTable data={session} groups={createSessionForm()} />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="config">
+            <FormTable data={config} groups={createConfigForm()} />
+          </Tabs.Panel>
+        </Tabs>
       </View>
     </ViewStateProvider>
   );
 };
 
-const createSettingsForm = (): FieldGroup<config.Session>[] => {
+const createSessionForm = (): FieldGroup<browseConfig.Session>[] => {
   return [
     {
       label: "Session Data 1",
       colSpan: 6,
-      collapsable: false,
       fields: [
         { label: "chain", type: "text", accessor: "chain" },
         { label: "lastFile", type: "text", accessor: "lastFile" },
@@ -54,5 +80,25 @@ const createSettingsForm = (): FieldGroup<config.Session>[] => {
         // { label: "toggles", type: "text", accessor: "lastRoute" },
       ],
     },
+  ];
+};
+
+const createConfigForm = (): FieldGroup<configtypes.Config>[] => {
+  return [
+    {
+      label: "Buttons",
+      buttons: [
+        <PublishButton key="publish" value="https://trueblocks.io" />,
+        <SpecButton
+          key="spec"
+          value="https://trueblocks.io/papers/2023/specification-for-the-unchained-index-v2.0.0-release.pdf"
+        />,
+      ],
+    },
+    // {
+    //   label: "Version Group",
+    //   colSpan: 12, // Full width since it's the only field
+    //   components: [<div key={"1"}>Hello world</div>],
+    // },
   ];
 };
