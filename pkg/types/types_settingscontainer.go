@@ -8,7 +8,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 type SettingsContainer struct {
@@ -51,17 +50,17 @@ func (s *SettingsContainer) ShallowCopy() Containerer {
 }
 
 func (s *SettingsContainer) Summarize() {
-	logger.Info("Version:", s.Config.Version.String())
-	logger.Info("Settings:", s.Config.Settings.String())
-	for _, key := range s.Config.Keys {
-		logger.Info("Keys:", key.String())
-	}
-	logger.Info("Pinning:", s.Config.Pinning.String())
-	logger.Info("Unchained:", s.Config.Unchained.String())
-	for _, chain := range s.Config.Chains {
-		logger.Info("Chains:", chain.String())
-	}
-	logger.Info("Session:", s.Session.String())
+	// logger.Info("Version:", s.Config.Version.String())
+	// logger.Info("Settings:", s.Config.Settings.String())
+	// for _, key := range s.Config.Keys {
+	// 	logger.Info("Keys:", key.String())
+	// }
+	// logger.Info("Pinning:", s.Config.Pinning.String())
+	// logger.Info("Unchained:", s.Config.Unchained.String())
+	// for _, chain := range s.Config.Chains {
+	// 	logger.Info("Chains:", chain.String())
+	// }
+	// logger.Info("Session:", s.Session.String())
 }
 
 func getLatestFileTime() time.Time {
