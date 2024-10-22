@@ -43,3 +43,27 @@ func (a *App) AccordionToggle(cd *menu.CallbackData) {
 	}
 	messages.EmitToggle(a.ctx, "", route)
 }
+
+func (a *App) SwithTabHome(cd *menu.CallbackData) {
+	logger.Info("SwithTabHome pressed")
+	which := "home"
+	messages.EmitSwitchTab(a.ctx, which)
+}
+
+func (a *App) SwithTabPrev(cd *menu.CallbackData) {
+	logger.Info("SwithTabPrev pressed")
+	which := "previous"
+	messages.EmitSwitchTab(a.ctx, which)
+}
+
+func (a *App) SwithTabNext(cd *menu.CallbackData) {
+	logger.Info("SwithTabNext pressed")
+	which := "next"
+	messages.EmitSwitchTab(a.ctx, which)
+}
+
+func (a *App) SwithTabEnd(cd *menu.CallbackData) {
+	logger.Info("SwithTabEnd pressed")
+	which := "end"
+	messages.EmitSwitchTab(a.ctx, which)
+}

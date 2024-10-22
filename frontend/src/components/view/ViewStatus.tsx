@@ -58,6 +58,11 @@ export const ViewStatus = () => {
       setColor("red");
     };
 
+    const handleSwitchTab = (msg: messages.SwitchTabMsg) => {
+      setStatusMessage(`Tab: ${msg.dest}`);
+      setColor("red");
+    };
+
     const handleInfo = (msg: messages.InfoMsg) => {
       setStatusMessage(`Info [${new Date().toLocaleString()}]: ${msg.message}`);
       setColor("blue");
@@ -75,6 +80,7 @@ export const ViewStatus = () => {
     EventsOn(Message.DOCUMENT, handleDocument);
     EventsOn(Message.ERROR, handleError);
     EventsOn(Message.INFO, handleInfo);
+    EventsOn(Message.SWITCHTAB, handleSwitchTab);
     EventsOn(Message.PROGRESS, handleProgress);
     EventsOn(Message.WARNING, handleWarning);
 
@@ -84,6 +90,7 @@ export const ViewStatus = () => {
       EventsOff(Message.DOCUMENT);
       EventsOff(Message.ERROR);
       EventsOff(Message.INFO);
+      EventsOff(Message.SWITCHTAB);
       EventsOff(Message.PROGRESS);
       EventsOff(Message.WARNING);
     };

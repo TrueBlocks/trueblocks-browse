@@ -238,6 +238,22 @@ export function String() {
   return window['go']['app']['App']['String']();
 }
 
+export function SwithTabEnd(arg1) {
+  return window['go']['app']['App']['SwithTabEnd'](arg1);
+}
+
+export function SwithTabHome(arg1) {
+  return window['go']['app']['App']['SwithTabHome'](arg1);
+}
+
+export function SwithTabNext(arg1) {
+  return window['go']['app']['App']['SwithTabNext'](arg1);
+}
+
+export function SwithTabPrev(arg1) {
+  return window['go']['app']['App']['SwithTabPrev'](arg1);
+}
+
 export function SystemAbout(arg1) {
   return window['go']['app']['App']['SystemAbout'](arg1);
 }

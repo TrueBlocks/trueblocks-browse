@@ -40,6 +40,7 @@ func main() {
 			&messages.DocumentMsg{},
 			&messages.ErrorMsg{},
 			&messages.InfoMsg{},
+			&messages.SwitchTabMsg{},
 			&messages.NavigateMsg{},
 			&messages.ProgressMsg{},
 			&messages.ToggleMsg{},

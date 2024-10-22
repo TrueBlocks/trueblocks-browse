@@ -8,6 +8,7 @@ const (
 	Error        Message = "Error"
 	Warn         Message = "Warn"
 	Info         Message = "Info"
+	SwitchTab    Message = "SwitchTab"
 	Progress     Message = "Progress"
 	Daemon       Message = "Daemon"
 	Document     Message = "Document"
@@ -27,6 +28,7 @@ var AllMessages = []struct {
 	{Error, "ERROR"},
 	{Warn, "WARNING"},
 	{Info, "INFO"},
+	{SwitchTab, "SWITCHTAB"},
 	{Progress, "PROGRESS"},
 	{Daemon, "DAEMON"},
 	{Document, "DOCUMENT"},

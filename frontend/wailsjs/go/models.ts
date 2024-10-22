@@ -549,6 +549,7 @@ export namespace messages {
 	    ERROR = "Error",
 	    WARNING = "Warn",
 	    INFO = "Info",
+	    SWITCHTAB = "SwitchTab",
 	    PROGRESS = "Progress",
 	    DAEMON = "Daemon",
 	    DOCUMENT = "Document",
@@ -707,6 +708,18 @@ export namespace messages {
 		    }
 		    return a;
 		}
+	}
+	export class SwitchTabMsg {
+	    dest: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new SwitchTabMsg(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.dest = source["dest"];
+	    }
 	}
 	export class ToggleMsg {
 	    layout: string;
@@ -2240,12 +2253,6 @@ export namespace version {
 
 export namespace wizard {
 	
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
-	}
 	export enum State {
 	    WELCOME = "welcome",
 	    TOMLOKAY = "tomlOkay",
@@ -2253,6 +2260,12 @@ export namespace wizard {
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
 	    OKAY = "okay",
+	}
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
 	}
 	export class Wizard {
 	    state: State;
