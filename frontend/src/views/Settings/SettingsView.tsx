@@ -7,7 +7,7 @@ import { useNoops } from "../../hooks";
 
 export const SettingsView = () => {
   const { fetchNoop, modifyNoop } = useNoops();
-  // TODO BOGUS: This state should be in the AppState
+  // TODO BOGUS: The settings state should be in the AppState
   const [session, setSession] = useState<config.Session | null>(null);
   // const [config, setConfig] = useState<config.ConfigFile | null>(null);
 

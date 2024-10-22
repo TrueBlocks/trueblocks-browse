@@ -37,12 +37,14 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
           </Accordion.Control>
           <Accordion.Panel>
             <Grid>
-              {collapsableGroups.map((group) => {
+              {collapsableGroups.map((group, gIndex) => {
                 return (
-                  <Grid.Col key={group.label} span={group.colSpan ?? 12}>
+                  <Grid.Col key={group.label + gIndex} span={group.colSpan ?? 12}>
                     <Fieldset bg="white" className={classes.fieldSet}>
-                      {group.fields?.map((fld) => <FieldRenderer key={String(fld.accessor)} field={fld} data={data} />)}
-                      {group.components?.map((cmp) => cmp)}
+                      {group.fields?.map((fld, fIndex) => (
+                        <FieldRenderer key={String(fld.accessor) + fIndex} field={fld} data={data} />
+                      ))}
+                      {group.components?.map((cmp, gIndex) => <div key={gIndex}>{cmp}</div>)}
                     </Fieldset>
                   </Grid.Col>
                 );
@@ -52,11 +54,13 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
         </Accordion.Item>
       </Accordion>
       <Grid>
-        {nonCollapsableGroups.map((group) => (
-          <Grid.Col key={group.label} span={group.colSpan ?? 12}>
+        {nonCollapsableGroups.map((group, gIndex) => (
+          <Grid.Col key={group.label + gIndex} span={group.colSpan ?? 12}>
             <Fieldset legend={group.label} bg="white" className={classes.fieldSet}>
-              {group.fields?.map((fld) => <FieldRenderer key={String(fld.accessor)} field={fld} data={data} />)}
-              {group.components?.map((cmp) => cmp)}
+              {group.fields?.map((fld, fIndex) => (
+                <FieldRenderer key={String(fld.accessor) + fIndex} field={fld} data={data} />
+              ))}
+              {group.components?.map((cmp, gIndex) => <div key={gIndex}>{cmp}</div>)}
             </Fieldset>
           </Grid.Col>
         ))}

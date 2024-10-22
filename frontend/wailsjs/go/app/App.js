@@ -82,8 +82,8 @@ export function GetDaemon(arg1) {
   return window['go']['app']['App']['GetDaemon'](arg1);
 }
 
-export function GetDaemonState(arg1) {
-  return window['go']['app']['App']['GetDaemonState'](arg1);
+export function GetState(arg1) {
+  return window['go']['app']['App']['GetState'](arg1);
 }
 
 export function GetEnv(arg1) {

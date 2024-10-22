@@ -51,7 +51,7 @@ export function GetContext():Promise<context.Context>;
 
 export function GetDaemon(arg1:string):Promise<string>;
 
-export function GetDaemonState(arg1:string):Promise<string>;
+export function GetState(arg1:string):Promise<string>;
 
 export function GetEnv(arg1:string):Promise<string>;
 
