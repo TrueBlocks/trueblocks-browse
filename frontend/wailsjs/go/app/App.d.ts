@@ -51,8 +51,6 @@ export function GetContext():Promise<context.Context>;
 
 export function GetDaemon(arg1:string):Promise<string>;
 
-export function GetState(arg1:string):Promise<string>;
-
 export function GetEnv(arg1:string):Promise<string>;
 
 export function GetExploreUrl(arg1:string,arg2:boolean,arg3:boolean):Promise<string>;
@@ -64,6 +62,8 @@ export function GetMeta():Promise<types.MetaData>;
 export function GetRoute():Promise<string>;
 
 export function GetSession():Promise<config.Session>;
+
+export function GetState(arg1:string):Promise<string>;
 
 export function GetWindow():Promise<config.Window>;
 

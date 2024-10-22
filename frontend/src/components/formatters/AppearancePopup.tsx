@@ -5,11 +5,11 @@ export interface AppearancePopupProps extends PopupProps {
   hash: string;
 }
 
-export const AppearancePopup = ({ hash, onCopy, onClose }: AppearancePopupProps) => {
+export const AppearancePopup = ({ hash, onClose }: AppearancePopupProps) => {
   return (
     <Group bg="white">
       <ExploreButton value={hash} onClose={onClose} />
-      <CopyButton value={hash} onClick={onCopy} onClose={onClose} />
+      <CopyButton value={hash} onClose={onClose} />
     </Group>
   );
 };
