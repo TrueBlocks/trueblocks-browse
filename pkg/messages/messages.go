@@ -46,7 +46,7 @@ var AllMessages = []struct {
 }
 
 type MessageData interface {
-	CancelMsg |
+	MessageMsg |
 		DaemonMsg |
 		DocumentMsg |
 		ErrorMsg |

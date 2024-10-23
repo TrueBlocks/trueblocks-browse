@@ -1,18 +1,27 @@
 package messages
 
-import "context"
+import (
+	"context"
+
+	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+)
 
 type DaemonMsg struct {
-	Name    string `json:"name"`
-	Message string `json:"message"`
-	Color   string `json:"color"`
+	Name    string       `json:"name"`
+	Address base.Address `json:"address"`
+	State   wizard.State `json:"state"`
+	Int1    int          `json:"int1"`
+	Int2    int          `json:"int2"`
+	Msg1    string       `json:"msg1"`
+	Msg2    string       `json:"msg2"`
 }
 
 func NewDaemonMsg(name string, message string, color string) *DaemonMsg {
 	return &DaemonMsg{
-		Name:    name,
-		Message: message,
-		Color:   color,
+		Name: name,
+		Msg1: message,
+		Msg2: color,
 	}
 }
 

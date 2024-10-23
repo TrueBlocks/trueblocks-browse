@@ -55,7 +55,7 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
   useEffect(() => {
     const handleToggle = (msg: messages.ToggleMsg) => {
       const cmp = route === "" ? "project" : route;
-      if (msg.layout === "" && cmp === msg.route) {
+      if (msg.msg2 === "" && cmp === msg.msg1) {
         IsShowing(cmp).then((onOff) => {
           SetShowing(cmp, !onOff).then(() => {
             setHeaderShows(!onOff);
@@ -63,9 +63,11 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
         });
       }
     };
-    EventsOn(messages.Message.TOGGLEHEADER, handleToggle);
+
+    const { Message } = messages;
+    EventsOn(Message.TOGGLEHEADER, handleToggle);
     return () => {
-      EventsOff(messages.Message.TOGGLEHEADER);
+      EventsOff(Message.TOGGLEHEADER);
     };
   }, [route]);
 

@@ -1,13 +1,11 @@
 package messages
 
 import (
-	"context"
-
 	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
-type InfoMsg struct {
+type MessageMsg struct {
 	Name    string       `json:"name"`
 	Address base.Address `json:"address"`
 	State   wizard.State `json:"state"`
@@ -17,14 +15,6 @@ type InfoMsg struct {
 	Msg2    string       `json:"msg2"`
 }
 
-func NewInfoMsg(message string) *InfoMsg {
-	return &InfoMsg{Msg1: message}
-}
-
-func EmitInfo(ctx context.Context, msg string) {
-	emitMsg(ctx, Info, NewInfoMsg(msg))
-}
-
-func (m *InfoMsg) Instance() InfoMsg {
-	return InfoMsg{}
+func (m *MessageMsg) Instance() MessageMsg {
+	return MessageMsg{}
 }
