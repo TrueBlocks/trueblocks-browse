@@ -11,7 +11,7 @@ export const ViewStatus = () => {
 
   useEffect(() => {
     const handleDocument = (msg: messages.DocumentMsg) => {
-      setStatusMessage(`${msg.msg} ${msg.filename}`);
+      setStatusMessage(`${msg.msg2} ${msg.msg1}`);
       setColor("green");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -22,12 +22,12 @@ export const ViewStatus = () => {
     };
 
     const handleProgress = (msg: messages.ProgressMsg) => {
-      setStatusMessage(`Progress (${msg.address}): ${msg.have}/${msg.want}`);
+      setStatusMessage(`Progress (${msg.address}): ${msg.int1}/${msg.int2}`);
       setColor("green");
     };
 
     const handleCompleted = (msg: messages.ProgressMsg) => {
-      setStatusMessage(`Completed (${msg.address}): ${msg.have}/${msg.want}`);
+      setStatusMessage(`Completed (${msg.address}): ${msg.int1}/${msg.int2}`);
       setColor("green");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -37,7 +37,7 @@ export const ViewStatus = () => {
       }, 2000);
     };
 
-    const handleCancel = (msg: messages.CancelMsg) => {
+    const handleCancel = (msg: messages.MessageMsg) => {
       setStatusMessage(`Canceled (${msg.address})`);
       setColor("green");
       if (timeoutRef.current) {
@@ -49,22 +49,17 @@ export const ViewStatus = () => {
     };
 
     const handleWarning = (msg: messages.ErrorMsg) => {
-      setStatusMessage(`Warning: ${msg.errStr} ${msg.address}`);
+      setStatusMessage(`Warning: ${msg.msg1} ${msg.address}`);
       setColor("yellow");
     };
 
     const handleError = (msg: messages.ErrorMsg) => {
-      setStatusMessage(`Error: ${msg.errStr} ${msg.address}`);
-      setColor("red");
-    };
-
-    const handleSwitchTab = (msg: messages.SwitchTabMsg) => {
-      setStatusMessage(`Tab: ${msg.dest}`);
+      setStatusMessage(`Error: ${msg.msg1} ${msg.address}`);
       setColor("red");
     };
 
     const handleInfo = (msg: messages.InfoMsg) => {
-      setStatusMessage(`Info [${new Date().toLocaleString()}]: ${msg.message}`);
+      setStatusMessage(`Info [${new Date().toLocaleString()}]: ${msg.msg1}`);
       setColor("blue");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -80,7 +75,6 @@ export const ViewStatus = () => {
     EventsOn(Message.DOCUMENT, handleDocument);
     EventsOn(Message.ERROR, handleError);
     EventsOn(Message.INFO, handleInfo);
-    EventsOn(Message.SWITCHTAB, handleSwitchTab);
     EventsOn(Message.PROGRESS, handleProgress);
     EventsOn(Message.WARNING, handleWarning);
 
@@ -90,7 +84,6 @@ export const ViewStatus = () => {
       EventsOff(Message.DOCUMENT);
       EventsOff(Message.ERROR);
       EventsOff(Message.INFO);
-      EventsOff(Message.SWITCHTAB);
       EventsOff(Message.PROGRESS);
       EventsOff(Message.WARNING);
     };

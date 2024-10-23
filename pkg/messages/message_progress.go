@@ -3,20 +3,25 @@ package messages
 import (
 	"context"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
 type ProgressMsg struct {
+	Name    string       `json:"name"`
 	Address base.Address `json:"address"`
-	Have    int          `json:"have"`
-	Want    int          `json:"want"`
+	State   wizard.State `json:"state"`
+	Int1    int          `json:"int1"`
+	Int2    int          `json:"int2"`
+	Msg1    string       `json:"msg1"`
+	Msg2    string       `json:"msg2"`
 }
 
-func NewProgressMsg(address base.Address, have int, want int) *ProgressMsg {
+func NewProgressMsg(address base.Address, have, want int) *ProgressMsg {
 	return &ProgressMsg{
 		Address: address,
-		Have:    have,
-		Want:    want,
+		Int1:    have,
+		Int2:    want,
 	}
 }
 
@@ -26,7 +31,6 @@ func EmitCompleted(ctx context.Context, address base.Address, total int) {
 
 func EmitProgress(ctx context.Context, address base.Address, have, want int) {
 	emitMsg(ctx, Progress, NewProgressMsg(address, have, want))
-
 }
 
 func (m *ProgressMsg) Instance() ProgressMsg {

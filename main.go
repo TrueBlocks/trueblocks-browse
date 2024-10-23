@@ -35,7 +35,7 @@ func main() {
 		Menu:             a.GetMenus(),
 		Bind: []interface{}{
 			a,
-			&messages.CancelMsg{},
+			&messages.MessageMsg{},
 			&messages.DaemonMsg{},
 			&messages.DocumentMsg{},
 			&messages.ErrorMsg{},

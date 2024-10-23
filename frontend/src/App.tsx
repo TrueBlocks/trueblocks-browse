@@ -41,11 +41,11 @@ export const App = () => {
 
   useEffect(() => {
     const handleToggleLayout = (msg: messages.ToggleMsg) => {
-      const toggle = toggles.find((t) => t.layout === msg.layout);
+      const toggle = toggles.find((t) => t.layout === msg.msg2);
       if (toggle) {
         toggle.setter((prev) => {
           const show = !prev;
-          SetShowing(msg.layout, !prev);
+          SetShowing(msg.msg2, !prev);
           return show;
         });
       }

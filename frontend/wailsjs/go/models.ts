@@ -559,16 +559,28 @@ export namespace messages {
 	    TOGGLEHEADER = "ToggleHeader",
 	    WIZARD = "Wizard",
 	}
-	export class CancelMsg {
+	export class DaemonMsg {
+	    name: string;
 	    address: base.Address;
+	    state: wizard.State;
+	    int1: number;
+	    int2: number;
+	    msg1: string;
+	    msg2: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new CancelMsg(source);
+	        return new DaemonMsg(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
 	        this.address = this.convertValues(source["address"], base.Address);
+	        this.state = source["state"];
+	        this.int1 = source["int1"];
+	        this.int2 = source["int2"];
+	        this.msg1 = source["msg1"];
+	        this.msg2 = source["msg2"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -589,25 +601,14 @@ export namespace messages {
 		    return a;
 		}
 	}
-	export class DaemonMsg {
-	    name: string;
-	    message: string;
-	    color: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new DaemonMsg(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.name = source["name"];
-	        this.message = source["message"];
-	        this.color = source["color"];
-	    }
-	}
 	export class DocumentMsg {
-	    filename: string;
-	    msg: string;
+	    name: string;
+	    address: base.Address;
+	    state: wizard.State;
+	    int1: number;
+	    int2: number;
+	    msg1: string;
+	    msg2: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new DocumentMsg(source);
@@ -615,13 +616,41 @@ export namespace messages {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.filename = source["filename"];
-	        this.msg = source["msg"];
+	        this.name = source["name"];
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.state = source["state"];
+	        this.int1 = source["int1"];
+	        this.int2 = source["int2"];
+	        this.msg1 = source["msg1"];
+	        this.msg2 = source["msg2"];
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class ErrorMsg {
+	    name: string;
 	    address: base.Address;
-	    errStr: string;
+	    state: wizard.State;
+	    int1: number;
+	    int2: number;
+	    msg1: string;
+	    msg2: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new ErrorMsg(source);
@@ -629,8 +658,13 @@ export namespace messages {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
 	        this.address = this.convertValues(source["address"], base.Address);
-	        this.errStr = source["errStr"];
+	        this.state = source["state"];
+	        this.int1 = source["int1"];
+	        this.int2 = source["int2"];
+	        this.msg1 = source["msg1"];
+	        this.msg2 = source["msg2"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -652,7 +686,13 @@ export namespace messages {
 		}
 	}
 	export class InfoMsg {
-	    message: string;
+	    name: string;
+	    address: base.Address;
+	    state: wizard.State;
+	    int1: number;
+	    int2: number;
+	    msg1: string;
+	    msg2: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new InfoMsg(source);
@@ -660,11 +700,83 @@ export namespace messages {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.message = source["message"];
+	        this.name = source["name"];
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.state = source["state"];
+	        this.int1 = source["int1"];
+	        this.int2 = source["int2"];
+	        this.msg1 = source["msg1"];
+	        this.msg2 = source["msg2"];
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class MessageMsg {
+	    name: string;
+	    address: base.Address;
+	    state: wizard.State;
+	    int1: number;
+	    int2: number;
+	    msg1: string;
+	    msg2: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new MessageMsg(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.state = source["state"];
+	        this.int1 = source["int1"];
+	        this.int2 = source["int2"];
+	        this.msg1 = source["msg1"];
+	        this.msg2 = source["msg2"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class NavigateMsg {
-	    route: string;
+	    name: string;
+	    address: base.Address;
+	    state: wizard.State;
+	    int1: number;
+	    int2: number;
+	    msg1: string;
+	    msg2: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new NavigateMsg(source);
@@ -672,13 +784,41 @@ export namespace messages {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.route = source["route"];
+	        this.name = source["name"];
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.state = source["state"];
+	        this.int1 = source["int1"];
+	        this.int2 = source["int2"];
+	        this.msg1 = source["msg1"];
+	        this.msg2 = source["msg2"];
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class ProgressMsg {
+	    name: string;
 	    address: base.Address;
-	    have: number;
-	    want: number;
+	    state: wizard.State;
+	    int1: number;
+	    int2: number;
+	    msg1: string;
+	    msg2: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new ProgressMsg(source);
@@ -686,9 +826,13 @@ export namespace messages {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
 	        this.address = this.convertValues(source["address"], base.Address);
-	        this.have = source["have"];
-	        this.want = source["want"];
+	        this.state = source["state"];
+	        this.int1 = source["int1"];
+	        this.int2 = source["int2"];
+	        this.msg1 = source["msg1"];
+	        this.msg2 = source["msg2"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -710,7 +854,13 @@ export namespace messages {
 		}
 	}
 	export class SwitchTabMsg {
-	    dest: string;
+	    name: string;
+	    address: base.Address;
+	    state: wizard.State;
+	    int1: number;
+	    int2: number;
+	    msg1: string;
+	    msg2: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new SwitchTabMsg(source);
@@ -718,12 +868,41 @@ export namespace messages {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.dest = source["dest"];
+	        this.name = source["name"];
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.state = source["state"];
+	        this.int1 = source["int1"];
+	        this.int2 = source["int2"];
+	        this.msg1 = source["msg1"];
+	        this.msg2 = source["msg2"];
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class ToggleMsg {
-	    layout: string;
-	    route: string;
+	    name: string;
+	    address: base.Address;
+	    state: wizard.State;
+	    int1: number;
+	    int2: number;
+	    msg1: string;
+	    msg2: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new ToggleMsg(source);
@@ -731,12 +910,41 @@ export namespace messages {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.layout = source["layout"];
-	        this.route = source["route"];
+	        this.name = source["name"];
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.state = source["state"];
+	        this.int1 = source["int1"];
+	        this.int2 = source["int2"];
+	        this.msg1 = source["msg1"];
+	        this.msg2 = source["msg2"];
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class WizardMsg {
+	    name: string;
+	    address: base.Address;
 	    state: wizard.State;
+	    int1: number;
+	    int2: number;
+	    msg1: string;
+	    msg2: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new WizardMsg(source);
@@ -744,8 +952,32 @@ export namespace messages {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.address = this.convertValues(source["address"], base.Address);
 	        this.state = source["state"];
+	        this.int1 = source["int1"];
+	        this.int2 = source["int2"];
+	        this.msg1 = source["msg1"];
+	        this.msg2 = source["msg2"];
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 
 }
