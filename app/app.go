@@ -37,7 +37,7 @@ type App struct {
 	index    types.IndexContainer
 	manifest types.ManifestContainer
 	monitors types.MonitorContainer
-	names    types.NameContainer
+	names    types.NamesContainer
 	settings types.SettingsContainer
 
 	status types.StatusContainer
