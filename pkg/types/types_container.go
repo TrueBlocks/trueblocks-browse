@@ -6,3 +6,5 @@ type Containerer interface {
 	Summarize()
 	NeedsUpdate(force bool) bool
 }
+
+type Containerers []Containerer
