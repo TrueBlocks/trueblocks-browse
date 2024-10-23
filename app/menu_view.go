@@ -5,61 +5,48 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
 
-func (a *App) ViewProject(cd *menu.CallbackData) {
-	debugMsg("ViewProject")
+func (a *App) ProjectView(cd *menu.CallbackData) {
 	a.Navigate("/", "")
 }
 
-func (a *App) ViewHistory(cd *menu.CallbackData) {
-	debugMsg("ViewHistory")
-
+func (a *App) HistoryView(cd *menu.CallbackData) {
 	address := a.GetAddress()
 	a.Navigate("/history", address.Hex())
 }
 
-func (a *App) ViewMonitors(cd *menu.CallbackData) {
-	debugMsg("ViewMonitors")
+func (a *App) MonitorsView(cd *menu.CallbackData) {
 	a.Navigate("/monitors", "")
 }
 
-func (a *App) ViewNames(cd *menu.CallbackData) {
-	debugMsg("ViewNames")
+func (a *App) NamesView(cd *menu.CallbackData) {
 	a.Navigate("/names", "")
 }
 
-func (a *App) ViewIndexes(cd *menu.CallbackData) {
-	debugMsg("ViewIndexes")
-	a.Navigate("/indexes", "")
-}
-
-func (a *App) ViewManifest(cd *menu.CallbackData) {
-	debugMsg("ViewManifest")
-	a.Navigate("/manifests", "")
-}
-
-func (a *App) ViewAbis(cd *menu.CallbackData) {
-	debugMsg("ViewAbis")
+func (a *App) AbisView(cd *menu.CallbackData) {
 	a.Navigate("/abis", "")
 }
 
-func (a *App) ViewStatus(cd *menu.CallbackData) {
-	debugMsg("ViewStatus")
+func (a *App) IndexesView(cd *menu.CallbackData) {
+	a.Navigate("/indexes", "")
+}
+
+func (a *App) ManifestsView(cd *menu.CallbackData) {
+	a.Navigate("/manifests", "")
+}
+
+func (a *App) StatusView(cd *menu.CallbackData) {
 	a.Navigate("/status", "")
 }
 
-func (a *App) ViewDaemons(cd *menu.CallbackData) {
-	debugMsg("ViewDaemons")
-	a.Navigate("/daemons", "")
-}
-
-func (a *App) ViewSettings(cd *menu.CallbackData) {
-	debugMsg("ViewSettings")
+func (a *App) SettingsView(cd *menu.CallbackData) {
 	a.Navigate("/settings", "")
 }
 
-func (a *App) ViewWizard(cd *menu.CallbackData) {
-	debugMsg("ViewWizard")
+func (a *App) DaemonsView(cd *menu.CallbackData) {
+	a.Navigate("/daemons", "")
+}
 
+func (a *App) WizardView(cd *menu.CallbackData) {
 	if a.IsConfigured() {
 		a.StepWizard(wizard.Reset)
 	} else {
