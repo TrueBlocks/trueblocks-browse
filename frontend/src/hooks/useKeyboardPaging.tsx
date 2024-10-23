@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Pager, EmptyPager } from "@components";
 import { CancelAllContexts, Reload } from "@gocode/app/App";
-import { Route } from "@layout";
 import { useAppState } from "@state";
 
 export type Page = {
@@ -12,7 +11,6 @@ export type Page = {
 };
 
 export function useKeyboardPaging(
-  route: Route,
   nItems: number,
   perPage: number = 20,
   onEnter: (page: Page) => void
@@ -104,7 +102,6 @@ export function useKeyboardPaging(
     return EmptyPager;
   } else {
     return {
-      name: route,
       selected,
       perPage,
       nItems,
