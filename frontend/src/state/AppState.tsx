@@ -43,7 +43,7 @@ interface AppStateProps {
   status: types.StatusContainer;
   fetchStatus: (currentItem: number, itemsPerPage: number) => void;
 
-  settings: types.SettingsContainer;
+  settings: types.SettingsGroup;
   fetchSettings: (currentItem: number, itemsPerPage: number) => void;
 
   address: base.Address;
@@ -71,7 +71,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [indexes, setIndexes] = useState<types.IndexContainer>({} as types.IndexContainer);
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
-  const [settings, setSettings] = useState<types.SettingsContainer>({} as types.SettingsContainer);
+  const [settings, setSettings] = useState<types.SettingsGroup>({} as types.SettingsGroup);
   // TODO BOGUS: The daemon state should be in the AppState
   // TODO BOGUS: The settings state should be in the AppState
 
@@ -145,7 +145,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   const fetchSettings = async (currentItem: number, itemsPerPage: number) => {
-    SettingsPage(currentItem, itemsPerPage).then((item: types.SettingsContainer) => {
+    SettingsPage(currentItem, itemsPerPage).then((item: types.SettingsGroup) => {
       if (item) {
         setSettings(item);
       }

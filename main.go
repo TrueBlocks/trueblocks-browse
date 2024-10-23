@@ -43,7 +43,7 @@ func main() {
 			&types.MonitorContainer{},
 			&types.NamesContainer{},
 			&types.StatusContainer{},
-			&types.SettingsContainer{},
+			&types.SettingsGroup{},
 			&wizard.Wizard{},
 			&editors.Name{},
 			&daemons.Daemon{},
