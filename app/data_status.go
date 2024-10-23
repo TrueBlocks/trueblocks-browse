@@ -71,7 +71,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		})
 		a.status.Summarize()
 		logger.SetLoggerWriter(w)
-		messages.EmitInfo(a.ctx, "Loaded status")
+		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded status"})
 	}
 	return nil
 }

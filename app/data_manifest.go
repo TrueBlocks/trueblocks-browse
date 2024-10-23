@@ -66,7 +66,7 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 			return a.manifest.Chunks[i].Range > a.manifest.Chunks[j].Range
 		})
 		a.manifest.Summarize()
-		messages.EmitInfo(a.ctx, "Loaded manifest")
+		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded manifest"})
 	}
 	return nil
 }

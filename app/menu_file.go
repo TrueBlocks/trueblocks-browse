@@ -13,8 +13,13 @@ import (
 func (a *App) FileNew(cd *menu.CallbackData) {
 	logger.Info("File New")
 	a.project = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
-	messages.EmitNavigate(a.ctx, "/")
-	messages.EmitDocument(a.ctx, a.project.Filename, "Opened")
+	messages.EmitMessage(a.ctx, messages.Navigate, &messages.MessageMsg{
+		String1: "/",
+	})
+	messages.EmitMessage(a.ctx, messages.Document, &messages.MessageMsg{
+		String1: a.project.Filename,
+		String2: "Created",
+	})
 }
 
 func (a *App) FileOpen(cd *menu.CallbackData) {
@@ -52,8 +57,13 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 		}
 		wg.Wait()
 
-		messages.EmitNavigate(a.ctx, "/")
-		messages.EmitDocument(a.ctx, a.project.Filename, "Opened")
+		messages.EmitMessage(a.ctx, messages.Navigate, &messages.MessageMsg{
+			String1: "/",
+		})
+		messages.EmitMessage(a.ctx, messages.Document, &messages.MessageMsg{
+			String1: a.project.Filename,
+			String2: "Opened",
+		})
 	}
 }
 
@@ -73,7 +83,10 @@ func (a *App) FileSave(cd *menu.CallbackData) {
 	})
 	a.project.Session = a.session
 	a.project.Save()
-	messages.EmitDocument(a.ctx, a.project.Filename, "Saved")
+	messages.EmitMessage(a.ctx, messages.Document, &messages.MessageMsg{
+		String1: a.project.Filename,
+		String2: "Saved",
+	})
 }
 
 func (a *App) FileSaveAs(cd *menu.CallbackData) {

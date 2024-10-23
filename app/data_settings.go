@@ -33,10 +33,14 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	if path, err := utils.GetConfigFn("", "trueBlocks.toml"); err != nil {
-		messages.EmitError(a.ctx, err)
+		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+			String1: err.Error(),
+		})
 	} else {
 		if err := coreConfig.ReadToml(path, &a.cfg); err != nil {
-			messages.EmitError(a.ctx, err)
+			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+				String1: err.Error(),
+			})
 		}
 	}
 	a.settings = types.NewSettingsContainer(&a.cfg, &a.session)

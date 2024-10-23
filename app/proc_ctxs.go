@@ -24,7 +24,9 @@ func (a *App) CancelContext(address base.Address) {
 	defer ctxMutex.Unlock()
 	if ctxArrays, ok := a.renderCtxs[address]; ok {
 		for _, ctx := range ctxArrays {
-			messages.EmitCancel(a.ctx, address)
+			messages.EmitMessage(a.ctx, messages.Cancelled, &messages.MessageMsg{
+				Address: address,
+			})
 			ctx.Cancel()
 		}
 		delete(a.renderCtxs, address)

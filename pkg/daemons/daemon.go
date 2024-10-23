@@ -82,7 +82,11 @@ func (s *Daemon) Tick(msg ...string) int {
 		msg,
 	)
 
-	messages.EmitDaemon(s.freshener.GetContext(), strings.ToLower(s.Name), msgOut, s.Color)
+	messages.EmitMessage(s.freshener.GetContext(), messages.Daemon, &messages.MessageMsg{
+		Name:    strings.ToLower(s.Name),
+		String1: msgOut,
+		String2: s.Color,
+	})
 	s.Ticks++
 	return s.Ticks
 }

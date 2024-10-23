@@ -14,9 +14,9 @@ export const SettingsView = () => {
 
   useEffect(() => {
     const tabs = ["session", "config"];
-    const handleSwitchTab = (msg: messages.SwitchTabMsg) => {
-      const { msg1 } = msg;
-      switch (msg1) {
+    const handleSwitchTab = (msg: messages.MessageMsg) => {
+      const { string1 } = msg;
+      switch (string1) {
         case "prev":
           setActiveTab((prevTab) => {
             const currentIndex = tabs.indexOf(prevTab);

@@ -14,7 +14,7 @@ interface Nope {
   scraper: daemons.Daemon;
   freshen: daemons.Daemon;
   ipfs: daemons.Daemon;
-  logMessages: messages.DaemonMsg[];
+  logMessages: messages.MessageMsg[];
   toggleDaemon: (name: string) => void;
 }
 
@@ -24,7 +24,7 @@ export const DaemonsView = () => {
   const [scraper, setScraper] = useState<daemons.Daemon>(empty);
   const [freshen, setFreshen] = useState<daemons.Daemon>(empty);
   const [ipfs, setIpfs] = useState<daemons.Daemon>(empty);
-  const [logMessages, setLogMessages] = useState<messages.DaemonMsg[]>([]);
+  const [logMessages, setLogMessages] = useState<messages.MessageMsg[]>([]);
 
   const updateDaemon = (daemon: string, setDaemon: Dispatch<SetStateAction<daemons.Daemon>>) => {
     GetDaemon(daemon).then((json: string) => {
@@ -38,8 +38,8 @@ export const DaemonsView = () => {
     updateDaemon("ipfs", setIpfs);
   }, []);
 
-  const handleMessage = (sMsg: messages.DaemonMsg) => {
-    switch (sMsg.name) {
+  const handleMessage = (msg: messages.MessageMsg) => {
+    switch (msg.name) {
       case "scraper":
         updateDaemon("scraper", setScraper);
         break;
@@ -53,7 +53,7 @@ export const DaemonsView = () => {
         break;
     }
     setLogMessages((prev) => {
-      const newLogs = [...prev, sMsg];
+      const newLogs = [...prev, msg];
       return newLogs.length > 8 ? newLogs.slice(-8) : newLogs;
     });
   };

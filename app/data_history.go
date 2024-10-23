@@ -16,7 +16,10 @@ import (
 func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContainer {
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
-		messages.EmitError(a.ctx, fmt.Errorf("Invalid address: "+addr))
+		err := fmt.Errorf("Invalid address: " + addr)
+		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+			String1: err.Error(),
+		})
 		return &types.HistoryContainer{}
 	}
 
@@ -42,7 +45,10 @@ func (a *App) getHistoryCnt(address base.Address) int {
 	}
 	appearances, meta, err := opts.ListCount()
 	if err != nil {
-		messages.EmitError(a.ctx, err, address)
+		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+			String1: err.Error(),
+			Address: address,
+		})
 		return 0
 	} else if len(appearances) == 0 {
 		return 0
@@ -117,7 +123,10 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 
 	logger.Info("Loading history for address: ", address.Hex())
 	if err := a.thing(address, 15); err != nil {
-		messages.EmitError(a.ctx, err, address)
+		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+			String1: err.Error(),
+			Address: address,
+		})
 		return err
 	}
 	a.loadProject(nil, nil)
@@ -158,7 +167,11 @@ func (a *App) thing(address base.Address, freq int) error {
 						}
 						return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
 					})
-					messages.EmitProgress(a.ctx, address, len(summary.Items), nItems)
+					messages.EmitMessage(a.ctx, messages.Progress, &messages.MessageMsg{
+						Address: address,
+						Num1:    len(summary.Items),
+						Num2:    nItems,
+					})
 				}
 
 				if len(summary.Items) == 0 {
@@ -168,7 +181,10 @@ func (a *App) thing(address base.Address, freq int) error {
 				}
 
 			case err := <-opts.RenderCtx.ErrorChan:
-				messages.EmitError(a.ctx, err, address)
+				messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+					String1: err.Error(),
+					Address: address,
+				})
 
 			default:
 				if opts.RenderCtx.WasCanceled() {
@@ -193,6 +209,10 @@ func (a *App) thing(address base.Address, freq int) error {
 	})
 	history.Summarize()
 	a.project.HistoryMap.Store(address, history)
-	messages.EmitCompleted(a.ctx, address, a.txCount(address))
+	messages.EmitMessage(a.ctx, messages.Completed, &messages.MessageMsg{
+		Address: address,
+		Num1:    a.txCount(address),
+		Num2:    a.txCount(address),
+	})
 	return nil
 }

@@ -62,10 +62,12 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.abis = types.NewAbiContainer(abisChain, abis)
 		if err := sdk.SortAbis(a.abis.Items, a.abis.Sorts); err != nil {
-			messages.EmitError(a.ctx, err)
+			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+				String1: err.Error(),
+			})
 		}
 		a.abis.Summarize()
-		messages.EmitInfo(a.ctx, "Loaded abis")
+		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded abis"})
 	}
 	return nil
 }
@@ -78,7 +80,10 @@ func (a *App) ModifyAbi(modData *ModifyData) error {
 	opts.Globals.Decache = true
 
 	if _, _, err := opts.Abis(); err != nil {
-		messages.EmitError(a.ctx, err, modData.Address)
+		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+			String1: err.Error(),
+			Address: modData.Address,
+		})
 		return err
 	} else {
 		newAbis := make([]coreTypes.Abi, 0, len(a.abis.Items))
@@ -94,7 +99,7 @@ func (a *App) ModifyAbi(modData *ModifyData) error {
 		a.abis.LastUpdate = time.Time{}
 		a.abis.Items = newAbis
 		msg := fmt.Sprintf("ModifyAbi delete: %s", modData.Address.Hex())
-		messages.EmitInfo(a.ctx, msg)
+		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: msg})
 		return nil
 	}
 }

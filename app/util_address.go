@@ -29,7 +29,9 @@ func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
 		Globals: a.globals,
 	}
 	if names, meta, err := opts.Names(); err != nil {
-		messages.EmitError(a.ctx, err)
+		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+			String1: err.Error(),
+		})
 		return base.ZeroAddr, false
 	} else {
 		a.meta = *meta
