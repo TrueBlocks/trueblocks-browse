@@ -1773,11 +1773,11 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class NameContainer {
+	export class NamesContainer {
 	    names: Name[];
-	    sizeOnDisc: number;
 	    namesMap: {[key: string]: Name};
 	    nItems: number;
+	    nDeleted: number;
 	    nContracts: number;
 	    nErc20s: number;
 	    nErc721s: number;
@@ -1785,21 +1785,21 @@ export namespace types {
 	    nRegular: number;
 	    nPrefund: number;
 	    nSystem: number;
-	    nDeleted: number;
 	    // Go type: time
 	    lastUpdate: any;
+	    sizeOnDisc: number;
 	    chain: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new NameContainer(source);
+	        return new NamesContainer(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.names = this.convertValues(source["names"], Name);
-	        this.sizeOnDisc = source["sizeOnDisc"];
 	        this.namesMap = this.convertValues(source["namesMap"], Name, true);
 	        this.nItems = source["nItems"];
+	        this.nDeleted = source["nDeleted"];
 	        this.nContracts = source["nContracts"];
 	        this.nErc20s = source["nErc20s"];
 	        this.nErc721s = source["nErc721s"];
@@ -1807,8 +1807,8 @@ export namespace types {
 	        this.nRegular = source["nRegular"];
 	        this.nPrefund = source["nPrefund"];
 	        this.nSystem = source["nSystem"];
-	        this.nDeleted = source["nDeleted"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.sizeOnDisc = source["sizeOnDisc"];
 	        this.chain = source["chain"];
 	    }
 	

@@ -2,7 +2,6 @@ package app
 
 import (
 	"fmt"
-	"sort"
 	"sync"
 	"sync/atomic"
 
@@ -69,34 +68,10 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		defer nameMutex.Unlock()
 
 		a.names = types.NewNamesContainer(namesChain, namesMap)
-		for _, name := range a.names.NamesMap {
-			a.names.Names = append(a.names.Names, name)
-		}
-		sort.Slice(a.names.Names, func(i, j int) bool {
-			return compare(a.names.Names[i], a.names.Names[j])
-		})
 		a.names.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded names"})
 	}
 	return nil
-}
-
-func compare(nameI, nameJ coreTypes.Name) bool {
-	ti := nameI.Parts
-	if ti == coreTypes.Regular {
-		ti = 7
-	}
-	tj := nameJ.Parts
-	if tj == coreTypes.Regular {
-		tj = 7
-	}
-	if ti == tj {
-		if nameI.Tags == nameJ.Tags {
-			return nameI.Address.Hex() < nameJ.Address.Hex()
-		}
-		return nameI.Tags < nameJ.Tags
-	}
-	return ti < tj
 }
 
 func (a *App) ModifyName(modData *ModifyData) error {

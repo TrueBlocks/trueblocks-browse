@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/json"
 	"path/filepath"
+	"sort"
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
@@ -15,9 +16,9 @@ import (
 
 type NamesContainer struct {
 	Names      []coreTypes.Name                `json:"names"`
-	SizeOnDisc int                             `json:"sizeOnDisc"`
 	NamesMap   map[base.Address]coreTypes.Name `json:"namesMap"`
 	NItems     int                             `json:"nItems"`
+	NDeleted   int                             `json:"nDeleted"`
 	NContracts int                             `json:"nContracts"`
 	NErc20s    int                             `json:"nErc20s"`
 	NErc721s   int                             `json:"nErc721s"`
@@ -25,19 +26,26 @@ type NamesContainer struct {
 	NRegular   int                             `json:"nRegular"`
 	NPrefund   int                             `json:"nPrefund"`
 	NSystem    int                             `json:"nSystem"`
-	NDeleted   int                             `json:"nDeleted"`
 	LastUpdate time.Time                       `json:"lastUpdate"`
+	SizeOnDisc int                             `json:"sizeOnDisc"`
 	Chain      string                          `json:"chain"`
 }
 
 func NewNamesContainer(chain string, namesMap map[base.Address]coreTypes.Name) NamesContainer {
 	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(chain))
-	return NamesContainer{
+	ret := NamesContainer{
 		Names:      make([]coreTypes.Name, 0),
 		NamesMap:   namesMap,
 		LastUpdate: latest,
 		Chain:      chain,
 	}
+	for _, name := range ret.NamesMap {
+		ret.Names = append(ret.Names, name)
+	}
+	sort.Slice(ret.Names, func(i, j int) bool {
+		return compare(ret.Names[i], ret.Names[j])
+	})
+	return ret
 }
 
 func (a *NamesContainer) String() string {
@@ -57,7 +65,7 @@ func (s *NamesContainer) NeedsUpdate(force bool) bool {
 func (s *NamesContainer) ShallowCopy() Containerer {
 	return &NamesContainer{
 		NItems:     s.NItems,
-		SizeOnDisc: s.SizeOnDisc,
+		NDeleted:   s.NDeleted,
 		NContracts: s.NContracts,
 		NErc20s:    s.NErc20s,
 		NErc721s:   s.NErc721s,
@@ -65,8 +73,8 @@ func (s *NamesContainer) ShallowCopy() Containerer {
 		NRegular:   s.NRegular,
 		NPrefund:   s.NPrefund,
 		NSystem:    s.NSystem,
-		NDeleted:   s.NDeleted,
 		LastUpdate: s.LastUpdate,
+		SizeOnDisc: s.SizeOnDisc,
 		Chain:      s.Chain,
 	}
 }
@@ -105,4 +113,22 @@ func (s *NamesContainer) Summarize() {
 			s.NContracts++
 		}
 	}
+}
+
+func compare(nameI, nameJ coreTypes.Name) bool {
+	ti := nameI.Parts
+	if ti == coreTypes.Regular {
+		ti = 7
+	}
+	tj := nameJ.Parts
+	if tj == coreTypes.Regular {
+		tj = 7
+	}
+	if ti == tj {
+		if nameI.Tags == nameJ.Tags {
+			return nameI.Address.Hex() < nameJ.Address.Hex()
+		}
+		return nameI.Tags < nameJ.Tags
+	}
+	return ti < tj
 }
