@@ -11,5 +11,5 @@ export const ExportButton = ({ value, ...props }: ButtonProps) => {
     ExportAddress(value as base.Address);
   };
 
-  return <BaseButton {...props} tip="Export" onClick={handleClick} leftSection={icon} />;
+  return <BaseButton {...props} tip="Export" onClick={handleClick} icon={icon} />;
 };

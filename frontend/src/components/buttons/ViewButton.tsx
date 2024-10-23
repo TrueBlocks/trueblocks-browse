@@ -12,5 +12,5 @@ export const ViewButton = ({ value, ...props }: ButtonProps) => {
     GoToHistory(address).then(() => {});
   };
 
-  return <BaseButton {...props} tip="View" onClick={handleClick} leftSection={icon} />;
+  return <BaseButton {...props} tip="View" onClick={handleClick} icon={icon} />;
 };

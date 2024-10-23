@@ -9,7 +9,7 @@ export const UndeleteButton = ({ value, ...props }: ButtonProps) => {
   const { undeleteItem } = useModifyFn(address);
   return (
     <Group justify="flex-end">
-      <BaseButton {...props} tip="Undelete" onClick={undeleteItem} leftSection={<IconArrowBackUp />} />
+      <BaseButton {...props} tip="Undelete" onClick={undeleteItem} icon={<IconArrowBackUp />} />
     </Group>
   );
 };

@@ -67,7 +67,7 @@ const createProjectForm = (table: any): FieldGroup<types.ProjectContainer>[] => 
       buttons: [<AddButton key={"add"} value={"https://trueblocks.io"} />],
     },
     {
-      label: "Open Monitors",
+      label: "Histories",
       fields: [],
       collapsable: false,
       components: [<DataTable<types.HistoryContainer> key={"dataTable"} table={table} loading={false} />],

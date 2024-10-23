@@ -9,7 +9,7 @@ export const EditButton = ({ value, ...props }: ButtonProps) => {
   const { modifyItem } = useModifyFn(address);
   return (
     <Group justify="flex-end">
-      <BaseButton {...props} tip="Edit" onClick={modifyItem} leftSection={<IconEdit />} />
+      <BaseButton {...props} tip="Edit" onClick={modifyItem} icon={<IconEdit />} />
     </Group>
   );
 };
