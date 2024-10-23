@@ -22,13 +22,13 @@ var namesChain = "mainnet"
 var namesLock atomic.Uint32
 
 // Find: NewViews
-func (a *App) NamePage(first, pageSize int) *types.NameContainer {
+func (a *App) NamePage(first, pageSize int) *types.NamesContainer {
 	nameMutex.Lock()
 	defer nameMutex.Unlock()
 
 	first = base.Max(0, base.Min(first, len(a.names.Names)-1))
 	last := base.Min(len(a.names.Names), first+pageSize)
-	copy, _ := a.names.ShallowCopy().(*types.NameContainer)
+	copy, _ := a.names.ShallowCopy().(*types.NamesContainer)
 	copy.Names = a.names.Names[first:last]
 	return copy
 }
@@ -68,7 +68,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		nameMutex.Lock()
 		defer nameMutex.Unlock()
 
-		a.names = types.NewNameContainer(namesChain, namesMap)
+		a.names = types.NewNamesContainer(namesChain, namesMap)
 		for _, name := range a.names.NamesMap {
 			a.names.Names = append(a.names.Names, name)
 		}

@@ -99,7 +99,7 @@ export function ModifyProject(arg1:app.ModifyData):Promise<void>;
 
 export function MonitorPage(arg1:number,arg2:number):Promise<types.MonitorContainer>;
 
-export function NamePage(arg1:number,arg2:number):Promise<types.NameContainer>;
+export function NamePage(arg1:number,arg2:number):Promise<types.NamesContainer>;
 
 export function Navigate(arg1:string,arg2:string):Promise<void>;
 

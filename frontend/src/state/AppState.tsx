@@ -28,7 +28,7 @@ interface AppStateProps {
   monitors: types.MonitorContainer;
   fetchMonitors: (currentItem: number, itemsPerPage: number) => void;
 
-  names: types.NameContainer;
+  names: types.NamesContainer;
   fetchNames: (currentItem: number, itemsPerPage: number) => void;
 
   abis: types.AbiContainer;
@@ -66,7 +66,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [project, setProject] = useState<types.ProjectContainer>({} as types.ProjectContainer);
   const [history, setHistory] = useState<types.HistoryContainer>({} as types.HistoryContainer);
   const [monitors, setMonitors] = useState<types.MonitorContainer>({} as types.MonitorContainer);
-  const [names, setNames] = useState<types.NameContainer>({} as types.NameContainer);
+  const [names, setNames] = useState<types.NamesContainer>({} as types.NamesContainer);
   const [abis, setAbis] = useState<types.AbiContainer>({} as types.AbiContainer);
   const [indexes, setIndexes] = useState<types.IndexContainer>({} as types.IndexContainer);
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
@@ -105,7 +105,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   const fetchNames = async (currentItem: number, itemsPerPage: number) => {
-    NamePage(currentItem, itemsPerPage).then((item: types.NameContainer) => {
+    NamePage(currentItem, itemsPerPage).then((item: types.NamesContainer) => {
       if (item) {
         setNames(item);
       }

@@ -13,7 +13,7 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-type NameContainer struct {
+type NamesContainer struct {
 	Names      []coreTypes.Name                `json:"names"`
 	SizeOnDisc int                             `json:"sizeOnDisc"`
 	NamesMap   map[base.Address]coreTypes.Name `json:"namesMap"`
@@ -30,9 +30,9 @@ type NameContainer struct {
 	Chain      string                          `json:"chain"`
 }
 
-func NewNameContainer(chain string, namesMap map[base.Address]coreTypes.Name) NameContainer {
+func NewNamesContainer(chain string, namesMap map[base.Address]coreTypes.Name) NamesContainer {
 	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(chain))
-	return NameContainer{
+	return NamesContainer{
 		Names:      make([]coreTypes.Name, 0),
 		NamesMap:   namesMap,
 		LastUpdate: latest,
@@ -40,12 +40,12 @@ func NewNameContainer(chain string, namesMap map[base.Address]coreTypes.Name) Na
 	}
 }
 
-func (a *NameContainer) String() string {
+func (a *NamesContainer) String() string {
 	bytes, _ := json.Marshal(a)
 	return string(bytes)
 }
 
-func (s *NameContainer) NeedsUpdate(force bool) bool {
+func (s *NamesContainer) NeedsUpdate(force bool) bool {
 	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(s.Chain))
 	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
@@ -54,8 +54,8 @@ func (s *NameContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
-func (s *NameContainer) ShallowCopy() Containerer {
-	return &NameContainer{
+func (s *NamesContainer) ShallowCopy() Containerer {
+	return &NamesContainer{
 		NItems:     s.NItems,
 		SizeOnDisc: s.SizeOnDisc,
 		NContracts: s.NContracts,
@@ -71,7 +71,7 @@ func (s *NameContainer) ShallowCopy() Containerer {
 	}
 }
 
-func (s *NameContainer) Summarize() {
+func (s *NamesContainer) Summarize() {
 	chain := "mainnet"
 	customPath := filepath.Join(config.MustGetPathToChainConfig(chain), string(names.DatabaseCustom))
 	s.SizeOnDisc = int(file.FileSize(customPath))
