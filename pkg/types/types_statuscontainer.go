@@ -17,10 +17,10 @@ type StatusContainer struct {
 	LastUpdate       time.Time `json:"lastUpdate"`
 }
 
-func NewStatusContainer(chain string, status coreTypes.Status) StatusContainer {
+func NewStatusContainer(chain string, status *coreTypes.Status) StatusContainer {
 	ret := StatusContainer{}
 	ret.Chain = chain
-	ret.Status = status
+	ret.Status = *status
 	// TODO: This is a hack. We need to get the version from the core
 	ret.Version = version.LibraryVersion
 	ret.Caches = status.Caches
