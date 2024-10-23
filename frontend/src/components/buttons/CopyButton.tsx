@@ -10,7 +10,5 @@ export const CopyButton = ({ value, onClose, ...props }: ButtonProps) => {
     notifyCopy(shortened(value as string));
   };
 
-  return (
-    <BaseButton {...props} tip="Copy to clipboard" onClick={handleClick} onClose={onClose} leftSection={<IconCopy />} />
-  );
+  return <BaseButton {...props} tip="Copy to clipboard" onClick={handleClick} onClose={onClose} icon={<IconCopy />} />;
 };

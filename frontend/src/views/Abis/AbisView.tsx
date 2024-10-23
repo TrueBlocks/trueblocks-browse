@@ -49,8 +49,8 @@ const createAbisForm = (table: Table<types.Abi>): FieldGroup<types.AbiContainer>
       label: "Buttons",
       buttons: [
         <AddButton key={"add"} value={"https://trueblocks.io"} />,
-        <PublishButton key={"publish"} value={"https://trueblocks.io"} />,
         <CleanButton key={"clean"} value={"https://trueblocks.io"} />,
+        <PublishButton key={"publish"} value={"https://trueblocks.io"} />,
       ],
     },
     {

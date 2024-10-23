@@ -64,8 +64,8 @@ const createNameForm = (table: any): FieldGroup<types.NamesContainer>[] => {
       label: "Buttons",
       buttons: [
         <AddButton key={"add"} value={"https://trueblocks.io"} />,
-        <PublishButton key={"publish"} value={"https://trueblocks.io"} />,
         <CleanButton key={"clean"} value={"https://trueblocks.io"} />,
+        <PublishButton key={"publish"} value={"https://trueblocks.io"} />,
       ],
     },
     {

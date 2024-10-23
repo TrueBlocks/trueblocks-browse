@@ -70,7 +70,6 @@ export const DaemonsView = () => {
     ToggleDaemon(name);
   };
 
-  const route = "daemons";
   const data: Nope = {
     toggleDaemon,
     scraper,
@@ -79,6 +78,7 @@ export const DaemonsView = () => {
     logMessages,
   };
 
+  const route = "daemons";
   return (
     <ViewStateProvider route={route} fetchFn={fetchNoop} modifyFn={modifyNoop}>
       <View>

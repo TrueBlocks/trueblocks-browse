@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Tabs } from "@mantine/core";
-import { FieldGroup, FormTable, PublishButton, SpecButton, View } from "@components";
+import { EditButton, FieldGroup, FormTable, PublishButton, SpecButton, View } from "@components";
 import { config as browseConfig, configtypes, messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import { ViewStateProvider, useAppState } from "@state";
@@ -112,13 +112,7 @@ const createConfigForm = (): FieldGroup<configtypes.Config>[] => {
   return [
     {
       label: "Buttons",
-      buttons: [
-        <PublishButton key="publish" value="https://trueblocks.io" />,
-        <SpecButton
-          key="spec"
-          value="https://trueblocks.io/papers/2023/specification-for-the-unchained-index-v2.0.0-release.pdf"
-        />,
-      ],
+      buttons: [<EditButton key="edit" value="https://trueblocks.io" />],
     },
     // {
     //   label: "Version Group",
