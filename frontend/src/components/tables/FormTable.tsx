@@ -21,12 +21,14 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
     return <></>;
   }
 
+  const style1 = { root: { marginBottom: "-50px", marginTop: "-45px" } };
+  const style2 = { root: { marginTop: "40px", backgroundColor: "white" } };
   return (
     <Container styles={{ root: { minWidth: "95%" } }}>
       <Accordion
         classNames={{ chevron: classes.chevron }}
         data-rotate={headerShows ? "true" : "false"}
-        styles={{ root: { marginBottom: "-20px", marginTop: "-15px" } }}
+        styles={style1}
         value={headerShows ? "header" : null}
         onChange={handleCollapse}
         chevron={<IconPlus className={classes.icon} />}
@@ -53,7 +55,7 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
-      <Grid>
+      <Grid styles={style2}>
         {nonCollapsableGroups.map((group, gIndex) => (
           <Grid.Col key={group.label + gIndex} span={group.colSpan ?? 12}>
             <Fieldset legend={group.label} bg="white" className={classes.fieldSet}>
