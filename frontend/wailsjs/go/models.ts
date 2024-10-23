@@ -1934,14 +1934,14 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class SettingsContainer {
+	export class SettingsGroup {
 	    config?: configtypes.Config;
 	    session?: config.Session;
 	    // Go type: time
 	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
-	        return new SettingsContainer(source);
+	        return new SettingsGroup(source);
 	    }
 	
 	    constructor(source: any = {}) {

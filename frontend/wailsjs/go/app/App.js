@@ -6,6 +6,10 @@ export function AbiPage(arg1, arg2) {
   return window['go']['app']['App']['AbiPage'](arg1, arg2);
 }
 
+export function AbisView(arg1) {
+  return window['go']['app']['App']['AbisView'](arg1);
+}
+
 export function AccordionToggle(arg1) {
   return window['go']['app']['App']['AccordionToggle'](arg1);
 }
@@ -24,6 +28,10 @@ export function CancelContext(arg1) {
 
 export function ConvertToAddress(arg1) {
   return window['go']['app']['App']['ConvertToAddress'](arg1);
+}
+
+export function DaemonsView(arg1) {
+  return window['go']['app']['App']['DaemonsView'](arg1);
 }
 
 export function ExportAddress(arg1) {
@@ -134,8 +142,16 @@ export function HistoryPage(arg1, arg2, arg3) {
   return window['go']['app']['App']['HistoryPage'](arg1, arg2, arg3);
 }
 
+export function HistoryView(arg1) {
+  return window['go']['app']['App']['HistoryView'](arg1);
+}
+
 export function IndexPage(arg1, arg2) {
   return window['go']['app']['App']['IndexPage'](arg1, arg2);
+}
+
+export function IndexesView(arg1) {
+  return window['go']['app']['App']['IndexesView'](arg1);
 }
 
 export function IsConfigured() {
@@ -152,6 +168,10 @@ export function LoadName(arg1) {
 
 export function ManifestPage(arg1, arg2) {
   return window['go']['app']['App']['ManifestPage'](arg1, arg2);
+}
+
+export function ManifestsView(arg1) {
+  return window['go']['app']['App']['ManifestsView'](arg1);
 }
 
 export function MenuToggle(arg1) {
@@ -178,8 +198,16 @@ export function MonitorPage(arg1, arg2) {
   return window['go']['app']['App']['MonitorPage'](arg1, arg2);
 }
 
+export function MonitorsView(arg1) {
+  return window['go']['app']['App']['MonitorsView'](arg1);
+}
+
 export function NamePage(arg1, arg2) {
   return window['go']['app']['App']['NamePage'](arg1, arg2);
+}
+
+export function NamesView(arg1) {
+  return window['go']['app']['App']['NamesView'](arg1);
 }
 
 export function Navigate(arg1, arg2) {
@@ -188,6 +216,10 @@ export function Navigate(arg1, arg2) {
 
 export function ProjectPage(arg1, arg2) {
   return window['go']['app']['App']['ProjectPage'](arg1, arg2);
+}
+
+export function ProjectView(arg1) {
+  return window['go']['app']['App']['ProjectView'](arg1);
 }
 
 export function Refresh() {
@@ -226,8 +258,16 @@ export function SettingsPage(arg1, arg2) {
   return window['go']['app']['App']['SettingsPage'](arg1, arg2);
 }
 
+export function SettingsView(arg1) {
+  return window['go']['app']['App']['SettingsView'](arg1);
+}
+
 export function StatusPage(arg1, arg2) {
   return window['go']['app']['App']['StatusPage'](arg1, arg2);
+}
+
+export function StatusView(arg1) {
+  return window['go']['app']['App']['StatusView'](arg1);
 }
 
 export function StepWizard(arg1) {
@@ -258,46 +298,6 @@ export function ToggleDaemon(arg1) {
   return window['go']['app']['App']['ToggleDaemon'](arg1);
 }
 
-export function ViewAbis(arg1) {
-  return window['go']['app']['App']['ViewAbis'](arg1);
-}
-
-export function ViewDaemons(arg1) {
-  return window['go']['app']['App']['ViewDaemons'](arg1);
-}
-
-export function ViewHistory(arg1) {
-  return window['go']['app']['App']['ViewHistory'](arg1);
-}
-
-export function ViewIndexes(arg1) {
-  return window['go']['app']['App']['ViewIndexes'](arg1);
-}
-
-export function ViewManifest(arg1) {
-  return window['go']['app']['App']['ViewManifest'](arg1);
-}
-
-export function ViewMonitors(arg1) {
-  return window['go']['app']['App']['ViewMonitors'](arg1);
-}
-
-export function ViewNames(arg1) {
-  return window['go']['app']['App']['ViewNames'](arg1);
-}
-
-export function ViewProject(arg1) {
-  return window['go']['app']['App']['ViewProject'](arg1);
-}
-
-export function ViewSettings(arg1) {
-  return window['go']['app']['App']['ViewSettings'](arg1);
-}
-
-export function ViewStatus(arg1) {
-  return window['go']['app']['App']['ViewStatus'](arg1);
-}
-
-export function ViewWizard(arg1) {
-  return window['go']['app']['App']['ViewWizard'](arg1);
+export function WizardView(arg1) {
+  return window['go']['app']['App']['WizardView'](arg1);
 }

@@ -10,15 +10,15 @@ import (
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 )
 
-type SettingsContainer struct {
+type SettingsGroup struct {
 	Config     *configTypes.Config `json:"config"`
 	Session    *config.Session     `json:"session"`
 	LastUpdate time.Time           `json:"lastUpdate"`
 }
 
-func NewSettingsContainer(cfg *configTypes.Config, session *config.Session) SettingsContainer {
+func NewSettingsGroup(cfg *configTypes.Config, session *config.Session) SettingsGroup {
 	latest := getLatestFileTime()
-	ret := SettingsContainer{
+	ret := SettingsGroup{
 		Config:  cfg,
 		Session: session,
 	}
@@ -26,12 +26,12 @@ func NewSettingsContainer(cfg *configTypes.Config, session *config.Session) Sett
 	return ret
 }
 
-func (s *SettingsContainer) String() string {
+func (s *SettingsGroup) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-func (s *SettingsContainer) NeedsUpdate(force bool) bool {
+func (s *SettingsGroup) NeedsUpdate(force bool) bool {
 	latest := getLatestFileTime()
 	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
@@ -40,8 +40,8 @@ func (s *SettingsContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
-func (s *SettingsContainer) ShallowCopy() Containerer {
-	ret := &SettingsContainer{
+func (s *SettingsGroup) ShallowCopy() Containerer {
+	ret := &SettingsGroup{
 		Config:     s.Config,
 		Session:    s.Session,
 		LastUpdate: s.LastUpdate,
@@ -49,7 +49,7 @@ func (s *SettingsContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *SettingsContainer) Summarize() {
+func (s *SettingsGroup) Summarize() {
 	// logger.Info("Version:", s.Config.Version.String())
 	// logger.Info("Settings:", s.Config.Settings.String())
 	// for _, key := range s.Config.Keys {

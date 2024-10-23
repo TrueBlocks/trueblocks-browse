@@ -13,6 +13,8 @@ import {output} from '../models';
 
 export function AbiPage(arg1:number,arg2:number):Promise<types.AbiContainer>;
 
+export function AbisView(arg1:menu.CallbackData):Promise<void>;
+
 export function AccordionToggle(arg1:menu.CallbackData):Promise<void>;
 
 export function AddrToName(arg1:base.Address):Promise<string>;
@@ -22,6 +24,8 @@ export function CancelAllContexts():Promise<void>;
 export function CancelContext(arg1:base.Address):Promise<void>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
+
+export function DaemonsView(arg1:menu.CallbackData):Promise<void>;
 
 export function ExportAddress(arg1:base.Address):Promise<void>;
 
@@ -77,7 +81,11 @@ export function HelpToggle(arg1:menu.CallbackData):Promise<void>;
 
 export function HistoryPage(arg1:string,arg2:number,arg3:number):Promise<types.HistoryContainer>;
 
+export function HistoryView(arg1:menu.CallbackData):Promise<void>;
+
 export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>;
+
+export function IndexesView(arg1:menu.CallbackData):Promise<void>;
 
 export function IsConfigured():Promise<boolean>;
 
@@ -86,6 +94,8 @@ export function IsShowing(arg1:string):Promise<boolean>;
 export function LoadName(arg1:string):Promise<editors.Name>;
 
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
+
+export function ManifestsView(arg1:menu.CallbackData):Promise<void>;
 
 export function MenuToggle(arg1:menu.CallbackData):Promise<void>;
 
@@ -99,11 +109,17 @@ export function ModifyProject(arg1:app.ModifyData):Promise<void>;
 
 export function MonitorPage(arg1:number,arg2:number):Promise<types.MonitorContainer>;
 
+export function MonitorsView(arg1:menu.CallbackData):Promise<void>;
+
 export function NamePage(arg1:number,arg2:number):Promise<types.NamesContainer>;
+
+export function NamesView(arg1:menu.CallbackData):Promise<void>;
 
 export function Navigate(arg1:string,arg2:string):Promise<void>;
 
 export function ProjectPage(arg1:number,arg2:number):Promise<types.ProjectContainer>;
+
+export function ProjectView(arg1:menu.CallbackData):Promise<void>;
 
 export function Refresh():Promise<void>;
 
@@ -121,9 +137,13 @@ export function SetRoute(arg1:string,arg2:string):Promise<void>;
 
 export function SetShowing(arg1:string,arg2:boolean):Promise<void>;
 
-export function SettingsPage(arg1:number,arg2:number):Promise<types.SettingsContainer>;
+export function SettingsPage(arg1:number,arg2:number):Promise<types.SettingsGroup>;
+
+export function SettingsView(arg1:menu.CallbackData):Promise<void>;
 
 export function StatusPage(arg1:number,arg2:number):Promise<types.StatusContainer>;
+
+export function StatusView(arg1:menu.CallbackData):Promise<void>;
 
 export function StepWizard(arg1:wizard.Step):Promise<wizard.State>;
 
@@ -139,24 +159,4 @@ export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
 
 export function ToggleDaemon(arg1:string):Promise<void>;
 
-export function ViewAbis(arg1:menu.CallbackData):Promise<void>;
-
-export function ViewDaemons(arg1:menu.CallbackData):Promise<void>;
-
-export function ViewHistory(arg1:menu.CallbackData):Promise<void>;
-
-export function ViewIndexes(arg1:menu.CallbackData):Promise<void>;
-
-export function ViewManifest(arg1:menu.CallbackData):Promise<void>;
-
-export function ViewMonitors(arg1:menu.CallbackData):Promise<void>;
-
-export function ViewNames(arg1:menu.CallbackData):Promise<void>;
-
-export function ViewProject(arg1:menu.CallbackData):Promise<void>;
-
-export function ViewSettings(arg1:menu.CallbackData):Promise<void>;
-
-export function ViewStatus(arg1:menu.CallbackData):Promise<void>;
-
-export function ViewWizard(arg1:menu.CallbackData):Promise<void>;
+export function WizardView(arg1:menu.CallbackData):Promise<void>;

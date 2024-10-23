@@ -38,7 +38,7 @@ type App struct {
 	manifest types.ManifestContainer
 	monitors types.MonitorContainer
 	names    types.NamesContainer
-	settings types.SettingsContainer
+	settings types.SettingsGroup
 
 	status types.StatusContainer
 
