@@ -37,7 +37,7 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const ignoreEnter = (_unused: Page) => {};
-  const pager = useKeyboardPaging(route, nItems, lines, onEnter ? onEnter : ignoreEnter);
+  const pager = useKeyboardPaging(nItems, lines, onEnter ? onEnter : ignoreEnter);
 
   const handleCollapse = (newState: string | null) => {
     const isShowing = newState === "header";
