@@ -8,19 +8,22 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 type SettingsGroup struct {
-	Config     *configTypes.Config `json:"config"`
-	Session    *config.Session     `json:"session"`
-	LastUpdate time.Time           `json:"lastUpdate"`
+	Status     StatusContainer  `json:"status"`
+	Config     ConfigContainer  `json:"config"`
+	Session    SessionContainer `json:"session"`
+	LastUpdate time.Time        `json:"lastUpdate"`
 }
 
-func NewSettingsGroup(cfg *configTypes.Config, session *config.Session) SettingsGroup {
+func NewSettingsGroup(status *coreTypes.Status, cfg *configTypes.Config, session *config.Session) SettingsGroup {
 	latest := getLatestFileTime()
 	ret := SettingsGroup{
-		Config:  cfg,
-		Session: session,
+		Status:  NewStatusContainer(status.Chain, status),
+		Config:  NewConfigContainer(cfg),
+		Session: NewSessionContainer(session),
 	}
 	ret.LastUpdate = latest
 	return ret
@@ -32,39 +35,35 @@ func (s *SettingsGroup) String() string {
 }
 
 func (s *SettingsGroup) NeedsUpdate(force bool) bool {
-	latest := getLatestFileTime()
-	if force || latest != s.LastUpdate {
-		s.LastUpdate = latest
-		return true
-	}
-	return false
+	return s.Session.NeedsUpdate(force) ||
+		s.Config.NeedsUpdate(force) ||
+		s.Status.NeedsUpdate(force)
 }
 
 func (s *SettingsGroup) ShallowCopy() Containerer {
+	statusCopy := s.Status.ShallowCopy().(*StatusContainer)
+	configCopy := s.Config.ShallowCopy().(*ConfigContainer)
+	sessionCopy := s.Session.ShallowCopy().(*SessionContainer)
 	ret := &SettingsGroup{
-		Config:     s.Config,
-		Session:    s.Session,
+		Status:     *statusCopy,
+		Config:     *configCopy,
+		Session:    *sessionCopy,
 		LastUpdate: s.LastUpdate,
 	}
 	return ret
 }
 
 func (s *SettingsGroup) Summarize() {
-	// logger.Info("Version:", s.Config.Version.String())
-	// logger.Info("Settings:", s.Config.Settings.String())
-	// for _, key := range s.Config.Keys {
-	// 	logger.Info("Keys:", key.String())
-	// }
-	// logger.Info("Pinning:", s.Config.Pinning.String())
-	// logger.Info("Unchained:", s.Config.Unchained.String())
-	// for _, chain := range s.Config.Chains {
-	// 	logger.Info("Chains:", chain.String())
-	// }
+	s.Status.Summarize()
+	s.Config.Summarize()
+	// s.Session.Summarize()
 	// logger.Info("Session:", s.Session.String())
 }
 
 func getLatestFileTime() time.Time {
+	configFn := coreConfig.PathToRootConfig()
 	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
-	folders := []string{coreConfig.PathToRootConfig(), sessionFn}
-	return utils.MustGetLatestFileTime(folders...)
+	folders := []string{configFn, sessionFn}
+	ret := utils.MustGetLatestFileTime(folders...)
+	return ret
 }
