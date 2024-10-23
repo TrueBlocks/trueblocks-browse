@@ -37,7 +37,9 @@ func (a *App) Refresh() error {
 	// We always load names first since we need them everywhere
 	err := a.loadNames(nil, nil)
 	if err != nil {
-		messages.EmitError(a.ctx, err)
+		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+			String1: err.Error(),
+		})
 	}
 
 	// And then update everything else in the fullness of time
@@ -69,11 +71,17 @@ func (a *App) Refresh() error {
 	if len(errors) > 0 {
 		// Handle errors, e.g., wait 1/2 second between each error message
 		for _, err := range errors {
-			messages.EmitError(a.ctx, err)
+			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+				String1: err.Error(),
+			})
 			time.Sleep(500 * time.Millisecond)
 		}
 	} else {
-		messages.EmitDaemon(a.ctx, a.FreshenController.Name, "Freshening...", a.FreshenController.Color)
+		messages.EmitMessage(a.ctx, messages.Daemon, &messages.MessageMsg{
+			Name:    a.FreshenController.Name,
+			String1: "Freshening...",
+			String2: a.FreshenController.Color,
+		})
 	}
 	return nil
 }

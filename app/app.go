@@ -86,10 +86,14 @@ func (a *App) DomReady(ctx context.Context) {
 	runtime.WindowShow(a.ctx)
 
 	if path, err := utils.GetConfigFn("", "trueBlocks.toml"); err != nil {
-		messages.EmitError(a.ctx, err)
+		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+			String1: err.Error(),
+		})
 	} else {
 		if err := coreConfig.ReadToml(path, &a.cfg); err != nil {
-			messages.EmitError(a.ctx, err)
+			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+				String1: err.Error(),
+			})
 		}
 	}
 }

@@ -60,7 +60,10 @@ func (a *App) ExportAddress(address base.Address) {
 	})
 
 	if !completed {
-		messages.EmitError(a.ctx, fmt.Errorf("export interrupted for address: %s", address.Hex()))
+		err := fmt.Errorf("export interrupted for address: %s", address.Hex())
+		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+			String1: err.Error(),
+		})
 		return
 	}
 

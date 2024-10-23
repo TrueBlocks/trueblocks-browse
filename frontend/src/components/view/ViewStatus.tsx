@@ -10,8 +10,8 @@ export const ViewStatus = () => {
   const [color, setColor] = useState<string>("green");
 
   useEffect(() => {
-    const handleDocument = (msg: messages.DocumentMsg) => {
-      setStatusMessage(`${msg.msg2} ${msg.msg1}`);
+    const handleDocument = (msg: messages.MessageMsg) => {
+      setStatusMessage(`${msg.string2} ${msg.string1}`);
       setColor("green");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -21,13 +21,13 @@ export const ViewStatus = () => {
       }, 2000);
     };
 
-    const handleProgress = (msg: messages.ProgressMsg) => {
-      setStatusMessage(`Progress (${msg.address}): ${msg.int1}/${msg.int2}`);
+    const handleProgress = (msg: messages.MessageMsg) => {
+      setStatusMessage(`Progress (${msg.address}): ${msg.num1}/${msg.num2}`);
       setColor("green");
     };
 
-    const handleCompleted = (msg: messages.ProgressMsg) => {
-      setStatusMessage(`Completed (${msg.address}): ${msg.int1}/${msg.int2}`);
+    const handleCompleted = (msg: messages.MessageMsg) => {
+      setStatusMessage(`Completed (${msg.address}): ${msg.num1}/${msg.num2}`);
       setColor("green");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -37,7 +37,7 @@ export const ViewStatus = () => {
       }, 2000);
     };
 
-    const handleCancel = (msg: messages.MessageMsg) => {
+    const handleCancelled = (msg: messages.MessageMsg) => {
       setStatusMessage(`Canceled (${msg.address})`);
       setColor("green");
       if (timeoutRef.current) {
@@ -48,18 +48,18 @@ export const ViewStatus = () => {
       }, 2000);
     };
 
-    const handleWarning = (msg: messages.ErrorMsg) => {
-      setStatusMessage(`Warning: ${msg.msg1} ${msg.address}`);
+    const handleWarning = (msg: messages.MessageMsg) => {
+      setStatusMessage(`Warning: ${msg.string1} ${msg.address}`);
       setColor("yellow");
     };
 
-    const handleError = (msg: messages.ErrorMsg) => {
-      setStatusMessage(`Error: ${msg.msg1} ${msg.address}`);
+    const handleError = (msg: messages.MessageMsg) => {
+      setStatusMessage(`Error: ${msg.string1} ${msg.address}`);
       setColor("red");
     };
 
-    const handleInfo = (msg: messages.InfoMsg) => {
-      setStatusMessage(`Info [${new Date().toLocaleString()}]: ${msg.msg1}`);
+    const handleInfo = (msg: messages.MessageMsg) => {
+      setStatusMessage(`Info [${new Date().toLocaleString()}]: ${msg.string1}`);
       setColor("blue");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -70,7 +70,7 @@ export const ViewStatus = () => {
     };
 
     const { Message } = messages;
-    EventsOn(Message.CANCELLED, handleCancel);
+    EventsOn(Message.CANCELLED, handleCancelled);
     EventsOn(Message.COMPLETED, handleCompleted);
     EventsOn(Message.DOCUMENT, handleDocument);
     EventsOn(Message.ERROR, handleError);

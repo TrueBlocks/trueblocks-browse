@@ -9,10 +9,10 @@ type MessageMsg struct {
 	Name    string       `json:"name"`
 	Address base.Address `json:"address"`
 	State   wizard.State `json:"state"`
-	Int1    int          `json:"int1"`
-	Int2    int          `json:"int2"`
-	Msg1    string       `json:"msg1"`
-	Msg2    string       `json:"msg2"`
+	Num1    int          `json:"num1"`
+	Num2    int          `json:"num2"`
+	String1 string       `json:"string1"`
+	String2 string       `json:"string2"`
 }
 
 func (m *MessageMsg) Instance() MessageMsg {

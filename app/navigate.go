@@ -17,5 +17,7 @@ func (a *App) Navigate(route, subRoute string) {
 	a.SetRoute(route, subRoute)
 
 	debugMsg("Message sent", route, subRoute)
-	messages.EmitNavigate(a.ctx, route+sep+subRoute)
+	messages.EmitMessage(a.ctx, messages.Navigate, &messages.MessageMsg{
+		String1: route + sep + subRoute,
+	})
 }

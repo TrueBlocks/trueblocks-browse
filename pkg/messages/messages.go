@@ -45,19 +45,6 @@ var AllMessages = []struct {
 	{Wizard, "WIZARD"},
 }
 
-type MessageData interface {
-	MessageMsg |
-		DaemonMsg |
-		DocumentMsg |
-		ErrorMsg |
-		InfoMsg |
-		SwitchTabMsg |
-		NavigateMsg |
-		ProgressMsg |
-		ToggleMsg |
-		WizardMsg
-}
-
-func emitMsg[T MessageData](ctx context.Context, msg Message, data *T) {
+func EmitMessage(ctx context.Context, msg Message, data *MessageMsg) {
 	runtime.EventsEmit(ctx, string(msg), data)
 }

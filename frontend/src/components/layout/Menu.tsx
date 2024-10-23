@@ -24,9 +24,9 @@ export const Menu = () => {
   }, []);
 
   useEffect(() => {
-    const handleNavigation = (msg: messages.NavigateMsg) => {
-      setLocation(msg.msg1);
-      setActiveRoute(msg.msg1);
+    const handleNavigation = (msg: messages.MessageMsg) => {
+      setLocation(msg.string1);
+      setActiveRoute(msg.string1);
     };
 
     const { Message } = messages;

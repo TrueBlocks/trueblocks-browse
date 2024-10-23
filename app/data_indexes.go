@@ -61,10 +61,12 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.index = types.NewIndexContainer(chain, chunks)
 		if err := sdk.SortChunkStats(a.index.Items, a.index.Sorts); err != nil {
-			messages.EmitError(a.ctx, err)
+			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+				String1: err.Error(),
+			})
 		}
 		a.index.Summarize()
-		messages.EmitInfo(a.ctx, "Loaded indexes")
+		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded indexes"})
 	}
 	return nil
 }

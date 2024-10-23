@@ -18,7 +18,9 @@ func (a *App) StepWizard(step wizard.Step) wizard.State {
 		if a.IsConfigured() {
 			a.Navigate("/", "")
 		}
-		messages.EmitWizard(a.ctx, a.session.Wizard.State)
+		messages.EmitMessage(a.ctx, messages.Wizard, &messages.MessageMsg{
+			State: a.session.Wizard.State,
+		})
 	}()
 
 	a.session.Wizard.Step(step)
