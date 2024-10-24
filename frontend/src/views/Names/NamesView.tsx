@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, FieldGroup, CleanButton, PublishButton, AddButton } from "@components";
 import { GoToHistory, ModifyName } from "@gocode/app/App";
@@ -21,6 +22,10 @@ export const NamesView = () => {
   });
 
   const route = "names";
+  const tabs = ["names"];
+  const forms: Record<string, ReactNode> = {
+    names: <FormTable data={names} groups={createNameForm(table)} />,
+  };
   return (
     <ViewStateProvider
       route={route}
@@ -29,9 +34,7 @@ export const NamesView = () => {
       onEnter={handleEnter}
       modifyFn={ModifyName}
     >
-      <View>
-        <FormTable data={names} groups={createNameForm(table)} />
-      </View>
+      <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
 };

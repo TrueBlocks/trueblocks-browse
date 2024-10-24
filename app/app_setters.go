@@ -27,10 +27,11 @@ func (a *App) SetChain(chain string, address base.Address) {
 	a.session.Chain = chain
 	a.saveSession()
 	a.Reload(address)
+	a.monitors = types.MonitorContainer{}
+	a.names = types.NamesContainer{}
 	a.abis = types.AbiContainer{}
 	a.index = types.IndexContainer{}
 	a.manifest = types.ManifestContainer{}
-	a.monitors = types.MonitorContainer{}
 	a.status = types.StatusContainer{}
 	a.settings = types.SettingsGroup{}
 	_ = a.Refresh()

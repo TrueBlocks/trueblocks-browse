@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, FieldGroup, SpecButton, PublishButton } from "@components";
 import { types } from "@gocode/models";
@@ -16,11 +17,13 @@ export const ManifestsView = () => {
   });
 
   const route = "manifests";
+  const tabs = ["manifests"];
+  const forms: Record<string, ReactNode> = {
+    manifests: <FormTable data={manifests} groups={createManifestForm(table)} />,
+  };
   return (
     <ViewStateProvider route={route} nItems={manifests.nItems} fetchFn={fetchManifests} modifyFn={modifyNoop}>
-      <View>
-        <FormTable data={manifests} groups={createManifestForm(table)} />
-      </View>
+      <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
 };

@@ -1,6 +1,6 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useState, useEffect, Dispatch, SetStateAction, ReactNode } from "react";
 import { SimpleGrid, Stack, Box } from "@mantine/core";
-import { FieldGroup, FieldsetWrapper, FormTable, View } from "@components";
+import { FieldGroup, FieldsetWrapper, FormTable, PinButton, View } from "@components";
 import { GetDaemon, ToggleDaemon } from "@gocode/app/App";
 import { daemons, messages } from "@gocode/models";
 import { useNoops } from "@hooks";
@@ -79,11 +79,14 @@ export const DaemonsView = () => {
   };
 
   const route = "daemons";
+  const tabs = ["daemons"];
+  const forms: Record<string, ReactNode> = {
+    daemons: <FormTable data={data} groups={createDaemonForm(data)} />,
+  };
+
   return (
     <ViewStateProvider route={route} fetchFn={fetchNoop} modifyFn={modifyNoop}>
-      <View>
-        <FormTable data={data} groups={createDaemonForm(data)} />
-      </View>
+      <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
 };
@@ -106,6 +109,10 @@ const createDaemonForm = (data: Nope): FieldGroup<Nope>[] => {
           </FieldsetWrapper>
         </Stack>,
       ],
+    },
+    {
+      label: "Buttons",
+      buttons: [<PinButton key={"pin"} value="https://trueblocks.io" />],
     },
   ];
 };

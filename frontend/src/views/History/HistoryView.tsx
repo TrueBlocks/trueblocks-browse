@@ -1,14 +1,15 @@
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { useParams } from "wouter";
 import { ExploreButton, ExportButton, View, FormTable, DataTable, FieldGroup, GoogleButton } from "@components";
 import { types, base } from "@gocode/models";
-import { useNoops } from "@hooks";
+import { useNoops, useUtils } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { tableColumns } from "./HistoryTable";
 
 export const HistoryView = () => {
   const { modifyNoop } = useNoops();
+  const { ShortenAddr } = useUtils();
   const { setAddress, history, fetchHistory } = useAppState();
 
   const address = useParams().address as unknown as base.Address;
@@ -23,11 +24,14 @@ export const HistoryView = () => {
   });
 
   const route = "history";
+  const addrStr = ShortenAddr(address.toString());
+  const tabs = [addrStr];
+  const forms: Record<string, ReactNode> = {
+    [addrStr]: <FormTable data={history} groups={createHistoryForm(address, table)} />,
+  };
   return (
     <ViewStateProvider route={route} nItems={history.nItems} fetchFn={fetchHistory} modifyFn={modifyNoop}>
-      <View>
-        <FormTable data={history} groups={createHistoryForm(address, table)} />
-      </View>
+      <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
 };

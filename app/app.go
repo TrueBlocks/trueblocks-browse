@@ -33,14 +33,13 @@ type App struct {
 
 	// Containers
 	project  types.ProjectContainer
+	monitors types.MonitorContainer
+	names    types.NamesContainer
 	abis     types.AbiContainer
 	index    types.IndexContainer
 	manifest types.ManifestContainer
-	monitors types.MonitorContainer
-	names    types.NamesContainer
+	status   types.StatusContainer
 	settings types.SettingsGroup
-
-	status types.StatusContainer
 
 	// Controllers
 	ScraperController *daemons.DaemonScraper

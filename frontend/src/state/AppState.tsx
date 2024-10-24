@@ -73,7 +73,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
   const [settings, setSettings] = useState<types.SettingsGroup>({} as types.SettingsGroup);
   // TODO BOGUS: The daemon state should be in the AppState
-  // TODO BOGUS: The settings state should be in the AppState
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
   const [chain, setChain] = useState<string>("mainnet");

@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { DataTable, FormTable, FieldGroup, View, SpecButton, PinButton } from "@components";
 import { types } from "@gocode/models";
@@ -16,11 +17,13 @@ export const IndexesView = () => {
   });
 
   const route = "indexes";
+  const tabs = ["indexes"];
+  const forms: Record<string, ReactNode> = {
+    indexes: <FormTable data={indexes} groups={createIndexForm(table)} />,
+  };
   return (
     <ViewStateProvider route={route} nItems={indexes.nItems} fetchFn={fetchIndexes} modifyFn={modifyNoop}>
-      <View>
-        <FormTable data={indexes} groups={createIndexForm(table)} />
-      </View>
+      <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
 };
