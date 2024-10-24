@@ -1,88 +1,57 @@
-import { useEffect, useState } from "react";
-import { Tabs } from "@mantine/core";
-import { EditButton, FieldGroup, FormTable, PublishButton, SpecButton, View } from "@components";
-import { config as browseConfig, configtypes, messages } from "@gocode/models";
-import { EventsOn, EventsOff } from "@runtime";
+import { ReactNode } from "react";
+import { Stack, Group } from "@mantine/core";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { CleanButton, DataTable, EditButton, FieldGroup, FormTable, View } from "@components";
+import { configtypes, types } from "@gocode/models";
+import { useNoops } from "@hooks";
 import { ViewStateProvider, useAppState } from "@state";
-import { useNoops } from "../../hooks";
-import classes from "./SettingsView.module.css";
+import { tableColumns } from "./StatusTable";
 
 export const SettingsView = () => {
   const { modifyNoop } = useNoops();
   const { settings, fetchSettings } = useAppState();
-  const [activeTab, setActiveTab] = useState("session");
 
-  useEffect(() => {
-    const tabs = ["session", "config"];
-    const handleSwitchTab = (msg: messages.MessageMsg) => {
-      const { string1 } = msg;
-      switch (string1) {
-        case "prev":
-          setActiveTab((prevTab) => {
-            const currentIndex = tabs.indexOf(prevTab);
-            return currentIndex > 0 ? tabs[currentIndex - 1] : tabs[tabs.length - 1];
-          });
-          break;
-        case "next":
-          setActiveTab((prevTab) => {
-            const currentIndex = tabs.indexOf(prevTab);
-            return currentIndex < tabs.length - 1 ? tabs[currentIndex + 1] : tabs[0];
-          });
-          break;
-        default:
-          break;
-      }
-    };
+  const status = settings.status ?? types.StatusContainer.createFrom({});
+  const config = settings.config ?? types.ConfigContainer.createFrom({});
+  const session = settings.session ?? types.SessionContainer.createFrom({});
 
-    const { Message } = messages;
-    EventsOn(Message.SWITCHTAB, handleSwitchTab);
-    return () => {
-      EventsOff(Message.SWITCHTAB);
-    };
-  }, []);
+  const table = useReactTable({
+    data: status.caches || [],
+    columns: tableColumns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  const route = "settings";
+  const tabs = ["config", "status", "session"];
+  const forms: Record<string, ReactNode> = {
+    status: <FormTable data={status} groups={createStatusForm(table)} />,
+    config: <FormTable data={config} groups={createConfigForm(config)} />,
+    session: <FormTable data={session} groups={createSessionForm()} />,
+  };
 
   if (!settings) {
     return <div>Loading...</div>;
   }
 
-  const session = settings.session ?? browseConfig.Session.createFrom({});
-  const config = settings.config ?? configtypes.Config.createFrom({});
-
-  const route = "settings";
   return (
     <ViewStateProvider route={route} fetchFn={fetchSettings} modifyFn={modifyNoop}>
-      <View>
-        <Tabs
-          value={activeTab}
-          onChange={(value) => {
-            if (value !== null) {
-              setActiveTab(value);
-            }
-          }}
-        >
-          <Tabs.List>
-            <Tabs.Tab className={classes.tab} value="session">
-              Session
-            </Tabs.Tab>
-            <Tabs.Tab className={classes.tab} value="config">
-              Config
-            </Tabs.Tab>
-          </Tabs.List>
-
-          <Tabs.Panel value="session">
-            <FormTable data={session} groups={createSessionForm()} />
-          </Tabs.Panel>
-
-          <Tabs.Panel value="config">
-            <FormTable data={config} groups={createConfigForm()} />
-          </Tabs.Panel>
-        </Tabs>
-      </View>
+      <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
 };
 
-const createSessionForm = (): FieldGroup<browseConfig.Session>[] => {
+const createSessionForm = (): FieldGroup<types.SessionContainer>[] => {
+  /*
+	    chain: string;
+	    lastFile: string;
+	    lastRoute: string;
+	    lastSub: {[key: string]: string};
+	    window: config.Window;
+	    wizard: wizard.Wizard;
+	    toggles: config.Toggles;
+	    // Go type: time
+	    lastUpdate: any;
+   */
   return [
     {
       label: "Session Data 1",
@@ -98,6 +67,7 @@ const createSessionForm = (): FieldGroup<browseConfig.Session>[] => {
       colSpan: 6,
       collapsable: false,
       fields: [
+        { label: "lastRoute", type: "text", accessor: "lastRoute" },
         // { label: "lastSub", type: "text", accessor: "lastSub" },
         // { label: "window", type: "text", accessor: "window" },
         // { label: "daemons", type: "text", accessor: "lastRoute" },
@@ -105,11 +75,33 @@ const createSessionForm = (): FieldGroup<browseConfig.Session>[] => {
         // { label: "toggles", type: "text", accessor: "lastRoute" },
       ],
     },
+    {
+      label: "Buttons",
+      buttons: [
+        <EditButton key="edit" value="https://trueblocks.io" />,
+        <EditButton key="edit" value="https://trueblocks.io" />,
+      ],
+    },
   ];
 };
 
-const createConfigForm = (): FieldGroup<configtypes.Config>[] => {
+const createConfigForm = (config: types.ConfigContainer): FieldGroup<types.ConfigContainer>[] => {
+  /*
+  	    version: configtypes.VersionGroup;
+	    settings: configtypes.SettingsGroup;
+	    keys: {[key: string]: configtypes.KeyGroup};
+	    pinning: configtypes.PinningGroup;
+	    unchained: configtypes.UnchainedGroup;
+	    chains: {[key: string]: configtypes.ChainGroup};
+	    // Go type: time
+	    lastUpdate: any;
+ */
+  // const vg = <VG key={"version"} version={config.version} />;
   return [
+    {
+      label: "Version",
+      components: [<VG key={"version"} version={config.version} />, <SG key={"settings"} settings={config.settings} />],
+    },
     {
       label: "Buttons",
       buttons: [<EditButton key="edit" value="https://trueblocks.io" />],
@@ -119,5 +111,99 @@ const createConfigForm = (): FieldGroup<configtypes.Config>[] => {
     //   colSpan: 12, // Full width since it's the only field
     //   components: [<div key={"1"}>Hello world</div>],
     // },
+  ];
+};
+
+type ConfigProps = {
+  version?: configtypes.VersionGroup;
+  settings?: configtypes.SettingsGroup;
+};
+
+const VG = ({ version }: ConfigProps) => {
+  return (
+    <Stack>
+      <Group>
+        <div>current:</div>
+        <div>{version?.current}</div>
+      </Group>
+    </Stack>
+  );
+};
+
+const SG = ({ settings }: ConfigProps) => {
+  return (
+    <Stack>
+      <Group>
+        <div>cachePath:</div>
+        <div>{settings?.cachePath}</div>
+      </Group>
+      <Group>
+        <div>indexPath:</div>
+        <div>{settings?.indexPath}</div>
+      </Group>
+      <Group>
+        <div>defaultChain:</div>
+        <div>{settings?.defaultChain}</div>
+      </Group>
+      <Group>
+        <div>defaultGateway:</div>
+        <div>{settings?.defaultGateway}</div>
+      </Group>
+    </Stack>
+  );
+};
+
+const createStatusForm = (table: any): FieldGroup<types.StatusContainer>[] => {
+  return [
+    {
+      label: "System Data",
+      colSpan: 7,
+      fields: [
+        { label: "trueblocks", type: "text", accessor: "version" },
+        { label: "client", type: "text", accessor: "clientVersion" },
+        { label: "isArchive", type: "boolean", accessor: "isArchive" },
+        { label: "isTracing", type: "boolean", accessor: "isTracing" },
+      ],
+    },
+    {
+      label: "API Keys",
+      colSpan: 5,
+      fields: [
+        { label: "hasEsKey", type: "boolean", accessor: "hasEsKey" },
+        { label: "hasPinKey", type: "boolean", accessor: "hasPinKey" },
+        { label: "rpcProvider", type: "url", accessor: "rpcProvider" },
+      ],
+    },
+    {
+      label: "Configuration Paths",
+      colSpan: 7,
+      fields: [
+        { label: "rootConfig", type: "path", accessor: "rootConfig" },
+        { label: "chainConfig", type: "path", accessor: "chainConfig" },
+        { label: "indexPath", type: "path", accessor: "indexPath" },
+        { label: "cachePath", type: "path", accessor: "cachePath" },
+      ],
+    },
+    {
+      label: "Statistics",
+      colSpan: 5,
+      fields: [
+        { label: "lastUpdate", type: "date", accessor: "lastUpdate" },
+        { label: "nCaches", type: "int", accessor: "nItems" },
+        { label: "nFiles", type: "int", accessor: "nFiles" },
+        { label: "nFolders", type: "int", accessor: "nFolders" },
+        { label: "sizeInBytes", type: "bytes", accessor: "nBytes" },
+      ],
+    },
+    {
+      label: "Buttons",
+      buttons: [<CleanButton key={"clean"} value={"https://trueblocks.io"} />],
+    },
+    {
+      label: "Caches",
+      fields: [],
+      collapsable: false,
+      components: [<DataTable<types.CacheItem> key={"dataTable"} table={table} loading={false} />],
+    },
   ];
 };

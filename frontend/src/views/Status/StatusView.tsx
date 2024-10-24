@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, DataTable, FieldGroup, CleanButton } from "@components";
 import { types } from "@gocode/models";
@@ -16,11 +17,13 @@ export const StatusView = () => {
   });
 
   const route = "status";
+  const tabs = ["status"];
+  const forms: Record<string, ReactNode> = {
+    status: <FormTable data={status} groups={createStatusForm(table)} />,
+  };
   return (
     <ViewStateProvider route={route} nItems={status.nItems} fetchFn={fetchStatus} modifyFn={modifyNoop}>
-      <View>
-        <FormTable data={status} groups={createStatusForm(table)} />
-      </View>
+      <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
 };

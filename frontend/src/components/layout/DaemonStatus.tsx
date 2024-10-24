@@ -5,16 +5,16 @@ import { IconCheck } from "@tabler/icons-react";
 export function DaemonStatus() {
   return (
     <Stack justify="flex-start" align="flex-start">
-      <Status name="Erigon" />
-      <Status name="Prysm" />
-      <Status name="Ipfs" />
-      <Status name="Scraper" />
-      <Status name="Monitor" />
+      <NodeStatus name="Erigon" />
+      <NodeStatus name="Prysm" />
+      <NodeStatus name="Ipfs" />
+      <NodeStatus name="Scraper" />
+      <NodeStatus name="Monitor" />
     </Stack>
   );
 }
 
-const Status = ({ name }: { name: string }) => (
+const NodeStatus = ({ name }: { name: string }) => (
   <Group>
     <IconCheck />
     <Text size="xs">{name}</Text>
