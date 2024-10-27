@@ -40,32 +40,36 @@ func (m *MonitorContainer) Filter(f func(*coreTypes.Monitor) bool) []int {
 	return items
 }
 */
+
+type MonitorItemType = coreTypes.Monitor
+type MonitorInputType = []coreTypes.Monitor
+
 // EXISTING_CODE
 
 type MonitorContainer struct {
-	coreTypes.Monitor
-	Monitors   []coreTypes.Monitor `json:"items"`
-	NMonitors  int                 `json:"nItems"`
-	NNamed     int                 `json:"nNamed"`
-	NDeleted   int                 `json:"nDeleted"`
-	NStaged    int                 `json:"nStaged"`
-	NEmpty     int                 `json:"nEmpty"`
-	LastUpdate time.Time           `json:"lastUpdate"`
-	Chain      string              `json:"chain"`
+	NDeleted   uint64            `json:"NDeleted"`
+	NEmpty     uint64            `json:"NEmpty"`
+	NNamed     uint64            `json:"NNamed"`
+	NStaged    uint64            `json:"NStaged"`
+	Items      []MonitorItemType `json:"items"`
+	NItems     uint64            `json:"nItems"`
+	Chain      string            `json:"chain"`
+	LastUpdate time.Time         `json:"lastUpdate"`
 	// EXISTING_CODE
 	// FilteredItems []int         `json:"filteresdItems"`
 	// MonitorFilter MonitorFilter `json:"filter"`
 	// EXISTING_CODE
 }
 
-func NewMonitorContainer(chain string) MonitorContainer {
-	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(chain), "monitors"))
+func NewMonitorContainer(chain string, itemsIn MonitorInputType) MonitorContainer {
+	latest := getLatestMonitorDate(chain)
 	ret := MonitorContainer{
+		Items:      make([]MonitorItemType, 0, len(itemsIn)),
 		Chain:      chain,
-		Monitors:   []coreTypes.Monitor{},
 		LastUpdate: latest,
 	}
 	// EXISTING_CODE
+	ret.Items = itemsIn
 	// EXISTING_CODE
 	return ret
 }
@@ -76,7 +80,7 @@ func (s *MonitorContainer) String() string {
 }
 
 func (s *MonitorContainer) NeedsUpdate(force bool) bool {
-	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "monitors"))
+	latest := getLatestMonitorDate(s.Chain)
 	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
 		return true
@@ -86,12 +90,11 @@ func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 
 func (s *MonitorContainer) ShallowCopy() Containerer {
 	return &MonitorContainer{
-		Monitor:    s.Monitor,
+		NDeleted:   s.NDeleted,
+		NEmpty:     s.NEmpty,
 		NNamed:     s.NNamed,
 		NStaged:    s.NStaged,
-		NEmpty:     s.NEmpty,
-		NDeleted:   s.NDeleted,
-		NMonitors:  s.NMonitors,
+		NItems:     s.NItems,
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
@@ -100,9 +103,9 @@ func (s *MonitorContainer) ShallowCopy() Containerer {
 }
 
 func (s *MonitorContainer) Summarize() {
+	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
-	s.NMonitors = len(s.Monitors)
-	for _, mon := range s.Monitors {
+	for _, mon := range s.Items {
 		if mon.Deleted {
 			s.NDeleted++
 		}
@@ -121,9 +124,11 @@ func (s *MonitorContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func MonitorX() {
+func getLatestMonitorDate(chain string) (ret time.Time) {
 	// EXISTING_CODE
+	ret = utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(chain), "monitors"))
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

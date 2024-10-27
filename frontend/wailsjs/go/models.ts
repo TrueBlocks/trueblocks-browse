@@ -1709,15 +1709,15 @@ export namespace types {
 	    lastScanned: number;
 	    nRecords: number;
 	    name: string;
-	    items: Monitor[];
-	    nItems: number;
 	    nNamed: number;
 	    nDeleted: number;
 	    nStaged: number;
 	    nEmpty: number;
+	    items: Monitor[];
+	    nItems: number;
+	    chain: string;
 	    // Go type: time
 	    lastUpdate: any;
-	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new MonitorContainer(source);
@@ -1733,14 +1733,14 @@ export namespace types {
 	        this.lastScanned = source["lastScanned"];
 	        this.nRecords = source["nRecords"];
 	        this.name = source["name"];
-	        this.items = this.convertValues(source["items"], Monitor);
-	        this.nItems = source["nItems"];
 	        this.nNamed = source["nNamed"];
 	        this.nDeleted = source["nDeleted"];
 	        this.nStaged = source["nStaged"];
 	        this.nEmpty = source["nEmpty"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.items = this.convertValues(source["items"], Monitor);
+	        this.nItems = source["nItems"];
 	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
