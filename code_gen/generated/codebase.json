@@ -59,6 +59,7 @@
             "doc_route": "120-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "disable_go": true,
             "members": [
                 {
                     "name": "bloomSz",
@@ -257,28 +258,40 @@
             "cache_type": "cacheable",
             "members": [
                 {
-                    "name": "NNamed",
+                    "name": "nNamed",
                     "type": "uint64",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "NStaged",
+                    "name": "nStaged",
                     "type": "uint64",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "NEmpty",
+                    "name": "nEmpty",
                     "type": "uint64",
                     "description": "jim",
                     "num": 3
                 },
                 {
-                    "name": "NDeleted",
+                    "name": "nDeleted",
                     "type": "uint64",
                     "description": "jim",
                     "num": 4
+                },
+                {
+                    "name": "fileSize",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nRecords",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
                 }
             ]
         },
