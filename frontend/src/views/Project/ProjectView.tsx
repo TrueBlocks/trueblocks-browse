@@ -1,6 +1,5 @@
-import { ReactNode } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, FieldGroup, AddButton } from "@components";
+import { View, FormTable, DataTable, FieldGroup, ViewForm, AddButton } from "@components";
 import { GoToHistory, ModifyProject } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { Page } from "@hooks";
@@ -25,7 +24,7 @@ export const ProjectView = () => {
 
   const route = "";
   const tabs = ["project"];
-  const forms: Record<string, ReactNode> = {
+  const forms: ViewForm = {
     project: <FormTable data={project} groups={createProjectForm(table)} />,
   };
   return (

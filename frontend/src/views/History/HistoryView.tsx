@@ -1,7 +1,16 @@
-import { ReactNode, useEffect } from "react";
+import { useEffect } from "react";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
 import { useParams } from "wouter";
-import { ExploreButton, ExportButton, View, FormTable, DataTable, FieldGroup, GoogleButton } from "@components";
+import {
+  ExploreButton,
+  ExportButton,
+  View,
+  FormTable,
+  ViewForm,
+  DataTable,
+  FieldGroup,
+  GoogleButton,
+} from "@components";
 import { types, base } from "@gocode/models";
 import { useNoops, useUtils } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
@@ -26,7 +35,7 @@ export const HistoryView = () => {
   const route = "history";
   const addrStr = ShortenAddr(address.toString());
   const tabs = [addrStr];
-  const forms: Record<string, ReactNode> = {
+  const forms: ViewForm = {
     [addrStr]: <FormTable data={history} groups={createHistoryForm(address, table)} />,
   };
   return (

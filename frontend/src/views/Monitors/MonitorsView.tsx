@@ -1,6 +1,5 @@
-import { ReactNode } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, FieldGroup, CleanButton, AddButton } from "@components";
+import { View, FormTable, DataTable, FieldGroup, ViewForm, CleanButton, AddButton } from "@components";
 import { GoToHistory, ModifyMonitors } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { Page } from "@hooks";
@@ -23,7 +22,7 @@ export const MonitorsView = () => {
 
   const route = "monitors";
   const tabs = ["monitors"];
-  const forms: Record<string, ReactNode> = {
+  const forms: ViewForm = {
     monitors: <FormTable data={monitors} groups={createMonitorForm(table)} />,
   };
   return (

@@ -5,9 +5,11 @@ import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import classes from "./View.module.css";
 
+export type ViewForm = Record<string, ReactNode>;
+
 export type ViewProps = {
   tabs: string[];
-  forms: Record<string, ReactNode>;
+  forms: ViewForm;
 };
 
 export const View = ({ tabs, forms }: ViewProps) => {

@@ -1,6 +1,5 @@
-import { ReactNode } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { DataTable, FormTable, FieldGroup, View, SpecButton, PinButton } from "@components";
+import { DataTable, FormTable, FieldGroup, View, ViewForm, SpecButton, PinButton } from "@components";
 import { types } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
@@ -18,7 +17,7 @@ export const IndexesView = () => {
 
   const route = "indexes";
   const tabs = ["indexes"];
-  const forms: Record<string, ReactNode> = {
+  const forms: ViewForm = {
     indexes: <FormTable data={indexes} groups={createIndexForm(table)} />,
   };
   return (
