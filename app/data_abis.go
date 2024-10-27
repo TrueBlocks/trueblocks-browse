@@ -13,7 +13,9 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-// Find: NewViews
+var abisChain = "mainnet"
+var abiLock atomic.Uint32
+
 func (a *App) AbiPage(first, pageSize int) *types.AbiContainer {
 	first = base.Max(0, base.Min(first, len(a.abis.Items)-1))
 	last := base.Min(len(a.abis.Items), first+pageSize)
@@ -21,9 +23,6 @@ func (a *App) AbiPage(first, pageSize int) *types.AbiContainer {
 	copy.Items = a.abis.Items[first:last]
 	return copy
 }
-
-var abisChain = "mainnet"
-var abiLock atomic.Uint32
 
 func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
