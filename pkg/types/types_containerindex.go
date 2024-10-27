@@ -1,5 +1,6 @@
 package types
 
+// EXISTING_CODE
 import (
 	"encoding/json"
 	"time"
@@ -10,26 +11,34 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
+// EXISTING_CODE
+
 type IndexContainer struct {
-	coreTypes.ChunkStats
 	Items      []coreTypes.ChunkStats `json:"items"`
-	NItems     int                    `json:"nItems"`
-	Sorts      sdk.SortSpec           `json:"sort"`
-	LastUpdate time.Time              `json:"lastUpdate"`
+	NItems     uint64                 `json:"nItems"`
 	Chain      string                 `json:"chain"`
+	LastUpdate time.Time              `json:"lastUpdate"`
+	// EXISTING_CODE
+	coreTypes.ChunkStats
+	Sorts sdk.SortSpec `json:"sort"`
+	// EXISTING_CODE
 }
 
-func NewIndexContainer(chain string, items []coreTypes.ChunkStats) IndexContainer {
-	latest := utils.MustGetLatestFileTime(config.PathToIndex(chain))
-	return IndexContainer{
-		Items: items,
-		Sorts: sdk.SortSpec{
-			Fields: []string{"range"},
-			Order:  []sdk.SortOrder{sdk.Dec},
-		},
-		LastUpdate: latest,
+func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContainer {
+	latest := getLatestIndexDate(chain)
+	ret := IndexContainer{
+		Items:    make([]coreTypes.ChunkStats, 0, len(itemsIn)),
 		Chain:      chain,
+		LastUpdate: latest,
 	}
+	// EXISTING_CODE
+	ret.Items = itemsIn
+	ret.Sorts = sdk.SortSpec{
+		Fields: []string{"range"},
+		Order:  []sdk.SortOrder{sdk.Dec},
+	}
+	// EXISTING_CODE
+	return ret
 }
 
 func (s *IndexContainer) String() string {
@@ -38,7 +47,7 @@ func (s *IndexContainer) String() string {
 }
 
 func (s *IndexContainer) NeedsUpdate(force bool) bool {
-	latest := utils.MustGetLatestFileTime(config.PathToIndex(s.Chain))
+	latest := getLatestIndexDate(s.Chain)
 	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
 		return true
@@ -49,14 +58,18 @@ func (s *IndexContainer) NeedsUpdate(force bool) bool {
 func (s *IndexContainer) ShallowCopy() Containerer {
 	return &IndexContainer{
 		NItems:     s.NItems,
-		ChunkStats: s.ChunkStats,
-		LastUpdate: s.LastUpdate,
 		Chain:      s.Chain,
+		LastUpdate: s.LastUpdate,
+		// EXISTING_CODE
+		ChunkStats: s.ChunkStats,
+		Sorts:      s.Sorts,
+		// EXISTING_CODE
 	}
 }
 
 func (s *IndexContainer) Summarize() {
-	s.NItems = len(s.Items)
+	// EXISTING_CODE
+	s.NItems = uint64(len(s.Items))
 	for _, chunk := range s.Items {
 		s.BloomSz += chunk.BloomSz
 		s.ChunkSz += chunk.ChunkSz
@@ -74,4 +87,15 @@ func (s *IndexContainer) Summarize() {
 	if s.NBlocks > 0 {
 		s.AppsPerBlock = float64(s.NApps) / float64(s.NBlocks)
 	}
+	// EXISTING_CODE
 }
+
+func getLatestIndexDate(chain string) (ret time.Time) {
+	// EXISTING_CODE
+	ret = utils.MustGetLatestFileTime(config.PathToIndex(chain))
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
+// EXISTING_CODE

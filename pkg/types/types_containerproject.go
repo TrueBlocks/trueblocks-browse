@@ -1,5 +1,6 @@
 package types
 
+// EXISTING_CODE
 import (
 	"encoding/json"
 	"sync"
@@ -7,6 +8,8 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 )
+
+// EXISTING_CODE
 
 type ProjectContainer struct {
 	Session     config.Session     `json:"session"`
@@ -25,10 +28,12 @@ type ProjectContainer struct {
 	HistorySize int                `json:"historySize"`
 	Dirty       bool               `json:"dirty"`
 	Filename    string             `json:"filename"`
+	// EXISTING_CODE
+	// EXISTING_CODE
 }
 
 func NewProjectContainer(filename string, historyMap *HistoryMap, balMap, ensMap *sync.Map) ProjectContainer {
-	return ProjectContainer{
+	ret := ProjectContainer{
 		Items:      []HistoryContainer{},
 		HistoryMap: historyMap,
 		BalanceMap: balMap,
@@ -36,6 +41,9 @@ func NewProjectContainer(filename string, historyMap *HistoryMap, balMap, ensMap
 		Dirty:      false,
 		Filename:   filename,
 	}
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return ret
 }
 
 func (h *ProjectContainer) String() string {
@@ -68,9 +76,17 @@ func (s *ProjectContainer) ShallowCopy() Containerer {
 }
 
 func (s *ProjectContainer) Summarize() {
+	// EXISTING_CODE
 	// do nothing
+	// EXISTING_CODE
 }
 
+func ProjectX() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+// EXISTING_CODE
 func (s *ProjectContainer) Load() error {
 	str := file.AsciiFileToString(s.Filename)
 	json.Unmarshal([]byte(str), s)
@@ -92,3 +108,5 @@ func (s *ProjectContainer) Save() error {
 	// }
 	return nil
 }
+
+// EXISTING_CODE

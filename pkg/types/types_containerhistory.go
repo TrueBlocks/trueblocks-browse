@@ -1,5 +1,6 @@
 package types
 
+// EXISTING_CODE
 import (
 	"encoding/json"
 	"path/filepath"
@@ -13,27 +14,34 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
+// EXISTING_CODE
+
 type HistoryContainer struct {
-	Items      []coreTypes.Transaction `json:"items"`
-	NItems     int                     `json:"nItems"`
-	NTotal     int                     `json:"nTotal"`
 	Address    base.Address            `json:"address"`
+	NTotal     int                     `json:"nTotal"`
 	Name       string                  `json:"name"`
 	Balance    string                  `json:"balance"`
 	NLogs      int                     `json:"nLogs"`
 	NTokens    int                     `json:"nTokens"`
 	NErrors    int                     `json:"nErrors"`
+	Items      []coreTypes.Transaction `json:"items"`
+	NItems     int                     `json:"nItems"`
 	Chain      string                  `json:"chain"`
 	LastUpdate time.Time               `json:"lastUpdate"`
+	// EXISTING_CODE
+	// EXISTING_CODE
 }
 
 func NewHistoryContainer(chain string, address base.Address) HistoryContainer {
 	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(chain), "monitors", address.Hex()+".mon.bin"))
-	return HistoryContainer{
-		Address:    address,
+	ret := HistoryContainer{
 		Chain:      chain,
 		LastUpdate: latest,
 	}
+	// EXISTING_CODE
+	ret.Address = address
+	// EXISTING_CODE
+	return ret
 }
 
 func (s *HistoryContainer) String() string {
@@ -62,10 +70,13 @@ func (s *HistoryContainer) ShallowCopy() Containerer {
 		NTotal:     s.NTotal,
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
+		// EXISTING_CODE
+		// EXISTING_CODE
 	}
 }
 
 func (s *HistoryContainer) Summarize() {
+	// EXISTING_CODE
 	s.NItems = len(s.Items)
 	for _, tx := range s.Items {
 		if tx.Receipt != nil {
@@ -78,8 +89,15 @@ func (s *HistoryContainer) Summarize() {
 			s.NErrors++
 		}
 	}
+	// EXISTING_CODE
 }
 
+func HistoryX() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+// EXISTING_CODE
 func (s *HistoryContainer) SizeOf() int {
 	size := unsafe.Sizeof(s.Address) + unsafe.Sizeof(s.Name) + unsafe.Sizeof(s.Balance) + unsafe.Sizeof(s.NLogs) + unsafe.Sizeof(s.NTokens) + unsafe.Sizeof(s.NErrors) + unsafe.Sizeof(s.NItems) + unsafe.Sizeof(s.NTotal)
 	for _, record := range s.Items {
@@ -113,3 +131,5 @@ func (h *HistoryMap) Range(f func(address base.Address, historyContainer History
 		return f(key.(base.Address), value.(HistoryContainer))
 	})
 }
+
+// EXISTING_CODE

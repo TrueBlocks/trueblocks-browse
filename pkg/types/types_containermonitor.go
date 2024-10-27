@@ -1,5 +1,6 @@
 package types
 
+// EXISTING_CODE
 import (
 	"encoding/json"
 	"path/filepath"
@@ -39,10 +40,9 @@ func (m *MonitorContainer) Filter(f func(*coreTypes.Monitor) bool) []int {
 	return items
 }
 */
+// EXISTING_CODE
 
 type MonitorContainer struct {
-	// FilteredItems []int         `json:"filteresdItems"`
-	// MonitorFilter MonitorFilter `json:"filter"`
 	coreTypes.Monitor
 	Monitors   []coreTypes.Monitor `json:"items"`
 	NMonitors  int                 `json:"nItems"`
@@ -52,15 +52,22 @@ type MonitorContainer struct {
 	NEmpty     int                 `json:"nEmpty"`
 	LastUpdate time.Time           `json:"lastUpdate"`
 	Chain      string              `json:"chain"`
+	// EXISTING_CODE
+	// FilteredItems []int         `json:"filteresdItems"`
+	// MonitorFilter MonitorFilter `json:"filter"`
+	// EXISTING_CODE
 }
 
 func NewMonitorContainer(chain string) MonitorContainer {
 	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(chain), "monitors"))
-	return MonitorContainer{
+	ret := MonitorContainer{
 		Chain:      chain,
 		Monitors:   []coreTypes.Monitor{},
 		LastUpdate: latest,
 	}
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return ret
 }
 
 func (s *MonitorContainer) String() string {
@@ -85,12 +92,15 @@ func (s *MonitorContainer) ShallowCopy() Containerer {
 		NEmpty:     s.NEmpty,
 		NDeleted:   s.NDeleted,
 		NMonitors:  s.NMonitors,
-		LastUpdate: s.LastUpdate,
 		Chain:      s.Chain,
+		LastUpdate: s.LastUpdate,
+		// EXISTING_CODE
+		// EXISTING_CODE
 	}
 }
 
 func (s *MonitorContainer) Summarize() {
+	// EXISTING_CODE
 	s.NMonitors = len(s.Monitors)
 	for _, mon := range s.Monitors {
 		if mon.Deleted {
@@ -108,4 +118,13 @@ func (s *MonitorContainer) Summarize() {
 		s.FileSize += mon.FileSize
 		s.NRecords += mon.NRecords
 	}
+	// EXISTING_CODE
 }
+
+func MonitorX() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+// EXISTING_CODE
+// EXISTING_CODE
