@@ -2202,12 +2202,6 @@ export namespace version {
 
 export namespace wizard {
 	
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
-	}
 	export enum State {
 	    WELCOME = "welcome",
 	    TOMLOKAY = "tomlOkay",
@@ -2215,6 +2209,12 @@ export namespace wizard {
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
 	    OKAY = "okay",
+	}
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
 	}
 	export class Wizard {
 	    state: State;
