@@ -1,0 +1,65 @@
+package types
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+type {{.Class}}Container struct {
+{{toPlural .Class}} []{{.Class}}ItemType `json:"{{toLowerPlural .Class}}"`
+{{range .Members}}{{if .IsSimpField}}{{.GoName}} {{.GoType}} {{.Tag}}
+{{end}}{{end}}	N{{toPlural .Class}} uint64 `json:"n{{toPlural .Class}}"`
+	Chain string `json:"chain"`
+	LastUpdate time.Time `json:"lastUpdate"`
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func New{{.Class}}Container(chain string, itemsIn {{.Class}}InputType) {{.Class}}Container {
+	latest := getLatest{{.Class}}Date(chain)
+	ret := {{.Class}}Container{
+		{{toPlural .Class}}:      make([]{{.Class}}ItemType, 0, len(itemsIn)),
+		Chain:      chain,
+		LastUpdate: latest,
+	}
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return ret
+}
+
+func (s *{{.Class}}Container) String() string {
+	bytes, _ := json.Marshal(s)
+	return string(bytes)
+}
+
+func (s *{{.Class}}Container) NeedsUpdate(force bool) bool {
+	latest := getLatest{{.Class}}Date(s.Chain)
+	if force || latest != s.LastUpdate {
+		s.LastUpdate = latest
+		return true
+	}
+	return false
+}
+
+func (s *{{.Class}}Container) ShallowCopy() Containerer {
+	return &{{.Class}}Container{
+		{{range .Members}}{{if .IsSimpField}}{{.GoName}}: s.{{.GoName}},
+		{{end}}{{end}}	N{{toPlural .Class}}: s.N{{toPlural .Class}},
+			Chain: s.Chain,
+			LastUpdate: s.LastUpdate,
+			// EXISTING_CODE
+			// EXISTING_CODE
+	}
+}
+
+func (s *{{.Class}}Container) Summarize() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func getLatest{{.Class}}Date(chain string) (ret time.Time) {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
+// EXISTING_CODE

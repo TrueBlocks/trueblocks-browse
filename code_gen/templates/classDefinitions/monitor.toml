@@ -1,0 +1,11 @@
+[settings]
+	class = "Monitor"
+	# doc_group = "02-Chain Data"
+	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
+	doc_route = "160-containers"
+	# attributes = ""
+	# produced_by = "blocks"
+	# contains = "transaction, withdrawal"
+	cache_type = "cacheable"
+	cache_by = "range"
+	disable_go = true
