@@ -170,6 +170,10 @@ export function LoadName(arg1) {
   return window['go']['app']['App']['LoadName'](arg1);
 }
 
+export function Logger(arg1) {
+  return window['go']['app']['App']['Logger'](arg1);
+}
+
 export function ManifestPage(arg1, arg2) {
   return window['go']['app']['App']['ManifestPage'](arg1, arg2);
 }
