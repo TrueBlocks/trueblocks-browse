@@ -6,7 +6,6 @@
             "doc_route": "100-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
             "members": [
                 {
                     "name": "largestFile",
@@ -33,43 +32,30 @@
             "doc_route": "110-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
             "members": [
                 {
-                    "name": "bloomSz",
+                    "name": "nItems",
                     "type": "uint64",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "chunkSz",
+                    "name": "nFolders",
                     "type": "uint64",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "nAddrs",
+                    "name": "nFiles",
                     "type": "uint64",
                     "description": "jim",
                     "num": 3
                 },
                 {
-                    "name": "nApps",
+                    "name": "nBytes",
                     "type": "uint64",
                     "description": "jim",
                     "num": 4
-                },
-                {
-                    "name": "nBlocks",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 5
-                },
-                {
-                    "name": "nBlooms",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 6
                 }
             ]
         },
