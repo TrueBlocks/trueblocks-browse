@@ -4,9 +4,9 @@ package types
 // EXISTING_CODE
 
 type {{.Class}}Container struct {
-{{toPlural .Class}} []{{.Class}}ItemType `json:"{{toLowerPlural .Class}}"`
 {{range .Members}}{{if .IsSimpField}}{{.GoName}} {{.GoType}} {{.Tag}}
-{{end}}{{end}}	N{{toPlural .Class}} uint64 `json:"n{{toPlural .Class}}"`
+{{end}}{{end}}	Items []{{.Class}}ItemType `json:"items"`
+	NItems uint64 `json:"nItems"`
 	Chain string `json:"chain"`
 	LastUpdate time.Time `json:"lastUpdate"`
 	// EXISTING_CODE
@@ -16,7 +16,7 @@ type {{.Class}}Container struct {
 func New{{.Class}}Container(chain string, itemsIn {{.Class}}InputType) {{.Class}}Container {
 	latest := getLatest{{.Class}}Date(chain)
 	ret := {{.Class}}Container{
-		{{toPlural .Class}}:      make([]{{.Class}}ItemType, 0, len(itemsIn)),
+		Items:      make([]{{.Class}}ItemType, 0, len(itemsIn)),
 		Chain:      chain,
 		LastUpdate: latest,
 	}
@@ -42,7 +42,7 @@ func (s *{{.Class}}Container) NeedsUpdate(force bool) bool {
 func (s *{{.Class}}Container) ShallowCopy() Containerer {
 	return &{{.Class}}Container{
 		{{range .Members}}{{if .IsSimpField}}{{.GoName}}: s.{{.GoName}},
-		{{end}}{{end}}	N{{toPlural .Class}}: s.N{{toPlural .Class}},
+		{{end}}{{end}}	NItems: s.NItems,
 			Chain: s.Chain,
 			LastUpdate: s.LastUpdate,
 			// EXISTING_CODE
@@ -51,6 +51,7 @@ func (s *{{.Class}}Container) ShallowCopy() Containerer {
 }
 
 func (s *{{.Class}}Container) Summarize() {
+	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
 	// EXISTING_CODE
 }

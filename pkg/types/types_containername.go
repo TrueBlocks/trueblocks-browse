@@ -15,31 +15,34 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
+type NameItemType = coreTypes.Name
+type NameInputType = map[base.Address]coreTypes.Name
+
 // EXISTING_CODE
 
 type NameContainer struct {
-	NContracts uint64           `json:"nContracts"`
-	NCustom    uint64           `json:"nCustom"`
-	NDeleted   uint64           `json:"nDeleted"`
-	NErc20s    uint64           `json:"nErc20s"`
-	NErc721s   uint64           `json:"nErc721s"`
-	NPrefund   uint64           `json:"nPrefund"`
-	NRegular   uint64           `json:"nRegular"`
-	NSystem    uint64           `json:"nSystem"`
-	SizeOnDisc uint64           `json:"sizeOnDisc"`
-	Items      []coreTypes.Name `json:"items"`
-	NItems     uint64           `json:"nItems"`
-	LastUpdate time.Time        `json:"lastUpdate"`
-	Chain      string           `json:"chain"`
+	NContracts uint64         `json:"nContracts"`
+	NCustom    uint64         `json:"nCustom"`
+	NDeleted   uint64         `json:"nDeleted"`
+	NErc20s    uint64         `json:"nErc20s"`
+	NErc721s   uint64         `json:"nErc721s"`
+	NPrefund   uint64         `json:"nPrefund"`
+	NRegular   uint64         `json:"nRegular"`
+	NSystem    uint64         `json:"nSystem"`
+	SizeOnDisc uint64         `json:"sizeOnDisc"`
+	Items      []NameItemType `json:"items"`
+	NItems     uint64         `json:"nItems"`
+	Chain      string         `json:"chain"`
+	LastUpdate time.Time      `json:"lastUpdate"`
 	// EXISTING_CODE
 	NamesMap map[base.Address]coreTypes.Name `json:"namesMap"`
 	// EXISTING_CODE
 }
 
-func NewNameContainer(chain string, itemsIn map[base.Address]coreTypes.Name) NameContainer {
+func NewNameContainer(chain string, itemsIn NameInputType) NameContainer {
 	latest := getLatestNameDate(chain)
 	ret := NameContainer{
-		Items:      make([]coreTypes.Name, 0, len(itemsIn)),
+		Items:      make([]NameItemType, 0, len(itemsIn)),
 		Chain:      chain,
 		LastUpdate: latest,
 	}
@@ -89,8 +92,8 @@ func (s *NameContainer) ShallowCopy() Containerer {
 }
 
 func (s *NameContainer) Summarize() {
-	// EXISTING_CODE
 	s.NItems = uint64(len(s.Items))
+	// EXISTING_CODE
 	for _, name := range s.Items {
 		if name.Parts&coreTypes.Regular > 0 {
 			s.NRegular++
