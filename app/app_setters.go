@@ -24,7 +24,7 @@ func (a *App) SetRoute(route, subRoute string) {
 func (a *App) SetChain(chain string, address base.Address) {
 	a.CancelAllContexts() // cancel what's happening on the old chain
 	a.globals.Chain = chain
-	a.session.Chain = chain
+	a.session.LastChain = chain
 	a.saveSession()
 	a.Reload(address)
 	a.monitors = types.MonitorContainer{}

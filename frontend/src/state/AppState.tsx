@@ -40,11 +40,11 @@ interface AppStateProps {
   manifests: types.ManifestContainer;
   fetchManifests: (currentItem: number, itemsPerPage: number) => void;
 
-  status: types.StatusContainer;
-  fetchStatus: (currentItem: number, itemsPerPage: number) => void;
-
   settings: types.SettingsGroup;
   fetchSettings: (currentItem: number, itemsPerPage: number) => void;
+
+  status: types.StatusContainer;
+  fetchStatus: (currentItem: number, itemsPerPage: number) => void;
 
   address: base.Address;
   setAddress: (address: base.Address) => void;
@@ -70,8 +70,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [abis, setAbis] = useState<types.AbiContainer>({} as types.AbiContainer);
   const [indexes, setIndexes] = useState<types.IndexContainer>({} as types.IndexContainer);
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
-  const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
   const [settings, setSettings] = useState<types.SettingsGroup>({} as types.SettingsGroup);
+  const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
   // TODO BOGUS: The daemon state should be in the AppState
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
@@ -135,18 +135,18 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
-    StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
-      if (item) {
-        setStatus(item);
-      }
-    });
-  };
-
   const fetchSettings = async (currentItem: number, itemsPerPage: number) => {
     SettingsPage(currentItem, itemsPerPage).then((item: types.SettingsGroup) => {
       if (item) {
         setSettings(item);
+      }
+    });
+  };
+
+  const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
+    StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
+      if (item) {
+        setStatus(item);
       }
     });
   };
@@ -241,10 +241,10 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchIndexes,
     manifests,
     fetchManifests,
-    status,
-    fetchStatus,
     settings,
     fetchSettings,
+    status,
+    fetchStatus,
     setAddress,
     selectChain,
     meta,

@@ -21,6 +21,7 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
     return <></>;
   }
 
+  // TODO: This is pretty dumb
   const style1 = { root: { marginBottom: "-50px", marginTop: "-45px" } };
   const style2 = { root: { marginTop: "40px", backgroundColor: "white" } };
   return (

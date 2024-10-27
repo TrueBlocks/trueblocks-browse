@@ -38,12 +38,12 @@ func (a *App) StatusView(cd *menu.CallbackData) {
 	a.Navigate("/status", "")
 }
 
-func (a *App) SettingsView(cd *menu.CallbackData) {
-	a.Navigate("/settings", "")
-}
-
 func (a *App) DaemonsView(cd *menu.CallbackData) {
 	a.Navigate("/daemons", "")
+}
+
+func (a *App) SettingsView(cd *menu.CallbackData) {
+	a.Navigate("/settings", "")
 }
 
 func (a *App) WizardView(cd *menu.CallbackData) {

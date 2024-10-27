@@ -14,13 +14,14 @@ import (
 // Session stores ephemeral things such as last window position,
 // last view, and recent file list.
 type Session struct {
-	Chain     string            `json:"chain"`
-	LastFile  string            `json:"lastFile"`
-	LastRoute string            `json:"lastRoute"`
-	LastSub   map[string]string `json:"lastSub"`
-	Window    Window            `json:"window"`
-	Wizard    wizard.Wizard     `json:"wizard"`
-	Toggles   Toggles           `json:"toggles"`
+	LastChain  string            `json:"lastChain"`
+	LastFile   string            `json:"lastFile"`
+	LastFolder string            `json:"lastFolder"`
+	LastRoute  string            `json:"lastRoute"`
+	LastSub    map[string]string `json:"lastSub"`
+	Window     Window            `json:"window"`
+	Wizard     wizard.Wizard     `json:"wizard"`
+	Toggles    Toggles           `json:"toggles"`
 }
 
 func (s *Session) String() string {
@@ -54,7 +55,7 @@ var defDaemons = Daemons{
 }
 
 var defaultSession = Session{
-	Chain:     "mainnet",
+	LastChain: "mainnet",
 	LastFile:  "Untitled.tbx",
 	LastRoute: "/wizard",
 	LastSub:   map[string]string{"/history": "0xf503017d7baf7fbc0fff7492b751025c6a78179b"},
@@ -140,8 +141,8 @@ func (s *Session) Load() error {
 		if contents := file.AsciiFileToString(fn); len(contents) > 0 {
 			if err := json.Unmarshal([]byte(contents), s); err == nil {
 				s.Wizard.State, s.LastRoute = checkWizard()
-				if s.Chain == "" {
-					s.Chain = "mainnet"
+				if s.LastChain == "" {
+					s.LastChain = "mainnet"
 				}
 				if s.LastFile == "" {
 					s.LastFile = "Untitled.tbx"
