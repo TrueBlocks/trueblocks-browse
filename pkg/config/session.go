@@ -76,7 +76,6 @@ var defaultSession = Session{
 
 func (s *Session) CleanWindowSize(ctx context.Context) {
 	if s.Window.Width != 0 && s.Window.Height != 0 {
-		logger.Info("Leaving early", s.Window.String())
 		// already set
 		return
 	}
