@@ -47,10 +47,12 @@ type MonitorInputType = []coreTypes.Monitor
 // EXISTING_CODE
 
 type MonitorContainer struct {
-	NDeleted   uint64            `json:"NDeleted"`
-	NEmpty     uint64            `json:"NEmpty"`
-	NNamed     uint64            `json:"NNamed"`
-	NStaged    uint64            `json:"NStaged"`
+	FileSize   uint64            `json:"fileSize"`
+	NDeleted   uint64            `json:"nDeleted"`
+	NEmpty     uint64            `json:"nEmpty"`
+	NNamed     uint64            `json:"nNamed"`
+	NRecords   uint64            `json:"nRecords"`
+	NStaged    uint64            `json:"nStaged"`
 	Items      []MonitorItemType `json:"items"`
 	NItems     uint64            `json:"nItems"`
 	Chain      string            `json:"chain"`
@@ -90,9 +92,11 @@ func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 
 func (s *MonitorContainer) ShallowCopy() Containerer {
 	return &MonitorContainer{
+		FileSize:   s.FileSize,
 		NDeleted:   s.NDeleted,
 		NEmpty:     s.NEmpty,
 		NNamed:     s.NNamed,
+		NRecords:   s.NRecords,
 		NStaged:    s.NStaged,
 		NItems:     s.NItems,
 		Chain:      s.Chain,
@@ -118,8 +122,8 @@ func (s *MonitorContainer) Summarize() {
 		if len(mon.Name) > 0 {
 			s.NNamed++
 		}
-		s.FileSize += mon.FileSize
-		s.NRecords += mon.NRecords
+		s.FileSize += uint64(mon.FileSize)
+		s.NRecords += uint64(mon.NRecords)
 	}
 	// EXISTING_CODE
 }

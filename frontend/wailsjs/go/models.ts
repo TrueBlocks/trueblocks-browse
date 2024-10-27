@@ -1701,18 +1701,12 @@ export namespace types {
 		}
 	}
 	export class MonitorContainer {
-	    address: base.Address;
-	    deleted: boolean;
 	    fileSize: number;
-	    isEmpty: boolean;
-	    isStaged: boolean;
-	    lastScanned: number;
-	    nRecords: number;
-	    name: string;
-	    nNamed: number;
 	    nDeleted: number;
-	    nStaged: number;
 	    nEmpty: number;
+	    nNamed: number;
+	    nRecords: number;
+	    nStaged: number;
 	    items: Monitor[];
 	    nItems: number;
 	    chain: string;
@@ -1725,18 +1719,12 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.address = this.convertValues(source["address"], base.Address);
-	        this.deleted = source["deleted"];
 	        this.fileSize = source["fileSize"];
-	        this.isEmpty = source["isEmpty"];
-	        this.isStaged = source["isStaged"];
-	        this.lastScanned = source["lastScanned"];
-	        this.nRecords = source["nRecords"];
-	        this.name = source["name"];
-	        this.nNamed = source["nNamed"];
 	        this.nDeleted = source["nDeleted"];
-	        this.nStaged = source["nStaged"];
 	        this.nEmpty = source["nEmpty"];
+	        this.nNamed = source["nNamed"];
+	        this.nRecords = source["nRecords"];
+	        this.nStaged = source["nStaged"];
 	        this.items = this.convertValues(source["items"], Monitor);
 	        this.nItems = source["nItems"];
 	        this.chain = source["chain"];
