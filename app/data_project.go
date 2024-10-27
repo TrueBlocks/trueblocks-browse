@@ -63,7 +63,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	)
 	a.project.NOpenFiles = a.openFileCnt()
 	a.project.NMonitors = len(a.monitors.Monitors)
-	a.project.NNames = len(a.names.Names)
+	a.project.NNames = len(a.names.Items)
 	a.project.NAbis = len(a.abis.Items)
 	a.project.NIndexes = len(a.index.Items)
 	a.project.NManifests = len(a.manifest.Chunks)

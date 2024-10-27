@@ -787,6 +787,14 @@ export namespace types {
 		}
 	}
 	export class AbiContainer {
+	    largestFile: string;
+	    mostFunctions: string;
+	    mostEvents: string;
+	    items: Abi[];
+	    nItems: number;
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
 	    address: base.Address;
 	    fileSize: number;
 	    functions: Function[];
@@ -799,15 +807,7 @@ export namespace types {
 	    nFunctions: number;
 	    name: string;
 	    path: string;
-	    items: Abi[];
-	    nItems: number;
-	    largestFile: string;
-	    mostFunctions: string;
-	    mostEvents: string;
 	    sort: sdk.SortSpec;
-	    // Go type: time
-	    lastUpdate: any;
-	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new AbiContainer(source);
@@ -815,6 +815,13 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.largestFile = source["largestFile"];
+	        this.mostFunctions = source["mostFunctions"];
+	        this.mostEvents = source["mostEvents"];
+	        this.items = this.convertValues(source["items"], Abi);
+	        this.nItems = source["nItems"];
+	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.address = this.convertValues(source["address"], base.Address);
 	        this.fileSize = source["fileSize"];
 	        this.functions = this.convertValues(source["functions"], Function);
@@ -827,14 +834,7 @@ export namespace types {
 	        this.nFunctions = source["nFunctions"];
 	        this.name = source["name"];
 	        this.path = source["path"];
-	        this.items = this.convertValues(source["items"], Abi);
-	        this.nItems = source["nItems"];
-	        this.largestFile = source["largestFile"];
-	        this.mostFunctions = source["mostFunctions"];
-	        this.mostEvents = source["mostEvents"];
 	        this.sort = this.convertValues(source["sort"], sdk.SortSpec);
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
-	        this.chain = source["chain"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1424,15 +1424,15 @@ export namespace types {
 		}
 	}
 	export class HistoryContainer {
-	    items: Transaction[];
-	    nItems: number;
-	    nTotal: number;
 	    address: base.Address;
+	    nTotal: number;
 	    name: string;
 	    balance: string;
 	    nLogs: number;
 	    nTokens: number;
 	    nErrors: number;
+	    items: Transaction[];
+	    nItems: number;
 	    chain: string;
 	    // Go type: time
 	    lastUpdate: any;
@@ -1443,15 +1443,15 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.items = this.convertValues(source["items"], Transaction);
-	        this.nItems = source["nItems"];
-	        this.nTotal = source["nTotal"];
 	        this.address = this.convertValues(source["address"], base.Address);
+	        this.nTotal = source["nTotal"];
 	        this.name = source["name"];
 	        this.balance = source["balance"];
 	        this.nLogs = source["nLogs"];
 	        this.nTokens = source["nTokens"];
 	        this.nErrors = source["nErrors"];
+	        this.items = this.convertValues(source["items"], Transaction);
+	        this.nItems = source["nItems"];
 	        this.chain = source["chain"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
@@ -1475,6 +1475,11 @@ export namespace types {
 		}
 	}
 	export class IndexContainer {
+	    items: ChunkStats[];
+	    nItems: number;
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
 	    addrsPerBlock: number;
 	    appsPerAddr: number;
 	    appsPerBlock: number;
@@ -1488,12 +1493,7 @@ export namespace types {
 	    rangeDates?: RangeDates;
 	    ratio: number;
 	    recWid: number;
-	    items: ChunkStats[];
-	    nItems: number;
 	    sort: sdk.SortSpec;
-	    // Go type: time
-	    lastUpdate: any;
-	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new IndexContainer(source);
@@ -1501,6 +1501,10 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.items = this.convertValues(source["items"], ChunkStats);
+	        this.nItems = source["nItems"];
+	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.addrsPerBlock = source["addrsPerBlock"];
 	        this.appsPerAddr = source["appsPerAddr"];
 	        this.appsPerBlock = source["appsPerBlock"];
@@ -1514,11 +1518,7 @@ export namespace types {
 	        this.rangeDates = this.convertValues(source["rangeDates"], RangeDates);
 	        this.ratio = source["ratio"];
 	        this.recWid = source["recWid"];
-	        this.items = this.convertValues(source["items"], ChunkStats);
-	        this.nItems = source["nItems"];
 	        this.sort = this.convertValues(source["sort"], sdk.SortSpec);
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
-	        this.chain = source["chain"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1585,11 +1585,11 @@ export namespace types {
 	    chunks: ChunkRecord[];
 	    specification: string;
 	    version: string;
-	    nItems: number;
 	    nBlooms: number;
 	    bloomsSize: number;
 	    nIndexes: number;
 	    indexSize: number;
+	    nItems: number;
 	    // Go type: time
 	    lastUpdate: any;
 	
@@ -1603,11 +1603,11 @@ export namespace types {
 	        this.chunks = this.convertValues(source["chunks"], ChunkRecord);
 	        this.specification = source["specification"];
 	        this.version = source["version"];
-	        this.nItems = source["nItems"];
 	        this.nBlooms = source["nBlooms"];
 	        this.bloomsSize = source["bloomsSize"];
 	        this.nIndexes = source["nIndexes"];
 	        this.indexSize = source["indexSize"];
+	        this.nItems = source["nItems"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
@@ -1819,21 +1819,21 @@ export namespace types {
 		}
 	}
 	export class NameContainer {
-	    names: Name[];
-	    namesMap: {[key: string]: Name};
-	    nItems: number;
-	    nDeleted: number;
 	    nContracts: number;
+	    nCustom: number;
+	    nDeleted: number;
 	    nErc20s: number;
 	    nErc721s: number;
-	    nCustom: number;
-	    nRegular: number;
 	    nPrefund: number;
+	    nRegular: number;
 	    nSystem: number;
+	    sizeOnDisc: number;
+	    items: Name[];
+	    nItems: number;
 	    // Go type: time
 	    lastUpdate: any;
-	    sizeOnDisc: number;
 	    chain: string;
+	    namesMap: {[key: string]: Name};
 	
 	    static createFrom(source: any = {}) {
 	        return new NameContainer(source);
@@ -1841,20 +1841,20 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.names = this.convertValues(source["names"], Name);
-	        this.namesMap = this.convertValues(source["namesMap"], Name, true);
-	        this.nItems = source["nItems"];
-	        this.nDeleted = source["nDeleted"];
 	        this.nContracts = source["nContracts"];
+	        this.nCustom = source["nCustom"];
+	        this.nDeleted = source["nDeleted"];
 	        this.nErc20s = source["nErc20s"];
 	        this.nErc721s = source["nErc721s"];
-	        this.nCustom = source["nCustom"];
-	        this.nRegular = source["nRegular"];
 	        this.nPrefund = source["nPrefund"];
+	        this.nRegular = source["nRegular"];
 	        this.nSystem = source["nSystem"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.sizeOnDisc = source["sizeOnDisc"];
+	        this.items = this.convertValues(source["items"], Name);
+	        this.nItems = source["nItems"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.chain = source["chain"];
+	        this.namesMap = this.convertValues(source["namesMap"], Name, true);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

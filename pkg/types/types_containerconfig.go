@@ -1,5 +1,6 @@
 package types
 
+// EXISTING_CODE
 import (
 	"encoding/json"
 	"time"
@@ -9,17 +10,23 @@ import (
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 )
 
+// EXISTING_CODE
+
 type ConfigContainer struct {
 	configTypes.Config `json:",inline"`
 	LastUpdate         time.Time `json:"lastUpdate"`
+	// EXISTING_CODE
+	// EXISTING_CODE
 }
 
 func NewConfigContainer(cfg *configTypes.Config) ConfigContainer {
 	latest := utils.MustGetLatestFileTime(coreConfig.PathToRootConfig())
 	ret := ConfigContainer{
-		Config: *cfg,
+		Config:     *cfg,
+		LastUpdate: latest,
 	}
-	ret.LastUpdate = latest
+	// EXISTING_CODE
+	// EXISTING_CODE
 	return ret
 }
 
@@ -41,11 +48,14 @@ func (s *ConfigContainer) ShallowCopy() Containerer {
 	ret := &ConfigContainer{
 		Config:     s.Config,
 		LastUpdate: s.LastUpdate,
+		// EXISTING_CODE
+		// EXISTING_CODE
 	}
 	return ret
 }
 
 func (s *ConfigContainer) Summarize() {
+	// EXISTING_CODE
 	// logger.Info("Version:", s.Config.Version.String())
 	// logger.Info("Settings:", s.Config.Settings.String())
 	// for _, key := range s.Config.Keys {
@@ -56,4 +66,13 @@ func (s *ConfigContainer) Summarize() {
 	// for _, chain := range s.Config.Chains {
 	// 	logger.Info("Chains:", chain.String())
 	// }
+	// EXISTING_CODE
 }
+
+func ConfigX() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+// EXISTING_CODE
+// EXISTING_CODE

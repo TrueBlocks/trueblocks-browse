@@ -1,5 +1,6 @@
 package types
 
+// EXISTING_CODE
 import (
 	"encoding/json"
 	"path/filepath"
@@ -14,47 +15,53 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
+// EXISTING_CODE
+
 type NameContainer struct {
-	Names      []coreTypes.Name                `json:"names"`
-	NamesMap   map[base.Address]coreTypes.Name `json:"namesMap"`
-	NItems     int                             `json:"nItems"`
-	NDeleted   int                             `json:"nDeleted"`
-	NContracts int                             `json:"nContracts"`
-	NErc20s    int                             `json:"nErc20s"`
-	NErc721s   int                             `json:"nErc721s"`
-	NCustom    int                             `json:"nCustom"`
-	NRegular   int                             `json:"nRegular"`
-	NPrefund   int                             `json:"nPrefund"`
-	NSystem    int                             `json:"nSystem"`
-	LastUpdate time.Time                       `json:"lastUpdate"`
-	SizeOnDisc int                             `json:"sizeOnDisc"`
-	Chain      string                          `json:"chain"`
+	NContracts uint64           `json:"nContracts"`
+	NCustom    uint64           `json:"nCustom"`
+	NDeleted   uint64           `json:"nDeleted"`
+	NErc20s    uint64           `json:"nErc20s"`
+	NErc721s   uint64           `json:"nErc721s"`
+	NPrefund   uint64           `json:"nPrefund"`
+	NRegular   uint64           `json:"nRegular"`
+	NSystem    uint64           `json:"nSystem"`
+	SizeOnDisc uint64           `json:"sizeOnDisc"`
+	Items      []coreTypes.Name `json:"items"`
+	NItems     uint64           `json:"nItems"`
+	LastUpdate time.Time        `json:"lastUpdate"`
+	Chain      string           `json:"chain"`
+	// EXISTING_CODE
+	NamesMap map[base.Address]coreTypes.Name `json:"namesMap"`
+	// EXISTING_CODE
 }
 
-func NewNameContainer(chain string, namesMap map[base.Address]coreTypes.Name) NameContainer {
-	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(chain))
+func NewNameContainer(chain string, itemsIn map[base.Address]coreTypes.Name) NameContainer {
+	latest := getLatestNameDate(chain)
 	ret := NameContainer{
-		Names:      make([]coreTypes.Name, 0),
-		NamesMap:   namesMap,
-		LastUpdate: latest,
+		Items:      make([]coreTypes.Name, 0, len(itemsIn)),
 		Chain:      chain,
+		LastUpdate: latest,
 	}
+	// EXISTING_CODE
+	ret.NamesMap = itemsIn
 	for _, name := range ret.NamesMap {
-		ret.Names = append(ret.Names, name)
+		ret.Items = append(ret.Items, name)
 	}
-	sort.Slice(ret.Names, func(i, j int) bool {
-		return compare(ret.Names[i], ret.Names[j])
+	sort.Slice(ret.Items, func(i, j int) bool {
+		return compare(ret.Items[i], ret.Items[j])
 	})
+	// EXISTING_CODE
 	return ret
 }
 
-func (a *NameContainer) String() string {
-	bytes, _ := json.Marshal(a)
+func (s *NameContainer) String() string {
+	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
 func (s *NameContainer) NeedsUpdate(force bool) bool {
-	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(s.Chain))
+	latest := getLatestNameDate(s.Chain)
 	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
 		return true
@@ -64,30 +71,27 @@ func (s *NameContainer) NeedsUpdate(force bool) bool {
 
 func (s *NameContainer) ShallowCopy() Containerer {
 	return &NameContainer{
-		NItems:     s.NItems,
-		NDeleted:   s.NDeleted,
 		NContracts: s.NContracts,
+		NCustom:    s.NCustom,
+		NDeleted:   s.NDeleted,
 		NErc20s:    s.NErc20s,
 		NErc721s:   s.NErc721s,
-		NCustom:    s.NCustom,
-		NRegular:   s.NRegular,
 		NPrefund:   s.NPrefund,
+		NRegular:   s.NRegular,
 		NSystem:    s.NSystem,
-		LastUpdate: s.LastUpdate,
 		SizeOnDisc: s.SizeOnDisc,
+		NItems:     s.NItems,
 		Chain:      s.Chain,
+		LastUpdate: s.LastUpdate,
+		// EXISTING_CODE
+		// EXISTING_CODE
 	}
 }
 
 func (s *NameContainer) Summarize() {
-	chain := "mainnet"
-	customPath := filepath.Join(config.MustGetPathToChainConfig(chain), string(names.DatabaseCustom))
-	s.SizeOnDisc = int(file.FileSize(customPath))
-	regularPath := filepath.Join(config.MustGetPathToChainConfig(chain), string(names.DatabaseRegular))
-	s.SizeOnDisc += int(file.FileSize(regularPath))
-
-	s.NItems = len(s.Names)
-	for _, name := range s.Names {
+	// EXISTING_CODE
+	s.NItems = uint64(len(s.Items))
+	for _, name := range s.Items {
 		if name.Parts&coreTypes.Regular > 0 {
 			s.NRegular++
 		}
@@ -113,8 +117,22 @@ func (s *NameContainer) Summarize() {
 			s.NContracts++
 		}
 	}
+	chain := "mainnet"
+	customPath := filepath.Join(config.MustGetPathToChainConfig(chain), string(names.DatabaseCustom))
+	s.SizeOnDisc = uint64(file.FileSize(customPath))
+	regularPath := filepath.Join(config.MustGetPathToChainConfig(chain), string(names.DatabaseRegular))
+	s.SizeOnDisc += uint64(file.FileSize(regularPath))
+	// EXISTING_CODE
 }
 
+func getLatestNameDate(chain string) (ret time.Time) {
+	// EXISTING_CODE
+	ret = utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(chain))
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
 func compare(nameI, nameJ coreTypes.Name) bool {
 	ti := nameI.Parts
 	if ti == coreTypes.Regular {
@@ -132,3 +150,5 @@ func compare(nameI, nameJ coreTypes.Name) bool {
 	}
 	return ti < tj
 }
+
+// EXISTING_CODE

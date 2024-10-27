@@ -10,12 +10,12 @@ export const NamesView = () => {
   const { names, fetchNames } = useAppState();
 
   const handleEnter = (page: Page) => {
-    const address = names.names[page.getRecord()].address;
+    const address = names.items[page.getRecord()].address;
     GoToHistory(address).then(() => {});
   };
 
   const table = useReactTable({
-    data: names.names || [],
+    data: names.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });

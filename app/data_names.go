@@ -25,10 +25,10 @@ func (a *App) NamePage(first, pageSize int) *types.NameContainer {
 	nameMutex.Lock()
 	defer nameMutex.Unlock()
 
-	first = base.Max(0, base.Min(first, len(a.names.Names)-1))
-	last := base.Min(len(a.names.Names), first+pageSize)
+	first = base.Max(0, base.Min(first, len(a.names.Items)-1))
+	last := base.Min(len(a.names.Items), first+pageSize)
 	copy, _ := a.names.ShallowCopy().(*types.NameContainer)
-	copy.Names = a.names.Names[first:last]
+	copy.Items = a.names.Items[first:last]
 	return copy
 }
 
@@ -119,7 +119,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 	}
 
 	newArray := []coreTypes.Name{}
-	for _, name := range a.names.Names {
+	for _, name := range a.names.Items {
 		if name.Address == modData.Address {
 			switch opFromString(op) {
 			case crud.Update:
@@ -144,7 +144,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 		newArray = append(newArray, name)
 	}
 	nameMutex.Lock()
-	a.names.Names = newArray
+	a.names.Items = newArray
 	nameMutex.Unlock()
 
 	return nil

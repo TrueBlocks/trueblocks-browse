@@ -1,5 +1,6 @@
 package types
 
+// EXISTING_CODE
 import (
 	"encoding/json"
 	"fmt"
@@ -12,29 +13,37 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
+// EXISTING_CODE
+
 type AbiContainer struct {
-	coreTypes.Abi
-	Items         []coreTypes.Abi `json:"items"`
-	NItems        int             `json:"nItems"`
 	LargestFile   string          `json:"largestFile"`
 	MostFunctions string          `json:"mostFunctions"`
 	MostEvents    string          `json:"mostEvents"`
-	Sorts         sdk.SortSpec    `json:"sort"`
-	LastUpdate    time.Time       `json:"lastUpdate"`
+	Items         []coreTypes.Abi `json:"items"`
+	NItems        uint64          `json:"nItems"`
 	Chain         string          `json:"chain"`
+	LastUpdate    time.Time       `json:"lastUpdate"`
+	// EXISTING_CODE
+	coreTypes.Abi
+	Sorts sdk.SortSpec `json:"sort"`
+	// EXISTING_CODE
 }
 
-func NewAbiContainer(chain string, items []coreTypes.Abi) AbiContainer {
-	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(chain), "abis"))
-	return AbiContainer{
-		Items: items,
-		Sorts: sdk.SortSpec{
-			Fields: []string{"isEmpty", "isKnown", "address"},
-			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},
-		},
+func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
+	latest := getLatestAbiDate(chain)
+	ret := AbiContainer{
+		Items:      make([]coreTypes.Abi, 0, len(itemsIn)),
 		Chain:      chain,
 		LastUpdate: latest,
 	}
+	// EXISTING_CODE
+	ret.Items = itemsIn
+	ret.Sorts = sdk.SortSpec{
+		Fields: []string{"isEmpty", "isKnown", "address"},
+		Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},
+	}
+	// EXISTING_CODE
+	return ret
 }
 
 func (s *AbiContainer) String() string {
@@ -43,7 +52,7 @@ func (s *AbiContainer) String() string {
 }
 
 func (s *AbiContainer) NeedsUpdate(force bool) bool {
-	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "abis"))
+	latest := getLatestAbiDate(s.Chain)
 	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
 		return true
@@ -53,21 +62,24 @@ func (s *AbiContainer) NeedsUpdate(force bool) bool {
 
 func (s *AbiContainer) ShallowCopy() Containerer {
 	return &AbiContainer{
-		Abi:           s.Abi,
-		NItems:        s.NItems,
 		LargestFile:   s.LargestFile,
-		MostFunctions: s.MostFunctions,
 		MostEvents:    s.MostEvents,
-		LastUpdate:    s.LastUpdate,
+		MostFunctions: s.MostFunctions,
+		NItems:        s.NItems,
 		Chain:         s.Chain,
+		LastUpdate:    s.LastUpdate,
+		// EXISTING_CODE
+		Abi: s.Abi,
+		// EXISTING_CODE
 	}
 }
 
 func (s *AbiContainer) Summarize() {
+	// EXISTING_CODE
 	var lF comparison
 	var mF comparison
 	var mE comparison
-	s.NItems = len(s.Items)
+	s.NItems = uint64(len(s.Items))
 	for _, file := range s.Items {
 		s.NFunctions += file.NFunctions
 		s.NEvents += file.NEvents
@@ -79,8 +91,17 @@ func (s *AbiContainer) Summarize() {
 	s.LargestFile = fmt.Sprintf("%s (%d bytes)", lF.Name, lF.Value)
 	s.MostFunctions = fmt.Sprintf("%s (%d functions)", mF.Name, mF.Value)
 	s.MostEvents = fmt.Sprintf("%s (%d events)", mE.Name, mE.Value)
+	// EXISTING_CODE
 }
 
+func getLatestAbiDate(chain string) (ret time.Time) {
+	// EXISTING_CODE
+	ret = utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(chain), "abis"))
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
 type comparison struct {
 	Name  string `json:"name"`
 	Value int    `json:"value"`
@@ -99,3 +120,5 @@ func (c *comparison) MarkMin(name string, value int) {
 		c.Value = value
 	}
 }
+
+// EXISTING_CODE

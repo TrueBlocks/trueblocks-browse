@@ -1,5 +1,6 @@
 package types
 
+// EXISTING_CODE
 import (
 	"encoding/json"
 	"time"
@@ -11,21 +12,27 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
+// EXISTING_CODE
+
 type SettingsGroup struct {
 	Status     StatusContainer  `json:"status"`
 	Config     ConfigContainer  `json:"config"`
 	Session    SessionContainer `json:"session"`
 	LastUpdate time.Time        `json:"lastUpdate"`
+	// EXISTING_CODE
+	// EXISTING_CODE
 }
 
 func NewSettingsGroup(status *coreTypes.Status, cfg *configTypes.Config, session *config.Session) SettingsGroup {
 	latest := getLatestFileTime()
 	ret := SettingsGroup{
-		Status:  NewStatusContainer(status.Chain, status),
-		Config:  NewConfigContainer(cfg),
-		Session: NewSessionContainer(session),
+		Status:     NewStatusContainer(status.Chain, status),
+		Config:     NewConfigContainer(cfg),
+		Session:    NewSessionContainer(session),
+		LastUpdate: latest,
 	}
-	ret.LastUpdate = latest
+	// EXISTING_CODE
+	// EXISTING_CODE
 	return ret
 }
 
@@ -49,15 +56,19 @@ func (s *SettingsGroup) ShallowCopy() Containerer {
 		Config:     *configCopy,
 		Session:    *sessionCopy,
 		LastUpdate: s.LastUpdate,
+		// EXISTING_CODE
+		// EXISTING_CODE
 	}
 	return ret
 }
 
 func (s *SettingsGroup) Summarize() {
+	// EXISTING_CODE
 	s.Status.Summarize()
 	s.Config.Summarize()
 	// s.Session.Summarize()
 	// logger.Info("Session:", s.Session.String())
+	// EXISTING_CODE
 }
 
 func getLatestFileTime() time.Time {
@@ -65,5 +76,10 @@ func getLatestFileTime() time.Time {
 	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
 	folders := []string{configFn, sessionFn}
 	ret := utils.MustGetLatestFileTime(folders...)
+	// EXISTING_CODE
+	// EXISTING_CODE
 	return ret
 }
+
+// EXISTING_CODE
+// EXISTING_CODE

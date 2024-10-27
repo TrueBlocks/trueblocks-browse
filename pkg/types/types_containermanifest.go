@@ -1,5 +1,6 @@
 package types
 
+// EXISTING_CODE
 import (
 	"encoding/json"
 	"time"
@@ -9,14 +10,18 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
+// EXISTING_CODE
+
 type ManifestContainer struct {
 	coreTypes.Manifest `json:",inline"`
-	NItems             int       `json:"nItems"`
 	NBlooms            int       `json:"nBlooms"`
 	BloomsSize         int       `json:"bloomsSize"`
 	NIndexes           int       `json:"nIndexes"`
 	IndexSize          int       `json:"indexSize"`
+	NItems             int       `json:"nItems"`
 	LastUpdate         time.Time `json:"lastUpdate"`
+	// EXISTING_CODE
+	// EXISTING_CODE
 }
 
 func NewManifestContainer(chain string, manifest coreTypes.Manifest) ManifestContainer {
@@ -25,7 +30,9 @@ func NewManifestContainer(chain string, manifest coreTypes.Manifest) ManifestCon
 		Manifest:   manifest,
 		LastUpdate: latest,
 	}
+	// EXISTING_CODE
 	ret.Chain = chain
+	// EXISTING_CODE
 	return ret
 }
 
@@ -50,16 +57,19 @@ func (s *ManifestContainer) ShallowCopy() Containerer {
 			Specification: s.Manifest.Specification,
 			Version:       s.Manifest.Version,
 		},
-		NItems:     s.NItems,
 		NBlooms:    s.NBlooms,
 		BloomsSize: s.BloomsSize,
 		NIndexes:   s.NIndexes,
 		IndexSize:  s.IndexSize,
+		NItems:     s.NItems,
 		LastUpdate: s.LastUpdate,
+		// EXISTING_CODE
+		// EXISTING_CODE
 	}
 }
 
 func (s *ManifestContainer) Summarize() {
+	// EXISTING_CODE
 	s.NItems = len(s.Chunks)
 	for _, item := range s.Chunks {
 		s.NBlooms++
@@ -67,4 +77,13 @@ func (s *ManifestContainer) Summarize() {
 		s.NIndexes++
 		s.IndexSize += int(item.IndexSize)
 	}
+	// EXISTING_CODE
 }
+
+func X() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+// EXISTING_CODE
+// EXISTING_CODE
