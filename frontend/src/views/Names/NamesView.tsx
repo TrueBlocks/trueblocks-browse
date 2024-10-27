@@ -39,7 +39,7 @@ export const NamesView = () => {
   );
 };
 
-const createNameForm = (table: any): FieldGroup<types.NamesContainer>[] => {
+const createNameForm = (table: any): FieldGroup<types.NameContainer>[] => {
   return [
     {
       label: "Name Data",
