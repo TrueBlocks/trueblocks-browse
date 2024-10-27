@@ -1,6 +1,6 @@
-import { useState, useEffect, Dispatch, SetStateAction, ReactNode } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { SimpleGrid, Stack, Box } from "@mantine/core";
-import { FieldGroup, FieldsetWrapper, FormTable, PinButton, View } from "@components";
+import { FieldGroup, FieldsetWrapper, FormTable, ViewForm, PinButton, View } from "@components";
 import { GetDaemon, ToggleDaemon } from "@gocode/app/App";
 import { daemons, messages } from "@gocode/models";
 import { useNoops } from "@hooks";
@@ -80,7 +80,7 @@ export const DaemonsView = () => {
 
   const route = "daemons";
   const tabs = ["daemons"];
-  const forms: Record<string, ReactNode> = {
+  const forms: ViewForm = {
     daemons: <FormTable data={data} groups={createDaemonForm(data)} />,
   };
 

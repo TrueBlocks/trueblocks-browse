@@ -1,6 +1,5 @@
-import { ReactNode } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, FieldGroup, CleanButton } from "@components";
+import { View, FormTable, DataTable, FieldGroup, ViewForm, CleanButton } from "@components";
 import { types } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
@@ -18,7 +17,7 @@ export const StatusView = () => {
 
   const route = "status";
   const tabs = ["status"];
-  const forms: Record<string, ReactNode> = {
+  const forms: ViewForm = {
     status: <FormTable data={status} groups={createStatusForm(table)} />,
   };
   return (

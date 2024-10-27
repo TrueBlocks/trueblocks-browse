@@ -1,6 +1,5 @@
-import { ReactNode } from "react";
 import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
-import { View, FormTable, DataTable, FieldGroup, PublishButton, CleanButton, AddButton } from "@components";
+import { View, FormTable, DataTable, FieldGroup, ViewForm, PublishButton, CleanButton, AddButton } from "@components";
 import { ModifyAbi } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
@@ -17,7 +16,7 @@ export const AbisView = () => {
 
   const route = "abis";
   const tabs = ["abis"];
-  const forms: Record<string, ReactNode> = {
+  const forms: ViewForm = {
     abis: <FormTable data={abis} groups={createAbisForm(table)} />,
   };
   return (

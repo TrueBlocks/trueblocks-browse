@@ -1,7 +1,6 @@
-import { ReactNode } from "react";
 import { Stack, Group } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { CleanButton, DataTable, EditButton, FieldGroup, FormTable, View } from "@components";
+import { CleanButton, DataTable, EditButton, FieldGroup, FormTable, View, ViewForm } from "@components";
 import { configtypes, types } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { ViewStateProvider, useAppState } from "@state";
@@ -23,7 +22,7 @@ export const SettingsView = () => {
 
   const route = "settings";
   const tabs = ["config", "status", "session"];
-  const forms: Record<string, ReactNode> = {
+  const forms: ViewForm = {
     status: <FormTable data={status} groups={createStatusForm(table)} />,
     config: <FormTable data={config} groups={createConfigForm(config)} />,
     session: <FormTable data={session} groups={createSessionForm()} />,
