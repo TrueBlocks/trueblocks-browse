@@ -1,0 +1,4 @@
+name     ,type   ,strDefault ,attributes ,upgrades ,docOrder ,description
+nFolders ,uint64 ,           ,           ,         ,         ,jim
+nFiles   ,uint64 ,           ,           ,         ,         ,jim
+nBytes   ,uint64 ,           ,           ,         ,         ,jim
