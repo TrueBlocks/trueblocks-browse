@@ -112,6 +112,6 @@ func (a *App) loadSession() {
 	_ = a.session.Load()
 	a.session.CleanWindowSize(a.ctx)
 	a.globals = sdk.Globals{
-		Chain: a.session.Chain,
+		Chain: a.session.LastChain,
 	}
 }

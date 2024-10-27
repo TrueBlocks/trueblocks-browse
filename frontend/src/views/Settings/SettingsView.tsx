@@ -56,7 +56,7 @@ const createSessionForm = (): FieldGroup<types.SessionContainer>[] => {
       label: "Session Data 1",
       colSpan: 6,
       fields: [
-        { label: "chain", type: "text", accessor: "chain" },
+        { label: "chain", type: "text", accessor: "lastChain" },
         { label: "lastFile", type: "text", accessor: "lastFile" },
         { label: "lastRoute", type: "text", accessor: "lastRoute" },
       ],

@@ -185,8 +185,9 @@ export namespace config {
 	    }
 	}
 	export class Session {
-	    chain: string;
+	    lastChain: string;
 	    lastFile: string;
+	    lastFolder: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
 	    window: Window;
@@ -199,8 +200,9 @@ export namespace config {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.chain = source["chain"];
+	        this.lastChain = source["lastChain"];
 	        this.lastFile = source["lastFile"];
+	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
 	        this.window = this.convertValues(source["window"], Window);
@@ -1978,8 +1980,9 @@ export namespace types {
 		}
 	}
 	export class SessionContainer {
-	    chain: string;
+	    lastChain: string;
 	    lastFile: string;
+	    lastFolder: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
 	    window: config.Window;
@@ -1994,8 +1997,9 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.chain = source["chain"];
+	        this.lastChain = source["lastChain"];
 	        this.lastFile = source["lastFile"];
+	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
 	        this.window = this.convertValues(source["window"], config.Window);
