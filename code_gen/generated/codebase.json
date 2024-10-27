@@ -32,6 +32,7 @@
             "doc_route": "110-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "disable_go": true,
             "members": [
                 {
                     "name": "nFolders",
@@ -300,41 +301,40 @@
             "doc_route": "170-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
             "members": [
                 {
-                    "name": "bloomSz",
+                    "name": "nBlooms",
                     "type": "uint64",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "chunkSz",
+                    "name": "bloomsSize",
                     "type": "uint64",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "nAddrs",
+                    "name": "nIndexes",
                     "type": "uint64",
                     "description": "jim",
                     "num": 3
                 },
                 {
-                    "name": "nApps",
+                    "name": "indexSize",
                     "type": "uint64",
                     "description": "jim",
                     "num": 4
                 },
                 {
-                    "name": "nBlocks",
-                    "type": "uint64",
+                    "name": "specification",
+                    "type": "string",
                     "description": "jim",
                     "num": 5
                 },
                 {
-                    "name": "nBlooms",
-                    "type": "uint64",
+                    "name": "version",
+                    "type": "string",
                     "description": "jim",
                     "num": 6
                 }
@@ -344,46 +344,7 @@
             "class": "Index",
             "doc_route": "180-containers",
             "cache_by": "range",
-            "cache_type": "cacheable",
-            "disable_go": true,
-            "members": [
-                {
-                    "name": "bloomSz",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 1
-                },
-                {
-                    "name": "chunkSz",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 2
-                },
-                {
-                    "name": "nAddrs",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 3
-                },
-                {
-                    "name": "nApps",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 4
-                },
-                {
-                    "name": "nBlocks",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 5
-                },
-                {
-                    "name": "nBlooms",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 6
-                }
-            ]
+            "cache_type": "cacheable"
         },
         {
             "class": "History",
