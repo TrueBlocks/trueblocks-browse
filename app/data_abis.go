@@ -42,7 +42,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.AbisOptions{
-		Globals: a.globals,
+		Globals: a.toGlobals(),
 	}
 	opts.Globals.Chain = abisChain
 
@@ -75,7 +75,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 func (a *App) ModifyAbi(modData *ModifyData) error {
 	opts := sdk.AbisOptions{
 		Addrs:   []string{modData.Address.Hex()},
-		Globals: a.globals,
+		Globals: a.toGlobals(),
 	}
 	opts.Globals.Decache = true
 

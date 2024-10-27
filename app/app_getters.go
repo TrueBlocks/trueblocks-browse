@@ -62,7 +62,7 @@ func (a *App) GetAddress() base.Address {
 }
 
 func (a *App) GetChain() string {
-	return a.globals.Chain
+	return a.Chain
 }
 
 func (a *App) GetChains() []string {

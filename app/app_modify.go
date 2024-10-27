@@ -9,3 +9,7 @@ type ModifyData struct {
 	Address   base.Address `json:"address"`
 	Value     string       `json:"value"`
 }
+
+func (a *App) UnusedFunc(modData *ModifyData) error {
+	return nil
+}

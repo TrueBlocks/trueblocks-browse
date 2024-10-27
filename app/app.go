@@ -21,13 +21,14 @@ import (
 )
 
 type App struct {
+	sdk.Globals `json:",inline"`
+
 	ctx context.Context
 	cfg configTypes.Config
 
 	session config.Session
 
-	meta    coreTypes.MetaData
-	globals sdk.Globals
+	meta coreTypes.MetaData
 
 	renderCtxs map[base.Address][]*output.RenderCtx
 
@@ -38,8 +39,9 @@ type App struct {
 	abis     types.AbiContainer
 	index    types.IndexContainer
 	manifest types.ManifestContainer
-	status   types.StatusContainer
 	settings types.SettingsGroup
+
+	status types.StatusContainer
 
 	// Controllers
 	ScraperController *daemons.DaemonScraper
@@ -111,7 +113,5 @@ func (a *App) saveSession() {
 func (a *App) loadSession() {
 	_ = a.session.Load()
 	a.session.CleanWindowSize(a.ctx)
-	a.globals = sdk.Globals{
-		Chain: a.session.LastChain,
-	}
+	a.Chain = a.session.LastChain
 }

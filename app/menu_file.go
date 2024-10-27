@@ -64,6 +64,11 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 			String1: a.project.Filename,
 			String2: "Opened",
 		})
+	} else {
+		messages.EmitMessage(a.ctx, messages.Document, &messages.MessageMsg{
+			String1: a.project.Filename,
+			String2: "Not opened",
+		})
 	}
 }
 
