@@ -115,3 +115,7 @@ func (a *App) loadSession() {
 	a.session.CleanWindowSize(a.ctx)
 	a.Chain = a.session.LastChain
 }
+
+func (a *App) Logger(msg string) {
+	logger.Info(msg)
+}

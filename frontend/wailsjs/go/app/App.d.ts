@@ -96,6 +96,8 @@ export function IsShowing(arg1:string):Promise<boolean>;
 
 export function LoadName(arg1:string):Promise<editors.Name>;
 
+export function Logger(arg1:string):Promise<void>;
+
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
 
 export function ManifestsView(arg1:menu.CallbackData):Promise<void>;
