@@ -6,6 +6,7 @@
             "doc_route": "100-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "disable_go": true,
             "members": [
                 {
                     "name": "largestFile",
@@ -214,43 +215,43 @@
             "cache_type": "cacheable",
             "members": [
                 {
-                    "name": "nDeleted",
+                    "name": "nContracts",
                     "type": "uint64",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "nContracts",
+                    "name": "nCustom",
                     "type": "uint64",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "nErc20s",
+                    "name": "nDeleted",
                     "type": "uint64",
                     "description": "jim",
                     "num": 3
                 },
                 {
-                    "name": "nErc721s",
+                    "name": "nErc20s",
                     "type": "uint64",
                     "description": "jim",
                     "num": 4
                 },
                 {
-                    "name": "nCustom",
+                    "name": "nErc721s",
                     "type": "uint64",
                     "description": "jim",
                     "num": 5
                 },
                 {
-                    "name": "nRegular",
+                    "name": "nPrefund",
                     "type": "uint64",
                     "description": "jim",
                     "num": 6
                 },
                 {
-                    "name": "nPrefund",
+                    "name": "nRegular",
                     "type": "uint64",
                     "description": "jim",
                     "num": 7
@@ -364,6 +365,7 @@
             "doc_route": "180-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "disable_go": true,
             "members": [
                 {
                     "name": "bloomSz",
