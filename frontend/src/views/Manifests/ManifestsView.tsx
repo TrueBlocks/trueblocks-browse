@@ -10,7 +10,7 @@ export const ManifestsView = () => {
   const { manifests, fetchManifests } = useAppState();
 
   const table = useReactTable({
-    data: manifests.chunks || [],
+    data: manifests.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
