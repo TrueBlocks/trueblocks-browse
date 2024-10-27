@@ -14,10 +14,10 @@ import (
 
 // Find: NewViews
 func (a *App) ManifestPage(first, pageSize int) *types.ManifestContainer {
-	first = base.Max(0, base.Min(first, len(a.manifest.Chunks)-1))
-	last := base.Min(len(a.manifest.Chunks), first+pageSize)
+	first = base.Max(0, base.Min(first, len(a.manifest.Items)-1))
+	last := base.Min(len(a.manifest.Items), first+pageSize)
 	copy, _ := a.manifest.ShallowCopy().(*types.ManifestContainer)
-	copy.Chunks = a.manifest.Chunks[first:last]
+	copy.Items = a.manifest.Items[first:last]
 	return copy
 }
 
@@ -60,10 +60,10 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 		return err
 	} else {
 		a.meta = *meta
-		a.manifest = types.NewManifestContainer(chain, manifests[0])
+		a.manifest = types.NewManifestContainer(chain, manifests)
 		// TODO: Use sorting mechanism from core (see SortChunkStats for example)
-		sort.Slice(a.manifest.Chunks, func(i, j int) bool {
-			return a.manifest.Chunks[i].Range > a.manifest.Chunks[j].Range
+		sort.Slice(a.manifest.Items, func(i, j int) bool {
+			return a.manifest.Items[i].Range > a.manifest.Items[j].Range
 		})
 		a.manifest.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded manifest"})
