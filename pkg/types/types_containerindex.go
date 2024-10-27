@@ -11,23 +11,26 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
+type IndexItemType = coreTypes.ChunkStats
+type IndexInputType = []coreTypes.ChunkStats
+
 // EXISTING_CODE
 
 type IndexContainer struct {
-	Items      []coreTypes.ChunkStats `json:"items"`
-	NItems     uint64                 `json:"nItems"`
-	Chain      string                 `json:"chain"`
-	LastUpdate time.Time              `json:"lastUpdate"`
+	Items      []IndexItemType `json:"items"`
+	NItems     uint64          `json:"nItems"`
+	Chain      string          `json:"chain"`
+	LastUpdate time.Time       `json:"lastUpdate"`
 	// EXISTING_CODE
 	coreTypes.ChunkStats
 	Sorts sdk.SortSpec `json:"sort"`
 	// EXISTING_CODE
 }
 
-func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContainer {
+func NewIndexContainer(chain string, itemsIn IndexInputType) IndexContainer {
 	latest := getLatestIndexDate(chain)
 	ret := IndexContainer{
-		Items:    make([]coreTypes.ChunkStats, 0, len(itemsIn)),
+		Items:      make([]IndexItemType, 0, len(itemsIn)),
 		Chain:      chain,
 		LastUpdate: latest,
 	}
@@ -68,8 +71,8 @@ func (s *IndexContainer) ShallowCopy() Containerer {
 }
 
 func (s *IndexContainer) Summarize() {
-	// EXISTING_CODE
 	s.NItems = uint64(len(s.Items))
+	// EXISTING_CODE
 	for _, chunk := range s.Items {
 		s.BloomSz += chunk.BloomSz
 		s.ChunkSz += chunk.ChunkSz
