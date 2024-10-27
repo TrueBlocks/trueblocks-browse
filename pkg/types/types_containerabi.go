@@ -13,26 +13,29 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
+type AbiItemType = coreTypes.Abi
+type AbiInputType = []coreTypes.Abi
+
 // EXISTING_CODE
 
 type AbiContainer struct {
-	LargestFile   string          `json:"largestFile"`
-	MostFunctions string          `json:"mostFunctions"`
-	MostEvents    string          `json:"mostEvents"`
-	Items         []coreTypes.Abi `json:"items"`
-	NItems        uint64          `json:"nItems"`
-	Chain         string          `json:"chain"`
-	LastUpdate    time.Time       `json:"lastUpdate"`
+	LargestFile   string        `json:"largestFile"`
+	MostEvents    string        `json:"mostEvents"`
+	MostFunctions string        `json:"mostFunctions"`
+	Items         []AbiItemType `json:"items"`
+	NItems        uint64        `json:"nItems"`
+	Chain         string        `json:"chain"`
+	LastUpdate    time.Time     `json:"lastUpdate"`
 	// EXISTING_CODE
 	coreTypes.Abi
 	Sorts sdk.SortSpec `json:"sort"`
 	// EXISTING_CODE
 }
 
-func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
+func NewAbiContainer(chain string, itemsIn AbiInputType) AbiContainer {
 	latest := getLatestAbiDate(chain)
 	ret := AbiContainer{
-		Items:      make([]coreTypes.Abi, 0, len(itemsIn)),
+		Items:      make([]AbiItemType, 0, len(itemsIn)),
 		Chain:      chain,
 		LastUpdate: latest,
 	}
@@ -75,11 +78,11 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 }
 
 func (s *AbiContainer) Summarize() {
+	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
 	var lF comparison
 	var mF comparison
 	var mE comparison
-	s.NItems = uint64(len(s.Items))
 	for _, file := range s.Items {
 		s.NFunctions += file.NFunctions
 		s.NEvents += file.NEvents

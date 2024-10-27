@@ -34,28 +34,22 @@
             "cache_type": "cacheable",
             "members": [
                 {
-                    "name": "nItems",
+                    "name": "nFolders",
                     "type": "uint64",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "nFolders",
+                    "name": "nFiles",
                     "type": "uint64",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "nFiles",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 3
-                },
-                {
                     "name": "nBytes",
                     "type": "uint64",
                     "description": "jim",
-                    "num": 4
+                    "num": 3
                 }
             ]
         },
