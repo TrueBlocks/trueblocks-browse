@@ -31,7 +31,7 @@ type NameContainer struct {
 	Chain      string                          `json:"chain"`
 }
 
-func NewNamesContainer(chain string, namesMap map[base.Address]coreTypes.Name) NameContainer {
+func NewNameContainer(chain string, namesMap map[base.Address]coreTypes.Name) NameContainer {
 	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(chain))
 	ret := NameContainer{
 		Names:      make([]coreTypes.Name, 0),

@@ -67,7 +67,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		nameMutex.Lock()
 		defer nameMutex.Unlock()
 
-		a.names = types.NewNamesContainer(namesChain, namesMap)
+		a.names = types.NewNameContainer(namesChain, namesMap)
 		a.names.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded names"})
 	}
