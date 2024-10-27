@@ -18,6 +18,10 @@ export function AddrToName(arg1) {
   return window['go']['app']['App']['AddrToName'](arg1);
 }
 
+export function Caching(arg1) {
+  return window['go']['app']['App']['Caching'](arg1);
+}
+
 export function CancelAllContexts() {
   return window['go']['app']['App']['CancelAllContexts']();
 }
@@ -296,6 +300,10 @@ export function SystemQuit(arg1) {
 
 export function ToggleDaemon(arg1) {
   return window['go']['app']['App']['ToggleDaemon'](arg1);
+}
+
+export function UnusedFunc(arg1) {
+  return window['go']['app']['App']['UnusedFunc'](arg1);
 }
 
 export function WizardView(arg1) {

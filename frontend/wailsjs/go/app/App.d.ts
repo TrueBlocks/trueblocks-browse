@@ -3,6 +3,7 @@
 import {types} from '../models';
 import {menu} from '../models';
 import {base} from '../models';
+import {sdk} from '../models';
 import {configtypes} from '../models';
 import {context} from '../models';
 import {config} from '../models';
@@ -18,6 +19,8 @@ export function AbisView(arg1:menu.CallbackData):Promise<void>;
 export function AccordionToggle(arg1:menu.CallbackData):Promise<void>;
 
 export function AddrToName(arg1:base.Address):Promise<string>;
+
+export function Caching(arg1:sdk.CacheOp):Promise<void>;
 
 export function CancelAllContexts():Promise<void>;
 
@@ -158,5 +161,7 @@ export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
 
 export function ToggleDaemon(arg1:string):Promise<void>;
+
+export function UnusedFunc(arg1:app.ModifyData):Promise<void>;
 
 export function WizardView(arg1:menu.CallbackData):Promise<void>;
