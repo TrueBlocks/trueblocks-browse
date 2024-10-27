@@ -788,8 +788,8 @@ export namespace types {
 	}
 	export class AbiContainer {
 	    largestFile: string;
-	    mostFunctions: string;
 	    mostEvents: string;
+	    mostFunctions: string;
 	    items: Abi[];
 	    nItems: number;
 	    chain: string;
@@ -816,8 +816,8 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.largestFile = source["largestFile"];
-	        this.mostFunctions = source["mostFunctions"];
 	        this.mostEvents = source["mostEvents"];
+	        this.mostFunctions = source["mostFunctions"];
 	        this.items = this.convertValues(source["items"], Abi);
 	        this.nItems = source["nItems"];
 	        this.chain = source["chain"];
@@ -1830,9 +1830,9 @@ export namespace types {
 	    sizeOnDisc: number;
 	    items: Name[];
 	    nItems: number;
+	    chain: string;
 	    // Go type: time
 	    lastUpdate: any;
-	    chain: string;
 	    namesMap: {[key: string]: Name};
 	
 	    static createFrom(source: any = {}) {
@@ -1852,8 +1852,8 @@ export namespace types {
 	        this.sizeOnDisc = source["sizeOnDisc"];
 	        this.items = this.convertValues(source["items"], Name);
 	        this.nItems = source["nItems"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.namesMap = this.convertValues(source["namesMap"], Name, true);
 	    }
 	
