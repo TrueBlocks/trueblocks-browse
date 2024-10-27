@@ -28,7 +28,7 @@ func (a *App) SetChain(chain string, address base.Address) {
 	a.saveSession()
 	a.Reload(address)
 	a.monitors = types.MonitorContainer{}
-	a.names = types.NamesContainer{}
+	a.names = types.NameContainer{}
 	a.abis = types.AbiContainer{}
 	a.index = types.IndexContainer{}
 	a.manifest = types.ManifestContainer{}

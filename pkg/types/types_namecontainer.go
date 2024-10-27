@@ -14,7 +14,7 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-type NamesContainer struct {
+type NameContainer struct {
 	Names      []coreTypes.Name                `json:"names"`
 	NamesMap   map[base.Address]coreTypes.Name `json:"namesMap"`
 	NItems     int                             `json:"nItems"`
@@ -31,9 +31,9 @@ type NamesContainer struct {
 	Chain      string                          `json:"chain"`
 }
 
-func NewNamesContainer(chain string, namesMap map[base.Address]coreTypes.Name) NamesContainer {
+func NewNamesContainer(chain string, namesMap map[base.Address]coreTypes.Name) NameContainer {
 	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(chain))
-	ret := NamesContainer{
+	ret := NameContainer{
 		Names:      make([]coreTypes.Name, 0),
 		NamesMap:   namesMap,
 		LastUpdate: latest,
@@ -48,12 +48,12 @@ func NewNamesContainer(chain string, namesMap map[base.Address]coreTypes.Name) N
 	return ret
 }
 
-func (a *NamesContainer) String() string {
+func (a *NameContainer) String() string {
 	bytes, _ := json.Marshal(a)
 	return string(bytes)
 }
 
-func (s *NamesContainer) NeedsUpdate(force bool) bool {
+func (s *NameContainer) NeedsUpdate(force bool) bool {
 	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(s.Chain))
 	if force || latest != s.LastUpdate {
 		s.LastUpdate = latest
@@ -62,8 +62,8 @@ func (s *NamesContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
-func (s *NamesContainer) ShallowCopy() Containerer {
-	return &NamesContainer{
+func (s *NameContainer) ShallowCopy() Containerer {
+	return &NameContainer{
 		NItems:     s.NItems,
 		NDeleted:   s.NDeleted,
 		NContracts: s.NContracts,
@@ -79,7 +79,7 @@ func (s *NamesContainer) ShallowCopy() Containerer {
 	}
 }
 
-func (s *NamesContainer) Summarize() {
+func (s *NameContainer) Summarize() {
 	chain := "mainnet"
 	customPath := filepath.Join(config.MustGetPathToChainConfig(chain), string(names.DatabaseCustom))
 	s.SizeOnDisc = int(file.FileSize(customPath))

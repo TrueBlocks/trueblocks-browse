@@ -34,7 +34,7 @@ type App struct {
 	// Containers
 	project  types.ProjectContainer
 	monitors types.MonitorContainer
-	names    types.NamesContainer
+	names    types.NameContainer
 	abis     types.AbiContainer
 	index    types.IndexContainer
 	manifest types.ManifestContainer

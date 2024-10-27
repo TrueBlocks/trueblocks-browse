@@ -1816,7 +1816,7 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class NamesContainer {
+	export class NameContainer {
 	    names: Name[];
 	    namesMap: {[key: string]: Name};
 	    nItems: number;
@@ -1834,7 +1834,7 @@ export namespace types {
 	    chain: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new NamesContainer(source);
+	        return new NameContainer(source);
 	    }
 	
 	    constructor(source: any = {}) {

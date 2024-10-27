@@ -111,7 +111,7 @@ export function MonitorPage(arg1:number,arg2:number):Promise<types.MonitorContai
 
 export function MonitorsView(arg1:menu.CallbackData):Promise<void>;
 
-export function NamePage(arg1:number,arg2:number):Promise<types.NamesContainer>;
+export function NamePage(arg1:number,arg2:number):Promise<types.NameContainer>;
 
 export function NamesView(arg1:menu.CallbackData):Promise<void>;
 
