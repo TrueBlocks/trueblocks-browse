@@ -84,7 +84,7 @@ func (a *App) l oadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	chain := a.globals.Chain
 	opts := sdk.StatusOptions{
 		Chains:  true,
-		Globals: a.globals,
+		Globals: a.toGlobals(),
 	}
 
 	if statusArray, meta, err := opts.StatusAll(); err != nil {

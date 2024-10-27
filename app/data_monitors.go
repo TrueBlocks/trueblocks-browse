@@ -43,7 +43,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
-	chain := a.globals.Chain
+	chain := a.Chain
 	opts := sdk.MonitorsOptions{
 		Globals: sdk.Globals{
 			Verbose: true,
@@ -100,7 +100,7 @@ func (a *App) ModifyMonitors(modData *ModifyData) error {
 		Delete:   op == crud.Delete,
 		Undelete: op == crud.Undelete,
 		Remove:   op == crud.Remove,
-		Globals:  a.globals,
+		Globals:  a.toGlobals(),
 	}
 
 	if _, _, err := opts.Monitors(); err != nil {

@@ -38,7 +38,7 @@ func (a *App) loadIndex(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
-	chain := a.globals.Chain
+	chain := a.Chain
 	opts := sdk.ChunksOptions{
 		Globals: sdk.Globals{
 			Verbose: true,

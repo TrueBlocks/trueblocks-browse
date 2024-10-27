@@ -107,7 +107,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 
 	cd := crud.CrudFromName(newName)
 	opts := sdk.NamesOptions{
-		Globals: a.globals,
+		Globals: a.toGlobals(),
 	}
 	opts.Globals.Chain = namesChain
 

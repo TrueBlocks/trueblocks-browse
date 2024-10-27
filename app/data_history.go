@@ -41,7 +41,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 func (a *App) getHistoryCnt(address base.Address) int {
 	opts := sdk.ListOptions{
 		Addrs:   []string{address.Hex()},
-		Globals: a.globals,
+		Globals: a.toGlobals(),
 	}
 	appearances, meta, err := opts.ListCount()
 	if err != nil {
@@ -142,7 +142,7 @@ func (a *App) thing(address base.Address, freq int) error {
 		Globals: sdk.Globals{
 			Cache: true,
 			Ether: true,
-			Chain: a.globals.Chain,
+			Chain: a.Chain,
 		},
 	}
 

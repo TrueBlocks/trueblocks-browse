@@ -42,6 +42,7 @@ func main() {
 			&types.IndexContainer{},
 			&types.ManifestContainer{},
 			&types.MonitorContainer{},
+			// &types.DaemonContainer{},
 			&types.SettingsGroup{},
 			&types.StatusContainer{},
 			&wizard.Wizard{},

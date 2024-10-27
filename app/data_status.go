@@ -45,10 +45,10 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	logger.SetLoggerWriter(io.Discard)
 	defer logger.SetLoggerWriter(w)
 
-	chain := a.globals.Chain
+	chain := a.Chain
 	opts := sdk.StatusOptions{
 		Chains:  true,
-		Globals: a.globals,
+		Globals: a.toGlobals(),
 	}
 
 	if statusArray, meta, err := opts.StatusAll(); err != nil {
@@ -74,4 +74,16 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded status"})
 	}
 	return nil
+}
+
+func (a *App) toGlobals() sdk.Globals {
+	return sdk.Globals{
+		Ether:   a.Ether,
+		Cache:   a.Cache,
+		Decache: a.Decache,
+		Verbose: a.Verbose,
+		Chain:   a.Chain,
+		Output:  a.Output,
+		Append:  a.Append,
+	}
 }
