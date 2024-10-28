@@ -27,12 +27,11 @@ type ConfigContainer struct {
 }
 
 func NewConfigContainer(chain string, itemsIn ConfigInputType) ConfigContainer {
-	latest, _ := getConfigReload(chain, time.Time{})
 	ret := ConfigContainer{
-		Items:      make([]ConfigItemType, 0, len(itemsIn)),
-		Chain:      chain,
-		LastUpdate: latest,
+		Items: make([]ConfigItemType, 0, len(itemsIn)),
+		Chain: chain,
 	}
+	ret.LastUpdate, _ = ret.getConfigReload()
 	// EXISTING_CODE
 	ret.Config = itemsIn[0]
 	// EXISTING_CODE
@@ -45,7 +44,7 @@ func (s *ConfigContainer) String() string {
 }
 
 func (s *ConfigContainer) NeedsUpdate(force bool) bool {
-	latest, reload := getConfigReload(s.Chain, s.LastUpdate)
+	latest, reload := s.getConfigReload()
 	if force || reload {
 		s.LastUpdate = latest
 		return true
@@ -81,11 +80,10 @@ func (s *ConfigContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func getConfigReload(chain string, lastUpdate time.Time) (ret time.Time, reload bool) {
+func (s *ConfigContainer) getConfigReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	_ = chain
 	ret = utils.MustGetLatestFileTime(coreConfig.PathToRootConfig())
-	reload = ret != lastUpdate
+	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return
 }

@@ -25,12 +25,11 @@ type SessionContainer struct {
 }
 
 func NewSessionContainer(chain string, itemsIn SessionInputType) SessionContainer {
-	latest, _ := getSessionReload(chain, time.Time{})
 	ret := SessionContainer{
-		Items:      make([]SessionItemType, 0, len(itemsIn)),
-		Chain:      chain,
-		LastUpdate: latest,
+		Items: make([]SessionItemType, 0, len(itemsIn)),
+		Chain: chain,
 	}
+	ret.LastUpdate, _ = ret.getSessionReload()
 	// EXISTING_CODE
 	ret.Session = itemsIn[0]
 	// EXISTING_CODE
@@ -43,7 +42,7 @@ func (s *SessionContainer) String() string {
 }
 
 func (s *SessionContainer) NeedsUpdate(force bool) bool {
-	latest, reload := getSessionReload(s.Chain, s.LastUpdate)
+	latest, reload := s.getSessionReload()
 	if force || reload {
 		s.LastUpdate = latest
 		return true
@@ -78,12 +77,11 @@ func (s *SessionContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func getSessionReload(chain string, lastUpdate time.Time) (ret time.Time, reload bool) {
+func (s *SessionContainer) getSessionReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	_ = chain
 	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
 	ret = utils.MustGetLatestFileTime(sessionFn)
-	reload = ret != lastUpdate
+	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return
 }

@@ -14,12 +14,11 @@ type {{.Class}}Container struct {
 }
 
 func New{{.Class}}Container(chain string, itemsIn {{.Class}}InputType) {{.Class}}Container {
-	latest, _ := get{{.Class}}Reload(chain, time.Time{})
 	ret := {{.Class}}Container{
 		Items:      make([]{{.Class}}ItemType, 0, len(itemsIn)),
 		Chain:      chain,
-		LastUpdate: latest,
 	}
+	ret.LastUpdate, _ = ret.get{{.Class}}Reload()
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -31,7 +30,7 @@ func (s *{{.Class}}Container) String() string {
 }
 
 func (s *{{.Class}}Container) NeedsUpdate(force bool) bool {
-	latest, reload := get{{.Class}}Reload(s.Chain, s.LastUpdate)
+	latest, reload := s.get{{.Class}}Reload()
 	if force || reload {
 		s.LastUpdate = latest
 		return true
@@ -56,7 +55,7 @@ func (s *{{.Class}}Container) Summarize() {
 	// EXISTING_CODE
 }
 
-func get{{.Class}}Reload(chain string, lastUpdate time.Time) (ret time.Time, reload bool) {
+func (s *{{.Class}}Container) get{{.Class}}Reload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return
