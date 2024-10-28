@@ -4,14 +4,13 @@ package app
 import (
 	"fmt"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 )
 
 // EXISTING_CODE
 
 func (a *App) sessionLoadMe() {
-	session := types.NewSessionContainer(a.Chain, &config.Session{})
+	session := types.NewSessionContainer(a.Chain, &types.Session{})
 	fmt.Println("Loaded: ", session.String())
 	// EXISTING_CODE
 	// EXISTING_CODE

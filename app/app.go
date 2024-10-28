@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"sync"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -23,11 +22,8 @@ import (
 type App struct {
 	sdk.Globals `json:",inline"`
 
-	ctx context.Context
-	cfg configTypes.Config
-
-	session config.Session
-
+	ctx  context.Context
+	cfg  configTypes.Config
 	meta coreTypes.MetaData
 
 	renderCtxs map[base.Address][]*output.RenderCtx
@@ -41,8 +37,8 @@ type App struct {
 	manifests types.ManifestContainer
 	settings  types.SettingsGroup
 	configs   types.ConfigContainer
-
-	status types.StatusContainer
+	status    types.StatusContainer
+	session   types.Session
 
 	// Controllers
 	ScraperController *daemons.DaemonScraper

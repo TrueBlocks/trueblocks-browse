@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -91,7 +91,7 @@ func (s *ManifestContainer) Summarize() {
 
 func (s *ManifestContainer) getManifestReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(config.PathToManifest(s.Chain))
+	ret = utils.MustGetLatestFileTime(coreConfig.PathToManifest(s.Chain))
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return

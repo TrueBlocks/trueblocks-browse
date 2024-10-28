@@ -1,4 +1,4 @@
-package config
+package types
 
 type Layout struct {
 	Header bool `json:"header"`

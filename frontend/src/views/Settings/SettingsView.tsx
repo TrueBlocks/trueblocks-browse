@@ -45,9 +45,9 @@ const createSessionForm = (): FieldGroup<types.SessionContainer>[] => {
 	    lastFile: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
-	    window: config.Window;
-	    wizard: wizard.Wizard;
-	    toggles: config.Toggles;
+	    window: types.Window;
+	    wizard: types.Wizard;
+	    toggles: types.Toggles;
 	    // Go type: time
 	    lastUpdate: any;
    */
@@ -84,7 +84,7 @@ const createSessionForm = (): FieldGroup<types.SessionContainer>[] => {
   ];
 };
 
-const createConfigForm = (config: types.ConfigContainer): FieldGroup<types.ConfigContainer>[] => {
+const createConfigForm = (cfg: types.ConfigContainer): FieldGroup<types.ConfigContainer>[] => {
   /*
   	    version: configtypes.VersionGroup;
 	    settings: configtypes.SettingsGroup;
@@ -95,11 +95,11 @@ const createConfigForm = (config: types.ConfigContainer): FieldGroup<types.Confi
 	    // Go type: time
 	    lastUpdate: any;
  */
-  // const vg = <VG key={"version"} version={config.version} />;
+  // const vg = <VG key={"version"} version={cfg.version} />;
   return [
     {
       label: "Version",
-      components: [<VG key={"version"} version={config.version} />, <SG key={"settings"} settings={config.settings} />],
+      components: [<VG key={"version"} version={cfg.version} />, <SG key={"settings"} settings={cfg.settings} />],
     },
     {
       label: "Buttons",

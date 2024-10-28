@@ -1,11 +1,11 @@
 import { Button } from "@mantine/core";
 import { StepWizard } from "@gocode/app/App";
-import { wizard } from "@gocode/models";
+import { types } from "@gocode/models";
 import { useAppState } from "@state";
 
 export const WizardView = () => {
   const { isConfigured, wizardState, setWizardState } = useAppState();
-  const stepWizard = (step: wizard.Step) => {
+  const stepWizard = (step: types.Step) => {
     StepWizard(step).then((state) => {
       setWizardState(state);
     });
@@ -24,13 +24,13 @@ export const WizardView = () => {
 };
 
 type StepProps = {
-  stepWizard: (step: wizard.Step) => void;
+  stepWizard: (step: types.Step) => void;
   back?: boolean;
 };
 
 export const ResetWizard = ({ stepWizard }: StepProps) => {
   return (
-    <Button size={"xs"} onClick={() => stepWizard(wizard.Step.RESET)}>
+    <Button size={"xs"} onClick={() => stepWizard(types.Step.RESET)}>
       Reset
     </Button>
   );
@@ -38,7 +38,7 @@ export const ResetWizard = ({ stepWizard }: StepProps) => {
 
 export const BumpWizard = ({ stepWizard, back = false }: StepProps) => {
   return (
-    <Button size={"xs"} onClick={() => stepWizard(back ? wizard.Step.PREVIOUS : wizard.Step.NEXT)}>
+    <Button size={"xs"} onClick={() => stepWizard(back ? types.Step.PREVIOUS : types.Step.NEXT)}>
       {back ? "Back" : "Next"}
     </Button>
   );
@@ -46,7 +46,7 @@ export const BumpWizard = ({ stepWizard, back = false }: StepProps) => {
 
 export const FinishWizard = ({ stepWizard }: StepProps) => {
   return (
-    <Button size={"xs"} onClick={() => stepWizard(wizard.Step.FINISH)}>
+    <Button size={"xs"} onClick={() => stepWizard(types.Step.FINISH)}>
       Finish
     </Button>
   );

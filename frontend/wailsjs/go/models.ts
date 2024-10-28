@@ -66,172 +66,6 @@ export namespace base {
 
 }
 
-export namespace config {
-	
-	export class Daemons {
-	    freshen: boolean;
-	    scraper: boolean;
-	    ipfs: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new Daemons(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.freshen = source["freshen"];
-	        this.scraper = source["scraper"];
-	        this.ipfs = source["ipfs"];
-	    }
-	}
-	export class Headers {
-	    project: boolean;
-	    history: boolean;
-	    monitors: boolean;
-	    names: boolean;
-	    abis: boolean;
-	    indexes: boolean;
-	    manifests: boolean;
-	    status: boolean;
-	    settings: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new Headers(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.project = source["project"];
-	        this.history = source["history"];
-	        this.monitors = source["monitors"];
-	        this.names = source["names"];
-	        this.abis = source["abis"];
-	        this.indexes = source["indexes"];
-	        this.manifests = source["manifests"];
-	        this.status = source["status"];
-	        this.settings = source["settings"];
-	    }
-	}
-	export class Layout {
-	    header: boolean;
-	    menu: boolean;
-	    help: boolean;
-	    footer: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new Layout(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.header = source["header"];
-	        this.menu = source["menu"];
-	        this.help = source["help"];
-	        this.footer = source["footer"];
-	    }
-	}
-	export class Toggles {
-	    layout: Layout;
-	    headers: Headers;
-	    daemons: Daemons;
-	
-	    static createFrom(source: any = {}) {
-	        return new Toggles(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.layout = this.convertValues(source["layout"], Layout);
-	        this.headers = this.convertValues(source["headers"], Headers);
-	        this.daemons = this.convertValues(source["daemons"], Daemons);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class Window {
-	    x: number;
-	    y: number;
-	    width: number;
-	    height: number;
-	    title: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Window(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.x = source["x"];
-	        this.y = source["y"];
-	        this.width = source["width"];
-	        this.height = source["height"];
-	        this.title = source["title"];
-	    }
-	}
-	export class Session {
-	    lastChain: string;
-	    lastFile: string;
-	    lastFolder: string;
-	    lastRoute: string;
-	    lastSub: {[key: string]: string};
-	    window: Window;
-	    wizard: wizard.Wizard;
-	    toggles: Toggles;
-	
-	    static createFrom(source: any = {}) {
-	        return new Session(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.lastChain = source["lastChain"];
-	        this.lastFile = source["lastFile"];
-	        this.lastFolder = source["lastFolder"];
-	        this.lastRoute = source["lastRoute"];
-	        this.lastSub = source["lastSub"];
-	        this.window = this.convertValues(source["window"], Window);
-	        this.wizard = this.convertValues(source["wizard"], wizard.Wizard);
-	        this.toggles = this.convertValues(source["toggles"], Toggles);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	
-
-}
-
 export namespace configtypes {
 	
 	export class ScrapeSettings {
@@ -564,7 +398,7 @@ export namespace messages {
 	export class MessageMsg {
 	    name: string;
 	    address: base.Address;
-	    state: wizard.State;
+	    state: types.State;
 	    num1: number;
 	    num2: number;
 	    string1: string;
@@ -644,6 +478,20 @@ export namespace sdk {
 
 export namespace types {
 	
+	export enum State {
+	    WELCOME = "welcome",
+	    TOMLOKAY = "tomlOkay",
+	    RPCOKAY = "rpcOkay",
+	    BLOOMSOKAY = "bloomsOkay",
+	    INDEXOKAY = "indexOkay",
+	    OKAY = "okay",
+	}
+	export enum Step {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
+	}
 	export class Parameter {
 	    components?: Parameter[];
 	    indexed?: boolean;
@@ -1066,7 +914,51 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class Daemons {
+	    freshen: boolean;
+	    scraper: boolean;
+	    ipfs: boolean;
 	
+	    static createFrom(source: any = {}) {
+	        return new Daemons(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.freshen = source["freshen"];
+	        this.scraper = source["scraper"];
+	        this.ipfs = source["ipfs"];
+	    }
+	}
+	
+	export class Headers {
+	    project: boolean;
+	    history: boolean;
+	    monitors: boolean;
+	    names: boolean;
+	    abis: boolean;
+	    indexes: boolean;
+	    manifests: boolean;
+	    status: boolean;
+	    settings: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Headers(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.project = source["project"];
+	        this.history = source["history"];
+	        this.monitors = source["monitors"];
+	        this.names = source["names"];
+	        this.abis = source["abis"];
+	        this.indexes = source["indexes"];
+	        this.manifests = source["manifests"];
+	        this.status = source["status"];
+	        this.settings = source["settings"];
+	    }
+	}
 	export class Statement {
 	    accountedFor: base.Address;
 	    // Go type: base
@@ -1611,6 +1503,24 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class Layout {
+	    header: boolean;
+	    menu: boolean;
+	    help: boolean;
+	    footer: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Layout(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.header = source["header"];
+	        this.menu = source["menu"];
+	        this.help = source["help"];
+	        this.footer = source["footer"];
+	    }
+	}
 	
 	export class ManifestContainer {
 	    bloomsSize: number;
@@ -1898,6 +1808,116 @@ export namespace types {
 		}
 	}
 	
+	export class Toggles {
+	    layout: Layout;
+	    headers: Headers;
+	    daemons: Daemons;
+	
+	    static createFrom(source: any = {}) {
+	        return new Toggles(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.layout = this.convertValues(source["layout"], Layout);
+	        this.headers = this.convertValues(source["headers"], Headers);
+	        this.daemons = this.convertValues(source["daemons"], Daemons);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class Wizard {
+	    state: State;
+	
+	    static createFrom(source: any = {}) {
+	        return new Wizard(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.state = source["state"];
+	    }
+	}
+	export class Window {
+	    x: number;
+	    y: number;
+	    width: number;
+	    height: number;
+	    title: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Window(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.x = source["x"];
+	        this.y = source["y"];
+	        this.width = source["width"];
+	        this.height = source["height"];
+	        this.title = source["title"];
+	    }
+	}
+	export class Session {
+	    lastChain: string;
+	    lastFile: string;
+	    lastFolder: string;
+	    lastRoute: string;
+	    lastSub: {[key: string]: string};
+	    window: Window;
+	    wizard: Wizard;
+	    toggles: Toggles;
+	
+	    static createFrom(source: any = {}) {
+	        return new Session(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.lastChain = source["lastChain"];
+	        this.lastFile = source["lastFile"];
+	        this.lastFolder = source["lastFolder"];
+	        this.lastRoute = source["lastRoute"];
+	        this.lastSub = source["lastSub"];
+	        this.window = this.convertValues(source["window"], Window);
+	        this.wizard = this.convertValues(source["wizard"], Wizard);
+	        this.toggles = this.convertValues(source["toggles"], Toggles);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class ProjectContainer {
 	    nMonitors: number;
 	    nNames: number;
@@ -1910,7 +1930,7 @@ export namespace types {
 	    filename: string;
 	    nItems: number;
 	    items: HistoryContainer[];
-	    session: config.Session;
+	    session: Session;
 	    // Go type: HistoryMap
 	    historyMap?: any;
 	    // Go type: sync
@@ -1935,7 +1955,7 @@ export namespace types {
 	        this.filename = source["filename"];
 	        this.nItems = source["nItems"];
 	        this.items = this.convertValues(source["items"], HistoryContainer);
-	        this.session = this.convertValues(source["session"], config.Session);
+	        this.session = this.convertValues(source["session"], Session);
 	        this.historyMap = this.convertValues(source["historyMap"], null);
 	        this.balanceMap = this.convertValues(source["balanceMap"], null);
 	        this.ensMap = this.convertValues(source["ensMap"], null);
@@ -2001,15 +2021,16 @@ export namespace types {
 		    return a;
 		}
 	}
+	
 	export class SessionContainer {
 	    lastChain: string;
 	    lastFile: string;
 	    lastFolder: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
-	    window: config.Window;
-	    wizard: wizard.Wizard;
-	    toggles: config.Toggles;
+	    window: Window;
+	    wizard: Wizard;
+	    toggles: Toggles;
 	    chain: string;
 	    // Go type: time
 	    lastUpdate: any;
@@ -2025,9 +2046,9 @@ export namespace types {
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
-	        this.window = this.convertValues(source["window"], config.Window);
-	        this.wizard = this.convertValues(source["wizard"], wizard.Wizard);
-	        this.toggles = this.convertValues(source["toggles"], config.Toggles);
+	        this.window = this.convertValues(source["window"], Window);
+	        this.wizard = this.convertValues(source["wizard"], Wizard);
+	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	        this.chain = source["chain"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
@@ -2176,6 +2197,9 @@ export namespace types {
 	
 	
 	
+	
+	
+	
 
 }
 
@@ -2197,37 +2221,6 @@ export namespace version {
 	        this.minor = source["minor"];
 	        this.build = source["build"];
 	        this.aspect = source["aspect"];
-	    }
-	}
-
-}
-
-export namespace wizard {
-	
-	export enum State {
-	    WELCOME = "welcome",
-	    TOMLOKAY = "tomlOkay",
-	    RPCOKAY = "rpcOkay",
-	    BLOOMSOKAY = "bloomsOkay",
-	    INDEXOKAY = "indexOkay",
-	    OKAY = "okay",
-	}
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
-	}
-	export class Wizard {
-	    state: State;
-	
-	    static createFrom(source: any = {}) {
-	        return new Wizard(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.state = source["state"];
 	    }
 	}
 

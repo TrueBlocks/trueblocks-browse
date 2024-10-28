@@ -2,18 +2,18 @@ package app
 
 import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 )
 
 func (a *App) IsConfigured() bool {
-	return a.GetWizardState() == wizard.Okay
+	return a.GetWizardState() == types.Okay
 }
 
-func (a *App) GetWizardState() wizard.State {
+func (a *App) GetWizardState() types.State {
 	return a.session.Wizard.State
 }
 
-func (a *App) StepWizard(step wizard.Step) wizard.State {
+func (a *App) StepWizard(step types.Step) types.State {
 	defer func() {
 		if a.IsConfigured() {
 			a.Navigate("/", "")

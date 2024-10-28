@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"sync"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 )
 
@@ -27,7 +26,7 @@ type ProjectContainer struct {
 	NItems      uint64             `json:"nItems"`
 	Items       []HistoryContainer `json:"items"`
 	// EXISTING_CODE
-	Session    config.Session   `json:"session"`
+	Session    Session          `json:"session"`
 	Summary    HistoryContainer `json:",inline"`
 	HistoryMap *HistoryMap      `json:"historyMap"`
 	BalanceMap *sync.Map        `json:"balanceMap"`

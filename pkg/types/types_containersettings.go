@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
@@ -23,7 +22,7 @@ type SettingsGroup struct {
 	// EXISTING_CODE
 }
 
-func NewSettingsGroup(status *coreTypes.Status, cfg *configTypes.Config, session *config.Session) SettingsGroup {
+func NewSettingsGroup(status *coreTypes.Status, cfg *configTypes.Config, session *Session) SettingsGroup {
 	latest := getLatestFileTime()
 	ret := SettingsGroup{
 		Status:     NewStatusContainer(status.Chain, status),

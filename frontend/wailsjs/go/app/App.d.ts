@@ -6,8 +6,6 @@ import {base} from '../models';
 import {sdk} from '../models';
 import {configtypes} from '../models';
 import {context} from '../models';
-import {config} from '../models';
-import {wizard} from '../models';
 import {editors} from '../models';
 import {app} from '../models';
 import {output} from '../models';
@@ -70,13 +68,13 @@ export function GetMeta():Promise<types.MetaData>;
 
 export function GetRoute():Promise<string>;
 
-export function GetSession():Promise<config.Session>;
+export function GetSession():Promise<types.Session>;
 
 export function GetState(arg1:string):Promise<string>;
 
-export function GetWindow():Promise<config.Window>;
+export function GetWindow():Promise<types.Window>;
 
-export function GetWizardState():Promise<wizard.State>;
+export function GetWizardState():Promise<types.State>;
 
 export function GoToHistory(arg1:base.Address):Promise<void>;
 
@@ -152,7 +150,7 @@ export function StatusPage(arg1:number,arg2:number):Promise<types.StatusContaine
 
 export function StatusView(arg1:menu.CallbackData):Promise<void>;
 
-export function StepWizard(arg1:wizard.Step):Promise<wizard.State>;
+export function StepWizard(arg1:types.Step):Promise<types.State>;
 
 export function String():Promise<string>;
 

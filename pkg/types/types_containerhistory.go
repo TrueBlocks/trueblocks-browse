@@ -10,7 +10,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -95,7 +95,7 @@ func (s *HistoryContainer) Summarize() {
 
 func (s *HistoryContainer) getHistoryReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "monitors", s.Address.Hex()+".mon.bin"))
+	ret = utils.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "monitors", s.Address.Hex()+".mon.bin"))
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return
