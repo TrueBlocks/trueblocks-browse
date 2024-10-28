@@ -103,45 +103,7 @@
             "class": "Session",
             "doc_route": "130-containers",
             "cache_by": "range",
-            "cache_type": "cacheable",
-            "members": [
-                {
-                    "name": "bloomSz",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 1
-                },
-                {
-                    "name": "chunkSz",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 2
-                },
-                {
-                    "name": "nAddrs",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 3
-                },
-                {
-                    "name": "nApps",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 4
-                },
-                {
-                    "name": "nBlocks",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 5
-                },
-                {
-                    "name": "nBlooms",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 6
-                }
-            ]
+            "cache_type": "cacheable"
         },
         {
             "class": "Project",

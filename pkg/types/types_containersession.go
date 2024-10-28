@@ -10,22 +10,30 @@ import (
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 )
 
+type SessionItemType = config.Session
+type SessionInputType = []config.Session
+
 // EXISTING_CODE
 
 type SessionContainer struct {
-	config.Session `json:",inline"`
-	LastUpdate     time.Time `json:"lastUpdate"`
+	Items      []SessionItemType `json:"items"`
+	NItems     uint64            `json:"nItems"`
+	Chain      string            `json:"chain"`
+	LastUpdate time.Time         `json:"lastUpdate"`
 	// EXISTING_CODE
+	config.Session `json:",inline"`
 	// EXISTING_CODE
 }
 
-func NewSessionContainer(session *config.Session) SessionContainer {
-	latest := utils.MustGetLatestFileTime(coreConfig.PathToRootConfig())
+func NewSessionContainer(chain string, itemsIn SessionInputType) SessionContainer {
+	latest, _ := getSessionReload(chain, time.Time{})
 	ret := SessionContainer{
-		Session:    *session,
+		Items:      make([]SessionItemType, 0, len(itemsIn)),
+		Chain:      chain,
 		LastUpdate: latest,
 	}
 	// EXISTING_CODE
+	ret.Session = itemsIn[0]
 	// EXISTING_CODE
 	return ret
 }
@@ -36,10 +44,8 @@ func (s *SessionContainer) String() string {
 }
 
 func (s *SessionContainer) NeedsUpdate(force bool) bool {
-	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
-	folders := []string{sessionFn}
-	latest := utils.MustGetLatestFileTime(folders...)
-	if force || latest != s.LastUpdate {
+	latest, reload := getSessionReload(s.Chain, s.LastUpdate)
+	if force || reload {
 		s.LastUpdate = latest
 		return true
 	}
@@ -47,16 +53,18 @@ func (s *SessionContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *SessionContainer) ShallowCopy() Containerer {
-	ret := &SessionContainer{
-		Session:    s.Session,
+	return &SessionContainer{
+		NItems:     s.NItems,
+		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
+		Session: s.Session,
 		// EXISTING_CODE
 	}
-	return ret
 }
 
 func (s *SessionContainer) Summarize() {
+	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
 	// logger.Info("Version:", s.Config.Version.String())
 	// logger.Info("Settings:", s.Config.Settings.String())
@@ -71,9 +79,13 @@ func (s *SessionContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func SessionX() {
+func getSessionReload(chain string, lastUpdate time.Time) (ret time.Time, reload bool) {
 	// EXISTING_CODE
+	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
+	ret = utils.MustGetLatestFileTime(sessionFn)
+	reload = ret != lastUpdate
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE
