@@ -15,7 +15,7 @@ export const ProjectView = () => {
     GoToHistory(address).then(() => {});
   };
 
-  const modColumns = project.nOpenFiles < 2 ? withoutDelete : withDelete;
+  const modColumns = project.nItems < 2 ? withoutDelete : withDelete;
   const table = useReactTable({
     data: project.items ?? [],
     columns: modColumns,
@@ -30,7 +30,7 @@ export const ProjectView = () => {
   return (
     <ViewStateProvider
       route={route}
-      nItems={project.nOpenFiles}
+      nItems={project.nItems}
       fetchFn={fetchProject}
       onEnter={handleEnter}
       modifyFn={ModifyProject}
@@ -47,7 +47,7 @@ const createProjectForm = (table: any): FieldGroup<types.ProjectContainer>[] => 
       colSpan: 6,
       fields: [
         { label: "fileName", type: "text", accessor: "filename" },
-        { label: "nHistories", type: "int", accessor: "nOpenFiles" },
+        { label: "nHistories", type: "int", accessor: "nItems" },
         { label: "historySize", type: "bytes", accessor: "historySize" },
         { label: "dirty", type: "boolean", accessor: "dirty" },
       ],

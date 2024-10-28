@@ -1897,15 +1897,6 @@ export namespace types {
 	}
 	
 	export class ProjectContainer {
-	    session: config.Session;
-	    items: HistoryContainer[];
-	    // Go type: HistoryMap
-	    historyMap?: any;
-	    // Go type: sync
-	    balanceMap?: any;
-	    // Go type: sync
-	    ensMap?: any;
-	    nOpenFiles: number;
 	    nMonitors: number;
 	    nNames: number;
 	    nAbis: number;
@@ -1915,6 +1906,15 @@ export namespace types {
 	    historySize: number;
 	    dirty: boolean;
 	    filename: string;
+	    nItems: number;
+	    items: HistoryContainer[];
+	    session: config.Session;
+	    // Go type: HistoryMap
+	    historyMap?: any;
+	    // Go type: sync
+	    balanceMap?: any;
+	    // Go type: sync
+	    ensMap?: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new ProjectContainer(source);
@@ -1922,12 +1922,6 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.session = this.convertValues(source["session"], config.Session);
-	        this.items = this.convertValues(source["items"], HistoryContainer);
-	        this.historyMap = this.convertValues(source["historyMap"], null);
-	        this.balanceMap = this.convertValues(source["balanceMap"], null);
-	        this.ensMap = this.convertValues(source["ensMap"], null);
-	        this.nOpenFiles = source["nOpenFiles"];
 	        this.nMonitors = source["nMonitors"];
 	        this.nNames = source["nNames"];
 	        this.nAbis = source["nAbis"];
@@ -1937,6 +1931,12 @@ export namespace types {
 	        this.historySize = source["historySize"];
 	        this.dirty = source["dirty"];
 	        this.filename = source["filename"];
+	        this.nItems = source["nItems"];
+	        this.items = this.convertValues(source["items"], HistoryContainer);
+	        this.session = this.convertValues(source["session"], config.Session);
+	        this.historyMap = this.convertValues(source["historyMap"], null);
+	        this.balanceMap = this.convertValues(source["balanceMap"], null);
+	        this.ensMap = this.convertValues(source["ensMap"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

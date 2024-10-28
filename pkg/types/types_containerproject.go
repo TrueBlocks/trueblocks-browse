@@ -9,39 +9,42 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 )
 
+type ProjectItemType = HistoryContainer
+type ProjectInputType = HistoryContainer
+
 // EXISTING_CODE
 
 type ProjectContainer struct {
-	Session     config.Session     `json:"session"`
-	Summary     HistoryContainer   `json:",inline"`
-	Items       []HistoryContainer `json:"items"`
-	HistoryMap  *HistoryMap        `json:"historyMap"`
-	BalanceMap  *sync.Map          `json:"balanceMap"`
-	EnsMap      *sync.Map          `json:"ensMap"`
-	NOpenFiles  int                `json:"nOpenFiles"`
-	NMonitors   int                `json:"nMonitors"`
-	NNames      int                `json:"nNames"`
-	NAbis       int                `json:"nAbis"`
-	NIndexes    int                `json:"nIndexes"`
-	NManifests  int                `json:"nManifests"`
-	NCaches     int                `json:"nCaches"`
-	HistorySize int                `json:"historySize"`
+	NMonitors   uint64             `json:"nMonitors"`
+	NNames      uint64             `json:"nNames"`
+	NAbis       uint64             `json:"nAbis"`
+	NIndexes    uint64             `json:"nIndexes"`
+	NManifests  uint64             `json:"nManifests"`
+	NCaches     uint64             `json:"nCaches"`
+	HistorySize uint64             `json:"historySize"`
 	Dirty       bool               `json:"dirty"`
 	Filename    string             `json:"filename"`
+	NItems      uint64             `json:"nItems"`
+	Items       []HistoryContainer `json:"items"`
 	// EXISTING_CODE
+	Session    config.Session   `json:"session"`
+	Summary    HistoryContainer `json:",inline"`
+	HistoryMap *HistoryMap      `json:"historyMap"`
+	BalanceMap *sync.Map        `json:"balanceMap"`
+	EnsMap     *sync.Map        `json:"ensMap"`
 	// EXISTING_CODE
 }
 
 func NewProjectContainer(filename string, historyMap *HistoryMap, balMap, ensMap *sync.Map) ProjectContainer {
 	ret := ProjectContainer{
-		Items:      []HistoryContainer{},
-		HistoryMap: historyMap,
-		BalanceMap: balMap,
-		EnsMap:     ensMap,
-		Dirty:      false,
-		Filename:   filename,
+		Items:    []HistoryContainer{},
+		Dirty:    false,
+		Filename: filename,
 	}
 	// EXISTING_CODE
+	ret.HistoryMap = historyMap
+	ret.BalanceMap = balMap
+	ret.EnsMap = ensMap
 	// EXISTING_CODE
 	return ret
 }
@@ -56,20 +59,22 @@ func (s *ProjectContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *ProjectContainer) ShallowCopy() Containerer {
-	ret := ProjectContainer{}
-	ret.Session = s.Session
+	ret := ProjectContainer{
+		Session:     s.Session,
+		NItems:      s.NItems,
+		NMonitors:   s.NMonitors,
+		NNames:      s.NNames,
+		NAbis:       s.NAbis,
+		NIndexes:    s.NIndexes,
+		NManifests:  s.NManifests,
+		NCaches:     s.NCaches,
+		HistorySize: s.HistorySize,
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
 	if copy, ok := s.Summary.ShallowCopy().(*HistoryContainer); ok {
 		ret.Summary = *copy
 	}
-	// ret.Items = h.Items
-	ret.NOpenFiles = s.NOpenFiles
-	ret.NMonitors = s.NMonitors
-	ret.NNames = s.NNames
-	ret.NAbis = s.NAbis
-	ret.NIndexes = s.NIndexes
-	ret.NManifests = s.NManifests
-	ret.NCaches = s.NCaches
-	ret.HistorySize = s.HistorySize
 	ret.Dirty = true
 	ret.Filename = "Untitled"
 	return &ret
