@@ -5,18 +5,20 @@ package types
 
 type {{.Class}}Container struct {
 {{range .Members}}{{if .IsSimpField}}{{.GoName}} {{.GoType}} {{.Tag}}
-{{end}}{{end}}	{{if .HasItemType}}	{{.ItemType}} `json:",inline"`{{else}}	Items []{{.Class}}ItemType `json:"items"`
-	NItems uint64 `json:"nItems"`{{end}}
-{{if .NeedsChain}}	Chain string `json:"chain"`
+{{end}}{{end}}{{if .NeedsEmbed}}{{.EmbedType}} `json:",inline"`
+{{end}}{{if .NeedsItems}}	Items []{{.ItemType}} `json:"items"`
+	NItems uint64 `json:"nItems"`
+{{end}}{{if .NeedsChain}}	Chain string `json:"chain"`
 {{end}}	LastUpdate time.Time `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func New{{.Class}}Container(chain string, {{.InputType}}) {{.Class}}Container {
+func New{{.Class}}Container(chain string{{if .NeedsItems}}, itemsIn []{{.ItemType}}{{end}}{{if .NeedsEmbed}}, {{toLower .EmbedName}} *{{.EmbedType}}{{end}}) {{.Class}}Container {
 	ret := {{.Class}}Container{
-		{{.InputTypeInit}},
-{{if .NeedsChain}}		Chain: chain,
+	{{if .NeedsItems}}Items: make([]{{.ItemType}}, 0, len(itemsIn)),
+{{end}}{{if .NeedsEmbed}}{{toProper .EmbedName}}: *{{toLower .EmbedName}},
+{{end}}{{if .NeedsChain}}		Chain: chain,
 {{end}}	}
 	ret.LastUpdate, _ = ret.get{{.Class}}Reload()
 	// EXISTING_CODE
@@ -41,8 +43,9 @@ func (s *{{.Class}}Container) NeedsUpdate(force bool) bool {
 func (s *{{.Class}}Container) ShallowCopy() Containerer {
 	return &{{.Class}}Container{
 		{{range .Members}}{{if .IsSimpField}}{{.GoName}}: s.{{.GoName}},
-		{{end}}{{end}}{{.InputTypeCopy}},
-{{if .NeedsChain}}			Chain: s.Chain,
+		{{end}}{{end}}{{if .NeedsEmbed}}{{toProper .EmbedName}}: s.{{toProper .EmbedName}}.ShallowCopy(),
+{{end}}{{if .NeedsItems}}NItems: s.NItems,
+{{end}}{{if .NeedsChain}}			Chain: s.Chain,
 {{end}}			LastUpdate: s.LastUpdate,
 			// EXISTING_CODE
 			// EXISTING_CODE
@@ -50,7 +53,7 @@ func (s *{{.Class}}Container) ShallowCopy() Containerer {
 }
 
 func (s *{{.Class}}Container) Summarize() {
-{{if not .HasItemType}}	s.NItems = uint64(len(s.Items))
+{{if .NeedsItems}}	s.NItems = uint64(len(s.Items))
 {{end}}	// EXISTING_CODE
 	// EXISTING_CODE
 }

@@ -13,28 +13,25 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-type AbiItemType = coreTypes.Abi
-type AbiInputType = []coreTypes.Abi
-
 // EXISTING_CODE
 
 type AbiContainer struct {
-	LargestFile   string        `json:"largestFile"`
-	MostEvents    string        `json:"mostEvents"`
-	MostFunctions string        `json:"mostFunctions"`
-	Items         []AbiItemType `json:"items"`
-	NItems        uint64        `json:"nItems"`
-	Chain         string        `json:"chain"`
-	LastUpdate    time.Time     `json:"lastUpdate"`
+	LargestFile   string          `json:"largestFile"`
+	MostEvents    string          `json:"mostEvents"`
+	MostFunctions string          `json:"mostFunctions"`
+	Items         []coreTypes.Abi `json:"items"`
+	NItems        uint64          `json:"nItems"`
+	Chain         string          `json:"chain"`
+	LastUpdate    time.Time       `json:"lastUpdate"`
 	// EXISTING_CODE
 	coreTypes.Abi
 	Sorts sdk.SortSpec `json:"sort"`
 	// EXISTING_CODE
 }
 
-func NewAbiContainer(chain string, itemsIn AbiInputType) AbiContainer {
+func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 	ret := AbiContainer{
-		Items: make([]AbiItemType, 0, len(itemsIn)),
+		Items: make([]coreTypes.Abi, 0, len(itemsIn)),
 		Chain: chain,
 	}
 	ret.LastUpdate, _ = ret.getAbiReload()

@@ -12,10 +12,10 @@ import (
 // EXISTING_CODE
 
 type StatusContainer struct {
+	NBytes           uint64 `json:"nBytes"`
+	NFiles           uint64 `json:"nFiles"`
+	NFolders         uint64 `json:"nFolders"`
 	coreTypes.Status `json:",inline"`
-	NBytes           uint64    `json:"nBytes"`
-	NFiles           uint64    `json:"nFiles"`
-	NFolders         uint64    `json:"nFolders"`
 	LastUpdate       time.Time `json:"lastUpdate"`
 	// EXISTING_CODE
 	Items  []coreTypes.CacheItem `json:"items"`
@@ -23,9 +23,9 @@ type StatusContainer struct {
 	// EXISTING_CODE
 }
 
-func NewStatusContainer(chain string, itemsIn *coreTypes.Status) StatusContainer {
+func NewStatusContainer(chain string, status *coreTypes.Status) StatusContainer {
 	ret := StatusContainer{
-		Status: *itemsIn,
+		Status: *status,
 	}
 	ret.LastUpdate, _ = ret.getStatusReload()
 	// EXISTING_CODE
@@ -33,7 +33,7 @@ func NewStatusContainer(chain string, itemsIn *coreTypes.Status) StatusContainer
 	ret.LastUpdate = time.Now()
 	// TODO: This is a hack. We need to get the version from the core
 	ret.Version = version.LibraryVersion
-	ret.Items = itemsIn.Caches
+	ret.Items = status.Caches
 	ret.NItems = uint64(len(ret.Items))
 	// EXISTING_CODE
 	return ret
@@ -55,10 +55,10 @@ func (s *StatusContainer) NeedsUpdate(force bool) bool {
 
 func (s *StatusContainer) ShallowCopy() Containerer {
 	return &StatusContainer{
-		Status:     s.Status.ShallowCopy(),
 		NBytes:     s.NBytes,
 		NFiles:     s.NFiles,
 		NFolders:   s.NFolders,
+		Status:     s.Status.ShallowCopy(),
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
 		NItems: s.NItems,

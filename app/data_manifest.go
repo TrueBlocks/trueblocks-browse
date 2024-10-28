@@ -60,7 +60,9 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 		return err
 	} else {
 		a.meta = *meta
-		a.manifest = types.NewManifestContainer(chain, manifests)
+		a.manifest = types.NewManifestContainer(chain, manifests[0].Chunks)
+		a.manifest.Version = manifests[0].Version
+		a.manifest.Specification = string(manifests[0].Specification)
 		// TODO: Use sorting mechanism from core (see SortChunkStats for example)
 		sort.Slice(a.manifest.Items, func(i, j int) bool {
 			return a.manifest.Items[i].Range > a.manifest.Items[j].Range

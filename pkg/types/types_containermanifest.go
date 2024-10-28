@@ -10,36 +10,34 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-type ManifestItemType = coreTypes.ChunkRecord
-type ManifestInputType = []coreTypes.Manifest
-
 // EXISTING_CODE
 
 type ManifestContainer struct {
-	BloomsSize    uint64             `json:"bloomsSize"`
-	IndexSize     uint64             `json:"indexSize"`
-	NBlooms       uint64             `json:"nBlooms"`
-	NIndexes      uint64             `json:"nIndexes"`
-	Specification string             `json:"specification"`
-	Version       string             `json:"version"`
-	Items         []ManifestItemType `json:"items"`
-	NItems        uint64             `json:"nItems"`
-	Chain         string             `json:"chain"`
-	LastUpdate    time.Time          `json:"lastUpdate"`
+	BloomsSize    uint64                  `json:"bloomsSize"`
+	IndexSize     uint64                  `json:"indexSize"`
+	NBlooms       uint64                  `json:"nBlooms"`
+	NIndexes      uint64                  `json:"nIndexes"`
+	Specification string                  `json:"specification"`
+	Version       string                  `json:"version"`
+	Items         []coreTypes.ChunkRecord `json:"items"`
+	NItems        uint64                  `json:"nItems"`
+	Chain         string                  `json:"chain"`
+	LastUpdate    time.Time               `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewManifestContainer(chain string, itemsIn ManifestInputType) ManifestContainer {
+func NewManifestContainer(chain string, itemsIn []coreTypes.ChunkRecord) ManifestContainer {
 	ret := ManifestContainer{
-		Items: make([]ManifestItemType, 0, len(itemsIn)),
+		Items: make([]coreTypes.ChunkRecord, 0, len(itemsIn)),
 		Chain: chain,
 	}
 	ret.LastUpdate, _ = ret.getManifestReload()
 	// EXISTING_CODE
-	ret.Specification = itemsIn[0].Specification.String()
-	ret.Version = itemsIn[0].Version
-	ret.Items = itemsIn[0].Chunks
+	// TODO: Hack
+	// ret.Specification = itemsIn[0].Specification.String()
+	// ret.Version = itemsIn[0].Version
+	ret.Items = itemsIn
 	// EXISTING_CODE
 	return ret
 }
