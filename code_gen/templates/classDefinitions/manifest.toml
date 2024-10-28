@@ -3,7 +3,7 @@
     # doc_group = "02-Chain Data"
     # doc_descr = "block data as returned from the RPC (with slight enhancements)"
     doc_route = "170-containers"
-    attributes = "itemType=coreTypes.ChunkRecord"
+    attributes = "itemType=coreTypes.ChunkRecord|sorts=range+Dec,"
     # produced_by = "blocks"
     # contains = "transaction, withdrawal"
     cache_type = "cacheable"

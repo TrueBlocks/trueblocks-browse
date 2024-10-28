@@ -8,16 +8,18 @@ type {{.Class}}Container struct {
 {{end}}{{end}}{{if .NeedsEmbed}}{{.EmbedType}} `json:",inline"`
 {{end}}{{if .NeedsItems}}	Items []{{.ItemType}} `json:"items"`
 	NItems uint64 `json:"nItems"`
+{{end}}{{if .HasSorts}}	Sorts sdk.SortSpec `json:"sorts"`
 {{end}}{{if .NeedsChain}}	Chain string `json:"chain"`
 {{end}}	LastUpdate time.Time `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func New{{.Class}}Container(chain string{{if .NeedsItems}}, itemsIn []{{.ItemType}}{{end}}{{if .NeedsEmbed}}, {{toLower .EmbedName}} *{{.EmbedType}}{{end}}{{if .NeedsOther}}, {{toLower .OtherName}} {{.OtherType}}{{end}}) {{.Class}}Container {
+func New{{.Class}}Container(chain string{{if .NeedsItems}}, itemsIn []{{.InputType}}{{end}}{{if .NeedsEmbed}}, {{toLower .EmbedName}} *{{.EmbedType}}{{end}}{{if .NeedsOther}}, {{toLower .OtherName}} {{.OtherType}}{{end}}) {{.Class}}Container {
 	ret := {{.Class}}Container{
 	{{if .NeedsItems}}Items: make([]{{.ItemType}}, 0, len(itemsIn)),
 {{end}}{{if .NeedsEmbed}}{{toProper .EmbedName}}: *{{toLower .EmbedName}},
+{{end}}{{if .HasSorts}}Sorts: {{.SortsInstance}}
 {{end}}{{if .NeedsChain}}		Chain: chain,
 {{end}}	}
 	ret.LastUpdate, _ = ret.get{{.Class}}Reload()

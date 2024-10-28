@@ -3,7 +3,7 @@
 	# doc_group = "02-Chain Data"
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "100-containers"
-	attributes = "itemType=coreTypes.Abi"
+	attributes = "itemType=coreTypes.Abi|editable|sorts=isEmpty+Asc,isKnown+Asc,address+Asc,"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"

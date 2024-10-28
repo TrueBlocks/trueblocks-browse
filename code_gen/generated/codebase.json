@@ -6,7 +6,7 @@
             "doc_route": "100-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.Abi",
+            "attributes": "itemType=coreTypes.Abi|editable|sorts=isEmpty+Asc,isKnown+Asc,address+Asc,",
             "members": [
                 {
                     "name": "largestFile",
@@ -33,6 +33,7 @@
             "doc_route": "110-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "disable_go": true,
             "attributes": "embedType=coreTypes.Status|noChain",
             "members": [
                 {
@@ -106,6 +107,7 @@
             "doc_route": "130-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "disable_go": true,
             "attributes": "embedType=config.Session"
         },
         {
@@ -222,6 +224,7 @@
             "doc_route": "160-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "disable_go": true,
             "attributes": "itemType=coreTypes.Monitor",
             "members": [
                 {
@@ -267,7 +270,7 @@
             "doc_route": "170-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.ChunkRecord",
+            "attributes": "itemType=coreTypes.ChunkRecord|sorts=range+Dec,",
             "members": [
                 {
                     "name": "nBlooms",
@@ -312,13 +315,14 @@
             "doc_route": "180-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.ChunkStats"
+            "attributes": "itemType=coreTypes.ChunkStats|sorts=range+Dec,"
         },
         {
             "class": "History",
             "doc_route": "190-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "disable_go": true,
             "attributes": "itemType=coreTypes.Transaction|otherType=base.Address",
             "members": [
                 {
@@ -370,6 +374,7 @@
             "doc_route": "200-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "disable_go": true,
             "attributes": "itemType=configTypes.Config",
             "members": [
                 {

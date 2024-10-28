@@ -1,0 +1,110 @@
+package app
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+var {{toLower .Class}}Lock atomic.Uint32
+
+func (a *App) {{.Class}}Page(first, pageSize int) *types.{{.Class}}Container {
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	first = base.Max(0, base.Min(first, len(a.{{toLowerPlural .Class}}.Items)-1))
+	last := base.Min(len(a.{{toLowerPlural .Class}}.Items), first+pageSize)
+	copy, _ := a.{{toLowerPlural .Class}}.ShallowCopy().(*types.{{.Class}}Container)
+	copy.Items = a.{{toLowerPlural .Class}}.Items[first:last]
+	return copy
+}
+
+func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) error {
+	defer func() {
+		if wg != nil {
+			wg.Done()
+		}
+	}()
+
+	if !{{toLower .Class}}Lock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer {{toLower .Class}}Lock.CompareAndSwap(1, 0)
+
+	if !a.{{toLowerPlural .Class}}.NeedsUpdate(a.force{{.Class}}()) {
+		return nil
+	}
+
+	opts := sdk.{{toPlural .Class}}Options{
+		Globals: a.toGlobals(),
+	}
+	// EXISTING_CODE
+	// EXISTING_CODE
+	opts.Verbose = true
+
+	if {{toLowerPlural .Class}}, meta, err := opts.{{toPlural .Class}}List(); err != nil {
+		if errorChan != nil {
+			errorChan <- err
+		}
+		return err
+	} else if ({{toLowerPlural .Class}} == nil) || (len({{toLowerPlural .Class}}) == 0) {
+		err = fmt.Errorf("no {{toLowerPlural .Class}} found")
+		if errorChan != nil {
+			errorChan <- err
+		}
+		return err
+	} else {
+		// EXISTING_CODE
+		// EXISTING_CODE
+		a.meta = *meta
+		a.{{toLowerPlural .Class}} = types.New{{.Class}}Container(opts.Chain, {{toLowerPlural .Class}})
+		// EXISTING_CODE
+		// EXISTING_CODE
+{{if .HasSorts}}		if err := sdk.Sort{{toPlural .Class}}(a.{{toLowerPlural .Class}}.Items, a.{{toLowerPlural .Class}}.Sorts); err != nil {
+			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+				String1: err.Error(),
+			})
+		}
+{{end}}		a.{{toLowerPlural .Class}}.Summarize()
+		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded {{toLowerPlural .Class}}"})
+	}
+	return nil
+}
+
+{{if .IsEditable}}func (a *App) Modify{{.Class}}(modData *ModifyData) error {
+	opts := sdk.{{toPlural .Class}}Options{
+		Addrs:   []string{modData.Address.Hex()},
+		Globals: a.toGlobals(),
+	}
+	opts.Globals.Decache = true
+
+	if _, _, err := opts.{{toPlural .Class}}(); err != nil {
+		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+			String1: err.Error(),
+			Address: modData.Address,
+		})
+		return err
+	} else {
+		new{{toPlural .Class}} := make([]{{.ItemType}}, 0, len(a.{{toLowerPlural .Class}}.Items))
+		for _, {{toLower .Class}} := range a.{{toLowerPlural .Class}}.Items {
+			if {{toLower .Class}}.Address == modData.Address {
+				a.{{toLowerPlural .Class}}.NItems--
+				a.{{toLowerPlural .Class}}.NEvents -= {{toLower .Class}}.NEvents
+				a.{{toLowerPlural .Class}}.NFunctions -= {{toLower .Class}}.NFunctions
+				continue
+			}
+			new{{toPlural .Class}} = append(new{{toPlural .Class}}, {{toLower .Class}})
+		}
+		a.{{toLowerPlural .Class}}.LastUpdate = time.Time{}
+		a.{{toLowerPlural .Class}}.Items = new{{toPlural .Class}}
+		msg := fmt.Sprintf("Modify{{.Class}} delete: %s", modData.Address.Hex())
+		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: msg})
+		return nil
+	}
+}
+{{end}}
+func (a *App) force{{.Class}}() (force bool) {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
+// EXISTING_CODE
