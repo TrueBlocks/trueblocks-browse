@@ -1,11 +1,10 @@
-package config
+package types
 
 import (
 	"context"
 	"encoding/json"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -20,7 +19,7 @@ type Session struct {
 	LastRoute  string            `json:"lastRoute"`
 	LastSub    map[string]string `json:"lastSub"`
 	Window     Window            `json:"window"`
-	Wizard     wizard.Wizard     `json:"wizard"`
+	Wizard     Wizard            `json:"wizard"`
 	Toggles    Toggles           `json:"toggles"`
 }
 
@@ -70,7 +69,7 @@ var defaultSession = Session{
 		Height: 0,
 		Title:  theTitle,
 	},
-	Wizard: wizard.Wizard{State: wizard.Welcome},
+	Wizard: Wizard{State: Welcome},
 	Toggles: Toggles{
 		Layout:  defLayout,
 		Headers: defHeader,
@@ -132,8 +131,8 @@ func (s *Session) Save() error {
 // Load loads the session from the configuration folder. If the file contains
 // data, we return true. False otherwise.
 func (s *Session) Load() error {
-	checkWizard := func() (wizard.State, string) {
-		if s.Wizard.State == wizard.Okay && s.LastRoute == "/wizard" {
+	checkWizard := func() (State, string) {
+		if s.Wizard.State == Okay && s.LastRoute == "/wizard" {
 			s.LastRoute = "/"
 			_ = s.Save()
 		}
@@ -160,4 +159,12 @@ func (s *Session) Load() error {
 	s.Wizard.State, s.LastRoute = checkWizard()
 	_ = s.Save()
 	return nil
+}
+
+func (s *Session) SetRoute(route, subRoute string) {
+	s.LastRoute = route
+	if len(subRoute) > 0 {
+		s.LastSub[route] = subRoute
+	}
+	_ = s.Save()
 }

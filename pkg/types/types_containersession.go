@@ -5,21 +5,20 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 )
 
 // EXISTING_CODE
 
 type SessionContainer struct {
-	config.Session `json:",inline"`
-	Chain          string    `json:"chain"`
-	LastUpdate     time.Time `json:"lastUpdate"`
+	Session    `json:",inline"`
+	Chain      string    `json:"chain"`
+	LastUpdate time.Time `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewSessionContainer(chain string, session *config.Session) SessionContainer {
+func NewSessionContainer(chain string, session *Session) SessionContainer {
 	ret := SessionContainer{
 		Session: *session,
 		Chain:   chain,

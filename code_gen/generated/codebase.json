@@ -106,8 +106,7 @@
             "doc_route": "130-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
-            "attributes": "embedType=config.Session"
+            "attributes": "embedType=types.Session"
         },
         {
             "class": "Project",

@@ -1,4 +1,4 @@
-package wizard
+package types
 
 type Wizard struct {
 	State State `json:"state"`

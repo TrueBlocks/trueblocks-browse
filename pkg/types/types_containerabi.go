@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -95,7 +95,7 @@ func (s *AbiContainer) Summarize() {
 
 func (s *AbiContainer) getAbiReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "abis"))
+	ret = utils.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "abis"))
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return

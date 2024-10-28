@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -126,7 +126,7 @@ func (s *MonitorContainer) Summarize() {
 
 func (s *MonitorContainer) getMonitorReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "monitors"))
+	ret = utils.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "monitors"))
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return

@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
 
@@ -48,9 +48,9 @@ func (a *App) SettingsView(cd *menu.CallbackData) {
 
 func (a *App) WizardView(cd *menu.CallbackData) {
 	if a.IsConfigured() {
-		a.StepWizard(wizard.Reset)
+		a.StepWizard(types.Reset)
 	} else {
-		a.StepWizard(wizard.Next)
+		a.StepWizard(types.Next)
 	}
 	a.Navigate("/wizard", "")
 }

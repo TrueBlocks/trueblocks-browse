@@ -9,7 +9,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -118,16 +118,16 @@ func (s *NameContainer) Summarize() {
 		}
 	}
 	chain := "mainnet"
-	customPath := filepath.Join(config.MustGetPathToChainConfig(chain), string(names.DatabaseCustom))
+	customPath := filepath.Join(coreConfig.MustGetPathToChainConfig(chain), string(names.DatabaseCustom))
 	s.SizeOnDisc = uint64(file.FileSize(customPath))
-	regularPath := filepath.Join(config.MustGetPathToChainConfig(chain), string(names.DatabaseRegular))
+	regularPath := filepath.Join(coreConfig.MustGetPathToChainConfig(chain), string(names.DatabaseRegular))
 	s.SizeOnDisc += uint64(file.FileSize(regularPath))
 	// EXISTING_CODE
 }
 
 func (s *NameContainer) getNameReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(s.Chain))
+	ret = utils.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(s.Chain))
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return

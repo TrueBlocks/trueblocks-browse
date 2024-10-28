@@ -14,7 +14,7 @@ import {
   GetWizardState,
   StatusPage,
 } from "@gocode/app/App";
-import { base, messages, types, wizard } from "@gocode/models";
+import { base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
 
 interface AppStateProps {
@@ -56,8 +56,8 @@ interface AppStateProps {
   setMeta: (meta: types.MetaData) => void;
 
   isConfigured: boolean;
-  wizardState: wizard.State;
-  setWizardState: (state: wizard.State) => void;
+  wizardState: types.State;
+  setWizardState: (state: types.State) => void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -79,7 +79,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
 
   const [isConfigured, setIsConfigured] = useState<boolean>(false);
-  const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.WELCOME);
+  const [wizardState, setWizardState] = useState<types.State>(types.State.WELCOME);
 
   const fetchProject = async (currentItem: number, itemsPerPage: number) => {
     ProjectPage(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
@@ -164,7 +164,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   useEffect(() => {
-    setIsConfigured(wizardState == wizard.State.OKAY);
+    setIsConfigured(wizardState == types.State.OKAY);
   }, [wizardState]);
 
   const fetchWizard = async () => {
