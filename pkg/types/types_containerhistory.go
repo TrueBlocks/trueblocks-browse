@@ -18,14 +18,14 @@ import (
 
 type HistoryContainer struct {
 	Address    base.Address            `json:"address"`
-	NTotal     int                     `json:"nTotal"`
-	Name       string                  `json:"name"`
 	Balance    string                  `json:"balance"`
-	NLogs      int                     `json:"nLogs"`
-	NTokens    int                     `json:"nTokens"`
-	NErrors    int                     `json:"nErrors"`
+	NErrors    uint64                  `json:"nErrors"`
+	NLogs      uint64                  `json:"nLogs"`
+	NTokens    uint64                  `json:"nTokens"`
+	NTotal     uint64                  `json:"nTotal"`
+	Name       string                  `json:"name"`
 	Items      []coreTypes.Transaction `json:"items"`
-	NItems     int                     `json:"nItems"`
+	NItems     uint64                  `json:"nItems"`
 	Chain      string                  `json:"chain"`
 	LastUpdate time.Time               `json:"lastUpdate"`
 	// EXISTING_CODE
@@ -61,13 +61,13 @@ func (s *HistoryContainer) NeedsUpdate(force bool) bool {
 func (s *HistoryContainer) ShallowCopy() Containerer {
 	return &HistoryContainer{
 		Address:    s.Address,
-		Name:       s.Name,
 		Balance:    s.Balance,
+		NErrors:    s.NErrors,
 		NLogs:      s.NLogs,
 		NTokens:    s.NTokens,
-		NErrors:    s.NErrors,
-		NItems:     s.NItems,
 		NTotal:     s.NTotal,
+		Name:       s.Name,
+		NItems:     s.NItems,
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
@@ -76,11 +76,11 @@ func (s *HistoryContainer) ShallowCopy() Containerer {
 }
 
 func (s *HistoryContainer) Summarize() {
+	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
-	s.NItems = len(s.Items)
 	for _, tx := range s.Items {
 		if tx.Receipt != nil {
-			s.NLogs += len(tx.Receipt.Logs)
+			s.NLogs += uint64(len(tx.Receipt.Logs))
 		}
 		if tx.HasToken {
 			s.NTokens++
@@ -92,9 +92,10 @@ func (s *HistoryContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func HistoryX() {
+func (s *HistoryContainer) getHistoryReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE
