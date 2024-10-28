@@ -21,26 +21,26 @@ type AbiContainer struct {
 	MostFunctions string          `json:"mostFunctions"`
 	Items         []coreTypes.Abi `json:"items"`
 	NItems        uint64          `json:"nItems"`
+	Sorts         sdk.SortSpec    `json:"sorts"`
 	Chain         string          `json:"chain"`
 	LastUpdate    time.Time       `json:"lastUpdate"`
 	// EXISTING_CODE
 	coreTypes.Abi
-	Sorts sdk.SortSpec `json:"sort"`
 	// EXISTING_CODE
 }
 
 func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 	ret := AbiContainer{
 		Items: make([]coreTypes.Abi, 0, len(itemsIn)),
+		Sorts: sdk.SortSpec{
+			Fields: []string{"isEmpty", "isKnown", "address"},
+			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},
+		},
 		Chain: chain,
 	}
 	ret.LastUpdate, _ = ret.getAbiReload()
 	// EXISTING_CODE
 	ret.Items = itemsIn
-	ret.Sorts = sdk.SortSpec{
-		Fields: []string{"isEmpty", "isKnown", "address"},
-		Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},
-	}
 	// EXISTING_CODE
 	return ret
 }

@@ -116,11 +116,12 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 
 	history, exists := a.project.HistoryMap.Load(address)
 	if exists {
-		if !history.NeedsUpdate(a.nameChange()) {
+		if !history.NeedsUpdate(a.forceHistory()) {
 			return nil
 		}
 	}
 
+	_ = errorChan // delint
 	logger.Info("Loading history for address: ", address.Hex())
 	if err := a.thing(address, 15); err != nil {
 		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
@@ -215,4 +216,11 @@ func (a *App) thing(address base.Address, freq int) error {
 		Num2:    a.txCount(address),
 	})
 	return nil
+}
+
+func (a *App) forceHistory() (force bool) {
+	// EXISTING_CODE
+	force = a.forceName()
+	// EXISTING_CODE
+	return
 }

@@ -1,5 +1,6 @@
 package app
 
+// EXISTING_CODE
 import (
 	"fmt"
 	"sync"
@@ -14,9 +15,15 @@ import (
 )
 
 var abisChain = "mainnet"
+
+// EXISTING_CODE
+
 var abiLock atomic.Uint32
 
 func (a *App) AbiPage(first, pageSize int) *types.AbiContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	first = base.Max(0, base.Min(first, len(a.abis.Items)-1))
 	last := base.Min(len(a.abis.Items), first+pageSize)
 	copy, _ := a.abis.ShallowCopy().(*types.AbiContainer)
@@ -36,16 +43,18 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer abiLock.CompareAndSwap(1, 0)
 
-	if !a.abis.NeedsUpdate(a.nameChange()) {
+	if !a.abis.NeedsUpdate(a.forceAbi()) {
 		return nil
 	}
 
 	opts := sdk.AbisOptions{
 		Globals: a.toGlobals(),
 	}
-	opts.Globals.Chain = abisChain
+	// EXISTING_CODE
+	opts.Chain = abisChain
+	// EXISTING_CODE
+	opts.Verbose = true
 
-	opts.Globals.Verbose = true
 	if abis, meta, err := opts.AbisList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -58,8 +67,12 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else {
+		// EXISTING_CODE
+		// EXISTING_CODE
 		a.meta = *meta
-		a.abis = types.NewAbiContainer(abisChain, abis)
+		a.abis = types.NewAbiContainer(opts.Chain, abis)
+		// EXISTING_CODE
+		// EXISTING_CODE
 		if err := sdk.SortAbis(a.abis.Items, a.abis.Sorts); err != nil {
 			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
 				String1: err.Error(),
@@ -102,3 +115,13 @@ func (a *App) ModifyAbi(modData *ModifyData) error {
 		return nil
 	}
 }
+
+func (a *App) forceAbi() (force bool) {
+	// EXISTING_CODE
+	force = a.forceName()
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
+// EXISTING_CODE

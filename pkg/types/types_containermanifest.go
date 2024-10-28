@@ -8,6 +8,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -21,23 +22,27 @@ type ManifestContainer struct {
 	Version       string                  `json:"version"`
 	Items         []coreTypes.ChunkRecord `json:"items"`
 	NItems        uint64                  `json:"nItems"`
+	Sorts         sdk.SortSpec            `json:"sorts"`
 	Chain         string                  `json:"chain"`
 	LastUpdate    time.Time               `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewManifestContainer(chain string, itemsIn []coreTypes.ChunkRecord) ManifestContainer {
+func NewManifestContainer(chain string, itemsIn []coreTypes.Manifest) ManifestContainer {
 	ret := ManifestContainer{
 		Items: make([]coreTypes.ChunkRecord, 0, len(itemsIn)),
+		Sorts: sdk.SortSpec{
+			Fields: []string{"range"},
+			Order:  []sdk.SortOrder{sdk.Dec},
+		},
 		Chain: chain,
 	}
 	ret.LastUpdate, _ = ret.getManifestReload()
 	// EXISTING_CODE
-	// TODO: Hack
-	// ret.Specification = itemsIn[0].Specification.String()
-	// ret.Version = itemsIn[0].Version
-	ret.Items = itemsIn
+	ret.Specification = itemsIn[0].Specification.String()
+	ret.Version = itemsIn[0].Version
+	ret.Items = itemsIn[0].Chunks
 	// EXISTING_CODE
 	return ret
 }

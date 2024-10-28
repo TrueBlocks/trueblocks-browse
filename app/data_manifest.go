@@ -1,8 +1,8 @@
 package app
 
+// EXISTING_CODE
 import (
 	"fmt"
-	"sort"
 	"sync"
 	"sync/atomic"
 
@@ -12,18 +12,22 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-// Find: NewViews
-func (a *App) ManifestPage(first, pageSize int) *types.ManifestContainer {
-	first = base.Max(0, base.Min(first, len(a.manifest.Items)-1))
-	last := base.Min(len(a.manifest.Items), first+pageSize)
-	copy, _ := a.manifest.ShallowCopy().(*types.ManifestContainer)
-	copy.Items = a.manifest.Items[first:last]
-	return copy
-}
+// EXISTING_CODE
 
 var manifestLock atomic.Uint32
 
-func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
+func (a *App) ManifestPage(first, pageSize int) *types.ManifestContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	first = base.Max(0, base.Min(first, len(a.manifests.Items)-1))
+	last := base.Min(len(a.manifests.Items), first+pageSize)
+	copy, _ := a.manifests.ShallowCopy().(*types.ManifestContainer)
+	copy.Items = a.manifests.Items[first:last]
+	return copy
+}
+
+func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -35,40 +39,51 @@ func (a *App) loadManifest(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer manifestLock.CompareAndSwap(1, 0)
 
-	if !a.manifest.NeedsUpdate(false) {
+	if !a.manifests.NeedsUpdate(a.forceManifest()) {
 		return nil
 	}
 
-	chain := a.Chain
-	opts := sdk.ChunksOptions{
-		Globals: sdk.Globals{
-			Verbose: true,
-			Chain:   chain,
-		},
+	opts := sdk.ManifestsOptions{
+		Globals: a.toGlobals(),
 	}
+	// EXISTING_CODE
+	// EXISTING_CODE
+	opts.Verbose = true
 
-	if manifests, meta, err := opts.ChunksManifest(); err != nil {
+	if manifests, meta, err := opts.ManifestsList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
 	} else if (manifests == nil) || (len(manifests) == 0) {
-		err = fmt.Errorf("no manifest found")
+		err = fmt.Errorf("no manifests found")
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
 	} else {
+		// EXISTING_CODE
+		// EXISTING_CODE
 		a.meta = *meta
-		a.manifest = types.NewManifestContainer(chain, manifests[0].Chunks)
-		a.manifest.Version = manifests[0].Version
-		a.manifest.Specification = string(manifests[0].Specification)
-		// TODO: Use sorting mechanism from core (see SortChunkStats for example)
-		sort.Slice(a.manifest.Items, func(i, j int) bool {
-			return a.manifest.Items[i].Range > a.manifest.Items[j].Range
-		})
-		a.manifest.Summarize()
-		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded manifest"})
+		a.manifests = types.NewManifestContainer(opts.Chain, manifests)
+		// EXISTING_CODE
+		// EXISTING_CODE
+		if err := sdk.SortManifests(a.manifests.Items, a.manifests.Sorts); err != nil {
+			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
+				String1: err.Error(),
+			})
+		}
+		a.manifests.Summarize()
+		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded manifests"})
 	}
 	return nil
 }
+
+func (a *App) forceManifest() (force bool) {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
+// EXISTING_CODE

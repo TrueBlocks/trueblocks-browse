@@ -39,7 +39,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer monitorLock.CompareAndSwap(1, 0)
 
-	if !a.monitors.NeedsUpdate(a.nameChange()) {
+	if !a.monitors.NeedsUpdate(a.forceMonitors()) {
 		return nil
 	}
 
@@ -129,4 +129,8 @@ func (a *App) ModifyMonitors(modData *ModifyData) error {
 	a.monitors.Items = newArray
 	a.monitors.Summarize()
 	return nil
+}
+
+func (a *App) forceMonitors() bool {
+	return a.forceName()
 }

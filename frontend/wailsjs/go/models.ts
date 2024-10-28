@@ -792,6 +792,7 @@ export namespace types {
 	    mostFunctions: string;
 	    items: Abi[];
 	    nItems: number;
+	    sorts: sdk.SortSpec;
 	    chain: string;
 	    // Go type: time
 	    lastUpdate: any;
@@ -807,7 +808,6 @@ export namespace types {
 	    nFunctions: number;
 	    name: string;
 	    path: string;
-	    sort: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new AbiContainer(source);
@@ -820,6 +820,7 @@ export namespace types {
 	        this.mostFunctions = source["mostFunctions"];
 	        this.items = this.convertValues(source["items"], Abi);
 	        this.nItems = source["nItems"];
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.chain = source["chain"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.address = this.convertValues(source["address"], base.Address);
@@ -834,7 +835,6 @@ export namespace types {
 	        this.nFunctions = source["nFunctions"];
 	        this.name = source["name"];
 	        this.path = source["path"];
-	        this.sort = this.convertValues(source["sort"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1549,6 +1549,7 @@ export namespace types {
 	export class IndexContainer {
 	    items: ChunkStats[];
 	    nItems: number;
+	    sorts: sdk.SortSpec;
 	    chain: string;
 	    // Go type: time
 	    lastUpdate: any;
@@ -1565,7 +1566,6 @@ export namespace types {
 	    rangeDates?: RangeDates;
 	    ratio: number;
 	    recWid: number;
-	    sort: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new IndexContainer(source);
@@ -1575,6 +1575,7 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.items = this.convertValues(source["items"], ChunkStats);
 	        this.nItems = source["nItems"];
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.chain = source["chain"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.addrsPerBlock = source["addrsPerBlock"];
@@ -1590,7 +1591,6 @@ export namespace types {
 	        this.rangeDates = this.convertValues(source["rangeDates"], RangeDates);
 	        this.ratio = source["ratio"];
 	        this.recWid = source["recWid"];
-	        this.sort = this.convertValues(source["sort"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1621,6 +1621,7 @@ export namespace types {
 	    version: string;
 	    items: ChunkRecord[];
 	    nItems: number;
+	    sorts: sdk.SortSpec;
 	    chain: string;
 	    // Go type: time
 	    lastUpdate: any;
@@ -1639,6 +1640,7 @@ export namespace types {
 	        this.version = source["version"];
 	        this.items = this.convertValues(source["items"], ChunkRecord);
 	        this.nItems = source["nItems"];
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.chain = source["chain"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }

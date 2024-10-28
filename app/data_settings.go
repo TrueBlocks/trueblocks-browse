@@ -32,6 +32,7 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
+	_ = errorChan // delint
 	if path, err := utils.GetConfigFn("", "trueBlocks.toml"); err != nil {
 		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
 			String1: err.Error(),
