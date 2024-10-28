@@ -104,7 +104,6 @@
             "doc_route": "130-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
             "members": [
                 {
                     "name": "bloomSz",
@@ -395,7 +394,6 @@
             "doc_route": "200-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
             "members": [
                 {
                     "name": "nChains",

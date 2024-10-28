@@ -855,6 +855,30 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class CacheItem {
+	    items: any[];
+	    lastCached?: string;
+	    nFiles: number;
+	    nFolders: number;
+	    path: string;
+	    sizeInBytes: number;
+	    type: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new CacheItem(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.items = source["items"];
+	        this.lastCached = source["lastCached"];
+	        this.nFiles = source["nFiles"];
+	        this.nFolders = source["nFolders"];
+	        this.path = source["path"];
+	        this.sizeInBytes = source["sizeInBytes"];
+	        this.type = source["type"];
+	    }
+	}
 	export class Chain {
 	    chain: string;
 	    chainId: number;
@@ -2014,31 +2038,14 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class CacheItem {
-	    items: any[];
-	    lastCached?: string;
+	export class StatusContainer {
+	    nBytes: number;
 	    nFiles: number;
 	    nFolders: number;
-	    path: string;
-	    sizeInBytes: number;
-	    type: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new CacheItem(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.items = source["items"];
-	        this.lastCached = source["lastCached"];
-	        this.nFiles = source["nFiles"];
-	        this.nFolders = source["nFolders"];
-	        this.path = source["path"];
-	        this.sizeInBytes = source["sizeInBytes"];
-	        this.type = source["type"];
-	    }
-	}
-	export class StatusContainer {
+	    items: CacheItem[];
+	    nItems: number;
+	    // Go type: time
+	    lastUpdate: any;
 	    cachePath?: string;
 	    caches: CacheItem[];
 	    chain?: string;
@@ -2061,12 +2068,6 @@ export namespace types {
 	    version?: string;
 	    meta?: MetaData;
 	    diffs?: MetaData;
-	    nItems: number;
-	    nFolders: number;
-	    nFiles: number;
-	    nBytes: number;
-	    // Go type: time
-	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new StatusContainer(source);
@@ -2074,6 +2075,12 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.nBytes = source["nBytes"];
+	        this.nFiles = source["nFiles"];
+	        this.nFolders = source["nFolders"];
+	        this.items = this.convertValues(source["items"], CacheItem);
+	        this.nItems = source["nItems"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.cachePath = source["cachePath"];
 	        this.caches = this.convertValues(source["caches"], CacheItem);
 	        this.chain = source["chain"];
@@ -2096,11 +2103,6 @@ export namespace types {
 	        this.version = source["version"];
 	        this.meta = this.convertValues(source["meta"], MetaData);
 	        this.diffs = this.convertValues(source["diffs"], MetaData);
-	        this.nItems = source["nItems"];
-	        this.nFolders = source["nFolders"];
-	        this.nFiles = source["nFiles"];
-	        this.nBytes = source["nBytes"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

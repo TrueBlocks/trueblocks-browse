@@ -10,22 +10,31 @@ import (
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 )
 
+type ConfigItemType = configTypes.Config
+type ConfigInputType = []configTypes.Config
+
 // EXISTING_CODE
 
 type ConfigContainer struct {
-	configTypes.Config `json:",inline"`
-	LastUpdate         time.Time `json:"lastUpdate"`
+	NChains    uint64           `json:"nChains"`
+	Items      []ConfigItemType `json:"items"`
+	NItems     uint64           `json:"nItems"`
+	Chain      string           `json:"chain"`
+	LastUpdate time.Time        `json:"lastUpdate"`
 	// EXISTING_CODE
+	configTypes.Config `json:",inline"`
 	// EXISTING_CODE
 }
 
-func NewConfigContainer(cfg *configTypes.Config) ConfigContainer {
-	latest := utils.MustGetLatestFileTime(coreConfig.PathToRootConfig())
+func NewConfigContainer(chain string, itemsIn ConfigInputType) ConfigContainer {
+	latest, _ := getConfigReload(chain, time.Time{})
 	ret := ConfigContainer{
-		Config:     *cfg,
+		Items:      make([]ConfigItemType, 0, len(itemsIn)),
+		Chain:      chain,
 		LastUpdate: latest,
 	}
 	// EXISTING_CODE
+	ret.Config = itemsIn[0]
 	// EXISTING_CODE
 	return ret
 }
@@ -36,8 +45,8 @@ func (s *ConfigContainer) String() string {
 }
 
 func (s *ConfigContainer) NeedsUpdate(force bool) bool {
-	latest := utils.MustGetLatestFileTime(coreConfig.PathToRootConfig())
-	if force || latest != s.LastUpdate {
+	latest, reload := getConfigReload(s.Chain, s.LastUpdate)
+	if force || reload {
 		s.LastUpdate = latest
 		return true
 	}
@@ -45,16 +54,19 @@ func (s *ConfigContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *ConfigContainer) ShallowCopy() Containerer {
-	ret := &ConfigContainer{
-		Config:     s.Config,
+	return &ConfigContainer{
+		NChains:    s.NChains,
+		NItems:     s.NItems,
+		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
+		Config: s.Config,
 		// EXISTING_CODE
 	}
-	return ret
 }
 
 func (s *ConfigContainer) Summarize() {
+	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
 	// logger.Info("Version:", s.Config.Version.String())
 	// logger.Info("Settings:", s.Config.Settings.String())
@@ -69,9 +81,13 @@ func (s *ConfigContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func ConfigX() {
+func getConfigReload(chain string, lastUpdate time.Time) (ret time.Time, reload bool) {
 	// EXISTING_CODE
+	_ = chain
+	ret = utils.MustGetLatestFileTime(coreConfig.PathToRootConfig())
+	reload = ret != lastUpdate
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE
