@@ -66,7 +66,7 @@ func (a *App) Refresh() error {
 		}
 	}
 
-	a.loadProject(nil, nil)
+	a.loadProjects(nil, nil)
 
 	if len(errors) > 0 {
 		// Handle errors, e.g., wait 1/2 second between each error message

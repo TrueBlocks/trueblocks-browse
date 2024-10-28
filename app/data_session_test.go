@@ -2,7 +2,7 @@ package app
 
 import "testing"
 
-func TestSessionLoadMe(t *testing.T) {
+func TestLoadSessions(t *testing.T) {
 	// app := NewApp()
-	// app.loadSession() // nil, nil)
+	// app.loadSessions(nil, nil)
 }

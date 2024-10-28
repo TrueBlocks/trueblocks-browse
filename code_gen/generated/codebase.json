@@ -113,7 +113,6 @@
             "doc_route": "140-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
             "attributes": "itemType=HistoryContainer",
             "members": [
                 {

@@ -2,7 +2,7 @@ package app
 
 import "testing"
 
-func TesLoadProject(t *testing.T) {
+func TestLoadProjects(t *testing.T) {
 	app := NewApp()
-	app.loadProject(nil, nil)
+	app.loadProjects(nil, nil)
 }

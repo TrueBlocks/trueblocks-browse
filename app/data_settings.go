@@ -44,7 +44,7 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 			})
 		}
 	}
-	a.settings = types.NewSettingsGroup(&a.status.Status, &a.cfg, &a.session)
+	a.settings = types.NewSettingsGroup(&a.status.Status, &a.cfg, &a.sessions)
 	a.settings.Summarize()
 
 	return nil

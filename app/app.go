@@ -29,7 +29,7 @@ type App struct {
 	renderCtxs map[base.Address][]*output.RenderCtx
 
 	// Containers
-	project   types.ProjectContainer
+	projects  types.ProjectContainer
 	monitors  types.MonitorContainer
 	names     types.NameContainer
 	abis      types.AbiContainer
@@ -38,7 +38,7 @@ type App struct {
 	settings  types.SettingsGroup
 	configs   types.ConfigContainer
 	status    types.StatusContainer
-	session   types.Session
+	sessions  types.Session
 
 	// Controllers
 	ScraperController *daemons.DaemonScraper
@@ -51,8 +51,8 @@ func NewApp() *App {
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 	}
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
-	a.project = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
-	a.session.LastSub = make(map[string]string)
+	a.projects = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
+	a.sessions.LastSub = make(map[string]string)
 
 	return &a
 }
@@ -101,16 +101,16 @@ func (a *App) Shutdown(ctx context.Context) {
 }
 
 func (a *App) saveSession() {
-	a.session.Window.X, a.session.Window.Y = runtime.WindowGetPosition(a.ctx)
-	a.session.Window.Width, a.session.Window.Height = runtime.WindowGetSize(a.ctx)
-	a.session.Window.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
-	_ = a.session.Save()
+	a.sessions.Window.X, a.sessions.Window.Y = runtime.WindowGetPosition(a.ctx)
+	a.sessions.Window.Width, a.sessions.Window.Height = runtime.WindowGetSize(a.ctx)
+	a.sessions.Window.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
+	_ = a.sessions.Save()
 }
 
 func (a *App) loadSession() {
-	_ = a.session.Load()
-	a.session.CleanWindowSize(a.ctx)
-	a.Chain = a.session.LastChain
+	_ = a.sessions.Load()
+	a.sessions.CleanWindowSize(a.ctx)
+	a.Chain = a.sessions.LastChain
 }
 
 func (a *App) Logger(msg string) {
