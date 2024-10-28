@@ -12,7 +12,7 @@ import (
 )
 
 func (a *App) IsShowing(which string) bool {
-	return a.session.Toggles.IsOn(which)
+	return a.sessions.Toggles.IsOn(which)
 }
 
 func (a *App) GetConfig() *configTypes.Config {
@@ -20,7 +20,7 @@ func (a *App) GetConfig() *configTypes.Config {
 }
 
 func (a *App) GetSession() *types.Session {
-	return &a.session
+	return &a.sessions
 }
 
 func (a *App) GetContext() context.Context {
@@ -28,7 +28,7 @@ func (a *App) GetContext() context.Context {
 }
 
 func (a *App) GetWindow() *types.Window {
-	return &a.session.Window
+	return &a.sessions.Window
 }
 
 func (a *App) GetEnv(key string) string {
@@ -40,7 +40,7 @@ func (a *App) GetMeta() coreTypes.MetaData {
 }
 
 func (a *App) GetAppTitle() string {
-	return a.session.Window.Title
+	return a.sessions.Window.Title
 }
 
 func (a *App) GetRoute() string {
@@ -48,16 +48,16 @@ func (a *App) GetRoute() string {
 		return "/wizard"
 	}
 
-	route := a.session.LastRoute
-	if len(a.session.LastSub) > 0 {
-		route += "/" + a.session.LastSub[route]
+	route := a.sessions.LastRoute
+	if len(a.sessions.LastSub) > 0 {
+		route += "/" + a.sessions.LastSub[route]
 	}
 
 	return route
 }
 
 func (a *App) GetAddress() base.Address {
-	addr := a.session.LastSub["/history"]
+	addr := a.sessions.LastSub["/history"]
 	return base.HexToAddress(addr)
 }
 

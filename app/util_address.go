@@ -18,7 +18,7 @@ func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
 		return ret, ret != base.ZeroAddr
 	}
 
-	ensAddr, exists := a.project.EnsMap.Load(addr)
+	ensAddr, exists := a.projects.EnsMap.Load(addr)
 	if exists {
 		return ensAddr.(base.Address), true
 	}
@@ -36,7 +36,7 @@ func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
 	} else {
 		a.meta = *meta
 		if len(names) > 0 {
-			a.project.EnsMap.Store(addr, names[0].Address)
+			a.projects.EnsMap.Store(addr, names[0].Address)
 			return names[0].Address, true
 		} else {
 			ret := base.HexToAddress(addr)

@@ -10,7 +10,7 @@ func (a *App) IsConfigured() bool {
 }
 
 func (a *App) GetWizardState() types.State {
-	return a.session.Wizard.State
+	return a.sessions.Wizard.State
 }
 
 func (a *App) StepWizard(step types.Step) types.State {
@@ -19,11 +19,11 @@ func (a *App) StepWizard(step types.Step) types.State {
 			a.Navigate("/", "")
 		}
 		messages.EmitMessage(a.ctx, messages.Wizard, &messages.MessageMsg{
-			State: a.session.Wizard.State,
+			State: a.sessions.Wizard.State,
 		})
 	}()
 
-	a.session.Wizard.Step(step)
+	a.sessions.Wizard.Step(step)
 	a.saveSession()
 	return a.GetWizardState()
 }
