@@ -15,40 +15,38 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-type NameItemType = coreTypes.Name
-type NameInputType = map[base.Address]coreTypes.Name
-
 // EXISTING_CODE
 
 type NameContainer struct {
-	NContracts uint64         `json:"nContracts"`
-	NCustom    uint64         `json:"nCustom"`
-	NDeleted   uint64         `json:"nDeleted"`
-	NErc20s    uint64         `json:"nErc20s"`
-	NErc721s   uint64         `json:"nErc721s"`
-	NPrefund   uint64         `json:"nPrefund"`
-	NRegular   uint64         `json:"nRegular"`
-	NSystem    uint64         `json:"nSystem"`
-	SizeOnDisc uint64         `json:"sizeOnDisc"`
-	Items      []NameItemType `json:"items"`
-	NItems     uint64         `json:"nItems"`
-	Chain      string         `json:"chain"`
-	LastUpdate time.Time      `json:"lastUpdate"`
+	NContracts uint64           `json:"nContracts"`
+	NCustom    uint64           `json:"nCustom"`
+	NDeleted   uint64           `json:"nDeleted"`
+	NErc20s    uint64           `json:"nErc20s"`
+	NErc721s   uint64           `json:"nErc721s"`
+	NPrefund   uint64           `json:"nPrefund"`
+	NRegular   uint64           `json:"nRegular"`
+	NSystem    uint64           `json:"nSystem"`
+	SizeOnDisc uint64           `json:"sizeOnDisc"`
+	Items      []coreTypes.Name `json:"items"`
+	NItems     uint64           `json:"nItems"`
+	Chain      string           `json:"chain"`
+	LastUpdate time.Time        `json:"lastUpdate"`
 	// EXISTING_CODE
 	NamesMap map[base.Address]coreTypes.Name `json:"namesMap"`
 	// EXISTING_CODE
 }
 
-func NewNameContainer(chain string, itemsIn NameInputType) NameContainer {
+func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	ret := NameContainer{
-		Items: make([]NameItemType, 0, len(itemsIn)),
+		Items: make([]coreTypes.Name, 0, len(itemsIn)),
 		Chain: chain,
 	}
 	ret.LastUpdate, _ = ret.getNameReload()
 	// EXISTING_CODE
-	ret.NamesMap = itemsIn
-	for _, name := range ret.NamesMap {
-		ret.Items = append(ret.Items, name)
+	ret.Items = itemsIn
+	ret.NamesMap = make(map[base.Address]coreTypes.Name)
+	for _, name := range ret.Items {
+		ret.NamesMap[name.Address] = name
 	}
 	sort.Slice(ret.Items, func(i, j int) bool {
 		return compare(ret.Items[i], ret.Items[j])

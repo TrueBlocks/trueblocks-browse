@@ -6,6 +6,7 @@
             "doc_route": "100-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.Abi",
             "members": [
                 {
                     "name": "largestFile",
@@ -32,7 +33,7 @@
             "doc_route": "110-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "noChain",
+            "attributes": "embedType=coreTypes.Status|noChain",
             "members": [
                 {
                     "name": "nFolders",
@@ -60,6 +61,7 @@
             "cache_by": "range",
             "cache_type": "cacheable",
             "disable_go": true,
+            "attributes": "itemType=",
             "members": [
                 {
                     "name": "bloomSz",
@@ -104,7 +106,7 @@
             "doc_route": "130-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=config.Session"
+            "attributes": "embedType=config.Session"
         },
         {
             "class": "Project",
@@ -112,6 +114,7 @@
             "cache_by": "range",
             "cache_type": "cacheable",
             "disable_go": true,
+            "attributes": "itemType=HistoryContainer",
             "members": [
                 {
                     "name": "bloomSz",
@@ -156,6 +159,7 @@
             "doc_route": "150-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.Name",
             "members": [
                 {
                     "name": "nContracts",
@@ -218,6 +222,7 @@
             "doc_route": "160-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.Monitor",
             "members": [
                 {
                     "name": "nNamed",
@@ -262,6 +267,7 @@
             "doc_route": "170-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.ChunkRecord",
             "members": [
                 {
                     "name": "nBlooms",
@@ -305,7 +311,8 @@
             "class": "Index",
             "doc_route": "180-containers",
             "cache_by": "range",
-            "cache_type": "cacheable"
+            "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.ChunkStats"
         },
         {
             "class": "History",
@@ -313,6 +320,7 @@
             "cache_by": "range",
             "cache_type": "cacheable",
             "disable_go": true,
+            "attributes": "itemType=coreTypes.Transaction",
             "members": [
                 {
                     "name": "address",
@@ -363,6 +371,7 @@
             "doc_route": "200-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "attributes": "itemType=configTypes.Config",
             "members": [
                 {
                     "name": "nChains",

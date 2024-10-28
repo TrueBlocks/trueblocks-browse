@@ -41,31 +41,28 @@ func (m *MonitorContainer) Filter(f func(*coreTypes.Monitor) bool) []int {
 }
 */
 
-type MonitorItemType = coreTypes.Monitor
-type MonitorInputType = []coreTypes.Monitor
-
 // EXISTING_CODE
 
 type MonitorContainer struct {
-	FileSize   uint64            `json:"fileSize"`
-	NDeleted   uint64            `json:"nDeleted"`
-	NEmpty     uint64            `json:"nEmpty"`
-	NNamed     uint64            `json:"nNamed"`
-	NRecords   uint64            `json:"nRecords"`
-	NStaged    uint64            `json:"nStaged"`
-	Items      []MonitorItemType `json:"items"`
-	NItems     uint64            `json:"nItems"`
-	Chain      string            `json:"chain"`
-	LastUpdate time.Time         `json:"lastUpdate"`
+	FileSize   uint64              `json:"fileSize"`
+	NDeleted   uint64              `json:"nDeleted"`
+	NEmpty     uint64              `json:"nEmpty"`
+	NNamed     uint64              `json:"nNamed"`
+	NRecords   uint64              `json:"nRecords"`
+	NStaged    uint64              `json:"nStaged"`
+	Items      []coreTypes.Monitor `json:"items"`
+	NItems     uint64              `json:"nItems"`
+	Chain      string              `json:"chain"`
+	LastUpdate time.Time           `json:"lastUpdate"`
 	// EXISTING_CODE
 	// FilteredItems []int         `json:"filteresdItems"`
 	// MonitorFilter MonitorFilter `json:"filter"`
 	// EXISTING_CODE
 }
 
-func NewMonitorContainer(chain string, itemsIn MonitorInputType) MonitorContainer {
+func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorContainer {
 	ret := MonitorContainer{
-		Items: make([]MonitorItemType, 0, len(itemsIn)),
+		Items: make([]coreTypes.Monitor, 0, len(itemsIn)),
 		Chain: chain,
 	}
 	ret.LastUpdate, _ = ret.getMonitorReload()

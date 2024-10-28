@@ -29,6 +29,10 @@ func (s *Session) String() string {
 	return string(bytes)
 }
 
+func (s *Session) ShallowCopy() Session {
+	return *s
+}
+
 const theTitle = "Browse by TrueBlocks"
 
 var defLayout = Layout{

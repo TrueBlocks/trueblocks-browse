@@ -17,19 +17,19 @@ type IndexInputType = []coreTypes.ChunkStats
 // EXISTING_CODE
 
 type IndexContainer struct {
-	Items      []IndexItemType `json:"items"`
-	NItems     uint64          `json:"nItems"`
-	Chain      string          `json:"chain"`
-	LastUpdate time.Time       `json:"lastUpdate"`
+	Items      []coreTypes.ChunkStats `json:"items"`
+	NItems     uint64                 `json:"nItems"`
+	Chain      string                 `json:"chain"`
+	LastUpdate time.Time              `json:"lastUpdate"`
 	// EXISTING_CODE
 	coreTypes.ChunkStats
 	Sorts sdk.SortSpec `json:"sort"`
 	// EXISTING_CODE
 }
 
-func NewIndexContainer(chain string, itemsIn IndexInputType) IndexContainer {
+func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContainer {
 	ret := IndexContainer{
-		Items: make([]IndexItemType, 0, len(itemsIn)),
+		Items: make([]coreTypes.ChunkStats, 0, len(itemsIn)),
 		Chain: chain,
 	}
 	ret.LastUpdate, _ = ret.getIndexReload()

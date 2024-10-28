@@ -10,25 +10,22 @@ import (
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 )
 
-type ConfigItemType = configTypes.Config
-type ConfigInputType = []configTypes.Config
-
 // EXISTING_CODE
 
 type ConfigContainer struct {
-	NChains    uint64           `json:"nChains"`
-	Items      []ConfigItemType `json:"items"`
-	NItems     uint64           `json:"nItems"`
-	Chain      string           `json:"chain"`
-	LastUpdate time.Time        `json:"lastUpdate"`
+	NChains    uint64               `json:"nChains"`
+	Items      []configTypes.Config `json:"items"`
+	NItems     uint64               `json:"nItems"`
+	Chain      string               `json:"chain"`
+	LastUpdate time.Time            `json:"lastUpdate"`
 	// EXISTING_CODE
 	configTypes.Config `json:",inline"`
 	// EXISTING_CODE
 }
 
-func NewConfigContainer(chain string, itemsIn ConfigInputType) ConfigContainer {
+func NewConfigContainer(chain string, itemsIn []configTypes.Config) ConfigContainer {
 	ret := ConfigContainer{
-		Items: make([]ConfigItemType, 0, len(itemsIn)),
+		Items: make([]configTypes.Config, 0, len(itemsIn)),
 		Chain: chain,
 	}
 	ret.LastUpdate, _ = ret.getConfigReload()

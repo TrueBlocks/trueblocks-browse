@@ -2049,6 +2049,9 @@ export namespace types {
 		}
 	}
 	export class StatusContainer {
+	    nBytes: number;
+	    nFiles: number;
+	    nFolders: number;
 	    cachePath?: string;
 	    caches: CacheItem[];
 	    chain?: string;
@@ -2071,9 +2074,6 @@ export namespace types {
 	    version?: string;
 	    meta?: MetaData;
 	    diffs?: MetaData;
-	    nBytes: number;
-	    nFiles: number;
-	    nFolders: number;
 	    // Go type: time
 	    lastUpdate: any;
 	    items: CacheItem[];
@@ -2085,6 +2085,9 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.nBytes = source["nBytes"];
+	        this.nFiles = source["nFiles"];
+	        this.nFolders = source["nFolders"];
 	        this.cachePath = source["cachePath"];
 	        this.caches = this.convertValues(source["caches"], CacheItem);
 	        this.chain = source["chain"];
@@ -2107,9 +2110,6 @@ export namespace types {
 	        this.version = source["version"];
 	        this.meta = this.convertValues(source["meta"], MetaData);
 	        this.diffs = this.convertValues(source["diffs"], MetaData);
-	        this.nBytes = source["nBytes"];
-	        this.nFiles = source["nFiles"];
-	        this.nFolders = source["nFolders"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.items = this.convertValues(source["items"], CacheItem);
 	        this.nItems = source["nItems"];

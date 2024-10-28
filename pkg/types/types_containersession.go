@@ -46,7 +46,7 @@ func (s *SessionContainer) NeedsUpdate(force bool) bool {
 
 func (s *SessionContainer) ShallowCopy() Containerer {
 	return &SessionContainer{
-		Session:    s.Session,
+		Session:    s.Session.ShallowCopy(),
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
