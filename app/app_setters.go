@@ -30,8 +30,8 @@ func (a *App) SetChain(chain string, address base.Address) {
 	a.monitors = types.MonitorContainer{}
 	a.names = types.NameContainer{}
 	a.abis = types.AbiContainer{}
-	a.index = types.IndexContainer{}
-	a.manifest = types.ManifestContainer{}
+	a.indexes = types.IndexContainer{}
+	a.manifests = types.ManifestContainer{}
 	a.status = types.StatusContainer{}
 	a.settings = types.SettingsGroup{}
 	_ = a.Refresh()

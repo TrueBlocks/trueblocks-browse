@@ -48,9 +48,9 @@ func (a *App) Refresh() error {
 
 	wg.Add(6)
 	go a.loadAbis(&wg, errorChan)
-	go a.loadManifest(&wg, errorChan)
+	go a.loadManifests(&wg, errorChan)
 	go a.loadMonitors(&wg, errorChan)
-	go a.loadIndex(&wg, errorChan)
+	go a.loadIndexes(&wg, errorChan)
 	go a.loadStatus(&wg, errorChan)
 	go a.loadSettings(&wg, errorChan)
 

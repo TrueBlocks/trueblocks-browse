@@ -37,8 +37,8 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	// containers := []types.Containerer{
 	// 	&a.abis,
 	// 	// &HistoryContainer{},
-	// 	&a.index,
-	// 	&a.manifest,
+	// 	&a.indexes,
+	// 	&a.manifests,
 	// 	&a.monitors,
 	// 	&a.names,
 	// 	&a.status,
@@ -46,7 +46,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	// }
 	// needsUpdate := false
 	// for _, container := range containers {
-	// 	if container.NeedsUpdate(a.nameChange()) {
+	// 	if container.NeedsUpdate(a.forceProject()) {
 	// 		needsUpdate = true
 	// 		break
 	// 	}
@@ -54,6 +54,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	// if !needsUpdate && a.openFileCnt() == a.project.NOpenFiles {
 	// 	return nil
 	// }
+	_ = a.forceProject() // silence unused
 
 	a.project = types.NewProjectContainer(
 		a.project.Filename,
@@ -65,8 +66,8 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	a.project.NMonitors = uint64(len(a.monitors.Items))
 	a.project.NNames = uint64(len(a.names.Items))
 	a.project.NAbis = uint64(len(a.abis.Items))
-	a.project.NIndexes = uint64(len(a.index.Items))
-	a.project.NManifests = uint64(len(a.manifest.Items))
+	a.project.NIndexes = uint64(len(a.indexes.Items))
+	a.project.NManifests = uint64(len(a.manifests.Items))
 	a.project.NCaches = uint64(len(a.status.Caches))
 	_ = a.forEveryHistory(func(item *types.HistoryContainer) bool {
 		a.project.Summary.Balance += item.Balance
@@ -99,6 +100,10 @@ func (a *App) ModifyProject(modData *ModifyData) {
 		}
 	}
 	a.loadProject(nil, nil)
+}
+
+func (a *App) forceProject() bool {
+	return a.forceName()
 }
 
 func (a *App) Reload(address base.Address) {

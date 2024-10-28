@@ -1,5 +1,6 @@
 package app
 
+// EXISTING_CODE
 import (
 	"fmt"
 	"sync"
@@ -18,12 +19,16 @@ import (
 
 var nameMutex sync.Mutex
 var namesChain = "mainnet"
-var namesLock atomic.Uint32
 
-// Find: NewViews
+// EXISTING_CODE
+
+var nameLock atomic.Uint32
+
 func (a *App) NamePage(first, pageSize int) *types.NameContainer {
+	// EXISTING_CODE
 	nameMutex.Lock()
 	defer nameMutex.Unlock()
+	// EXISTING_CODE
 
 	first = base.Max(0, base.Min(first, len(a.names.Items)-1))
 	last := base.Min(len(a.names.Items), first+pageSize)
@@ -39,51 +44,66 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}()
 
-	if !namesLock.CompareAndSwap(0, 1) {
+	if !nameLock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer namesLock.CompareAndSwap(1, 0)
+	defer nameLock.CompareAndSwap(1, 0)
 
-	if !a.names.NeedsUpdate(false) {
+	if !a.names.NeedsUpdate(a.forceName()) {
 		return nil
 	}
 
+	opts := sdk.NamesOptions{
+		Globals: a.toGlobals(),
+	}
+	// EXISTING_CODE
 	names.ClearCustomNames()
+	opts.Regular = true
+	opts.Custom = true
+	opts.Prefund = true
+	// EXISTING_CODE
+	opts.Verbose = true
 
-	parts := coreTypes.Regular | coreTypes.Custom | coreTypes.Prefund | coreTypes.Baddress
-	if namesMap, err := names.LoadNamesMap(namesChain, parts, nil); err != nil {
+	if names, meta, err := opts.Names(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (namesMap == nil) || (len(namesMap) == 0) {
+	} else if (names == nil) || (len(names) == 0) {
 		err = fmt.Errorf("no names found")
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
 	} else {
-		// a.meta = *meta
+		// EXISTING_CODE
 		nameMutex.Lock()
 		defer nameMutex.Unlock()
-
-		// Auto code gen gets in the way
-		namesArray := make([]coreTypes.Name, 0, len(namesMap))
-		for _, name := range namesMap {
-			namesArray = append(namesArray, name)
-		}
-		a.names = types.NewNameContainer(namesChain, namesArray)
+		// EXISTING_CODE
+		a.meta = *meta
+		a.names = types.NewNameContainer(opts.Chain, names)
+		// EXISTING_CODE
+		// EXISTING_CODE
 		a.names.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded names"})
 	}
 	return nil
 }
 
+func (a *App) forceName() (force bool) {
+	// EXISTING_CODE
+	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(namesChain))
+	force = latest != a.names.LastUpdate
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
 func (a *App) ModifyName(modData *ModifyData) error {
-	if !namesLock.CompareAndSwap(0, 1) {
+	if !nameLock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer namesLock.CompareAndSwap(1, 0)
+	defer nameLock.CompareAndSwap(1, 0)
 
 	opFromString := func(op string) crud.Operation {
 		m := map[string]crud.Operation{
@@ -155,7 +175,4 @@ func (a *App) ModifyName(modData *ModifyData) error {
 	return nil
 }
 
-func (a *App) nameChange() bool {
-	latest := utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(namesChain))
-	return latest != a.names.LastUpdate
-}
+// EXISTING_CODE

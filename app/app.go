@@ -33,13 +33,13 @@ type App struct {
 	renderCtxs map[base.Address][]*output.RenderCtx
 
 	// Containers
-	project  types.ProjectContainer
-	monitors types.MonitorContainer
-	names    types.NameContainer
-	abis     types.AbiContainer
-	index    types.IndexContainer
-	manifest types.ManifestContainer
-	settings types.SettingsGroup
+	project   types.ProjectContainer
+	monitors  types.MonitorContainer
+	names     types.NameContainer
+	abis      types.AbiContainer
+	indexes   types.IndexContainer
+	manifests types.ManifestContainer
+	settings  types.SettingsGroup
 
 	status types.StatusContainer
 
