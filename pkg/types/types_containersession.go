@@ -9,29 +9,23 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 )
 
-type SessionItemType = config.Session
-type SessionInputType = []config.Session
-
 // EXISTING_CODE
 
 type SessionContainer struct {
-	Items      []SessionItemType `json:"items"`
-	NItems     uint64            `json:"nItems"`
-	Chain      string            `json:"chain"`
-	LastUpdate time.Time         `json:"lastUpdate"`
-	// EXISTING_CODE
 	config.Session `json:",inline"`
+	Chain          string    `json:"chain"`
+	LastUpdate     time.Time `json:"lastUpdate"`
+	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewSessionContainer(chain string, itemsIn SessionInputType) SessionContainer {
+func NewSessionContainer(chain string, session *config.Session) SessionContainer {
 	ret := SessionContainer{
-		Items: make([]SessionItemType, 0, len(itemsIn)),
-		Chain: chain,
+		Session: *session,
+		Chain:   chain,
 	}
 	ret.LastUpdate, _ = ret.getSessionReload()
 	// EXISTING_CODE
-	ret.Session = itemsIn[0]
 	// EXISTING_CODE
 	return ret
 }
@@ -52,17 +46,15 @@ func (s *SessionContainer) NeedsUpdate(force bool) bool {
 
 func (s *SessionContainer) ShallowCopy() Containerer {
 	return &SessionContainer{
-		NItems:     s.NItems,
+		Session:    s.Session,
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
-		Session: s.Session,
 		// EXISTING_CODE
 	}
 }
 
 func (s *SessionContainer) Summarize() {
-	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
 	// logger.Info("Version:", s.Config.Version.String())
 	// logger.Info("Settings:", s.Config.Settings.String())

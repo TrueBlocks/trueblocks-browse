@@ -2000,11 +2000,6 @@ export namespace types {
 		}
 	}
 	export class SessionContainer {
-	    items: config.Session[];
-	    nItems: number;
-	    chain: string;
-	    // Go type: time
-	    lastUpdate: any;
 	    lastChain: string;
 	    lastFile: string;
 	    lastFolder: string;
@@ -2013,6 +2008,9 @@ export namespace types {
 	    window: config.Window;
 	    wizard: wizard.Wizard;
 	    toggles: config.Toggles;
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new SessionContainer(source);
@@ -2020,10 +2018,6 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.items = this.convertValues(source["items"], config.Session);
-	        this.nItems = source["nItems"];
-	        this.chain = source["chain"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.lastChain = source["lastChain"];
 	        this.lastFile = source["lastFile"];
 	        this.lastFolder = source["lastFolder"];
@@ -2032,6 +2026,8 @@ export namespace types {
 	        this.window = this.convertValues(source["window"], config.Window);
 	        this.wizard = this.convertValues(source["wizard"], wizard.Wizard);
 	        this.toggles = this.convertValues(source["toggles"], config.Toggles);
+	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2053,13 +2049,6 @@ export namespace types {
 		}
 	}
 	export class StatusContainer {
-	    nBytes: number;
-	    nFiles: number;
-	    nFolders: number;
-	    items: CacheItem[];
-	    nItems: number;
-	    // Go type: time
-	    lastUpdate: any;
 	    cachePath?: string;
 	    caches: CacheItem[];
 	    chain?: string;
@@ -2082,6 +2071,13 @@ export namespace types {
 	    version?: string;
 	    meta?: MetaData;
 	    diffs?: MetaData;
+	    nBytes: number;
+	    nFiles: number;
+	    nFolders: number;
+	    // Go type: time
+	    lastUpdate: any;
+	    items: CacheItem[];
+	    nItems: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new StatusContainer(source);
@@ -2089,12 +2085,6 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.nBytes = source["nBytes"];
-	        this.nFiles = source["nFiles"];
-	        this.nFolders = source["nFolders"];
-	        this.items = this.convertValues(source["items"], CacheItem);
-	        this.nItems = source["nItems"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.cachePath = source["cachePath"];
 	        this.caches = this.convertValues(source["caches"], CacheItem);
 	        this.chain = source["chain"];
@@ -2117,6 +2107,12 @@ export namespace types {
 	        this.version = source["version"];
 	        this.meta = this.convertValues(source["meta"], MetaData);
 	        this.diffs = this.convertValues(source["diffs"], MetaData);
+	        this.nBytes = source["nBytes"];
+	        this.nFiles = source["nFiles"];
+	        this.nFolders = source["nFolders"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.items = this.convertValues(source["items"], CacheItem);
+	        this.nItems = source["nItems"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
