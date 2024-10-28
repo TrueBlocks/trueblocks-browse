@@ -58,7 +58,6 @@
             "doc_route": "120-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
             "members": [
                 {
                     "name": "bloomSz",
