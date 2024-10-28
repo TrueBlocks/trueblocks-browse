@@ -31,7 +31,7 @@ type ManifestContainer struct {
 }
 
 func NewManifestContainer(chain string, itemsIn ManifestInputType) ManifestContainer {
-	latest := getLatestManifestDate(chain)
+	latest, _ := getManifestReload(chain, time.Time{})
 	ret := ManifestContainer{
 		Items:      make([]ManifestItemType, 0, len(itemsIn)),
 		Chain:      chain,
@@ -51,8 +51,8 @@ func (s *ManifestContainer) String() string {
 }
 
 func (s *ManifestContainer) NeedsUpdate(force bool) bool {
-	latest := getLatestManifestDate(s.Chain)
-	if force || latest != s.LastUpdate {
+	latest, reload := getManifestReload(s.Chain, s.LastUpdate)
+	if force || reload {
 		s.LastUpdate = latest
 		return true
 	}
@@ -87,9 +87,10 @@ func (s *ManifestContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func getLatestManifestDate(chain string) (ret time.Time) {
+func getManifestReload(chain string, lastUpdate time.Time) (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	ret = utils.MustGetLatestFileTime(config.PathToManifest(chain))
+	reload = ret != lastUpdate
 	// EXISTING_CODE
 	return
 }
