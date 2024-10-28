@@ -156,7 +156,7 @@ func (a *App) thing(address base.Address, freq int) error {
 					continue
 				}
 				summary, _ := a.project.HistoryMap.Load(address)
-				summary.NTotal = nItems
+				summary.NTotal = int(nItems)
 				summary.Address = address
 				summary.Name = a.names.NamesMap[address].Name
 				summary.Items = append(summary.Items, *tx)
