@@ -15,7 +15,7 @@ export const SettingsView = () => {
   const session = settings.session ?? types.SessionContainer.createFrom({});
 
   const table = useReactTable({
-    data: status.caches || [],
+    data: status.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });

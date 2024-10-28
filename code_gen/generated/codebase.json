@@ -33,7 +33,6 @@
             "doc_route": "110-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
             "attributes": "embedType=coreTypes.Status|noChain",
             "members": [
                 {

@@ -10,7 +10,7 @@ export const StatusView = () => {
   const { status, fetchStatus } = useAppState();
 
   const table = useReactTable({
-    data: status.caches || [],
+    data: status.items || [],
     columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });

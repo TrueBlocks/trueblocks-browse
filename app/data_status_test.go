@@ -2,7 +2,7 @@ package app
 
 import "testing"
 
-func TestStatusLoadMe(t *testing.T) {
+func TestLoadStatus(t *testing.T) {
 	app := NewApp()
 	app.loadStatus(nil, nil)
 }

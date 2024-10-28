@@ -65,7 +65,6 @@ func (a *App) loadConfigs(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		configs = append(configs, a.cfg)
 		a.configs = types.NewConfigContainer(opts.Chain, configs)
 		// EXISTING_CODE
 		// EXISTING_CODE
