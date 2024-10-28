@@ -2,7 +2,7 @@ package app
 
 import "testing"
 
-func TestConfigLoadMe(t *testing.T) {
+func TestLoadConfigs(t *testing.T) {
 	app := NewApp()
-	app.configLoadMe()
+	app.loadConfigs(nil, nil)
 }

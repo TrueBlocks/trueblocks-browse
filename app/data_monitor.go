@@ -1,5 +1,6 @@
 package app
 
+// EXISTING_CODE
 import (
 	"fmt"
 	"sort"
@@ -16,16 +17,20 @@ import (
 
 var monitorMutex sync.Mutex
 
-// Find: NewViews
+// EXISTING_CODE
+
+var monitorLock atomic.Uint32
+
 func (a *App) MonitorPage(first, pageSize int) *types.MonitorContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	first = base.Max(0, base.Min(first, len(a.monitors.Items)-1))
 	last := base.Min(len(a.monitors.Items), first+pageSize)
 	copy, _ := a.monitors.ShallowCopy().(*types.MonitorContainer)
 	copy.Items = a.monitors.Items[first:last]
 	return copy
 }
-
-var monitorLock atomic.Uint32
 
 func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
@@ -39,17 +44,16 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer monitorLock.CompareAndSwap(1, 0)
 
-	if !a.monitors.NeedsUpdate(a.forceMonitors()) {
+	if !a.monitors.NeedsUpdate(a.forceMonitor()) {
 		return nil
 	}
 
-	chain := a.Chain
 	opts := sdk.MonitorsOptions{
-		Globals: sdk.Globals{
-			Verbose: true,
-			Chain:   chain,
-		},
+		Globals: a.toGlobals(),
 	}
+	// EXISTING_CODE
+	// EXISTING_CODE
+	opts.Verbose = true
 
 	if monitors, meta, err := opts.MonitorsList(); err != nil {
 		if errorChan != nil {
@@ -63,21 +67,33 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else {
-		a.meta = *meta
+		// EXISTING_CODE
 		for i := 0; i < len(monitors); i++ {
 			monitors[i].Name = a.names.NamesMap[monitors[i].Address].Name
 		}
-		a.monitors = types.NewMonitorContainer(chain, monitors)
+		// EXISTING_CODE
+		a.meta = *meta
+		a.monitors = types.NewMonitorContainer(opts.Chain, monitors)
+		// EXISTING_CODE
 		// TODO: Use core's sorting mechanism (see SortChunkStats for example)
 		sort.Slice(a.monitors.Items, func(i, j int) bool {
 			return a.monitors.Items[i].NRecords < a.monitors.Items[j].NRecords
 		})
+		// EXISTING_CODE
 		a.monitors.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded monitors"})
 	}
 	return nil
 }
 
+func (a *App) forceMonitor() (force bool) {
+	// EXISTING_CODE
+	force = a.forceName()
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
 func (a *App) ModifyMonitors(modData *ModifyData) error {
 	if !monitorLock.CompareAndSwap(0, 1) {
 		return nil
@@ -131,6 +147,4 @@ func (a *App) ModifyMonitors(modData *ModifyData) error {
 	return nil
 }
 
-func (a *App) forceMonitors() bool {
-	return a.forceName()
-}
+// EXISTING_CODE

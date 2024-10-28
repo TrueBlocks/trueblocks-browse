@@ -30,6 +30,10 @@ export function CancelContext(arg1) {
   return window['go']['app']['App']['CancelContext'](arg1);
 }
 
+export function ConfigPage(arg1, arg2) {
+  return window['go']['app']['App']['ConfigPage'](arg1, arg2);
+}
+
 export function ConvertToAddress(arg1) {
   return window['go']['app']['App']['ConvertToAddress'](arg1);
 }
