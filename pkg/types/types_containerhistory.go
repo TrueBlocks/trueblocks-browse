@@ -32,14 +32,15 @@ type HistoryContainer struct {
 	// EXISTING_CODE
 }
 
-func NewHistoryContainer(chain string, address base.Address) HistoryContainer {
-	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(chain), "monitors", address.Hex()+".mon.bin"))
+func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address base.Address) HistoryContainer {
 	ret := HistoryContainer{
-		Chain:      chain,
-		LastUpdate: latest,
+		Items: make([]coreTypes.Transaction, 0, len(itemsIn)),
+		Chain: chain,
 	}
+	ret.LastUpdate, _ = ret.getHistoryReload()
 	// EXISTING_CODE
 	ret.Address = address
+	ret.LastUpdate, _ = ret.getHistoryReload() // it requires address
 	// EXISTING_CODE
 	return ret
 }
@@ -50,8 +51,8 @@ func (s *HistoryContainer) String() string {
 }
 
 func (s *HistoryContainer) NeedsUpdate(force bool) bool {
-	latest := utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "monitors", s.Address.Hex()+".mon.bin"))
-	if force || latest != s.LastUpdate {
+	latest, reload := s.getHistoryReload()
+	if force || reload {
 		s.LastUpdate = latest
 		return true
 	}
@@ -94,6 +95,8 @@ func (s *HistoryContainer) Summarize() {
 
 func (s *HistoryContainer) getHistoryReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
+	ret = utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "monitors", s.Address.Hex()+".mon.bin"))
+	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return
 }

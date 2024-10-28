@@ -319,8 +319,7 @@
             "doc_route": "190-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
-            "attributes": "itemType=coreTypes.Transaction",
+            "attributes": "itemType=coreTypes.Transaction|otherType=base.Address",
             "members": [
                 {
                     "name": "address",
@@ -342,7 +341,7 @@
                 },
                 {
                     "name": "balance",
-                    "type": "wei",
+                    "type": "string",
                     "description": "jim",
                     "num": 4
                 },

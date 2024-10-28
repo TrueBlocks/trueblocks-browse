@@ -14,7 +14,7 @@ type {{.Class}}Container struct {
 	// EXISTING_CODE
 }
 
-func New{{.Class}}Container(chain string{{if .NeedsItems}}, itemsIn []{{.ItemType}}{{end}}{{if .NeedsEmbed}}, {{toLower .EmbedName}} *{{.EmbedType}}{{end}}) {{.Class}}Container {
+func New{{.Class}}Container(chain string{{if .NeedsItems}}, itemsIn []{{.ItemType}}{{end}}{{if .NeedsEmbed}}, {{toLower .EmbedName}} *{{.EmbedType}}{{end}}{{if .NeedsOther}}, {{toLower .OtherName}} {{.OtherType}}{{end}}) {{.Class}}Container {
 	ret := {{.Class}}Container{
 	{{if .NeedsItems}}Items: make([]{{.ItemType}}, 0, len(itemsIn)),
 {{end}}{{if .NeedsEmbed}}{{toProper .EmbedName}}: *{{toLower .EmbedName}},

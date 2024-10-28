@@ -2,7 +2,7 @@ name    ,type    ,strDefault ,attributes ,upgrades ,docOrder ,description
 address ,address ,           ,           ,         ,         ,jim
 nTotal  ,uint64  ,           ,           ,         ,         ,jim
 name    ,string  ,           ,           ,         ,         ,jim
-balance ,wei     ,           ,           ,         ,         ,jim
+balance ,string  ,           ,           ,         ,         ,jim
 nLogs   ,uint64  ,           ,           ,         ,         ,jim
 nTokens ,uint64  ,           ,           ,         ,         ,jim
 nErrors ,uint64  ,           ,           ,         ,         ,jim
