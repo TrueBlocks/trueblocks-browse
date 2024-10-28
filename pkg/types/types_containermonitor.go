@@ -64,12 +64,11 @@ type MonitorContainer struct {
 }
 
 func NewMonitorContainer(chain string, itemsIn MonitorInputType) MonitorContainer {
-	latest, _ := getMonitorReload(chain, time.Time{})
 	ret := MonitorContainer{
-		Items:      make([]MonitorItemType, 0, len(itemsIn)),
-		Chain:      chain,
-		LastUpdate: latest,
+		Items: make([]MonitorItemType, 0, len(itemsIn)),
+		Chain: chain,
 	}
+	ret.LastUpdate, _ = ret.getMonitorReload()
 	// EXISTING_CODE
 	ret.Items = itemsIn
 	// EXISTING_CODE
@@ -82,7 +81,7 @@ func (s *MonitorContainer) String() string {
 }
 
 func (s *MonitorContainer) NeedsUpdate(force bool) bool {
-	latest, reload := getMonitorReload(s.Chain, s.LastUpdate)
+	latest, reload := s.getMonitorReload()
 	if force || reload {
 		s.LastUpdate = latest
 		return true
@@ -128,10 +127,10 @@ func (s *MonitorContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func getMonitorReload(chain string, lastUpdate time.Time) (ret time.Time, reload bool) {
+func (s *MonitorContainer) getMonitorReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(chain), "monitors"))
-	reload = ret != lastUpdate
+	ret = utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(s.Chain), "monitors"))
+	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return
 }

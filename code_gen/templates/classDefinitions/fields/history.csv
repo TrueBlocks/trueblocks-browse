@@ -1,7 +1,8 @@
-name    ,type ,strDefault ,attributes ,upgrades ,docOrder ,description
-bloomSz ,uint64  ,           ,           ,         ,         ,jim
-chunkSz ,uint64  ,           ,           ,         ,         ,jim
-nAddrs  ,uint64  ,           ,           ,         ,         ,jim
-nApps   ,uint64  ,           ,           ,         ,         ,jim
-nBlocks ,uint64  ,           ,           ,         ,         ,jim
-nBlooms ,uint64  ,           ,           ,         ,         ,jim
+name    ,type    ,strDefault ,attributes ,upgrades ,docOrder ,description
+address ,address ,           ,           ,         ,         ,jim
+nTotal  ,uint64  ,           ,           ,         ,         ,jim
+name    ,string  ,           ,           ,         ,         ,jim
+balance ,wei     ,           ,           ,         ,         ,jim
+nLogs   ,uint64  ,           ,           ,         ,         ,jim
+nTokens ,uint64  ,           ,           ,         ,         ,jim
+nErrors ,uint64  ,           ,           ,         ,         ,jim

@@ -27,11 +27,10 @@ type StatusContainer struct {
 }
 
 func NewStatusContainer(chain string, itemsIn StatusInputType) StatusContainer {
-	latest, _ := getStatusReload(chain, time.Time{})
 	ret := StatusContainer{
-		Items:      make([]StatusItemType, 0, len(itemsIn)),
-		LastUpdate: latest,
+		Items: make([]StatusItemType, 0, len(itemsIn)),
 	}
+	ret.LastUpdate, _ = ret.getStatusReload()
 	// EXISTING_CODE
 	ret.Chain = chain
 	ret.LastUpdate = time.Now()
@@ -49,7 +48,7 @@ func (s *StatusContainer) String() string {
 }
 
 func (s *StatusContainer) NeedsUpdate(force bool) bool {
-	latest, reload := getStatusReload(s.Chain, s.LastUpdate)
+	latest, reload := s.getStatusReload()
 	if force || reload {
 		s.LastUpdate = latest
 		return true
@@ -81,11 +80,10 @@ func (s *StatusContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func getStatusReload(chain string, lastUpdate time.Time) (ret time.Time, reload bool) {
+func (s *StatusContainer) getStatusReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	_ = chain
 	ret = time.Now()
-	reload = ret.After(lastUpdate.Add(time.Minute * 2)) // every two minutes
+	reload = ret.After(s.LastUpdate.Add(time.Minute * 2)) // every two minutes
 	// EXISTING_CODE
 	return
 }

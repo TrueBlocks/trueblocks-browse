@@ -38,7 +38,7 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 	return copy
 }
 
-func (a *App) getHistoryCnt(address base.Address) int {
+func (a *App) getHistoryCnt(address base.Address) uint64 {
 	opts := sdk.ListOptions{
 		Addrs:   []string{address.Hex()},
 		Globals: a.toGlobals(),
@@ -54,7 +54,7 @@ func (a *App) getHistoryCnt(address base.Address) int {
 		return 0
 	} else {
 		a.meta = *meta
-		return int(appearances[0].NRecords)
+		return uint64(appearances[0].NRecords)
 	}
 }
 
@@ -170,7 +170,7 @@ func (a *App) thing(address base.Address, freq int) error {
 					messages.EmitMessage(a.ctx, messages.Progress, &messages.MessageMsg{
 						Address: address,
 						Num1:    len(summary.Items),
-						Num2:    nItems,
+						Num2:    int(nItems),
 					})
 				}
 
