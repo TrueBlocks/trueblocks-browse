@@ -54,7 +54,7 @@ func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) 
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.{{toLowerPlural .Class}} = types.New{{.Class}}Container(opts.Chain, {{toLowerPlural .Class}})
+		a.{{toLowerPlural .Class}} = types.New{{.Class}}Container(opts.Chain, {{if .NeedsItems}}{{toLowerPlural .Class}}{{end}}{{if .NeedsEmbed}}&{{toLowerPlural .Class}}[0]{{end}})
 		// EXISTING_CODE
 		// EXISTING_CODE
 {{if .HasSorts}}		if err := sdk.Sort{{toPlural .Class}}(a.{{toLowerPlural .Class}}.Items, a.{{toLowerPlural .Class}}.Sorts); err != nil {

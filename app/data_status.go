@@ -1,5 +1,6 @@
 package app
 
+// EXISTING_CODE
 import (
 	"fmt"
 	"io"
@@ -14,15 +15,20 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-func (a *App) StatusPage(first, pageSize int) *types.StatusContainer {
-	first = base.Max(0, base.Min(first, len(a.status.Caches)-1))
-	last := base.Min(len(a.status.Caches), first+pageSize)
-	copy, _ := a.status.ShallowCopy().(*types.StatusContainer)
-	copy.Caches = a.status.Caches[first:last]
-	return copy
-}
+// EXISTING_CODE
 
 var statusLock atomic.Uint32
+
+func (a *App) StatusPage(first, pageSize int) *types.StatusContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	first = base.Max(0, base.Min(first, len(a.status.Items)-1))
+	last := base.Min(len(a.status.Items), first+pageSize)
+	copy, _ := a.status.ShallowCopy().(*types.StatusContainer)
+	copy.Items = a.status.Items[first:last]
+	return copy
+}
 
 func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
@@ -36,46 +42,56 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer statusLock.CompareAndSwap(1, 0)
 
-	if !a.status.NeedsUpdate(false) {
+	if !a.status.NeedsUpdate(a.forceStatus()) {
 		return nil
 	}
 
-	// silence progress reporting for a second...
+	opts := sdk.StatusOptions{
+		Globals: a.toGlobals(),
+	}
+	// EXISTING_CODE
 	w := logger.GetLoggerWriter()
 	logger.SetLoggerWriter(io.Discard)
 	defer logger.SetLoggerWriter(w)
+	// EXISTING_CODE
+	opts.Verbose = true
 
-	chain := a.Chain
-	opts := sdk.StatusOptions{
-		Chains:  true,
-		Globals: a.toGlobals(),
-	}
-
-	if statusArray, meta, err := opts.StatusAll(); err != nil {
+	if status, meta, err := opts.StatusList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (statusArray == nil) || (len(statusArray) == 0) {
+	} else if (status == nil) || (len(status) == 0) {
 		err = fmt.Errorf("no status found")
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
 	} else {
+		// EXISTING_CODE
+		// EXISTING_CODE
 		a.meta = *meta
-		a.status = types.NewStatusContainer(chain, &statusArray[0])
+		a.status = types.NewStatusContainer(opts.Chain, &status[0])
+		// EXISTING_CODE
 		// TODO: Use the core's sorting mechanism (see SortChunkStats for example)
 		sort.Slice(a.status.Caches, func(i, j int) bool {
 			return a.status.Caches[i].SizeInBytes > a.status.Caches[j].SizeInBytes
 		})
-		a.status.Summarize()
 		logger.SetLoggerWriter(w)
+		// EXISTING_CODE
+		a.status.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded status"})
 	}
 	return nil
 }
 
+func (a *App) forceStatus() (force bool) {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
 func (a *App) toGlobals() sdk.Globals {
 	return sdk.Globals{
 		Ether:   a.Ether,
@@ -87,3 +103,5 @@ func (a *App) toGlobals() sdk.Globals {
 		Append:  a.Append,
 	}
 }
+
+// EXISTING_CODE
