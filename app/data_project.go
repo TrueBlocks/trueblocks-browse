@@ -61,13 +61,13 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 		a.project.BalanceMap,
 		a.project.EnsMap,
 	)
-	a.project.NOpenFiles = a.openFileCnt()
-	a.project.NMonitors = len(a.monitors.Items)
-	a.project.NNames = len(a.names.Items)
-	a.project.NAbis = len(a.abis.Items)
-	a.project.NIndexes = len(a.index.Items)
-	a.project.NManifests = len(a.manifest.Items)
-	a.project.NCaches = len(a.status.Caches)
+	a.project.NItems = uint64(a.openFileCnt())
+	a.project.NMonitors = uint64(len(a.monitors.Items))
+	a.project.NNames = uint64(len(a.names.Items))
+	a.project.NAbis = uint64(len(a.abis.Items))
+	a.project.NIndexes = uint64(len(a.index.Items))
+	a.project.NManifests = uint64(len(a.manifest.Items))
+	a.project.NCaches = uint64(len(a.status.Caches))
 	_ = a.forEveryHistory(func(item *types.HistoryContainer) bool {
 		a.project.Summary.Balance += item.Balance
 		a.project.Summary.NItems += item.NItems
@@ -79,7 +79,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 		if copy, ok := item.ShallowCopy().(*types.HistoryContainer); ok {
 			a.project.Items = append(a.project.Items, *copy)
 		}
-		a.project.HistorySize += item.SizeOf()
+		a.project.HistorySize += uint64(item.SizeOf())
 		return true
 	})
 	sort.Slice(a.project.Items, func(i, j int) bool {
