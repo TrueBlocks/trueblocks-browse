@@ -64,7 +64,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		return err
 	} else {
 		a.meta = *meta
-		a.status = types.NewStatusContainer(chain, statusArray)
+		a.status = types.NewStatusContainer(chain, &statusArray[0])
 		// TODO: Use the core's sorting mechanism (see SortChunkStats for example)
 		sort.Slice(a.status.Caches, func(i, j int) bool {
 			return a.status.Caches[i].SizeInBytes > a.status.Caches[j].SizeInBytes

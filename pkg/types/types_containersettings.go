@@ -26,9 +26,9 @@ type SettingsGroup struct {
 func NewSettingsGroup(status *coreTypes.Status, cfg *configTypes.Config, session *config.Session) SettingsGroup {
 	latest := getLatestFileTime()
 	ret := SettingsGroup{
-		Status:     NewStatusContainer(status.Chain, []coreTypes.Status{*status}),
+		Status:     NewStatusContainer(status.Chain, status),
 		Config:     NewConfigContainer(status.Chain, []configTypes.Config{*cfg}),
-		Session:    NewSessionContainer(status.Chain, []config.Session{*session}),
+		Session:    NewSessionContainer(status.Chain, session),
 		LastUpdate: latest,
 	}
 	// EXISTING_CODE

@@ -9,35 +9,32 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/version"
 )
 
-type StatusItemType = coreTypes.CacheItem
-type StatusInputType = []coreTypes.Status
-
 // EXISTING_CODE
 
 type StatusContainer struct {
-	NBytes     uint64           `json:"nBytes"`
-	NFiles     uint64           `json:"nFiles"`
-	NFolders   uint64           `json:"nFolders"`
-	Items      []StatusItemType `json:"items"`
-	NItems     uint64           `json:"nItems"`
-	LastUpdate time.Time        `json:"lastUpdate"`
-	// EXISTING_CODE
 	coreTypes.Status `json:",inline"`
+	NBytes           uint64    `json:"nBytes"`
+	NFiles           uint64    `json:"nFiles"`
+	NFolders         uint64    `json:"nFolders"`
+	LastUpdate       time.Time `json:"lastUpdate"`
+	// EXISTING_CODE
+	Items  []coreTypes.CacheItem `json:"items"`
+	NItems uint64                `json:"nItems"`
 	// EXISTING_CODE
 }
 
-func NewStatusContainer(chain string, itemsIn StatusInputType) StatusContainer {
+func NewStatusContainer(chain string, itemsIn *coreTypes.Status) StatusContainer {
 	ret := StatusContainer{
-		Items: make([]StatusItemType, 0, len(itemsIn)),
+		Status: *itemsIn,
 	}
 	ret.LastUpdate, _ = ret.getStatusReload()
 	// EXISTING_CODE
 	ret.Chain = chain
 	ret.LastUpdate = time.Now()
-	ret.Status = itemsIn[0]
 	// TODO: This is a hack. We need to get the version from the core
 	ret.Version = version.LibraryVersion
-	ret.Items = itemsIn[0].Caches
+	ret.Items = itemsIn.Caches
+	ret.NItems = uint64(len(ret.Items))
 	// EXISTING_CODE
 	return ret
 }
@@ -58,20 +55,20 @@ func (s *StatusContainer) NeedsUpdate(force bool) bool {
 
 func (s *StatusContainer) ShallowCopy() Containerer {
 	return &StatusContainer{
+		Status:     s.Status.ShallowCopy(),
 		NBytes:     s.NBytes,
 		NFiles:     s.NFiles,
 		NFolders:   s.NFolders,
-		NItems:     s.NItems,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
-		Status: s.Status.ShallowCopy(),
+		NItems: s.NItems,
 		// EXISTING_CODE
 	}
 }
 
 func (s *StatusContainer) Summarize() {
-	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
+	s.NItems = uint64(len(s.Items))
 	for _, cache := range s.Caches {
 		s.NFolders += cache.NFolders
 		s.NFiles += cache.NFiles

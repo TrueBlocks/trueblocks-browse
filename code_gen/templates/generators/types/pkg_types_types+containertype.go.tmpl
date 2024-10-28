@@ -5,19 +5,19 @@ package types
 
 type {{.Class}}Container struct {
 {{range .Members}}{{if .IsSimpField}}{{.GoName}} {{.GoType}} {{.Tag}}
-{{end}}{{end}}	Items []{{.Class}}ItemType `json:"items"`
-	NItems uint64 `json:"nItems"`
-	Chain string `json:"chain"`
-	LastUpdate time.Time `json:"lastUpdate"`
+{{end}}{{end}}	{{if .HasItemType}}	{{.ItemType}} `json:",inline"`{{else}}	Items []{{.Class}}ItemType `json:"items"`
+	NItems uint64 `json:"nItems"`{{end}}
+{{if .NeedsChain}}	Chain string `json:"chain"`
+{{end}}	LastUpdate time.Time `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func New{{.Class}}Container(chain string, itemsIn {{.Class}}InputType) {{.Class}}Container {
+func New{{.Class}}Container(chain string, {{.InputType}}) {{.Class}}Container {
 	ret := {{.Class}}Container{
-		Items:      make([]{{.Class}}ItemType, 0, len(itemsIn)),
-		Chain:      chain,
-	}
+		{{.InputTypeInit}},
+{{if .NeedsChain}}		Chain: chain,
+{{end}}	}
 	ret.LastUpdate, _ = ret.get{{.Class}}Reload()
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -41,17 +41,17 @@ func (s *{{.Class}}Container) NeedsUpdate(force bool) bool {
 func (s *{{.Class}}Container) ShallowCopy() Containerer {
 	return &{{.Class}}Container{
 		{{range .Members}}{{if .IsSimpField}}{{.GoName}}: s.{{.GoName}},
-		{{end}}{{end}}	NItems: s.NItems,
-			Chain: s.Chain,
-			LastUpdate: s.LastUpdate,
+		{{end}}{{end}}{{.InputTypeCopy}},
+{{if .NeedsChain}}			Chain: s.Chain,
+{{end}}			LastUpdate: s.LastUpdate,
 			// EXISTING_CODE
 			// EXISTING_CODE
 	}
 }
 
 func (s *{{.Class}}Container) Summarize() {
-	s.NItems = uint64(len(s.Items))
-	// EXISTING_CODE
+{{if not .HasItemType}}	s.NItems = uint64(len(s.Items))
+{{end}}	// EXISTING_CODE
 	// EXISTING_CODE
 }
 

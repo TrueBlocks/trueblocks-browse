@@ -32,6 +32,7 @@
             "doc_route": "110-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "attributes": "noChain",
             "members": [
                 {
                     "name": "nFolders",
@@ -58,6 +59,7 @@
             "doc_route": "120-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "disable_go": true,
             "members": [
                 {
                     "name": "bloomSz",
@@ -101,7 +103,8 @@
             "class": "Session",
             "doc_route": "130-containers",
             "cache_by": "range",
-            "cache_type": "cacheable"
+            "cache_type": "cacheable",
+            "attributes": "itemType=config.Session"
         },
         {
             "class": "Project",
