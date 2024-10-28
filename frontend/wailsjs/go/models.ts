@@ -1016,14 +1016,18 @@ export namespace types {
 		}
 	}
 	export class ConfigContainer {
+	    nChains: number;
+	    items: configtypes.Config[];
+	    nItems: number;
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
 	    version: configtypes.VersionGroup;
 	    settings: configtypes.SettingsGroup;
 	    keys: {[key: string]: configtypes.KeyGroup};
 	    pinning: configtypes.PinningGroup;
 	    unchained: configtypes.UnchainedGroup;
 	    chains: {[key: string]: configtypes.ChainGroup};
-	    // Go type: time
-	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new ConfigContainer(source);
@@ -1031,13 +1035,17 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.nChains = source["nChains"];
+	        this.items = this.convertValues(source["items"], configtypes.Config);
+	        this.nItems = source["nItems"];
+	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.version = this.convertValues(source["version"], configtypes.VersionGroup);
 	        this.settings = this.convertValues(source["settings"], configtypes.SettingsGroup);
 	        this.keys = this.convertValues(source["keys"], configtypes.KeyGroup, true);
 	        this.pinning = this.convertValues(source["pinning"], configtypes.PinningGroup);
 	        this.unchained = this.convertValues(source["unchained"], configtypes.UnchainedGroup);
 	        this.chains = this.convertValues(source["chains"], configtypes.ChainGroup, true);
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1992,6 +2000,11 @@ export namespace types {
 		}
 	}
 	export class SessionContainer {
+	    items: config.Session[];
+	    nItems: number;
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
 	    lastChain: string;
 	    lastFile: string;
 	    lastFolder: string;
@@ -2000,8 +2013,6 @@ export namespace types {
 	    window: config.Window;
 	    wizard: wizard.Wizard;
 	    toggles: config.Toggles;
-	    // Go type: time
-	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new SessionContainer(source);
@@ -2009,6 +2020,10 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.items = this.convertValues(source["items"], config.Session);
+	        this.nItems = source["nItems"];
+	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.lastChain = source["lastChain"];
 	        this.lastFile = source["lastFile"];
 	        this.lastFolder = source["lastFolder"];
@@ -2017,7 +2032,6 @@ export namespace types {
 	        this.window = this.convertValues(source["window"], config.Window);
 	        this.wizard = this.convertValues(source["wizard"], wizard.Wizard);
 	        this.toggles = this.convertValues(source["toggles"], config.Toggles);
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

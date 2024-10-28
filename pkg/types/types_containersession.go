@@ -7,7 +7,6 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/config"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
-	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 )
 
 type SessionItemType = config.Session
@@ -81,6 +80,7 @@ func (s *SessionContainer) Summarize() {
 
 func getSessionReload(chain string, lastUpdate time.Time) (ret time.Time, reload bool) {
 	// EXISTING_CODE
+	_ = chain
 	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
 	ret = utils.MustGetLatestFileTime(sessionFn)
 	reload = ret != lastUpdate
