@@ -58,13 +58,11 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	// EXISTING_CODE
 	names.ClearCustomNames()
-	opts.Regular = true
-	opts.Custom = true
-	opts.Prefund = true
+	opts.All = true
 	// EXISTING_CODE
 	opts.Verbose = true
 
-	if names, meta, err := opts.Names(); err != nil {
+	if names, meta, err := opts.NamesList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}

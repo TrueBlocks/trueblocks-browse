@@ -224,7 +224,6 @@
             "doc_route": "160-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
             "attributes": "itemType=coreTypes.Monitor",
             "members": [
                 {
@@ -374,7 +373,6 @@
             "doc_route": "200-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
             "attributes": "itemType=configTypes.Config",
             "members": [
                 {

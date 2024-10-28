@@ -8,4 +8,4 @@
 	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"
 	cache_by = "range"
-	disable_go = true
+	# disable_go = true

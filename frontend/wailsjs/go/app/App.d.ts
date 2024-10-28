@@ -26,6 +26,8 @@ export function CancelAllContexts():Promise<void>;
 
 export function CancelContext(arg1:base.Address):Promise<void>;
 
+export function ConfigPage(arg1:number,arg2:number):Promise<types.ConfigContainer>;
+
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
 export function DaemonsView(arg1:menu.CallbackData):Promise<void>;

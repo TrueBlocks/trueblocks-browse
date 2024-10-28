@@ -40,6 +40,7 @@ type App struct {
 	indexes   types.IndexContainer
 	manifests types.ManifestContainer
 	settings  types.SettingsGroup
+	configs   types.ConfigContainer
 
 	status types.StatusContainer
 
