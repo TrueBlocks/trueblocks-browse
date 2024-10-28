@@ -1497,12 +1497,12 @@ export namespace types {
 	}
 	export class HistoryContainer {
 	    address: base.Address;
-	    nTotal: number;
-	    name: string;
 	    balance: string;
+	    nErrors: number;
 	    nLogs: number;
 	    nTokens: number;
-	    nErrors: number;
+	    nTotal: number;
+	    name: string;
 	    items: Transaction[];
 	    nItems: number;
 	    chain: string;
@@ -1516,12 +1516,12 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.address = this.convertValues(source["address"], base.Address);
-	        this.nTotal = source["nTotal"];
-	        this.name = source["name"];
 	        this.balance = source["balance"];
+	        this.nErrors = source["nErrors"];
 	        this.nLogs = source["nLogs"];
 	        this.nTokens = source["nTokens"];
-	        this.nErrors = source["nErrors"];
+	        this.nTotal = source["nTotal"];
+	        this.name = source["name"];
 	        this.items = this.convertValues(source["items"], Transaction);
 	        this.nItems = source["nItems"];
 	        this.chain = source["chain"];
