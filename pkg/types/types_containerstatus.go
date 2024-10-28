@@ -9,28 +9,36 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/version"
 )
 
+type StatusItemType = coreTypes.CacheItem
+type StatusInputType = []coreTypes.Status
+
 // EXISTING_CODE
 
 type StatusContainer struct {
-	coreTypes.Status `json:",inline"`
-	NItems           int       `json:"nItems"`
-	NFolders         int       `json:"nFolders"`
-	NFiles           int       `json:"nFiles"`
-	NBytes           int       `json:"nBytes"`
-	LastUpdate       time.Time `json:"lastUpdate"`
+	NBytes     uint64           `json:"nBytes"`
+	NFiles     uint64           `json:"nFiles"`
+	NFolders   uint64           `json:"nFolders"`
+	Items      []StatusItemType `json:"items"`
+	NItems     uint64           `json:"nItems"`
+	LastUpdate time.Time        `json:"lastUpdate"`
 	// EXISTING_CODE
+	coreTypes.Status `json:",inline"`
 	// EXISTING_CODE
 }
 
-func NewStatusContainer(chain string, status *coreTypes.Status) StatusContainer {
-	ret := StatusContainer{}
+func NewStatusContainer(chain string, itemsIn StatusInputType) StatusContainer {
+	latest, _ := getStatusReload(chain, time.Time{})
+	ret := StatusContainer{
+		Items:      make([]StatusItemType, 0, len(itemsIn)),
+		LastUpdate: latest,
+	}
 	// EXISTING_CODE
 	ret.Chain = chain
-	ret.Status = *status
+	ret.LastUpdate = time.Now()
+	ret.Status = itemsIn[0]
 	// TODO: This is a hack. We need to get the version from the core
 	ret.Version = version.LibraryVersion
-	ret.Caches = status.Caches
-	ret.LastUpdate = time.Now()
+	ret.Items = itemsIn[0].Caches
 	// EXISTING_CODE
 	return ret
 }
@@ -41,43 +49,45 @@ func (s *StatusContainer) String() string {
 }
 
 func (s *StatusContainer) NeedsUpdate(force bool) bool {
-	elapsed := time.Now().After(s.LastUpdate.Add(time.Minute * 2))
-	if force || elapsed {
-		s.LastUpdate = time.Now()
+	latest, reload := getStatusReload(s.Chain, s.LastUpdate)
+	if force || reload {
+		s.LastUpdate = latest
 		return true
 	}
 	return false
 }
 
 func (s *StatusContainer) ShallowCopy() Containerer {
-	ret := &StatusContainer{
-		Status:     s.Status.ShallowCopy(),
-		NItems:     s.NItems,
-		NFolders:   s.NFolders,
-		NFiles:     s.NFiles,
+	return &StatusContainer{
 		NBytes:     s.NBytes,
+		NFiles:     s.NFiles,
+		NFolders:   s.NFolders,
+		NItems:     s.NItems,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
+		Status: s.Status.ShallowCopy(),
 		// EXISTING_CODE
 	}
-	ret.Status.Chain = s.Status.Chain
-	return ret
 }
 
 func (s *StatusContainer) Summarize() {
+	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
-	s.NItems = len(s.Caches)
 	for _, cache := range s.Caches {
-		s.NFolders += int(cache.NFolders)
-		s.NFiles += int(cache.NFiles)
-		s.NBytes += int(cache.SizeInBytes)
+		s.NFolders += cache.NFolders
+		s.NFiles += cache.NFiles
+		s.NBytes += uint64(cache.SizeInBytes)
 	}
 	// EXISTING_CODE
 }
 
-func StatusX() {
+func getStatusReload(chain string, lastUpdate time.Time) (ret time.Time, reload bool) {
 	// EXISTING_CODE
+	_ = chain
+	ret = time.Now()
+	reload = ret.After(lastUpdate.Add(time.Minute * 2)) // every two minutes
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

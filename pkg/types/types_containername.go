@@ -40,7 +40,7 @@ type NameContainer struct {
 }
 
 func NewNameContainer(chain string, itemsIn NameInputType) NameContainer {
-	latest := getLatestNameDate(chain)
+	latest, _ := getNameReload(chain, time.Time{})
 	ret := NameContainer{
 		Items:      make([]NameItemType, 0, len(itemsIn)),
 		Chain:      chain,
@@ -64,8 +64,8 @@ func (s *NameContainer) String() string {
 }
 
 func (s *NameContainer) NeedsUpdate(force bool) bool {
-	latest := getLatestNameDate(s.Chain)
-	if force || latest != s.LastUpdate {
+	latest, reload := getNameReload(s.Chain, s.LastUpdate)
+	if force || reload {
 		s.LastUpdate = latest
 		return true
 	}
@@ -128,9 +128,10 @@ func (s *NameContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func getLatestNameDate(chain string) (ret time.Time) {
+func getNameReload(chain string, lastUpdate time.Time) (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	ret = utils.MustGetLatestFileTime(config.MustGetPathToChainConfig(chain))
+	reload = ret != lastUpdate
 	// EXISTING_CODE
 	return
 }

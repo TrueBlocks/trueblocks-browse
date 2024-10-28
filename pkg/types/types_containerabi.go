@@ -33,7 +33,7 @@ type AbiContainer struct {
 }
 
 func NewAbiContainer(chain string, itemsIn AbiInputType) AbiContainer {
-	latest := getLatestAbiDate(chain)
+	latest, _ := getAbiReload(chain, time.Time{})
 	ret := AbiContainer{
 		Items:      make([]AbiItemType, 0, len(itemsIn)),
 		Chain:      chain,
@@ -55,8 +55,8 @@ func (s *AbiContainer) String() string {
 }
 
 func (s *AbiContainer) NeedsUpdate(force bool) bool {
-	latest := getLatestAbiDate(s.Chain)
-	if force || latest != s.LastUpdate {
+	latest, reload := getAbiReload(s.Chain, s.LastUpdate)
+	if force || reload {
 		s.LastUpdate = latest
 		return true
 	}
@@ -97,9 +97,10 @@ func (s *AbiContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func getLatestAbiDate(chain string) (ret time.Time) {
+func getAbiReload(chain string, lastUpdate time.Time) (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	ret = utils.MustGetLatestFileTime(filepath.Join(config.PathToCache(chain), "abis"))
+	reload = ret != lastUpdate
 	// EXISTING_CODE
 	return
 }

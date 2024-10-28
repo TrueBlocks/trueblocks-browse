@@ -28,7 +28,7 @@ type IndexContainer struct {
 }
 
 func NewIndexContainer(chain string, itemsIn IndexInputType) IndexContainer {
-	latest := getLatestIndexDate(chain)
+	latest, _ := getIndexReload(chain, time.Time{})
 	ret := IndexContainer{
 		Items:      make([]IndexItemType, 0, len(itemsIn)),
 		Chain:      chain,
@@ -50,8 +50,8 @@ func (s *IndexContainer) String() string {
 }
 
 func (s *IndexContainer) NeedsUpdate(force bool) bool {
-	latest := getLatestIndexDate(s.Chain)
-	if force || latest != s.LastUpdate {
+	latest, reload := getIndexReload(s.Chain, s.LastUpdate)
+	if force || reload {
 		s.LastUpdate = latest
 		return true
 	}
@@ -93,9 +93,10 @@ func (s *IndexContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func getLatestIndexDate(chain string) (ret time.Time) {
+func getIndexReload(chain string, lastUpdate time.Time) (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	ret = utils.MustGetLatestFileTime(config.PathToIndex(chain))
+	reload = ret != lastUpdate
 	// EXISTING_CODE
 	return
 }
