@@ -9,11 +9,11 @@ func (a *App) {{.Class}}Page(first, pageSize int) *types.{{.Class}}Container {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	first = base.Max(0, base.Min(first, len(a.{{toLowerPlural .Class}}.Items)-1))
+{{if not .NeedsEmbed}}	first = base.Max(0, base.Min(first, len(a.{{toLowerPlural .Class}}.Items)-1))
 	last := base.Min(len(a.{{toLowerPlural .Class}}.Items), first+pageSize)
-	copy, _ := a.{{toLowerPlural .Class}}.ShallowCopy().(*types.{{.Class}}Container)
-	copy.Items = a.{{toLowerPlural .Class}}.Items[first:last]
-	return copy
+{{end}}	copy, _ := a.{{toLowerPlural .Class}}.ShallowCopy().(*types.{{.Class}}Container)
+{{if not .NeedsEmbed}}	copy.Items = a.{{toLowerPlural .Class}}.Items[first:last]
+{{end}}	return copy
 }
 
 func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) error {
