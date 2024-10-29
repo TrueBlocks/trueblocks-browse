@@ -2,14 +2,14 @@ module github.com/TrueBlocks/trueblocks-browse
 
 go 1.22
 
-replace (
-	github.com/TrueBlocks/trueblocks-core/src/apps/chifra => ../trueblocks-core/src/apps/chifra
-	github.com/TrueBlocks/trueblocks-sdk/v3 => ../trueblocks-sdk
-)
+// replace (
+// 	github.com/TrueBlocks/trueblocks-core/src/apps/chifra => ../trueblocks-core/src/apps/chifra
+// 	github.com/TrueBlocks/trueblocks-sdk/v3 => ../trueblocks-sdk
+// )
 
 require (
-	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20241022031540-b362680128f7
-	github.com/TrueBlocks/trueblocks-sdk/v3 v3.5.5
+	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20241025131929-e14d63198d2e
+	github.com/TrueBlocks/trueblocks-sdk/v3 v3.5.10
 	github.com/wailsapp/wails/v2 v2.8.2
 )
 
