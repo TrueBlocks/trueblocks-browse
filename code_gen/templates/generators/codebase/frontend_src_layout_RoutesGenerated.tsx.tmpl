@@ -2,30 +2,10 @@
 // of ExistingCode markers (if any).
 import {
   // Icons
-  ProjectIcon,
-  HistoryIcon,
-  MonitorIcon,
-  NamesIcon,
-  IndexesIcon,
-  ManifestIcon,
-  AbisIcon,
-  StatusIcon,
-  DaemonsIcon,
-  SettingsIcon,
-  WizardIcon,
-  // Views
-  ProjectView,
-  HistoryView,
-  NamesView,
-  MonitorsView,
-  IndexesView,
-  ManifestsView,
-  AbisView,
-  DaemonsView,
-  StatusView,
-  SettingsView,
-  WizardView,
-} from "@views";
+  {{range .Structures}}{{firstUpper .UiRouteName}}Icon,
+  {{end}}// Views
+  {{range .Structures}}{{firstUpper .UiRouteName}}View,
+  {{end}}} from "@views";
 
 export type Route =
   | ""
@@ -68,7 +48,7 @@ export const routeItems: RouteItem[] = [
     order: 20,
     route: expandRoute("monitors"),
     label: "Monitors",
-    icon: MonitorIcon,
+    icon: MonitorsIcon,
     component: MonitorsView,
   },
   {

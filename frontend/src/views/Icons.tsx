@@ -13,7 +13,7 @@ import {
 
 export const ProjectIcon = <IconHome />;
 export const HistoryIcon = <IconBuildingMonument />;
-export const MonitorIcon = <IconDeviceDesktop />;
+export const MonitorsIcon = <IconDeviceDesktop />;
 export const NamesIcon = <IconTag />;
 export const IndexesIcon = <IconArchive />;
 export const ManifestIcon = <IconCubeSend />;
