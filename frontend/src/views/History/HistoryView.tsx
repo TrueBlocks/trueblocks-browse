@@ -59,8 +59,8 @@ const createHistoryForm = (
       label: "Transaction Data",
       colSpan: 7,
       fields: [
-        { label: "address", type: "address-address-only", accessor: "address" },
         { label: "name", type: "address-name-only", accessor: "address" },
+        { label: "address", type: "address-address-only", accessor: "address" },
         { label: "balance", type: "ether", accessor: "balance" },
       ],
     },
