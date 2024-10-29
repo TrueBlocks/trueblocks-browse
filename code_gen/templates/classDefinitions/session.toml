@@ -3,9 +3,9 @@
 	# doc_group = "02-Chain Data"
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "130-containers"
-	attributes = "embedType=types.Session"
+	attributes = "embedType=types.Session|noChain"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"
 	cache_by = "range"
-	# disable_go = true
+	disable_go = true

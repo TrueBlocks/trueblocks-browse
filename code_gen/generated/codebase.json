@@ -106,13 +106,14 @@
             "doc_route": "130-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=types.Session"
+            "attributes": "embedType=types.Session|noChain"
         },
         {
             "class": "Project",
             "doc_route": "140-containers",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "disable_go": true,
             "attributes": "itemType=HistoryContainer",
             "members": [
                 {

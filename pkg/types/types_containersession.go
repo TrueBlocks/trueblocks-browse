@@ -12,7 +12,6 @@ import (
 
 type SessionContainer struct {
 	Session    `json:",inline"`
-	Chain      string    `json:"chain"`
 	LastUpdate time.Time `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -21,7 +20,6 @@ type SessionContainer struct {
 func NewSessionContainer(chain string, session *Session) SessionContainer {
 	ret := SessionContainer{
 		Session: *session,
-		Chain:   chain,
 	}
 	ret.LastUpdate, _ = ret.getSessionReload()
 	// EXISTING_CODE
@@ -46,7 +44,6 @@ func (s *SessionContainer) NeedsUpdate(force bool) bool {
 func (s *SessionContainer) ShallowCopy() Containerer {
 	return &SessionContainer{
 		Session:    s.Session.ShallowCopy(),
-		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
 		// EXISTING_CODE

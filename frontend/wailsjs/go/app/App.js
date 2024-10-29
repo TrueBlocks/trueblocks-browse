@@ -250,6 +250,10 @@ export function SaveName(arg1) {
   return window['go']['app']['App']['SaveName'](arg1);
 }
 
+export function SessionPage(arg1, arg2) {
+  return window['go']['app']['App']['SessionPage'](arg1, arg2);
+}
+
 export function SetChain(arg1, arg2) {
   return window['go']['app']['App']['SetChain'](arg1, arg2);
 }

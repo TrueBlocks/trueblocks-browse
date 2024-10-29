@@ -38,7 +38,7 @@ type App struct {
 	settings  types.SettingsGroup
 	configs   types.ConfigContainer
 	status    types.StatusContainer
-	sessions  types.Session
+	sessions  types.SessionContainer
 
 	// Controllers
 	ScraperController *daemons.DaemonScraper
