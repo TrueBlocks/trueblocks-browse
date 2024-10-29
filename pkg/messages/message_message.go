@@ -6,13 +6,13 @@ import (
 )
 
 type MessageMsg struct {
-	Name    string       `json:"name"`
-	Address base.Address `json:"address"`
-	State   types.State  `json:"state"`
-	Num1    int          `json:"num1"`
-	Num2    int          `json:"num2"`
-	String1 string       `json:"string1"`
-	String2 string       `json:"string2"`
+	Name    string         `json:"name"`
+	Address base.Address   `json:"address"`
+	State   types.WizState `json:"state"`
+	Num1    int            `json:"num1"`
+	Num2    int            `json:"num2"`
+	String1 string         `json:"string1"`
+	String2 string         `json:"string2"`
 }
 
 func (m *MessageMsg) Instance() MessageMsg {

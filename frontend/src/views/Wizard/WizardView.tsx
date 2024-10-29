@@ -5,7 +5,7 @@ import { useAppState } from "@state";
 
 export const WizardView = () => {
   const { isConfigured, wizardState, setWizardState } = useAppState();
-  const stepWizard = (step: types.Step) => {
+  const stepWizard = (step: types.WizStep) => {
     StepWizard(step).then((state) => {
       setWizardState(state);
     });
@@ -24,13 +24,13 @@ export const WizardView = () => {
 };
 
 type StepProps = {
-  stepWizard: (step: types.Step) => void;
+  stepWizard: (step: types.WizStep) => void;
   back?: boolean;
 };
 
 export const ResetWizard = ({ stepWizard }: StepProps) => {
   return (
-    <Button size={"xs"} onClick={() => stepWizard(types.Step.RESET)}>
+    <Button size={"xs"} onClick={() => stepWizard(types.WizStep.RESET)}>
       Reset
     </Button>
   );
@@ -38,7 +38,7 @@ export const ResetWizard = ({ stepWizard }: StepProps) => {
 
 export const BumpWizard = ({ stepWizard, back = false }: StepProps) => {
   return (
-    <Button size={"xs"} onClick={() => stepWizard(back ? types.Step.PREVIOUS : types.Step.NEXT)}>
+    <Button size={"xs"} onClick={() => stepWizard(back ? types.WizStep.PREVIOUS : types.WizStep.NEXT)}>
       {back ? "Back" : "Next"}
     </Button>
   );
@@ -46,7 +46,7 @@ export const BumpWizard = ({ stepWizard, back = false }: StepProps) => {
 
 export const FinishWizard = ({ stepWizard }: StepProps) => {
   return (
-    <Button size={"xs"} onClick={() => stepWizard(types.Step.FINISH)}>
+    <Button size={"xs"} onClick={() => stepWizard(types.WizStep.FINISH)}>
       Finish
     </Button>
   );

@@ -6,8 +6,8 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	coreUtils "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
 func (a *App) SettingsPage(first, pageSize int) *types.SettingsGroup {
@@ -33,7 +33,7 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	_ = errorChan // delint
-	if path, err := utils.GetConfigFn("", "trueBlocks.toml"); err != nil {
+	if path, err := coreUtils.GetConfigFn("", "trueBlocks.toml"); err != nil {
 		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
 			String1: err.Error(),
 		})

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
+	coreUtils "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
 // EXISTING_CODE
@@ -67,7 +68,7 @@ func (s *SessionContainer) Summarize() {
 
 func (s *SessionContainer) getSessionReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
+	sessionFn, _ := coreUtils.GetConfigFn("browse", "") /* session.json */
 	ret = utils.MustGetLatestFileTime(sessionFn)
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE

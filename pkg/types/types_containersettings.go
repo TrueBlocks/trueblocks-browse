@@ -9,6 +9,7 @@ import (
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	coreUtils "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
 // EXISTING_CODE
@@ -72,7 +73,7 @@ func (s *SettingsGroup) Summarize() {
 
 func getLatestFileTime() time.Time {
 	configFn := coreConfig.PathToRootConfig()
-	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
+	sessionFn, _ := coreUtils.GetConfigFn("browse", "") /* session.json */
 	folders := []string{configFn, sessionFn}
 	ret := utils.MustGetLatestFileTime(folders...)
 	// EXISTING_CODE
