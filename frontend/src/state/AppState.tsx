@@ -56,8 +56,8 @@ interface AppStateProps {
   setMeta: (meta: types.MetaData) => void;
 
   isConfigured: boolean;
-  wizardState: types.State;
-  setWizardState: (state: types.State) => void;
+  wizardState: types.WizState;
+  setWizardState: (state: types.WizState) => void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -79,7 +79,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
 
   const [isConfigured, setIsConfigured] = useState<boolean>(false);
-  const [wizardState, setWizardState] = useState<types.State>(types.State.WELCOME);
+  const [wizardState, setWizardState] = useState<types.WizState>(types.WizState.WELCOME);
 
   const fetchProject = async (currentItem: number, itemsPerPage: number) => {
     ProjectPage(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
@@ -164,7 +164,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   useEffect(() => {
-    setIsConfigured(wizardState == types.State.OKAY);
+    setIsConfigured(wizardState == types.WizState.OKAY);
   }, [wizardState]);
 
   const fetchWizard = async () => {

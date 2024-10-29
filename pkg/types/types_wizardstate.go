@@ -1,25 +1,25 @@
 package types
 
-type State string
+type WizState string
 
 const (
-	Welcome    State = "welcome"
-	TomlOkay   State = "tomlOkay"
-	RpcOkay    State = "rpcOkay"
-	BloomsOkay State = "bloomsOkay"
-	IndexOkay  State = "indexOkay"
-	Okay       State = "okay"
+	Welcome    WizState = "welcome"
+	TomlOkay   WizState = "tomlOkay"
+	RpcOkay    WizState = "rpcOkay"
+	BloomsOkay WizState = "bloomsOkay"
+	IndexOkay  WizState = "indexOkay"
+	Okay       WizState = "okay"
 )
 
-// String returns the string representation of the State.
-func (s State) String() string {
+// String returns the string representation of the WizState.
+func (s WizState) String() string {
 	return string(s)
 }
 
 // AllStates - all possible states for the frontend codegen
 var AllStates = []struct {
-	Value  State  `json:"value"`
-	TSName string `json:"tsName"`
+	Value  WizState `json:"value"`
+	TSName string   `json:"tsName"`
 }{
 	{Welcome, "WELCOME"},
 	{TomlOkay, "TOMLOKAY"},

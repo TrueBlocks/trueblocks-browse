@@ -39,6 +39,7 @@ func (a *App) loadSessions(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
+	_ = errorChan
 	// opts := sdk.SessionsOptions{
 	// 	Globals: a.toGlobals(),
 	// }

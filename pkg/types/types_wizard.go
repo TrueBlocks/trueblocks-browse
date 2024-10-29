@@ -1,10 +1,10 @@
 package types
 
 type Wizard struct {
-	State State `json:"state"`
+	State WizState `json:"state"`
 }
 
-var stateOrder = []State{
+var stateOrder = []WizState{
 	Welcome,
 	TomlOkay,
 	RpcOkay,
@@ -13,7 +13,7 @@ var stateOrder = []State{
 	Okay,
 }
 
-func (w *Wizard) Step(step Step) {
+func (w *Wizard) Step(step WizStep) {
 	switch step {
 	case Reset:
 		w.State = Welcome

@@ -74,7 +74,7 @@ export function GetState(arg1:string):Promise<string>;
 
 export function GetWindow():Promise<types.Window>;
 
-export function GetWizardState():Promise<types.State>;
+export function GetWizardState():Promise<types.WizState>;
 
 export function GoToHistory(arg1:base.Address):Promise<void>;
 
@@ -152,7 +152,7 @@ export function StatusPage(arg1:number,arg2:number):Promise<types.StatusContaine
 
 export function StatusView(arg1:menu.CallbackData):Promise<void>;
 
-export function StepWizard(arg1:types.Step):Promise<types.State>;
+export function StepWizard(arg1:types.WizStep):Promise<types.WizState>;
 
 export function String():Promise<string>;
 

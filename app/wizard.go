@@ -9,11 +9,11 @@ func (a *App) IsConfigured() bool {
 	return a.GetWizardState() == types.Okay
 }
 
-func (a *App) GetWizardState() types.State {
+func (a *App) GetWizardState() types.WizState {
 	return a.sessions.Wizard.State
 }
 
-func (a *App) StepWizard(step types.Step) types.State {
+func (a *App) StepWizard(step types.WizStep) types.WizState {
 	defer func() {
 		if a.IsConfigured() {
 			a.Navigate("/", "")

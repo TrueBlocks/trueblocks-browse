@@ -398,7 +398,7 @@ export namespace messages {
 	export class MessageMsg {
 	    name: string;
 	    address: base.Address;
-	    state: types.State;
+	    state: types.WizState;
 	    num1: number;
 	    num2: number;
 	    string1: string;
@@ -478,7 +478,7 @@ export namespace sdk {
 
 export namespace types {
 	
-	export enum State {
+	export enum WizState {
 	    WELCOME = "welcome",
 	    TOMLOKAY = "tomlOkay",
 	    RPCOKAY = "rpcOkay",
@@ -486,7 +486,7 @@ export namespace types {
 	    INDEXOKAY = "indexOkay",
 	    OKAY = "okay",
 	}
-	export enum Step {
+	export enum WizStep {
 	    RESET = "Reset",
 	    PREVIOUS = "Previous",
 	    NEXT = "Next",
@@ -1843,7 +1843,7 @@ export namespace types {
 		}
 	}
 	export class Wizard {
-	    state: State;
+	    state: WizState;
 	
 	    static createFrom(source: any = {}) {
 	        return new Wizard(source);
