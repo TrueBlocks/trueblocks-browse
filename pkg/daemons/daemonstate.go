@@ -1,15 +1,15 @@
 package daemons
 
-type State string
+type DaemonState string
 
 const (
-	Stopped State = "Stopped"
-	Running State = "Running"
-	Paused  State = "Paused"
+	Stopped DaemonState = "Stopped"
+	Running DaemonState = "Running"
+	Paused  DaemonState = "Paused"
 )
 
-func (s State) String() string {
-	m := map[State]string{
+func (s DaemonState) String() string {
+	m := map[DaemonState]string{
 		Stopped: "Stopped",
 		Running: "Running",
 		Paused:  "Paused",
@@ -19,8 +19,8 @@ func (s State) String() string {
 
 // AllStates - all possible states for the frontend codegen
 var AllStates = []struct {
-	Value  State  `json:"value"`
-	TSName string `json:"tsName"`
+	Value  DaemonState `json:"value"`
+	TSName string      `json:"tsName"`
 }{
 	{Stopped, "STOPPED"},
 	{Running, "RUNNING"},

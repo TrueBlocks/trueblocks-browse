@@ -168,3 +168,219 @@ func (s *Session) SetRoute(route, subRoute string) {
 	}
 	_ = s.Save()
 }
+
+type Layout struct {
+	Header bool `json:"header"`
+	Menu   bool `json:"menu"`
+	Help   bool `json:"help"`
+	Footer bool `json:"footer"`
+}
+
+type Headers struct {
+	Project   bool `json:"project"`
+	History   bool `json:"history"`
+	Monitors  bool `json:"monitors"`
+	Names     bool `json:"names"`
+	Abis      bool `json:"abis"`
+	Indexes   bool `json:"indexes"`
+	Manifests bool `json:"manifests"`
+	Status    bool `json:"status"`
+	Settings  bool `json:"settings"`
+}
+
+type Daemons struct {
+	Freshen bool `json:"freshen"`
+	Scraper bool `json:"scraper"`
+	Ipfs    bool `json:"ipfs"`
+}
+
+type Toggles struct {
+	Layout  Layout  `json:"layout"`
+	Headers Headers `json:"headers"`
+	Daemons Daemons `json:"daemons"`
+}
+
+func (t *Toggles) IsOn(which string) bool {
+	if which == "" {
+		which = "project"
+	}
+	switch which {
+	case "header":
+		return t.Layout.Header
+	case "menu":
+		return t.Layout.Menu
+	case "help":
+		return t.Layout.Help
+	case "footer":
+		return t.Layout.Footer
+	case "project":
+		return t.Headers.Project
+	case "history":
+		return t.Headers.History
+	case "monitors":
+		return t.Headers.Monitors
+	case "names":
+		return t.Headers.Names
+	case "abis":
+		return t.Headers.Abis
+	case "indexes":
+		return t.Headers.Indexes
+	case "manifests":
+		return t.Headers.Manifests
+	case "status":
+		return t.Headers.Status
+	case "settings":
+		return t.Headers.Settings
+	case "freshen":
+		return t.Daemons.Freshen
+	case "scraper":
+		return t.Daemons.Scraper
+	case "ipfs":
+		return t.Daemons.Ipfs
+	}
+	return false
+}
+
+func (t *Toggles) SetState(which string, onOff bool) {
+	if which == "" {
+		which = "project"
+	}
+	switch which {
+	case "header":
+		t.Layout.Header = onOff
+	case "menu":
+		t.Layout.Menu = onOff
+	case "help":
+		t.Layout.Help = onOff
+	case "footer":
+		t.Layout.Footer = onOff
+	case "project":
+		t.Headers.Project = onOff
+	case "history":
+		t.Headers.History = onOff
+	case "monitors":
+		t.Headers.Monitors = onOff
+	case "names":
+		t.Headers.Names = onOff
+	case "abis":
+		t.Headers.Abis = onOff
+	case "indexes":
+		t.Headers.Indexes = onOff
+	case "manifests":
+		t.Headers.Manifests = onOff
+	case "status":
+		t.Headers.Status = onOff
+	case "settings":
+		t.Headers.Settings = onOff
+	case "freshen":
+		t.Daemons.Freshen = onOff
+	case "scraper":
+		t.Daemons.Scraper = onOff
+	case "ipfs":
+		t.Daemons.Ipfs = onOff
+	}
+}
+
+// Window stores the last position and title of the window
+type Window struct {
+	X      int    `json:"x"`
+	Y      int    `json:"y"`
+	Width  int    `json:"width"`
+	Height int    `json:"height"`
+	Title  string `json:"title"`
+}
+
+func (w *Window) String() string {
+	bytes, _ := json.Marshal(w)
+	return string(bytes)
+}
+
+type Wizard struct {
+	State WizState `json:"state"`
+}
+
+var stateOrder = []WizState{
+	Welcome,
+	TomlOkay,
+	RpcOkay,
+	BloomsOkay,
+	IndexOkay,
+	Okay,
+}
+
+func (w *Wizard) Step(step WizStep) {
+	switch step {
+	case Reset:
+		w.State = Welcome
+	case Previous:
+		for i := range stateOrder {
+			if stateOrder[i] == w.State && i > 0 {
+				w.State = stateOrder[i-1]
+				break
+			}
+		}
+	case Next:
+		for i := range stateOrder {
+			if stateOrder[i] == w.State && i < len(stateOrder)-1 {
+				w.State = stateOrder[i+1]
+				break
+			}
+		}
+	case Finish:
+		w.State = Okay
+	}
+}
+
+type WizState string
+
+const (
+	Welcome    WizState = "welcome"
+	TomlOkay   WizState = "tomlOkay"
+	RpcOkay    WizState = "rpcOkay"
+	BloomsOkay WizState = "bloomsOkay"
+	IndexOkay  WizState = "indexOkay"
+	Okay       WizState = "okay"
+)
+
+// String returns the string representation of the WizState.
+func (s WizState) String() string {
+	return string(s)
+}
+
+// AllStates - all possible states for the frontend codegen
+var AllStates = []struct {
+	Value  WizState `json:"value"`
+	TSName string   `json:"tsName"`
+}{
+	{Welcome, "WELCOME"},
+	{TomlOkay, "TOMLOKAY"},
+	{RpcOkay, "RPCOKAY"},
+	{BloomsOkay, "BLOOMSOKAY"},
+	{IndexOkay, "INDEXOKAY"},
+	{Okay, "OKAY"},
+}
+
+type WizStep string
+
+const (
+	Reset    WizStep = "Reset"
+	Previous WizStep = "Previous"
+	Next     WizStep = "Next"
+	Finish   WizStep = "Finish"
+)
+
+// String returns the string representation of the Step.
+func (s WizStep) String() string {
+	return string(s)
+}
+
+// AllSteps - all possible steps for the frontend codegen
+var AllSteps = []struct {
+	Value  WizStep `json:"value"`
+	TSName string  `json:"tsName"`
+}{
+	{Reset, "RESET"},
+	{Previous, "PREVIOUS"},
+	{Next, "NEXT"},
+	{Finish, "FINISH"},
+}

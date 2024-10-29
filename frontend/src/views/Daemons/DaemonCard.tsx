@@ -24,7 +24,7 @@ export const DaemonCard = ({ daemon, toggle }: { daemon: daemons.Daemon; toggle:
           {name}
         </Title>
         <div onClick={handleToggle} style={{ cursor: "pointer" }}>
-          <Badge bg={stateStr === daemons.State.RUNNING ? "green" : "red"}>{stateStr}</Badge>
+          <Badge bg={stateStr === daemons.DaemonState.RUNNING ? "green" : "red"}>{stateStr}</Badge>
         </div>
       </Group>
       <Text size="sm">Sleep Duration: {sleep}</Text>

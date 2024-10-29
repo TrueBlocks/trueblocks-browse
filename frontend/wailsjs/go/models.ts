@@ -299,7 +299,7 @@ export namespace configtypes {
 
 export namespace daemons {
 	
-	export enum State {
+	export enum DaemonState {
 	    STOPPED = "Stopped",
 	    RUNNING = "Running",
 	    PAUSED = "Paused",
@@ -311,7 +311,7 @@ export namespace daemons {
 	    // Go type: time
 	    started: any;
 	    ticks: number;
-	    state: State;
+	    state: DaemonState;
 	
 	    static createFrom(source: any = {}) {
 	        return new Daemon(source);
