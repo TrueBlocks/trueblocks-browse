@@ -134,6 +134,8 @@ export function Reload(arg1:base.Address):Promise<void>;
 
 export function SaveName(arg1:editors.Name):Promise<void>;
 
+export function SessionPage(arg1:number,arg2:number):Promise<types.SessionContainer>;
+
 export function SetChain(arg1:string,arg2:base.Address):Promise<void>;
 
 export function SetEnv(arg1:string,arg2:string):Promise<void>;

@@ -49,7 +49,7 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 			Filename: file,
 		}
 		newProject.Load()
-		a.sessions = newProject.Session
+		a.sessions = types.NewSessionContainer(a.Chain, &newProject.Session)
 		var wg sync.WaitGroup
 		for _, history := range newProject.Items {
 			wg.Add(1)
@@ -86,7 +86,7 @@ func (a *App) FileSave(cd *menu.CallbackData) {
 			{DisplayName: "Monitor Groups", Pattern: "*.tbx"},
 		},
 	})
-	a.projects.Session = a.sessions
+	a.projects.Session = a.sessions.Session
 	a.projects.Save()
 	messages.EmitMessage(a.ctx, messages.Document, &messages.MessageMsg{
 		String1: a.projects.Filename,

@@ -20,7 +20,7 @@ func (a *App) GetConfig() *configTypes.Config {
 }
 
 func (a *App) GetSession() *types.Session {
-	return &a.sessions
+	return &a.sessions.Session
 }
 
 func (a *App) GetContext() context.Context {

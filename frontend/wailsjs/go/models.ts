@@ -2031,7 +2031,6 @@ export namespace types {
 	    window: Window;
 	    wizard: Wizard;
 	    toggles: Toggles;
-	    chain: string;
 	    // Go type: time
 	    lastUpdate: any;
 	
@@ -2049,7 +2048,6 @@ export namespace types {
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizard = this.convertValues(source["wizard"], Wizard);
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
-	        this.chain = source["chain"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	

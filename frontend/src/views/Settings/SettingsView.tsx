@@ -41,13 +41,10 @@ export const SettingsView = () => {
 
 const createSessionForm = (): FieldGroup<types.SessionContainer>[] => {
   /*
-	    chain: string;
-	    lastFile: string;
-	    lastRoute: string;
 	    lastSub: {[key: string]: string};
-	    window: types.Window;
-	    wizard: types.Wizard;
-	    toggles: types.Toggles;
+	    window: Window;
+	    wizard: Wizard;
+	    toggles: Toggles;
 	    // Go type: time
 	    lastUpdate: any;
    */
@@ -56,8 +53,10 @@ const createSessionForm = (): FieldGroup<types.SessionContainer>[] => {
       label: "Session Data 1",
       colSpan: 6,
       fields: [
+        // { label: "chain", type: "text", accessor: "chain" },
         { label: "chain", type: "text", accessor: "lastChain" },
         { label: "lastFile", type: "text", accessor: "lastFile" },
+        { label: "lastFolder", type: "text", accessor: "lastFolder" },
         { label: "lastRoute", type: "text", accessor: "lastRoute" },
       ],
     },
