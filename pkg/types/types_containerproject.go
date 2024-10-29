@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 type ProjectItemType = HistoryContainer
@@ -26,11 +27,11 @@ type ProjectContainer struct {
 	NItems      uint64             `json:"nItems"`
 	Items       []HistoryContainer `json:"items"`
 	// EXISTING_CODE
-	Session    Session          `json:"session"`
-	Summary    HistoryContainer `json:",inline"`
-	HistoryMap *HistoryMap      `json:"historyMap"`
-	BalanceMap *sync.Map        `json:"balanceMap"`
-	EnsMap     *sync.Map        `json:"ensMap"`
+	Session    coreTypes.Session `json:"session"`
+	Summary    HistoryContainer  `json:",inline"`
+	HistoryMap *HistoryMap       `json:"historyMap"`
+	BalanceMap *sync.Map         `json:"balanceMap"`
+	EnsMap     *sync.Map         `json:"ensMap"`
 	// EXISTING_CODE
 }
 

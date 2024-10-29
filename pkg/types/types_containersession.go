@@ -6,19 +6,20 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	coreUtils "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
 // EXISTING_CODE
 
 type SessionContainer struct {
-	Session    `json:",inline"`
-	LastUpdate time.Time `json:"lastUpdate"`
+	coreTypes.Session `json:",inline"`
+	LastUpdate        time.Time `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewSessionContainer(chain string, session *Session) SessionContainer {
+func NewSessionContainer(chain string, session *coreTypes.Session) SessionContainer {
 	ret := SessionContainer{
 		Session: *session,
 	}

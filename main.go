@@ -44,7 +44,7 @@ func main() {
 			// &types.DaemonContainer{},
 			&types.SettingsGroup{},
 			&types.StatusContainer{},
-			&types.Wizard{},
+			&coreTypes.Wizard{},
 			&editors.Name{},
 			&daemons.Daemon{},
 			&coreTypes.Transaction{},
@@ -53,8 +53,8 @@ func main() {
 		EnumBind: []interface{}{
 			daemons.AllStates,
 			messages.AllMessages,
-			types.AllStates,
-			types.AllSteps,
+			coreTypes.AllStates,
+			coreTypes.AllSteps,
 		},
 		StartHidden: true,
 		AssetServer: &assetserver.Options{
