@@ -23,7 +23,7 @@ type SettingsGroup struct {
 	// EXISTING_CODE
 }
 
-func NewSettingsGroup(status *coreTypes.Status, cfg *configTypes.Config, session *Session) SettingsGroup {
+func NewSettingsGroup(status *coreTypes.Status, cfg *configTypes.Config, session *coreTypes.Session) SettingsGroup {
 	latest := getLatestFileTime()
 	ret := SettingsGroup{
 		Status:     NewStatusContainer(status.Chain, status),

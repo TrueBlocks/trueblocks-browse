@@ -5,7 +5,6 @@ import (
 	"os"
 	"sort"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -19,7 +18,7 @@ func (a *App) GetConfig() *configTypes.Config {
 	return &a.cfg
 }
 
-func (a *App) GetSession() *types.Session {
+func (a *App) GetSession() *coreTypes.Session {
 	return &a.sessions.Session
 }
 
@@ -27,7 +26,7 @@ func (a *App) GetContext() context.Context {
 	return a.ctx
 }
 
-func (a *App) GetWindow() *types.Window {
+func (a *App) GetWindow() *coreTypes.Window {
 	return &a.sessions.Window
 }
 
