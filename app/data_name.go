@@ -8,10 +8,10 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -90,7 +90,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 
 func (a *App) forceName() (force bool) {
 	// EXISTING_CODE
-	latest := utils.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(namesChain))
+	latest := file.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(namesChain))
 	force = latest != a.names.LastUpdate
 	// EXISTING_CODE
 	return

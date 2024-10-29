@@ -14,7 +14,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	coreUtils "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -83,7 +83,7 @@ func (a *App) DomReady(ctx context.Context) {
 	runtime.WindowSetSize(a.ctx, win.Width, win.Height)
 	runtime.WindowShow(a.ctx)
 
-	if path, err := coreUtils.GetConfigFn("", "trueBlocks.toml"); err != nil {
+	if path, err := utils.GetConfigFn("", "trueBlocks.toml"); err != nil {
 		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
 			String1: err.Error(),
 		})

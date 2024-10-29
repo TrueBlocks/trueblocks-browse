@@ -7,7 +7,6 @@ import (
 	"sort"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -127,7 +126,7 @@ func (s *NameContainer) Summarize() {
 
 func (s *NameContainer) getNameReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(s.Chain))
+	ret = file.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(s.Chain))
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return

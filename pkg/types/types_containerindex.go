@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -94,7 +94,7 @@ func (s *IndexContainer) Summarize() {
 
 func (s *IndexContainer) getIndexReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(coreConfig.PathToIndex(s.Chain))
+	ret = file.MustGetLatestFileTime(coreConfig.PathToIndex(s.Chain))
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return

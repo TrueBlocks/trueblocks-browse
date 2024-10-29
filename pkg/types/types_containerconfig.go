@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 )
 
 // EXISTING_CODE
@@ -79,7 +79,7 @@ func (s *ConfigContainer) Summarize() {
 
 func (s *ConfigContainer) getConfigReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(coreConfig.PathToRootConfig())
+	ret = file.MustGetLatestFileTime(coreConfig.PathToRootConfig())
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return
