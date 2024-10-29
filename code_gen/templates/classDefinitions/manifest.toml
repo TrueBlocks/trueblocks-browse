@@ -1,8 +1,9 @@
 [settings]
     class = "Manifest"
-    # doc_group = "02-Chain Data"
+    # doc_group = "20-Routes"
     # doc_descr = "block data as returned from the RPC (with slight enhancements)"
-    doc_route = "170-containers"
+    doc_route = "1060-containers"
+    ui_route = "1060-manifests"
     attributes = "itemType=coreTypes.ChunkRecord|sorts=range+Dec,"
     # produced_by = "blocks"
     # contains = "transaction, withdrawal"

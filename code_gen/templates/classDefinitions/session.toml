@@ -1,8 +1,9 @@
 [settings]
 	class = "Session"
-	# doc_group = "02-Chain Data"
+	# doc_group = "20-Routes"
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
-	doc_route = "130-containers"
+	doc_route = "1100-containers"
+	ui_route = "1100-session"
 	attributes = "embedType=coreTypes.Session|noChain"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"

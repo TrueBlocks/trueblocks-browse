@@ -135,3 +135,7 @@ export const routeItems: RouteItem[] = [
     component: ProjectView,
   },
 ];
+
+//-----
+{{range .Structures}}{{if .IsRoute}}// {{toPlural .Name}} --> {{.UiRoute}}
+{{end}}{{end}}//-----

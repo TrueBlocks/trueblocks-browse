@@ -1,8 +1,9 @@
 [settings]
 	class = "Config"
-	# doc_group = "02-Chain Data"
+	# doc_group = "20-Routes"
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
-	doc_route = "200-containers"
+	doc_route = "2110-containers"
+	ui_route = "2110-config"
 	attributes = "itemType=configTypes.Config"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"

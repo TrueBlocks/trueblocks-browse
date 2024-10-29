@@ -1,11 +1,12 @@
 [settings]
-    class = "Index"
+    class = "Daemon"
     # doc_group = "20-Routes"
     # doc_descr = "block data as returned from the RPC (with slight enhancements)"
-    doc_route = "1050-containers"
-    ui_route = "1050-indexes"
-    attributes = "itemType=coreTypes.ChunkStats|sorts=range+Dec,"
+    doc_route = "1090-containers"
+    ui_route = "1090-daemons"
+    attributes = "embedType=types.Daemon|noChain"
     # produced_by = "blocks"
     # contains = "transaction, withdrawal"
     cache_type = "cacheable"
     cache_by = "range"
+    disable_go = true
