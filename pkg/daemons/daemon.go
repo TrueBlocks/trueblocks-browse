@@ -17,7 +17,7 @@ type Freshener interface {
 
 type Daemoner interface {
 	String() string
-	GetState() State
+	GetState() DaemonState
 	IsRunning() bool
 	Run()
 	Stop() error
@@ -32,7 +32,7 @@ type Daemon struct {
 	Color     string        `json:"color"`
 	Started   time.Time     `json:"started"`
 	Ticks     int           `json:"ticks"`
-	State     State         `json:"state"`
+	State     DaemonState   `json:"state"`
 	freshener Freshener
 }
 
@@ -41,7 +41,7 @@ func (s *Daemon) String() string {
 	return string(bytes)
 }
 
-func (s *Daemon) GetState() State {
+func (s *Daemon) GetState() DaemonState {
 	return s.State
 }
 

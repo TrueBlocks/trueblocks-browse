@@ -32,7 +32,7 @@ func (s *DaemonScraper) String() string {
 	return s.Daemon.String()
 }
 
-func (s *DaemonScraper) GetState() State {
+func (s *DaemonScraper) GetState() DaemonState {
 	return s.Daemon.GetState()
 }
 

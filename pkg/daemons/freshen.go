@@ -31,7 +31,7 @@ func (s *DaemonFreshen) String() string {
 	return s.Daemon.String()
 }
 
-func (s *DaemonFreshen) GetState() State {
+func (s *DaemonFreshen) GetState() DaemonState {
 	return s.Daemon.GetState()
 }
 
