@@ -11,7 +11,6 @@ import (
 )
 
 func (a *App) FileNew(cd *menu.CallbackData) {
-	logger.Info("File New")
 	a.projects = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
 	messages.EmitMessage(a.ctx, messages.Navigate, &messages.MessageMsg{
 		String1: "/",
@@ -23,7 +22,6 @@ func (a *App) FileNew(cd *menu.CallbackData) {
 }
 
 func (a *App) FileOpen(cd *menu.CallbackData) {
-	logger.Info("File Open")
 	file, _ := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
 		DefaultDirectory:           "/Users/jrush/Documents/",
 		Title:                      "Open File",
@@ -73,7 +71,6 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 }
 
 func (a *App) FileSave(cd *menu.CallbackData) {
-	logger.Info("File Save")
 	a.saveSession()
 	a.projects.Filename, _ = runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
 		DefaultDirectory:           "/Users/jrush/Documents/",
@@ -95,6 +92,5 @@ func (a *App) FileSave(cd *menu.CallbackData) {
 }
 
 func (a *App) FileSaveAs(cd *menu.CallbackData) {
-	logger.Info("File SaveAs")
 	a.saveSession()
 }

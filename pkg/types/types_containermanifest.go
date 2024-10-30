@@ -45,6 +45,7 @@ func NewManifestContainer(chain string, itemsIn []coreTypes.Manifest) ManifestCo
 	ret.Specification = itemsIn[0].Specification.String()
 	ret.Version = itemsIn[0].Version
 	ret.Items = itemsIn[0].Chunks
+	ret.NItems = uint64(len(ret.Items))
 	// EXISTING_CODE
 	return ret
 }
