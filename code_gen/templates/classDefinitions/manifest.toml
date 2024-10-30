@@ -4,7 +4,7 @@
     # doc_descr = "block data as returned from the RPC (with slight enhancements)"
     doc_route = "1060-containers"
     ui_route = "1060-manifests"
-    attributes = "itemType=coreTypes.ChunkRecord|sorts=range+Dec,"
+    attributes = "itemType=coreTypes.ChunkRecord|inputType=coreTypes.Manifest|sorts=range+Dec,"
     # produced_by = "blocks"
     # contains = "transaction, withdrawal"
     cache_type = "cacheable"

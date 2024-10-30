@@ -1,4 +1,4 @@
-// This file is auto-generated. Edit only code inside
+{{if .IsRoute}}{{if not .IsRoute}}// This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 package app
 
@@ -8,3 +8,4 @@ func TestLoad{{toPlural .Class}}(t *testing.T) {
 	app := NewApp()
 	app.load{{toPlural .Class}}(nil, nil)
 }
+{{end}}{{end}}

@@ -253,7 +253,7 @@
             "ui_route": "1060-manifests",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.ChunkRecord|sorts=range+Dec,",
+            "attributes": "itemType=coreTypes.ChunkRecord|inputType=coreTypes.Manifest|sorts=range+Dec,",
             "members": [
                 {
                     "name": "nBlooms",
