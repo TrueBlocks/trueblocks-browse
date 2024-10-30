@@ -19,7 +19,8 @@ type {{.Class}}Container struct {
 
 func New{{.Class}}Container(chain string{{if .NeedsItems}}, itemsIn []{{.InputType}}{{end}}{{if .NeedsEmbed}}, {{toLower .EmbedName}} *{{.EmbedType}}{{end}}{{if .NeedsOther}}, {{toLower .OtherName}} {{.OtherType}}{{end}}) {{.Class}}Container {
 	ret := {{.Class}}Container{
-	{{if .NeedsItems}}Items: make([]{{.ItemType}}, 0, len(itemsIn)),
+	{{if .NeedsItems}}Items: {{if eq .ItemType .InputType}}itemsIn,
+NItems: uint64(len(itemsIn)){{else}}make([]coreTypes.ChunkRecord, 0, len(itemsIn)){{end}},
 {{end}}{{if .NeedsEmbed}}{{toProper .EmbedName}}: *{{toLower .EmbedName}},
 {{end}}{{if .HasSorts}}Sorts: {{.SortsInstance}}
 {{end}}{{if .NeedsChain}}		Chain: chain,

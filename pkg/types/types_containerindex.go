@@ -31,7 +31,8 @@ type IndexContainer struct {
 
 func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContainer {
 	ret := IndexContainer{
-		Items: make([]coreTypes.ChunkStats, 0, len(itemsIn)),
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"range"},
 			Order:  []sdk.SortOrder{sdk.Dec},
@@ -40,7 +41,6 @@ func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContai
 	}
 	ret.LastUpdate, _ = ret.getIndexReload()
 	// EXISTING_CODE
-	ret.Items = itemsIn
 	// EXISTING_CODE
 	return ret
 }

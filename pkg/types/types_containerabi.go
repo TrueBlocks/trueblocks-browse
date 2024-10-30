@@ -33,7 +33,8 @@ type AbiContainer struct {
 
 func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 	ret := AbiContainer{
-		Items: make([]coreTypes.Abi, 0, len(itemsIn)),
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"isEmpty", "isKnown", "address"},
 			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},
@@ -42,7 +43,6 @@ func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 	}
 	ret.LastUpdate, _ = ret.getAbiReload()
 	// EXISTING_CODE
-	ret.Items = itemsIn
 	// EXISTING_CODE
 	return ret
 }

@@ -39,12 +39,12 @@ type NameContainer struct {
 
 func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	ret := NameContainer{
-		Items: make([]coreTypes.Name, 0, len(itemsIn)),
-		Chain: chain,
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Chain:  chain,
 	}
 	ret.LastUpdate, _ = ret.getNameReload()
 	// EXISTING_CODE
-	ret.Items = itemsIn
 	ret.NamesMap = make(map[base.Address]coreTypes.Name)
 	for _, name := range ret.Items {
 		ret.NamesMap[name.Address] = name

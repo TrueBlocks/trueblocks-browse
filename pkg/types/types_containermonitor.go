@@ -64,12 +64,12 @@ type MonitorContainer struct {
 
 func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorContainer {
 	ret := MonitorContainer{
-		Items: make([]coreTypes.Monitor, 0, len(itemsIn)),
-		Chain: chain,
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Chain:  chain,
 	}
 	ret.LastUpdate, _ = ret.getMonitorReload()
 	// EXISTING_CODE
-	ret.Items = itemsIn
 	// EXISTING_CODE
 	return ret
 }
