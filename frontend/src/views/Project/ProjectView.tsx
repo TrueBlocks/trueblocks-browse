@@ -44,7 +44,7 @@ const createProjectForm = (table: any): FieldGroup<types.ProjectContainer>[] => 
   return [
     {
       label: "Data 1",
-      colSpan: 6,
+      colSpan: 4,
       fields: [
         { label: "fileName", type: "text", accessor: "filename" },
         { label: "nHistories", type: "int", accessor: "nItems" },
@@ -54,14 +54,20 @@ const createProjectForm = (table: any): FieldGroup<types.ProjectContainer>[] => 
     },
     {
       label: "Data 2",
-      colSpan: 6,
+      colSpan: 4,
+      fields: [
+        { label: "nNames", type: "int", accessor: "nNames" },
+        { label: "nAbis", type: "int", accessor: "nAbis" },
+        { label: "nCaches", type: "int", accessor: "nCaches" },
+      ],
+    },
+    {
+      label: "Data 2",
+      colSpan: 4,
       fields: [
         { label: "nMonitors", type: "int", accessor: "nMonitors" },
         { label: "nIndexes", type: "int", accessor: "nIndexes" },
         { label: "nManifests", type: "int", accessor: "nManifests" },
-        { label: "nNames", type: "int", accessor: "nNames" },
-        { label: "nAbis", type: "int", accessor: "nAbis" },
-        { label: "nCaches", type: "int", accessor: "nCaches" },
       ],
     },
     {

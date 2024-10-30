@@ -11,40 +11,58 @@
             "attributes": "itemType=HistoryContainer",
             "members": [
                 {
-                    "name": "bloomSz",
+                    "name": "nMonitors",
                     "type": "uint64",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "chunkSz",
+                    "name": "nNames",
                     "type": "uint64",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "nAddrs",
+                    "name": "nAbis",
                     "type": "uint64",
                     "description": "jim",
                     "num": 3
                 },
                 {
-                    "name": "nApps",
+                    "name": "nIndexes",
                     "type": "uint64",
                     "description": "jim",
                     "num": 4
                 },
                 {
-                    "name": "nBlocks",
+                    "name": "nManifests",
                     "type": "uint64",
                     "description": "jim",
                     "num": 5
                 },
                 {
-                    "name": "nBlooms",
+                    "name": "nCaches",
                     "type": "uint64",
                     "description": "jim",
                     "num": 6
+                },
+                {
+                    "name": "historySize",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "dirty",
+                    "type": "bool",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "filename",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 9
                 }
             ]
         },

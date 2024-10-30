@@ -12,6 +12,8 @@ import {
   StatusIcon,
   SettingsIcon,
   DaemonsIcon,
+  SessionIcon,
+  ConfigIcon,
   WizardIcon,
   // Views
   ProjectView,
@@ -24,6 +26,8 @@ import {
   StatusView,
   SettingsView,
   DaemonsView,
+  SessionView,
+  ConfigView,
   WizardView,
 } from "@views";
 
@@ -38,6 +42,8 @@ export type Route =
   | "status"
   | "settings"
   | "daemons"
+  | "session"
+  | "config"
   | "wizard";
 
 export type RouteItem = {
@@ -58,96 +64,94 @@ const expandRoute = (r: Route): string => {
 
 export const routeItems: RouteItem[] = [
   {
-    order: 10,
-    route: expandRoute("history"),
-    label: "History",
-    icon: HistoryIcon,
-    component: HistoryView,
-  },
-  {
-    order: 20,
-    route: expandRoute("monitors"),
-    label: "Monitors",
-    icon: MonitorsIcon,
-    component: MonitorsView,
-  },
-  {
-    order: 30,
-    route: expandRoute("names"),
-    label: "Names",
-    icon: NamesIcon,
-    component: NamesView,
-  },
-  {
-    order: 40,
-    route: expandRoute("abis"),
-    label: "Abis",
-    icon: AbisIcon,
-    component: AbisView,
-  },
-  {
-    order: 50,
-    route: expandRoute("indexes"),
-    label: "Indexes",
-    icon: IndexesIcon,
-    component: IndexesView,
-  },
-  {
-    order: 60,
-    route: expandRoute("manifests"),
-    label: "Manifest",
-    icon: ManifestIcon,
-    component: ManifestsView,
-  },
-  {
-    order: 70,
-    route: expandRoute("status"),
-    label: "Status",
-    icon: StatusIcon,
-    component: StatusView,
-  },
-  {
-    order: 80,
-    route: expandRoute("settings"),
-    label: "Settings",
-    icon: SettingsIcon,
-    component: SettingsView,
-  },
-  {
-    order: 90,
-    route: expandRoute("daemons"),
-    label: "Daemons",
-    icon: DaemonsIcon,
-    component: DaemonsView,
-  },
-  {
-    order: 100,
-    route: expandRoute("wizard"),
-    label: "Wizard",
-    icon: WizardIcon,
-    component: WizardView,
-  },
-  {
     order: 0,
     route: expandRoute(""),
     label: "Project",
     icon: ProjectIcon,
     component: ProjectView,
   },
+  {
+    order: 1010,
+    route: expandRoute("history"),
+    label: "History",
+    icon: HistoryIcon,
+    component: HistoryView,
+  },
+  {
+    order: 1020,
+    route: expandRoute("monitors"),
+    label: "Monitors",
+    icon: MonitorsIcon,
+    component: MonitorsView,
+  },
+  {
+    order: 1030,
+    route: expandRoute("names"),
+    label: "Names",
+    icon: NamesIcon,
+    component: NamesView,
+  },
+  {
+    order: 1040,
+    route: expandRoute("abis"),
+    label: "Abis",
+    icon: AbisIcon,
+    component: AbisView,
+  },
+  {
+    order: 1050,
+    route: expandRoute("indexes"),
+    label: "Indexes",
+    icon: IndexesIcon,
+    component: IndexesView,
+  },
+  {
+    order: 1060,
+    route: expandRoute("manifests"),
+    label: "Manifests",
+    icon: ManifestsIcon,
+    component: ManifestsView,
+  },
+  {
+    order: 1070,
+    route: expandRoute("status"),
+    label: "Status",
+    icon: StatusIcon,
+    component: StatusView,
+  },
+  {
+    order: 1080,
+    route: expandRoute("settings"),
+    label: "Settings",
+    icon: SettingsIcon,
+    component: SettingsView,
+  },
+  {
+    order: 1090,
+    route: expandRoute("daemons"),
+    label: "Daemons",
+    icon: DaemonsIcon,
+    component: DaemonsView,
+  },
+  {
+    order: 1100,
+    route: expandRoute("session"),
+    label: "Session",
+    icon: SessionIcon,
+    component: SessionView,
+  },
+  {
+    order: 2110,
+    route: expandRoute("config"),
+    label: "Config",
+    icon: ConfigIcon,
+    component: ConfigView,
+  },
+  {
+    order: 2120,
+    route: expandRoute("wizard"),
+    label: "Wizard",
+    icon: WizardIcon,
+    component: WizardView,
+  },
 ];
-
-//-----
-// projects --> 0000-project
-// historys --> 1010-history
-// monitors --> 1020-monitors
-// names --> 1030-names
-// abis --> 1040-abis
-// indexes --> 1050-indexes
-// manifests --> 1060-manifests
-// status --> 1070-status
-// settings --> 1080-settings
-// daemons --> 1090-daemons
-// sessions --> 1100-session
-// configs --> 2110-config
-// wizards --> 2120-wizard
-//-----
