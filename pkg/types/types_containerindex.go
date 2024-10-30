@@ -102,5 +102,16 @@ func (s *IndexContainer) getIndexReload() (ret time.Time, reload bool) {
 	return
 }
 
+type EveryChunkStatsFn func(item coreTypes.ChunkStats, data any) bool
+
+func (s *IndexContainer) ForEveryChunkStats(process EveryChunkStatsFn, data any) bool {
+	for _, item := range s.Items {
+		if !process(item, data) {
+			return false
+		}
+	}
+	return true
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

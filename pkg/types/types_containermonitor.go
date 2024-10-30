@@ -134,5 +134,16 @@ func (s *MonitorContainer) getMonitorReload() (ret time.Time, reload bool) {
 	return
 }
 
+type EveryMonitorFn func(item coreTypes.Monitor, data any) bool
+
+func (s *MonitorContainer) ForEveryMonitor(process EveryMonitorFn, data any) bool {
+	for _, item := range s.Items {
+		if !process(item, data) {
+			return false
+		}
+	}
+	return true
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

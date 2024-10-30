@@ -134,6 +134,17 @@ func (s *NameContainer) getNameReload() (ret time.Time, reload bool) {
 	return
 }
 
+type EveryNameFn func(item coreTypes.Name, data any) bool
+
+func (s *NameContainer) ForEveryName(process EveryNameFn, data any) bool {
+	for _, item := range s.Items {
+		if !process(item, data) {
+			return false
+		}
+	}
+	return true
+}
+
 // EXISTING_CODE
 func compare(nameI, nameJ coreTypes.Name) bool {
 	ti := nameI.Parts

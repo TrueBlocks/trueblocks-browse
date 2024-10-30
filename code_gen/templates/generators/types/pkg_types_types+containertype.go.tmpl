@@ -69,5 +69,17 @@ func (s *{{.Class}}Container) get{{.Class}}Reload() (ret time.Time, reload bool)
 	return
 }
 
+{{if .NeedsItems}}type Every{{.ItemTypeName}}Fn func(item {{.ItemType}}, data any) bool
+
+func (s *{{.Class}}Container) ForEvery{{.ItemTypeName}}(process Every{{.ItemTypeName}}Fn, data any) bool {
+	for _, item := range s.Items {
+		if !process(item, data) {
+			return false
+		}
+	}
+	return true
+}
+{{end}}
+
 // EXISTING_CODE
 // EXISTING_CODE

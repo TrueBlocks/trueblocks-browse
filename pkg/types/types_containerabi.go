@@ -103,6 +103,17 @@ func (s *AbiContainer) getAbiReload() (ret time.Time, reload bool) {
 	return
 }
 
+type EveryAbiFn func(item coreTypes.Abi, data any) bool
+
+func (s *AbiContainer) ForEveryAbi(process EveryAbiFn, data any) bool {
+	for _, item := range s.Items {
+		if !process(item, data) {
+			return false
+		}
+	}
+	return true
+}
+
 // EXISTING_CODE
 type comparison struct {
 	Name  string `json:"name"`

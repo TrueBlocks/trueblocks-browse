@@ -1,6 +1,7 @@
 package app
 
 import (
+	"path/filepath"
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
@@ -50,7 +51,7 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 		if err := newProject.Load(); err != nil {
 			logger.Error("Error loading project", err.Error(), a.sessions.Session.LastFile)
 			newProject.Session = a.sessions.Session // backup plan
-			newProject.Wizard.State = wizard.Reset
+			newProject.Session.Wizard.State = coreTypes.Error
 		}
 		copyFields := func(dest, src *coreTypes.Session) {
 			dest.LastChain = src.LastChain
@@ -89,23 +90,30 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 
 func (a *App) FileSave(cd *menu.CallbackData) {
 	a.saveSession()
-	a.projects.Filename, _ = runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
-		DefaultDirectory:           "/Users/jrush/Documents/",
+	fn, _ := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
+		DefaultDirectory:           a.sessions.Session.LastFolder,
 		DefaultFilename:            a.projects.Filename,
 		Title:                      "Save File",
 		CanCreateDirectories:       true,
 		ShowHiddenFiles:            false,
 		TreatPackagesAsDirectories: false,
 		Filters: []runtime.FileFilter{
-			{DisplayName: "Monitor Groups", Pattern: "*.tbx"},
+			{DisplayName: "Projects", Pattern: "*.tbx"},
 		},
 	})
-	a.projects.Session = a.sessions.Session
-	a.projects.Save()
-	messages.EmitMessage(a.ctx, messages.Document, &messages.MessageMsg{
-		String1: a.projects.Filename,
-		String2: "Saved",
-	})
+	if len(fn) > 0 {
+		a.sessions.Session.LastFolder, a.sessions.Session.LastFile = filepath.Split(fn)
+		a.sessions.Session.LastRoute = "/"
+
+		a.projects.Session = a.sessions.Session
+		a.projects.Filename = fn
+		a.projects.Save()
+		messages.EmitMessage(a.ctx, messages.Document, &messages.MessageMsg{
+			String1: a.projects.Filename,
+			String2: "Saved",
+		})
+	} else {
+	}
 }
 
 func (a *App) FileSaveAs(cd *menu.CallbackData) {

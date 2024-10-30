@@ -103,6 +103,17 @@ func (s *HistoryContainer) getHistoryReload() (ret time.Time, reload bool) {
 	return
 }
 
+type EveryTransactionFn func(item coreTypes.Transaction, data any) bool
+
+func (s *HistoryContainer) ForEveryTransaction(process EveryTransactionFn, data any) bool {
+	for _, item := range s.Items {
+		if !process(item, data) {
+			return false
+		}
+	}
+	return true
+}
+
 // EXISTING_CODE
 func (s *HistoryContainer) SizeOf() int {
 	size := unsafe.Sizeof(s.Address) + unsafe.Sizeof(s.Name) + unsafe.Sizeof(s.Balance) + unsafe.Sizeof(s.NLogs) + unsafe.Sizeof(s.NTokens) + unsafe.Sizeof(s.NErrors) + unsafe.Sizeof(s.NItems) + unsafe.Sizeof(s.NTotal)

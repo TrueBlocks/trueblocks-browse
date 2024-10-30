@@ -59,16 +59,6 @@ func (a *App) getHistoryCnt(address base.Address) uint64 {
 	}
 }
 
-func (a *App) forEveryTx(address base.Address, process func(coreTypes.Transaction) bool) bool {
-	historyContainer, _ := a.projects.HistoryMap.Load(address)
-	for _, item := range historyContainer.Items {
-		if !process(item) {
-			return false
-		}
-	}
-	return true
-}
-
 func (a *App) forEveryHistory(process func(*types.HistoryContainer) bool) bool {
 	a.projects.HistoryMap.Range(func(key base.Address, value types.HistoryContainer) bool {
 		return process(&value)

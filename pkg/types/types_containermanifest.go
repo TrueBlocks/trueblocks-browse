@@ -100,5 +100,16 @@ func (s *ManifestContainer) getManifestReload() (ret time.Time, reload bool) {
 	return
 }
 
+type EveryChunkRecordFn func(item coreTypes.ChunkRecord, data any) bool
+
+func (s *ManifestContainer) ForEveryChunkRecord(process EveryChunkRecordFn, data any) bool {
+	for _, item := range s.Items {
+		if !process(item, data) {
+			return false
+		}
+	}
+	return true
+}
+
 // EXISTING_CODE
 // EXISTING_CODE
