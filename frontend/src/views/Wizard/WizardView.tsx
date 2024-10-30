@@ -1,20 +1,28 @@
+import { useState, useEffect } from "react";
 import { Button } from "@mantine/core";
+import { Text } from "@mantine/core";
 import { StepWizard } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState } from "@state";
+import classes from "./WizardView.module.css";
 
 export const WizardView = () => {
   const { isConfigured, wizardState, setWizardState } = useAppState();
+  const [cn, setCn] = useState(classes.wizOkay);
   const stepWizard = (step: types.WizStep) => {
     StepWizard(step).then((state) => {
       setWizardState(state);
     });
   };
 
+  useEffect(() => {
+    setCn(wizardState === types.WizState.ERROR ? classes.wizError : classes.wizOkay);
+  }, [wizardState]);
+
   return (
     <div>
-      <div>{`wizardState: ${wizardState}`}</div>
-      <div>{`isConfigured: ${isConfigured}`}</div>
+      <Text className={cn}>{`wizardState: ${wizardState}`}</Text>
+      <Text className={cn}>{`isConfigured: ${isConfigured}`}</Text>
       <ResetWizard stepWizard={stepWizard} />
       <BumpWizard stepWizard={stepWizard} back />
       <BumpWizard stepWizard={stepWizard} />

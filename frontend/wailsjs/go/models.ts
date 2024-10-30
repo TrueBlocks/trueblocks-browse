@@ -467,6 +467,7 @@ export namespace types {
 	    RPCOKAY = "rpcOkay",
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
+	    ERROR = "error",
 	    OKAY = "okay",
 	}
 	export enum WizStep {

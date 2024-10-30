@@ -45,8 +45,7 @@ func (a *App) getHistoryCnt(address base.Address) uint64 {
 		Addrs:   []string{address.Hex()},
 		Globals: a.toGlobals(),
 	}
-	appearances, meta, err := opts.ListCount()
-	if err != nil {
+	if appearances, meta, err := opts.ListCount(); err != nil {
 		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
 			String1: err.Error(),
 			Address: address,

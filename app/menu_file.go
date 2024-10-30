@@ -5,6 +5,8 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -45,8 +47,24 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 		newProject := types.ProjectContainer{
 			Filename: file,
 		}
-		newProject.Load()
-		a.sessions = types.NewSessionContainer(a.Chain, &newProject.Session)
+		if err := newProject.Load(); err != nil {
+			logger.Error("Error loading project", err.Error(), a.sessions.Session.LastFile)
+			newProject.Session = a.sessions.Session // backup plan
+			newProject.Wizard.State = wizard.Reset
+		}
+		copyFields := func(dest, src *coreTypes.Session) {
+			dest.LastChain = src.LastChain
+			dest.LastFile = src.LastFile
+			dest.LastFolder = src.LastFolder
+			dest.LastRoute = src.LastRoute
+			dest.LastSub = src.LastSub
+			dest.Toggles = src.Toggles
+			dest.Window = src.Window
+			dest.Wizard = src.Wizard
+		}
+		copyFields(&a.sessions.Session, &newProject.Session)
+
+		a.sessions = types.NewSessionContainer(a.Chain, &a.sessions.Session)
 		var wg sync.WaitGroup
 		for _, history := range newProject.Items {
 			wg.Add(1)
