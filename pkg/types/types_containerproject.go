@@ -29,7 +29,6 @@ type ProjectContainer struct {
 	Items       []HistoryContainer `json:"items"`
 	// EXISTING_CODE
 	Session    coreTypes.Session `json:"session"`
-	Summary    HistoryContainer  `json:",inline"`
 	HistoryMap *HistoryMap       `json:"historyMap"`
 	// EXISTING_CODE
 }
@@ -56,7 +55,7 @@ func (s *ProjectContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *ProjectContainer) ShallowCopy() Containerer {
-	ret := ProjectContainer{
+	return &ProjectContainer{
 		Session:     s.Session,
 		NItems:      s.NItems,
 		NMonitors:   s.NMonitors,
@@ -66,15 +65,11 @@ func (s *ProjectContainer) ShallowCopy() Containerer {
 		NManifests:  s.NManifests,
 		NCaches:     s.NCaches,
 		HistorySize: s.HistorySize,
+		Dirty:       true,
+		Filename:    "Untitled",
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
-	if copy, ok := s.Summary.ShallowCopy().(*HistoryContainer); ok {
-		ret.Summary = *copy
-	}
-	ret.Dirty = true
-	ret.Filename = "Untitled"
-	return &ret
 }
 
 func (s *ProjectContainer) Summarize() {
@@ -97,8 +92,6 @@ func (s *ProjectContainer) Load() error {
 
 func (s *ProjectContainer) Save() error {
 	bytes, _ := json.MarshalIndent(s, "", "  ")
-	// fmt.Println("Saving:", s.Filename)
-	// fmt.Println("Len:", len(bytes))
 	file.StringToAsciiFile(s.Filename, string(bytes))
 	// if store, err := cache.NewStore(&cache.StoreOptions{
 	// 	Location: cache.FsCache,

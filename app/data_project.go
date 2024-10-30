@@ -77,12 +77,6 @@ func (a *App) loadProjects(wg *sync.WaitGroup, errorChan chan error) error {
 	a.projects.NManifests = uint64(len(a.manifests.Items))
 	a.projects.NCaches = uint64(len(a.status.Caches))
 	_ = a.forEveryHistory(func(item *types.HistoryContainer) bool {
-		a.projects.Summary.Balance += item.Balance
-		a.projects.Summary.NItems += item.NItems
-		a.projects.Summary.NTotal += item.NTotal
-		a.projects.Summary.NLogs += item.NLogs
-		a.projects.Summary.NErrors += item.NErrors
-		a.projects.Summary.NTokens += item.NTokens
 		item.Summarize()
 		if copy, ok := item.ShallowCopy().(*types.HistoryContainer); ok {
 			a.projects.Items = append(a.projects.Items, *copy)
@@ -106,7 +100,7 @@ func (a *App) forceProject() (force bool) {
 
 // EXISTING_CODE
 func (a *App) ModifyProject(modData *ModifyData) {
-	a.CancelContext(modData.Address)
+	a.cancelContext(modData.Address)
 	a.projects.HistoryMap.Delete(modData.Address)
 	for i, item := range a.projects.Items {
 		if item.Address == modData.Address {

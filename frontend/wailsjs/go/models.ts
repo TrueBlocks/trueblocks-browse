@@ -440,23 +440,6 @@ export namespace messages {
 
 }
 
-export namespace output {
-	
-	export class RenderCtx {
-	
-	
-	    static createFrom(source: any = {}) {
-	        return new RenderCtx(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	
-	    }
-	}
-
-}
-
 export namespace sdk {
 	
 	export class SortSpec {
@@ -1977,10 +1960,6 @@ export namespace types {
 	    session: Session;
 	    // Go type: HistoryMap
 	    historyMap?: any;
-	    // Go type: sync
-	    balanceMap?: any;
-	    // Go type: sync
-	    ensMap?: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new ProjectContainer(source);
@@ -2001,8 +1980,6 @@ export namespace types {
 	        this.items = this.convertValues(source["items"], HistoryContainer);
 	        this.session = this.convertValues(source["session"], Session);
 	        this.historyMap = this.convertValues(source["historyMap"], null);
-	        this.balanceMap = this.convertValues(source["balanceMap"], null);
-	        this.ensMap = this.convertValues(source["ensMap"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

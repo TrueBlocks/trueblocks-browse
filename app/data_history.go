@@ -138,7 +138,9 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 }
 
 func (a *App) thing(address base.Address, freq int) error {
-	rCtx := a.RegisterCtx(address)
+	rCtx := a.registerCtx(address)
+	defer a.unregisterCtx(address)
+
 	opts := sdk.ExportOptions{
 		Addrs:     []string{address.Hex()},
 		RenderCtx: rCtx,

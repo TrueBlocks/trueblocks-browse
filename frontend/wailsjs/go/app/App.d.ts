@@ -8,7 +8,6 @@ import {configtypes} from '../models';
 import {context} from '../models';
 import {editors} from '../models';
 import {app} from '../models';
-import {output} from '../models';
 
 export function AbiPage(arg1:number,arg2:number):Promise<types.AbiContainer>;
 
@@ -22,9 +21,9 @@ export function Caching(arg1:sdk.CacheOp):Promise<void>;
 
 export function CancelAllContexts():Promise<void>;
 
-export function CancelContext(arg1:base.Address):Promise<void>;
-
 export function ConfigPage(arg1:number,arg2:number):Promise<types.ConfigContainer>;
+
+export function ConfigView(arg1:menu.CallbackData):Promise<void>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
@@ -130,13 +129,13 @@ export function ProjectView(arg1:menu.CallbackData):Promise<void>;
 
 export function Refresh():Promise<void>;
 
-export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
-
 export function Reload(arg1:base.Address):Promise<void>;
 
 export function SaveName(arg1:editors.Name):Promise<void>;
 
 export function SessionPage(arg1:number,arg2:number):Promise<types.SessionContainer>;
+
+export function SessionView(arg1:menu.CallbackData):Promise<void>;
 
 export function SetChain(arg1:string,arg2:base.Address):Promise<void>;
 

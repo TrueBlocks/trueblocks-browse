@@ -26,12 +26,12 @@ export function CancelAllContexts() {
   return window['go']['app']['App']['CancelAllContexts']();
 }
 
-export function CancelContext(arg1) {
-  return window['go']['app']['App']['CancelContext'](arg1);
-}
-
 export function ConfigPage(arg1, arg2) {
   return window['go']['app']['App']['ConfigPage'](arg1, arg2);
+}
+
+export function ConfigView(arg1) {
+  return window['go']['app']['App']['ConfigView'](arg1);
 }
 
 export function ConvertToAddress(arg1) {
@@ -242,10 +242,6 @@ export function Refresh() {
   return window['go']['app']['App']['Refresh']();
 }
 
-export function RegisterCtx(arg1) {
-  return window['go']['app']['App']['RegisterCtx'](arg1);
-}
-
 export function Reload(arg1) {
   return window['go']['app']['App']['Reload'](arg1);
 }
@@ -256,6 +252,10 @@ export function SaveName(arg1) {
 
 export function SessionPage(arg1, arg2) {
   return window['go']['app']['App']['SessionPage'](arg1, arg2);
+}
+
+export function SessionView(arg1) {
+  return window['go']['app']['App']['SessionView'](arg1);
 }
 
 export function SetChain(arg1, arg2) {
