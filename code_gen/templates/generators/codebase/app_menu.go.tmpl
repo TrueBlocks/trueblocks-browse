@@ -1,0 +1,17 @@
+package app
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+func (a *App) GetMenus() *menu.Menu {
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+{{range .Structures}}	viewMenu.AddText("{{firstUpper .UiRouteName}}", keyMap["{{toLower .UiRouteName}}"], a.{{firstUpper .UiRouteName}}View)
+{{end}}
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	return appMenu
+}
