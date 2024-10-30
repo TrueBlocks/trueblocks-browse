@@ -68,8 +68,6 @@ func (a *App) loadProjects(wg *sync.WaitGroup, errorChan chan error) error {
 	a.projects = types.NewProjectContainer(
 		a.projects.Filename,
 		a.projects.HistoryMap,
-		a.projects.BalanceMap,
-		a.projects.EnsMap,
 	)
 	a.projects.NItems = uint64(a.openFileCnt())
 	a.projects.NMonitors = uint64(len(a.monitors.Items))

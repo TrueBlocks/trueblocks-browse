@@ -40,6 +40,10 @@ type App struct {
 	status    types.StatusContainer
 	sessions  types.SessionContainer
 
+	// Memory caches
+	EnsMap     *sync.Map `json:"ensMap"`
+	BalanceMap *sync.Map `json:"balanceMap"`
+
 	// Controllers
 	ScraperController *daemons.DaemonScraper
 	FreshenController *daemons.DaemonFreshen
@@ -50,8 +54,10 @@ func NewApp() *App {
 	a := App{
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 	}
+	a.EnsMap = &sync.Map{}
+	a.BalanceMap = &sync.Map{}
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
-	a.projects = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
+	a.projects = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{})
 	a.sessions.LastSub = make(map[string]string)
 
 	return &a

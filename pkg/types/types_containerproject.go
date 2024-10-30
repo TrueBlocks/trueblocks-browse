@@ -5,7 +5,6 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"sync"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -32,12 +31,10 @@ type ProjectContainer struct {
 	Session    coreTypes.Session `json:"session"`
 	Summary    HistoryContainer  `json:",inline"`
 	HistoryMap *HistoryMap       `json:"historyMap"`
-	BalanceMap *sync.Map         `json:"balanceMap"`
-	EnsMap     *sync.Map         `json:"ensMap"`
 	// EXISTING_CODE
 }
 
-func NewProjectContainer(filename string, historyMap *HistoryMap, balMap, ensMap *sync.Map) ProjectContainer {
+func NewProjectContainer(filename string, historyMap *HistoryMap) ProjectContainer {
 	ret := ProjectContainer{
 		Items:    []HistoryContainer{},
 		Dirty:    false,
@@ -45,8 +42,6 @@ func NewProjectContainer(filename string, historyMap *HistoryMap, balMap, ensMap
 	}
 	// EXISTING_CODE
 	ret.HistoryMap = historyMap
-	ret.BalanceMap = balMap
-	ret.EnsMap = ensMap
 	// EXISTING_CODE
 	return ret
 }

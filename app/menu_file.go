@@ -5,13 +5,12 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 func (a *App) FileNew(cd *menu.CallbackData) {
-	a.projects = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
+	a.projects = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{})
 	messages.EmitMessage(a.ctx, messages.Navigate, &messages.MessageMsg{
 		String1: "/",
 	})
@@ -42,7 +41,7 @@ func (a *App) FileOpen(cd *menu.CallbackData) {
 		a.saveSession()
 
 		a.CancelAllContexts()
-		a.projects = types.NewProjectContainer(file, &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
+		a.projects = types.NewProjectContainer(file, &types.HistoryMap{})
 		newProject := types.ProjectContainer{
 			Filename: file,
 		}
