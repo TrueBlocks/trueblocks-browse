@@ -8,7 +8,7 @@
             "cache_by": "range",
             "cache_type": "cacheable",
             "disable_go": true,
-            "attributes": "itemType=HistoryContainer",
+            "attributes": "itemType=types.HistoryContainer",
             "members": [
                 {
                     "name": "nMonitors",
@@ -393,7 +393,7 @@
             "cache_by": "range",
             "cache_type": "cacheable",
             "disable_go": true,
-            "attributes": "embedType=types.Daemon|noChain"
+            "attributes": "embedType=types.Daemon|noChain|noFetch"
         },
         {
             "class": "Session",
@@ -401,15 +401,15 @@
             "ui_route": "1100-session",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=coreTypes.Session|noChain"
+            "attributes": "embedType=coreTypes.Session|noChain|noFetch"
         },
         {
             "class": "Config",
-            "doc_route": "2110-containers",
-            "ui_route": "2110-config",
+            "doc_route": "1110-containers",
+            "ui_route": "1110-config",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=configTypes.Config",
+            "attributes": "embedType=configTypes.Config|noFetch",
             "members": [
                 {
                     "name": "nChains",
@@ -421,10 +421,11 @@
         },
         {
             "class": "Wizard",
-            "doc_route": "2120-containers",
-            "ui_route": "2120-wizard",
+            "doc_route": "1120-containers",
+            "ui_route": "1120-wizard",
             "cache_by": "range",
-            "cache_type": "cacheable"
+            "cache_type": "cacheable",
+            "attributes": "noFetch"
         }
     ],
     "baseTypes": [
