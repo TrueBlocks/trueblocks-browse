@@ -1,23 +1,25 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, FieldGroup, ViewForm, AddButton } from "@components";
+import { View, FormTable, ViewForm } from "@components";
 import { GoToHistory, ModifyProject } from "@gocode/app/App";
-import { types } from "@gocode/models";
+import { base, types } from "@gocode/models";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { withoutDelete, withDelete } from "./ProjectTable";
+import { withoutDelete, withDelete, ProjectFormDef } from ".";
 
 export const ProjectView = () => {
   const { project, fetchProject } = useAppState();
   // const [filtered, setFiltered] = useState<types.HistoryContainer[]>([]);
 
   const handleEnter = (page: Page) => {
-    const address = project.items[page.getRecord()].address;
+    const address = project.items[page.getRecord()];
     GoToHistory(address).then(() => {});
   };
 
   const modColumns = project.nItems < 2 ? withoutDelete : withDelete;
+  const projectContainers = project.items?.map(toHistoryContainer);
+
   const table = useReactTable({
-    data: project.items ?? [],
+    data: projectContainers ?? [],
     columns: modColumns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -25,7 +27,7 @@ export const ProjectView = () => {
   const route = "";
   const tabs = ["project"];
   const forms: ViewForm = {
-    project: <FormTable data={project} groups={createProjectForm(table)} />,
+    project: <FormTable data={project} groups={ProjectFormDef(table)} />,
   };
   return (
     <ViewStateProvider
@@ -40,45 +42,21 @@ export const ProjectView = () => {
   );
 };
 
-const createProjectForm = (table: any): FieldGroup<types.ProjectContainer>[] => {
-  return [
-    {
-      label: "Data 1",
-      colSpan: 4,
-      fields: [
-        { label: "fileName", type: "text", accessor: "filename" },
-        { label: "nHistories", type: "int", accessor: "nItems" },
-        { label: "historySize", type: "bytes", accessor: "historySize" },
-        { label: "dirty", type: "boolean", accessor: "dirty" },
-      ],
-    },
-    {
-      label: "Data 2",
-      colSpan: 4,
-      fields: [
-        { label: "nNames", type: "int", accessor: "nNames" },
-        { label: "nAbis", type: "int", accessor: "nAbis" },
-        { label: "nCaches", type: "int", accessor: "nCaches" },
-      ],
-    },
-    {
-      label: "Data 2",
-      colSpan: 4,
-      fields: [
-        { label: "nMonitors", type: "int", accessor: "nMonitors" },
-        { label: "nIndexes", type: "int", accessor: "nIndexes" },
-        { label: "nManifests", type: "int", accessor: "nManifests" },
-      ],
-    },
-    {
-      label: "Buttons",
-      buttons: [<AddButton key={"add"} value={"https://trueblocks.io"} />],
-    },
-    {
-      label: "Histories",
-      fields: [],
-      collapsable: false,
-      components: [<DataTable<types.HistoryContainer> key={"dataTable"} table={table} loading={false} />],
-    },
-  ];
+const toHistoryContainer = (address: base.Address): types.HistoryContainer => {
+  // Perform any additional operations needed here
+
+  return {
+    address: address as unknown as base.Address,
+    balance: "",
+    nErrors: 1,
+    nLogs: 2,
+    nTokens: 3,
+    nTotal: 4,
+    name: "5",
+    items: [],
+    nItems: 0,
+    chain: "mainnet",
+    lastUpdate: 0,
+    convertValues: () => {},
+  };
 };

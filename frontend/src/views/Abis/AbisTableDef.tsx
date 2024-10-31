@@ -4,7 +4,7 @@ import { types } from "@gocode/models";
 
 const columnHelper = createColumnHelper<types.Abi>();
 
-export const tableColumns: CustomColumnDef<types.Abi, any>[] = [
+export const AbisTableDef: CustomColumnDef<types.Abi, any>[] = [
   columnHelper.accessor("address", {
     header: () => "Name/Address",
     cell: (info) => {

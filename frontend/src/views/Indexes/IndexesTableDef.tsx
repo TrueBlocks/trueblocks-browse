@@ -4,7 +4,7 @@ import { types } from "@gocode/models";
 
 const columnHelper = createColumnHelper<types.ChunkStats>();
 
-export const tableColumns: CustomColumnDef<types.ChunkStats, any>[] = [
+export const IndexesTableDef: CustomColumnDef<types.ChunkStats, any>[] = [
   columnHelper.accessor("range", {
     header: () => "range",
     cell: (info) => <Formatter type="range" value={info.renderValue()} />,

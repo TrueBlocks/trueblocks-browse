@@ -83,6 +83,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		a.abis.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded abis"})
 	}
+
 	return nil
 }
 

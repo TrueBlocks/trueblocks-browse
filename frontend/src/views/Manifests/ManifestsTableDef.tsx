@@ -4,7 +4,7 @@ import { types } from "@gocode/models";
 
 const columnHelper = createColumnHelper<types.ChunkRecord>();
 
-export const tableColumns: CustomColumnDef<types.ChunkRecord, any>[] = [
+export const ManifestsTableDef: CustomColumnDef<types.ChunkRecord, any>[] = [
   columnHelper.accessor("range", {
     header: () => "Range",
     cell: (info) => <Formatter type="range" value={info.renderValue()} />,

@@ -13,9 +13,6 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-type IndexItemType = coreTypes.ChunkStats
-type IndexInputType = []coreTypes.ChunkStats
-
 // EXISTING_CODE
 
 type IndexContainer struct {

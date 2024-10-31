@@ -29,7 +29,7 @@ func NewSettingsGroup(status *coreTypes.Status, cfg *configTypes.Config, session
 	latest := getLatestFileTime()
 	ret := SettingsGroup{
 		Status:     NewStatusContainer(status.Chain, status),
-		Config:     NewConfigContainer(status.Chain, []configTypes.Config{*cfg}),
+		Config:     NewConfigContainer(status.Chain, cfg),
 		Session:    NewSessionContainer(status.Chain, session),
 		LastUpdate: latest,
 	}

@@ -78,6 +78,7 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 		a.indexes.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded indexes"})
 	}
+
 	return nil
 }
 

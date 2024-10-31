@@ -87,6 +87,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		a.names.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded names"})
 	}
+
 	return nil
 }
 

@@ -4,7 +4,7 @@ import { types } from "@gocode/models";
 
 const columnHelper = createColumnHelper<types.Monitor>();
 
-export const tableColumns: CustomColumnDef<types.Monitor, any>[] = [
+export const MonitorsTableDef: CustomColumnDef<types.Monitor, any>[] = [
   columnHelper.accessor("address", {
     header: () => "Name/Address",
     cell: (info) => {

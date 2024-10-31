@@ -10,7 +10,7 @@ func (a *App) getBalance(address base.Address) string {
 		return "0"
 	}
 
-	b, exists := a.BalanceMap.Load(address)
+	b, exists := a.BalanceCache.Load(address)
 	if exists {
 		return b.(string)
 	}
@@ -28,7 +28,7 @@ func (a *App) getBalance(address base.Address) string {
 	} else {
 		a.meta = *meta
 		value := balances[0].Balance.ToEtherStr(18)
-		a.BalanceMap.Store(address, value)
+		a.BalanceCache.Store(address, value)
 		return value
 	}
 }

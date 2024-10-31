@@ -40,34 +40,25 @@ func (a *App) loadProjects(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer projectLock.CompareAndSwap(1, 0)
 
+	if !a.projects.NeedsUpdate(a.forceProject()) {
+		return nil
+	}
+
 	// EXISTING_CODE
+	items := []base.Address{}
+	a.HistoryCache.Range(func(address base.Address, _ types.HistoryContainer) bool {
+		items = append(items, address)
+		return true
+	})
 	// EXISTING_CODE
-	_ = errorChan // delint
-	// containers := []types.Containerer{
-	// 	&a.abis,
-	// 	// &HistoryContainer{},
-	// 	&a.indexes,
-	// 	&a.manifests,
-	// 	&a.monitors,
-	// 	&a.names,
-	// 	&a.status,
-	// 	// &ProjectContainer{},
-	// }
-	// needsUpdate := false
-	// for _, container := range containers {
-	// 	if container.NeedsUpdate(a.forceProject()) {
-	// 		needsUpdate = true
-	// 		break
-	// 	}
-	// }
-	// if !needsUpdate && a.openFileCnt() == a.projects.NOpenFiles {
-	// 	return nil
-	// }
-	_ = a.forceProject() // silence unused
 
 	a.projects = types.NewProjectContainer(
-		a.projects.Filename,
-		a.projects.HistoryMap,
+		// EXISTING_CODE
+		// EXISTING_CODE
+		a.session.Session.LastChain,
+		items,
+		// EXISTING_CODE
+		// EXISTING_CODE
 	)
 	a.projects.NItems = uint64(a.openFileCnt())
 	a.projects.NMonitors = uint64(len(a.monitors.Items))
@@ -79,13 +70,13 @@ func (a *App) loadProjects(wg *sync.WaitGroup, errorChan chan error) error {
 	_ = a.forEveryHistory(func(item *types.HistoryContainer) bool {
 		item.Summarize()
 		if copy, ok := item.ShallowCopy().(*types.HistoryContainer); ok {
-			a.projects.Items = append(a.projects.Items, *copy)
+			a.projects.Items = append(a.projects.Items, copy.Address)
 		}
 		a.projects.HistorySize += uint64(item.SizeOf())
 		return true
 	})
 	sort.Slice(a.projects.Items, func(i, j int) bool {
-		return a.projects.Items[i].Address.Cmp(a.projects.Items[j].Address.Address) < 0
+		return a.projects.Items[i].Address.Cmp(a.projects.Items[j].Address) < 0
 	})
 
 	return nil
@@ -101,9 +92,9 @@ func (a *App) forceProject() (force bool) {
 // EXISTING_CODE
 func (a *App) ModifyProject(modData *ModifyData) {
 	a.cancelContext(modData.Address)
-	a.projects.HistoryMap.Delete(modData.Address)
+	a.HistoryCache.Delete(modData.Address)
 	for i, item := range a.projects.Items {
-		if item.Address == modData.Address {
+		if item == modData.Address {
 			a.projects.Items = append(a.projects.Items[:i], a.projects.Items[i+1:]...)
 			break
 		}

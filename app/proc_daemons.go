@@ -37,7 +37,9 @@ func (a *App) getDaemon(name string) daemons.Daemoner {
 	case "ipfs":
 		return a.IpfsController
 	default:
-		logger.Fatal("getDaemon", "should not happen", name)
+		if len(name) > 0 {
+			logger.Fatal("getDaemon", "should not happen", name)
+		}
 		return nil
 	}
 }

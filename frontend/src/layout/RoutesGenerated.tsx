@@ -141,14 +141,14 @@ export const routeItems: RouteItem[] = [
     component: SessionView,
   },
   {
-    order: 2110,
+    order: 1110,
     route: expandRoute("config"),
     label: "Config",
     icon: ConfigIcon,
     component: ConfigView,
   },
   {
-    order: 2120,
+    order: 1120,
     route: expandRoute("wizard"),
     label: "Wizard",
     icon: WizardIcon,

@@ -4,7 +4,8 @@ import { CleanButton, DataTable, EditButton, FieldGroup, FormTable, View, ViewFo
 import { configtypes, types } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { ViewStateProvider, useAppState } from "@state";
-import { tableColumns } from "./StatusTable";
+import { SessionFormDef } from "../Session";
+import { tableColumns } from ".";
 
 export const SettingsView = () => {
   const { modifyNoop } = useNoops();
@@ -25,7 +26,7 @@ export const SettingsView = () => {
   const forms: ViewForm = {
     status: <FormTable data={status} groups={createStatusForm(table)} />,
     config: <FormTable data={config} groups={createConfigForm(config)} />,
-    session: <FormTable data={session} groups={createSessionForm()} />,
+    session: <FormTable data={session} groups={SessionFormDef()} />,
   };
 
   if (!settings) {
@@ -37,50 +38,6 @@ export const SettingsView = () => {
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
-};
-
-const createSessionForm = (): FieldGroup<types.SessionContainer>[] => {
-  /*
-	    lastSub: {[key: string]: string};
-	    window: Window;
-	    wizard: Wizard;
-	    toggles: Toggles;
-	    // Go type: time
-	    lastUpdate: any;
-   */
-  return [
-    {
-      label: "Session Data 1",
-      colSpan: 6,
-      fields: [
-        // { label: "chain", type: "text", accessor: "chain" },
-        { label: "chain", type: "text", accessor: "lastChain" },
-        { label: "lastFile", type: "text", accessor: "lastFile" },
-        { label: "lastFolder", type: "text", accessor: "lastFolder" },
-        { label: "lastRoute", type: "text", accessor: "lastRoute" },
-      ],
-    },
-    {
-      label: "Session Data 2",
-      colSpan: 6,
-      collapsable: false,
-      fields: [
-        { label: "lastRoute", type: "text", accessor: "lastRoute" },
-        // { label: "lastSub", type: "text", accessor: "lastSub" },
-        // { label: "window", type: "text", accessor: "window" },
-        // { label: "daemons", type: "text", accessor: "lastRoute" },
-        // { label: "wizard", type: "text", accessor: "lastRoute" },
-        // { label: "toggles", type: "text", accessor: "lastRoute" },
-      ],
-    },
-    {
-      label: "Buttons",
-      buttons: [
-        <EditButton key="edit" value="https://trueblocks.io" />,
-        <EditButton key="edit" value="https://trueblocks.io" />,
-      ],
-    },
-  ];
 };
 
 const createConfigForm = (cfg: types.ConfigContainer): FieldGroup<types.ConfigContainer>[] => {

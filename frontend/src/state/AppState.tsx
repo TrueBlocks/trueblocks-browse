@@ -13,6 +13,7 @@ import {
   GetMeta,
   GetWizardState,
   StatusPage,
+  SessionPage,
 } from "@gocode/app/App";
 import { base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
@@ -46,6 +47,9 @@ interface AppStateProps {
   status: types.StatusContainer;
   fetchStatus: (currentItem: number, itemsPerPage: number) => void;
 
+  session: types.SessionContainer;
+  fetchSession: (currentItem: number, itemsPerPage: number) => void;
+
   address: base.Address;
   setAddress: (address: base.Address) => void;
 
@@ -72,6 +76,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
   const [settings, setSettings] = useState<types.SettingsGroup>({} as types.SettingsGroup);
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
+  const [session, setSession] = useState<types.SessionContainer>({} as types.SessionContainer);
   // TODO BOGUS: The daemon state should be in the AppState
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
@@ -147,6 +152,14 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
       if (item) {
         setStatus(item);
+      }
+    });
+  };
+
+  const fetchSession = async (currentItem: number, itemsPerPage: number) => {
+    SessionPage(currentItem, itemsPerPage).then((item: types.SessionContainer) => {
+      if (item) {
+        setSession(item);
       }
     });
   };
@@ -245,6 +258,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchSettings,
     status,
     fetchStatus,
+    session,
+    fetchSession,
     setAddress,
     selectChain,
     meta,

@@ -26,20 +26,12 @@ export function CancelAllContexts() {
   return window['go']['app']['App']['CancelAllContexts']();
 }
 
-export function ConfigPage(arg1, arg2) {
-  return window['go']['app']['App']['ConfigPage'](arg1, arg2);
-}
-
 export function ConfigView(arg1) {
   return window['go']['app']['App']['ConfigView'](arg1);
 }
 
 export function ConvertToAddress(arg1) {
   return window['go']['app']['App']['ConvertToAddress'](arg1);
-}
-
-export function DaemonPage(arg1, arg2) {
-  return window['go']['app']['App']['DaemonPage'](arg1, arg2);
 }
 
 export function DaemonsView(arg1) {

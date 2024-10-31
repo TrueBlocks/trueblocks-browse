@@ -849,17 +849,15 @@ export namespace types {
 	}
 	export class ConfigContainer {
 	    nChains: number;
-	    items: configtypes.Config[];
-	    nItems: number;
-	    chain: string;
-	    // Go type: time
-	    lastUpdate: any;
 	    version: configtypes.VersionGroup;
 	    settings: configtypes.SettingsGroup;
 	    keys: {[key: string]: configtypes.KeyGroup};
 	    pinning: configtypes.PinningGroup;
 	    unchained: configtypes.UnchainedGroup;
 	    chains: {[key: string]: configtypes.ChainGroup};
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new ConfigContainer(source);
@@ -868,59 +866,13 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.nChains = source["nChains"];
-	        this.items = this.convertValues(source["items"], configtypes.Config);
-	        this.nItems = source["nItems"];
-	        this.chain = source["chain"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.version = this.convertValues(source["version"], configtypes.VersionGroup);
 	        this.settings = this.convertValues(source["settings"], configtypes.SettingsGroup);
 	        this.keys = this.convertValues(source["keys"], configtypes.KeyGroup, true);
 	        this.pinning = this.convertValues(source["pinning"], configtypes.PinningGroup);
 	        this.unchained = this.convertValues(source["unchained"], configtypes.UnchainedGroup);
 	        this.chains = this.convertValues(source["chains"], configtypes.ChainGroup, true);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	export class DaemonContainer {
-	    name: string;
-	    sleep: number;
-	    color: string;
-	    // Go type: time
-	    started: any;
-	    ticks: number;
-	    state: daemons.DaemonState;
-	    // Go type: time
-	    lastUpdate: any;
-	
-	    static createFrom(source: any = {}) {
-	        return new DaemonContainer(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.name = source["name"];
-	        this.sleep = source["sleep"];
-	        this.color = source["color"];
-	        this.started = this.convertValues(source["started"], null);
-	        this.ticks = source["ticks"];
-	        this.state = source["state"];
+	        this.chain = source["chain"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
@@ -1947,20 +1899,19 @@ export namespace types {
 		}
 	}
 	export class ProjectContainer {
-	    nMonitors: number;
-	    nNames: number;
+	    historySize: number;
 	    nAbis: number;
+	    nCaches: number;
 	    nIndexes: number;
 	    nManifests: number;
-	    nCaches: number;
-	    historySize: number;
-	    dirty: boolean;
-	    filename: string;
+	    nMonitors: number;
+	    nNames: number;
+	    items: base.Address[];
 	    nItems: number;
-	    items: HistoryContainer[];
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
 	    session: Session;
-	    // Go type: HistoryMap
-	    historyMap?: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new ProjectContainer(source);
@@ -1968,19 +1919,18 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.nMonitors = source["nMonitors"];
-	        this.nNames = source["nNames"];
+	        this.historySize = source["historySize"];
 	        this.nAbis = source["nAbis"];
+	        this.nCaches = source["nCaches"];
 	        this.nIndexes = source["nIndexes"];
 	        this.nManifests = source["nManifests"];
-	        this.nCaches = source["nCaches"];
-	        this.historySize = source["historySize"];
-	        this.dirty = source["dirty"];
-	        this.filename = source["filename"];
+	        this.nMonitors = source["nMonitors"];
+	        this.nNames = source["nNames"];
+	        this.items = this.convertValues(source["items"], base.Address);
 	        this.nItems = source["nItems"];
-	        this.items = this.convertValues(source["items"], HistoryContainer);
+	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.session = this.convertValues(source["session"], Session);
-	        this.historyMap = this.convertValues(source["historyMap"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

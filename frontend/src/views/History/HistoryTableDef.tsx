@@ -4,7 +4,7 @@ import { types } from "@gocode/models";
 
 const columnHelper = createColumnHelper<types.Transaction>();
 
-export const tableColumns: CustomColumnDef<types.Transaction, any>[] = [
+export const HistoryTableDef: CustomColumnDef<types.Transaction, any>[] = [
   columnHelper.accessor("blockNumber", {
     header: () => "TxId",
     cell: (info) => {

@@ -4,7 +4,7 @@ import { types } from "@gocode/models";
 
 const columnHelper = createColumnHelper<types.CacheItem>();
 
-export const tableColumns: CustomColumnDef<types.CacheItem, any>[] = [
+export const StatusTableDef: CustomColumnDef<types.CacheItem, any>[] = [
   columnHelper.accessor("type", {
     header: () => "Type",
     cell: (info) => <Formatter type="text" value={info.renderValue()} />,

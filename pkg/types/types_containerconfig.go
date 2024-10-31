@@ -15,24 +15,21 @@ import (
 // EXISTING_CODE
 
 type ConfigContainer struct {
-	NChains    uint64               `json:"nChains"`
-	Items      []configTypes.Config `json:"items"`
-	NItems     uint64               `json:"nItems"`
-	Chain      string               `json:"chain"`
-	LastUpdate time.Time            `json:"lastUpdate"`
-	// EXISTING_CODE
+	NChains            uint64 `json:"nChains"`
 	configTypes.Config `json:",inline"`
+	Chain              string    `json:"chain"`
+	LastUpdate         time.Time `json:"lastUpdate"`
+	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewConfigContainer(chain string, itemsIn []configTypes.Config) ConfigContainer {
+func NewConfigContainer(chain string, config *configTypes.Config) ConfigContainer {
 	ret := ConfigContainer{
-		Items: make([]configTypes.Config, 0, len(itemsIn)),
-		Chain: chain,
+		Config: *config,
+		Chain:  chain,
 	}
 	ret.LastUpdate, _ = ret.getConfigReload()
 	// EXISTING_CODE
-	ret.Config = itemsIn[0]
 	// EXISTING_CODE
 	return ret
 }
@@ -54,17 +51,15 @@ func (s *ConfigContainer) NeedsUpdate(force bool) bool {
 func (s *ConfigContainer) ShallowCopy() Containerer {
 	return &ConfigContainer{
 		NChains:    s.NChains,
-		NItems:     s.NItems,
+		Config:     s.Config.ShallowCopy(),
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
-		Config: s.Config,
 		// EXISTING_CODE
 	}
 }
 
 func (s *ConfigContainer) Summarize() {
-	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
 	// logger.Info("Version:", s.Config.Version.String())
 	// logger.Info("Settings:", s.Config.Settings.String())

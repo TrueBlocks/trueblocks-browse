@@ -5,7 +5,7 @@ import { NameTags } from "./NameTag";
 
 const columnHelper = createColumnHelper<types.Name>();
 
-export const tableColumns: CustomColumnDef<types.Name, any>[] = [
+export const NamesTableDef: CustomColumnDef<types.Name, any>[] = [
   columnHelper.accessor("parts", {
     header: () => "Type",
     cell: (row) => <NameTags name={row.row.original} />,

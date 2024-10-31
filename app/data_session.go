@@ -21,7 +21,7 @@ func (a *App) SessionPage(first, pageSize int) *types.SessionContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	copy, _ := a.sessions.ShallowCopy().(*types.SessionContainer)
+	copy, _ := a.session.ShallowCopy().(*types.SessionContainer)
 	return copy
 }
 
@@ -37,7 +37,7 @@ func (a *App) loadSessions(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer sessionLock.CompareAndSwap(1, 0)
 
-	if !a.sessions.NeedsUpdate(a.forceSession()) {
+	if !a.session.NeedsUpdate(a.forceSession()) {
 		return nil
 	}
 
@@ -61,14 +61,14 @@ func (a *App) loadSessions(wg *sync.WaitGroup, errorChan chan error) error {
 		return err
 	} else {
 		// EXISTING_CODE
-		ss := a.sessions.Session
+		ss := a.session.Session
 		// EXISTING_CODE
 		a.meta = *meta
-		a.sessions = types.NewSessionContainer(opts.Chain, &sessions[0])
+		a.session = types.NewSessionContainer(opts.Chain, &sessions[0])
 		// EXISTING_CODE
-		a.sessions.Session = ss
+		a.session.Session = ss
 		// EXISTING_CODE
-		a.sessions.Summarize()
+		a.session.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded sessions"})
 	}
 	return nil

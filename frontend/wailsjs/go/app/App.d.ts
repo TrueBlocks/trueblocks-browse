@@ -21,13 +21,9 @@ export function Caching(arg1:sdk.CacheOp):Promise<void>;
 
 export function CancelAllContexts():Promise<void>;
 
-export function ConfigPage(arg1:number,arg2:number):Promise<types.ConfigContainer>;
-
 export function ConfigView(arg1:menu.CallbackData):Promise<void>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
-
-export function DaemonPage(arg1:number,arg2:number):Promise<types.DaemonContainer>;
 
 export function DaemonsView(arg1:menu.CallbackData):Promise<void>;
 

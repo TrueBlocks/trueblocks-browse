@@ -25,6 +25,7 @@ func NewSessionContainer(chain string, session *coreTypes.Session) SessionContai
 	ret := SessionContainer{
 		Session: *session,
 	}
+	ret.Chain = chain
 	ret.LastUpdate, _ = ret.getSessionReload()
 	// EXISTING_CODE
 	// EXISTING_CODE

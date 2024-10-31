@@ -40,13 +40,14 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 			String1: err.Error(),
 		})
 	} else {
-		if err := coreConfig.ReadToml(path, &a.cfg); err != nil {
+		if err := coreConfig.ReadToml(path, &a.config.Config); err != nil {
 			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
 				String1: err.Error(),
 			})
 		}
 	}
-	a.settings = types.NewSettingsGroup(&a.status.Status, &a.cfg, &a.sessions.Session)
+	a.loadSession()
+	a.settings = types.NewSettingsGroup(&a.status.Status, &a.config.Config, &a.session.Session)
 	a.settings.Summarize()
 
 	return nil
