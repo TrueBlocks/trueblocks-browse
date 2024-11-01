@@ -60,7 +60,7 @@ func (a *App) getHistoryCnt(address base.Address) uint64 {
 }
 
 func (a *App) forEveryHistory(process func(*types.HistoryContainer) bool) bool {
-	a.HistoryCache.Range(func(key base.Address, value types.HistoryContainer) bool {
+	a.HistoryCache.ForEveryHistory(func(key base.Address, value types.HistoryContainer) bool {
 		return process(&value)
 	})
 	return true
@@ -69,15 +69,6 @@ func (a *App) forEveryHistory(process func(*types.HistoryContainer) bool) bool {
 func (a *App) isFileOpen(address base.Address) bool {
 	_, isOpen := a.HistoryCache.Load(address)
 	return isOpen
-}
-
-func (a *App) openFileCnt() int {
-	count := 0
-	a.HistoryCache.Range(func(key base.Address, value types.HistoryContainer) bool {
-		count++
-		return true
-	})
-	return count
 }
 
 func (a *App) txCount(address base.Address) int {
@@ -121,7 +112,7 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 		})
 		return err
 	}
-	a.loadProjects(nil, nil)
+	a.loadDashboard(nil, nil)
 
 	return nil
 }
@@ -152,7 +143,7 @@ func (a *App) thing(address base.Address, freq int) error {
 				summary, _ := a.HistoryCache.Load(address)
 				summary.NTotal = nItems
 				summary.Address = address
-				summary.Name = a.names.NamesMap[address].Name
+				summary.Name = a.names.NamesCache[address].Name
 				summary.Items = append(summary.Items, *tx)
 				if len(summary.Items)%(freq*3) == 0 {
 					sort.Slice(summary.Items, func(i, j int) bool {

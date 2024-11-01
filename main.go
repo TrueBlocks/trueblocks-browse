@@ -36,6 +36,7 @@ func main() {
 			a,
 			&messages.MessageMsg{},
 			&types.ProjectContainer{},
+			&types.DashboardContainer{},
 			&types.NameContainer{},
 			&types.AbiContainer{},
 			&types.IndexContainer{},

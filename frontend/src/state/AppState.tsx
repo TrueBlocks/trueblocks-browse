@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext, createContext, ReactNode } from "react";
 import {
-  ProjectPage,
+  DashboardPage,
+  // ProjectPage,
   HistoryPage,
   MonitorPage,
   NamePage,
@@ -19,8 +20,8 @@ import { base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
 
 interface AppStateProps {
-  project: types.ProjectContainer;
-  fetchProject: (currentItem: number, itemsPerPage: number) => void;
+  dashboard: types.DashboardContainer;
+  fetchDashboard: (currentItem: number, itemsPerPage: number) => void;
 
   history: types.HistoryContainer;
   fetchHistory: (currentItem: number, itemsPerPage: number) => void;
@@ -67,6 +68,7 @@ interface AppStateProps {
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
 export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => {
+  const [dashboard, setDashboard] = useState<types.DashboardContainer>({} as types.DashboardContainer);
   const [project, setProject] = useState<types.ProjectContainer>({} as types.ProjectContainer);
   const [history, setHistory] = useState<types.HistoryContainer>({} as types.HistoryContainer);
   const [monitors, setMonitors] = useState<types.MonitorContainer>({} as types.MonitorContainer);
@@ -86,12 +88,26 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [isConfigured, setIsConfigured] = useState<boolean>(false);
   const [wizardState, setWizardState] = useState<types.WizState>(types.WizState.WELCOME);
 
-  const fetchProject = async (currentItem: number, itemsPerPage: number) => {
-    ProjectPage(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
+  const fetchDashboard = async (currentItem: number, itemsPerPage: number) => {
+    DashboardPage(currentItem, itemsPerPage).then((item: types.DashboardContainer) => {
       if (item) {
-        setProject(item);
+        setDashboard(item);
+        // ProjectPage(currentItem, itemsPerPage).then((item: types.DashboardContainer) => {
+        //   if (item) {
+        //     setProject(item);
+        //   }
+        // });
+        // }
       }
     });
+  };
+
+  const fetchProject = async (currentItem: number, itemsPerPage: number) => {
+    // ProjectPage(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
+    //   if (item) {
+    //     setProject(item);
+    //   }
+    // });
   };
 
   const fetchHistory = async (currentItem: number, itemsPerPage: number) => {
@@ -207,6 +223,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchMeta();
     fetchWizard();
     fetchStatus(0, 100);
+    fetchDashboard(0, 100);
   }, []);
 
   useEffect(() => {
@@ -215,6 +232,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       fetchMeta();
       fetchWizard();
       fetchStatus(0, 100);
+      fetchDashboard(0, 100);
     };
 
     const { Message } = messages;
@@ -239,6 +257,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const state = {
     address,
     chain,
+    dashboard,
+    fetchDashboard,
     project,
     fetchProject,
     history,

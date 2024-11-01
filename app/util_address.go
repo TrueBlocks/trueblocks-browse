@@ -46,7 +46,7 @@ func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
 }
 
 func (a *App) AddrToName(address base.Address) string {
-	if name, exists := a.names.NamesMap[address]; exists {
+	if name, exists := a.names.NamesCache[address]; exists {
 		return name.Name
 	}
 	return ""

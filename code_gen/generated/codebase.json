@@ -7,8 +7,15 @@
             "ui_route": "0000-project",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
-            "attributes": "itemType=types.HistoryContainer",
+            "attributes": "itemType=base.Address"
+        },
+        {
+            "class": "Dashboard",
+            "doc_route": "0001-dashboard",
+            "ui_route": "0001-dashboard",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "itemType=types.ProjectContainer",
             "members": [
                 {
                     "name": "nMonitors",
@@ -51,18 +58,6 @@
                     "type": "uint64",
                     "description": "jim",
                     "num": 7
-                },
-                {
-                    "name": "dirty",
-                    "type": "bool",
-                    "description": "jim",
-                    "num": 8
-                },
-                {
-                    "name": "filename",
-                    "type": "string",
-                    "description": "jim",
-                    "num": 9
                 }
             ]
         },

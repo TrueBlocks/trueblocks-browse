@@ -4,9 +4,8 @@
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "0000-containers"
 	ui_route = "0000-project"
-	attributes = "itemType=types.HistoryContainer"
+	attributes = "itemType=base.Address"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"
 	cache_by = "range"
-	disable_go = true

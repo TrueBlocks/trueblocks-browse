@@ -33,7 +33,7 @@ type NameContainer struct {
 	Chain      string           `json:"chain"`
 	LastUpdate time.Time        `json:"lastUpdate"`
 	// EXISTING_CODE
-	NamesMap map[base.Address]coreTypes.Name `json:"namesMap"`
+	NamesCache map[base.Address]coreTypes.Name `json:"namesCache"`
 	// EXISTING_CODE
 }
 
@@ -45,9 +45,9 @@ func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	}
 	ret.LastUpdate, _ = ret.getNameReload()
 	// EXISTING_CODE
-	ret.NamesMap = make(map[base.Address]coreTypes.Name)
+	ret.NamesCache = make(map[base.Address]coreTypes.Name)
 	for _, name := range ret.Items {
-		ret.NamesMap[name.Address] = name
+		ret.NamesCache[name.Address] = name
 	}
 	sort.Slice(ret.Items, func(i, j int) bool {
 		return compare(ret.Items[i], ret.Items[j])

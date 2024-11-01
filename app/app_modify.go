@@ -6,10 +6,7 @@ import (
 
 type ModifyData struct {
 	Operation string       `json:"operation"`
+	Filename  string       `json:"filename"`
 	Address   base.Address `json:"address"`
 	Value     string       `json:"value"`
-}
-
-func (a *App) UnusedFunc(modData *ModifyData) error {
-	return nil
 }

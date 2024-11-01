@@ -38,6 +38,14 @@ export function DaemonsView(arg1) {
   return window['go']['app']['App']['DaemonsView'](arg1);
 }
 
+export function DashboardPage(arg1, arg2) {
+  return window['go']['app']['App']['DashboardPage'](arg1, arg2);
+}
+
+export function DashboardView(arg1) {
+  return window['go']['app']['App']['DashboardView'](arg1);
+}
+
 export function ExportAddress(arg1) {
   return window['go']['app']['App']['ExportAddress'](arg1);
 }
@@ -226,10 +234,6 @@ export function ProjectPage(arg1, arg2) {
   return window['go']['app']['App']['ProjectPage'](arg1, arg2);
 }
 
-export function ProjectView(arg1) {
-  return window['go']['app']['App']['ProjectView'](arg1);
-}
-
 export function Refresh() {
   return window['go']['app']['App']['Refresh']();
 }
@@ -308,10 +312,6 @@ export function SystemQuit(arg1) {
 
 export function ToggleDaemon(arg1) {
   return window['go']['app']['App']['ToggleDaemon'](arg1);
-}
-
-export function UnusedFunc(arg1) {
-  return window['go']['app']['App']['UnusedFunc'](arg1);
 }
 
 export function WizardView(arg1) {

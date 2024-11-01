@@ -27,6 +27,10 @@ export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
 export function DaemonsView(arg1:menu.CallbackData):Promise<void>;
 
+export function DashboardPage(arg1:number,arg2:number):Promise<types.DashboardContainer>;
+
+export function DashboardView(arg1:menu.CallbackData):Promise<void>;
+
 export function ExportAddress(arg1:base.Address):Promise<void>;
 
 export function FileNew(arg1:menu.CallbackData):Promise<void>;
@@ -121,8 +125,6 @@ export function Navigate(arg1:string,arg2:string):Promise<void>;
 
 export function ProjectPage(arg1:number,arg2:number):Promise<types.ProjectContainer>;
 
-export function ProjectView(arg1:menu.CallbackData):Promise<void>;
-
 export function Refresh():Promise<void>;
 
 export function Reload(arg1:base.Address):Promise<void>;
@@ -162,7 +164,5 @@ export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
 
 export function ToggleDaemon(arg1:string):Promise<void>;
-
-export function UnusedFunc(arg1:app.ModifyData):Promise<void>;
 
 export function WizardView(arg1:menu.CallbackData):Promise<void>;

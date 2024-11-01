@@ -9,7 +9,7 @@ import (
 )
 
 var keyMap = map[string]*keys.Accelerator{
-	"project":   keys.CmdOrCtrl("1"),
+	"dashboard": keys.CmdOrCtrl("1"),
 	"history":   keys.CmdOrCtrl("2"),
 	"monitors":  keys.CmdOrCtrl("3"),
 	"names":     keys.CmdOrCtrl("4"),
@@ -43,7 +43,7 @@ func (a *App) GetMenus() *menu.Menu {
 	fileMenu.AddText("Save As File", nil, a.FileSaveAs)
 	// EXISTING_CODE
 
-	viewMenu.AddText("Project", keyMap["project"], a.ProjectView)
+	viewMenu.AddText("Dashboard", keyMap["dashboard"], a.DashboardView)
 	viewMenu.AddText("History", keyMap["history"], a.HistoryView)
 	viewMenu.AddText("Monitors", keyMap["monitors"], a.MonitorsView)
 	viewMenu.AddText("Names", keyMap["names"], a.NamesView)

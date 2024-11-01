@@ -1,0 +1,8 @@
+name        ,type   ,strDefault ,attributes ,upgrades ,docOrder ,description
+nMonitors   ,uint64 ,           ,           ,         ,         ,jim
+nNames      ,uint64 ,           ,           ,         ,         ,jim
+nAbis       ,uint64 ,           ,           ,         ,         ,jim
+nIndexes    ,uint64 ,           ,           ,         ,         ,jim
+nManifests  ,uint64 ,           ,           ,         ,         ,jim
+nCaches     ,uint64 ,           ,           ,         ,         ,jim
+historySize ,uint64 ,           ,           ,         ,         ,jim

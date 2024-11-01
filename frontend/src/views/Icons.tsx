@@ -26,3 +26,4 @@ export const SettingsIcon = <IconSettings />;
 export const WizardIcon = <IconSettings />;
 export const ConfigIcon = <IconFileSettings />;
 export const SessionIcon = <IconDimensions />;
+export const DashboardIcon = <IconDimensions />;

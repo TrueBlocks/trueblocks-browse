@@ -1,8 +1,8 @@
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 import {
-  // Icons
   ProjectIcon,
+  DashboardIcon,
   HistoryIcon,
   MonitorsIcon,
   NamesIcon,
@@ -16,7 +16,7 @@ import {
   ConfigIcon,
   WizardIcon,
   // Views
-  ProjectView,
+  DashboardView,
   HistoryView,
   MonitorsView,
   NamesView,
@@ -66,9 +66,9 @@ export const routeItems: RouteItem[] = [
   {
     order: 0,
     route: expandRoute(""),
-    label: "Project",
-    icon: ProjectIcon,
-    component: ProjectView,
+    label: "Dashboard",
+    icon: DashboardIcon,
+    component: DashboardView,
   },
   {
     order: 1010,

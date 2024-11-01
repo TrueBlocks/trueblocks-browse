@@ -71,7 +71,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	} else {
 		// EXISTING_CODE
 		for i := 0; i < len(monitors); i++ {
-			monitors[i].Name = a.names.NamesMap[monitors[i].Address].Name
+			monitors[i].Name = a.names.NamesCache[monitors[i].Address].Name
 		}
 		// EXISTING_CODE
 		a.meta = *meta

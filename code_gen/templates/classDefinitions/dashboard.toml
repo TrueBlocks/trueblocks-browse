@@ -1,0 +1,12 @@
+[settings]
+    class = "Dashboard"
+    # doc_group = "20-Routes"
+    # doc_descr = "block data as returned from the RPC (with slight enhancements)"
+    doc_route = "0001-dashboard"
+    ui_route = "0001-dashboard"
+    attributes = "itemType=types.ProjectContainer"
+    # produced_by = "blocks"
+    # contains = "transaction, withdrawal"
+    cache_type = "cacheable"
+    cache_by = "range"
+    disable_go = true

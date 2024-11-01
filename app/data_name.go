@@ -124,7 +124,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 		Source:   "TrueBlocks Browse",
 		Tags:     "99-User-Defined",
 	}
-	if existing, ok := a.names.NamesMap[modData.Address]; ok {
+	if existing, ok := a.names.NamesCache[modData.Address]; ok {
 		if existing.IsCustom {
 			// We preserve the tags if it's already customized
 			newName.Tags = existing.Tags
@@ -164,7 +164,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 				}
 			}
 			nameMutex.Lock()
-			a.names.NamesMap[modData.Address] = name
+			a.names.NamesCache[modData.Address] = name
 			nameMutex.Unlock()
 		}
 		newArray = append(newArray, name)

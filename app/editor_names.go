@@ -11,7 +11,7 @@ import (
 )
 
 func (a *App) LoadName(addr string) editors.Name {
-	if name, ok := a.names.NamesMap[base.HexToAddress(addr)]; ok {
+	if name, ok := a.names.NamesCache[base.HexToAddress(addr)]; ok {
 		logger.Info("Found name for ", name.Address.Hex())
 		return editors.CoreToName(name)
 	} else {

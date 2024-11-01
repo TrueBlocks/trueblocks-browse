@@ -30,7 +30,7 @@ type App struct {
 	renderCtxs map[base.Address][]*output.RenderCtx
 
 	// Containers
-	projects  types.ProjectContainer
+	dashboard types.DashboardContainer
 	monitors  types.MonitorContainer
 	names     types.NameContainer
 	abis      types.AbiContainer
@@ -42,6 +42,7 @@ type App struct {
 	config    types.ConfigContainer
 
 	// Memory caches
+	ProjectCache *types.ProjectMap `json:"projectCache"`
 	HistoryCache *types.HistoryMap `json:"historyCache"`
 	EnsCache     *sync.Map         `json:"ensCache"`
 	BalanceCache *sync.Map         `json:"balanceCache"`
@@ -56,11 +57,11 @@ func NewApp() *App {
 	a := App{
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 	}
+	a.ProjectCache = &types.ProjectMap{}
+	a.HistoryCache = &types.HistoryMap{}
 	a.EnsCache = &sync.Map{}
 	a.BalanceCache = &sync.Map{}
-	a.HistoryCache = &types.HistoryMap{}
-	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
-	a.projects = types.NewProjectContainer("", []base.Address{})
+	a.names.NamesCache = make(map[base.Address]coreTypes.Name)
 	a.session.LastSub = make(map[string]string)
 
 	return &a
@@ -79,6 +80,9 @@ func (a *App) Startup(ctx context.Context) {
 		a.Filename = ""
 	}
 	a.Chain = a.session.LastChain
+	a.dashboard = types.NewDashboardContainer(a.Chain, []types.ProjectContainer{
+		types.NewProjectContainer(a.Chain, []base.Address{base.HexToAddress(a.session.LastSub["/history"])}),
+	})
 
 	go a.loadHistory(a.GetAddress(), nil, nil)
 

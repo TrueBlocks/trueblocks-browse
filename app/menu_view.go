@@ -7,7 +7,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
 
-func (a *App) ProjectView(cd *menu.CallbackData) {
+func (a *App) DashboardView(cd *menu.CallbackData) {
 	a.Navigate("/", "")
 }
 
