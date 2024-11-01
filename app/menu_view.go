@@ -1,3 +1,5 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package app
 
 import (
@@ -38,12 +40,20 @@ func (a *App) StatusView(cd *menu.CallbackData) {
 	a.Navigate("/status", "")
 }
 
+func (a *App) SettingsView(cd *menu.CallbackData) {
+	a.Navigate("/settings", "")
+}
+
 func (a *App) DaemonsView(cd *menu.CallbackData) {
 	a.Navigate("/daemons", "")
 }
 
-func (a *App) SettingsView(cd *menu.CallbackData) {
-	a.Navigate("/settings", "")
+func (a *App) SessionView(cd *menu.CallbackData) {
+	a.Navigate("/session", "")
+}
+
+func (a *App) ConfigView(cd *menu.CallbackData) {
+	a.Navigate("/config", "")
 }
 
 func (a *App) WizardView(cd *menu.CallbackData) {

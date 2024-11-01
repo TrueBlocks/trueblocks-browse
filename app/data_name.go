@@ -1,3 +1,5 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package app
 
 // EXISTING_CODE
@@ -8,10 +10,10 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -85,12 +87,13 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		a.names.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded names"})
 	}
+
 	return nil
 }
 
 func (a *App) forceName() (force bool) {
 	// EXISTING_CODE
-	latest := utils.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(namesChain))
+	latest := file.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(namesChain))
 	force = latest != a.names.LastUpdate
 	// EXISTING_CODE
 	return
@@ -102,16 +105,6 @@ func (a *App) ModifyName(modData *ModifyData) error {
 		return nil
 	}
 	defer nameLock.CompareAndSwap(1, 0)
-
-	opFromString := func(op string) crud.Operation {
-		m := map[string]crud.Operation{
-			"update":   crud.Update,
-			"delete":   crud.Delete,
-			"undelete": crud.Undelete,
-			"remove":   crud.Remove,
-		}
-		return m[op]
-	}
 
 	op := modData.Operation
 	newName := coreTypes.Name{
@@ -134,7 +127,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 	}
 	opts.Globals.Chain = namesChain
 
-	if _, _, err := opts.ModifyName(opFromString(op), cd); err != nil {
+	if _, _, err := opts.ModifyName(crud.OpFromString(op), cd); err != nil {
 		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
 			String1: err.Error(),
 		})
@@ -144,13 +137,13 @@ func (a *App) ModifyName(modData *ModifyData) error {
 	newArray := []coreTypes.Name{}
 	for _, name := range a.names.Items {
 		if name.Address == modData.Address {
-			switch opFromString(op) {
+			switch crud.OpFromString(op) {
 			case crud.Update:
 				name = newName
 			default:
 				if name.IsCustom {
 					// we can only delete if it's custom already
-					switch opFromString(op) {
+					switch crud.OpFromString(op) {
 					case crud.Delete:
 						name.Deleted = true
 					case crud.Undelete:

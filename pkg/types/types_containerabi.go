@@ -1,3 +1,5 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package types
 
 // EXISTING_CODE
@@ -7,8 +9,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -31,7 +33,8 @@ type AbiContainer struct {
 
 func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 	ret := AbiContainer{
-		Items: make([]coreTypes.Abi, 0, len(itemsIn)),
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"isEmpty", "isKnown", "address"},
 			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},
@@ -40,7 +43,6 @@ func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 	}
 	ret.LastUpdate, _ = ret.getAbiReload()
 	// EXISTING_CODE
-	ret.Items = itemsIn
 	// EXISTING_CODE
 	return ret
 }
@@ -95,10 +97,21 @@ func (s *AbiContainer) Summarize() {
 
 func (s *AbiContainer) getAbiReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "abis"))
+	ret = file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "abis"))
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return
+}
+
+type EveryAbiFn func(item *coreTypes.Abi, data any) bool
+
+func (s *AbiContainer) ForEveryAbi(process EveryAbiFn, data any) bool {
+	for i := 0 ; i < len(s.Items) ; i++ {
+		if !process(&s.Items[i], data) {
+			return false
+		}
+	}
+	return true
 }
 
 // EXISTING_CODE

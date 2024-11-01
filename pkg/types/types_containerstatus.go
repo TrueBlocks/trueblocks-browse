@@ -1,3 +1,5 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package types
 
 // EXISTING_CODE
@@ -6,7 +8,6 @@ import (
 	"time"
 
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/version"
 )
 
 // EXISTING_CODE
@@ -27,12 +28,10 @@ func NewStatusContainer(chain string, status *coreTypes.Status) StatusContainer 
 	ret := StatusContainer{
 		Status: *status,
 	}
+	ret.Chain = chain
 	ret.LastUpdate, _ = ret.getStatusReload()
 	// EXISTING_CODE
-	ret.Chain = chain
 	ret.LastUpdate = time.Now()
-	// TODO: This is a hack. We need to get the version from the core
-	ret.Version = version.LibraryVersion
 	ret.Items = status.Caches
 	ret.NItems = uint64(len(ret.Items))
 	// EXISTING_CODE

@@ -13,6 +13,8 @@ import {
   GetMeta,
   GetWizardState,
   StatusPage,
+  SessionPage,
+  Filename,
 } from "@gocode/app/App";
 import { base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
@@ -46,10 +48,14 @@ interface AppStateProps {
   status: types.StatusContainer;
   fetchStatus: (currentItem: number, itemsPerPage: number) => void;
 
+  session: types.SessionContainer;
+  fetchSession: (currentItem: number, itemsPerPage: number) => void;
+
   address: base.Address;
   setAddress: (address: base.Address) => void;
 
   chain: string;
+  filename: string;
   selectChain: (newChain: string) => void;
 
   meta: types.MetaData;
@@ -72,10 +78,12 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
   const [settings, setSettings] = useState<types.SettingsGroup>({} as types.SettingsGroup);
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
+  const [session, setSession] = useState<types.SessionContainer>({} as types.SessionContainer);
   // TODO BOGUS: The daemon state should be in the AppState
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
   const [chain, setChain] = useState<string>("mainnet");
+  const [filename, setFilename] = useState<string>("mainnet");
   const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
 
   const [isConfigured, setIsConfigured] = useState<boolean>(false);
@@ -83,9 +91,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const fetchProject = async (currentItem: number, itemsPerPage: number) => {
     ProjectPage(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
-      if (item) {
-        setProject(item);
-      }
+      setProject(item);
     });
   };
 
@@ -151,9 +157,20 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
+  const fetchSession = async (currentItem: number, itemsPerPage: number) => {
+    SessionPage(currentItem, itemsPerPage).then((item: types.SessionContainer) => {
+      if (item) {
+        setSession(item);
+      }
+    });
+  };
+
   const fetchChain = async () => {
     GetChain().then((chain) => {
       setChain(chain);
+    });
+    Filename().then((name) => {
+      setFilename(name);
     });
   };
 
@@ -206,8 +223,10 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     const { Message } = messages;
     EventsOn(Message.DAEMON, handleRefresh);
+    EventsOn(Message.DOCUMENT, handleRefresh);
     return () => {
       EventsOff(Message.DAEMON);
+      EventsOff(Message.DOCUMENT);
     };
   }, []);
 
@@ -226,6 +245,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const state = {
     address,
     chain,
+    filename,
     project,
     fetchProject,
     history,
@@ -245,6 +265,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchSettings,
     status,
     fetchStatus,
+    session,
+    fetchSession,
     setAddress,
     selectChain,
     meta,

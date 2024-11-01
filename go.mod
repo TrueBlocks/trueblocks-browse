@@ -2,6 +2,11 @@ module github.com/TrueBlocks/trueblocks-browse
 
 go 1.22
 
+replace (
+	github.com/TrueBlocks/trueblocks-core/src/apps/chifra => ../trueblocks-core/src/apps/chifra
+	github.com/TrueBlocks/trueblocks-sdk/v3 => ../trueblocks-sdk
+)
+
 require (
 	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20241029041530-7027d0af36cd
 	github.com/TrueBlocks/trueblocks-sdk/v3 v3.7.0

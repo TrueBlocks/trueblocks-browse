@@ -1,116 +1,139 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package types
 
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"sync"
+	"time"
 
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
-
-type ProjectItemType = HistoryContainer
-type ProjectInputType = HistoryContainer
 
 // EXISTING_CODE
 
 type ProjectContainer struct {
-	NMonitors   uint64             `json:"nMonitors"`
-	NNames      uint64             `json:"nNames"`
+	HistorySize uint64             `json:"historySize"`
 	NAbis       uint64             `json:"nAbis"`
+	NCaches     uint64             `json:"nCaches"`
 	NIndexes    uint64             `json:"nIndexes"`
 	NManifests  uint64             `json:"nManifests"`
-	NCaches     uint64             `json:"nCaches"`
-	HistorySize uint64             `json:"historySize"`
-	Dirty       bool               `json:"dirty"`
-	Filename    string             `json:"filename"`
-	NItems      uint64             `json:"nItems"`
+	NMonitors   uint64             `json:"nMonitors"`
+	NNames      uint64             `json:"nNames"`
 	Items       []HistoryContainer `json:"items"`
+	NItems      uint64             `json:"nItems"`
+	Chain       string             `json:"chain"`
+	LastUpdate  time.Time          `json:"lastUpdate"`
 	// EXISTING_CODE
-	Session    coreTypes.Session `json:"session"`
-	Summary    HistoryContainer  `json:",inline"`
-	HistoryMap *HistoryMap       `json:"historyMap"`
-	BalanceMap *sync.Map         `json:"balanceMap"`
-	EnsMap     *sync.Map         `json:"ensMap"`
 	// EXISTING_CODE
 }
 
-func NewProjectContainer(filename string, historyMap *HistoryMap, balMap, ensMap *sync.Map) ProjectContainer {
+func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContainer {
 	ret := ProjectContainer{
-		Items:    []HistoryContainer{},
-		Dirty:    false,
-		Filename: filename,
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Chain:  chain,
 	}
+	ret.LastUpdate, _ = ret.getProjectReload()
 	// EXISTING_CODE
-	ret.HistoryMap = historyMap
-	ret.BalanceMap = balMap
-	ret.EnsMap = ensMap
 	// EXISTING_CODE
 	return ret
 }
 
-func (h *ProjectContainer) String() string {
-	bytes, _ := json.Marshal(h)
+func (s *ProjectContainer) String() string {
+	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
 func (s *ProjectContainer) NeedsUpdate(force bool) bool {
-	return force
+	latest, reload := s.getProjectReload()
+	if force || reload {
+		s.LastUpdate = latest
+		return true
+	}
+	return false
 }
 
 func (s *ProjectContainer) ShallowCopy() Containerer {
-	ret := ProjectContainer{
-		Session:     s.Session,
-		NItems:      s.NItems,
-		NMonitors:   s.NMonitors,
-		NNames:      s.NNames,
+	return &ProjectContainer{
+		HistorySize: s.HistorySize,
 		NAbis:       s.NAbis,
+		NCaches:     s.NCaches,
 		NIndexes:    s.NIndexes,
 		NManifests:  s.NManifests,
-		NCaches:     s.NCaches,
-		HistorySize: s.HistorySize,
+		NMonitors:   s.NMonitors,
+		NNames:      s.NNames,
+		NItems:      s.NItems,
+		Chain:       s.Chain,
+		LastUpdate:  s.LastUpdate,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
-	if copy, ok := s.Summary.ShallowCopy().(*HistoryContainer); ok {
-		ret.Summary = *copy
-	}
-	ret.Dirty = true
-	ret.Filename = "Untitled"
-	return &ret
 }
 
 func (s *ProjectContainer) Summarize() {
+	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
 	// do nothing
 	// EXISTING_CODE
 }
 
-func ProjectX() {
+func (s *ProjectContainer) getProjectReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
+	_ = s.ForEveryHistory(func(item *HistoryContainer, data any) bool {
+		if item.NeedsUpdate(false) {
+			ret = item.LastUpdate
+			reload = true // we can stop
+			return false
+		}
+		return true
+	}, nil)
+	// return ret, needs
 	// EXISTING_CODE
+	return
+}
+
+type EveryAddressFn func(item *HistoryContainer, data any) bool
+
+func (s *ProjectContainer) ForEveryHistory(process EveryAddressFn, data any) bool {
+	for i := 0; i < len(s.Items); i++ {
+		if !process(&s.Items[i], data) {
+			return false
+		}
+	}
+	return true
 }
 
 // EXISTING_CODE
-func (s *ProjectContainer) Load() error {
-	str := file.AsciiFileToString(s.Filename)
-	json.Unmarshal([]byte(str), s)
-	return nil
+type ProjectFile struct {
+	DateSaved string         `json:"dateSaved"`
+	Selected  base.Address   `json:"selected"`
+	Addresses []base.Address `json:"addresses"`
 }
 
-func (s *ProjectContainer) Save() error {
-	bytes, _ := json.MarshalIndent(s, "", "  ")
-	// fmt.Println("Saving:", s.Filename)
-	// fmt.Println("Len:", len(bytes))
-	file.StringToAsciiFile(s.Filename, string(bytes))
-	// if store, err := cache.NewStore(&cache.StoreOptions{
-	// 	Location: cache.FsCache,
-	// 	ReadOnly: false,
-	// }); err != nil {
-	// 	return err
-	// } else {
-	// 	return store.Write(s, nil)
-	// }
+func (p *ProjectFile) String() string {
+	bytes, _ := json.Marshal(p)
+	return string(bytes)
+}
+
+func (s *ProjectContainer) Load(fn string) (*ProjectFile, error) {
+	projectFile := &ProjectFile{}
+	str := file.AsciiFileToString(fn)
+	err := json.Unmarshal([]byte(str), projectFile)
+	return projectFile, err
+}
+
+func (s *ProjectContainer) Save(fn string, selected base.Address) error {
+	projectFile := ProjectFile{DateSaved: time.Now().String(), Selected: selected}
+	s.ForEveryHistory(func(history *HistoryContainer, data any) bool {
+		projectFile.Addresses = append(projectFile.Addresses, history.Address)
+		return true
+	}, nil)
+	logger.Info("ProjectContainer:Save:", projectFile.String())
+	bytes, _ := json.MarshalIndent(projectFile, "", "  ")
+	file.StringToAsciiFile(fn, string(bytes))
 	return nil
 }
 

@@ -1,8 +1,0 @@
-package app
-
-import "testing"
-
-func TestLoad{{toPlural .Class}}(t *testing.T) {
-	app := NewApp()
-	app.load{{toPlural .Class}}(nil, nil)
-}

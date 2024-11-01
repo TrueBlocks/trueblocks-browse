@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Text } from "@mantine/core";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
+import { notifyError } from "../notifications";
 import classes from "./View.module.css";
 
 export const ViewStatus = () => {
@@ -54,6 +55,9 @@ export const ViewStatus = () => {
     };
 
     const handleError = (msg: messages.MessageMsg) => {
+      if (!msg.string1.includes("Invalid address")) {
+        notifyError(msg.string1 + "\n" + msg.string2 || "An error occurred!");
+      }
       setStatusMessage(`Error: ${msg.string1} ${msg.address}`);
       setColor("red");
     };

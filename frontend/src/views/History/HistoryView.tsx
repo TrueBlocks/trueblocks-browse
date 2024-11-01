@@ -1,20 +1,11 @@
 import { useEffect } from "react";
-import { getCoreRowModel, useReactTable, Table } from "@tanstack/react-table";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { useParams } from "wouter";
-import {
-  ExploreButton,
-  ExportButton,
-  View,
-  FormTable,
-  ViewForm,
-  DataTable,
-  FieldGroup,
-  GoogleButton,
-} from "@components";
-import { types, base } from "@gocode/models";
+import { View, FormTable, ViewForm } from "@components";
+import { base } from "@gocode/models";
 import { useNoops, useUtils } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { tableColumns } from "./HistoryTable";
+import { HistoryTableDef, HistoryFormDef } from ".";
 
 export const HistoryView = () => {
   const { modifyNoop } = useNoops();
@@ -28,7 +19,7 @@ export const HistoryView = () => {
 
   const table = useReactTable({
     data: history.items || [],
-    columns: tableColumns,
+    columns: HistoryTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -36,56 +27,11 @@ export const HistoryView = () => {
   const addrStr = ShortenAddr(address.toString());
   const tabs = [addrStr];
   const forms: ViewForm = {
-    [addrStr]: <FormTable data={history} groups={createHistoryForm(address, table)} />,
+    [addrStr]: <FormTable data={history} groups={HistoryFormDef(address, table)} />,
   };
   return (
     <ViewStateProvider route={route} nItems={history.nItems} fetchFn={fetchHistory} modifyFn={modifyNoop}>
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
-};
-
-const createHistoryForm = (
-  address: base.Address,
-  table: Table<types.Transaction>
-): FieldGroup<types.HistoryContainer>[] => {
-  return [
-    {
-      label: "DalleDress",
-      colSpan: 2,
-      fields: [{ label: "", type: "dalle", accessor: "address" }],
-    },
-    {
-      label: "Transaction Data",
-      colSpan: 7,
-      fields: [
-        { label: "address", type: "address-address-only", accessor: "address" },
-        { label: "name", type: "address-name-only", accessor: "address" },
-        { label: "balance", type: "ether", accessor: "balance" },
-      ],
-    },
-    {
-      label: "Transaction Data",
-      colSpan: 3,
-      fields: [
-        { label: "nTransactions", type: "int", accessor: "nItems" },
-        { label: "nLogs", type: "int", accessor: "nLogs" },
-        { label: "nTokens", type: "int", accessor: "nTokens" },
-        { label: "nErrors", type: "int", accessor: "nErrors" },
-      ],
-    },
-    {
-      label: "Buttons",
-      buttons: [
-        <ExploreButton key={"explore"} value={address} />,
-        <GoogleButton key={"google"} value={address} />,
-        <ExportButton key={"export"} value={address} />,
-      ],
-    },
-    {
-      label: "Transaction History",
-      collapsable: false,
-      components: [<DataTable<types.Transaction> key={"dataTable"} table={table} loading={false} />],
-    },
-  ];
 };

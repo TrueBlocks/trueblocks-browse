@@ -1,3 +1,5 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package types
 
 // EXISTING_CODE
@@ -6,8 +8,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -62,12 +64,12 @@ type MonitorContainer struct {
 
 func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorContainer {
 	ret := MonitorContainer{
-		Items: make([]coreTypes.Monitor, 0, len(itemsIn)),
-		Chain: chain,
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Chain:  chain,
 	}
 	ret.LastUpdate, _ = ret.getMonitorReload()
 	// EXISTING_CODE
-	ret.Items = itemsIn
 	// EXISTING_CODE
 	return ret
 }
@@ -126,10 +128,21 @@ func (s *MonitorContainer) Summarize() {
 
 func (s *MonitorContainer) getMonitorReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "monitors"))
+	ret = file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "monitors"))
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return
+}
+
+type EveryMonitorFn func(item *coreTypes.Monitor, data any) bool
+
+func (s *MonitorContainer) ForEveryMonitor(process EveryMonitorFn, data any) bool {
+	for i := 0 ; i < len(s.Items) ; i++ {
+		if !process(&item[i], data) {
+			return false
+		}
+	}
+	return true
 }
 
 // EXISTING_CODE

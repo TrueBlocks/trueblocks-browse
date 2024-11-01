@@ -1,3 +1,5 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package types
 
 // EXISTING_CODE
@@ -7,7 +9,6 @@ import (
 	"sort"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -38,12 +39,12 @@ type NameContainer struct {
 
 func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	ret := NameContainer{
-		Items: make([]coreTypes.Name, 0, len(itemsIn)),
-		Chain: chain,
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Chain:  chain,
 	}
 	ret.LastUpdate, _ = ret.getNameReload()
 	// EXISTING_CODE
-	ret.Items = itemsIn
 	ret.NamesMap = make(map[base.Address]coreTypes.Name)
 	for _, name := range ret.Items {
 		ret.NamesMap[name.Address] = name
@@ -127,10 +128,21 @@ func (s *NameContainer) Summarize() {
 
 func (s *NameContainer) getNameReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(s.Chain))
+	ret = file.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(s.Chain))
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return
+}
+
+type EveryNameFn func(item *coreTypes.Name, data any) bool
+
+func (s *NameContainer) ForEveryName(process EveryNameFn, data any) bool {
+	for i := 0 ; i < len(s.Items) ; i++ {
+		if !process(&s.Items[i], data) {
+			return false
+		}
+	}
+	return true
 }
 
 // EXISTING_CODE

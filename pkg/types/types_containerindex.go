@@ -1,3 +1,5 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package types
 
 // EXISTING_CODE
@@ -5,14 +7,11 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
-
-type IndexItemType = coreTypes.ChunkStats
-type IndexInputType = []coreTypes.ChunkStats
 
 // EXISTING_CODE
 
@@ -29,7 +28,8 @@ type IndexContainer struct {
 
 func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContainer {
 	ret := IndexContainer{
-		Items: make([]coreTypes.ChunkStats, 0, len(itemsIn)),
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"range"},
 			Order:  []sdk.SortOrder{sdk.Dec},
@@ -38,7 +38,6 @@ func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContai
 	}
 	ret.LastUpdate, _ = ret.getIndexReload()
 	// EXISTING_CODE
-	ret.Items = itemsIn
 	// EXISTING_CODE
 	return ret
 }
@@ -94,10 +93,21 @@ func (s *IndexContainer) Summarize() {
 
 func (s *IndexContainer) getIndexReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(coreConfig.PathToIndex(s.Chain))
+	ret = file.MustGetLatestFileTime(coreConfig.PathToIndex(s.Chain))
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return
+}
+
+type EveryChunkStatsFn func(item *coreTypes.ChunkStats, data any) bool
+
+func (s *IndexContainer) ForEveryChunkStats(process EveryChunkStatsFn, data any) bool {
+	for i := 0 ; i < len(s.Items) ; i++ {
+		if !process(&s.Items[i], data) {
+			return false
+		}
+	}
+	return true
 }
 
 // EXISTING_CODE

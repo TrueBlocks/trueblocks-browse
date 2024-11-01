@@ -1,3 +1,6 @@
+{{if .NeedsFetch -}}
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package app
 
 // EXISTING_CODE
@@ -9,11 +12,11 @@ func (a *App) {{.Class}}Page(first, pageSize int) *types.{{.Class}}Container {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-{{if not .NeedsEmbed}}	first = base.Max(0, base.Min(first, len(a.{{toLowerPlural .Class}}.Items)-1))
+	first = base.Max(0, base.Min(first, len(a.{{toLowerPlural .Class}}.Items)-1))
 	last := base.Min(len(a.{{toLowerPlural .Class}}.Items), first+pageSize)
-{{end}}	copy, _ := a.{{toLowerPlural .Class}}.ShallowCopy().(*types.{{.Class}}Container)
-{{if not .NeedsEmbed}}	copy.Items = a.{{toLowerPlural .Class}}.Items[first:last]
-{{end}}	return copy
+	copy, _ := a.{{toLowerPlural .Class}}.ShallowCopy().(*types.{{.Class}}Container)
+	copy.Items = a.{{toLowerPlural .Class}}.Items[first:last]
+	return copy
 }
 
 func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) error {
@@ -54,17 +57,20 @@ func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) 
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.{{toLowerPlural .Class}} = types.New{{.Class}}Container(opts.Chain, {{if .NeedsItems}}{{toLowerPlural .Class}}{{end}}{{if .NeedsEmbed}}&{{toLowerPlural .Class}}[0]{{end}})
+		a.{{toLowerPlural .Class}} = types.New{{.Class}}Container(opts.Chain, {{if .HasItems}}{{toLowerPlural .Class}}{{end}}{{if .HasEmbed}}&{{toLowerPlural .Class}}[0]{{end}})
 		// EXISTING_CODE
 		// EXISTING_CODE
-{{if .HasSorts}}		if err := sdk.Sort{{toPlural .Class}}(a.{{toLowerPlural .Class}}.Items, a.{{toLowerPlural .Class}}.Sorts); err != nil {
+{{if .HasSorts -}}
+		if err := sdk.Sort{{toPlural .Class}}(a.{{toLowerPlural .Class}}.Items, a.{{toLowerPlural .Class}}.Sorts); err != nil {
 			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
 				String1: err.Error(),
 			})
 		}
-{{end}}		a.{{toLowerPlural .Class}}.Summarize()
+{{end -}}
+		a.{{toLowerPlural .Class}}.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded {{toLowerPlural .Class}}"})
 	}
+
 	return nil
 }
 
@@ -100,6 +106,7 @@ func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) 
 	}
 }
 {{end}}
+
 func (a *App) force{{.Class}}() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -108,3 +115,4 @@ func (a *App) force{{.Class}}() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
+{{end}}

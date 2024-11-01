@@ -1,3 +1,5 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package types
 
 // EXISTING_CODE
@@ -5,8 +7,8 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -43,6 +45,7 @@ func NewManifestContainer(chain string, itemsIn []coreTypes.Manifest) ManifestCo
 	ret.Specification = itemsIn[0].Specification.String()
 	ret.Version = itemsIn[0].Version
 	ret.Items = itemsIn[0].Chunks
+	ret.NItems = uint64(len(ret.Items))
 	// EXISTING_CODE
 	return ret
 }
@@ -91,10 +94,21 @@ func (s *ManifestContainer) Summarize() {
 
 func (s *ManifestContainer) getManifestReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(coreConfig.PathToManifest(s.Chain))
+	ret = file.MustGetLatestFileTime(coreConfig.PathToManifest(s.Chain))
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return
+}
+
+type EveryChunkRecordFn func(item *coreTypes.ChunkRecord, data any) bool
+
+func (s *ManifestContainer) ForEveryChunkRecord(process EveryChunkRecordFn, data any) bool {
+	for i := 0 ; i < len(s.Items) ; i++ {
+		if !process(&s.Items[i], data) {
+			return false
+		}
+	}
+	return true
 }
 
 // EXISTING_CODE

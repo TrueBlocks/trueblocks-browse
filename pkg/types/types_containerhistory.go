@@ -1,16 +1,17 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package types
 
 // EXISTING_CODE
 import (
 	"encoding/json"
 	"path/filepath"
-	"sync"
 	"time"
 	"unsafe"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -95,10 +96,23 @@ func (s *HistoryContainer) Summarize() {
 
 func (s *HistoryContainer) getHistoryReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = utils.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "monitors", s.Address.Hex()+".mon.bin"))
+	cache := coreConfig.PathToCache(s.Chain)
+	path := filepath.Join(cache, "monitors", s.Address.Hex()+".mon.bin")
+	ret = file.MustGetLatestFileTime(path)
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return
+}
+
+type EveryTransactionFn func(item *coreTypes.Transaction, data any) bool
+
+func (s *HistoryContainer) ForEveryTransaction(process EveryTransactionFn, data any) bool {
+	for i := 0 ; i < len(s.Items) ; i++ {
+		if !process(&s.Items[i], data) {
+			return false
+		}
+	}
+	return true
 }
 
 // EXISTING_CODE
@@ -108,32 +122,6 @@ func (s *HistoryContainer) SizeOf() int {
 		size += unsafe.Sizeof(record)
 	}
 	return int(size)
-}
-
-type HistoryMap struct {
-	internal sync.Map
-}
-
-func (h *HistoryMap) Store(address base.Address, historyContainer HistoryContainer) {
-	h.internal.Store(address, historyContainer)
-}
-
-func (h *HistoryMap) Load(address base.Address) (HistoryContainer, bool) {
-	value, ok := h.internal.Load(address)
-	if !ok {
-		return HistoryContainer{}, false
-	}
-	return value.(HistoryContainer), true
-}
-
-func (h *HistoryMap) Delete(address base.Address) {
-	h.internal.Delete(address)
-}
-
-func (h *HistoryMap) Range(f func(address base.Address, historyContainer HistoryContainer) bool) {
-	h.internal.Range(func(key, value interface{}) bool {
-		return f(key.(base.Address), value.(HistoryContainer))
-	})
 }
 
 // EXISTING_CODE

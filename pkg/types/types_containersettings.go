@@ -1,3 +1,5 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package types
 
 // EXISTING_CODE
@@ -5,11 +7,11 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	coreUtils "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
 // EXISTING_CODE
@@ -27,7 +29,7 @@ func NewSettingsGroup(status *coreTypes.Status, cfg *configTypes.Config, session
 	latest := getLatestFileTime()
 	ret := SettingsGroup{
 		Status:     NewStatusContainer(status.Chain, status),
-		Config:     NewConfigContainer(status.Chain, []configTypes.Config{*cfg}),
+		Config:     NewConfigContainer(status.Chain, cfg),
 		Session:    NewSessionContainer(status.Chain, session),
 		LastUpdate: latest,
 	}
@@ -73,9 +75,9 @@ func (s *SettingsGroup) Summarize() {
 
 func getLatestFileTime() time.Time {
 	configFn := coreConfig.PathToRootConfig()
-	sessionFn, _ := coreUtils.GetConfigFn("browse", "") /* session.json */
+	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
 	folders := []string{configFn, sessionFn}
-	ret := utils.MustGetLatestFileTime(folders...)
+	ret := file.MustGetLatestFileTime(folders...)
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret

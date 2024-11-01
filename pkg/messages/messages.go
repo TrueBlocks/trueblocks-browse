@@ -2,7 +2,9 @@ package messages
 
 import (
 	"context"
+	"os"
 
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -46,5 +48,15 @@ var AllMessages = []struct {
 }
 
 func EmitMessage(ctx context.Context, msg Message, data *MessageMsg) {
-	runtime.EventsEmit(ctx, string(msg), data)
+	if isTesting {
+		logger.Info("EmitMessage", "msg", string(msg), "data", data)
+	} else {
+		runtime.EventsEmit(ctx, string(msg), data)
+	}
+}
+
+var isTesting bool
+
+func init() {
+	isTesting = os.Getenv("TB_TEST_MODE") == "true"
 }

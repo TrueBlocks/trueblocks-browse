@@ -10,7 +10,7 @@ import (
 
 var ctxMutex sync.Mutex
 
-func (a *App) RegisterCtx(address base.Address) *output.RenderCtx {
+func (a *App) registerCtx(address base.Address) *output.RenderCtx {
 	ctxMutex.Lock()
 	defer ctxMutex.Unlock()
 
@@ -19,7 +19,11 @@ func (a *App) RegisterCtx(address base.Address) *output.RenderCtx {
 	return rCtx
 }
 
-func (a *App) CancelContext(address base.Address) {
+func (a *App) unregisterCtx(address base.Address) bool {
+	return a.cancelContext(address)
+}
+
+func (a *App) cancelContext(address base.Address) (removed bool) {
 	ctxMutex.Lock()
 	defer ctxMutex.Unlock()
 	if ctxArrays, ok := a.renderCtxs[address]; ok {
@@ -30,11 +34,13 @@ func (a *App) CancelContext(address base.Address) {
 			ctx.Cancel()
 		}
 		delete(a.renderCtxs, address)
+		removed = true
 	}
+	return
 }
 
 func (a *App) CancelAllContexts() {
 	for address := range a.renderCtxs {
-		a.CancelContext(address)
+		a.cancelContext(address)
 	}
 }

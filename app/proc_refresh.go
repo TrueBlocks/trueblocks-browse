@@ -46,13 +46,15 @@ func (a *App) Refresh() error {
 	wg := sync.WaitGroup{}
 	errorChan := make(chan error, 5) // Buffered channel to hold up to 5 errors (one from each goroutine)
 
-	wg.Add(6)
+	wg.Add(8)
 	go a.loadAbis(&wg, errorChan)
 	go a.loadManifests(&wg, errorChan)
 	go a.loadMonitors(&wg, errorChan)
 	go a.loadIndexes(&wg, errorChan)
 	go a.loadStatus(&wg, errorChan)
+	go a.loadSessions(&wg, errorChan)
 	go a.loadSettings(&wg, errorChan)
+	go a.loadProjects(&wg, errorChan)
 
 	go func() {
 		wg.Wait()
@@ -65,8 +67,6 @@ func (a *App) Refresh() error {
 			errors = append(errors, err)
 		}
 	}
-
-	a.loadProjects(nil, nil)
 
 	if len(errors) > 0 {
 		// Handle errors, e.g., wait 1/2 second between each error message

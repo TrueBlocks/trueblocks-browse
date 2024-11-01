@@ -3,6 +3,8 @@ package app
 import (
 	"context"
 	"encoding/json"
+	"os"
+	"path/filepath"
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
@@ -10,11 +12,11 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	coreUtils "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -22,9 +24,9 @@ import (
 type App struct {
 	sdk.Globals `json:",inline"`
 
-	ctx  context.Context
-	cfg  configTypes.Config
-	meta coreTypes.MetaData
+	ctx   context.Context
+	meta  coreTypes.MetaData
+	dirty bool
 
 	renderCtxs map[base.Address][]*output.RenderCtx
 
@@ -35,10 +37,15 @@ type App struct {
 	abis      types.AbiContainer
 	indexes   types.IndexContainer
 	manifests types.ManifestContainer
-	settings  types.SettingsGroup
-	configs   types.ConfigContainer
 	status    types.StatusContainer
-	sessions  types.SessionContainer
+	settings  types.SettingsGroup
+	session   types.SessionContainer
+	config    types.ConfigContainer
+
+	// Memory caches
+	HistoryCache *types.HistoryMap `json:"historyCache"`
+	EnsCache     *sync.Map         `json:"ensCache"`
+	BalanceCache *sync.Map         `json:"balanceCache"`
 
 	// Controllers
 	ScraperController *daemons.DaemonScraper
@@ -50,9 +57,12 @@ func NewApp() *App {
 	a := App{
 		renderCtxs: make(map[base.Address][]*output.RenderCtx),
 	}
+	a.EnsCache = &sync.Map{}
+	a.BalanceCache = &sync.Map{}
+	a.HistoryCache = &types.HistoryMap{}
 	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
-	a.projects = types.NewProjectContainer("Untitled.tbx", &types.HistoryMap{}, &sync.Map{}, &sync.Map{})
-	a.sessions.LastSub = make(map[string]string)
+	a.projects = types.NewProjectContainer("", []types.HistoryContainer{})
+	a.session.LastSub = make(map[string]string)
 
 	return &a
 }
@@ -65,13 +75,20 @@ func (a *App) String() string {
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 	a.loadSession()
-
-	go a.loadHistory(a.GetAddress(), nil, nil)
+	a.Chain = a.session.LastChain
 
 	a.FreshenController = daemons.NewFreshen(a, "freshen", 3000, a.IsShowing("freshen"))
 	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.IsShowing("scraper"))
 	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.IsShowing("ipfs"))
 	go a.startDaemons()
+
+	fn := filepath.Join(a.session.LastFolder, a.session.LastFile)
+	if file.FileExists(fn) {
+		a.LoadFile(fn)
+		a.dirty = false
+	} else {
+		a.dirty = true
+	}
 
 	logger.Info("Starting freshen process...")
 	_ = a.Refresh()
@@ -83,12 +100,12 @@ func (a *App) DomReady(ctx context.Context) {
 	runtime.WindowSetSize(a.ctx, win.Width, win.Height)
 	runtime.WindowShow(a.ctx)
 
-	if path, err := coreUtils.GetConfigFn("", "trueBlocks.toml"); err != nil {
+	if path, err := utils.GetConfigFn("", "trueBlocks.toml"); err != nil {
 		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
 			String1: err.Error(),
 		})
 	} else {
-		if err := coreConfig.ReadToml(path, &a.cfg); err != nil {
+		if err := coreConfig.ReadToml(path, &a.config.Config); err != nil {
 			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
 				String1: err.Error(),
 			})
@@ -101,18 +118,26 @@ func (a *App) Shutdown(ctx context.Context) {
 }
 
 func (a *App) saveSession() {
-	a.sessions.Window.X, a.sessions.Window.Y = runtime.WindowGetPosition(a.ctx)
-	a.sessions.Window.Width, a.sessions.Window.Height = runtime.WindowGetSize(a.ctx)
-	a.sessions.Window.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
-	_ = a.sessions.Save()
+	if !isTesting {
+		a.session.Window.X, a.session.Window.Y = runtime.WindowGetPosition(a.ctx)
+		a.session.Window.Width, a.session.Window.Height = runtime.WindowGetSize(a.ctx)
+		a.session.Window.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
+	}
+	_ = a.session.Save()
 }
 
 func (a *App) loadSession() {
-	_ = a.sessions.Load()
-	a.sessions.CleanWindowSize(a.ctx)
-	a.Chain = a.sessions.LastChain
+	_ = a.session.Load()
+	a.session.CleanWindowSize(a.ctx)
+	a.Chain = a.session.LastChain
 }
 
 func (a *App) Logger(msg string) {
 	logger.Info(msg)
+}
+
+var isTesting bool
+
+func init() {
+	isTesting = os.Getenv("TB_TEST_MODE") == "true"
 }

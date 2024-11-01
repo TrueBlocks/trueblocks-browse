@@ -8,7 +8,7 @@ import (
 )
 
 func (a *App) SetShowing(which string, onOff bool) {
-	a.sessions.Toggles.SetState(which, onOff)
+	a.session.Toggles.SetState(which, onOff)
 	a.saveSession()
 }
 
@@ -17,14 +17,14 @@ func (a *App) SetEnv(key, value string) {
 }
 
 func (a *App) SetRoute(route, subRoute string) {
-	a.sessions.SetRoute(route, subRoute)
+	a.session.SetRoute(route, subRoute)
 	a.saveSession()
 }
 
 func (a *App) SetChain(chain string, address base.Address) {
 	a.CancelAllContexts() // cancel what's happening on the old chain
 	a.Chain = chain
-	a.sessions.LastChain = chain
+	a.session.LastChain = chain
 	a.saveSession()
 	a.Reload(address)
 	a.monitors = types.MonitorContainer{}

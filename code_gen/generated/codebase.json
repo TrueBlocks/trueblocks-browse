@@ -2,152 +2,163 @@
     "commands": [],
     "structures": [
         {
-            "class": "Abi",
-            "doc_route": "100-containers",
-            "cache_by": "range",
-            "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.Abi|editable|sorts=isEmpty+Asc,isKnown+Asc,address+Asc,",
-            "members": [
-                {
-                    "name": "largestFile",
-                    "type": "string",
-                    "description": "jim",
-                    "num": 1
-                },
-                {
-                    "name": "mostFunctions",
-                    "type": "string",
-                    "description": "jim",
-                    "num": 2
-                },
-                {
-                    "name": "mostEvents",
-                    "type": "string",
-                    "description": "jim",
-                    "num": 3
-                }
-            ]
-        },
-        {
-            "class": "Status",
-            "doc_route": "110-containers",
-            "cache_by": "range",
-            "cache_type": "cacheable",
-            "attributes": "embedType=coreTypes.Status|noChain",
-            "members": [
-                {
-                    "name": "nFolders",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 1
-                },
-                {
-                    "name": "nFiles",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 2
-                },
-                {
-                    "name": "nBytes",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 3
-                }
-            ]
-        },
-        {
-            "class": "Settings",
-            "doc_route": "120-containers",
+            "class": "Project",
+            "doc_route": "0000-containers",
+            "ui_route": "0000-project",
             "cache_by": "range",
             "cache_type": "cacheable",
             "disable_go": true,
-            "attributes": "itemType=",
+            "attributes": "itemType=types.HistoryContainer",
             "members": [
                 {
-                    "name": "bloomSz",
+                    "name": "nMonitors",
                     "type": "uint64",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "chunkSz",
+                    "name": "nNames",
                     "type": "uint64",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "nAddrs",
+                    "name": "nAbis",
                     "type": "uint64",
                     "description": "jim",
                     "num": 3
                 },
                 {
-                    "name": "nApps",
+                    "name": "nIndexes",
                     "type": "uint64",
                     "description": "jim",
                     "num": 4
                 },
                 {
-                    "name": "nBlocks",
+                    "name": "nManifests",
                     "type": "uint64",
                     "description": "jim",
                     "num": 5
                 },
                 {
-                    "name": "nBlooms",
+                    "name": "nCaches",
                     "type": "uint64",
                     "description": "jim",
                     "num": 6
+                },
+                {
+                    "name": "historySize",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "dirty",
+                    "type": "bool",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "filename",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 9
                 }
             ]
         },
         {
-            "class": "Session",
-            "doc_route": "130-containers",
-            "cache_by": "range",
-            "cache_type": "cacheable",
-            "attributes": "embedType=coreTypes.Session|noChain"
-        },
-        {
-            "class": "Project",
-            "doc_route": "140-containers",
+            "class": "History",
+            "doc_route": "1010-containers",
+            "ui_route": "1010-history",
             "cache_by": "range",
             "cache_type": "cacheable",
             "disable_go": true,
-            "attributes": "itemType=HistoryContainer",
+            "attributes": "itemType=coreTypes.Transaction|otherType=base.Address",
             "members": [
                 {
-                    "name": "bloomSz",
-                    "type": "uint64",
+                    "name": "address",
+                    "type": "address",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "chunkSz",
+                    "name": "nTotal",
                     "type": "uint64",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "nAddrs",
-                    "type": "uint64",
+                    "name": "name",
+                    "type": "string",
                     "description": "jim",
                     "num": 3
                 },
                 {
-                    "name": "nApps",
-                    "type": "uint64",
+                    "name": "balance",
+                    "type": "string",
                     "description": "jim",
                     "num": 4
                 },
                 {
-                    "name": "nBlocks",
+                    "name": "nLogs",
                     "type": "uint64",
                     "description": "jim",
                     "num": 5
                 },
                 {
-                    "name": "nBlooms",
+                    "name": "nTokens",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "nErrors",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                }
+            ]
+        },
+        {
+            "class": "Monitor",
+            "doc_route": "1020-containers",
+            "ui_route": "1020-monitors",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.Monitor",
+            "members": [
+                {
+                    "name": "nNamed",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nStaged",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "nEmpty",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "nDeleted",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "fileSize",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nRecords",
                     "type": "uint64",
                     "description": "jim",
                     "num": 6
@@ -156,7 +167,8 @@
         },
         {
             "class": "Name",
-            "doc_route": "150-containers",
+            "doc_route": "1030-containers",
+            "ui_route": "1030-names",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=coreTypes.Name",
@@ -218,56 +230,48 @@
             ]
         },
         {
-            "class": "Monitor",
-            "doc_route": "160-containers",
+            "class": "Abi",
+            "doc_route": "1040-containers",
+            "ui_route": "1040-abis",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.Monitor",
+            "attributes": "itemType=coreTypes.Abi|editable|sorts=isEmpty+Asc,isKnown+Asc,address+Asc,",
             "members": [
                 {
-                    "name": "nNamed",
-                    "type": "uint64",
+                    "name": "largestFile",
+                    "type": "string",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "nStaged",
-                    "type": "uint64",
+                    "name": "mostFunctions",
+                    "type": "string",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "nEmpty",
-                    "type": "uint64",
+                    "name": "mostEvents",
+                    "type": "string",
                     "description": "jim",
                     "num": 3
-                },
-                {
-                    "name": "nDeleted",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 4
-                },
-                {
-                    "name": "fileSize",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 5
-                },
-                {
-                    "name": "nRecords",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 6
                 }
             ]
         },
         {
-            "class": "Manifest",
-            "doc_route": "170-containers",
+            "class": "Index",
+            "doc_route": "1050-containers",
+            "ui_route": "1050-indexes",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.ChunkRecord|sorts=range+Dec,",
+            "attributes": "itemType=coreTypes.ChunkStats|sorts=range+Dec,"
+        },
+        {
+            "class": "Manifest",
+            "doc_route": "1060-containers",
+            "ui_route": "1060-manifests",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.ChunkRecord|inputType=coreTypes.Manifest|sorts=range+Dec,",
             "members": [
                 {
                     "name": "nBlooms",
@@ -308,70 +312,104 @@
             ]
         },
         {
-            "class": "Index",
-            "doc_route": "180-containers",
+            "class": "Status",
+            "doc_route": "1070-containers",
+            "ui_route": "1070-status",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.ChunkStats|sorts=range+Dec,"
-        },
-        {
-            "class": "History",
-            "doc_route": "190-containers",
-            "cache_by": "range",
-            "cache_type": "cacheable",
-            "disable_go": true,
-            "attributes": "itemType=coreTypes.Transaction|otherType=base.Address",
+            "attributes": "embedType=coreTypes.Status|noChain",
             "members": [
                 {
-                    "name": "address",
-                    "type": "address",
+                    "name": "nFolders",
+                    "type": "uint64",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "nTotal",
+                    "name": "nFiles",
                     "type": "uint64",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "name",
-                    "type": "string",
+                    "name": "nBytes",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 3
+                }
+            ]
+        },
+        {
+            "class": "Settings",
+            "doc_route": "1080-containers",
+            "ui_route": "1080-settings",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "disable_go": true,
+            "attributes": "itemType=",
+            "members": [
+                {
+                    "name": "bloomSz",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "chunkSz",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "nAddrs",
+                    "type": "uint64",
                     "description": "jim",
                     "num": 3
                 },
                 {
-                    "name": "balance",
-                    "type": "string",
+                    "name": "nApps",
+                    "type": "uint64",
                     "description": "jim",
                     "num": 4
                 },
                 {
-                    "name": "nLogs",
+                    "name": "nBlocks",
                     "type": "uint64",
                     "description": "jim",
                     "num": 5
                 },
                 {
-                    "name": "nTokens",
+                    "name": "nBlooms",
                     "type": "uint64",
                     "description": "jim",
                     "num": 6
-                },
-                {
-                    "name": "nErrors",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 7
                 }
             ]
         },
         {
-            "class": "Config",
-            "doc_route": "200-containers",
+            "class": "Daemon",
+            "doc_route": "1090-containers",
+            "ui_route": "1090-daemons",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=configTypes.Config",
+            "disable_go": true,
+            "attributes": "embedType=types.Daemon|noChain|noFetch"
+        },
+        {
+            "class": "Session",
+            "doc_route": "1100-containers",
+            "ui_route": "1100-session",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "embedType=coreTypes.Session|noChain|noFetch"
+        },
+        {
+            "class": "Config",
+            "doc_route": "1110-containers",
+            "ui_route": "1110-config",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "embedType=configTypes.Config|noFetch",
             "members": [
                 {
                     "name": "nChains",
@@ -380,6 +418,14 @@
                     "num": 1
                 }
             ]
+        },
+        {
+            "class": "Wizard",
+            "doc_route": "1120-containers",
+            "ui_route": "1120-wizard",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "noFetch"
         }
     ],
     "baseTypes": [

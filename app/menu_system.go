@@ -7,10 +7,9 @@ import (
 )
 
 func (a *App) SystemAbout(cd *menu.CallbackData) {
-	logger.Info("System About")
+	logger.Info("This is the about box plus some other stuff")
 }
 
 func (a *App) SystemQuit(cd *menu.CallbackData) {
-	logger.Info("System Quit")
 	runtime.Quit(a.ctx)
 }

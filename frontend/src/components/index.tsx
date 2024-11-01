@@ -1,4 +1,5 @@
 export * from "./buttons";
+export * from "./dialogs";
 export * from "./editors";
 export * from "./formatters";
 export * from "./help";

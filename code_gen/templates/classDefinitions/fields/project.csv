@@ -1,7 +1,10 @@
-name    ,type ,strDefault ,attributes ,upgrades ,docOrder ,description
-bloomSz ,uint64  ,           ,           ,         ,         ,jim
-chunkSz ,uint64  ,           ,           ,         ,         ,jim
-nAddrs  ,uint64  ,           ,           ,         ,         ,jim
-nApps   ,uint64  ,           ,           ,         ,         ,jim
-nBlocks ,uint64  ,           ,           ,         ,         ,jim
-nBlooms ,uint64  ,           ,           ,         ,         ,jim
+name        ,type   ,strDefault ,attributes ,upgrades ,docOrder ,description
+nMonitors   ,uint64 ,           ,           ,         ,         ,jim
+nNames      ,uint64 ,           ,           ,         ,         ,jim
+nAbis       ,uint64 ,           ,           ,         ,         ,jim
+nIndexes    ,uint64 ,           ,           ,         ,         ,jim
+nManifests  ,uint64 ,           ,           ,         ,         ,jim
+nCaches     ,uint64 ,           ,           ,         ,         ,jim
+historySize ,uint64 ,           ,           ,         ,         ,jim
+dirty       ,bool   ,           ,           ,         ,         ,jim
+filename    ,string ,           ,           ,         ,         ,jim

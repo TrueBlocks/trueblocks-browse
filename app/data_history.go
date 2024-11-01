@@ -1,3 +1,5 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package app
 
 import (
@@ -23,14 +25,14 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 		return &types.HistoryContainer{}
 	}
 
-	_, exists := a.projects.HistoryMap.Load(address)
+	_, exists := a.HistoryCache.Load(address)
 	if !exists {
 		return &types.HistoryContainer{}
 	}
 
 	first = base.Max(0, base.Min(first, a.txCount(address)-1))
 	last := base.Min(a.txCount(address), first+pageSize)
-	history, _ := a.projects.HistoryMap.Load(address)
+	history, _ := a.HistoryCache.Load(address)
 	history.Summarize()
 	copy := history.ShallowCopy().(*types.HistoryContainer)
 	copy.Balance = a.getBalance(address)
@@ -43,8 +45,7 @@ func (a *App) getHistoryCnt(address base.Address) uint64 {
 		Addrs:   []string{address.Hex()},
 		Globals: a.toGlobals(),
 	}
-	appearances, meta, err := opts.ListCount()
-	if err != nil {
+	if appearances, meta, err := opts.ListCount(); err != nil {
 		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
 			String1: err.Error(),
 			Address: address,
@@ -58,40 +59,14 @@ func (a *App) getHistoryCnt(address base.Address) uint64 {
 	}
 }
 
-func (a *App) forEveryTx(address base.Address, process func(coreTypes.Transaction) bool) bool {
-	historyContainer, _ := a.projects.HistoryMap.Load(address)
-	for _, item := range historyContainer.Items {
-		if !process(item) {
-			return false
-		}
-	}
-	return true
-}
-
-func (a *App) forEveryHistory(process func(*types.HistoryContainer) bool) bool {
-	a.projects.HistoryMap.Range(func(key base.Address, value types.HistoryContainer) bool {
-		return process(&value)
-	})
-	return true
-}
-
 func (a *App) isFileOpen(address base.Address) bool {
-	_, isOpen := a.projects.HistoryMap.Load(address)
+	_, isOpen := a.HistoryCache.Load(address)
 	return isOpen
-}
-
-func (a *App) openFileCnt() int {
-	count := 0
-	a.projects.HistoryMap.Range(func(key base.Address, value types.HistoryContainer) bool {
-		count++
-		return true
-	})
-	return count
 }
 
 func (a *App) txCount(address base.Address) int {
 	if a.isFileOpen(address) {
-		history, _ := a.projects.HistoryMap.Load(address)
+		history, _ := a.HistoryCache.Load(address)
 		return len(history.Items)
 	} else {
 		return 0
@@ -114,7 +89,7 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	// }
 	// defer historyLock.CompareAndSwap(1, 0)
 
-	history, exists := a.projects.HistoryMap.Load(address)
+	history, exists := a.HistoryCache.Load(address)
 	if exists {
 		if !history.NeedsUpdate(a.forceHistory()) {
 			return nil
@@ -136,7 +111,9 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 }
 
 func (a *App) thing(address base.Address, freq int) error {
-	rCtx := a.RegisterCtx(address)
+	rCtx := a.registerCtx(address)
+	defer a.unregisterCtx(address)
+
 	opts := sdk.ExportOptions{
 		Addrs:     []string{address.Hex()},
 		RenderCtx: rCtx,
@@ -156,7 +133,7 @@ func (a *App) thing(address base.Address, freq int) error {
 				if !ok {
 					continue
 				}
-				summary, _ := a.projects.HistoryMap.Load(address)
+				summary, _ := a.HistoryCache.Load(address)
 				summary.NTotal = nItems
 				summary.Address = address
 				summary.Name = a.names.NamesMap[address].Name
@@ -176,9 +153,9 @@ func (a *App) thing(address base.Address, freq int) error {
 				}
 
 				if len(summary.Items) == 0 {
-					a.projects.HistoryMap.Delete(address)
+					a.HistoryCache.Delete(address)
 				} else {
-					a.projects.HistoryMap.Store(address, summary)
+					a.HistoryCache.Store(address, summary)
 				}
 
 			case err := <-opts.RenderCtx.ErrorChan:
@@ -201,7 +178,7 @@ func (a *App) thing(address base.Address, freq int) error {
 	}
 	a.meta = *meta
 
-	history, _ := a.projects.HistoryMap.Load(address)
+	history, _ := a.HistoryCache.Load(address)
 	sort.Slice(history.Items, func(i, j int) bool {
 		if history.Items[i].BlockNumber == history.Items[j].BlockNumber {
 			return history.Items[i].TransactionIndex > history.Items[j].TransactionIndex
@@ -209,7 +186,7 @@ func (a *App) thing(address base.Address, freq int) error {
 		return history.Items[i].BlockNumber > history.Items[j].BlockNumber
 	})
 	history.Summarize()
-	a.projects.HistoryMap.Store(address, history)
+	a.HistoryCache.Store(address, history)
 	messages.EmitMessage(a.ctx, messages.Completed, &messages.MessageMsg{
 		Address: address,
 		Num1:    a.txCount(address),

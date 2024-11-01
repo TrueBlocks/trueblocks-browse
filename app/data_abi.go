@@ -1,3 +1,5 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package app
 
 // EXISTING_CODE
@@ -81,6 +83,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		a.abis.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded abis"})
 	}
+
 	return nil
 }
 

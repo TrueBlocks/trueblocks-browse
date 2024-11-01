@@ -1,9 +1,8 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, FieldGroup, ViewForm, SpecButton, PublishButton } from "@components";
-import { types } from "@gocode/models";
+import { View, FormTable, ViewForm } from "@components";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { tableColumns } from "./ManifestsTable";
+import { ManifestsTableDef, ManifestsFormDef } from ".";
 
 export const ManifestsView = () => {
   const { modifyNoop } = useNoops();
@@ -11,58 +10,18 @@ export const ManifestsView = () => {
 
   const table = useReactTable({
     data: manifests.items || [],
-    columns: tableColumns,
+    columns: ManifestsTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
 
   const route = "manifests";
   const tabs = ["manifests"];
   const forms: ViewForm = {
-    manifests: <FormTable data={manifests} groups={createManifestForm(table)} />,
+    manifests: <FormTable data={manifests} groups={ManifestsFormDef(table)} />,
   };
   return (
     <ViewStateProvider route={route} nItems={manifests.nItems} fetchFn={fetchManifests} modifyFn={modifyNoop}>
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
-};
-
-const createManifestForm = (table: any): FieldGroup<types.ManifestContainer>[] => {
-  return [
-    {
-      label: "Manifest Data",
-      colSpan: 6,
-      fields: [
-        { label: "version", type: "text", accessor: "version" },
-        { label: "chain", type: "text", accessor: "chain" },
-        { label: "specification", type: "hash", accessor: "specification" },
-        { label: "lastUpdate", type: "date", accessor: "lastUpdate" },
-      ],
-    },
-    {
-      label: "Statistics",
-      colSpan: 6,
-      fields: [
-        { label: "nBlooms", type: "int", accessor: "nBlooms" },
-        { label: "bloomsSize", type: "bytes", accessor: "bloomsSize" },
-        { label: "nIndexes", type: "int", accessor: "nIndexes" },
-        { label: "indexSize", type: "bytes", accessor: "indexSize" },
-      ],
-    },
-    {
-      label: "Buttons",
-      buttons: [
-        <PublishButton key={"publish"} value="https://trueblocks.io" />,
-        <SpecButton
-          key={"spec"}
-          value="https://trueblocks.io/papers/2023/specification-for-the-unchained-index-v2.0.0-release.pdf"
-        />,
-      ],
-    },
-    {
-      label: "Chunks",
-      collapsable: false,
-      components: [<DataTable<types.ChunkRecord> key={"dataTable"} table={table} loading={false} />],
-    },
-  ];
 };

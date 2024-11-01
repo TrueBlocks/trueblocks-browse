@@ -1,3 +1,5 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package types
 
 // EXISTING_CODE
@@ -5,9 +7,9 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/utils"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	coreUtils "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
 // EXISTING_CODE
@@ -23,6 +25,7 @@ func NewSessionContainer(chain string, session *coreTypes.Session) SessionContai
 	ret := SessionContainer{
 		Session: *session,
 	}
+	ret.Chain = chain
 	ret.LastUpdate, _ = ret.getSessionReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -69,8 +72,8 @@ func (s *SessionContainer) Summarize() {
 
 func (s *SessionContainer) getSessionReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	sessionFn, _ := coreUtils.GetConfigFn("browse", "") /* session.json */
-	ret = utils.MustGetLatestFileTime(sessionFn)
+	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
+	ret = file.MustGetLatestFileTime(sessionFn)
 	reload = ret != s.LastUpdate
 	// EXISTING_CODE
 	return

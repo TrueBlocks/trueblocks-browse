@@ -1,3 +1,5 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package app
 
 // EXISTING_CODE
@@ -77,12 +79,16 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// TODO: Use core's sorting mechanism (see SortChunkStats for example)
 		sort.Slice(a.monitors.Items, func(i, j int) bool {
+			if a.monitors.Items[i].NRecords == a.monitors.Items[j].NRecords {
+				return a.monitors.Items[i].Address.Hex() < a.monitors.Items[j].Address.Hex()
+			}
 			return a.monitors.Items[i].NRecords < a.monitors.Items[j].NRecords
 		})
 		// EXISTING_CODE
 		a.monitors.Summarize()
 		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded monitors"})
 	}
+
 	return nil
 }
 
@@ -100,16 +106,7 @@ func (a *App) ModifyMonitors(modData *ModifyData) error {
 	}
 	defer monitorLock.CompareAndSwap(1, 0)
 
-	opFromString := func(op string) crud.Operation {
-		m := map[string]crud.Operation{
-			"delete":   crud.Delete,
-			"undelete": crud.Undelete,
-			"remove":   crud.Remove,
-		}
-		return m[op]
-	}
-
-	op := opFromString(modData.Operation)
+	op := crud.OpFromString(modData.Operation)
 	opts := sdk.MonitorsOptions{
 		Addrs:    []string{modData.Address.Hex()},
 		Delete:   op == crud.Delete,

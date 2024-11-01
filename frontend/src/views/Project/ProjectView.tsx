@@ -1,32 +1,44 @@
+import { useEffect } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, FieldGroup, ViewForm, AddButton } from "@components";
+import { View, FormTable, ViewForm } from "@components";
 import { GoToHistory, ModifyProject } from "@gocode/app/App";
-import { types } from "@gocode/models";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { withoutDelete, withDelete } from "./ProjectTable";
+import { ProjectTableDefNoDelete, ProjectTableDef, ProjectFormDef } from ".";
 
 export const ProjectView = () => {
-  const { project, fetchProject } = useAppState();
-  // const [filtered, setFiltered] = useState<types.HistoryContainer[]>([]);
+  const { project, fetchProject, filename } = useAppState();
+
+  useEffect(() => {
+    fetchProject(0, 100);
+  }, [filename, fetchProject]);
 
   const handleEnter = (page: Page) => {
-    const address = project.items[page.getRecord()].address;
-    GoToHistory(address).then(() => {});
+    if (project && project.items) {
+      const history = project.items[page.getRecord()];
+      if (history && history.address) {
+        GoToHistory(history.address).then(() => {});
+      }
+    }
   };
 
-  const modColumns = project.nItems < 2 ? withoutDelete : withDelete;
+  const projColumns = project?.nItems < 2 ? ProjectTableDefNoDelete : ProjectTableDef;
   const table = useReactTable({
     data: project.items ?? [],
-    columns: modColumns,
+    columns: projColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   const route = "";
   const tabs = ["project"];
   const forms: ViewForm = {
-    project: <FormTable data={project} groups={createProjectForm(table)} />,
+    project: <FormTable data={project} groups={ProjectFormDef(table)} />,
   };
+
+  if (project?.items?.length === 0) {
+    return <></>;
+  }
+
   return (
     <ViewStateProvider
       route={route}
@@ -38,41 +50,4 @@ export const ProjectView = () => {
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
-};
-
-const createProjectForm = (table: any): FieldGroup<types.ProjectContainer>[] => {
-  return [
-    {
-      label: "Data 1",
-      colSpan: 6,
-      fields: [
-        { label: "fileName", type: "text", accessor: "filename" },
-        { label: "nHistories", type: "int", accessor: "nItems" },
-        { label: "historySize", type: "bytes", accessor: "historySize" },
-        { label: "dirty", type: "boolean", accessor: "dirty" },
-      ],
-    },
-    {
-      label: "Data 2",
-      colSpan: 6,
-      fields: [
-        { label: "nMonitors", type: "int", accessor: "nMonitors" },
-        { label: "nIndexes", type: "int", accessor: "nIndexes" },
-        { label: "nManifests", type: "int", accessor: "nManifests" },
-        { label: "nNames", type: "int", accessor: "nNames" },
-        { label: "nAbis", type: "int", accessor: "nAbis" },
-        { label: "nCaches", type: "int", accessor: "nCaches" },
-      ],
-    },
-    {
-      label: "Buttons",
-      buttons: [<AddButton key={"add"} value={"https://trueblocks.io"} />],
-    },
-    {
-      label: "Histories",
-      fields: [],
-      collapsable: false,
-      components: [<DataTable<types.HistoryContainer> key={"dataTable"} table={table} loading={false} />],
-    },
-  ];
 };
