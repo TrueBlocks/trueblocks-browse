@@ -8,9 +8,9 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // EXISTING_CODE
@@ -69,7 +69,7 @@ func (a *App) loadSessions(wg *sync.WaitGroup, errorChan chan error) error {
 		a.session.Session = ss
 		// EXISTING_CODE
 		a.session.Summarize()
-		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded sessions"})
+		a.emitInfoMsg("Loaded sessions", "")
 	}
 	return nil
 }
@@ -81,4 +81,13 @@ func (a *App) forceSession() (force bool) {
 }
 
 // EXISTING_CODE
+func (a *App) saveSession() {
+	if !isTesting {
+		a.session.Window.X, a.session.Window.Y = runtime.WindowGetPosition(a.ctx)
+		a.session.Window.Width, a.session.Window.Height = runtime.WindowGetSize(a.ctx)
+		a.session.Window.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
+	}
+	_ = a.session.Save()
+}
+
 // EXISTING_CODE

@@ -1,12 +1,12 @@
 import { IconCopy } from "@tabler/icons-react";
-import { BaseButton, ButtonProps, ButtonMouseEvent, notifyCopy } from "@components";
+import { BaseButton, ButtonProps, notifyCopy } from "@components";
 import { useUtils } from "@hooks";
 import { ClipboardSetText } from "@runtime";
 
 // CopyButton copies the address of the row to the clipboard.
 export const CopyButton = ({ value, onClose, ...props }: ButtonProps) => {
   const { ShortenAddr } = useUtils();
-  const handleClick = (e: ButtonMouseEvent) => {
+  const handleClick = () => {
     ClipboardSetText(value as string).then(() => {});
     notifyCopy(ShortenAddr(value as string));
   };

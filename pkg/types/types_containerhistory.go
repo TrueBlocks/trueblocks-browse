@@ -5,13 +5,13 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"path/filepath"
 	"time"
 	"unsafe"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	coreMonitors "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -41,7 +41,7 @@ func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address 
 	ret.LastUpdate, _ = ret.getHistoryReload()
 	// EXISTING_CODE
 	ret.Address = address
-	ret.LastUpdate, _ = ret.getHistoryReload() // it requires address
+	ret.LastUpdate, _ = ret.getHistoryReload() // DO NOT REMOVE (needs address)
 	// EXISTING_CODE
 	return ret
 }
@@ -54,6 +54,7 @@ func (s *HistoryContainer) String() string {
 func (s *HistoryContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getHistoryReload()
 	if force || reload {
+		logger.InfoB("HistoryContainer", s.Address.Hex(), s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}
@@ -96,10 +97,14 @@ func (s *HistoryContainer) Summarize() {
 
 func (s *HistoryContainer) getHistoryReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	cache := coreConfig.PathToCache(s.Chain)
-	path := filepath.Join(cache, "monitors", s.Address.Hex()+".mon.bin")
-	ret = file.MustGetLatestFileTime(path)
-	reload = ret != s.LastUpdate
+	if s.Address == base.ZeroAddr {
+		logger.Error("getHistoryReload called with zero address")
+		return
+	}
+	fn := coreMonitors.PathToMonitorFile(s.Chain, s.Address)
+	ret, _ = file.GetModTime(fn)
+	reload = ret.After(s.LastUpdate)
+	logger.InfoY("getHistoryReload", s.Address.Hex(), s.LastUpdate.String(), ret.String(), reload)
 	// EXISTING_CODE
 	return
 }
@@ -107,7 +112,7 @@ func (s *HistoryContainer) getHistoryReload() (ret time.Time, reload bool) {
 type EveryTransactionFn func(item *coreTypes.Transaction, data any) bool
 
 func (s *HistoryContainer) ForEveryTransaction(process EveryTransactionFn, data any) bool {
-	for i := 0 ; i < len(s.Items) ; i++ {
+	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false
 		}

@@ -8,7 +8,6 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
@@ -85,7 +84,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.names.Summarize()
-		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded names"})
+		a.emitInfoMsg("Loaded names", "")
 	}
 
 	return nil
@@ -114,7 +113,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 		Source:   "TrueBlocks Browse",
 		Tags:     "99-User-Defined",
 	}
-	if existing, ok := a.names.NamesMap[modData.Address]; ok {
+	if existing, ok := a.namesMap[modData.Address]; ok {
 		if existing.IsCustom {
 			// We preserve the tags if it's already customized
 			newName.Tags = existing.Tags
@@ -128,9 +127,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 	opts.Globals.Chain = namesChain
 
 	if _, _, err := opts.ModifyName(crud.OpFromString(op), cd); err != nil {
-		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-			String1: err.Error(),
-		})
+		a.emitErrorMsg(err, nil)
 		return err
 	}
 
@@ -154,7 +151,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 				}
 			}
 			nameMutex.Lock()
-			a.names.NamesMap[modData.Address] = name
+			a.namesMap[modData.Address] = name
 			nameMutex.Unlock()
 		}
 		newArray = append(newArray, name)

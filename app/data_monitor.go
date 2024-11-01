@@ -9,7 +9,6 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
@@ -71,7 +70,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	} else {
 		// EXISTING_CODE
 		for i := 0; i < len(monitors); i++ {
-			monitors[i].Name = a.names.NamesMap[monitors[i].Address].Name
+			monitors[i].Name = a.namesMap[monitors[i].Address].Name
 		}
 		// EXISTING_CODE
 		a.meta = *meta
@@ -86,7 +85,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		})
 		// EXISTING_CODE
 		a.monitors.Summarize()
-		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded monitors"})
+		a.emitInfoMsg("Loaded monitors", "")
 	}
 
 	return nil
@@ -116,9 +115,7 @@ func (a *App) ModifyMonitors(modData *ModifyData) error {
 	}
 
 	if _, _, err := opts.Monitors(); err != nil {
-		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-			String1: err.Error(),
-		})
+		a.emitErrorMsg(err, nil)
 		return err
 	}
 

@@ -8,7 +8,6 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -71,12 +70,10 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := sdk.SortIndexes(a.indexes.Items, a.indexes.Sorts); err != nil {
-			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-				String1: err.Error(),
-			})
+			a.emitErrorMsg(err, nil)
 		}
 		a.indexes.Summarize()
-		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded indexes"})
+		a.emitInfoMsg("Loaded indexes", "")
 	}
 
 	return nil

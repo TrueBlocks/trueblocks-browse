@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -46,6 +47,7 @@ func (s *StatusContainer) String() string {
 func (s *StatusContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getStatusReload()
 	if force || reload {
+		logger.InfoG("StatusContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}

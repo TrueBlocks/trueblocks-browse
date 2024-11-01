@@ -11,6 +11,7 @@ import (
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -55,6 +56,7 @@ func (s *AbiContainer) String() string {
 func (s *AbiContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getAbiReload()
 	if force || reload {
+		logger.InfoG("AbiContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}
@@ -106,7 +108,7 @@ func (s *AbiContainer) getAbiReload() (ret time.Time, reload bool) {
 type EveryAbiFn func(item *coreTypes.Abi, data any) bool
 
 func (s *AbiContainer) ForEveryAbi(process EveryAbiFn, data any) bool {
-	for i := 0 ; i < len(s.Items) ; i++ {
+	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false
 		}

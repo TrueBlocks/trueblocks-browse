@@ -6,11 +6,11 @@ import (
 )
 
 func (a *App) getBalance(address base.Address) string {
-	if !a.IsConfigured() {
+	if !a.isConfigured() {
 		return "0"
 	}
 
-	b, exists := a.BalanceCache.Load(address)
+	b, exists := a.balanceCache.Load(address)
 	if exists {
 		return b.(string)
 	}
@@ -28,7 +28,7 @@ func (a *App) getBalance(address base.Address) string {
 	} else {
 		a.meta = *meta
 		value := balances[0].Balance.ToEtherStr(18)
-		a.BalanceCache.Store(address, value)
+		a.balanceCache.Store(address, value)
 		return value
 	}
 }

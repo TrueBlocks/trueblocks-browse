@@ -10,7 +10,6 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -82,7 +81,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		logger.SetLoggerWriter(w)
 		// EXISTING_CODE
 		a.status.Summarize()
-		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded status"})
+		a.emitInfoMsg("Loaded status", "")
 	}
 
 	return nil

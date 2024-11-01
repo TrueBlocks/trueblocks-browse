@@ -1,13 +1,10 @@
 import { useState } from "react";
-import { Logger } from "@gocode/app/App";
 
 function InputDialog({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [inputValue, setInputValue] = useState("");
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     try {
-      //   const result =
-      await Logger(inputValue);
       // Handle the result as needed
       onClose();
     } catch (error) {

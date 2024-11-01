@@ -6,21 +6,20 @@ package types
 import (
 	"encoding/json"
 	"time"
+
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 // EXISTING_CODE
 
 type WizardContainer struct {
-	Chain      string    `json:"chain"`
 	LastUpdate time.Time `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 func NewWizardContainer(chain string) WizardContainer {
-	ret := WizardContainer{
-		Chain: chain,
-	}
+	ret := WizardContainer{}
 	ret.LastUpdate, _ = ret.getWizardReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -35,6 +34,7 @@ func (s *WizardContainer) String() string {
 func (s *WizardContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getWizardReload()
 	if force || reload {
+		logger.InfoG("WizardContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}
@@ -43,7 +43,6 @@ func (s *WizardContainer) NeedsUpdate(force bool) bool {
 
 func (s *WizardContainer) ShallowCopy() Containerer {
 	return &WizardContainer{
-		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
 		// EXISTING_CODE

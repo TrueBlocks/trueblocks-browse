@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -25,15 +24,11 @@ func (a *App) GetExploreUrl(term string, google, dalle bool) string {
 	// TODO: Expose this to the user and/or put it in trueBlocks.toml
 	os.Setenv("TB_DALLE_SERIES", "five-tone-postal-protozoa")
 	if result, meta, err := opts.Explore(); err != nil {
-		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-			String1: err.Error(),
-		})
+		a.emitErrorMsg(err, nil)
 		return ""
 	} else if (result == nil) || (len(result) == 0) {
 		err := fmt.Errorf("url not found")
-		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-			String1: err.Error(),
-		})
+		a.emitErrorMsg(err, nil)
 		return ""
 	} else {
 		a.meta = *meta

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"sort"
 	"sync"
+	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -19,20 +20,18 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
 		err := fmt.Errorf("Invalid address: " + addr)
-		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-			String1: err.Error(),
-		})
+		a.emitErrorMsg(err, nil)
 		return &types.HistoryContainer{}
 	}
 
-	_, exists := a.HistoryCache.Load(address)
+	_, exists := a.historyCache.Load(address)
 	if !exists {
 		return &types.HistoryContainer{}
 	}
 
 	first = base.Max(0, base.Min(first, a.txCount(address)-1))
 	last := base.Min(a.txCount(address), first+pageSize)
-	history, _ := a.HistoryCache.Load(address)
+	history, _ := a.historyCache.Load(address)
 	history.Summarize()
 	copy := history.ShallowCopy().(*types.HistoryContainer)
 	copy.Balance = a.getBalance(address)
@@ -46,10 +45,7 @@ func (a *App) getHistoryCnt(address base.Address) uint64 {
 		Globals: a.toGlobals(),
 	}
 	if appearances, meta, err := opts.ListCount(); err != nil {
-		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-			String1: err.Error(),
-			Address: address,
-		})
+		a.emitAddressErrorMsg(err, address)
 		return 0
 	} else if len(appearances) == 0 {
 		return 0
@@ -60,13 +56,13 @@ func (a *App) getHistoryCnt(address base.Address) uint64 {
 }
 
 func (a *App) isFileOpen(address base.Address) bool {
-	_, isOpen := a.HistoryCache.Load(address)
+	_, isOpen := a.historyCache.Load(address)
 	return isOpen
 }
 
 func (a *App) txCount(address base.Address) int {
 	if a.isFileOpen(address) {
-		history, _ := a.HistoryCache.Load(address)
+		history, _ := a.historyCache.Load(address)
 		return len(history.Items)
 	} else {
 		return 0
@@ -89,7 +85,7 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	// }
 	// defer historyLock.CompareAndSwap(1, 0)
 
-	history, exists := a.HistoryCache.Load(address)
+	history, exists := a.historyCache.Load(address)
 	if exists {
 		if !history.NeedsUpdate(a.forceHistory()) {
 			return nil
@@ -99,10 +95,7 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	_ = errorChan // delint
 	logger.Info("Loading history for address: ", address.Hex())
 	if err := a.thing(address, 15); err != nil {
-		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-			String1: err.Error(),
-			Address: address,
-		})
+		a.emitAddressErrorMsg(err, address)
 		return err
 	}
 	a.loadProjects(nil, nil)
@@ -133,10 +126,10 @@ func (a *App) thing(address base.Address, freq int) error {
 				if !ok {
 					continue
 				}
-				summary, _ := a.HistoryCache.Load(address)
+				summary, _ := a.historyCache.Load(address)
 				summary.NTotal = nItems
 				summary.Address = address
-				summary.Name = a.names.NamesMap[address].Name
+				summary.Name = a.namesMap[address].Name
 				summary.Items = append(summary.Items, *tx)
 				if len(summary.Items)%(freq*3) == 0 {
 					sort.Slice(summary.Items, func(i, j int) bool {
@@ -145,24 +138,17 @@ func (a *App) thing(address base.Address, freq int) error {
 						}
 						return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
 					})
-					messages.EmitMessage(a.ctx, messages.Progress, &messages.MessageMsg{
-						Address: address,
-						Num1:    len(summary.Items),
-						Num2:    int(nItems),
-					})
+					a.emitProgressMsg(messages.Progress, address, len(summary.Items), int(nItems))
 				}
 
 				if len(summary.Items) == 0 {
-					a.HistoryCache.Delete(address)
+					a.historyCache.Delete(address)
 				} else {
-					a.HistoryCache.Store(address, summary)
+					a.historyCache.Store(address, summary)
 				}
 
 			case err := <-opts.RenderCtx.ErrorChan:
-				messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-					String1: err.Error(),
-					Address: address,
-				})
+				a.emitAddressErrorMsg(err, address)
 
 			default:
 				if opts.RenderCtx.WasCanceled() {
@@ -178,7 +164,7 @@ func (a *App) thing(address base.Address, freq int) error {
 	}
 	a.meta = *meta
 
-	history, _ := a.HistoryCache.Load(address)
+	history, _ := a.historyCache.Load(address)
 	sort.Slice(history.Items, func(i, j int) bool {
 		if history.Items[i].BlockNumber == history.Items[j].BlockNumber {
 			return history.Items[i].TransactionIndex > history.Items[j].TransactionIndex
@@ -186,12 +172,8 @@ func (a *App) thing(address base.Address, freq int) error {
 		return history.Items[i].BlockNumber > history.Items[j].BlockNumber
 	})
 	history.Summarize()
-	a.HistoryCache.Store(address, history)
-	messages.EmitMessage(a.ctx, messages.Completed, &messages.MessageMsg{
-		Address: address,
-		Num1:    a.txCount(address),
-		Num2:    a.txCount(address),
-	})
+	a.historyCache.Store(address, history)
+	a.emitProgressMsg(messages.Completed, address, a.txCount(address), a.txCount(address))
 	return nil
 }
 
@@ -201,3 +183,36 @@ func (a *App) forceHistory() (force bool) {
 	// EXISTING_CODE
 	return
 }
+
+// EXISTING_CODE
+func (a *App) Reload() {
+	switch a.session.LastRoute {
+	case "/names":
+		logger.InfoC("Reloading names")
+		a.names.LastUpdate = time.Time{}
+		if err := a.loadNames(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+	}
+}
+
+func (a *App) GoToAddress(address base.Address) {
+	logger.Info("--------------------------- enter -------------------------------------------")
+	logger.Info("GoToAddress: ", address.Hex())
+	if address == base.ZeroAddr {
+		logger.Info("--------------------------- zeroAddr exit -------------------------------------------")
+		return
+	}
+
+	a.SetRoute("/history", address.Hex())
+
+	a.cancelContext(address)
+	a.historyCache.Delete(address)
+	a.loadHistory(address, nil, nil)
+
+	a.emitNavigateMsg(a.GetRoute())
+	a.emitInfoMsg("viewing address", address.Hex())
+	logger.Info("--------------------------- exit -------------------------------------------")
+}
+
+// EXISTING_CODE

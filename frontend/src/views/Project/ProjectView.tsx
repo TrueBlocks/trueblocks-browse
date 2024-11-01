@@ -1,23 +1,23 @@
 import { useEffect } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm } from "@components";
-import { GoToHistory, ModifyProject } from "@gocode/app/App";
+import { GoToAddress, DeleteAddress } from "@gocode/app/App";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { ProjectTableDefNoDelete, ProjectTableDef, ProjectFormDef } from ".";
 
 export const ProjectView = () => {
-  const { project, fetchProject, filename } = useAppState();
+  const { project, fetchProject, info } = useAppState();
 
   useEffect(() => {
     fetchProject(0, 100);
-  }, [filename, fetchProject]);
+  }, [info.filename, fetchProject]);
 
   const handleEnter = (page: Page) => {
     if (project && project.items) {
       const history = project.items[page.getRecord()];
       if (history && history.address) {
-        GoToHistory(history.address).then(() => {});
+        GoToAddress(history.address).then(() => {});
       }
     }
   };
@@ -45,7 +45,7 @@ export const ProjectView = () => {
       nItems={project.nItems}
       fetchFn={fetchProject}
       onEnter={handleEnter}
-      modifyFn={ModifyProject}
+      modifyFn={DeleteAddress}
     >
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>

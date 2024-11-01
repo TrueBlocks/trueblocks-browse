@@ -5,7 +5,7 @@ export const useEnvironment = (key: string): string => {
   const [envMap, setEnvMap] = useState<Map<string, string>>(new Map());
 
   useEffect(() => {
-    const fetchEnvValue = async () => {
+    const fetchEnvValue = () => {
       if (!envMap.has(key)) {
         GetEnv(key).then((val: string) => {
           setEnvMap((prevMap) => new Map(prevMap).set(key, val));

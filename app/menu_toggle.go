@@ -7,35 +7,27 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
 
-func (a *App) HeaderToggle(cd *menu.CallbackData) {
+func (a *App) HeaderToggle(cb *menu.CallbackData) {
 	which := "header"
-	messages.EmitMessage(a.ctx, messages.ToggleLayout, &messages.MessageMsg{
-		String1: which,
-	})
+	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) MenuToggle(cd *menu.CallbackData) {
+func (a *App) MenuToggle(cb *menu.CallbackData) {
 	which := "menu"
-	messages.EmitMessage(a.ctx, messages.ToggleLayout, &messages.MessageMsg{
-		String1: which,
-	})
+	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) HelpToggle(cd *menu.CallbackData) {
+func (a *App) HelpToggle(cb *menu.CallbackData) {
 	which := "help"
-	messages.EmitMessage(a.ctx, messages.ToggleLayout, &messages.MessageMsg{
-		String1: which,
-	})
+	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) FooterToggle(cd *menu.CallbackData) {
+func (a *App) FooterToggle(cb *menu.CallbackData) {
 	which := "footer"
-	messages.EmitMessage(a.ctx, messages.ToggleLayout, &messages.MessageMsg{
-		String1: which,
-	})
+	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) AccordionToggle(cd *menu.CallbackData) {
+func (a *App) AccordionToggle(cb *menu.CallbackData) {
 	route := a.GetRoute()
 	route = strings.TrimPrefix(route, "/")
 	parts := strings.Split(route, "/")
@@ -43,17 +35,15 @@ func (a *App) AccordionToggle(cd *menu.CallbackData) {
 	if route == "" {
 		route = "project"
 	}
-	messages.EmitMessage(a.ctx, messages.ToggleHeader, &messages.MessageMsg{
-		String1: route,
-	})
+	a.emitMsg(messages.ToggleAccordion, &messages.MessageMsg{String1: route})
 }
 
-func (a *App) SwitchTabPrev(cd *menu.CallbackData) {
+func (a *App) SwitchTabPrev(cb *menu.CallbackData) {
 	which := "prev"
-	messages.EmitMessage(a.ctx, messages.SwitchTab, &messages.MessageMsg{String1: which})
+	a.emitMsg(messages.SwitchTab, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) SwitchTabNext(cd *menu.CallbackData) {
+func (a *App) SwitchTabNext(cb *menu.CallbackData) {
 	which := "next"
-	messages.EmitMessage(a.ctx, messages.SwitchTab, &messages.MessageMsg{String1: which})
+	a.emitMsg(messages.SwitchTab, &messages.MessageMsg{String1: which})
 }

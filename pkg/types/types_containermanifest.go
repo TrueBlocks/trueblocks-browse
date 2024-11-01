@@ -9,6 +9,7 @@ import (
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -58,6 +59,7 @@ func (s *ManifestContainer) String() string {
 func (s *ManifestContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getManifestReload()
 	if force || reload {
+		logger.InfoG("ManifestContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}
@@ -103,7 +105,7 @@ func (s *ManifestContainer) getManifestReload() (ret time.Time, reload bool) {
 type EveryChunkRecordFn func(item *coreTypes.ChunkRecord, data any) bool
 
 func (s *ManifestContainer) ForEveryChunkRecord(process EveryChunkRecordFn, data any) bool {
-	for i := 0 ; i < len(s.Items) ; i++ {
+	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false
 		}

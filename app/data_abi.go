@@ -9,7 +9,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -76,12 +75,10 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := sdk.SortAbis(a.abis.Items, a.abis.Sorts); err != nil {
-			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-				String1: err.Error(),
-			})
+			a.emitErrorMsg(err, nil)
 		}
 		a.abis.Summarize()
-		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded abis"})
+		a.emitInfoMsg("Loaded abis", "")
 	}
 
 	return nil
@@ -95,10 +92,7 @@ func (a *App) ModifyAbi(modData *ModifyData) error {
 	opts.Globals.Decache = true
 
 	if _, _, err := opts.Abis(); err != nil {
-		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-			String1: err.Error(),
-			Address: modData.Address,
-		})
+		a.emitAddressErrorMsg(err, modData.Address)
 		return err
 	} else {
 		newAbis := make([]coreTypes.Abi, 0, len(a.abis.Items))
@@ -113,8 +107,7 @@ func (a *App) ModifyAbi(modData *ModifyData) error {
 		}
 		a.abis.LastUpdate = time.Time{}
 		a.abis.Items = newAbis
-		msg := fmt.Sprintf("ModifyAbi delete: %s", modData.Address.Hex())
-		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: msg})
+		a.emitInfoMsg("ModifyAbi delete", modData.Address.Hex())
 		return nil
 	}
 }

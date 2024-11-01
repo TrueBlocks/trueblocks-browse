@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { StyledNavLink } from "@components";
-import { GetRoute, GetAddress, SetRoute } from "@gocode/app/App";
+import { GetRoute, GetSelected, SetRoute } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { routeItems, RouteItem } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
@@ -39,11 +39,11 @@ export const Menu = () => {
   const handleRouteChange = (route: string) => {
     setActiveRoute(route);
     if (route.startsWith("/history")) {
-      GetAddress().then((address) => {
+      GetSelected().then((address) => {
         const addr = address as unknown as string;
         route = route.replace(":address", addr);
         setLocation(route);
-        SetRoute(route, addr);
+        SetRoute("/history", addr);
       });
       setActiveRoute("/history/:address");
     } else {

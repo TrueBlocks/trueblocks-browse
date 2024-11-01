@@ -5,25 +5,23 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-func (a *App) IsConfigured() bool {
-	return a.GetWizardState() == coreTypes.Okay
+func (a *App) isConfigured() bool {
+	return a.getWizardState() == coreTypes.Okay
 }
 
-func (a *App) GetWizardState() coreTypes.WizState {
+func (a *App) getWizardState() coreTypes.WizState {
 	return a.session.Wizard.State
 }
 
 func (a *App) StepWizard(step coreTypes.WizStep) coreTypes.WizState {
 	defer func() {
-		if a.IsConfigured() {
+		if a.isConfigured() {
 			a.Navigate("/", "")
 		}
-		messages.EmitMessage(a.ctx, messages.Wizard, &messages.MessageMsg{
-			State: a.session.Wizard.State,
-		})
+		a.emitMsg(messages.Wizard, &messages.MessageMsg{State: a.session.Wizard.State})
 	}()
 
 	a.session.Wizard.Step(step)
 	a.saveSession()
-	return a.GetWizardState()
+	return a.getWizardState()
 }

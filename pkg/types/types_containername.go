@@ -9,9 +9,9 @@ import (
 	"sort"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
@@ -33,7 +33,6 @@ type NameContainer struct {
 	Chain      string           `json:"chain"`
 	LastUpdate time.Time        `json:"lastUpdate"`
 	// EXISTING_CODE
-	NamesMap map[base.Address]coreTypes.Name `json:"namesMap"`
 	// EXISTING_CODE
 }
 
@@ -45,10 +44,6 @@ func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	}
 	ret.LastUpdate, _ = ret.getNameReload()
 	// EXISTING_CODE
-	ret.NamesMap = make(map[base.Address]coreTypes.Name)
-	for _, name := range ret.Items {
-		ret.NamesMap[name.Address] = name
-	}
 	sort.Slice(ret.Items, func(i, j int) bool {
 		return compare(ret.Items[i], ret.Items[j])
 	})
@@ -64,6 +59,7 @@ func (s *NameContainer) String() string {
 func (s *NameContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getNameReload()
 	if force || reload {
+		logger.InfoG("NameContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}
@@ -137,7 +133,7 @@ func (s *NameContainer) getNameReload() (ret time.Time, reload bool) {
 type EveryNameFn func(item *coreTypes.Name, data any) bool
 
 func (s *NameContainer) ForEveryName(process EveryNameFn, data any) bool {
-	for i := 0 ; i < len(s.Items) ; i++ {
+	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false
 		}

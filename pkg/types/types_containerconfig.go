@@ -5,11 +5,15 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
+	"path/filepath"
 	"time"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 // EXISTING_CODE
@@ -42,6 +46,7 @@ func (s *ConfigContainer) String() string {
 func (s *ConfigContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getConfigReload()
 	if force || reload {
+		logger.InfoG("ConfigContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}
@@ -83,4 +88,36 @@ func (s *ConfigContainer) getConfigReload() (ret time.Time, reload bool) {
 }
 
 // EXISTING_CODE
+var ErrNoConfigFolder = errors.New("core config folder not found")
+var ErrNoConfigFile = errors.New("trueBlocks.toml file not found")
+
+func (s *ConfigContainer) Load() error {
+	path := coreConfig.PathToRootConfig()
+	if !file.FolderExists(path) {
+		return ErrNoConfigFolder
+	}
+
+	fn := filepath.Join(path, "trueBlocks.toml")
+	if !file.FileExists(path) {
+		return ErrNoConfigFolder
+	}
+
+	if err := coreConfig.ReadToml(fn, &s.Config); err != nil {
+		return fmt.Errorf("%w: %v", ErrNoConfigFile, err)
+	}
+
+	return nil
+}
+
+var ErrChainNotConfigured = errors.New("chain not configured")
+
+func (s *ConfigContainer) IsValidChain(chain string) (string, error) {
+	for _, ch := range s.Chains {
+		if ch.Chain == chain {
+			return chain, nil
+		}
+	}
+	return "mainnet", fmt.Errorf("%w: %s", ErrChainNotConfigured, chain)
+}
+
 // EXISTING_CODE

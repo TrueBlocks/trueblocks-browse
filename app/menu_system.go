@@ -6,10 +6,11 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-func (a *App) SystemAbout(cd *menu.CallbackData) {
+func (a *App) SystemAbout(cb *menu.CallbackData) {
 	logger.Info("This is the about box plus some other stuff")
 }
 
-func (a *App) SystemQuit(cd *menu.CallbackData) {
+func (a *App) SystemQuit(cb *menu.CallbackData) {
+	a.dirty, _ = a.saveFileDialog()
 	runtime.Quit(a.ctx)
 }

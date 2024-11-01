@@ -11,17 +11,6 @@ export const ViewStatus = () => {
   const [color, setColor] = useState<string>("green");
 
   useEffect(() => {
-    const handleDocument = (msg: messages.MessageMsg) => {
-      setStatusMessage(`${msg.string2} ${msg.string1}`);
-      setColor("green");
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        setStatusMessage("");
-      }, 2000);
-    };
-
     const handleProgress = (msg: messages.MessageMsg) => {
       setStatusMessage(`Progress (${msg.address}): ${msg.num1}/${msg.num2}`);
       setColor("green");
@@ -63,7 +52,7 @@ export const ViewStatus = () => {
     };
 
     const handleInfo = (msg: messages.MessageMsg) => {
-      setStatusMessage(`Info [${new Date().toLocaleString()}]: ${msg.string1}`);
+      setStatusMessage(`Info ${msg.string2} ${msg.string1}`);
       setColor("blue");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -76,7 +65,6 @@ export const ViewStatus = () => {
     const { Message } = messages;
     EventsOn(Message.CANCELLED, handleCancelled);
     EventsOn(Message.COMPLETED, handleCompleted);
-    EventsOn(Message.DOCUMENT, handleDocument);
     EventsOn(Message.ERROR, handleError);
     EventsOn(Message.INFO, handleInfo);
     EventsOn(Message.PROGRESS, handleProgress);
@@ -85,7 +73,6 @@ export const ViewStatus = () => {
     return () => {
       EventsOff(Message.CANCELLED);
       EventsOff(Message.COMPLETED);
-      EventsOff(Message.DOCUMENT);
       EventsOff(Message.ERROR);
       EventsOff(Message.INFO);
       EventsOff(Message.PROGRESS);

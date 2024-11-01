@@ -53,7 +53,7 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
   }, [route]);
 
   useEffect(() => {
-    const handleToggle = (msg: messages.MessageMsg) => {
+    const handleAccordion = (msg: messages.MessageMsg) => {
       const cmp = route === "" ? "project" : route;
       if (msg.string2 === "" && cmp === msg.string1) {
         IsShowing(cmp).then((onOff) => {
@@ -65,9 +65,9 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
     };
 
     const { Message } = messages;
-    EventsOn(Message.TOGGLEHEADER, handleToggle);
+    EventsOn(Message.TOGGLEACCORDION, handleAccordion);
     return () => {
-      EventsOff(Message.TOGGLEHEADER);
+      EventsOff(Message.TOGGLEACCORDION);
     };
   }, [route]);
 

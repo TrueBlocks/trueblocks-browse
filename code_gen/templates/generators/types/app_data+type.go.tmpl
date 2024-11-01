@@ -62,13 +62,11 @@ func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) 
 		// EXISTING_CODE
 {{if .HasSorts -}}
 		if err := sdk.Sort{{toPlural .Class}}(a.{{toLowerPlural .Class}}.Items, a.{{toLowerPlural .Class}}.Sorts); err != nil {
-			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-				String1: err.Error(),
-			})
+			a.emitErrorMsg(err, nil)
 		}
 {{end -}}
 		a.{{toLowerPlural .Class}}.Summarize()
-		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded {{toLowerPlural .Class}}"})
+		a.emitInfoMsg("Loaded {{toLowerPlural .Class}}")
 	}
 
 	return nil
@@ -82,10 +80,7 @@ func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) 
 	opts.Globals.Decache = true
 
 	if _, _, err := opts.{{toPlural .Class}}(); err != nil {
-		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-			String1: err.Error(),
-			Address: modData.Address,
-		})
+		a.emitAddressErrorMsg(err, modData.Address)
 		return err
 	} else {
 		new{{toPlural .Class}} := make([]{{.ItemType}}, 0, len(a.{{toLowerPlural .Class}}.Items))
@@ -101,7 +96,7 @@ func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) 
 		a.{{toLowerPlural .Class}}.LastUpdate = time.Time{}
 		a.{{toLowerPlural .Class}}.Items = new{{toPlural .Class}}
 		msg := fmt.Sprintf("Modify{{.Class}} delete: %s", modData.Address.Hex())
-		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: msg})
+		a.emitInfoMsg(msg)
 		return nil
 	}
 }

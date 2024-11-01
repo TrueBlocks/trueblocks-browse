@@ -3,7 +3,6 @@ package app
 import (
 	"os"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
@@ -22,11 +21,12 @@ func (a *App) SetRoute(route, subRoute string) {
 }
 
 func (a *App) SetChain(chain string, address base.Address) {
-	a.CancelAllContexts() // cancel what's happening on the old chain
+	a.emitInfoMsg("Switching to chain", chain)
+	a.CancelAllContexts()
 	a.Chain = chain
 	a.session.LastChain = chain
 	a.saveSession()
-	a.Reload(address)
+	a.GoToAddress(address)
 	a.monitors = types.MonitorContainer{}
 	a.names = types.NameContainer{}
 	a.abis = types.AbiContainer{}

@@ -10,6 +10,7 @@ import (
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -82,6 +83,7 @@ func (s *MonitorContainer) String() string {
 func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getMonitorReload()
 	if force || reload {
+		logger.InfoG("MonitorContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}
@@ -137,8 +139,8 @@ func (s *MonitorContainer) getMonitorReload() (ret time.Time, reload bool) {
 type EveryMonitorFn func(item *coreTypes.Monitor, data any) bool
 
 func (s *MonitorContainer) ForEveryMonitor(process EveryMonitorFn, data any) bool {
-	for i := 0 ; i < len(s.Items) ; i++ {
-		if !process(&item[i], data) {
+	for i := 0; i < len(s.Items); i++ {
+		if !process(&s.Items[i], data) {
 			return false
 		}
 	}

@@ -4,11 +4,10 @@ import {types} from '../models';
 import {menu} from '../models';
 import {base} from '../models';
 import {sdk} from '../models';
+import {app} from '../models';
 import {configtypes} from '../models';
 import {context} from '../models';
 import {editors} from '../models';
-import {app} from '../models';
-import {output} from '../models';
 
 export function AbiPage(arg1:number,arg2:number):Promise<types.AbiContainer>;
 
@@ -22,13 +21,13 @@ export function Caching(arg1:sdk.CacheOp):Promise<void>;
 
 export function CancelAllContexts():Promise<void>;
 
-export function CancelContext(arg1:base.Address):Promise<void>;
-
-export function ConfigPage(arg1:number,arg2:number):Promise<types.ConfigContainer>;
+export function ConfigView(arg1:menu.CallbackData):Promise<void>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
 export function DaemonsView(arg1:menu.CallbackData):Promise<void>;
+
+export function DeleteAddress(arg1:app.ModifyData):Promise<void>;
 
 export function ExportAddress(arg1:base.Address):Promise<void>;
 
@@ -42,11 +41,9 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
 export function FooterToggle(arg1:menu.CallbackData):Promise<void>;
 
-export function GetAddress():Promise<base.Address>;
+export function GetAppInfo():Promise<app.AppInfo>;
 
 export function GetAppTitle():Promise<string>;
-
-export function GetChain():Promise<string>;
 
 export function GetChainInfo(arg1:string):Promise<types.Chain>;
 
@@ -64,9 +61,9 @@ export function GetExploreUrl(arg1:string,arg2:boolean,arg3:boolean):Promise<str
 
 export function GetMenus():Promise<menu.Menu>;
 
-export function GetMeta():Promise<types.MetaData>;
-
 export function GetRoute():Promise<string>;
+
+export function GetSelected():Promise<base.Address>;
 
 export function GetSession():Promise<types.Session>;
 
@@ -74,9 +71,7 @@ export function GetState(arg1:string):Promise<string>;
 
 export function GetWindow():Promise<types.Window>;
 
-export function GetWizardState():Promise<types.WizState>;
-
-export function GoToHistory(arg1:base.Address):Promise<void>;
+export function GoToAddress(arg1:base.Address):Promise<void>;
 
 export function HeaderToggle(arg1:menu.CallbackData):Promise<void>;
 
@@ -90,13 +85,11 @@ export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>
 
 export function IndexesView(arg1:menu.CallbackData):Promise<void>;
 
-export function IsConfigured():Promise<boolean>;
-
 export function IsShowing(arg1:string):Promise<boolean>;
 
 export function LoadName(arg1:string):Promise<editors.Name>;
 
-export function Logger(arg1:string):Promise<void>;
+export function Logger(arg1:Array<string>):Promise<void>;
 
 export function ManifestPage(arg1:number,arg2:number):Promise<types.ManifestContainer>;
 
@@ -109,8 +102,6 @@ export function ModifyAbi(arg1:app.ModifyData):Promise<void>;
 export function ModifyMonitors(arg1:app.ModifyData):Promise<void>;
 
 export function ModifyName(arg1:app.ModifyData):Promise<void>;
-
-export function ModifyProject(arg1:app.ModifyData):Promise<void>;
 
 export function MonitorPage(arg1:number,arg2:number):Promise<types.MonitorContainer>;
 
@@ -128,13 +119,13 @@ export function ProjectView(arg1:menu.CallbackData):Promise<void>;
 
 export function Refresh():Promise<void>;
 
-export function RegisterCtx(arg1:base.Address):Promise<output.RenderCtx>;
-
-export function Reload(arg1:base.Address):Promise<void>;
+export function Reload():Promise<void>;
 
 export function SaveName(arg1:editors.Name):Promise<void>;
 
 export function SessionPage(arg1:number,arg2:number):Promise<types.SessionContainer>;
+
+export function SessionView(arg1:menu.CallbackData):Promise<void>;
 
 export function SetChain(arg1:string,arg2:base.Address):Promise<void>;
 
@@ -165,7 +156,5 @@ export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
 
 export function ToggleDaemon(arg1:string):Promise<void>;
-
-export function UnusedFunc(arg1:app.ModifyData):Promise<void>;
 
 export function WizardView(arg1:menu.CallbackData):Promise<void>;

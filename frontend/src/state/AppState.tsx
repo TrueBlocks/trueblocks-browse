@@ -8,15 +8,12 @@ import {
   IndexPage,
   ManifestPage,
   SettingsPage,
-  GetChain,
   SetChain,
-  GetMeta,
-  GetWizardState,
   StatusPage,
   SessionPage,
-  Filename,
+  GetAppInfo,
 } from "@gocode/app/App";
-import { base, messages, types } from "@gocode/models";
+import { app, base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
 
 interface AppStateProps {
@@ -54,15 +51,13 @@ interface AppStateProps {
   address: base.Address;
   setAddress: (address: base.Address) => void;
 
+  info: app.AppInfo;
   chain: string;
-  filename: string;
-  selectChain: (newChain: string) => void;
-
   meta: types.MetaData;
-  setMeta: (meta: types.MetaData) => void;
-
   isConfigured: boolean;
   wizardState: types.WizState;
+  selectChain: (newChain: string) => void;
+  setMeta: (meta: types.MetaData) => void;
   setWizardState: (state: types.WizState) => void;
 }
 
@@ -82,12 +77,12 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   // TODO BOGUS: The daemon state should be in the AppState
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
-  const [chain, setChain] = useState<string>("mainnet");
-  const [filename, setFilename] = useState<string>("mainnet");
-  const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
 
+  const [chain, setChain] = useState<string>("mainnet");
   const [isConfigured, setIsConfigured] = useState<boolean>(false);
   const [wizardState, setWizardState] = useState<types.WizState>(types.WizState.WELCOME);
+  const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
+  const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
 
   const fetchProject = async (currentItem: number, itemsPerPage: number) => {
     ProjectPage(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
@@ -165,28 +160,13 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchChain = async () => {
-    GetChain().then((chain) => {
-      setChain(chain);
-    });
-    Filename().then((name) => {
-      setFilename(name);
-    });
-  };
-
-  const fetchMeta = async () => {
-    GetMeta().then((meta) => {
-      setMeta(meta);
-    });
-  };
-
-  useEffect(() => {
-    setIsConfigured(wizardState == types.WizState.OKAY);
-  }, [wizardState]);
-
-  const fetchWizard = async () => {
-    GetWizardState().then((state) => {
-      setWizardState(state);
+  const fetchAppInfo = () => {
+    GetAppInfo().then((info) => {
+      setChain(info.chain);
+      setMeta(info.meta);
+      setWizardState(info.state);
+      setIsConfigured(info.isConfigured);
+      setInfo(info);
     });
   };
 
@@ -207,45 +187,23 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    fetchChain();
-    fetchMeta();
-    fetchWizard();
-    fetchStatus(0, 100);
-  }, []);
-
-  useEffect(() => {
     const handleRefresh = () => {
-      fetchChain();
-      fetchMeta();
-      fetchWizard();
+      fetchAppInfo();
       fetchStatus(0, 100);
     };
+    handleRefresh(); // first load
 
+    // when messaged
     const { Message } = messages;
     EventsOn(Message.DAEMON, handleRefresh);
-    EventsOn(Message.DOCUMENT, handleRefresh);
+    EventsOn(Message.WIZARD, handleRefresh);
     return () => {
       EventsOff(Message.DAEMON);
-      EventsOff(Message.DOCUMENT);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleWizard = () => {
-      fetchWizard();
-    };
-
-    const { Message } = messages;
-    EventsOn(Message.WIZARD, handleWizard);
-    return () => {
       EventsOff(Message.WIZARD);
     };
   }, []);
 
   const state = {
-    address,
-    chain,
-    filename,
     project,
     fetchProject,
     history,
@@ -267,12 +225,15 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchStatus,
     session,
     fetchSession,
-    setAddress,
-    selectChain,
+    address,
+    info,
+    chain,
     meta,
-    setMeta,
     isConfigured,
     wizardState,
+    setAddress,
+    selectChain,
+    setMeta,
     setWizardState,
   };
 

@@ -1,13 +1,15 @@
 import { DataTable, FieldGroup, AddButton } from "@components";
 import { types } from "@gocode/models";
+import { useAppState } from "../../state";
 
 export const ProjectFormDef = (table: any): FieldGroup<types.ProjectContainer>[] => {
+  const { info } = useAppState();
   return [
     {
       label: "Data 1",
       colSpan: 4,
       fields: [
-        // { label: "fileName", type: "text", accessor: "filename" },
+        // { label: "fileName", type: "text", accessor: "lastFile" },
         { label: "nHistories", type: "int", accessor: "nItems" },
         { label: "historySize", type: "bytes", accessor: "historySize" },
         // { label: "dirty", type: "boolean", accessor: "dirty" },
@@ -36,7 +38,7 @@ export const ProjectFormDef = (table: any): FieldGroup<types.ProjectContainer>[]
       buttons: [<AddButton key={"add"} value={"https://trueblocks.io"} />],
     },
     {
-      label: "Histories",
+      label: info.filename,
       fields: [],
       collapsable: false,
       components: [<DataTable<types.HistoryContainer> key={"dataTable"} table={table} loading={false} />],

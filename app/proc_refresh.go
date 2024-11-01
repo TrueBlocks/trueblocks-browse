@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
@@ -18,7 +17,7 @@ var freshenMutex sync.Mutex
 // by extension the frontend to update. We protect against updating too fast... Note
 // that this routine is called as a goroutine.
 func (a *App) Refresh() error {
-	if !a.IsConfigured() {
+	if !a.isConfigured() {
 		return fmt.Errorf("App not configured")
 	}
 
@@ -30,16 +29,14 @@ func (a *App) Refresh() error {
 	freshenMutex.Lock()
 	defer freshenMutex.Unlock()
 
-	if !a.ScraperController.IsRunning() {
-		logger.Info(colors.Green, "Freshening...", colors.Off)
+	if !a.scraperController.IsRunning() {
+		logger.InfoG("Freshening...")
 	}
 
 	// We always load names first since we need them everywhere
 	err := a.loadNames(nil, nil)
 	if err != nil {
-		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-			String1: err.Error(),
-		})
+		a.emitErrorMsg(err, nil)
 	}
 
 	// And then update everything else in the fullness of time
@@ -47,14 +44,14 @@ func (a *App) Refresh() error {
 	errorChan := make(chan error, 5) // Buffered channel to hold up to 5 errors (one from each goroutine)
 
 	wg.Add(8)
-	go a.loadAbis(&wg, errorChan)
-	go a.loadManifests(&wg, errorChan)
+	go a.loadProjects(&wg, errorChan)
 	go a.loadMonitors(&wg, errorChan)
-	go a.loadIndexes(&wg, errorChan)
-	go a.loadStatus(&wg, errorChan)
 	go a.loadSessions(&wg, errorChan)
 	go a.loadSettings(&wg, errorChan)
-	go a.loadProjects(&wg, errorChan)
+	go a.loadStatus(&wg, errorChan)
+	go a.loadAbis(&wg, errorChan)
+	go a.loadManifests(&wg, errorChan)
+	go a.loadIndexes(&wg, errorChan)
 
 	go func() {
 		wg.Wait()
@@ -71,16 +68,14 @@ func (a *App) Refresh() error {
 	if len(errors) > 0 {
 		// Handle errors, e.g., wait 1/2 second between each error message
 		for _, err := range errors {
-			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-				String1: err.Error(),
-			})
+			a.emitErrorMsg(err, nil)
 			time.Sleep(500 * time.Millisecond)
 		}
 	} else {
-		messages.EmitMessage(a.ctx, messages.Daemon, &messages.MessageMsg{
-			Name:    a.FreshenController.Name,
+		a.emitMsg(messages.Daemon, &messages.MessageMsg{
+			Name:    a.freshenController.Name,
 			String1: "Freshening...",
-			String2: a.FreshenController.Color,
+			String2: a.freshenController.Color,
 		})
 	}
 	return nil

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
@@ -25,7 +26,6 @@ func NewSessionContainer(chain string, session *coreTypes.Session) SessionContai
 	ret := SessionContainer{
 		Session: *session,
 	}
-	ret.Chain = chain
 	ret.LastUpdate, _ = ret.getSessionReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -40,6 +40,7 @@ func (s *SessionContainer) String() string {
 func (s *SessionContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getSessionReload()
 	if force || reload {
+		logger.InfoG("SessionContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}

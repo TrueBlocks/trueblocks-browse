@@ -27,7 +27,7 @@ export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }
   const givenAddress = value as unknown as string;
 
   useEffect(() => {
-    const formatAddress = async () => {
+    const formatAddress = () => {
       if (!givenAddress || givenAddress === "0x0") {
         setLine1(givenName);
         setLine2("");

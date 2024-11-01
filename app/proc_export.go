@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -23,7 +22,7 @@ func (a *App) ExportAddress(address base.Address) {
 	fn := fmt.Sprintf("history_%s.csv", address)
 	lines := make([]string, 0, a.txCount(address)+2)
 
-	exportLine := func(item coreTypes.Transaction, data any) bool {
+	exportLine := func(item *coreTypes.Transaction, data any) bool {
 		if len(lines) == 0 {
 			lines = append(lines, fmt.Sprintf("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
 				"BlockNumber",
@@ -60,13 +59,11 @@ func (a *App) ExportAddress(address base.Address) {
 		return true
 	}
 
-	h, _ := a.HistoryCache.Load(address)
+	h, _ := a.historyCache.Load(address)
 	completed := h.ForEveryTransaction(exportLine, nil)
 	if !completed {
 		err := fmt.Errorf("export for %s interrupted after %d lines", address.Hex(), len(lines))
-		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-			String1: err.Error(),
-		})
+		a.emitErrorMsg(err, nil)
 		return
 	}
 

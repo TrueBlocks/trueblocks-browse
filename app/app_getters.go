@@ -34,16 +34,12 @@ func (a *App) GetEnv(key string) string {
 	return os.Getenv(key)
 }
 
-func (a *App) GetMeta() coreTypes.MetaData {
-	return a.meta
-}
-
 func (a *App) GetAppTitle() string {
 	return a.session.Window.Title
 }
 
 func (a *App) GetRoute() string {
-	if !a.IsConfigured() {
+	if !a.isConfigured() {
 		return "/wizard"
 	}
 
@@ -55,12 +51,12 @@ func (a *App) GetRoute() string {
 	return route
 }
 
-func (a *App) GetAddress() base.Address {
+func (a *App) GetSelected() base.Address {
 	addr := a.session.LastSub["/history"]
 	return base.HexToAddress(addr)
 }
 
-func (a *App) GetChain() string {
+func (a *App) getChain() string {
 	return a.Chain
 }
 

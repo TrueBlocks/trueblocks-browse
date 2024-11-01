@@ -8,12 +8,12 @@ import (
 )
 
 {{range .Structures -}}
-func (a *App) {{firstUpper .UiRouteName}}View(cd *menu.CallbackData) {
+func (a *App) {{firstUpper .UiRouteName}}View(cb *menu.CallbackData) {
 	{{if .IsHistory -}}
-	address := a.GetAddress()
+	address := a.GetSelected()
 	a.Navigate("/{{toLower .UiRouteName}}", address.Hex())
 	{{- else if .IsWizard -}}
-	if a.IsConfigured() {
+	if a.isConfigured() {
 		a.StepWizard(coreTypes.Reset)
 	} else {
 		a.StepWizard(coreTypes.Next)

@@ -10,12 +10,7 @@ export type Page = {
   getOffset: () => number;
 };
 
-export function useKeyboardPaging(
-  nItems: number,
-  perPage: number = 20,
-  onEnter: (page: Page) => void
-): Pager {
-  const { address } = useAppState();
+export function useKeyboardPaging(nItems: number, perPage: number = 20, onEnter: (page: Page) => void): Pager {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>(1);
   const [selected, setSelected] = useState<number>(0);
@@ -80,9 +75,10 @@ export function useKeyboardPaging(
     e.preventDefault();
     CancelAllContexts();
   });
+
   useHotkeys("mod+r", (e) => {
     e.preventDefault();
-    Reload(address).then(() => {});
+    Reload().then(() => {});
   });
 
   useHotkeys(

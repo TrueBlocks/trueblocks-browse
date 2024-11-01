@@ -3,32 +3,28 @@ package app
 import (
 	"context"
 	"encoding/json"
-	"os"
-	"path/filepath"
+	"errors"
+	"fmt"
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type App struct {
-	sdk.Globals `json:",inline"`
+	sdk.Globals
 
 	ctx   context.Context
 	meta  coreTypes.MetaData
 	dirty bool
-
-	renderCtxs map[base.Address][]*output.RenderCtx
 
 	// Containers
 	projects  types.ProjectContainer
@@ -43,101 +39,112 @@ type App struct {
 	config    types.ConfigContainer
 
 	// Memory caches
-	HistoryCache *types.HistoryMap `json:"historyCache"`
-	EnsCache     *sync.Map         `json:"ensCache"`
-	BalanceCache *sync.Map         `json:"balanceCache"`
+	ensCache     *sync.Map
+	balanceCache *sync.Map
+	namesMap     map[base.Address]coreTypes.Name
+	historyCache *types.HistoryMap
+	renderCtxs   map[base.Address][]*output.RenderCtx
 
 	// Controllers
-	ScraperController *daemons.DaemonScraper
-	FreshenController *daemons.DaemonFreshen
-	IpfsController    *daemons.DaemonIpfs
-}
+	scraperController *daemons.DaemonScraper
+	freshenController *daemons.DaemonFreshen
+	ipfsController    *daemons.DaemonIpfs
 
-func NewApp() *App {
-	a := App{
-		renderCtxs: make(map[base.Address][]*output.RenderCtx),
-	}
-	a.EnsCache = &sync.Map{}
-	a.BalanceCache = &sync.Map{}
-	a.HistoryCache = &types.HistoryMap{}
-	a.names.NamesMap = make(map[base.Address]coreTypes.Name)
-	a.projects = types.NewProjectContainer("", []types.HistoryContainer{})
-	a.session.LastSub = make(map[string]string)
-
-	return &a
+	// During initialization, we do things that may cause errors, but
+	// we have not yet opened the window, so we defer them until we can
+	// decide what to do.
+	deferredErrors []error
 }
 
 func (a *App) String() string {
-	bytes, _ := json.MarshalIndent(a, "", "  ")
+	bytes, _ := json.Marshal(a)
 	return string(bytes)
 }
 
+func NewApp() *App {
+	a := &App{
+		ensCache:     &sync.Map{},
+		balanceCache: &sync.Map{},
+		namesMap:     make(map[base.Address]coreTypes.Name),
+		historyCache: &types.HistoryMap{},
+		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
+	}
+	a.freshenController = daemons.NewFreshen(a, "freshen", 3000, a.IsShowing("freshen"))
+	a.scraperController = daemons.NewScraper(a, "scraper", 7000, a.IsShowing("scraper"))
+	a.ipfsController = daemons.NewIpfs(a, "ipfs", 10000, a.IsShowing("ipfs"))
+	a.session.LastSub = make(map[string]string)
+
+	return a
+}
+
+var ErrLoadingNames = errors.New("error loading names")
+var ErrWindowSize = errors.New("error fixing window size")
+
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
-	a.loadSession()
+
+	// We do various setups prior to showing the window. Improves interactivity.
+	// But...something may fail, so we need to keep track of errors.
+	var err error
+	if err = a.session.Load(); err != nil {
+		a.deferredErrors = append(a.deferredErrors, err)
+	}
+
+	// Load the trueBlocks.toml file
+	if err = a.config.Load(); err != nil {
+		a.deferredErrors = append(a.deferredErrors, err)
+	}
+	if a.session.LastChain, err = a.config.IsValidChain(a.session.LastChain); err != nil {
+		a.deferredErrors = append(a.deferredErrors, err)
+	}
 	a.Chain = a.session.LastChain
 
-	a.FreshenController = daemons.NewFreshen(a, "freshen", 3000, a.IsShowing("freshen"))
-	a.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.IsShowing("scraper"))
-	a.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.IsShowing("ipfs"))
-	go a.startDaemons()
-
-	fn := filepath.Join(a.session.LastFolder, a.session.LastFile)
-	if file.FileExists(fn) {
-		a.LoadFile(fn)
-		a.dirty = false
-	} else {
-		a.dirty = true
+	// We always need names, so let's load it before showing the window
+	if a.namesMap, err = names.LoadNamesMap(a.getChain(), coreTypes.All, nil); err == nil {
+		wErr := fmt.Errorf("%w: %v", ErrLoadingNames, err)
+		a.deferredErrors = append(a.deferredErrors, wErr)
 	}
-
-	logger.Info("Starting freshen process...")
-	_ = a.Refresh()
 }
 
+// DomReady is called by Wails when the app is ready to go. Adjust the window size and show it.
 func (a *App) DomReady(ctx context.Context) {
-	win := a.GetWindow()
-	runtime.WindowSetPosition(a.ctx, win.X, win.Y)
-	runtime.WindowSetSize(a.ctx, win.Width, win.Height)
-	runtime.WindowShow(a.ctx)
+	var err error
 
-	if path, err := utils.GetConfigFn("", "trueBlocks.toml"); err != nil {
-		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-			String1: err.Error(),
-		})
-	} else {
-		if err := coreConfig.ReadToml(path, &a.config.Config); err != nil {
-			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-				String1: err.Error(),
-			})
-		}
+	// We're ready to open the window, but first we need to make sure it will show...
+	if a.session.Window, err = a.session.CleanWindowSize(a.ctx); err != nil {
+		wErr := fmt.Errorf("%w: %v", ErrWindowSize, err)
+		a.deferredErrors = append(a.deferredErrors, wErr)
 	}
+	// DO NOT COLLAPSE - A VALID WINDOW IS RETURNED EVEN ON ERROR
+	runtime.WindowSetPosition(a.ctx, a.session.Window.X, a.session.Window.Y)
+	runtime.WindowSetSize(a.ctx, a.session.Window.Width, a.session.Window.Height)
+	runtime.WindowShow(a.ctx)
+	if err != nil {
+		a.deferredErrors = append(a.deferredErrors, err)
+	}
+
+	// We now have a window, so we can finally show any accumulated errors
+	for _, err := range a.deferredErrors {
+		a.emitErrorMsg(err, nil)
+	}
+
+	fn := a.getFullPath()
+	if file.FileExists(fn) {
+		a.readFile(fn)
+	} else {
+		a.newFile()
+	}
+
+	go a.Refresh()
+
+	go a.freshenController.Run()
+	go a.scraperController.Run()
+	go a.ipfsController.Run()
+
+	logger.Info("Fininished loading...")
 }
 
+// Shutdown is called by Wails when the app is closed
 func (a *App) Shutdown(ctx context.Context) {
 	a.saveSession()
-}
-
-func (a *App) saveSession() {
-	if !isTesting {
-		a.session.Window.X, a.session.Window.Y = runtime.WindowGetPosition(a.ctx)
-		a.session.Window.Width, a.session.Window.Height = runtime.WindowGetSize(a.ctx)
-		a.session.Window.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
-	}
-	_ = a.session.Save()
-}
-
-func (a *App) loadSession() {
-	_ = a.session.Load()
-	a.session.CleanWindowSize(a.ctx)
-	a.Chain = a.session.LastChain
-}
-
-func (a *App) Logger(msg string) {
-	logger.Info(msg)
-}
-
-var isTesting bool
-
-func init() {
-	isTesting = os.Getenv("TB_TEST_MODE") == "true"
 }

@@ -6,6 +6,10 @@ export function FinishUnmarshal() {
   return window['go']['types']['IndexContainer']['FinishUnmarshal']();
 }
 
+export function ForEveryChunkStats(arg1, arg2) {
+  return window['go']['types']['IndexContainer']['ForEveryChunkStats'](arg1, arg2);
+}
+
 export function Model(arg1, arg2, arg3, arg4) {
   return window['go']['types']['IndexContainer']['Model'](arg1, arg2, arg3, arg4);
 }

@@ -40,6 +40,7 @@ func (s *{{.Class}}Container) String() string {
 func (s *{{.Class}}Container) NeedsUpdate(force bool) bool {
 	latest, reload := s.get{{.Class}}Reload()
 	if force || reload {
+		logger.InfoG("{{.Class}}Container", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}

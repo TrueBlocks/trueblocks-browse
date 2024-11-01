@@ -6,7 +6,6 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
@@ -36,17 +35,13 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 
 	_ = errorChan // delint
 	if path, err := utils.GetConfigFn("", "trueBlocks.toml"); err != nil {
-		messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-			String1: err.Error(),
-		})
+		a.emitErrorMsg(err, nil)
 	} else {
 		if err := coreConfig.ReadToml(path, &a.config.Config); err != nil {
-			messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
-				String1: err.Error(),
-			})
+			a.emitErrorMsg(err, nil)
 		}
 	}
-	a.loadSession()
+
 	a.settings = types.NewSettingsGroup(&a.status.Status, &a.config.Config, &a.session.Session)
 	a.settings.Summarize()
 
@@ -111,7 +106,7 @@ func (a *App) l oadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		})
 		a.status.Summarize()
 		logger.SetLoggerWriter(w)
-		messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{String1: "Loaded status"})
+		a.emitInfoMsg("Loaded status")
 	}
 	return nil
 }

@@ -5,12 +5,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-func (a *App) startDaemons() {
-	go a.FreshenController.Run()
-	go a.ScraperController.Run()
-	go a.IpfsController.Run()
-}
-
 func (a *App) ToggleDaemon(name string) error {
 	d := a.getDaemon(name)
 	if err := d.Toggle(); err != nil {
@@ -31,11 +25,11 @@ func (a *App) GetState(name string) string {
 func (a *App) getDaemon(name string) daemons.Daemoner {
 	switch name {
 	case "freshen":
-		return a.FreshenController
+		return a.freshenController
 	case "scraper":
-		return a.ScraperController
+		return a.scraperController
 	case "ipfs":
-		return a.IpfsController
+		return a.ipfsController
 	default:
 		if len(name) > 0 {
 			logger.Fatal("getDaemon", "should not happen", name)

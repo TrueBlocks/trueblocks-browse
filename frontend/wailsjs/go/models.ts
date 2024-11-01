@@ -1,5 +1,45 @@
 export namespace app {
 	
+	export class AppInfo {
+	    chain: string;
+	    filename: string;
+	    dirty: boolean;
+	    meta: types.MetaData;
+	    state: types.WizState;
+	    isConfigured: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new AppInfo(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.chain = source["chain"];
+	        this.filename = source["filename"];
+	        this.dirty = source["dirty"];
+	        this.meta = this.convertValues(source["meta"], types.MetaData);
+	        this.state = source["state"];
+	        this.isConfigured = source["isConfigured"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class ModifyData {
 	    operation: string;
 	    address: base.Address;
@@ -380,19 +420,17 @@ export namespace editors {
 export namespace messages {
 	
 	export enum Message {
+	    PROGRESS = "Progress",
 	    COMPLETED = "Completed",
 	    CANCELLED = "Cancelled",
 	    ERROR = "Error",
 	    WARNING = "Warn",
 	    INFO = "Info",
 	    SWITCHTAB = "SwitchTab",
-	    PROGRESS = "Progress",
-	    DAEMON = "Daemon",
-	    DOCUMENT = "Document",
-	    NAVIGATE = "Navigate",
-	    RELOAD = "Reload",
 	    TOGGLELAYOUT = "ToggleLayout",
-	    TOGGLEHEADER = "ToggleHeader",
+	    TOGGLEACCORDION = "ToggleAccordion",
+	    DAEMON = "Daemon",
+	    NAVIGATE = "Navigate",
 	    WIZARD = "Wizard",
 	}
 	export class MessageMsg {
@@ -440,23 +478,6 @@ export namespace messages {
 
 }
 
-export namespace output {
-	
-	export class RenderCtx {
-	
-	
-	    static createFrom(source: any = {}) {
-	        return new RenderCtx(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	
-	    }
-	}
-
-}
-
 export namespace sdk {
 	
 	export class SortSpec {
@@ -484,6 +505,7 @@ export namespace types {
 	    RPCOKAY = "rpcOkay",
 	    BLOOMSOKAY = "bloomsOkay",
 	    INDEXOKAY = "indexOkay",
+	    ERROR = "error",
 	    OKAY = "okay",
 	}
 	export enum WizStep {
@@ -865,17 +887,15 @@ export namespace types {
 	}
 	export class ConfigContainer {
 	    nChains: number;
-	    items: configtypes.Config[];
-	    nItems: number;
-	    chain: string;
-	    // Go type: time
-	    lastUpdate: any;
 	    version: configtypes.VersionGroup;
 	    settings: configtypes.SettingsGroup;
 	    keys: {[key: string]: configtypes.KeyGroup};
 	    pinning: configtypes.PinningGroup;
 	    unchained: configtypes.UnchainedGroup;
 	    chains: {[key: string]: configtypes.ChainGroup};
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new ConfigContainer(source);
@@ -884,16 +904,14 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.nChains = source["nChains"];
-	        this.items = this.convertValues(source["items"], configtypes.Config);
-	        this.nItems = source["nItems"];
-	        this.chain = source["chain"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.version = this.convertValues(source["version"], configtypes.VersionGroup);
 	        this.settings = this.convertValues(source["settings"], configtypes.SettingsGroup);
 	        this.keys = this.convertValues(source["keys"], configtypes.KeyGroup, true);
 	        this.pinning = this.convertValues(source["pinning"], configtypes.PinningGroup);
 	        this.unchained = this.convertValues(source["unchained"], configtypes.UnchainedGroup);
 	        this.chains = this.convertValues(source["chains"], configtypes.ChainGroup, true);
+	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1765,7 +1783,6 @@ export namespace types {
 	    chain: string;
 	    // Go type: time
 	    lastUpdate: any;
-	    namesMap: {[key: string]: Name};
 	
 	    static createFrom(source: any = {}) {
 	        return new NameContainer(source);
@@ -1786,7 +1803,6 @@ export namespace types {
 	        this.nItems = source["nItems"];
 	        this.chain = source["chain"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
-	        this.namesMap = this.convertValues(source["namesMap"], Name, true);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1808,6 +1824,135 @@ export namespace types {
 		}
 	}
 	
+	export class ProjectContainer {
+	    historySize: number;
+	    nAbis: number;
+	    nCaches: number;
+	    nIndexes: number;
+	    nManifests: number;
+	    nMonitors: number;
+	    nNames: number;
+	    items: HistoryContainer[];
+	    nItems: number;
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new ProjectContainer(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.historySize = source["historySize"];
+	        this.nAbis = source["nAbis"];
+	        this.nCaches = source["nCaches"];
+	        this.nIndexes = source["nIndexes"];
+	        this.nManifests = source["nManifests"];
+	        this.nMonitors = source["nMonitors"];
+	        this.nNames = source["nNames"];
+	        this.items = this.convertValues(source["items"], HistoryContainer);
+	        this.nItems = source["nItems"];
+	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class ProjectFile {
+	    version: string;
+	    dateSaved: string;
+	    selected: base.Address;
+	    addresses: base.Address[];
+	
+	    static createFrom(source: any = {}) {
+	        return new ProjectFile(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.dateSaved = source["dateSaved"];
+	        this.selected = this.convertValues(source["selected"], base.Address);
+	        this.addresses = this.convertValues(source["addresses"], base.Address);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
+	
+	export class Rewards {
+	    // Go type: base
+	    block: any;
+	    // Go type: base
+	    nephew: any;
+	    // Go type: base
+	    txFee: any;
+	    // Go type: base
+	    uncle: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new Rewards(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.block = this.convertValues(source["block"], null);
+	        this.nephew = this.convertValues(source["nephew"], null);
+	        this.txFee = this.convertValues(source["txFee"], null);
+	        this.uncle = this.convertValues(source["uncle"], null);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class Toggles {
 	    layout: Layout;
 	    headers: Headers;
@@ -1918,110 +2063,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class ProjectContainer {
-	    nMonitors: number;
-	    nNames: number;
-	    nAbis: number;
-	    nIndexes: number;
-	    nManifests: number;
-	    nCaches: number;
-	    historySize: number;
-	    dirty: boolean;
-	    filename: string;
-	    nItems: number;
-	    items: HistoryContainer[];
-	    session: Session;
-	    // Go type: HistoryMap
-	    historyMap?: any;
-	    // Go type: sync
-	    balanceMap?: any;
-	    // Go type: sync
-	    ensMap?: any;
-	
-	    static createFrom(source: any = {}) {
-	        return new ProjectContainer(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.nMonitors = source["nMonitors"];
-	        this.nNames = source["nNames"];
-	        this.nAbis = source["nAbis"];
-	        this.nIndexes = source["nIndexes"];
-	        this.nManifests = source["nManifests"];
-	        this.nCaches = source["nCaches"];
-	        this.historySize = source["historySize"];
-	        this.dirty = source["dirty"];
-	        this.filename = source["filename"];
-	        this.nItems = source["nItems"];
-	        this.items = this.convertValues(source["items"], HistoryContainer);
-	        this.session = this.convertValues(source["session"], Session);
-	        this.historyMap = this.convertValues(source["historyMap"], null);
-	        this.balanceMap = this.convertValues(source["balanceMap"], null);
-	        this.ensMap = this.convertValues(source["ensMap"], null);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	
-	
-	export class Rewards {
-	    // Go type: base
-	    block: any;
-	    // Go type: base
-	    nephew: any;
-	    // Go type: base
-	    txFee: any;
-	    // Go type: base
-	    uncle: any;
-	
-	    static createFrom(source: any = {}) {
-	        return new Rewards(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.block = this.convertValues(source["block"], null);
-	        this.nephew = this.convertValues(source["nephew"], null);
-	        this.txFee = this.convertValues(source["txFee"], null);
-	        this.uncle = this.convertValues(source["uncle"], null);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	
 	export class SessionContainer {
 	    lastChain: string;
 	    lastFile: string;

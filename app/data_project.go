@@ -9,7 +9,6 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
@@ -45,12 +44,11 @@ func (a *App) loadProjects(wg *sync.WaitGroup, errorChan chan error) error {
 
 	// EXISTING_CODE
 	items := []types.HistoryContainer{}
-	a.HistoryCache.Range(func(_ base.Address, h types.HistoryContainer) bool {
+	a.historyCache.Range(func(_ base.Address, h types.HistoryContainer) bool {
 		items = append(items, h)
 		return true
 	})
 	a.projects = types.NewProjectContainer(a.session.LastChain, items)
-
 	if !a.projects.NeedsUpdate(a.forceProject()) {
 		return nil
 	}
@@ -82,10 +80,7 @@ func (a *App) loadProjects(wg *sync.WaitGroup, errorChan chan error) error {
 		aj := a.projects.Items[j].Address
 		return ai.Hex() < aj.Hex()
 	})
-	messages.EmitMessage(a.ctx, messages.Info, &messages.MessageMsg{
-		String1: fmt.Sprintf("After loadProject: %d projects", len(a.projects.Items)),
-	})
-
+	a.emitInfoMsg("Loaded projects", "")
 	return nil
 }
 
@@ -97,39 +92,17 @@ func (a *App) forceProject() (force bool) {
 }
 
 // EXISTING_CODE
-func (a *App) ModifyProject(modData *ModifyData) {
+func (a *App) DeleteAddress(modData *ModifyData) {
 	switch crud.OpFromString(modData.Operation) {
 	case crud.Delete:
 		a.cancelContext(modData.Address)
-		a.HistoryCache.Delete(modData.Address)
-		for i, history := range a.projects.Items {
-			if history.Address == modData.Address {
-				a.projects.Items = append(a.projects.Items[:i], a.projects.Items[i+1:]...)
-				break
-			}
-		}
+		a.dirty = true
+
+		a.historyCache.Delete(modData.Address)
 		a.loadProjects(nil, nil)
+
+		a.emitInfoMsg(a.getFullPath(), fmt.Sprint("deleted address", modData.Address.Hex()))
 	}
-}
-
-func (a *App) Reload(address base.Address) {
-	a.ModifyProject(&ModifyData{
-		Operation: "delete",
-		Address:   address,
-	})
-	a.loadHistory(a.GetAddress(), nil, nil)
-	_ = a.Refresh()
-	a.loadProjects(nil, nil)
-}
-
-func (a *App) GoToHistory(address base.Address) {
-	a.SetRoute("/history", address.Hex())
-	a.Reload(address)
-
-	route := "/history/" + address.Hex()
-	messages.EmitMessage(a.ctx, messages.Navigate, &messages.MessageMsg{
-		String1: route,
-	})
 }
 
 // EXISTING_CODE

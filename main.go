@@ -34,7 +34,7 @@ func main() {
 		Menu:             a.GetMenus(),
 		Bind: []interface{}{
 			a,
-			&messages.MessageMsg{},
+			&app.AppInfo{},
 			&types.ProjectContainer{},
 			&types.NameContainer{},
 			&types.AbiContainer{},
@@ -44,11 +44,12 @@ func main() {
 			// &types.DaemonContainer{},
 			&types.SettingsGroup{},
 			&types.StatusContainer{},
+			&messages.MessageMsg{},
 			&coreTypes.Wizard{},
-			&editors.Name{},
-			&daemons.Daemon{},
 			&coreTypes.Transaction{},
 			&configTypes.Config{},
+			&editors.Name{},
+			&daemons.Daemon{},
 		},
 		EnumBind: []interface{}{
 			daemons.AllStates,
