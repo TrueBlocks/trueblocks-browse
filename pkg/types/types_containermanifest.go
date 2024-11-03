@@ -67,7 +67,7 @@ func (s *ManifestContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *ManifestContainer) ShallowCopy() Containerer {
-	return &ManifestContainer{
+	ret := &ManifestContainer{
 		BloomsSize:    s.BloomsSize,
 		IndexSize:     s.IndexSize,
 		NBlooms:       s.NBlooms,
@@ -80,6 +80,7 @@ func (s *ManifestContainer) ShallowCopy() Containerer {
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func (s *ManifestContainer) Summarize() {

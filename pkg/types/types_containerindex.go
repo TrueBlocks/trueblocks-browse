@@ -59,7 +59,7 @@ func (s *IndexContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *IndexContainer) ShallowCopy() Containerer {
-	return &IndexContainer{
+	ret := &IndexContainer{
 		NItems:     s.NItems,
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
@@ -68,6 +68,7 @@ func (s *IndexContainer) ShallowCopy() Containerer {
 		Sorts:      s.Sorts,
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func (s *IndexContainer) Summarize() {

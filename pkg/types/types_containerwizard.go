@@ -13,13 +13,16 @@ import (
 // EXISTING_CODE
 
 type WizardContainer struct {
+	Chain      string    `json:"chain"`
 	LastUpdate time.Time `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 func NewWizardContainer(chain string) WizardContainer {
-	ret := WizardContainer{}
+	ret := WizardContainer{
+		Chain: chain,
+	}
 	ret.LastUpdate, _ = ret.getWizardReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -42,11 +45,13 @@ func (s *WizardContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *WizardContainer) ShallowCopy() Containerer {
-	return &WizardContainer{
+	ret := &WizardContainer{
+		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func (s *WizardContainer) Summarize() {

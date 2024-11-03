@@ -64,7 +64,7 @@ func (s *AbiContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *AbiContainer) ShallowCopy() Containerer {
-	return &AbiContainer{
+	ret := &AbiContainer{
 		LargestFile:   s.LargestFile,
 		MostEvents:    s.MostEvents,
 		MostFunctions: s.MostFunctions,
@@ -75,6 +75,7 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 		Abi: s.Abi,
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func (s *AbiContainer) Summarize() {

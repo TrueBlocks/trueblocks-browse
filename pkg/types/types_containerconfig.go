@@ -54,7 +54,7 @@ func (s *ConfigContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *ConfigContainer) ShallowCopy() Containerer {
-	return &ConfigContainer{
+	ret := &ConfigContainer{
 		NChains:    s.NChains,
 		Config:     s.Config.ShallowCopy(),
 		Chain:      s.Chain,
@@ -62,6 +62,7 @@ func (s *ConfigContainer) ShallowCopy() Containerer {
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func (s *ConfigContainer) Summarize() {

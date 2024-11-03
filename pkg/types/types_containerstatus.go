@@ -55,7 +55,7 @@ func (s *StatusContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *StatusContainer) ShallowCopy() Containerer {
-	return &StatusContainer{
+	ret := &StatusContainer{
 		NBytes:     s.NBytes,
 		NFiles:     s.NFiles,
 		NFolders:   s.NFolders,
@@ -65,6 +65,8 @@ func (s *StatusContainer) ShallowCopy() Containerer {
 		NItems: s.NItems,
 		// EXISTING_CODE
 	}
+	ret.Chain = s.Chain
+	return ret
 }
 
 func (s *StatusContainer) Summarize() {

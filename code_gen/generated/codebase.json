@@ -317,7 +317,7 @@
             "ui_route": "1070-status",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=coreTypes.Status|noChain",
+            "attributes": "embedType=coreTypes.Status|noChain|initChain",
             "members": [
                 {
                     "name": "nFolders",
@@ -401,7 +401,7 @@
             "ui_route": "1100-session",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=coreTypes.Session|noChain|noFetch"
+            "attributes": "embedType=coreTypes.Session|noChain|noFetch|initChain"
         },
         {
             "class": "Config",

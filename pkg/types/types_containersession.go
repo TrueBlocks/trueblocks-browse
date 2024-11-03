@@ -26,6 +26,7 @@ func NewSessionContainer(chain string, session *coreTypes.Session) SessionContai
 	ret := SessionContainer{
 		Session: *session,
 	}
+	ret.Chain = chain
 	ret.LastUpdate, _ = ret.getSessionReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -48,12 +49,14 @@ func (s *SessionContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *SessionContainer) ShallowCopy() Containerer {
-	return &SessionContainer{
+	ret := &SessionContainer{
 		Session:    s.Session.ShallowCopy(),
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
+	ret.Chain = s.Chain
+	return ret
 }
 
 func (s *SessionContainer) Summarize() {

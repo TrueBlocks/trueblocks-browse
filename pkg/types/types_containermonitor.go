@@ -91,7 +91,7 @@ func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *MonitorContainer) ShallowCopy() Containerer {
-	return &MonitorContainer{
+	ret := &MonitorContainer{
 		FileSize:   s.FileSize,
 		NDeleted:   s.NDeleted,
 		NEmpty:     s.NEmpty,
@@ -104,6 +104,7 @@ func (s *MonitorContainer) ShallowCopy() Containerer {
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func (s *MonitorContainer) Summarize() {

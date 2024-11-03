@@ -66,7 +66,7 @@ func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) 
 		}
 {{end -}}
 		a.{{toLowerPlural .Class}}.Summarize()
-		a.emitInfoMsg("Loaded {{toLowerPlural .Class}}")
+		a.emitInfoMsg("Loaded {{toLowerPlural .Class}}", "")
 	}
 
 	return nil
@@ -95,8 +95,7 @@ func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) 
 		}
 		a.{{toLowerPlural .Class}}.LastUpdate = time.Time{}
 		a.{{toLowerPlural .Class}}.Items = new{{toPlural .Class}}
-		msg := fmt.Sprintf("Modify{{.Class}} delete: %s", modData.Address.Hex())
-		a.emitInfoMsg(msg)
+		a.emitInfoMsg("Modify{{.Class}} delete", modData.Address.Hex())
 		return nil
 	}
 }

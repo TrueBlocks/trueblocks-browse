@@ -67,7 +67,7 @@ func (s *NameContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *NameContainer) ShallowCopy() Containerer {
-	return &NameContainer{
+	ret := &NameContainer{
 		NContracts: s.NContracts,
 		NCustom:    s.NCustom,
 		NDeleted:   s.NDeleted,
@@ -83,6 +83,7 @@ func (s *NameContainer) ShallowCopy() Containerer {
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func (s *NameContainer) Summarize() {
