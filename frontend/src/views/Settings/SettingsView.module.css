@@ -1,0 +1,14 @@
+.tab {
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.tab:hover {
+  background-color: #f0f0f0; /* Hover effect */
+}
+
+.tab[data-active="true"] {
+  background-color: green; /* Change the background of the active tab to green */
+  color: white; /* Change text color of the active tab */
+}

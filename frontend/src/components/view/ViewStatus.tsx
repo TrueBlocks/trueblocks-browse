@@ -1,17 +1,24 @@
 import { useState, useEffect, useRef } from "react";
+import { Text } from "@mantine/core";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
-import classes from "./ViewStatus.module.css";
+import { notifyError } from "../notifications";
+import classes from "./View.module.css";
 
-export const ViewStatus = function () {
+export const ViewStatus = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [statusMessage, setStatusMessage] = useState<string>("");
-  const [color, setColor] = useState<string>(classes.green);
+  const [color, setColor] = useState<string>("green");
 
   useEffect(() => {
-    const handleDocument = (msg: messages.DocumentMsg) => {
-      setStatusMessage(`${msg.msg} ${msg.filename}`);
-      setColor(classes.green);
+    const handleProgress = (msg: messages.MessageMsg) => {
+      setStatusMessage(`Progress (${msg.address}): ${msg.num1}/${msg.num2}`);
+      setColor("green");
+    };
+
+    const handleCompleted = (msg: messages.MessageMsg) => {
+      setStatusMessage(`Completed (${msg.address}): ${msg.num1}/${msg.num2}`);
+      setColor("green");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -20,25 +27,9 @@ export const ViewStatus = function () {
       }, 2000);
     };
 
-    const handleProgress = (msg: messages.ProgressMsg) => {
-      setStatusMessage(`Progress (${msg.address}): ${msg.have}/${msg.want}`);
-      setColor(classes.green);
-    };
-
-    const handleCompleted = (msg: messages.ProgressMsg) => {
-      setStatusMessage(`Completed (${msg.address}): ${msg.have}/${msg.want}`);
-      setColor(classes.green);
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        setStatusMessage("");
-      }, 2000);
-    };
-
-    const handleCancel = (msg: messages.ProgressMsg) => {
+    const handleCancelled = (msg: messages.MessageMsg) => {
       setStatusMessage(`Canceled (${msg.address})`);
-      setColor(classes.green);
+      setColor("green");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -47,19 +38,22 @@ export const ViewStatus = function () {
       }, 2000);
     };
 
-    const handleWarning = (msg: messages.ErrorMsg) => {
-      setStatusMessage(`Warning: ${msg.errStr} ${msg.address}`);
-      setColor(classes.yellow);
+    const handleWarning = (msg: messages.MessageMsg) => {
+      setStatusMessage(`Warning: ${msg.string1} ${msg.address}`);
+      setColor("yellow");
     };
 
-    const handleError = (msg: messages.ErrorMsg) => {
-      setStatusMessage(`Error: ${msg.errStr} ${msg.address}`);
-      setColor(classes.red);
+    const handleError = (msg: messages.MessageMsg) => {
+      if (!msg.string1.includes("Invalid address")) {
+        notifyError(msg.string1 + "\n" + msg.string2 || "An error occurred!");
+      }
+      setStatusMessage(`Error: ${msg.string1} ${msg.address}`);
+      setColor("red");
     };
 
-    const handleInfo = (msg: messages.InfoMsg) => {
-      setStatusMessage(`Info [${new Date().toLocaleString()}]: ${msg.message}`);
-      setColor(classes.blue);
+    const handleInfo = (msg: messages.MessageMsg) => {
+      setStatusMessage(`Info ${msg.string2} ${msg.string1}`);
+      setColor("blue");
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -69,24 +63,29 @@ export const ViewStatus = function () {
     };
 
     const { Message } = messages;
-    EventsOn(Message.DOCUMENT, handleDocument);
-    EventsOn(Message.PROGRESS, handleProgress);
+    EventsOn(Message.CANCELLED, handleCancelled);
     EventsOn(Message.COMPLETED, handleCompleted);
-    EventsOn(Message.CANCELLED, handleCancel);
-    EventsOn(Message.WARNING, handleWarning);
     EventsOn(Message.ERROR, handleError);
     EventsOn(Message.INFO, handleInfo);
+    EventsOn(Message.PROGRESS, handleProgress);
+    EventsOn(Message.WARNING, handleWarning);
 
     return () => {
-      EventsOff(Message.DOCUMENT);
-      EventsOff(Message.PROGRESS);
-      EventsOff(Message.COMPLETED);
       EventsOff(Message.CANCELLED);
-      EventsOff(Message.WARNING);
+      EventsOff(Message.COMPLETED);
       EventsOff(Message.ERROR);
       EventsOff(Message.INFO);
+      EventsOff(Message.PROGRESS);
+      EventsOff(Message.WARNING);
     };
   }, []);
 
-  return <div className={color}>{statusMessage || "\u00A0"}</div>;
+  const blankSpace = "\u00A0";
+  return (
+    <div className={classes.viewStatus}>
+      <Text size="lg" c={color}>
+        {statusMessage || blankSpace}
+      </Text>
+    </div>
+  );
 };

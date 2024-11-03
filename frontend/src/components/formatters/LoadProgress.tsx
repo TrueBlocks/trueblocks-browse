@@ -1,16 +1,36 @@
+import { useState, useEffect } from "react";
 import { Progress, Text } from "@mantine/core";
 import { FormatterProps } from "@components";
 
 export const LoadProgress = ({ value, value2 }: Omit<FormatterProps, "type">) => {
-  const n2 = value2 as number;
-  const loadedItems = Math.round((value / 100) * n2); // Calculate X
+  const [loaded, setLoaded] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
 
-  if (value > 98) {
+  useEffect(() => {
+    setTotal(value2 as number);
+  }, [value2]);
+
+  useEffect(() => {
+    setLoaded(Math.round((value * total) / 100));
+  }, [value, total]);
+
+  if (loaded === 0) {
     return (
       <>
         <Progress value={value} color="yellow" />
         <Text size="xs" mt="xs">
-          {loadedItems} of {n2}
+          not loaded
+        </Text>
+      </>
+    );
+  }
+
+  if (value > 98) {
+    return (
+      <>
+        <Progress value={value} color="green" />
+        <Text size="xs" mt="xs">
+          {loaded} of {total}
         </Text>
       </>
     );
@@ -20,7 +40,7 @@ export const LoadProgress = ({ value, value2 }: Omit<FormatterProps, "type">) =>
     <>
       <Progress value={value} color="yellow" striped />
       <Text size="xs" mt="xs">
-        {loadedItems} of {n2}
+        {loaded} of {total}
       </Text>
     </>
   );

@@ -1,0 +1,19 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+package app
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+func (a *App) GetMenus() *menu.Menu {
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+{{range .Structures}}	viewMenu.AddText("{{firstUpper .UiRouteName}}", keyMap["{{toLower .UiRouteName}}"], a.{{firstUpper .UiRouteName}}View)
+{{end}}
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	return appMenu
+}

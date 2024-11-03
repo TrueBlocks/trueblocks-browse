@@ -1,61 +1,83 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { AppShell } from "@mantine/core";
-import { Aside, Header, Navbar, Routes, AppStatus } from "@components";
-import { GetSessionVal, SetSessionVal } from "@gocode/app/App";
+import { ViewStatus } from "@components";
+import { IsShowing, SetShowing, GetAppTitle } from "@gocode/app/App";
 import { messages } from "@gocode/models";
+import { Header, MenuPanel, ViewContainer, HelpPanel, Footer } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
 import { AppStateProvider } from "@state";
-import classes from "@/App.module.css";
+import classes from "./App.module.css";
 
-function App() {
-  const [showHelp, setShowHelp] = useState<boolean>(false);
+export const App = () => {
+  const [showHeader, setShowHeader] = useState<boolean>(true);
+  const [showMenu, setShowMenu] = useState<boolean>(true);
+  const [showHelp, setShowHelp] = useState<boolean>(true);
+  const [showFooter, setShowFooter] = useState<boolean>(true);
+  const [title, setTitle] = useState<string>("");
 
   useEffect(() => {
-    GetSessionVal("help").then((value) => {
-      setShowHelp(value === "true");
+    GetAppTitle().then((title) => {
+      setTitle(title);
     });
-
-    const toggleHelp = () => {
-      setShowHelp((prevShowHelp) => {
-        const newShowHelp = !prevShowHelp;
-        SetSessionVal("help", `${newShowHelp ? "true" : "false"}`);
-        return newShowHelp;
-      });
-    };
-
-    const { Message } = messages;
-    EventsOn(Message.TOGGLEHELP, toggleHelp);
-    return () => {
-      EventsOff(Message.TOGGLEHELP);
-    };
   }, []);
+
+  const toggles = useMemo(
+    () => [
+      { layout: "header", setter: setShowHeader },
+      { layout: "menu", setter: setShowMenu },
+      { layout: "help", setter: setShowHelp },
+      { layout: "footer", setter: setShowFooter },
+    ],
+    [setShowHeader, setShowMenu, setShowHelp, setShowFooter]
+  );
+
+  useEffect(() => {
+    toggles.forEach(({ layout, setter }) => {
+      IsShowing(layout).then((show) => {
+        setter(show);
+      });
+    });
+  }, [toggles]);
+
+  useEffect(() => {
+    const handleToggleLayout = (msg: messages.MessageMsg) => {
+      const toggle = toggles.find((t) => t.layout === msg.string1);
+      if (toggle) {
+        toggle.setter((prev) => {
+          const show = !prev;
+          SetShowing(msg.string1, !prev);
+          return show;
+        });
+      }
+    };
+
+    EventsOn(messages.Message.TOGGLELAYOUT, handleToggleLayout);
+    return () => {
+      EventsOff(messages.Message.TOGGLELAYOUT);
+    };
+  }, [toggles]);
 
   return (
     <AppStateProvider>
       <AppShell
-        header={{ height: "3rem" }}
-        navbar={{ collapsed: { desktop: false }, width: "10rem", breakpoint: 0 }}
+        header={{ height: showHeader ? "3rem" : "0" }}
+        navbar={{ collapsed: { desktop: !showMenu }, width: "10rem", breakpoint: 0 }}
         aside={{ collapsed: { desktop: !showHelp }, width: "20rem", breakpoint: 0 }}
-        footer={{ height: "2rem" }}
+        footer={{ height: showFooter ? "2rem" : "0" }}
       >
-        <AppShell.Header>
-          <Header title="TrueBlocks Browse" />
-        </AppShell.Header>
+        <AppShell.Header>{showHeader ? <Header title={title} /> : <></>}</AppShell.Header>
         <AppShell.Navbar>
-          <Navbar />
+          <MenuPanel />
         </AppShell.Navbar>
         <AppShell.Main className={classes.mainContent}>
-          <Routes />
+          <ViewContainer />
+          <ViewStatus />
         </AppShell.Main>
         <AppShell.Aside>
-          <Aside />
+          <HelpPanel />
         </AppShell.Aside>
-        <AppShell.Footer>
-          <AppStatus />
-        </AppShell.Footer>
+        <AppShell.Footer>{showFooter ? <Footer /> : <></>}</AppShell.Footer>
       </AppShell>
     </AppStateProvider>
   );
-}
-
-export default App;
+};

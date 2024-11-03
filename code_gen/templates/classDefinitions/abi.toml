@@ -1,0 +1,11 @@
+[settings]
+	class = "Abi"
+	# doc_group = "20-Routes"
+	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
+	doc_route = "1040-containers"
+	ui_route = "1040-abis"
+	attributes = "itemType=coreTypes.Abi|editable|sorts=isEmpty+Asc,isKnown+Asc,address+Asc,"
+	# produced_by = "blocks"
+	# contains = "transaction, withdrawal"
+	cache_type = "cacheable"
+	cache_by = "range"

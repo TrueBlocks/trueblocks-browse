@@ -1,58 +1,26 @@
-import { getCoreRowModel, useReactTable, Table, ColumnDef } from "@tanstack/react-table";
-import { View, FormTable, DataTable, GroupDefinition, EditableTable } from "@components";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { View, FormTable, ViewForm } from "@components";
 import { ModifyAbi } from "@gocode/app/App";
-import { types } from "@gocode/models";
 import { useAppState, ViewStateProvider } from "@state";
-import { tableColumns } from "./AbisTable";
+import { AbisFormTable, AbisTableDef } from ".";
 
-export function AbisView() {
+export const AbisView = () => {
   const { abis, fetchAbis } = useAppState();
 
   const table = useReactTable({
     data: abis.items || [],
-    columns: tableColumns,
+    columns: AbisTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const route = "abis";
+  const tabs = ["abis"];
+  const forms: ViewForm = {
+    abis: <FormTable data={abis} groups={AbisFormTable(table)} />,
+  };
   return (
-    <ViewStateProvider route={"abis"} nItems={abis.nItems} fetchFn={fetchAbis} modifyFn={ModifyAbi}>
-      <View>
-        <FormTable data={abis} definition={createAbisForm(table)} />
-      </View>
+    <ViewStateProvider route={route} nItems={abis.nItems} fetchFn={fetchAbis} modifyFn={ModifyAbi}>
+      <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
-}
-
-type theInstance = InstanceType<typeof types.AbiContainer>;
-function createAbisForm(table: Table<types.Abi>): GroupDefinition<theInstance>[] {
-  return [
-    {
-      title: "Abi Data",
-      colSpan: 6,
-      fields: [
-        { label: "nItems", type: "int", accessor: "nItems" },
-        { label: "nFunctions", type: "int", accessor: "nFunctions" },
-        { label: "nEvents", type: "int", accessor: "nEvents" },
-        { label: "fileSize", type: "bytes", accessor: "fileSize" },
-      ],
-    },
-    {
-      title: "Bounds",
-      colSpan: 6,
-      fields: [
-        { label: "largestFile", type: "text", accessor: "largestFile" },
-        { label: "mostFunctions", type: "text", accessor: "mostFunctions" },
-        { label: "mostEvents", type: "text", accessor: "mostEvents" },
-      ],
-    },
-    {
-      title: "Files",
-      fields: [],
-      components: [
-        {
-          component: <DataTable<types.Abi> table={table} loading={false} />,
-        },
-      ],
-    },
-  ];
-}
+};

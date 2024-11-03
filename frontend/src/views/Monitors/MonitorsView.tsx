@@ -1,75 +1,38 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, DataTable, GroupDefinition } from "@components";
-import { SetSessionVal, ModifyMonitors } from "@gocode/app/App";
-import { types, messages } from "@gocode/models";
+import { View, FormTable, ViewForm } from "@components";
+import { GoToAddress, ModifyMonitors } from "@gocode/app/App";
 import { Page } from "@hooks";
-import { EventsEmit } from "@runtime";
 import { useAppState, ViewStateProvider } from "@state";
-import { tableColumns } from "./MonitorsTable";
+import { MonitorsTableDef, MonitorFormDef } from ".";
 
-export function MonitorsView() {
+export const MonitorsView = () => {
   const { monitors, fetchMonitors } = useAppState();
 
   const handleEnter = (page: Page) => {
-    const record = page.selected - page.getOffset();
-    const address = monitors.items[record].address;
-    SetSessionVal("route", `/history/${address}`);
-    EventsEmit(messages.Message.NAVIGATE, {
-      route: `/history/${address}`,
-    });
+    const address = monitors.items[page.getRecord()].address;
+    GoToAddress(address).then(() => {});
   };
 
   const table = useReactTable({
     data: monitors.items || [],
-    columns: tableColumns,
+    columns: MonitorsTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const route = "monitors";
+  const tabs = ["monitors"];
+  const forms: ViewForm = {
+    monitors: <FormTable data={monitors} groups={MonitorFormDef(table)} />,
+  };
   return (
     <ViewStateProvider
-      route="monitors"
+      route={route}
       nItems={monitors.nItems}
       fetchFn={fetchMonitors}
       onEnter={handleEnter}
       modifyFn={ModifyMonitors}
     >
-      <View>
-        <FormTable data={monitors} definition={createMonitorForm(table)} />
-      </View>
+      <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
-}
-
-type theInstance = InstanceType<typeof types.MonitorContainer>;
-function createMonitorForm(table: any): GroupDefinition<theInstance>[] {
-  return [
-    {
-      title: "Monitor Data",
-      colSpan: 6,
-      fields: [
-        { label: "nMonitors", type: "int", accessor: "nItems" },
-        { label: "nRecords", type: "int", accessor: "nRecords" },
-        { label: "nNamed", type: "int", accessor: "nNamed" },
-        { label: "fileSize", type: "bytes", accessor: "fileSize" },
-      ],
-    },
-    {
-      title: "Other",
-      colSpan: 6,
-      fields: [
-        { label: "nEmpty", type: "int", accessor: "nEmpty" },
-        { label: "nStaged", type: "int", accessor: "nStaged" },
-        { label: "nDeleted", type: "int", accessor: "nDeleted" },
-      ],
-    },
-    {
-      title: "Available Monitors",
-      fields: [],
-      components: [
-        {
-          component: <DataTable<types.Monitor> table={table} loading={false} />,
-        },
-      ],
-    },
-  ];
-}
+};

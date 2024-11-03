@@ -1,0 +1,27 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+package app
+
+import (
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	"github.com/wailsapp/wails/v2/pkg/menu"
+)
+
+{{range .Structures -}}
+func (a *App) {{firstUpper .UiRouteName}}View(cb *menu.CallbackData) {
+	{{if .IsHistory -}}
+	address := a.GetSelected()
+	a.Navigate("/{{toLower .UiRouteName}}", address.Hex())
+	{{- else if .IsWizard -}}
+	if a.isConfigured() {
+		a.StepWizard(coreTypes.Reset)
+	} else {
+		a.StepWizard(coreTypes.Next)
+	}
+	a.Navigate("/{{toLower .UiRouteName}}", "")
+	{{- else -}}
+	a.Navigate("/{{if not .IsProject}}{{toLower .UiRouteName}}{{end}}", "")
+	{{end -}}
+}
+
+{{end}}

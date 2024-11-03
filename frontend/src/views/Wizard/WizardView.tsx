@@ -1,45 +1,61 @@
+import { useState, useEffect } from "react";
 import { Button } from "@mantine/core";
-import { wizard } from "@gocode/models";
+import { Text } from "@mantine/core";
+import { StepWizard } from "@gocode/app/App";
+import { types } from "@gocode/models";
 import { useAppState } from "@state";
+import classes from "./WizardView.module.css";
 
-export function WizardView() {
-  const { isConfigured, wizardState } = useAppState();
+export const WizardView = () => {
+  const { isConfigured, wizardState, setWizardState } = useAppState();
+  const [cn, setCn] = useState(classes.wizOkay);
+  const stepWizard = (step: types.WizStep) => {
+    StepWizard(step).then((state) => {
+      setWizardState(state);
+    });
+  };
+
+  useEffect(() => {
+    setCn(wizardState === types.WizState.ERROR ? classes.wizError : classes.wizOkay);
+  }, [wizardState]);
 
   return (
     <div>
-      <div>{`wizardState: ${wizardState}`}</div>
-      <div>{`isConfigured: ${isConfigured}`}</div>
-      <ResetWizard />
-      <StepWizard back />
-      <StepWizard />
-      <FinishWizard />
+      <Text className={cn}>{`wizardState: ${wizardState}`}</Text>
+      <Text className={cn}>{`isConfigured: ${isConfigured}`}</Text>
+      <ResetWizard stepWizard={stepWizard} />
+      <BumpWizard stepWizard={stepWizard} back />
+      <BumpWizard stepWizard={stepWizard} />
+      <FinishWizard stepWizard={stepWizard} />
     </div>
   );
-}
+};
 
-export function ResetWizard() {
-  const { stepWizard } = useAppState();
+type StepProps = {
+  stepWizard: (step: types.WizStep) => void;
+  back?: boolean;
+};
+
+export const ResetWizard = ({ stepWizard }: StepProps) => {
   return (
-    <Button size={"xs"} onClick={() => stepWizard(wizard.Step.RESET)}>
+    <Button size={"xs"} onClick={() => stepWizard(types.WizStep.RESET)}>
       Reset
     </Button>
   );
-}
+};
 
-export function StepWizard({ back = false }: { back?: boolean }) {
-  const { stepWizard } = useAppState();
+export const BumpWizard = ({ stepWizard, back = false }: StepProps) => {
   return (
-    <Button size={"xs"} onClick={() => stepWizard(back ? wizard.Step.PREVIOUS : wizard.Step.NEXT)}>
+    <Button size={"xs"} onClick={() => stepWizard(back ? types.WizStep.PREVIOUS : types.WizStep.NEXT)}>
       {back ? "Back" : "Next"}
     </Button>
   );
-}
+};
 
-export function FinishWizard() {
-  const { stepWizard } = useAppState();
+export const FinishWizard = ({ stepWizard }: StepProps) => {
   return (
-    <Button size={"xs"} onClick={() => stepWizard(wizard.Step.FINISH)}>
+    <Button size={"xs"} onClick={() => stepWizard(types.WizStep.FINISH)}>
       Finish
     </Button>
   );
-}
+};

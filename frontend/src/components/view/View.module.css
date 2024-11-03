@@ -1,0 +1,34 @@
+.viewContainer {
+  overflow-y: auto;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  background-color: white;
+  color: black;
+}
+
+.viewStatus {
+  font-size: 14pt;
+  font-family: monospace;
+  height: 2rem;
+  background-color: transparent;
+  position: sticky;
+  bottom: 0;
+}
+
+.tab {
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.tab:hover {
+  background-color: #f0f0f0; /* Hover effect */
+}
+
+.tab[data-active="true"] {
+  background-color: green; /* Change the background of the active tab to green */
+  color: white; /* Change text color of the active tab */
+}

@@ -1,0 +1,11 @@
+[settings]
+	class = "Session"
+	# doc_group = "20-Routes"
+	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
+	doc_route = "1100-containers"
+	ui_route = "1100-session"
+	attributes = "embedType=coreTypes.Session|noChain|noFetch"
+	# produced_by = "blocks"
+	# contains = "transaction, withdrawal"
+	cache_type = "cacheable"
+	cache_by = "range"

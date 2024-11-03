@@ -31,7 +31,7 @@ func (s *DaemonIpfs) String() string {
 	return s.Daemon.String()
 }
 
-func (s *DaemonIpfs) GetState() State {
+func (s *DaemonIpfs) GetState() DaemonState {
 	return s.Daemon.GetState()
 }
 

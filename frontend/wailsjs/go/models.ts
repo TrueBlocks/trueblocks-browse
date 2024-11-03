@@ -1,5 +1,45 @@
 export namespace app {
 	
+	export class AppInfo {
+	    chain: string;
+	    filename: string;
+	    dirty: boolean;
+	    meta: types.MetaData;
+	    state: types.WizState;
+	    isConfigured: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new AppInfo(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.chain = source["chain"];
+	        this.filename = source["filename"];
+	        this.dirty = source["dirty"];
+	        this.meta = this.convertValues(source["meta"], types.MetaData);
+	        this.state = source["state"];
+	        this.isConfigured = source["isConfigured"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class ModifyData {
 	    operation: string;
 	    address: base.Address;
@@ -66,68 +106,56 @@ export namespace base {
 
 }
 
-export namespace config {
+export namespace configtypes {
 	
-	export class Daemons {
-	    freshen: boolean;
-	    scraper: boolean;
-	    ipfs: boolean;
+	export class ScrapeSettings {
+	    appsPerChunk: number;
+	    snapToGrid: number;
+	    firstSnap: number;
+	    unripeDist: number;
+	    allowMissing?: boolean;
+	    channelCount?: number;
 	
 	    static createFrom(source: any = {}) {
-	        return new Daemons(source);
+	        return new ScrapeSettings(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.freshen = source["freshen"];
-	        this.scraper = source["scraper"];
-	        this.ipfs = source["ipfs"];
+	        this.appsPerChunk = source["appsPerChunk"];
+	        this.snapToGrid = source["snapToGrid"];
+	        this.firstSnap = source["firstSnap"];
+	        this.unripeDist = source["unripeDist"];
+	        this.allowMissing = source["allowMissing"];
+	        this.channelCount = source["channelCount"];
 	    }
 	}
-	export class Window {
-	    x: number;
-	    y: number;
-	    width: number;
-	    height: number;
-	    title: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Window(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.x = source["x"];
-	        this.y = source["y"];
-	        this.width = source["width"];
-	        this.height = source["height"];
-	        this.title = source["title"];
-	    }
-	}
-	export class Session {
+	export class ChainGroup {
 	    chain: string;
-	    lastFile: string;
-	    lastRoute: string;
-	    lastSub: {[key: string]: string};
-	    lastHelp: boolean;
-	    daemons: Daemons;
-	    window: Window;
-	    wizard: wizard.Wizard;
+	    chainId: string;
+	    ipfsGateway: string;
+	    keyEndpoint: string;
+	    localExplorer: string;
+	    removeExplorer: string;
+	    rpcProvider: string;
+	    symbol: string;
+	    scrape: ScrapeSettings;
 	
 	    static createFrom(source: any = {}) {
-	        return new Session(source);
+	        return new ChainGroup(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.chain = source["chain"];
-	        this.lastFile = source["lastFile"];
-	        this.lastRoute = source["lastRoute"];
-	        this.lastSub = source["lastSub"];
-	        this.lastHelp = source["lastHelp"];
-	        this.daemons = this.convertValues(source["daemons"], Daemons);
-	        this.window = this.convertValues(source["window"], Window);
-	        this.wizard = this.convertValues(source["wizard"], wizard.Wizard);
+	        this.chainId = source["chainId"];
+	        this.ipfsGateway = source["ipfsGateway"];
+	        this.keyEndpoint = source["keyEndpoint"];
+	        this.localExplorer = source["localExplorer"];
+	        this.removeExplorer = source["removeExplorer"];
+	        this.rpcProvider = source["rpcProvider"];
+	        this.symbol = source["symbol"];
+	        this.scrape = this.convertValues(source["scrape"], ScrapeSettings);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -148,12 +176,170 @@ export namespace config {
 		    return a;
 		}
 	}
+	export class UnchainedGroup {
+	    preferredPublisher: string;
+	    smartContract: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new UnchainedGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.preferredPublisher = source["preferredPublisher"];
+	        this.smartContract = source["smartContract"];
+	    }
+	}
+	export class PinningGroup {
+	    gatewayUrl: string;
+	    localPinUrl: string;
+	    remotePinUrl: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new PinningGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.gatewayUrl = source["gatewayUrl"];
+	        this.localPinUrl = source["localPinUrl"];
+	        this.remotePinUrl = source["remotePinUrl"];
+	    }
+	}
+	export class KeyGroup {
+	    license: string;
+	    apiKey: string;
+	    secret: string;
+	    jwt: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new KeyGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.license = source["license"];
+	        this.apiKey = source["apiKey"];
+	        this.secret = source["secret"];
+	        this.jwt = source["jwt"];
+	    }
+	}
+	export class NotifyGroup {
+	    url?: string;
+	    author?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new NotifyGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.url = source["url"];
+	        this.author = source["author"];
+	    }
+	}
+	export class SettingsGroup {
+	    cachePath: string;
+	    indexPath: string;
+	    defaultChain: string;
+	    defaultGateway: string;
+	    notify: NotifyGroup;
+	
+	    static createFrom(source: any = {}) {
+	        return new SettingsGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.cachePath = source["cachePath"];
+	        this.indexPath = source["indexPath"];
+	        this.defaultChain = source["defaultChain"];
+	        this.defaultGateway = source["defaultGateway"];
+	        this.notify = this.convertValues(source["notify"], NotifyGroup);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class VersionGroup {
+	    current: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new VersionGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.current = source["current"];
+	    }
+	}
+	export class Config {
+	    version: VersionGroup;
+	    settings: SettingsGroup;
+	    keys: {[key: string]: KeyGroup};
+	    pinning: PinningGroup;
+	    unchained: UnchainedGroup;
+	    chains: {[key: string]: ChainGroup};
+	
+	    static createFrom(source: any = {}) {
+	        return new Config(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = this.convertValues(source["version"], VersionGroup);
+	        this.settings = this.convertValues(source["settings"], SettingsGroup);
+	        this.keys = this.convertValues(source["keys"], KeyGroup, true);
+	        this.pinning = this.convertValues(source["pinning"], PinningGroup);
+	        this.unchained = this.convertValues(source["unchained"], UnchainedGroup);
+	        this.chains = this.convertValues(source["chains"], ChainGroup, true);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
+	
+	
+	
+	
+	
 
 }
 
 export namespace daemons {
 	
-	export enum State {
+	export enum DaemonState {
 	    STOPPED = "Stopped",
 	    RUNNING = "Running",
 	    PAUSED = "Paused",
@@ -165,7 +351,7 @@ export namespace daemons {
 	    // Go type: time
 	    started: any;
 	    ticks: number;
-	    state: State;
+	    state: DaemonState;
 	
 	    static createFrom(source: any = {}) {
 	        return new Daemon(source);
@@ -202,63 +388,73 @@ export namespace daemons {
 
 }
 
+export namespace editors {
+	
+	export class Name {
+	    address: string;
+	    name: string;
+	    tags: string;
+	    source: string;
+	    symbol: string;
+	    decimals: number;
+	    deleted?: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Name(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = source["address"];
+	        this.name = source["name"];
+	        this.tags = source["tags"];
+	        this.source = source["source"];
+	        this.symbol = source["symbol"];
+	        this.decimals = source["decimals"];
+	        this.deleted = source["deleted"];
+	    }
+	}
+
+}
+
 export namespace messages {
 	
 	export enum Message {
+	    PROGRESS = "Progress",
 	    COMPLETED = "Completed",
 	    CANCELLED = "Cancelled",
 	    ERROR = "Error",
 	    WARNING = "Warn",
 	    INFO = "Info",
-	    PROGRESS = "Progress",
+	    SWITCHTAB = "SwitchTab",
+	    TOGGLELAYOUT = "ToggleLayout",
+	    TOGGLEACCORDION = "ToggleAccordion",
 	    DAEMON = "Daemon",
-	    DOCUMENT = "Document",
 	    NAVIGATE = "Navigate",
-	    RELOAD = "Reload",
-	    TOGGLEHELP = "ToggleHelp",
+	    WIZARD = "Wizard",
 	}
-	export class DaemonMsg {
+	export class MessageMsg {
 	    name: string;
-	    message: string;
-	    color: string;
+	    address: base.Address;
+	    state: types.WizState;
+	    num1: number;
+	    num2: number;
+	    string1: string;
+	    string2: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new DaemonMsg(source);
+	        return new MessageMsg(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.name = source["name"];
-	        this.message = source["message"];
-	        this.color = source["color"];
-	    }
-	}
-	export class DocumentMsg {
-	    filename: string;
-	    msg: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new DocumentMsg(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.filename = source["filename"];
-	        this.msg = source["msg"];
-	    }
-	}
-	export class ErrorMsg {
-	    address: base.Address;
-	    errStr: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ErrorMsg(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.address = this.convertValues(source["address"], base.Address);
-	        this.errStr = source["errStr"];
+	        this.state = source["state"];
+	        this.num1 = source["num1"];
+	        this.num2 = source["num2"];
+	        this.string1 = source["string1"];
+	        this.string2 = source["string2"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -278,82 +474,6 @@ export namespace messages {
 		    }
 		    return a;
 		}
-	}
-	
-	export class InfoMsg {
-	    message: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new InfoMsg(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.message = source["message"];
-	    }
-	}
-	export class NavigateMsg {
-	    route: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new NavigateMsg(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.route = source["route"];
-	    }
-	}
-	export class ProgressMsg {
-	    address: base.Address;
-	    have: number;
-	    want: number;
-	
-	    static createFrom(source: any = {}) {
-	        return new ProgressMsg(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.address = this.convertValues(source["address"], base.Address);
-	        this.have = source["have"];
-	        this.want = source["want"];
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-
-}
-
-export namespace output {
-	
-	export class RenderCtx {
-	
-	
-	    static createFrom(source: any = {}) {
-	        return new RenderCtx(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	
-	    }
 	}
 
 }
@@ -379,6 +499,21 @@ export namespace sdk {
 
 export namespace types {
 	
+	export enum WizState {
+	    WELCOME = "welcome",
+	    TOMLOKAY = "tomlOkay",
+	    RPCOKAY = "rpcOkay",
+	    BLOOMSOKAY = "bloomsOkay",
+	    INDEXOKAY = "indexOkay",
+	    ERROR = "error",
+	    OKAY = "okay",
+	}
+	export enum WizStep {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
+	}
 	export class Parameter {
 	    components?: Parameter[];
 	    indexed?: boolean;
@@ -522,6 +657,15 @@ export namespace types {
 		}
 	}
 	export class AbiContainer {
+	    largestFile: string;
+	    mostEvents: string;
+	    mostFunctions: string;
+	    items: Abi[];
+	    nItems: number;
+	    sorts: sdk.SortSpec;
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
 	    address: base.Address;
 	    fileSize: number;
 	    functions: Function[];
@@ -534,15 +678,6 @@ export namespace types {
 	    nFunctions: number;
 	    name: string;
 	    path: string;
-	    items: Abi[];
-	    nItems: number;
-	    largestFile: string;
-	    mostFunctions: string;
-	    mostEvents: string;
-	    sort: sdk.SortSpec;
-	    // Go type: time
-	    lastUpdate: any;
-	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new AbiContainer(source);
@@ -550,6 +685,14 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.largestFile = source["largestFile"];
+	        this.mostEvents = source["mostEvents"];
+	        this.mostFunctions = source["mostFunctions"];
+	        this.items = this.convertValues(source["items"], Abi);
+	        this.nItems = source["nItems"];
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
+	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.address = this.convertValues(source["address"], base.Address);
 	        this.fileSize = source["fileSize"];
 	        this.functions = this.convertValues(source["functions"], Function);
@@ -562,14 +705,6 @@ export namespace types {
 	        this.nFunctions = source["nFunctions"];
 	        this.name = source["name"];
 	        this.path = source["path"];
-	        this.items = this.convertValues(source["items"], Abi);
-	        this.nItems = source["nItems"];
-	        this.largestFile = source["largestFile"];
-	        this.mostFunctions = source["mostFunctions"];
-	        this.mostEvents = source["mostEvents"];
-	        this.sort = this.convertValues(source["sort"], sdk.SortSpec);
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
-	        this.chain = source["chain"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -589,6 +724,30 @@ export namespace types {
 		    }
 		    return a;
 		}
+	}
+	export class CacheItem {
+	    items: any[];
+	    lastCached?: string;
+	    nFiles: number;
+	    nFolders: number;
+	    path: string;
+	    sizeInBytes: number;
+	    type: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new CacheItem(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.items = source["items"];
+	        this.lastCached = source["lastCached"];
+	        this.nFiles = source["nFiles"];
+	        this.nFolders = source["nFolders"];
+	        this.path = source["path"];
+	        this.sizeInBytes = source["sizeInBytes"];
+	        this.type = source["type"];
+	    }
 	}
 	export class Chain {
 	    chain: string;
@@ -631,6 +790,46 @@ export namespace types {
 	        this.lastDate = source["lastDate"];
 	        this.lastTs = source["lastTs"];
 	    }
+	}
+	export class ChunkRecord {
+	    bloomHash: string;
+	    bloomSize: number;
+	    indexHash: string;
+	    indexSize: number;
+	    range: string;
+	    rangeDates?: RangeDates;
+	
+	    static createFrom(source: any = {}) {
+	        return new ChunkRecord(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.bloomHash = source["bloomHash"];
+	        this.bloomSize = source["bloomSize"];
+	        this.indexHash = source["indexHash"];
+	        this.indexSize = source["indexSize"];
+	        this.range = source["range"];
+	        this.rangeDates = this.convertValues(source["rangeDates"], RangeDates);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class ChunkStats {
 	    addrsPerBlock: number;
@@ -686,7 +885,98 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class ConfigContainer {
+	    nChains: number;
+	    version: configtypes.VersionGroup;
+	    settings: configtypes.SettingsGroup;
+	    keys: {[key: string]: configtypes.KeyGroup};
+	    pinning: configtypes.PinningGroup;
+	    unchained: configtypes.UnchainedGroup;
+	    chains: {[key: string]: configtypes.ChainGroup};
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
 	
+	    static createFrom(source: any = {}) {
+	        return new ConfigContainer(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.nChains = source["nChains"];
+	        this.version = this.convertValues(source["version"], configtypes.VersionGroup);
+	        this.settings = this.convertValues(source["settings"], configtypes.SettingsGroup);
+	        this.keys = this.convertValues(source["keys"], configtypes.KeyGroup, true);
+	        this.pinning = this.convertValues(source["pinning"], configtypes.PinningGroup);
+	        this.unchained = this.convertValues(source["unchained"], configtypes.UnchainedGroup);
+	        this.chains = this.convertValues(source["chains"], configtypes.ChainGroup, true);
+	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class Daemons {
+	    freshen: boolean;
+	    scraper: boolean;
+	    ipfs: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Daemons(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.freshen = source["freshen"];
+	        this.scraper = source["scraper"];
+	        this.ipfs = source["ipfs"];
+	    }
+	}
+	
+	export class Headers {
+	    project: boolean;
+	    history: boolean;
+	    monitors: boolean;
+	    names: boolean;
+	    abis: boolean;
+	    indexes: boolean;
+	    manifests: boolean;
+	    status: boolean;
+	    settings: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Headers(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.project = source["project"];
+	        this.history = source["history"];
+	        this.monitors = source["monitors"];
+	        this.names = source["names"];
+	        this.abis = source["abis"];
+	        this.indexes = source["indexes"];
+	        this.manifests = source["manifests"];
+	        this.status = source["status"];
+	        this.settings = source["settings"];
+	    }
+	}
 	export class Statement {
 	    accountedFor: base.Address;
 	    // Go type: base
@@ -1116,15 +1406,15 @@ export namespace types {
 		}
 	}
 	export class HistoryContainer {
-	    items: Transaction[];
-	    nItems: number;
-	    nTotal: number;
 	    address: base.Address;
-	    name: string;
 	    balance: string;
+	    nErrors: number;
 	    nLogs: number;
 	    nTokens: number;
-	    nErrors: number;
+	    nTotal: number;
+	    name: string;
+	    items: Transaction[];
+	    nItems: number;
 	    chain: string;
 	    // Go type: time
 	    lastUpdate: any;
@@ -1135,15 +1425,15 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.items = this.convertValues(source["items"], Transaction);
-	        this.nItems = source["nItems"];
-	        this.nTotal = source["nTotal"];
 	        this.address = this.convertValues(source["address"], base.Address);
-	        this.name = source["name"];
 	        this.balance = source["balance"];
+	        this.nErrors = source["nErrors"];
 	        this.nLogs = source["nLogs"];
 	        this.nTokens = source["nTokens"];
-	        this.nErrors = source["nErrors"];
+	        this.nTotal = source["nTotal"];
+	        this.name = source["name"];
+	        this.items = this.convertValues(source["items"], Transaction);
+	        this.nItems = source["nItems"];
 	        this.chain = source["chain"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
@@ -1167,6 +1457,12 @@ export namespace types {
 		}
 	}
 	export class IndexContainer {
+	    items: ChunkStats[];
+	    nItems: number;
+	    sorts: sdk.SortSpec;
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
 	    addrsPerBlock: number;
 	    appsPerAddr: number;
 	    appsPerBlock: number;
@@ -1180,12 +1476,6 @@ export namespace types {
 	    rangeDates?: RangeDates;
 	    ratio: number;
 	    recWid: number;
-	    items: ChunkStats[];
-	    nItems: number;
-	    sort: sdk.SortSpec;
-	    // Go type: time
-	    lastUpdate: any;
-	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new IndexContainer(source);
@@ -1193,6 +1483,11 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.items = this.convertValues(source["items"], ChunkStats);
+	        this.nItems = source["nItems"];
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
+	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.addrsPerBlock = source["addrsPerBlock"];
 	        this.appsPerAddr = source["appsPerAddr"];
 	        this.appsPerBlock = source["appsPerBlock"];
@@ -1206,11 +1501,6 @@ export namespace types {
 	        this.rangeDates = this.convertValues(source["rangeDates"], RangeDates);
 	        this.ratio = source["ratio"];
 	        this.recWid = source["recWid"];
-	        this.items = this.convertValues(source["items"], ChunkStats);
-	        this.nItems = source["nItems"];
-	        this.sort = this.convertValues(source["sort"], sdk.SortSpec);
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
-	        this.chain = source["chain"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1231,57 +1521,36 @@ export namespace types {
 		    return a;
 		}
 	}
-	
-	export class ChunkRecord {
-	    bloomHash: string;
-	    bloomSize: number;
-	    indexHash: string;
-	    indexSize: number;
-	    range: string;
-	    rangeDates?: RangeDates;
+	export class Layout {
+	    header: boolean;
+	    menu: boolean;
+	    help: boolean;
+	    footer: boolean;
 	
 	    static createFrom(source: any = {}) {
-	        return new ChunkRecord(source);
+	        return new Layout(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.bloomHash = source["bloomHash"];
-	        this.bloomSize = source["bloomSize"];
-	        this.indexHash = source["indexHash"];
-	        this.indexSize = source["indexSize"];
-	        this.range = source["range"];
-	        this.rangeDates = this.convertValues(source["rangeDates"], RangeDates);
+	        this.header = source["header"];
+	        this.menu = source["menu"];
+	        this.help = source["help"];
+	        this.footer = source["footer"];
 	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
 	}
+	
 	export class ManifestContainer {
-	    chain: string;
-	    chunks: ChunkRecord[];
+	    bloomsSize: number;
+	    indexSize: number;
+	    nBlooms: number;
+	    nIndexes: number;
 	    specification: string;
 	    version: string;
+	    items: ChunkRecord[];
 	    nItems: number;
-	    nBlooms: number;
-	    bloomsSize: number;
-	    nIndexes: number;
-	    indexSize: number;
+	    sorts: sdk.SortSpec;
+	    chain: string;
 	    // Go type: time
 	    lastUpdate: any;
 	
@@ -1291,15 +1560,16 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.chain = source["chain"];
-	        this.chunks = this.convertValues(source["chunks"], ChunkRecord);
+	        this.bloomsSize = source["bloomsSize"];
+	        this.indexSize = source["indexSize"];
+	        this.nBlooms = source["nBlooms"];
+	        this.nIndexes = source["nIndexes"];
 	        this.specification = source["specification"];
 	        this.version = source["version"];
+	        this.items = this.convertValues(source["items"], ChunkRecord);
 	        this.nItems = source["nItems"];
-	        this.nBlooms = source["nBlooms"];
-	        this.bloomsSize = source["bloomsSize"];
-	        this.nIndexes = source["nIndexes"];
-	        this.indexSize = source["indexSize"];
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
+	        this.chain = source["chain"];
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
@@ -1393,23 +1663,17 @@ export namespace types {
 		}
 	}
 	export class MonitorContainer {
-	    address: base.Address;
-	    deleted: boolean;
 	    fileSize: number;
-	    isEmpty: boolean;
-	    isStaged: boolean;
-	    lastScanned: number;
+	    nDeleted: number;
+	    nEmpty: number;
+	    nNamed: number;
 	    nRecords: number;
-	    name: string;
+	    nStaged: number;
 	    items: Monitor[];
 	    nItems: number;
-	    nNamed: number;
-	    nDeleted: number;
-	    nStaged: number;
-	    nEmpty: number;
+	    chain: string;
 	    // Go type: time
 	    lastUpdate: any;
-	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new MonitorContainer(source);
@@ -1417,22 +1681,16 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.address = this.convertValues(source["address"], base.Address);
-	        this.deleted = source["deleted"];
 	        this.fileSize = source["fileSize"];
-	        this.isEmpty = source["isEmpty"];
-	        this.isStaged = source["isStaged"];
-	        this.lastScanned = source["lastScanned"];
+	        this.nDeleted = source["nDeleted"];
+	        this.nEmpty = source["nEmpty"];
+	        this.nNamed = source["nNamed"];
 	        this.nRecords = source["nRecords"];
-	        this.name = source["name"];
+	        this.nStaged = source["nStaged"];
 	        this.items = this.convertValues(source["items"], Monitor);
 	        this.nItems = source["nItems"];
-	        this.nNamed = source["nNamed"];
-	        this.nDeleted = source["nDeleted"];
-	        this.nStaged = source["nStaged"];
-	        this.nEmpty = source["nEmpty"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1511,21 +1769,20 @@ export namespace types {
 		}
 	}
 	export class NameContainer {
-	    names: Name[];
-	    sizeOnDisc: number;
-	    namesMap: {[key: string]: Name};
-	    nItems: number;
 	    nContracts: number;
+	    nCustom: number;
+	    nDeleted: number;
 	    nErc20s: number;
 	    nErc721s: number;
-	    nCustom: number;
-	    nRegular: number;
 	    nPrefund: number;
-	    nBaddress: number;
-	    nDeleted: number;
+	    nRegular: number;
+	    nSystem: number;
+	    sizeOnDisc: number;
+	    items: Name[];
+	    nItems: number;
+	    chain: string;
 	    // Go type: time
 	    lastUpdate: any;
-	    chain: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new NameContainer(source);
@@ -1533,20 +1790,19 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.names = this.convertValues(source["names"], Name);
-	        this.sizeOnDisc = source["sizeOnDisc"];
-	        this.namesMap = this.convertValues(source["namesMap"], Name, true);
-	        this.nItems = source["nItems"];
 	        this.nContracts = source["nContracts"];
+	        this.nCustom = source["nCustom"];
+	        this.nDeleted = source["nDeleted"];
 	        this.nErc20s = source["nErc20s"];
 	        this.nErc721s = source["nErc721s"];
-	        this.nCustom = source["nCustom"];
-	        this.nRegular = source["nRegular"];
 	        this.nPrefund = source["nPrefund"];
-	        this.nBaddress = source["nBaddress"];
-	        this.nDeleted = source["nDeleted"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.nRegular = source["nRegular"];
+	        this.nSystem = source["nSystem"];
+	        this.sizeOnDisc = source["sizeOnDisc"];
+	        this.items = this.convertValues(source["items"], Name);
+	        this.nItems = source["nItems"];
 	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1569,24 +1825,18 @@ export namespace types {
 	}
 	
 	export class ProjectContainer {
-	    session: config.Session;
-	    items: HistoryContainer[];
-	    // Go type: HistoryMap
-	    historyMap?: any;
-	    // Go type: sync
-	    balanceMap?: any;
-	    // Go type: sync
-	    ensMap?: any;
-	    nOpenFiles: number;
-	    nMonitors: number;
-	    nNames: number;
+	    historySize: number;
 	    nAbis: number;
+	    nCaches: number;
 	    nIndexes: number;
 	    nManifests: number;
-	    nCaches: number;
-	    historySize: number;
-	    dirty: boolean;
-	    filename: string;
+	    nMonitors: number;
+	    nNames: number;
+	    items: HistoryContainer[];
+	    nItems: number;
+	    chain: string;
+	    // Go type: time
+	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new ProjectContainer(source);
@@ -1594,21 +1844,53 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.session = this.convertValues(source["session"], config.Session);
-	        this.items = this.convertValues(source["items"], HistoryContainer);
-	        this.historyMap = this.convertValues(source["historyMap"], null);
-	        this.balanceMap = this.convertValues(source["balanceMap"], null);
-	        this.ensMap = this.convertValues(source["ensMap"], null);
-	        this.nOpenFiles = source["nOpenFiles"];
-	        this.nMonitors = source["nMonitors"];
-	        this.nNames = source["nNames"];
+	        this.historySize = source["historySize"];
 	        this.nAbis = source["nAbis"];
+	        this.nCaches = source["nCaches"];
 	        this.nIndexes = source["nIndexes"];
 	        this.nManifests = source["nManifests"];
-	        this.nCaches = source["nCaches"];
-	        this.historySize = source["historySize"];
-	        this.dirty = source["dirty"];
-	        this.filename = source["filename"];
+	        this.nMonitors = source["nMonitors"];
+	        this.nNames = source["nNames"];
+	        this.items = this.convertValues(source["items"], HistoryContainer);
+	        this.nItems = source["nItems"];
+	        this.chain = source["chain"];
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class ProjectFile {
+	    version: string;
+	    dateSaved: string;
+	    selected: base.Address;
+	    addresses: base.Address[];
+	
+	    static createFrom(source: any = {}) {
+	        return new ProjectFile(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.dateSaved = source["dateSaved"];
+	        this.selected = this.convertValues(source["selected"], base.Address);
+	        this.addresses = this.convertValues(source["addresses"], base.Address);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1671,31 +1953,167 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class CacheItem {
-	    items: any[];
-	    lastCached?: string;
-	    nFiles: number;
-	    nFolders: number;
-	    path: string;
-	    sizeInBytes: number;
-	    type: string;
+	export class Toggles {
+	    layout: Layout;
+	    headers: Headers;
+	    daemons: Daemons;
 	
 	    static createFrom(source: any = {}) {
-	        return new CacheItem(source);
+	        return new Toggles(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.items = source["items"];
-	        this.lastCached = source["lastCached"];
-	        this.nFiles = source["nFiles"];
-	        this.nFolders = source["nFolders"];
-	        this.path = source["path"];
-	        this.sizeInBytes = source["sizeInBytes"];
-	        this.type = source["type"];
+	        this.layout = this.convertValues(source["layout"], Layout);
+	        this.headers = this.convertValues(source["headers"], Headers);
+	        this.daemons = this.convertValues(source["daemons"], Daemons);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class Wizard {
+	    state: WizState;
+	
+	    static createFrom(source: any = {}) {
+	        return new Wizard(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.state = source["state"];
 	    }
 	}
+	export class Window {
+	    x: number;
+	    y: number;
+	    width: number;
+	    height: number;
+	    title: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Window(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.x = source["x"];
+	        this.y = source["y"];
+	        this.width = source["width"];
+	        this.height = source["height"];
+	        this.title = source["title"];
+	    }
+	}
+	export class Session {
+	    lastChain: string;
+	    lastFile: string;
+	    lastFolder: string;
+	    lastRoute: string;
+	    lastSub: {[key: string]: string};
+	    window: Window;
+	    wizard: Wizard;
+	    toggles: Toggles;
+	
+	    static createFrom(source: any = {}) {
+	        return new Session(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.lastChain = source["lastChain"];
+	        this.lastFile = source["lastFile"];
+	        this.lastFolder = source["lastFolder"];
+	        this.lastRoute = source["lastRoute"];
+	        this.lastSub = source["lastSub"];
+	        this.window = this.convertValues(source["window"], Window);
+	        this.wizard = this.convertValues(source["wizard"], Wizard);
+	        this.toggles = this.convertValues(source["toggles"], Toggles);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class SessionContainer {
+	    lastChain: string;
+	    lastFile: string;
+	    lastFolder: string;
+	    lastRoute: string;
+	    lastSub: {[key: string]: string};
+	    window: Window;
+	    wizard: Wizard;
+	    toggles: Toggles;
+	    // Go type: time
+	    lastUpdate: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new SessionContainer(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.lastChain = source["lastChain"];
+	        this.lastFile = source["lastFile"];
+	        this.lastFolder = source["lastFolder"];
+	        this.lastRoute = source["lastRoute"];
+	        this.lastSub = source["lastSub"];
+	        this.window = this.convertValues(source["window"], Window);
+	        this.wizard = this.convertValues(source["wizard"], Wizard);
+	        this.toggles = this.convertValues(source["toggles"], Toggles);
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class StatusContainer {
+	    nBytes: number;
+	    nFiles: number;
+	    nFolders: number;
 	    cachePath?: string;
 	    caches: CacheItem[];
 	    chain?: string;
@@ -1718,12 +2136,10 @@ export namespace types {
 	    version?: string;
 	    meta?: MetaData;
 	    diffs?: MetaData;
-	    nItems: number;
-	    nFolders: number;
-	    nFiles: number;
-	    nBytes: number;
 	    // Go type: time
 	    lastUpdate: any;
+	    items: CacheItem[];
+	    nItems: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new StatusContainer(source);
@@ -1731,6 +2147,9 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.nBytes = source["nBytes"];
+	        this.nFiles = source["nFiles"];
+	        this.nFolders = source["nFolders"];
 	        this.cachePath = source["cachePath"];
 	        this.caches = this.convertValues(source["caches"], CacheItem);
 	        this.chain = source["chain"];
@@ -1753,10 +2172,45 @@ export namespace types {
 	        this.version = source["version"];
 	        this.meta = this.convertValues(source["meta"], MetaData);
 	        this.diffs = this.convertValues(source["diffs"], MetaData);
+	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.items = this.convertValues(source["items"], CacheItem);
 	        this.nItems = source["nItems"];
-	        this.nFolders = source["nFolders"];
-	        this.nFiles = source["nFiles"];
-	        this.nBytes = source["nBytes"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class SettingsGroup {
+	    status: StatusContainer;
+	    config: ConfigContainer;
+	    session: SessionContainer;
+	    // Go type: time
+	    lastUpdate: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new SettingsGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.status = this.convertValues(source["status"], StatusContainer);
+	        this.config = this.convertValues(source["config"], ConfigContainer);
+	        this.session = this.convertValues(source["session"], SessionContainer);
 	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
 	    }
 	
@@ -1781,35 +2235,31 @@ export namespace types {
 	
 	
 	
+	
+	
+	
+	
 
 }
 
-export namespace wizard {
+export namespace version {
 	
-	export enum State {
-	    NOTOKAY = "notOkay",
-	    TOMLOKAY = "tomlOkay",
-	    RPCOKAY = "rpcOkay",
-	    BLOOMSOKAY = "bloomsOkay",
-	    INDEXOKAY = "indexOkay",
-	    OKAY = "okay",
-	}
-	export enum Step {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
-	}
-	export class Wizard {
-	    state: State;
+	export class Version {
+	    major: number;
+	    minor: number;
+	    build: number;
+	    aspect: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new Wizard(source);
+	        return new Version(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.state = source["state"];
+	        this.major = source["major"];
+	        this.minor = source["minor"];
+	        this.build = source["build"];
+	        this.aspect = source["aspect"];
 	    }
 	}
 

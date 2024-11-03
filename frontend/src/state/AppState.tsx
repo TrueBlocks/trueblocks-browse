@@ -1,20 +1,19 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { useState, useEffect, useContext, createContext, ReactNode } from "react";
 import {
-  AbiPage,
-  GetMeta,
-  GetChain,
-  SetChain,
-  GetWizardState,
+  ProjectPage,
   HistoryPage,
-  IndexPage,
-  ManifestPage,
   MonitorPage,
   NamePage,
-  ProjectPage,
+  AbiPage,
+  IndexPage,
+  ManifestPage,
+  SettingsPage,
+  SetChain,
   StatusPage,
-  StepWizard,
+  SessionPage,
+  GetAppInfo,
 } from "@gocode/app/App";
-import { base, messages, types, wizard } from "@gocode/models";
+import { app, base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
 
 interface AppStateProps {
@@ -40,21 +39,26 @@ interface AppStateProps {
   manifests: types.ManifestContainer;
   fetchManifests: (currentItem: number, itemsPerPage: number) => void;
 
+  settings: types.SettingsGroup;
+  fetchSettings: (currentItem: number, itemsPerPage: number) => void;
+
   status: types.StatusContainer;
   fetchStatus: (currentItem: number, itemsPerPage: number) => void;
+
+  session: types.SessionContainer;
+  fetchSession: (currentItem: number, itemsPerPage: number) => void;
 
   address: base.Address;
   setAddress: (address: base.Address) => void;
 
+  info: app.AppInfo;
   chain: string;
-  changeChain: (newChain: string) => void;
-
   meta: types.MetaData;
-  setMeta: (meta: types.MetaData) => void;
-
   isConfigured: boolean;
-  wizardState: wizard.State;
-  stepWizard: (step: wizard.Step) => void;
+  wizardState: types.WizState;
+  selectChain: (newChain: string) => void;
+  setMeta: (meta: types.MetaData) => void;
+  setWizardState: (state: types.WizState) => void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -67,20 +71,22 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [abis, setAbis] = useState<types.AbiContainer>({} as types.AbiContainer);
   const [indexes, setIndexes] = useState<types.IndexContainer>({} as types.IndexContainer);
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
+  const [settings, setSettings] = useState<types.SettingsGroup>({} as types.SettingsGroup);
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
+  const [session, setSession] = useState<types.SessionContainer>({} as types.SessionContainer);
+  // TODO BOGUS: The daemon state should be in the AppState
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
-  const [chain, setChain] = useState<string>("");
-  const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
 
-  const [wizardState, setWizardState] = useState<wizard.State>(wizard.State.NOTOKAY);
+  const [chain, setChain] = useState<string>("mainnet");
   const [isConfigured, setIsConfigured] = useState<boolean>(false);
+  const [wizardState, setWizardState] = useState<types.WizState>(types.WizState.WELCOME);
+  const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
+  const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
 
   const fetchProject = async (currentItem: number, itemsPerPage: number) => {
     ProjectPage(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
-      if (item) {
-        setProject(item);
-      }
+      setProject(item);
     });
   };
 
@@ -130,6 +136,14 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
+  const fetchSettings = async (currentItem: number, itemsPerPage: number) => {
+    SettingsPage(currentItem, itemsPerPage).then((item: types.SettingsGroup) => {
+      if (item) {
+        setSettings(item);
+      }
+    });
+  };
+
   const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
     StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
       if (item) {
@@ -138,26 +152,25 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchChain = async () => {
-    GetChain().then((chain) => {
-      setChain(chain);
+  const fetchSession = async (currentItem: number, itemsPerPage: number) => {
+    SessionPage(currentItem, itemsPerPage).then((item: types.SessionContainer) => {
+      if (item) {
+        setSession(item);
+      }
     });
   };
 
-  const fetchMeta = async () => {
-    GetMeta().then((meta) => {
-      setMeta(meta);
+  const fetchAppInfo = () => {
+    GetAppInfo().then((info) => {
+      setChain(info.chain);
+      setMeta(info.meta);
+      setWizardState(info.state);
+      setIsConfigured(info.isConfigured);
+      setInfo(info);
     });
   };
 
-  const fetchWizard = async () => {
-    GetWizardState().then((state) => {
-      setWizardState(state);
-      setIsConfigured(state == wizard.State.OKAY);
-    });
-  };
-
-  const changeChain = (newChain: string) => {
+  const selectChain = (newChain: string) => {
     setChain(newChain);
     SetChain(newChain, address) // disables refresh
       .then(() => {})
@@ -167,44 +180,30 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   useEffect(() => {
-    fetchChain();
-    fetchMeta();
-    fetchWizard();
-    fetchStatus(0, 100);
-  }, []);
-
-  useEffect(() => {
-    const handleRefresh = () => {
-      fetchChain();
-      fetchMeta();
-      fetchWizard();
-      fetchStatus(0, 100);
-    };
-
-    const { Message } = messages;
-    EventsOn(Message.DAEMON, handleRefresh);
-    return () => {
-      EventsOff(Message.DAEMON);
-    };
-  }, []);
-
-  useEffect(() => {
     fetchHistory(0, 15);
     HistoryPage(address as unknown as string, 0, 15).then((item: types.HistoryContainer) => {
       setHistory(item);
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const stepWizard = (step: wizard.Step) => {
-    StepWizard(step).then((state) => {
-      setWizardState(state);
-      setIsConfigured(state == wizard.State.OKAY);
-    });
-  };
+  useEffect(() => {
+    const handleRefresh = () => {
+      fetchAppInfo();
+      fetchStatus(0, 100);
+    };
+    handleRefresh(); // first load
+
+    // when messaged
+    const { Message } = messages;
+    EventsOn(Message.DAEMON, handleRefresh);
+    EventsOn(Message.WIZARD, handleRefresh);
+    return () => {
+      EventsOff(Message.DAEMON);
+      EventsOff(Message.WIZARD);
+    };
+  }, []);
 
   const state = {
-    address,
-    chain,
     project,
     fetchProject,
     history,
@@ -220,15 +219,22 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchIndexes,
     manifests,
     fetchManifests,
+    settings,
+    fetchSettings,
     status,
     fetchStatus,
-    setAddress,
-    changeChain,
+    session,
+    fetchSession,
+    address,
+    info,
+    chain,
+    meta,
     isConfigured,
     wizardState,
-    stepWizard,
-    meta,
+    setAddress,
+    selectChain,
     setMeta,
+    setWizardState,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;

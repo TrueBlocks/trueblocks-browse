@@ -1,97 +1,66 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package app
 
 import (
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
 
-// Find: NewViews
-func (a *App) ViewProject(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewProject")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
-		a.SetSessionVal("route", "/")
-	}
+func (a *App) ProjectView(cb *menu.CallbackData) {
+	a.Navigate("/", "")
 }
 
-func (a *App) ViewHistory(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewHistory")
-		address := a.GetLastAddress()
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/history/"+address.Hex()))
-		a.SetSessionVal("route", "/history/"+address.Hex())
-	}
+func (a *App) HistoryView(cb *menu.CallbackData) {
+	address := a.GetSelected()
+	a.Navigate("/history", address.Hex())
 }
 
-func (a *App) ViewMonitors(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewMonitors")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/monitors"))
-		a.SetSessionVal("route", "/monitors")
-	}
+func (a *App) MonitorsView(cb *menu.CallbackData) {
+	a.Navigate("/monitors", "")
 }
 
-func (a *App) ViewNames(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewNames")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/names"))
-		a.SetSessionVal("route", "/names")
-	}
+func (a *App) NamesView(cb *menu.CallbackData) {
+	a.Navigate("/names", "")
 }
 
-func (a *App) ViewIndexes(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewIndexes")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/indexes"))
-		a.SetSessionVal("route", "/indexes")
-	}
+func (a *App) AbisView(cb *menu.CallbackData) {
+	a.Navigate("/abis", "")
 }
 
-func (a *App) ViewManifest(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewManifest")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/manifest"))
-		a.SetSessionVal("route", "/manifest")
-	}
+func (a *App) IndexesView(cb *menu.CallbackData) {
+	a.Navigate("/indexes", "")
 }
 
-func (a *App) ViewAbis(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewAbis")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/abis"))
-		a.SetSessionVal("route", "/abis")
-	}
+func (a *App) ManifestsView(cb *menu.CallbackData) {
+	a.Navigate("/manifests", "")
 }
 
-func (a *App) ViewStatus(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewStatus")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/status"))
-		a.SetSessionVal("route", "/status")
-	}
+func (a *App) StatusView(cb *menu.CallbackData) {
+	a.Navigate("/status", "")
 }
 
-func (a *App) ViewDaemons(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewDaemons")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/daemons"))
-		a.SetSessionVal("route", "/daemons")
-	}
+func (a *App) SettingsView(cb *menu.CallbackData) {
+	a.Navigate("/settings", "")
 }
 
-func (a *App) ViewSettings(cd *menu.CallbackData) {
-	if a.isConfigured() {
-		logger.Info("ViewSettings")
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/settings"))
-		a.SetSessionVal("route", "/settings")
-	}
+func (a *App) DaemonsView(cb *menu.CallbackData) {
+	a.Navigate("/daemons", "")
 }
 
-func (a *App) ViewWizard(cd *menu.CallbackData) {
-	a.StepWizard(wizard.Reset)
-	logger.Info("ViewWizard")
-	messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/wizard"))
-	a.SetSessionVal("route", "/wizard")
+func (a *App) SessionView(cb *menu.CallbackData) {
+	a.Navigate("/session", "")
+}
+
+func (a *App) ConfigView(cb *menu.CallbackData) {
+	a.Navigate("/config", "")
+}
+
+func (a *App) WizardView(cb *menu.CallbackData) {
+	if a.isConfigured() {
+		a.StepWizard(coreTypes.Reset)
+	} else {
+		a.StepWizard(coreTypes.Next)
+	}
+	a.Navigate("/wizard", "")
 }

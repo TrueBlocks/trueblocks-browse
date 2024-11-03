@@ -6,28 +6,44 @@ export function AbiPage(arg1, arg2) {
   return window['go']['app']['App']['AbiPage'](arg1, arg2);
 }
 
+export function AbisView(arg1) {
+  return window['go']['app']['App']['AbisView'](arg1);
+}
+
+export function AccordionToggle(arg1) {
+  return window['go']['app']['App']['AccordionToggle'](arg1);
+}
+
 export function AddrToName(arg1) {
   return window['go']['app']['App']['AddrToName'](arg1);
+}
+
+export function Caching(arg1) {
+  return window['go']['app']['App']['Caching'](arg1);
 }
 
 export function CancelAllContexts() {
   return window['go']['app']['App']['CancelAllContexts']();
 }
 
-export function CancelContext(arg1) {
-  return window['go']['app']['App']['CancelContext'](arg1);
+export function ConfigView(arg1) {
+  return window['go']['app']['App']['ConfigView'](arg1);
 }
 
 export function ConvertToAddress(arg1) {
   return window['go']['app']['App']['ConvertToAddress'](arg1);
 }
 
-export function ExportToCsv(arg1) {
-  return window['go']['app']['App']['ExportToCsv'](arg1);
+export function DaemonsView(arg1) {
+  return window['go']['app']['App']['DaemonsView'](arg1);
 }
 
-export function Fatal(arg1) {
-  return window['go']['app']['App']['Fatal'](arg1);
+export function DeleteAddress(arg1) {
+  return window['go']['app']['App']['DeleteAddress'](arg1);
+}
+
+export function ExportAddress(arg1) {
+  return window['go']['app']['App']['ExportAddress'](arg1);
 }
 
 export function FileNew(arg1) {
@@ -46,24 +62,36 @@ export function FileSaveAs(arg1) {
   return window['go']['app']['App']['FileSaveAs'](arg1);
 }
 
-export function GetChain() {
-  return window['go']['app']['App']['GetChain']();
+export function FooterToggle(arg1) {
+  return window['go']['app']['App']['FooterToggle'](arg1);
+}
+
+export function GetAppInfo() {
+  return window['go']['app']['App']['GetAppInfo']();
+}
+
+export function GetAppTitle() {
+  return window['go']['app']['App']['GetAppTitle']();
 }
 
 export function GetChainInfo(arg1) {
   return window['go']['app']['App']['GetChainInfo'](arg1);
 }
 
-export function GetChainList() {
-  return window['go']['app']['App']['GetChainList']();
+export function GetChains() {
+  return window['go']['app']['App']['GetChains']();
+}
+
+export function GetConfig() {
+  return window['go']['app']['App']['GetConfig']();
 }
 
 export function GetContext() {
   return window['go']['app']['App']['GetContext']();
 }
 
-export function GetDaemonJson(arg1) {
-  return window['go']['app']['App']['GetDaemonJson'](arg1);
+export function GetDaemon(arg1) {
+  return window['go']['app']['App']['GetDaemon'](arg1);
 }
 
 export function GetEnv(arg1) {
@@ -74,40 +102,36 @@ export function GetExploreUrl(arg1, arg2, arg3) {
   return window['go']['app']['App']['GetExploreUrl'](arg1, arg2, arg3);
 }
 
-export function GetLastAddress() {
-  return window['go']['app']['App']['GetLastAddress']();
-}
-
 export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
 
-export function GetMeta() {
-  return window['go']['app']['App']['GetMeta']();
+export function GetRoute() {
+  return window['go']['app']['App']['GetRoute']();
+}
+
+export function GetSelected() {
+  return window['go']['app']['App']['GetSelected']();
 }
 
 export function GetSession() {
   return window['go']['app']['App']['GetSession']();
 }
 
-export function GetSessionDeamon(arg1) {
-  return window['go']['app']['App']['GetSessionDeamon'](arg1);
+export function GetState(arg1) {
+  return window['go']['app']['App']['GetState'](arg1);
 }
 
-export function GetSessionSubVal(arg1) {
-  return window['go']['app']['App']['GetSessionSubVal'](arg1);
+export function GetWindow() {
+  return window['go']['app']['App']['GetWindow']();
 }
 
-export function GetSessionVal(arg1) {
-  return window['go']['app']['App']['GetSessionVal'](arg1);
+export function GoToAddress(arg1) {
+  return window['go']['app']['App']['GoToAddress'](arg1);
 }
 
-export function GetSessionWizard() {
-  return window['go']['app']['App']['GetSessionWizard']();
-}
-
-export function GetWizardState() {
-  return window['go']['app']['App']['GetWizardState']();
+export function HeaderToggle(arg1) {
+  return window['go']['app']['App']['HeaderToggle'](arg1);
 }
 
 export function HelpToggle(arg1) {
@@ -118,12 +142,40 @@ export function HistoryPage(arg1, arg2, arg3) {
   return window['go']['app']['App']['HistoryPage'](arg1, arg2, arg3);
 }
 
+export function HistoryView(arg1) {
+  return window['go']['app']['App']['HistoryView'](arg1);
+}
+
 export function IndexPage(arg1, arg2) {
   return window['go']['app']['App']['IndexPage'](arg1, arg2);
 }
 
+export function IndexesView(arg1) {
+  return window['go']['app']['App']['IndexesView'](arg1);
+}
+
+export function IsShowing(arg1) {
+  return window['go']['app']['App']['IsShowing'](arg1);
+}
+
+export function LoadName(arg1) {
+  return window['go']['app']['App']['LoadName'](arg1);
+}
+
+export function Logger(arg1) {
+  return window['go']['app']['App']['Logger'](arg1);
+}
+
 export function ManifestPage(arg1, arg2) {
   return window['go']['app']['App']['ManifestPage'](arg1, arg2);
+}
+
+export function ManifestsView(arg1) {
+  return window['go']['app']['App']['ManifestsView'](arg1);
+}
+
+export function MenuToggle(arg1) {
+  return window['go']['app']['App']['MenuToggle'](arg1);
 }
 
 export function ModifyAbi(arg1) {
@@ -138,36 +190,52 @@ export function ModifyName(arg1) {
   return window['go']['app']['App']['ModifyName'](arg1);
 }
 
-export function ModifyNoop(arg1) {
-  return window['go']['app']['App']['ModifyNoop'](arg1);
-}
-
-export function ModifyProject(arg1) {
-  return window['go']['app']['App']['ModifyProject'](arg1);
-}
-
 export function MonitorPage(arg1, arg2) {
   return window['go']['app']['App']['MonitorPage'](arg1, arg2);
+}
+
+export function MonitorsView(arg1) {
+  return window['go']['app']['App']['MonitorsView'](arg1);
 }
 
 export function NamePage(arg1, arg2) {
   return window['go']['app']['App']['NamePage'](arg1, arg2);
 }
 
+export function NamesView(arg1) {
+  return window['go']['app']['App']['NamesView'](arg1);
+}
+
+export function Navigate(arg1, arg2) {
+  return window['go']['app']['App']['Navigate'](arg1, arg2);
+}
+
 export function ProjectPage(arg1, arg2) {
   return window['go']['app']['App']['ProjectPage'](arg1, arg2);
 }
 
-export function Refresh(arg1) {
-  return window['go']['app']['App']['Refresh'](arg1);
+export function ProjectView(arg1) {
+  return window['go']['app']['App']['ProjectView'](arg1);
 }
 
-export function RegisterCtx(arg1) {
-  return window['go']['app']['App']['RegisterCtx'](arg1);
+export function Refresh() {
+  return window['go']['app']['App']['Refresh']();
 }
 
-export function Reload(arg1) {
-  return window['go']['app']['App']['Reload'](arg1);
+export function Reload() {
+  return window['go']['app']['App']['Reload']();
+}
+
+export function SaveName(arg1) {
+  return window['go']['app']['App']['SaveName'](arg1);
+}
+
+export function SessionPage(arg1, arg2) {
+  return window['go']['app']['App']['SessionPage'](arg1, arg2);
+}
+
+export function SessionView(arg1) {
+  return window['go']['app']['App']['SessionView'](arg1);
 }
 
 export function SetChain(arg1, arg2) {
@@ -178,20 +246,28 @@ export function SetEnv(arg1, arg2) {
   return window['go']['app']['App']['SetEnv'](arg1, arg2);
 }
 
-export function SetSessionDaemon(arg1, arg2) {
-  return window['go']['app']['App']['SetSessionDaemon'](arg1, arg2);
+export function SetRoute(arg1, arg2) {
+  return window['go']['app']['App']['SetRoute'](arg1, arg2);
 }
 
-export function SetSessionVal(arg1, arg2) {
-  return window['go']['app']['App']['SetSessionVal'](arg1, arg2);
+export function SetShowing(arg1, arg2) {
+  return window['go']['app']['App']['SetShowing'](arg1, arg2);
 }
 
-export function StateToString(arg1) {
-  return window['go']['app']['App']['StateToString'](arg1);
+export function SettingsPage(arg1, arg2) {
+  return window['go']['app']['App']['SettingsPage'](arg1, arg2);
+}
+
+export function SettingsView(arg1) {
+  return window['go']['app']['App']['SettingsView'](arg1);
 }
 
 export function StatusPage(arg1, arg2) {
   return window['go']['app']['App']['StatusPage'](arg1, arg2);
+}
+
+export function StatusView(arg1) {
+  return window['go']['app']['App']['StatusView'](arg1);
 }
 
 export function StepWizard(arg1) {
@@ -200,6 +276,14 @@ export function StepWizard(arg1) {
 
 export function String() {
   return window['go']['app']['App']['String']();
+}
+
+export function SwitchTabNext(arg1) {
+  return window['go']['app']['App']['SwitchTabNext'](arg1);
+}
+
+export function SwitchTabPrev(arg1) {
+  return window['go']['app']['App']['SwitchTabPrev'](arg1);
 }
 
 export function SystemAbout(arg1) {
@@ -214,46 +298,6 @@ export function ToggleDaemon(arg1) {
   return window['go']['app']['App']['ToggleDaemon'](arg1);
 }
 
-export function ViewAbis(arg1) {
-  return window['go']['app']['App']['ViewAbis'](arg1);
-}
-
-export function ViewDaemons(arg1) {
-  return window['go']['app']['App']['ViewDaemons'](arg1);
-}
-
-export function ViewHistory(arg1) {
-  return window['go']['app']['App']['ViewHistory'](arg1);
-}
-
-export function ViewIndexes(arg1) {
-  return window['go']['app']['App']['ViewIndexes'](arg1);
-}
-
-export function ViewManifest(arg1) {
-  return window['go']['app']['App']['ViewManifest'](arg1);
-}
-
-export function ViewMonitors(arg1) {
-  return window['go']['app']['App']['ViewMonitors'](arg1);
-}
-
-export function ViewNames(arg1) {
-  return window['go']['app']['App']['ViewNames'](arg1);
-}
-
-export function ViewProject(arg1) {
-  return window['go']['app']['App']['ViewProject'](arg1);
-}
-
-export function ViewSettings(arg1) {
-  return window['go']['app']['App']['ViewSettings'](arg1);
-}
-
-export function ViewStatus(arg1) {
-  return window['go']['app']['App']['ViewStatus'](arg1);
-}
-
-export function ViewWizard(arg1) {
-  return window['go']['app']['App']['ViewWizard'](arg1);
+export function WizardView(arg1) {
+  return window['go']['app']['App']['WizardView'](arg1);
 }

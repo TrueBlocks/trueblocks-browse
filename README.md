@@ -4,6 +4,8 @@ Web 3.0 Account Browser built on TrueBlocks
 
 ## Installing
 
+Clone the repo, then
+
 ```[bash]
 go mod tidy
 cd frontend && yarn install && cd -
@@ -12,15 +14,11 @@ cd frontend && yarn install && cd -
 ## Running
 
 ```[bash]
-wails dev
+yarn start
 ```
 
 ## Building
 
 ```[bash]
-wails build
+yarn build
 ```
-
-## Api Keys
-
-If you intend to use features that require OpenAI, rename the `.env.example` file to `.env` and add your OpenAI API key. The features will not work otherwise.

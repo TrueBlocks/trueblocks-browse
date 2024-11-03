@@ -1,9 +1,9 @@
-import { createContext, useEffect, useContext, ReactNode } from "react";
-import { Route } from "@/Routes";
+import { useState, createContext, useEffect, useContext, ReactNode } from "react";
 import { Pager } from "@components";
-import { HistoryPage } from "@gocode/app/App";
+import { HistoryPage, IsShowing, SetShowing } from "@gocode/app/App";
 import { types, messages, app } from "@gocode/models";
 import { Page, useKeyboardPaging } from "@hooks";
+import { Route } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
 import { useAppState } from "@state";
 
@@ -13,6 +13,8 @@ type FetchFnType = (selected: number, perPage: number) => void;
 interface ViewStateProps {
   route: Route;
   nItems: number;
+  headerShows: boolean | null;
+  handleCollapse: (value: string | null) => void;
   pager: Pager;
   fetchFn: FetchFnType;
   modifyFn: ModifyFnType;
@@ -29,19 +31,45 @@ type ViewContextType = {
   children: ReactNode;
 };
 
-export const ViewStateProvider: React.FC<{
-  route: Route;
-  nItems?: number;
-  fetchFn: FetchFnType;
-  modifyFn: ModifyFnType;
-  onEnter?: (page: Page) => void;
-  children: ReactNode;
-}> = ({ route, nItems = -1, fetchFn, modifyFn, onEnter, children }: ViewContextType) => {
+export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnter, children }: ViewContextType) => {
+  const [headerShows, setHeaderShows] = useState<boolean | null>(null);
   const { address, setHistory } = useAppState();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const ignoreEnter = (_unused: Page) => {};
-  const pager = useKeyboardPaging(route, nItems, lines, onEnter ? onEnter : ignoreEnter);
+  const enterNoop = (_unused: Page) => {};
+  const pager = useKeyboardPaging(nItems, lines, onEnter ? onEnter : enterNoop);
+
+  const handleCollapse = (newState: string | null) => {
+    const isShowing = newState === "header";
+    SetShowing(route, isShowing).then(() => {
+      setHeaderShows(isShowing);
+    });
+  };
+
+  useEffect(() => {
+    IsShowing(route).then((onOff) => {
+      setHeaderShows(onOff);
+    });
+  }, [route]);
+
+  useEffect(() => {
+    const handleAccordion = (msg: messages.MessageMsg) => {
+      const cmp = route === "" ? "project" : route;
+      if (msg.string2 === "" && cmp === msg.string1) {
+        IsShowing(cmp).then((onOff) => {
+          SetShowing(cmp, !onOff).then(() => {
+            setHeaderShows(!onOff);
+          });
+        });
+      }
+    };
+
+    const { Message } = messages;
+    EventsOn(Message.TOGGLEACCORDION, handleAccordion);
+    return () => {
+      EventsOff(Message.TOGGLEACCORDION);
+    };
+  }, [route]);
 
   useEffect(() => {
     fetchFn(pager.getOffset(), pager.perPage);
@@ -50,16 +78,6 @@ export const ViewStateProvider: React.FC<{
   useEffect(() => {
     const handleRefresh = () => {
       fetchFn(pager.getOffset(), pager.perPage);
-      /*
-      // Dawid: This doesn't really work. It ignores, for example, when the data is
-      // Dawid: with the latest data at the end. Plus, it has no effect on performance
-      // Fetch page only if it makes sense: the current page is the first page
-      // (showing the latest transactions) and is incomplete.
-      // Otherwise we get into constant rerendering
-      if (pager.pageNumber === 1 && nItems < pager.perPage) {
-        fetchFn(pager.getOffset(), pager.perPage);
-      }
-      */
     };
 
     const { Message } = messages;
@@ -80,6 +98,8 @@ export const ViewStateProvider: React.FC<{
   const state = {
     route,
     nItems,
+    headerShows,
+    handleCollapse,
     pager,
     fetchFn,
     modifyFn,

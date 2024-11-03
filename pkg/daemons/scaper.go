@@ -32,7 +32,7 @@ func (s *DaemonScraper) String() string {
 	return s.Daemon.String()
 }
 
-func (s *DaemonScraper) GetState() State {
+func (s *DaemonScraper) GetState() DaemonState {
 	return s.Daemon.GetState()
 }
 
@@ -68,7 +68,7 @@ func (s *DaemonScraper) Pause() error {
 }
 
 func (s *DaemonScraper) Tick(msg ...string) int {
-	go s.freshener.Refresh()
+	s.freshener.Refresh()
 	s.Ticks++
 	return s.Ticks // we don't use the Daemon's Tick since Freshen notifies if it runs
 }

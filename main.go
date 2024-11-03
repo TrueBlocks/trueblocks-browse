@@ -6,9 +6,10 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/app"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/editors"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
+	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/wailsapp/wails/v2"
 	wLogger "github.com/wailsapp/wails/v2/pkg/logger"
@@ -31,39 +32,34 @@ func main() {
 		BackgroundColour: nil,
 		LogLevel:         wLogger.ERROR,
 		Menu:             a.GetMenus(),
-		// Find: NewViews
 		Bind: []interface{}{
 			a,
-			&messages.DocumentMsg{},
-			&messages.ErrorMsg{},
-			&messages.InfoMsg{},
-			&messages.ProgressMsg{},
-			&messages.DaemonMsg{},
-			&messages.NavigateMsg{},
-			&messages.HelpMsg{},
-			&types.AbiContainer{},
+			&app.AppInfo{},
 			&types.ProjectContainer{},
+			&types.NameContainer{},
+			&types.AbiContainer{},
 			&types.IndexContainer{},
 			&types.ManifestContainer{},
 			&types.MonitorContainer{},
-			&types.NameContainer{},
+			// &types.DaemonContainer{},
+			&types.SettingsGroup{},
 			&types.StatusContainer{},
-			&wizard.Wizard{},
+			&messages.MessageMsg{},
+			&coreTypes.Wizard{},
 			&coreTypes.Transaction{},
+			&configTypes.Config{},
+			&editors.Name{},
 			&daemons.Daemon{},
 		},
 		EnumBind: []interface{}{
 			daemons.AllStates,
 			messages.AllMessages,
-			wizard.AllStates,
-			wizard.AllSteps,
+			coreTypes.AllStates,
+			coreTypes.AllSteps,
 		},
 		StartHidden: true,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
-		},
-		Debug: options.Debug{
-			OpenInspectorOnStartup: a.GetEnv("TB_DEBUG") == "true",
 		},
 	}
 

@@ -27,14 +27,20 @@
       "@components": [
         "./components/index"
       ],
-      "@views": [
-        "./views/index"
+      "@editors": [
+        "./editors/index"
       ],
       "@hooks": [
         "./hooks/index"
       ],
+      "@layout": [
+        "./layout/index"
+      ],
       "@state": [
         "./state/index"
+      ],
+      "@views": [
+        "./views/index"
       ],
       "@gocode/*": [
         "../wailsjs/go/*"

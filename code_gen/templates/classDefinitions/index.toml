@@ -1,0 +1,11 @@
+[settings]
+    class = "Index"
+    # doc_group = "20-Routes"
+    # doc_descr = "block data as returned from the RPC (with slight enhancements)"
+    doc_route = "1050-containers"
+    ui_route = "1050-indexes"
+    attributes = "itemType=coreTypes.ChunkStats|sorts=range+Dec,"
+    # produced_by = "blocks"
+    # contains = "transaction, withdrawal"
+    cache_type = "cacheable"
+    cache_by = "range"

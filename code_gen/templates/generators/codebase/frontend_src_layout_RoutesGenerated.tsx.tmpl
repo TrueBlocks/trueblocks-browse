@@ -1,0 +1,39 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+import {
+  // Icons
+  {{range .Structures}}{{firstUpper .UiRouteName}}Icon,
+  {{end}}// Views
+  {{range .Structures}}{{firstUpper .UiRouteName}}View,
+  {{end}}} from "@views";
+
+export type Route =
+{{range .Structures}}  | "{{toLower .UiRouteStr}}"
+{{end -}};
+
+export type RouteItem = {
+  order: number;
+  route: string;
+  label: string;
+  icon: JSX.Element;
+  component: React.ComponentType;
+};
+
+const expandRoute = (r: Route): string => {
+  if (r === "history") {
+    return "/" + r + "/:address";
+  }
+
+  return "/" + r;
+};
+
+export const routeItems: RouteItem[] = [
+{{range .Structures}}  {
+    order: {{.UiRouteNum}},
+    route: expandRoute("{{if not .IsProject}}{{toLower .UiRouteName}}{{end}}"),
+    label: "{{firstUpper .UiRouteName}}",
+    icon: {{firstUpper .UiRouteName}}Icon,
+    component: {{firstUpper .UiRouteName}}View,
+  },
+{{end -}}
+];

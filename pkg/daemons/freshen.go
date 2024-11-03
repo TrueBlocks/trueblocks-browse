@@ -31,7 +31,7 @@ func (s *DaemonFreshen) String() string {
 	return s.Daemon.String()
 }
 
-func (s *DaemonFreshen) GetState() State {
+func (s *DaemonFreshen) GetState() DaemonState {
 	return s.Daemon.GetState()
 }
 
@@ -54,7 +54,7 @@ func (s *DaemonFreshen) Pause() error {
 }
 
 func (s *DaemonFreshen) Tick(msg ...string) int {
-	go s.freshener.Refresh()
+	s.freshener.Refresh()
 	s.Ticks++
 	return s.Ticks // we don't use the Daemon's Tick since Freshen notifies if it runs
 }

@@ -1,19 +1,15 @@
 import { IconLink } from "@tabler/icons-react";
 import { BaseButton, ButtonProps } from "@components";
-import { SetSessionVal } from "@gocode/app/App";
-import { messages } from "@gocode/models";
-import { EventsEmit } from "@runtime";
+import { GoToAddress } from "@gocode/app/App";
+import { base } from "@gocode/models";
 
 // ViewButton opens the history page for a given address.
 export const ViewButton = ({ value, ...props }: ButtonProps) => {
-  const icon = <IconLink />;
+  const address = value as base.Address;
 
   const handleClick = () => {
-    SetSessionVal("route", `/history/${value}`);
-    EventsEmit(messages.Message.NAVIGATE, {
-      route: `/history/${value}`,
-    });
+    GoToAddress(address).then(() => {});
   };
 
-  return <BaseButton {...props} tip="View" onClick={handleClick} leftSection={icon} />;
+  return <BaseButton {...props} tip="View" onClick={handleClick} icon={<IconLink />} />;
 };

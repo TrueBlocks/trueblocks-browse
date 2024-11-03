@@ -1,9 +1,10 @@
 {
     "scripts": {
-        "dev": "wails dev --debounce 2000",
-        "start": "wails dev --debounce 2000"
+        "dev": "wails dev --debounce 5000",
+        "start": "wails dev --debounce 5000",
+	"lint": "cd frontend && yarn lint"
     },
-    "name": "trueblocks-miniDapp",
+    "name": "trueblocks-browse",
     "version": "1.0.0",
     "license": "GPL-3.0",
     "devDependencies": {

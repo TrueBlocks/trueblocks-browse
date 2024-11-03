@@ -1,25 +1,34 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { SimpleGrid, Fieldset } from "@mantine/core";
-import { View } from "@components";
-import { ModifyNoop } from "@gocode/app/App";
-import { GetDaemonJson, ToggleDaemon } from "@gocode/app/App";
+import { SimpleGrid, Stack, Box } from "@mantine/core";
+import { FieldGroup, FieldsetWrapper, FormTable, ViewForm, PinButton, View } from "@components";
+import { GetDaemon, ToggleDaemon } from "@gocode/app/App";
 import { daemons, messages } from "@gocode/models";
+import { useNoops } from "@hooks";
 import { EventsOn, EventsOff } from "@runtime";
 import { ViewStateProvider } from "@state";
 import { DaemonCard, DaemonLog } from ".";
 
 const empty = {} as daemons.Daemon;
 
-export function DaemonsView() {
+interface Nope {
+  scraper: daemons.Daemon;
+  freshen: daemons.Daemon;
+  ipfs: daemons.Daemon;
+  logMessages: messages.MessageMsg[];
+  toggleDaemon: (name: string) => void;
+}
+
+export const DaemonsView = () => {
+  const { fetchNoop, modifyNoop } = useNoops();
+  // TODO BOGUS: The daemon state should be in the AppState
   const [scraper, setScraper] = useState<daemons.Daemon>(empty);
   const [freshen, setFreshen] = useState<daemons.Daemon>(empty);
   const [ipfs, setIpfs] = useState<daemons.Daemon>(empty);
-  const [logMessages, setLogMessages] = useState<messages.DaemonMsg[]>([]);
+  const [logMessages, setLogMessages] = useState<messages.MessageMsg[]>([]);
 
   const updateDaemon = (daemon: string, setDaemon: Dispatch<SetStateAction<daemons.Daemon>>) => {
-    GetDaemonJson(daemon).then((jsonStr: string) => {
-      const d = daemons.Daemon.createFrom(jsonStr);
-      setDaemon(d);
+    GetDaemon(daemon).then((json: string) => {
+      setDaemon(daemons.Daemon.createFrom(json));
     });
   };
 
@@ -29,8 +38,8 @@ export function DaemonsView() {
     updateDaemon("ipfs", setIpfs);
   }, []);
 
-  const handleMessage = (sMsg: messages.DaemonMsg) => {
-    switch (sMsg.name) {
+  const handleMessage = (msg: messages.MessageMsg) => {
+    switch (msg.name) {
       case "scraper":
         updateDaemon("scraper", setScraper);
         break;
@@ -44,7 +53,7 @@ export function DaemonsView() {
         break;
     }
     setLogMessages((prev) => {
-      const newLogs = [...prev, sMsg];
+      const newLogs = [...prev, msg];
       return newLogs.length > 8 ? newLogs.slice(-8) : newLogs;
     });
   };
@@ -61,21 +70,49 @@ export function DaemonsView() {
     ToggleDaemon(name);
   };
 
+  const data: Nope = {
+    toggleDaemon,
+    scraper,
+    freshen,
+    ipfs,
+    logMessages,
+  };
+
+  const route = "daemons";
+  const tabs = ["daemons"];
+  const forms: ViewForm = {
+    daemons: <FormTable data={data} groups={createDaemonForm(data)} />,
+  };
+
   return (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    <ViewStateProvider route="daemons" fetchFn={(_unused1: number, _unused2: number) => {}} modifyFn={ModifyNoop}>
-      <View>
-        <Fieldset legend={"Daemons"} bg={"white"}>
-          <SimpleGrid cols={2}>
-            <DaemonCard daemon={scraper} toggle={toggleDaemon} />
-            <DaemonCard daemon={freshen} toggle={toggleDaemon} />
-            <DaemonCard daemon={ipfs} toggle={toggleDaemon} />
-          </SimpleGrid>
-        </Fieldset>
-        <Fieldset legend={"Logs"} bg={"white"}>
-          <DaemonLog logMessages={logMessages} />
-        </Fieldset>
-      </View>
+    <ViewStateProvider route={route} fetchFn={fetchNoop} modifyFn={modifyNoop}>
+      <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
-}
+};
+
+const createDaemonForm = (data: Nope): FieldGroup<Nope>[] => {
+  return [
+    {
+      label: "Daemons",
+      collapsable: false,
+      components: [
+        <SimpleGrid key={"cards"} cols={2}>
+          <DaemonCard daemon={data.scraper} toggle={data.toggleDaemon} />
+          <DaemonCard daemon={data.freshen} toggle={data.toggleDaemon} />
+          <DaemonCard daemon={data.ipfs} toggle={data.toggleDaemon} />
+        </SimpleGrid>,
+        <Stack key={"logs"}>
+          <Box />
+          <FieldsetWrapper legend="Logs">
+            <DaemonLog logMessages={data.logMessages} />
+          </FieldsetWrapper>
+        </Stack>,
+      ],
+    },
+    {
+      label: "Buttons",
+      buttons: [<PinButton key={"pin"} value="https://trueblocks.io" />],
+    },
+  ];
+};

@@ -1,27 +1,36 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package app
 
+// EXISTING_CODE
 import (
+	"fmt"
 	"sort"
 	"sync"
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
 )
 
-func (a *App) ProjectPage(first, pageSize int) *types.ProjectContainer {
-	first = base.Max(0, base.Min(first, len(a.project.Items)-1))
-	last := base.Min(len(a.project.Items), first+pageSize)
-	copy, _ := a.project.ShallowCopy().(*types.ProjectContainer)
-	copy.Items = a.project.Items[first:last]
-	return copy
-}
+// EXISTING_CODE
 
 var projectLock atomic.Uint32
 
-func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
-	_ = errorChan // delint
+func (a *App) ProjectPage(first, pageSize int) *types.ProjectContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
 
+	first = base.Max(0, base.Min(first, len(a.projects.Items)-1))
+	last := base.Min(len(a.projects.Items), first+pageSize)
+	copy, _ := a.projects.ShallowCopy().(*types.ProjectContainer)
+	copy.Items = a.projects.Items[first:last]
+	return copy
+}
+
+func (a *App) loadProjects(wg *sync.WaitGroup, errorChan chan error) error {
+	_ = errorChan
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -33,79 +42,67 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer projectLock.CompareAndSwap(1, 0)
 
-	// containers := []types.Containerer{
-	// 	&a.abis,
-	// 	// &HistoryContainer{},
-	// 	&a.index,
-	// 	&a.manifest,
-	// 	&a.monitors,
-	// 	&a.names,
-	// 	&a.status,
-	// 	// &ProjectContainer{},
-	// }
-	// needsUpdate := false
-	// for _, container := range containers {
-	// 	if container.NeedsUpdate(a.nameChange()) {
-	// 		needsUpdate = true
-	// 		break
-	// 	}
-	// }
-	// if !needsUpdate && a.openFileCnt() == a.project.NOpenFiles {
-	// 	return nil
-	// }
-
-	a.project = types.NewProjectContainer(
-		a.project.Filename,
-		a.project.HistoryMap,
-		a.project.BalanceMap,
-		a.project.EnsMap,
-	)
-	a.project.NOpenFiles = a.openFileCnt()
-	a.project.NMonitors = len(a.monitors.Monitors)
-	a.project.NNames = len(a.names.Names)
-	a.project.NAbis = len(a.abis.Items)
-	a.project.NIndexes = len(a.index.Items)
-	a.project.NManifests = len(a.manifest.Chunks)
-	a.project.NCaches = len(a.status.Caches)
-	_ = a.forEveryHistory(func(item *types.HistoryContainer) bool {
-		a.project.Summary.Balance += item.Balance
-		a.project.Summary.NItems += item.NItems
-		a.project.Summary.NTotal += item.NTotal
-		a.project.Summary.NLogs += item.NLogs
-		a.project.Summary.NErrors += item.NErrors
-		a.project.Summary.NTokens += item.NTokens
-		item.Summarize()
-		if copy, ok := item.ShallowCopy().(*types.HistoryContainer); ok {
-			a.project.Items = append(a.project.Items, *copy)
-		}
-		a.project.HistorySize += item.SizeOf()
+	// EXISTING_CODE
+	items := []types.HistoryContainer{}
+	a.historyCache.Range(func(_ base.Address, h types.HistoryContainer) bool {
+		items = append(items, h)
 		return true
 	})
-	sort.Slice(a.project.Items, func(i, j int) bool {
-		return a.project.Items[i].Address.Cmp(a.project.Items[j].Address.Address) < 0
-	})
+	a.projects = types.NewProjectContainer(a.session.LastChain, items)
+	if !a.projects.NeedsUpdate(a.forceProject()) {
+		return nil
+	}
 
+	// EXISTING_CODE
+
+	{
+
+		// EXISTING_CODE
+		// EXISTING_CODE
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
+
+	a.projects.NItems = uint64(len(a.projects.Items))
+	a.projects.NMonitors = uint64(len(a.monitors.Items))
+	a.projects.NNames = uint64(len(a.names.Items))
+	a.projects.NAbis = uint64(len(a.abis.Items))
+	a.projects.NIndexes = uint64(len(a.indexes.Items))
+	a.projects.NManifests = uint64(len(a.manifests.Items))
+	a.projects.NCaches = uint64(len(a.status.Caches))
+	a.projects.ForEveryHistory(func(item *types.HistoryContainer, data any) bool {
+		item.Summarize()
+		a.projects.HistorySize += uint64(item.SizeOf())
+		return true
+	}, nil)
+	sort.Slice(a.projects.Items, func(i, j int) bool {
+		ai := a.projects.Items[i].Address
+		aj := a.projects.Items[j].Address
+		return ai.Hex() < aj.Hex()
+	})
+	a.emitInfoMsg("Loaded projects", "")
 	return nil
 }
 
-func (a *App) ModifyProject(modData *ModifyData) {
-	a.CancelContext(modData.Address)
-	a.project.HistoryMap.Delete(modData.Address)
-	for i, item := range a.project.Items {
-		if item.Address == modData.Address {
-			a.project.Items = append(a.project.Items[:i], a.project.Items[i+1:]...)
-			break
-		}
-	}
-	a.loadProject(nil, nil)
+func (a *App) forceProject() (force bool) {
+	// EXISTING_CODE
+	force = a.forceName()
+	// EXISTING_CODE
+	return
 }
 
-func (a *App) Reload(address base.Address) {
-	a.ModifyProject(&ModifyData{
-		Operation: "reload",
-		Address:   address,
-	})
-	a.loadHistory(a.GetLastAddress(), nil, nil)
-	a.Refresh()
-	a.loadProject(nil, nil)
+// EXISTING_CODE
+func (a *App) DeleteAddress(modData *ModifyData) {
+	switch crud.OpFromString(modData.Operation) {
+	case crud.Delete:
+		a.cancelContext(modData.Address)
+		a.dirty = true
+
+		a.historyCache.Delete(modData.Address)
+		a.loadProjects(nil, nil)
+
+		a.emitInfoMsg(a.getFullPath(), fmt.Sprint("deleted address", modData.Address.Hex()))
+	}
 }
+
+// EXISTING_CODE

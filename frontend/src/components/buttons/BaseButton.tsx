@@ -7,6 +7,7 @@ export type ButtonMouseEvent = React.MouseEvent<HTMLButtonElement>;
 export interface ButtonProps extends MantineButtonProps {
   tip?: string;
   value?: string | base.Address;
+  icon?: React.ReactNode;
   onClick?: (e: ButtonMouseEvent) => void;
   onClose?: (e: ButtonMouseEvent) => void;
 }
@@ -21,7 +22,7 @@ export const BaseButton = ({
   children,
   ...props
 }: ButtonProps) => {
-  const { leftSection } = props;
+  const { icon } = props;
   const baseProps: MantineButtonProps = { ...props };
   const hasChilren: boolean = children !== undefined;
 
@@ -37,7 +38,7 @@ export const BaseButton = ({
   if (!hasChilren) {
     return (
       <ActionIcon className={classes.actionButton} onClick={handleClick} title={tip}>
-        {leftSection}
+        {icon}
       </ActionIcon>
     );
   }

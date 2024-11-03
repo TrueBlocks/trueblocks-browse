@@ -3,7 +3,6 @@ import { Popover } from "@mantine/core";
 
 export type PopupProps = {
   onClose: () => void;
-  onCopy: () => void;
   onSubmit: (value: string) => void;
 };
 
@@ -16,7 +15,7 @@ export function Popup({ children, editor }: { children: ReactNode; editor: React
       <Popover.Target>
         <div onClick={toggleOpened}>{children}</div>
       </Popover.Target>
-      {editor && <Popover.Dropdown>{editor}</Popover.Dropdown>}
+      {editor && <Popover.Dropdown bg="white">{editor}</Popover.Dropdown>}
     </Popover>
   );
 }

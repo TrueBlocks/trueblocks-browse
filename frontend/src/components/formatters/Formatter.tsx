@@ -1,4 +1,4 @@
-import { TextProps, Image } from "@mantine/core";
+import { TextProps } from "@mantine/core";
 import { IconCircleCheck } from "@tabler/icons-react";
 import {
   DalleImage,
@@ -7,6 +7,7 @@ import {
   DateFormatter,
   TagFormatter,
   TextFormatter,
+  CellType,
   EdMode,
   LoadProgress,
 } from "@components";
@@ -14,36 +15,8 @@ import { base } from "@gocode/models";
 import { useAppState } from "@state";
 import { GetDebugColor } from ".";
 
-export type knownType =
-  | "address-editor"
-  | "address-address-only"
-  | "address-name-only"
-  | "address-line1"
-  | "address-line2"
-  | "appearance"
-  | "boolean"
-  | "bytes"
-  | "check"
-  | "dalle"
-  | "dalle-small"
-  | "date"
-  | "error"
-  | "ether"
-  | "gas"
-  | "float"
-  | "hash"
-  | "int"
-  | "path"
-  | "progress"
-  | "range"
-  | "tag"
-  | "text"
-  | "time"
-  | "timestamp"
-  | "url";
-
 export type FormatterProps = {
-  type: knownType;
+  type: CellType;
   value: any;
   value2?: boolean | base.Hash | base.Address | string | number | undefined;
   className?: string;
@@ -80,6 +53,8 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
     case "timestamp":
       value = formatDateTime(n);
       break;
+    case "time":
+    // fall through
     case "date":
       value = value?.replace("T", " ");
       if ((value?.match(/ /g)?.length ?? 0) > 0) {
@@ -120,8 +95,10 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
       return <TextFormatter value={value} size={size} type={type} className={cn} />;
     case "address-line2":
       return <TextFormatter value={value} size="xs" type={type} className={cn} />;
-    default:
-      value = "UNKNOWN FORMATTER TYPE";
+    default: {
+      const exhaustiveCheck: never = type;
+      throw new Error(`Unhandled cellType: ${exhaustiveCheck}`);
+    }
   }
 
   return <TextFormatter value={value} size={size} type={type} className={cn} />;

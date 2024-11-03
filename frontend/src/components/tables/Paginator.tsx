@@ -1,9 +1,7 @@
 import { Pagination } from "@mantine/core";
-import { Route } from "@/Routes";
 import classes from "./Paginator.module.css";
 
 export type Pager = {
-  name: Route;
   nItems: number;
   selected: number;
   pageNumber: number;
@@ -40,13 +38,12 @@ export const Paginator = ({ pager }: { pager: Pager | null }) => {
 };
 
 export const EmptyPager: Pager = {
-  name: "",
   nItems: 0,
   selected: 0,
   perPage: 0,
   pageNumber: 0,
   lastPage: 0,
-  setPage: () => {},
   setRecord: () => {},
+  setPage: () => {},
   getOffset: () => 0,
 };

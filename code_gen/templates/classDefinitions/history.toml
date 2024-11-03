@@ -1,0 +1,12 @@
+[settings]
+	class = "History"
+	# doc_group = "20-Routes"
+	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
+	doc_route = "1010-containers"
+	ui_route = "1010-history"
+	attributes = "itemType=coreTypes.Transaction|otherType=base.Address"
+	# produced_by = "blocks"
+	# contains = "transaction, withdrawal"
+	cache_type = "cacheable"
+	cache_by = "range"
+	disable_go = true

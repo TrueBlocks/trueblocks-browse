@@ -22,7 +22,7 @@ export function Help(): JSX.Element {
   const viewName = useViewName();
 
   const onClose = useCallback(() => {
-    EventsEmit(messages.Message.TOGGLEHELP, {});
+    EventsEmit(messages.Message.TOGGLELAYOUT, { string1: "help" });
   }, []);
 
   useEffect(() => {
@@ -31,17 +31,17 @@ export function Help(): JSX.Element {
     const filePath = Object.keys(helpFiles).find((key) => key.endsWith(`/help/${helpFileName}`));
 
     const loadMarkdown = async (): Promise<void> => {
-      if (filePath) {
-        try {
-          const content = await helpFiles[filePath](); // Await the promise to get the raw content
-          setMarkdown(content);
-        } catch (error) {
-          setError(true);
-          setMarkdown("Sorry, the help file could not be loaded: " + error);
-        }
-      } else {
+      if (!filePath) {
         setError(true);
         setMarkdown("Sorry, the help file could not be found.");
+        return;
+      }
+      try {
+        const content = await helpFiles[filePath]();
+        setMarkdown(content);
+      } catch (error) {
+        setError(true);
+        setMarkdown("Sorry, the help file could not be loaded: " + error);
       }
     };
 
@@ -54,7 +54,7 @@ export function Help(): JSX.Element {
       <Title order={4} className={classes.header}>
         {viewName}
       </Title>
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{error ? "error" : markdown}</ReactMarkdown>
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{error ? markdown : markdown}</ReactMarkdown>
     </div>
   );
 }

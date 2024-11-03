@@ -10,7 +10,7 @@ func (a *App) getBalance(address base.Address) string {
 		return "0"
 	}
 
-	b, exists := a.project.BalanceMap.Load(address)
+	b, exists := a.balanceCache.Load(address)
 	if exists {
 		return b.(string)
 	}
@@ -20,7 +20,7 @@ func (a *App) getBalance(address base.Address) string {
 		Globals: sdk.Globals{
 			Ether: true,
 			Cache: true,
-			Chain: a.globals.Chain,
+			Chain: a.Chain,
 		},
 	}
 	if balances, meta, err := opts.State(); err != nil {
@@ -28,7 +28,7 @@ func (a *App) getBalance(address base.Address) string {
 	} else {
 		a.meta = *meta
 		value := balances[0].Balance.ToEtherStr(18)
-		a.project.BalanceMap.Store(address, value)
+		a.balanceCache.Store(address, value)
 		return value
 	}
 }

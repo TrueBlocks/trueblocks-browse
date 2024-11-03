@@ -11,13 +11,13 @@ import (
 )
 
 type Freshener interface {
-	Refresh(which ...string)
+	Refresh() error
 	GetContext() context.Context
 }
 
 type Daemoner interface {
 	String() string
-	GetState() State
+	GetState() DaemonState
 	IsRunning() bool
 	Run()
 	Stop() error
@@ -32,7 +32,7 @@ type Daemon struct {
 	Color     string        `json:"color"`
 	Started   time.Time     `json:"started"`
 	Ticks     int           `json:"ticks"`
-	State     State         `json:"state"`
+	State     DaemonState   `json:"state"`
 	freshener Freshener
 }
 
@@ -41,7 +41,7 @@ func (s *Daemon) String() string {
 	return string(bytes)
 }
 
-func (s *Daemon) GetState() State {
+func (s *Daemon) GetState() DaemonState {
 	return s.State
 }
 
@@ -82,11 +82,11 @@ func (s *Daemon) Tick(msg ...string) int {
 		msg,
 	)
 
-	messages.Send(s.freshener.GetContext(), messages.Daemon, messages.NewDaemonMsg(
-		strings.ToLower(s.Name),
-		msgOut,
-		s.Color,
-	))
+	messages.EmitMessage(s.freshener.GetContext(), messages.Daemon, &messages.MessageMsg{
+		Name:    strings.ToLower(s.Name),
+		String1: msgOut,
+		String2: s.Color,
+	})
 	s.Ticks++
 	return s.Ticks
 }

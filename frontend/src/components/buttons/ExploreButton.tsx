@@ -41,5 +41,5 @@ export const ExploreButton = ({ type = "explore", value, ...props }: ExploreButt
     BrowserOpenURL(url);
   };
 
-  return <BaseButton {...props} tip={tip} onClick={handleClick} leftSection={icon} />;
+  return <BaseButton {...props} tip={tip} onClick={handleClick} icon={icon} />;
 };

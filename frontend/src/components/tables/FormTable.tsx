@@ -1,55 +1,73 @@
-import { ReactNode } from "react";
-import { Fieldset, Container, Grid, Flex, Text, Stack } from "@mantine/core";
-import { Formatter, knownType } from "@components";
+import { Container, Fieldset, Grid, Accordion } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
+import { FieldRenderer, FieldGroup, isCollapsable, isButton, ButtonTray } from "@components";
+import { useViewState } from "@state";
 import classes from "./FormTable.module.css";
-
-type FieldDefinition<T> = {
-  type: knownType;
-  label: string;
-  accessor: keyof T;
-};
-
-type CustomComponentDefinition = {
-  component: ReactNode;
-};
-
-export type GroupDefinition<T> = {
-  title: string;
-  fields: FieldDefinition<T>[]; // Optional to allow custom components without fields
-  colSpan?: number;
-  components?: CustomComponentDefinition[]; // New field for custom components
-};
 
 type FormTableProps<T> = {
   data: Partial<T>;
-  definition: GroupDefinition<T>[];
+  groups: FieldGroup<T>[];
 };
 
-export function FormTable<T>({ data, definition }: FormTableProps<T>) {
+export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
+  const { headerShows, handleCollapse } = useViewState();
+
+  const collapsableGroups = groups.filter((group) => isCollapsable(group) && !isButton(group));
+  const nonCollapsableGroups = groups.filter((group) => !isCollapsable(group));
+  const buttonGroup = groups.find((group) => isButton(group)) || null;
+
+  if (headerShows == null) {
+    // avoids flashing
+    return <></>;
+  }
+
+  // TODO: This is pretty dumb
+  const style1 = { root: { marginBottom: "-50px", marginTop: "-45px" } };
+  const style2 = { root: { marginTop: "40px", backgroundColor: "white" } };
   return (
-    <Container style={{ maxWidth: "95%", paddingRight: "5%" }}>
-      <Grid>
-        {definition.map((group, index) => (
-          <Grid.Col span={group.colSpan || 12} key={index}>
-            <Stack>
-              <Fieldset legend={group.title} bg="white" className={classes.fieldSet}>
-                {group.fields?.map((field, fieldIndex) => {
-                  const value = <Formatter type={field.type} value={data[field.accessor]} />;
-                  return (
-                    <Flex key={fieldIndex} gap="md" align="center">
-                      {field.label.length > 0 ? <Text className={classes.fieldPrompt}>{field.label}</Text> : <></>}
-                      <Text>{value}</Text>
-                    </Flex>
-                  );
-                })}
-                {group.components?.map((customComponent, componentIndex) => (
-                  <div key={componentIndex}>{customComponent.component}</div>
-                ))}
-              </Fieldset>
-            </Stack>
+    <Container styles={{ root: { minWidth: "95%" } }}>
+      <Accordion
+        classNames={{ chevron: classes.chevron }}
+        data-rotate={headerShows ? "true" : "false"}
+        styles={style1}
+        value={headerShows ? "header" : null}
+        onChange={handleCollapse}
+        chevron={<IconPlus className={classes.icon} />}
+      >
+        <Accordion.Item value="header">
+          <Accordion.Control c={"black"} bg="white">
+            <ButtonTray buttonGroup={buttonGroup} />
+          </Accordion.Control>
+          <Accordion.Panel>
+            <Grid>
+              {collapsableGroups.map((group, gIndex) => {
+                return (
+                  <Grid.Col key={group.label + gIndex} span={group.colSpan ?? 12}>
+                    <Fieldset bg="white" className={classes.fieldSet}>
+                      {group.fields?.map((fld, fIndex) => (
+                        <FieldRenderer key={String(fld.accessor) + fIndex} field={fld} data={data} />
+                      ))}
+                      {group.components?.map((cmp, gIndex) => <div key={gIndex}>{cmp}</div>)}
+                    </Fieldset>
+                  </Grid.Col>
+                );
+              })}
+            </Grid>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
+      <Grid styles={style2}>
+        {nonCollapsableGroups.map((group, gIndex) => (
+          <Grid.Col key={group.label + gIndex} span={group.colSpan ?? 12}>
+            <Fieldset legend={group.label} bg="white" className={classes.fieldSet}>
+              {group.fields?.map((fld, fIndex) => (
+                <FieldRenderer key={String(fld.accessor) + fIndex} field={fld} data={data} />
+              ))}
+              {group.components?.map((cmp, gIndex) => <div key={gIndex}>{cmp}</div>)}
+            </Fieldset>
           </Grid.Col>
         ))}
       </Grid>
     </Container>
   );
-}
+};

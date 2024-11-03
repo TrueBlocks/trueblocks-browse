@@ -1,8 +1,18 @@
 .fieldSet {
+  background-color: white;
   margin-bottom: 1rem;
   overflow: hidden;
 }
 
-.fieldPrompt {
-  min-width: 8em;
+.chevron {
+  transition: transform 0.3s ease; /* Smooth transition */
+  &[data-rotate="true"] {
+    transform: rotate(45deg);
+  }
+}
+
+.icon {
+  color: black;
+  width: 16px;
+  height: 16px;
 }

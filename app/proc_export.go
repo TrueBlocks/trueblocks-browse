@@ -4,14 +4,16 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
-func (a *App) ExportToCsv(address base.Address) {
+// TODO: If this uses chifra export, it could be much expanded to include
+// TODO: all the options that chifra export has. Also, this should stream
+// TODO: it output to a Writer not a string. Much fast for much larger files.
+func (a *App) ExportAddress(address base.Address) {
 	isOpen := a.isFileOpen(address)
 	if !isOpen {
 		return
@@ -20,24 +22,24 @@ func (a *App) ExportToCsv(address base.Address) {
 	fn := fmt.Sprintf("history_%s.csv", address)
 	lines := make([]string, 0, a.txCount(address)+2)
 
-	// Add the CSV headers
-	lines = append(lines, fmt.Sprintf("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
-		"BlockNumber",
-		"BlockHash",
-		"TransactionIndex",
-		"Hash",
-		"From",
-		"To",
-		"Value.Uint64()",
-		"Gas",
-		"GasPrice",
-		"GasUsed",
-		"Timestamp",
-		"Nonce",
-		"Input",
-		"TransactionType"))
-
-	completed := a.forEveryTx(address, func(item types.Transaction) bool {
+	exportLine := func(item *coreTypes.Transaction, data any) bool {
+		if len(lines) == 0 {
+			lines = append(lines, fmt.Sprintf("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+				"BlockNumber",
+				"BlockHash",
+				"TransactionIndex",
+				"Hash",
+				"From",
+				"To",
+				"Value.Uint64()",
+				"Gas",
+				"GasPrice",
+				"GasUsed",
+				"Timestamp",
+				"Nonce",
+				"Input",
+				"TransactionType"))
+		}
 		lines = append(lines, fmt.Sprintf("%d,%d,%s,%d,%s,%s,%d,%d,%d,%d,%s,%s,%d,%s,%s",
 			item.BlockNumber,
 			item.TransactionIndex,
@@ -55,10 +57,13 @@ func (a *App) ExportToCsv(address base.Address) {
 			utils.FormattedCode(false, item.Input),
 			item.TransactionType))
 		return true
-	})
+	}
 
+	h, _ := a.historyCache.Load(address)
+	completed := h.ForEveryTransaction(exportLine, nil)
 	if !completed {
-		messages.SendError(a.ctx, fmt.Errorf("export interrupted for address: %s", address.Hex()))
+		err := fmt.Errorf("export for %s interrupted after %d lines", address.Hex(), len(lines))
+		a.emitErrorMsg(err, nil)
 		return
 	}
 

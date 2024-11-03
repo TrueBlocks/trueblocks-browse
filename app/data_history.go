@@ -1,9 +1,12 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
 package app
 
 import (
 	"fmt"
 	"sort"
 	"sync"
+	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -16,18 +19,19 @@ import (
 func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContainer {
 	address, ok := a.ConvertToAddress(addr)
 	if !ok {
-		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(fmt.Errorf("Invalid address: "+addr)))
+		err := fmt.Errorf("Invalid address: " + addr)
+		a.emitErrorMsg(err, nil)
 		return &types.HistoryContainer{}
 	}
 
-	_, exists := a.project.HistoryMap.Load(address)
+	_, exists := a.historyCache.Load(address)
 	if !exists {
 		return &types.HistoryContainer{}
 	}
 
 	first = base.Max(0, base.Min(first, a.txCount(address)-1))
 	last := base.Min(a.txCount(address), first+pageSize)
-	history, _ := a.project.HistoryMap.Load(address)
+	history, _ := a.historyCache.Load(address)
 	history.Summarize()
 	copy := history.ShallowCopy().(*types.HistoryContainer)
 	copy.Balance = a.getBalance(address)
@@ -35,57 +39,30 @@ func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContai
 	return copy
 }
 
-func (a *App) getHistoryCnt(address base.Address) int {
+func (a *App) getHistoryCnt(address base.Address) uint64 {
 	opts := sdk.ListOptions{
 		Addrs:   []string{address.Hex()},
-		Globals: a.globals,
+		Globals: a.toGlobals(),
 	}
-	appearances, meta, err := opts.ListCount()
-	if err != nil {
-		messages.SendError(a.ctx, err, address)
+	if appearances, meta, err := opts.ListCount(); err != nil {
+		a.emitAddressErrorMsg(err, address)
 		return 0
 	} else if len(appearances) == 0 {
 		return 0
 	} else {
 		a.meta = *meta
-		return int(appearances[0].NRecords)
+		return uint64(appearances[0].NRecords)
 	}
-}
-
-func (a *App) forEveryTx(address base.Address, process func(coreTypes.Transaction) bool) bool {
-	historyContainer, _ := a.project.HistoryMap.Load(address)
-	for _, item := range historyContainer.Items {
-		if !process(item) {
-			return false
-		}
-	}
-	return true
-}
-
-func (a *App) forEveryHistory(process func(*types.HistoryContainer) bool) bool {
-	a.project.HistoryMap.Range(func(key base.Address, value types.HistoryContainer) bool {
-		return process(&value)
-	})
-	return true
 }
 
 func (a *App) isFileOpen(address base.Address) bool {
-	_, isOpen := a.project.HistoryMap.Load(address)
+	_, isOpen := a.historyCache.Load(address)
 	return isOpen
-}
-
-func (a *App) openFileCnt() int {
-	count := 0
-	a.project.HistoryMap.Range(func(key base.Address, value types.HistoryContainer) bool {
-		count++
-		return true
-	})
-	return count
 }
 
 func (a *App) txCount(address base.Address) int {
 	if a.isFileOpen(address) {
-		history, _ := a.project.HistoryMap.Load(address)
+		history, _ := a.historyCache.Load(address)
 		return len(history.Items)
 	} else {
 		return 0
@@ -108,32 +85,35 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	// }
 	// defer historyLock.CompareAndSwap(1, 0)
 
-	history, exists := a.project.HistoryMap.Load(address)
+	history, exists := a.historyCache.Load(address)
 	if exists {
-		if !history.NeedsUpdate(a.nameChange()) {
+		if !history.NeedsUpdate(a.forceHistory()) {
 			return nil
 		}
 	}
 
+	_ = errorChan // delint
 	logger.Info("Loading history for address: ", address.Hex())
 	if err := a.thing(address, 15); err != nil {
-		messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
+		a.emitAddressErrorMsg(err, address)
 		return err
 	}
-	a.loadProject(nil, nil)
+	a.loadProjects(nil, nil)
 
 	return nil
 }
 
 func (a *App) thing(address base.Address, freq int) error {
-	rCtx := a.RegisterCtx(address)
+	rCtx := a.registerCtx(address)
+	defer a.unregisterCtx(address)
+
 	opts := sdk.ExportOptions{
 		Addrs:     []string{address.Hex()},
 		RenderCtx: rCtx,
 		Globals: sdk.Globals{
 			Cache: true,
 			Ether: true,
-			Chain: a.globals.Chain,
+			Chain: a.Chain,
 		},
 	}
 
@@ -146,32 +126,29 @@ func (a *App) thing(address base.Address, freq int) error {
 				if !ok {
 					continue
 				}
-				summary, _ := a.project.HistoryMap.Load(address)
+				summary, _ := a.historyCache.Load(address)
 				summary.NTotal = nItems
 				summary.Address = address
-				summary.Name = a.names.NamesMap[address].Name
+				summary.Name = a.namesMap[address].Name
 				summary.Items = append(summary.Items, *tx)
-				if len(summary.Items)%freq == 0 {
+				if len(summary.Items)%(freq*3) == 0 {
 					sort.Slice(summary.Items, func(i, j int) bool {
 						if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
 							return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
 						}
 						return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
 					})
-					messages.Send(a.ctx,
-						messages.Progress,
-						messages.NewProgressMsg(len(summary.Items), nItems, address),
-					)
+					a.emitProgressMsg(messages.Progress, address, len(summary.Items), int(nItems))
 				}
 
 				if len(summary.Items) == 0 {
-					a.project.HistoryMap.Delete(address)
+					a.historyCache.Delete(address)
 				} else {
-					a.project.HistoryMap.Store(address, summary)
+					a.historyCache.Store(address, summary)
 				}
 
 			case err := <-opts.RenderCtx.ErrorChan:
-				messages.Send(a.ctx, messages.Error, messages.NewErrorMsg(err, address))
+				a.emitAddressErrorMsg(err, address)
 
 			default:
 				if opts.RenderCtx.WasCanceled() {
@@ -187,7 +164,7 @@ func (a *App) thing(address base.Address, freq int) error {
 	}
 	a.meta = *meta
 
-	history, _ := a.project.HistoryMap.Load(address)
+	history, _ := a.historyCache.Load(address)
 	sort.Slice(history.Items, func(i, j int) bool {
 		if history.Items[i].BlockNumber == history.Items[j].BlockNumber {
 			return history.Items[i].TransactionIndex > history.Items[j].TransactionIndex
@@ -195,10 +172,47 @@ func (a *App) thing(address base.Address, freq int) error {
 		return history.Items[i].BlockNumber > history.Items[j].BlockNumber
 	})
 	history.Summarize()
-	a.project.HistoryMap.Store(address, history)
-	messages.Send(a.ctx,
-		messages.Completed,
-		messages.NewProgressMsg(a.txCount(address), a.txCount(address), address),
-	)
+	a.historyCache.Store(address, history)
+	a.emitProgressMsg(messages.Completed, address, a.txCount(address), a.txCount(address))
 	return nil
 }
+
+func (a *App) forceHistory() (force bool) {
+	// EXISTING_CODE
+	force = a.forceName()
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
+func (a *App) Reload() {
+	switch a.session.LastRoute {
+	case "/names":
+		logger.InfoC("Reloading names")
+		a.names.LastUpdate = time.Time{}
+		if err := a.loadNames(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+	}
+}
+
+func (a *App) GoToAddress(address base.Address) {
+	logger.Info("--------------------------- enter -------------------------------------------")
+	logger.Info("GoToAddress: ", address.Hex())
+	if address == base.ZeroAddr {
+		logger.Info("--------------------------- zeroAddr exit -------------------------------------------")
+		return
+	}
+
+	a.SetRoute("/history", address.Hex())
+
+	a.cancelContext(address)
+	a.historyCache.Delete(address)
+	a.loadHistory(address, nil, nil)
+
+	a.emitNavigateMsg(a.GetRoute())
+	a.emitInfoMsg("viewing address", address.Hex())
+	logger.Info("--------------------------- exit -------------------------------------------")
+}
+
+// EXISTING_CODE

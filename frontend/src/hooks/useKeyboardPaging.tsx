@@ -1,22 +1,16 @@
 import { useEffect, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { Route } from "@/Routes";
 import { Pager, EmptyPager } from "@components";
 import { CancelAllContexts, Reload } from "@gocode/app/App";
 import { useAppState } from "@state";
 
 export type Page = {
   selected: number;
+  getRecord: () => number;
   getOffset: () => number;
 };
 
-export function useKeyboardPaging(
-  route: Route,
-  nItems: number,
-  perPage: number = 20,
-  onEnter: (page: Page) => void
-): Pager {
-  const { address } = useAppState();
+export function useKeyboardPaging(nItems: number, perPage: number = 20, onEnter: (page: Page) => void): Pager {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>(1);
   const [selected, setSelected] = useState<number>(0);
@@ -40,6 +34,7 @@ export function useKeyboardPaging(
   };
 
   const getOffset = () => (pageNumber - 1) * perPage;
+  const getRecord = () => selected - getOffset();
 
   // keyboard shortcuts
   useHotkeys("up", (e) => {
@@ -80,9 +75,10 @@ export function useKeyboardPaging(
     e.preventDefault();
     CancelAllContexts();
   });
+
   useHotkeys("mod+r", (e) => {
     e.preventDefault();
-    Reload(address).then(() => {});
+    Reload().then(() => {});
   });
 
   useHotkeys(
@@ -91,6 +87,7 @@ export function useKeyboardPaging(
       e.preventDefault();
       onEnter({
         selected,
+        getRecord,
         getOffset,
       });
     },
@@ -101,7 +98,6 @@ export function useKeyboardPaging(
     return EmptyPager;
   } else {
     return {
-      name: route,
       selected,
       perPage,
       nItems,

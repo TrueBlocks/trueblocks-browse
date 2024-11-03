@@ -2,22 +2,26 @@ package app
 
 import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/wizard"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 func (a *App) isConfigured() bool {
-	return a.GetSessionWizard() == wizard.Okay
+	return a.getWizardState() == coreTypes.Okay
 }
 
-func (a *App) GetWizardState() wizard.State {
-	return a.GetSession().Wizard.State
+func (a *App) getWizardState() coreTypes.WizState {
+	return a.session.Wizard.State
 }
 
-func (a *App) StepWizard(step wizard.Step) wizard.State {
-	a.GetSession().Wizard.Step(step)
-	a.GetSession().Save()
-	if a.isConfigured() {
-		messages.Send(a.ctx, messages.Navigate, messages.NewNavigateMsg("/"))
-	}
-	return a.GetWizardState()
+func (a *App) StepWizard(step coreTypes.WizStep) coreTypes.WizState {
+	defer func() {
+		if a.isConfigured() {
+			a.Navigate("/", "")
+		}
+		a.emitMsg(messages.Wizard, &messages.MessageMsg{State: a.session.Wizard.State})
+	}()
+
+	a.session.Wizard.Step(step)
+	a.saveSession()
+	return a.getWizardState()
 }

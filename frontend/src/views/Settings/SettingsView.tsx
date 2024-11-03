@@ -1,28 +1,42 @@
-import { useState, useEffect } from "react";
-import { Checkbox, InputLabel } from "@mantine/core";
-import { View } from "@components";
-import { GetSession, ModifyNoop } from "@gocode/app/App";
-import { config } from "@gocode/models";
-import { useAppState, ViewStateProvider } from "@state";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { FormTable, View, ViewForm } from "@components";
+import { types } from "@gocode/models";
+import { useNoops } from "@hooks";
+import { ViewStateProvider, useAppState } from "@state";
+import { ConfigFormDef } from "../Config";
+import { SessionFormDef } from "../Session";
+import { StatusFormDef } from "../Status";
+import { SettingsTableDef } from ".";
 
-export function SettingsView() {
-  const [session, setSession] = useState<config.Session | null>(null);
-  const { status } = useAppState();
+export const SettingsView = () => {
+  const { modifyNoop } = useNoops();
+  const { settings, fetchSettings } = useAppState();
 
-  useEffect(() => {
-    GetSession().then((s) => setSession(s));
-  }, []);
+  const status = settings.status ?? types.StatusContainer.createFrom({});
+  const config = settings.config ?? types.ConfigContainer.createFrom({});
+  const session = settings.session ?? types.SessionContainer.createFrom({});
+
+  const table = useReactTable({
+    data: status.items || [],
+    columns: SettingsTableDef,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  const route = "settings";
+  const tabs = ["config", "status", "session"];
+  const forms: ViewForm = {
+    status: <FormTable data={status} groups={StatusFormDef(table)} />,
+    config: <FormTable data={config} groups={ConfigFormDef(config)} />,
+    session: <FormTable data={session} groups={SessionFormDef()} />,
+  };
+
+  if (!settings) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    <ViewStateProvider route="settings" fetchFn={(_unused1: number, _unused2: number) => {}} modifyFn={ModifyNoop}>
-      <View>
-        <InputLabel>
-          <Checkbox label={"A checkbox"} />
-          <pre>{JSON.stringify(session, null, 2)}</pre>
-          <pre>{status ? JSON.stringify(status, null, 2) : ""}</pre>
-        </InputLabel>
-      </View>
+    <ViewStateProvider route={route} fetchFn={fetchSettings} modifyFn={modifyNoop}>
+      <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
-}
+};
