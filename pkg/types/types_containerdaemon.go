@@ -38,7 +38,7 @@ func (s *DaemonContainer) String() string {
 func (s *DaemonContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getDaemonReload()
 	if force || reload {
-		logger.InfoG("DaemonContainer", s.LastUpdate.String(), latest.String())
+		logger.InfoG("reload DaemonContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}

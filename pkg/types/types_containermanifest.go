@@ -59,7 +59,7 @@ func (s *ManifestContainer) String() string {
 func (s *ManifestContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getManifestReload()
 	if force || reload {
-		logger.InfoG("ManifestContainer", s.LastUpdate.String(), latest.String())
+		logger.InfoG("reload ManifestContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}

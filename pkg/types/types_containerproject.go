@@ -55,7 +55,7 @@ func (s *ProjectContainer) NeedsUpdate(force bool) bool {
 	logger.InfoW("ProjectContainer::NeedsUpdate")
 	latest, reload := s.getProjectReload()
 	if force || reload {
-		logger.InfoG("ProjectContainer", s.LastUpdate.String(), latest.String())
+		logger.InfoG("reload ProjectContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}

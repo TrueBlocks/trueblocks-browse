@@ -69,9 +69,6 @@ func NewApp() *App {
 		historyCache: &types.HistoryMap{},
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}
-	a.freshenController = daemons.NewFreshen(a, "freshen", 3000, a.IsShowing("freshen"))
-	a.scraperController = daemons.NewScraper(a, "scraper", 7000, a.IsShowing("scraper"))
-	a.ipfsController = daemons.NewIpfs(a, "ipfs", 10000, a.IsShowing("ipfs"))
 	a.session.LastSub = make(map[string]string)
 
 	return a
@@ -104,6 +101,10 @@ func (a *App) Startup(ctx context.Context) {
 		wErr := fmt.Errorf("%w: %v", ErrLoadingNames, err)
 		a.deferredErrors = append(a.deferredErrors, wErr)
 	}
+
+	a.freshenController = daemons.NewFreshen(a, "freshen", 3000, a.IsShowing("freshen"))
+	a.scraperController = daemons.NewScraper(a, "scraper", 7000, a.IsShowing("scraper"))
+	a.ipfsController = daemons.NewIpfs(a, "ipfs", 10000, a.IsShowing("ipfs"))
 }
 
 // DomReady is called by Wails when the app is ready to go. Adjust the window size and show it.

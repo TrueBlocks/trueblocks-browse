@@ -46,7 +46,7 @@ func (s *ConfigContainer) String() string {
 func (s *ConfigContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getConfigReload()
 	if force || reload {
-		logger.InfoG("ConfigContainer", s.LastUpdate.String(), latest.String())
+		logger.InfoG("reload ConfigContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}

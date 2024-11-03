@@ -56,7 +56,7 @@ func (s *AbiContainer) String() string {
 func (s *AbiContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getAbiReload()
 	if force || reload {
-		logger.InfoG("AbiContainer", s.LastUpdate.String(), latest.String())
+		logger.InfoG("reload AbiContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}

@@ -59,7 +59,7 @@ func (s *NameContainer) String() string {
 func (s *NameContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getNameReload()
 	if force || reload {
-		logger.InfoG("NameContainer", s.LastUpdate.String(), latest.String())
+		logger.InfoG("reload NameContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}
@@ -125,7 +125,7 @@ func (s *NameContainer) Summarize() {
 func (s *NameContainer) getNameReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	ret = file.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(s.Chain))
-	reload = ret != s.LastUpdate
+	reload = ret.After(s.LastUpdate)
 	// EXISTING_CODE
 	return
 }

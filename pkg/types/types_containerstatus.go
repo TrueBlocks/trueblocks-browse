@@ -47,7 +47,7 @@ func (s *StatusContainer) String() string {
 func (s *StatusContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getStatusReload()
 	if force || reload {
-		logger.InfoG("StatusContainer", s.LastUpdate.String(), latest.String())
+		logger.InfoG("reload StatusContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}

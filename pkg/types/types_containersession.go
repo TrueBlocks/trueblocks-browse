@@ -40,7 +40,7 @@ func (s *SessionContainer) String() string {
 func (s *SessionContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getSessionReload()
 	if force || reload {
-		logger.InfoG("SessionContainer", s.LastUpdate.String(), latest.String())
+		logger.InfoG("reload SessionContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}
