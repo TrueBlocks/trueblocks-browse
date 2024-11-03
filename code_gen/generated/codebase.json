@@ -392,8 +392,7 @@
             "ui_route": "1090-daemons",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
-            "attributes": "embedType=types.Daemon|noChain|noFetch"
+            "attributes": "embedType=daemons.Daemon|noChain|noFetch"
         },
         {
             "class": "Session",

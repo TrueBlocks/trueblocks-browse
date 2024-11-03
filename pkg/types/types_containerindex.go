@@ -51,7 +51,6 @@ func (s *IndexContainer) String() string {
 func (s *IndexContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getIndexReload()
 	if force || reload {
-		logger.InfoG("reload IndexContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}

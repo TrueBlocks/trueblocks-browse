@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 // EXISTING_CODE
@@ -38,7 +37,6 @@ func (s *DaemonContainer) String() string {
 func (s *DaemonContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getDaemonReload()
 	if force || reload {
-		logger.InfoG("reload DaemonContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}
@@ -46,12 +44,13 @@ func (s *DaemonContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *DaemonContainer) ShallowCopy() Containerer {
-	return &DaemonContainer{
-		// Daemon:     s.Daemon.ShallowCopy(),
+	ret := &DaemonContainer{
+		Daemon:     s.Daemon.ShallowCopy(),
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func (s *DaemonContainer) Summarize() {

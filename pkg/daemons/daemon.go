@@ -41,6 +41,17 @@ func (s *Daemon) String() string {
 	return string(bytes)
 }
 
+func (s *Daemon) ShallowCopy() Daemon {
+	return Daemon{
+		Name:    s.Name,
+		Sleep:   s.Sleep,
+		Color:   s.Color,
+		Started: s.Started,
+		Ticks:   s.Ticks,
+		State:   s.State,
+	}
+}
+
 func (s *Daemon) GetState() DaemonState {
 	return s.State
 }

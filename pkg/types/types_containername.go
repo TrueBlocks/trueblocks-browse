@@ -59,7 +59,6 @@ func (s *NameContainer) String() string {
 func (s *NameContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getNameReload()
 	if force || reload {
-		logger.InfoG("reload NameContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}

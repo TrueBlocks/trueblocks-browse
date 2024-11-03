@@ -37,7 +37,6 @@ func (s *WizardContainer) String() string {
 func (s *WizardContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getWizardReload()
 	if force || reload {
-		logger.InfoG("reload WizardContainer", s.LastUpdate.String(), latest.String())
 		s.LastUpdate = latest
 		return true
 	}
