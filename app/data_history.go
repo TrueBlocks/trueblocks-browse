@@ -197,10 +197,10 @@ func (a *App) Reload() {
 }
 
 func (a *App) GoToAddress(address base.Address) {
-	logger.Info("--------------------------- enter -------------------------------------------")
-	logger.Info("GoToAddress: ", address.Hex())
+	logger.InfoW("--------------------------- enter -------------------------------------------")
+	logger.InfoW("GoToAddress: ", address.Hex())
 	if address == base.ZeroAddr {
-		logger.Info("--------------------------- zeroAddr exit -------------------------------------------")
+		logger.InfoW("--------------------------- zeroAddr exit -------------------------------------------")
 		return
 	}
 
@@ -212,7 +212,7 @@ func (a *App) GoToAddress(address base.Address) {
 
 	a.emitNavigateMsg(a.GetRoute())
 	a.emitInfoMsg("viewing address", address.Hex())
-	logger.Info("--------------------------- exit -------------------------------------------")
+	logger.InfoW("--------------------------- exit -------------------------------------------")
 }
 
 // EXISTING_CODE
