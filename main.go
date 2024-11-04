@@ -42,7 +42,7 @@ func main() {
 			&types.ManifestContainer{},
 			&types.MonitorContainer{},
 			// &types.DaemonContainer{},
-			&types.SettingsGroup{},
+			&types.SettingsContainer{},
 			&types.StatusContainer{},
 			&messages.MessageMsg{},
 			&coreTypes.Wizard{},

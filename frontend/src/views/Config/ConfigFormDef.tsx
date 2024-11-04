@@ -5,7 +5,7 @@ import { configtypes, types } from "@gocode/models";
 export const ConfigFormDef = (cfg: types.ConfigContainer): FieldGroup<types.ConfigContainer>[] => {
   /*
   	    version: configtypes.VersionGroup;
-	    settings: configtypes.SettingsGroup;
+	    settings: configtypes.SettingsContainer;
 	    keys: {[key: string]: configtypes.KeyGroup};
 	    pinning: configtypes.PinningGroup;
 	    unchained: configtypes.UnchainedGroup;

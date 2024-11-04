@@ -36,7 +36,7 @@ type App struct {
 	indexes   types.IndexContainer
 	manifests types.ManifestContainer
 	status    types.StatusContainer
-	settings  types.SettingsGroup
+	settings  types.SettingsContainer
 	session   types.SessionContainer
 	config    types.ConfigContainer
 

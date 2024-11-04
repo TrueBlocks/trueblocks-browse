@@ -2,15 +2,8 @@
 // of ExistingCode markers (if any).
 import { useState, useEffect, useContext, useCallback, createContext, ReactNode } from "react";
 import {
-  ProjectPage,
-  HistoryPage,
-  MonitorPage,
-  NamePage,
-  AbiPage,
-  IndexPage,
-  ManifestPage,
-  SettingsPage,
-  SetChain,
+{{range .Structures}}  {{firstUpper .UiRouteName}}Page,
+{{end}}  SetChain,
   StatusPage,
   SessionPage,
   GetAppInfo,
@@ -19,37 +12,10 @@ import { app, base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
 
 interface AppStateProps {
-  project: types.ProjectContainer;
-  fetchProject: (currentItem: number, itemsPerPage: number) => void;
+{{range .Structures}}  {{toLower .UiRouteName}}: types.{{.Class}}Container;
+  fetch{{firstUpper .UiRouteName}}: (currentItem: number, itemsPerPage: number) => void;
 
-  history: types.HistoryContainer;
-  fetchHistory: (currentItem: number, itemsPerPage: number) => void;
-
-  monitors: types.MonitorContainer;
-  fetchMonitors: (currentItem: number, itemsPerPage: number) => void;
-
-  names: types.NameContainer;
-  fetchNames: (currentItem: number, itemsPerPage: number) => void;
-
-  abis: types.AbiContainer;
-  fetchAbis: (currentItem: number, itemsPerPage: number) => void;
-
-  indexes: types.IndexContainer;
-  fetchIndexes: (currentItem: number, itemsPerPage: number) => void;
-
-  manifests: types.ManifestContainer;
-  fetchManifests: (currentItem: number, itemsPerPage: number) => void;
-
-  status: types.StatusContainer;
-  fetchStatus: (currentItem: number, itemsPerPage: number) => void;
-
-  settings: types.SettingsContainer;
-  fetchSettings: (currentItem: number, itemsPerPage: number) => void;
-
-  session: types.SessionContainer;
-  fetchSession: (currentItem: number, itemsPerPage: number) => void;
-
-  address: base.Address;
+{{end}}  address: base.Address;
   setAddress: (address: base.Address) => void;
 
   info: app.AppInfo;
@@ -66,17 +32,8 @@ interface AppStateProps {
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
 export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => {
-  const [project, setProject] = useState<types.ProjectContainer>({} as types.ProjectContainer);
-  const [history, setHistory] = useState<types.HistoryContainer>({} as types.HistoryContainer);
-  const [monitors, setMonitors] = useState<types.MonitorContainer>({} as types.MonitorContainer);
-  const [names, setNames] = useState<types.NameContainer>({} as types.NameContainer);
-  const [abis, setAbis] = useState<types.AbiContainer>({} as types.AbiContainer);
-  const [indexes, setIndexes] = useState<types.IndexContainer>({} as types.IndexContainer);
-  const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
-  const [settings, setSettings] = useState<types.SettingsContainer>({} as types.SettingsContainer);
-  const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
-  const [session, setSession] = useState<types.SessionContainer>({} as types.SessionContainer);
-  // TODO BOGUS: The daemon state should be in the AppState
+{{range .Structures}}  const [{{toLower .Class}}, set{{.Class}}] = useState<types.{{.Class}}Container>({} as types.{{.Class}}Container);
+{{end}}  // TODO BOGUS: The daemon state should be in the AppState
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
 
@@ -92,17 +49,14 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   }, []);
 
-  const fetchHistory = useCallback(
-    (currentItem: number, itemsPerPage: number) => {
-      HistoryPage(String(address), currentItem, itemsPerPage).then((item: types.HistoryContainer) => {
-        setHistory(item);
-      });
-    },
-    [address]
-  );
+  const fetchHistory = useCallback((currentItem: number, itemsPerPage: number) => {
+    HistoryPage(String(address), currentItem, itemsPerPage).then((item: types.HistoryContainer) => {
+      setHistory(item);
+    });
+  }, []);
 
   const fetchMonitors = useCallback((currentItem: number, itemsPerPage: number) => {
-    MonitorPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
+    MonitorsPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
       if (item) {
         setMonitors(item);
       }
@@ -206,7 +160,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       EventsOff(Message.DAEMON);
       EventsOff(Message.WIZARD);
     };
-  }, [fetchStatus]);
+  }, []);
 
   const state = {
     project,

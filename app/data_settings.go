@@ -11,7 +11,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
-func (a *App) SettingsPage(first, pageSize int) *types.SettingsGroup {
+func (a *App) SettingsPage(first, pageSize int) *types.SettingsContainer {
 	return &a.settings
 }
 
@@ -42,7 +42,7 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}
 
-	a.settings = types.NewSettingsGroup(&a.status.Status, &a.config.Config, &a.session.Session)
+	a.settings = types.NewSettingsContainer(&a.status.Status, &a.config.Config, &a.session.Session)
 	a.settings.Summarize()
 
 	return nil

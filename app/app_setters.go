@@ -34,6 +34,6 @@ func (a *App) SetChain(chain string, address base.Address) {
 	a.indexes = types.IndexContainer{}
 	a.manifests = types.ManifestContainer{}
 	a.status = types.StatusContainer{}
-	a.settings = types.SettingsGroup{}
+	a.settings = types.SettingsContainer{}
 	_ = a.Freshen()
 }

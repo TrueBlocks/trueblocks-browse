@@ -126,20 +126,10 @@ func (s *NameContainer) Summarize() {
 
 func (s *NameContainer) getNameReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	// TODO: Clean this up a bit
 	chain := "mainnet"
 	folder := coreConfig.MustGetPathToChainConfig(chain)
 	ret = file.MustGetLatestFileTime(folder)
-	t1 := ret
-	t2 := t1.Truncate(secs)
-	t3 := s.LastUpdate
-	t4 := t3.Truncate(secs)
-	reload = t2.After(t4)
-	// logger.InfoBY("getNameReload", "chain", s.Chain, "folder", folder, file.FolderExists(folder), "r eload", reload)
-	// logger.InfoBY("t1", t1.String())
-	// logger.InfoBY("t2", t2.String())
-	// logger.InfoBY("t3", t3.String())
-	// logger.InfoBY("t4", t4.String())
+	reload = ret.After(s.LastUpdate)
 	// EXISTING_CODE
 	return
 }

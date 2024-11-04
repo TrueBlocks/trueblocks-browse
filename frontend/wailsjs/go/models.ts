@@ -2195,7 +2195,7 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class SettingsGroup {
+	export class SettingsContainer {
 	    status: StatusContainer;
 	    config: ConfigContainer;
 	    session: SessionContainer;
@@ -2203,7 +2203,7 @@ export namespace types {
 	    lastUpdate: any;
 	
 	    static createFrom(source: any = {}) {
-	        return new SettingsGroup(source);
+	        return new SettingsContainer(source);
 	    }
 	
 	    constructor(source: any = {}) {

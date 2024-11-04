@@ -16,7 +16,7 @@ import (
 
 // EXISTING_CODE
 
-type SettingsGroup struct {
+type SettingsContainer struct {
 	Status     StatusContainer  `json:"status"`
 	Config     ConfigContainer  `json:"config"`
 	Session    SessionContainer `json:"session"`
@@ -25,9 +25,9 @@ type SettingsGroup struct {
 	// EXISTING_CODE
 }
 
-func NewSettingsGroup(status *coreTypes.Status, cfg *configTypes.Config, session *coreTypes.Session) SettingsGroup {
+func NewSettingsContainer(status *coreTypes.Status, cfg *configTypes.Config, session *coreTypes.Session) SettingsContainer {
 	latest := getLatestFileTime()
-	ret := SettingsGroup{
+	ret := SettingsContainer{
 		Status:     NewStatusContainer(status.Chain, status),
 		Config:     NewConfigContainer(status.Chain, cfg),
 		Session:    NewSessionContainer(status.Chain, session),
@@ -38,22 +38,22 @@ func NewSettingsGroup(status *coreTypes.Status, cfg *configTypes.Config, session
 	return ret
 }
 
-func (s *SettingsGroup) String() string {
+func (s *SettingsContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-func (s *SettingsGroup) NeedsUpdate(force bool) bool {
+func (s *SettingsContainer) NeedsUpdate(force bool) bool {
 	return s.Session.NeedsUpdate(force) ||
 		s.Config.NeedsUpdate(force) ||
 		s.Status.NeedsUpdate(force)
 }
 
-func (s *SettingsGroup) ShallowCopy() Containerer {
+func (s *SettingsContainer) ShallowCopy() Containerer {
 	statusCopy := s.Status.ShallowCopy().(*StatusContainer)
 	configCopy := s.Config.ShallowCopy().(*ConfigContainer)
 	sessionCopy := s.Session.ShallowCopy().(*SessionContainer)
-	ret := &SettingsGroup{
+	ret := &SettingsContainer{
 		Status:     *statusCopy,
 		Config:     *configCopy,
 		Session:    *sessionCopy,
@@ -64,7 +64,7 @@ func (s *SettingsGroup) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *SettingsGroup) Summarize() {
+func (s *SettingsContainer) Summarize() {
 	// EXISTING_CODE
 	s.Status.Summarize()
 	s.Config.Summarize()
