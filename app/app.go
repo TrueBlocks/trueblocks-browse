@@ -39,6 +39,7 @@ type App struct {
 	settings  types.SettingsContainer
 	session   types.SessionContainer
 	config    types.ConfigContainer
+	wizard    types.WizardContainer
 
 	// Memory caches
 	ensCache     *sync.Map
@@ -72,6 +73,7 @@ func NewApp() *App {
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}
 	a.session.LastSub = make(map[string]string)
+	_ = a.wizard // delint
 
 	return a
 }
