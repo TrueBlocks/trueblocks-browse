@@ -2,18 +2,16 @@
 // of ExistingCode markers (if any).
 import { useState, useEffect, useContext, useCallback, createContext, ReactNode } from "react";
 import {
-{{range .Structures}}  {{firstUpper .UiRouteName}}Page,
+{{range .Structures}}  {{.UiRoutePage}},
 {{end}}  SetChain,
-  StatusPage,
-  SessionPage,
   GetAppInfo,
 } from "@gocode/app/App";
 import { app, base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
 
 interface AppStateProps {
-{{range .Structures}}  {{toLower .UiRouteName}}: types.{{.Class}}Container;
-  fetch{{firstUpper .UiRouteName}}: (currentItem: number, itemsPerPage: number) => void;
+{{range .Structures}}  {{.UiRouteLower}}: types.{{.UiContainer}};
+  fetch{{.UiRouteLabel}}: (currentItem: number, itemsPerPage: number) => void;
 
 {{end}}  address: base.Address;
   setAddress: (address: base.Address) => void;
@@ -32,9 +30,8 @@ interface AppStateProps {
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
 export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => {
-{{range .Structures}}  const [{{toLower .Class}}, set{{.Class}}] = useState<types.{{.Class}}Container>({} as types.{{.Class}}Container);
-{{end}}  // TODO BOGUS: The daemon state should be in the AppState
-
+{{range .Structures}}  const [{{.UiRouteLower}}, set{{.UiRouteLabel}}] = useState<types.{{.UiContainer}}>({} as types.{{.UiContainer}});
+{{end}}
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
 
   const [chain, setChain] = useState<string>("mainnet");
@@ -43,82 +40,15 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
 
-  const fetchProject = useCallback((currentItem: number, itemsPerPage: number) => {
-    ProjectPage(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
-      setProject(item);
-    });
-  }, []);
-
-  const fetchHistory = useCallback((currentItem: number, itemsPerPage: number) => {
-    HistoryPage(String(address), currentItem, itemsPerPage).then((item: types.HistoryContainer) => {
-      setHistory(item);
-    });
-  }, []);
-
-  const fetchMonitors = useCallback((currentItem: number, itemsPerPage: number) => {
-    MonitorsPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
+{{range .Structures}}    const fetch{{.UiRouteLabel}} = useCallback((currentItem: number, itemsPerPage: number) => {
+    {{.UiRoutePage}}(currentItem, itemsPerPage).then((item: types.{{.UiContainer}}) => {
       if (item) {
-        setMonitors(item);
+        set{{.UiRouteLabel}}(item);
       }
     });
   }, []);
 
-  const fetchNames = useCallback((currentItem: number, itemsPerPage: number) => {
-    NamePage(currentItem, itemsPerPage).then((item: types.NameContainer) => {
-      if (item) {
-        setNames(item);
-      }
-    });
-  }, []);
-
-  const fetchAbis = useCallback((currentItem: number, itemsPerPage: number) => {
-    AbiPage(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
-      if (item) {
-        setAbis(item);
-      }
-    });
-  }, []);
-
-  const fetchIndexes = useCallback((currentItem: number, itemsPerPage: number) => {
-    IndexPage(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
-      if (item) {
-        setIndexes(item);
-      }
-    });
-  }, []);
-
-  const fetchManifests = useCallback((currentItem: number, itemsPerPage: number) => {
-    ManifestPage(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
-      if (item) {
-        setManifests(item);
-      }
-    });
-  }, []);
-
-  const fetchSettings = useCallback((currentItem: number, itemsPerPage: number) => {
-    SettingsPage(currentItem, itemsPerPage).then((item: types.SettingsContainer) => {
-      if (item) {
-        setSettings(item);
-      }
-    });
-  }, []);
-
-  const fetchStatus = useCallback((currentItem: number, itemsPerPage: number) => {
-    StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
-      if (item) {
-        setStatus(item);
-      }
-    });
-  }, []);
-
-  const fetchSession = useCallback((currentItem: number, itemsPerPage: number) => {
-    SessionPage(currentItem, itemsPerPage).then((item: types.SessionContainer) => {
-      if (item) {
-        setSession(item);
-      }
-    });
-  }, []);
-
+{{end}}
   const fetchAppInfo = () => {
     GetAppInfo().then((info) => {
       setChain(info.chain);
@@ -160,29 +90,12 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       EventsOff(Message.DAEMON);
       EventsOff(Message.WIZARD);
     };
-  }, []);
+  }, [fetchStatus]);
 
   const state = {
-    project,
-    fetchProject,
-    history,
-    fetchHistory,
-    monitors,
-    fetchMonitors,
-    names,
-    fetchNames,
-    abis,
-    fetchAbis,
-    indexes,
-    fetchIndexes,
-    manifests,
-    fetchManifests,
-    settings,
-    fetchSettings,
-    status,
-    fetchStatus,
-    session,
-    fetchSession,
+{{range .Structures}}    {{.UiRouteLower}},
+    fetch{{.UiRouteLabel}},
+{{end}}
     address,
     info,
     chain,

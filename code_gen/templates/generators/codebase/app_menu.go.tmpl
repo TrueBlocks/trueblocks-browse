@@ -33,7 +33,7 @@ func (a *App) GetMenus() *menu.Menu {
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-{{range .Structures}}	"{{toLower .UiRouteName}}":   {inc(), viewMenu, "{{firstUpper .UiRouteName}}", keys.CmdOrCtrl("{{.UiHotKey}}"), a.{{firstUpper .UiRouteName}}View},
+{{range .Structures}}	"{{.UiRouteLower}}":   {inc(), viewMenu, "{{.UiRouteLabel}}", keys.CmdOrCtrl("{{.UiHotKey}}"), a.{{.UiRouteView}}},
 {{end}}
 
 		// EXISTING_CODE

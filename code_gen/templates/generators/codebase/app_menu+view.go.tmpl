@@ -8,19 +8,19 @@ import (
 )
 
 {{range .Structures -}}
-func (a *App) {{firstUpper .UiRouteName}}View(cb *menu.CallbackData) {
+func (a *App) {{.UiRouteView}}(cb *menu.CallbackData) {
 	{{if .IsHistory -}}
 	address := a.GetSelected()
-	a.Navigate("/{{toLower .UiRouteName}}", address.Hex())
+	a.Navigate("/{{.UiRouteLower}}", address.Hex())
 	{{- else if .IsWizard -}}
 	if a.isConfigured() {
 		a.StepWizard(coreTypes.Reset)
 	} else {
 		a.StepWizard(coreTypes.Next)
 	}
-	a.Navigate("/{{toLower .UiRouteName}}", "")
+	a.Navigate("/{{.UiRouteLower}}", "")
 	{{- else -}}
-	a.Navigate("/{{if not .IsProject}}{{toLower .UiRouteName}}{{end}}", "")
+	a.Navigate("/{{if not .IsProject}}{{.UiRouteLower}}{{end}}", "")
 	{{end -}}
 }
 

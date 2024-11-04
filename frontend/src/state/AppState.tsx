@@ -9,10 +9,13 @@ import {
   AbiPage,
   IndexPage,
   ManifestPage,
-  SettingsPage,
-  SetChain,
   StatusPage,
+  SettingsPage,
+  DaemonPage,
   SessionPage,
+  ConfigPage,
+  WizardPage,
+  SetChain,
   GetAppInfo,
 } from "@gocode/app/App";
 import { app, base, messages, types } from "@gocode/models";
@@ -46,8 +49,17 @@ interface AppStateProps {
   settings: types.SettingsContainer;
   fetchSettings: (currentItem: number, itemsPerPage: number) => void;
 
+  daemons: types.DaemonContainer;
+  fetchDaemons: (currentItem: number, itemsPerPage: number) => void;
+
   session: types.SessionContainer;
   fetchSession: (currentItem: number, itemsPerPage: number) => void;
+
+  config: types.ConfigContainer;
+  fetchConfig: (currentItem: number, itemsPerPage: number) => void;
+
+  wizard: types.WizardContainer;
+  fetchWizard: (currentItem: number, itemsPerPage: number) => void;
 
   address: base.Address;
   setAddress: (address: base.Address) => void;
@@ -73,10 +85,12 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [abis, setAbis] = useState<types.AbiContainer>({} as types.AbiContainer);
   const [indexes, setIndexes] = useState<types.IndexContainer>({} as types.IndexContainer);
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
-  const [settings, setSettings] = useState<types.SettingsContainer>({} as types.SettingsContainer);
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
+  const [settings, setSettings] = useState<types.SettingsContainer>({} as types.SettingsContainer);
+  const [daemons, setDaemons] = useState<types.DaemonContainer>({} as types.DaemonContainer);
   const [session, setSession] = useState<types.SessionContainer>({} as types.SessionContainer);
-  // TODO BOGUS: The daemon state should be in the AppState
+  const [config, setConfig] = useState<types.ConfigContainer>({} as types.ConfigContainer);
+  const [wizard, setWizard] = useState<types.WizardContainer>({} as types.WizardContainer);
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
 
@@ -88,7 +102,9 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const fetchProject = useCallback((currentItem: number, itemsPerPage: number) => {
     ProjectPage(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
-      setProject(item);
+      if (item) {
+        setProject(item);
+      }
     });
   }, []);
 
@@ -141,14 +157,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   }, []);
 
-  const fetchSettings = useCallback((currentItem: number, itemsPerPage: number) => {
-    SettingsPage(currentItem, itemsPerPage).then((item: types.SettingsContainer) => {
-      if (item) {
-        setSettings(item);
-      }
-    });
-  }, []);
-
   const fetchStatus = useCallback((currentItem: number, itemsPerPage: number) => {
     StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
       if (item) {
@@ -157,10 +165,42 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   }, []);
 
+  const fetchSettings = useCallback((currentItem: number, itemsPerPage: number) => {
+    SettingsPage(currentItem, itemsPerPage).then((item: types.SettingsContainer) => {
+      if (item) {
+        setSettings(item);
+      }
+    });
+  }, []);
+
+  const fetchDaemons = useCallback((currentItem: number, itemsPerPage: number) => {
+    DaemonPage(currentItem, itemsPerPage).then((item: types.DaemonContainer) => {
+      if (item) {
+        setDaemons(item);
+      }
+    });
+  }, []);
+
   const fetchSession = useCallback((currentItem: number, itemsPerPage: number) => {
     SessionPage(currentItem, itemsPerPage).then((item: types.SessionContainer) => {
       if (item) {
         setSession(item);
+      }
+    });
+  }, []);
+
+  const fetchConfig = useCallback((currentItem: number, itemsPerPage: number) => {
+    ConfigPage(currentItem, itemsPerPage).then((item: types.ConfigContainer) => {
+      if (item) {
+        setConfig(item);
+      }
+    });
+  }, []);
+
+  const fetchWizard = useCallback((currentItem: number, itemsPerPage: number) => {
+    WizardPage(currentItem, itemsPerPage).then((item: types.WizardContainer) => {
+      if (item) {
+        setWizard(item);
       }
     });
   }, []);
@@ -223,12 +263,19 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchIndexes,
     manifests,
     fetchManifests,
-    settings,
-    fetchSettings,
     status,
     fetchStatus,
+    settings,
+    fetchSettings,
+    daemons,
+    fetchDaemons,
     session,
     fetchSession,
+    config,
+    fetchConfig,
+    wizard,
+    fetchWizard,
+
     address,
     info,
     chain,

@@ -8,13 +8,13 @@ package app
 
 var {{toLower .Class}}Lock atomic.Uint32
 
-func (a *App) {{.Class}}Page(first, pageSize int) *types.{{.Class}}Container {
+func (a *App) {{.UiRoutePage}}(first, pageSize int) *types.{{.UiContainer}} {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
 	first = base.Max(0, base.Min(first, len(a.{{toLowerPlural .Class}}.Items)-1))
 	last := base.Min(len(a.{{toLowerPlural .Class}}.Items), first+pageSize)
-	copy, _ := a.{{toLowerPlural .Class}}.ShallowCopy().(*types.{{.Class}}Container)
+	copy, _ := a.{{toLowerPlural .Class}}.ShallowCopy().(*types.{{.UiContainer}})
 	copy.Items = a.{{toLowerPlural .Class}}.Items[first:last]
 	return copy
 }
@@ -57,7 +57,7 @@ func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) 
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.{{toLowerPlural .Class}} = types.New{{.Class}}Container(opts.Chain, {{if .HasItems}}{{toLowerPlural .Class}}{{end}}{{if .HasEmbed}}&{{toLowerPlural .Class}}[0]{{end}})
+		a.{{toLowerPlural .Class}} = types.New{{.UiContainer}}(opts.Chain, {{if .HasItems}}{{toLowerPlural .Class}}{{end}}{{if .HasEmbed}}&{{toLowerPlural .Class}}[0]{{end}})
 		// EXISTING_CODE
 		// EXISTING_CODE
 {{if .HasSorts -}}

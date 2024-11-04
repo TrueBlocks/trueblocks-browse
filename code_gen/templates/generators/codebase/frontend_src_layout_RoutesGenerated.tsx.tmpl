@@ -2,13 +2,13 @@
 // of ExistingCode markers (if any).
 import {
   // Icons
-  {{range .Structures}}{{firstUpper .UiRouteName}}Icon,
+  {{range .Structures}}{{.UiRouteLabel}}Icon,
   {{end}}// Views
-  {{range .Structures}}{{firstUpper .UiRouteName}}View,
+  {{range .Structures}}{{.UiRouteView}},
   {{end}}} from "@views";
 
 export type Route =
-{{range .Structures}}  | "{{toLower .UiRouteStr}}"
+{{range .Structures}}  | "{{.UiRouteRoute}}"
 {{end -}};
 
 export type RouteItem = {
@@ -30,10 +30,10 @@ const expandRoute = (r: Route): string => {
 export const routeItems: RouteItem[] = [
 {{range .Structures}}  {
     order: {{.UiRouteNum}},
-    route: expandRoute("{{if not .IsProject}}{{toLower .UiRouteName}}{{end}}"),
-    label: "{{firstUpper .UiRouteName}}",
-    icon: {{firstUpper .UiRouteName}}Icon,
-    component: {{firstUpper .UiRouteName}}View,
+    route: expandRoute("{{if not .IsProject}}{{.UiRouteLower}}{{end}}"),
+    label: "{{.UiRouteLabel}}",
+    icon: {{.UiRouteLabel}}Icon,
+    component: {{.UiRouteView}},
   },
 {{end -}}
 ];
