@@ -1,13 +1,15 @@
 import { useEffect } from "react";
+import { Text } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm } from "@components";
-import { GoToAddress, DeleteAddress } from "@gocode/app/App";
-import { Page } from "@hooks";
+import { GoToAddress, ModifyHistory } from "@gocode/app/App";
+import { Page, useRenderCounter } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { ProjectTableDefNoDelete, ProjectTableDef, ProjectFormDef } from ".";
 
 export const ProjectView = () => {
   const { project, fetchProject, info } = useAppState();
+  const renderCount = useRenderCounter();
 
   useEffect(() => {
     fetchProject(0, 100);
@@ -45,8 +47,9 @@ export const ProjectView = () => {
       nItems={project.nItems}
       fetchFn={fetchProject}
       onEnter={handleEnter}
-      modifyFn={DeleteAddress}
+      modifyFn={ModifyHistory}
     >
+      <Text>Render count: {renderCount}</Text>
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

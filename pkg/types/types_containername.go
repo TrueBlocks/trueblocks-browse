@@ -44,6 +44,7 @@ func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	}
 	ret.LastUpdate, _ = ret.getNameReload()
 	// EXISTING_CODE
+	ret.Chain = "mainnet" // all names are on mainnet
 	sort.Slice(ret.Items, func(i, j int) bool {
 		return compare(ret.Items[i], ret.Items[j])
 	})
@@ -59,6 +60,7 @@ func (s *NameContainer) String() string {
 func (s *NameContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getNameReload()
 	if force || reload {
+		logger.InfoG("reload Name", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}
@@ -124,8 +126,19 @@ func (s *NameContainer) Summarize() {
 
 func (s *NameContainer) getNameReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = file.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(s.Chain))
-	reload = ret.After(s.LastUpdate)
+	chain := "mainnet"
+	folder := coreConfig.MustGetPathToChainConfig(chain)
+	ret = file.MustGetLatestFileTime(folder)
+	t1 := ret
+	t2 := t1.Truncate(secs)
+	t3 := s.LastUpdate
+	t4 := t3.Truncate(secs)
+	reload = t2.After(t4)
+	// logger.InfoBY("getNameReload", "chain", s.Chain, "folder", folder, file.FolderExists(folder), "r eload", reload)
+	// logger.InfoBY("t1", t1.String())
+	// logger.InfoBY("t2", t2.String())
+	// logger.InfoBY("t3", t3.String())
+	// logger.InfoBY("t4", t4.String())
 	// EXISTING_CODE
 	return
 }

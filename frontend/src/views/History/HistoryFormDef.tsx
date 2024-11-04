@@ -1,11 +1,23 @@
+import { useState, useEffect } from "react";
 import { Table } from "@tanstack/react-table";
 import { ExploreButton, ExportButton, DataTable, FieldGroup, GoogleButton } from "@components";
 import { types, base } from "@gocode/models";
+import { GetName } from "../../../wailsjs/go/app/App";
+import { useUtils } from "../../hooks";
 
 export const HistoryFormDef = (
   address: base.Address,
   table: Table<types.Transaction>
 ): FieldGroup<types.HistoryContainer>[] => {
+  const [named, setNamed] = useState(address as unknown as string);
+  const { ShortenAddr } = useUtils();
+
+  useEffect(() => {
+    GetName(address).then((name) => {
+      setNamed(name === "" ? ShortenAddr(address as unknown as string) : name);
+    });
+  }, [address, ShortenAddr]);
+
   return [
     {
       label: "DalleDress",
@@ -40,7 +52,7 @@ export const HistoryFormDef = (
       ],
     },
     {
-      label: "Transaction History",
+      label: named,
       collapsable: false,
       components: [<DataTable<types.Transaction> key={"dataTable"} table={table} loading={false} />],
     },

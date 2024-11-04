@@ -1,5 +1,7 @@
 package types
 
+import "time"
+
 type Containerer interface {
 	String() string
 	ShallowCopy() Containerer
@@ -8,3 +10,7 @@ type Containerer interface {
 }
 
 type Containerers []Containerer
+
+// TODO: are these still used?
+var secs = time.Second * 3
+var dateFmt string = "15:04:05"

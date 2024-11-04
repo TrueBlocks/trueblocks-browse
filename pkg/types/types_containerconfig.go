@@ -46,6 +46,7 @@ func (s *ConfigContainer) String() string {
 func (s *ConfigContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getConfigReload()
 	if force || reload {
+		logger.InfoG("reload Config", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}
@@ -82,7 +83,7 @@ func (s *ConfigContainer) Summarize() {
 func (s *ConfigContainer) getConfigReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	ret = file.MustGetLatestFileTime(coreConfig.PathToRootConfig())
-	reload = ret != s.LastUpdate
+	reload = ret.After(s.LastUpdate)
 	// EXISTING_CODE
 	return
 }

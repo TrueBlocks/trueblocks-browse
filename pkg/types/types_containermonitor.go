@@ -83,6 +83,7 @@ func (s *MonitorContainer) String() string {
 func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getMonitorReload()
 	if force || reload {
+		logger.InfoG("reload Monitor", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}
@@ -131,7 +132,7 @@ func (s *MonitorContainer) Summarize() {
 func (s *MonitorContainer) getMonitorReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	ret = file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "monitors"))
-	reload = ret != s.LastUpdate
+	reload = ret.After(s.LastUpdate)
 	// EXISTING_CODE
 	return
 }

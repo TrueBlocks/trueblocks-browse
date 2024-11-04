@@ -7,27 +7,27 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
 
-func (a *App) HeaderToggle(cb *menu.CallbackData) {
+func (a *App) ToggleHeader(cb *menu.CallbackData) {
 	which := "header"
 	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) MenuToggle(cb *menu.CallbackData) {
+func (a *App) ToggleMenu(cb *menu.CallbackData) {
 	which := "menu"
 	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) HelpToggle(cb *menu.CallbackData) {
+func (a *App) ToggleHelp(cb *menu.CallbackData) {
 	which := "help"
 	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) FooterToggle(cb *menu.CallbackData) {
+func (a *App) ToggleFooter(cb *menu.CallbackData) {
 	which := "footer"
 	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) AccordionToggle(cb *menu.CallbackData) {
+func (a *App) ToggleAccordion(cb *menu.CallbackData) {
 	route := a.GetRoute()
 	route = strings.TrimPrefix(route, "/")
 	parts := strings.Split(route, "/")
@@ -38,12 +38,12 @@ func (a *App) AccordionToggle(cb *menu.CallbackData) {
 	a.emitMsg(messages.ToggleAccordion, &messages.MessageMsg{String1: route})
 }
 
-func (a *App) SwitchTabPrev(cb *menu.CallbackData) {
+func (a *App) TogglePrevTab(cb *menu.CallbackData) {
 	which := "prev"
 	a.emitMsg(messages.SwitchTab, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) SwitchTabNext(cb *menu.CallbackData) {
+func (a *App) ToggleNextTab(cb *menu.CallbackData) {
 	which := "next"
 	a.emitMsg(messages.SwitchTab, &messages.MessageMsg{String1: which})
 }

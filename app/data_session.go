@@ -61,11 +61,13 @@ func (a *App) loadSessions(wg *sync.WaitGroup, errorChan chan error) error {
 		return err
 	} else {
 		// EXISTING_CODE
+		// Oddly, the session is always up to date, so we save it...
 		ss := a.session.Session
 		// EXISTING_CODE
 		a.meta = *meta
 		a.session = types.NewSessionContainer(opts.Chain, &sessions[0])
 		// EXISTING_CODE
+		// ... and put it back
 		a.session.Session = ss
 		// EXISTING_CODE
 		a.session.Summarize()

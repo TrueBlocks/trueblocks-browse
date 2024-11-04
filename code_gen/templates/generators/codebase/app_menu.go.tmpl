@@ -5,15 +5,55 @@ package app
 // EXISTING_CODE
 // EXISTING_CODE
 
-func (a *App) GetMenus() *menu.Menu {
-	// EXISTING_CODE
-	// EXISTING_CODE
+// sugar
+type cbd = menu.CallbackData
 
-{{range .Structures}}	viewMenu.AddText("{{firstUpper .UiRouteName}}", keyMap["{{toLower .UiRouteName}}"], a.{{firstUpper .UiRouteName}}View)
+type MenuDef struct {
+	number int
+	menu   *menu.Menu
+	title  string
+	hotKey *keys.Accelerator
+	action func(cb *cbd)
+}
+
+func (a *App) GetMenus() *menu.Menu {
+	appMenu := menu.NewMenu()
+	systemMenu := appMenu.AddSubmenu("System")
+	fileMenu := appMenu.AddSubmenu("File")
+	viewMenu := appMenu.AddSubmenu("View")
+	helpMenu := appMenu.AddSubmenu("Help")
+
+	id := 3000
+	inc := func() int {
+		id++
+		return id
+	}
+
+	var menuMap = map[string]MenuDef{
+		// EXISTING_CODE
+		// EXISTING_CODE
+
+{{range .Structures}}	"{{toLower .UiRouteName}}":   {inc(), viewMenu, "{{firstUpper .UiRouteName}}", keys.CmdOrCtrl("{{.UiHotKey}}"), a.{{firstUpper .UiRouteName}}View},
 {{end}}
 
-	// EXISTING_CODE
-	// EXISTING_CODE
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
+
+	var menus []MenuDef
+	for _, menuItem := range menuMap {
+		menus = append(menus, menuItem)
+	}
+	sort.Slice(menus, func(i, j int) bool {
+		return menus[i].number < menus[j].number
+	})
+
+	for _, item := range menus {
+		item.menu.AddText(item.title, item.hotKey, item.action)
+	}
 
 	return appMenu
 }
+
+// EXISTING_CODE
+// EXISTING_CODE

@@ -51,11 +51,9 @@ func (s *ProjectContainer) String() string {
 }
 
 func (s *ProjectContainer) NeedsUpdate(force bool) bool {
-	logger.Info()
-	logger.InfoW("ProjectContainer::NeedsUpdate")
 	latest, reload := s.getProjectReload()
 	if force || reload {
-		logger.InfoG("reload ProjectContainer", s.LastUpdate.String(), latest.String())
+		logger.InfoG("reload Project", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}
@@ -92,7 +90,6 @@ func (s *ProjectContainer) getProjectReload() (ret time.Time, reload bool) {
 		fn := coreMonitor.PathToMonitorFile(s.Chain, item.Address)
 		t, _ := file.GetModTime(fn)
 		if t.After(item.LastUpdate) {
-			logger.InfoBG("ProjectContainer::getHistoryReload", item.Address.Hex(), s.LastUpdate.String(), ret.String(), reload)
 			reload = true
 			ret = t
 			return false // all we need is one

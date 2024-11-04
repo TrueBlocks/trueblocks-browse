@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 	"sync"
+	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -97,12 +99,19 @@ func (a *App) Startup(ctx context.Context) {
 	a.Chain = a.session.LastChain
 
 	// We always need names, so let's load it before showing the window
-	if a.namesMap, err = names.LoadNamesMap(a.getChain(), coreTypes.All, nil); err == nil {
+	if a.namesMap, err = names.LoadNamesMap(namesChain, coreTypes.All, nil); err == nil {
 		wErr := fmt.Errorf("%w: %v", ErrLoadingNames, err)
 		a.deferredErrors = append(a.deferredErrors, wErr)
 	}
 
-	a.freshenController = daemons.NewFreshen(a, "freshen", 3000, a.IsShowing("freshen"))
+	freshenRate := time.Duration(3000)
+	if os.Getenv("TB_FRESHEN_RATE") != "" {
+		rate := base.MustParseInt64(os.Getenv("TB_FRESHEN_RATE"))
+		if rate > 0 {
+			freshenRate = time.Duration(rate)
+		}
+	}
+	a.freshenController = daemons.NewFreshen(a, "freshen", freshenRate, a.IsShowing("freshen"))
 	a.scraperController = daemons.NewScraper(a, "scraper", 7000, a.IsShowing("scraper"))
 	a.ipfsController = daemons.NewIpfs(a, "ipfs", 10000, a.IsShowing("ipfs"))
 }
@@ -136,7 +145,7 @@ func (a *App) DomReady(ctx context.Context) {
 		a.newFile()
 	}
 
-	go a.Refresh()
+	go a.Freshen()
 
 	go a.freshenController.Run()
 	go a.scraperController.Run()

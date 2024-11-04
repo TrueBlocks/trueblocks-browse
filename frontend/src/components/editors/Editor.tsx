@@ -53,11 +53,12 @@ export const Editor = <T extends object>({ source, fields, saveData, onCancel, l
     };
   }, []);
 
-  const handleSubmit = async (values: T) => {
+  const handleSubmit = (values: T) => {
     setSaving(true);
     try {
-      await saveData(values);
-      notifySuccess("Data saved successfully!");
+      saveData(values).then(() => {
+        notifySuccess("Data saved successfully!");
+      });
     } catch (error) {
       notifyError((error as Error).message || "Failed to save data!");
     } finally {

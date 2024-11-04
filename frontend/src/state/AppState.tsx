@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, createContext, ReactNode } from "react";
+import { useState, useEffect, useContext, useCallback, createContext, ReactNode } from "react";
 import {
   ProjectPage,
   HistoryPage,
@@ -84,19 +84,20 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
 
-  const fetchProject = async (currentItem: number, itemsPerPage: number) => {
+  // TODO: Make all these fetch fucntions useCallback
+  const fetchProject = useCallback((currentItem: number, itemsPerPage: number) => {
     ProjectPage(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
       setProject(item);
     });
-  };
+  }, []);
 
-  const fetchHistory = async (currentItem: number, itemsPerPage: number) => {
+  const fetchHistory = (currentItem: number, itemsPerPage: number) => {
     HistoryPage(String(address), currentItem, itemsPerPage).then((item: types.HistoryContainer) => {
       setHistory(item);
     });
   };
 
-  const fetchMonitors = async (currentItem: number, itemsPerPage: number) => {
+  const fetchMonitors = (currentItem: number, itemsPerPage: number) => {
     MonitorPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
       if (item) {
         setMonitors(item);
@@ -104,7 +105,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchNames = async (currentItem: number, itemsPerPage: number) => {
+  const fetchNames = (currentItem: number, itemsPerPage: number) => {
     NamePage(currentItem, itemsPerPage).then((item: types.NameContainer) => {
       if (item) {
         setNames(item);
@@ -112,7 +113,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchAbis = async (currentItem: number, itemsPerPage: number) => {
+  const fetchAbis = (currentItem: number, itemsPerPage: number) => {
     AbiPage(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
       if (item) {
         setAbis(item);
@@ -120,7 +121,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchIndexes = async (currentItem: number, itemsPerPage: number) => {
+  const fetchIndexes = (currentItem: number, itemsPerPage: number) => {
     IndexPage(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
       if (item) {
         setIndexes(item);
@@ -128,7 +129,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchManifests = async (currentItem: number, itemsPerPage: number) => {
+  const fetchManifests = (currentItem: number, itemsPerPage: number) => {
     ManifestPage(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
       if (item) {
         setManifests(item);
@@ -136,7 +137,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchSettings = async (currentItem: number, itemsPerPage: number) => {
+  const fetchSettings = (currentItem: number, itemsPerPage: number) => {
     SettingsPage(currentItem, itemsPerPage).then((item: types.SettingsGroup) => {
       if (item) {
         setSettings(item);
@@ -144,7 +145,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchStatus = async (currentItem: number, itemsPerPage: number) => {
+  const fetchStatus = (currentItem: number, itemsPerPage: number) => {
     StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
       if (item) {
         setStatus(item);
@@ -152,7 +153,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const fetchSession = async (currentItem: number, itemsPerPage: number) => {
+  const fetchSession = (currentItem: number, itemsPerPage: number) => {
     SessionPage(currentItem, itemsPerPage).then((item: types.SessionContainer) => {
       if (item) {
         setSession(item);

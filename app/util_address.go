@@ -7,7 +7,7 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
+func (a *App) ensToAddress(addr string) (base.Address, bool) {
 	if !a.isConfigured() {
 		return base.ZeroAddr, false
 	}
@@ -42,7 +42,7 @@ func (a *App) ConvertToAddress(addr string) (base.Address, bool) {
 	}
 }
 
-func (a *App) AddrToName(address base.Address) string {
+func (a *App) GetName(address base.Address) string {
 	if name, exists := a.namesMap[address]; exists {
 		return name.Name
 	}

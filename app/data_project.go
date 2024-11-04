@@ -48,6 +48,9 @@ func (a *App) loadProjects(wg *sync.WaitGroup, errorChan chan error) error {
 		items = append(items, h)
 		return true
 	})
+	sort.Slice(items, func(i, j int) bool {
+		return items[i].Address.Hex() < items[j].Address.Hex()
+	})
 	a.projects = types.NewProjectContainer(a.session.LastChain, items)
 	if !a.projects.NeedsUpdate(a.forceProject()) {
 		return nil
@@ -92,15 +95,12 @@ func (a *App) forceProject() (force bool) {
 }
 
 // EXISTING_CODE
-func (a *App) DeleteAddress(modData *ModifyData) {
+func (a *App) ModifyHistory(modData *ModifyData) {
 	switch crud.OpFromString(modData.Operation) {
 	case crud.Delete:
-		a.cancelContext(modData.Address)
-		a.dirty = true
-
 		a.historyCache.Delete(modData.Address)
-		a.loadProjects(nil, nil)
-
+		a.GoToAddress(modData.Address)
+		a.dirty = true
 		a.emitInfoMsg(a.getFullPath(), fmt.Sprint("deleted address", modData.Address.Hex()))
 	}
 }

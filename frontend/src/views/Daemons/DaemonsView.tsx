@@ -1,9 +1,10 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { Text } from "@mantine/core";
 import { SimpleGrid, Stack, Box } from "@mantine/core";
 import { FieldGroup, FieldsetWrapper, FormTable, ViewForm, PinButton, View } from "@components";
 import { GetDaemon, ToggleDaemon } from "@gocode/app/App";
 import { daemons, messages } from "@gocode/models";
-import { useNoops } from "@hooks";
+import { useNoops, useRenderCounter } from "@hooks";
 import { EventsOn, EventsOff } from "@runtime";
 import { ViewStateProvider } from "@state";
 import { DaemonCard, DaemonLog } from ".";
@@ -25,6 +26,7 @@ export const DaemonsView = () => {
   const [freshen, setFreshen] = useState<daemons.Daemon>(empty);
   const [ipfs, setIpfs] = useState<daemons.Daemon>(empty);
   const [logMessages, setLogMessages] = useState<messages.MessageMsg[]>([]);
+  const renderCount = useRenderCounter();
 
   const updateDaemon = (daemon: string, setDaemon: Dispatch<SetStateAction<daemons.Daemon>>) => {
     GetDaemon(daemon).then((json: string) => {
@@ -86,6 +88,7 @@ export const DaemonsView = () => {
 
   return (
     <ViewStateProvider route={route} fetchFn={fetchNoop} modifyFn={modifyNoop}>
+      <Text>Render count: {renderCount}</Text>
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

@@ -82,6 +82,10 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.names = types.NewNameContainer(opts.Chain, names)
 		// EXISTING_CODE
+		a.namesMap = make(map[base.Address]coreTypes.Name, len(names))
+		for _, name := range names {
+			a.namesMap[name.Address] = name
+		}
 		// EXISTING_CODE
 		a.names.Summarize()
 		a.emitInfoMsg("Loaded names", "")

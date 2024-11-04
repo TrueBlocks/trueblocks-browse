@@ -41,6 +41,7 @@ func (s *SessionContainer) String() string {
 func (s *SessionContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getSessionReload()
 	if force || reload {
+		logger.InfoG("reload Session", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}
@@ -75,9 +76,9 @@ func (s *SessionContainer) Summarize() {
 
 func (s *SessionContainer) getSessionReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
-	ret = file.MustGetLatestFileTime(sessionFn)
-	reload = ret != s.LastUpdate
+	sessionFn, _ := utils.GetConfigFn("browse", "session.json")
+	ret, _ = file.GetModTime(sessionFn)
+	reload = ret.After(s.LastUpdate)
 	// EXISTING_CODE
 	return
 }

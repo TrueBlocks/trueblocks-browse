@@ -1,9 +1,6 @@
 package app
 
 import (
-	"fmt"
-	"time"
-
 	"github.com/TrueBlocks/trueblocks-browse/pkg/editors"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
@@ -28,11 +25,11 @@ func (a *App) LoadName(addr string) editors.Name {
 	}
 }
 
-func (a *App) SaveName(name editors.Name) error {
-	logger.Info("Setting name", name.String())
-	if name.Name == "Error" {
-		return fmt.Errorf("not implemented")
-	}
-	time.Sleep(200 * time.Millisecond)
-	return nil
-}
+// func (a *App) SaveName(name editors.Name) error {
+// 	logger.Info("Setting name", name.String())
+// 	if name.Name == "Error" {
+// 		return fmt.Errorf("not implemented")
+// 	}
+// 	time.Sleep(200 * time.Millisecond)
+// 	return nil
+// }

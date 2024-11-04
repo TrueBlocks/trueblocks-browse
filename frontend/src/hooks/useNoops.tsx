@@ -1,7 +1,7 @@
 import { app } from "../../wailsjs/go/models";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const fetchNoop = async (currentItem: number, itemsPerPage: number) => {};
+const fetchNoop = (currentItem: number, itemsPerPage: number) => {};
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const modifyNoop = async (arg1: app.ModifyData) => {};

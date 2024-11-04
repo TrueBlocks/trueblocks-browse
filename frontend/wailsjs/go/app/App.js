@@ -10,14 +10,6 @@ export function AbisView(arg1) {
   return window['go']['app']['App']['AbisView'](arg1);
 }
 
-export function AccordionToggle(arg1) {
-  return window['go']['app']['App']['AccordionToggle'](arg1);
-}
-
-export function AddrToName(arg1) {
-  return window['go']['app']['App']['AddrToName'](arg1);
-}
-
 export function Caching(arg1) {
   return window['go']['app']['App']['Caching'](arg1);
 }
@@ -30,16 +22,8 @@ export function ConfigView(arg1) {
   return window['go']['app']['App']['ConfigView'](arg1);
 }
 
-export function ConvertToAddress(arg1) {
-  return window['go']['app']['App']['ConvertToAddress'](arg1);
-}
-
 export function DaemonsView(arg1) {
   return window['go']['app']['App']['DaemonsView'](arg1);
-}
-
-export function DeleteAddress(arg1) {
-  return window['go']['app']['App']['DeleteAddress'](arg1);
 }
 
 export function ExportAddress(arg1) {
@@ -62,8 +46,8 @@ export function FileSaveAs(arg1) {
   return window['go']['app']['App']['FileSaveAs'](arg1);
 }
 
-export function FooterToggle(arg1) {
-  return window['go']['app']['App']['FooterToggle'](arg1);
+export function Freshen() {
+  return window['go']['app']['App']['Freshen']();
 }
 
 export function GetAppInfo() {
@@ -106,6 +90,10 @@ export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
 
+export function GetName(arg1) {
+  return window['go']['app']['App']['GetName'](arg1);
+}
+
 export function GetRoute() {
   return window['go']['app']['App']['GetRoute']();
 }
@@ -128,14 +116,6 @@ export function GetWindow() {
 
 export function GoToAddress(arg1) {
   return window['go']['app']['App']['GoToAddress'](arg1);
-}
-
-export function HeaderToggle(arg1) {
-  return window['go']['app']['App']['HeaderToggle'](arg1);
-}
-
-export function HelpToggle(arg1) {
-  return window['go']['app']['App']['HelpToggle'](arg1);
 }
 
 export function HistoryPage(arg1, arg2, arg3) {
@@ -174,12 +154,12 @@ export function ManifestsView(arg1) {
   return window['go']['app']['App']['ManifestsView'](arg1);
 }
 
-export function MenuToggle(arg1) {
-  return window['go']['app']['App']['MenuToggle'](arg1);
-}
-
 export function ModifyAbi(arg1) {
   return window['go']['app']['App']['ModifyAbi'](arg1);
+}
+
+export function ModifyHistory(arg1) {
+  return window['go']['app']['App']['ModifyHistory'](arg1);
 }
 
 export function ModifyMonitors(arg1) {
@@ -218,16 +198,8 @@ export function ProjectView(arg1) {
   return window['go']['app']['App']['ProjectView'](arg1);
 }
 
-export function Refresh() {
-  return window['go']['app']['App']['Refresh']();
-}
-
 export function Reload() {
   return window['go']['app']['App']['Reload']();
-}
-
-export function SaveName(arg1) {
-  return window['go']['app']['App']['SaveName'](arg1);
 }
 
 export function SessionPage(arg1, arg2) {
@@ -278,14 +250,6 @@ export function String() {
   return window['go']['app']['App']['String']();
 }
 
-export function SwitchTabNext(arg1) {
-  return window['go']['app']['App']['SwitchTabNext'](arg1);
-}
-
-export function SwitchTabPrev(arg1) {
-  return window['go']['app']['App']['SwitchTabPrev'](arg1);
-}
-
 export function SystemAbout(arg1) {
   return window['go']['app']['App']['SystemAbout'](arg1);
 }
@@ -294,8 +258,36 @@ export function SystemQuit(arg1) {
   return window['go']['app']['App']['SystemQuit'](arg1);
 }
 
+export function ToggleAccordion(arg1) {
+  return window['go']['app']['App']['ToggleAccordion'](arg1);
+}
+
 export function ToggleDaemon(arg1) {
   return window['go']['app']['App']['ToggleDaemon'](arg1);
+}
+
+export function ToggleFooter(arg1) {
+  return window['go']['app']['App']['ToggleFooter'](arg1);
+}
+
+export function ToggleHeader(arg1) {
+  return window['go']['app']['App']['ToggleHeader'](arg1);
+}
+
+export function ToggleHelp(arg1) {
+  return window['go']['app']['App']['ToggleHelp'](arg1);
+}
+
+export function ToggleMenu(arg1) {
+  return window['go']['app']['App']['ToggleMenu'](arg1);
+}
+
+export function ToggleNextTab(arg1) {
+  return window['go']['app']['App']['ToggleNextTab'](arg1);
+}
+
+export function TogglePrevTab(arg1) {
+  return window['go']['app']['App']['TogglePrevTab'](arg1);
 }
 
 export function WizardView(arg1) {

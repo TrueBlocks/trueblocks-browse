@@ -51,6 +51,7 @@ func (s *IndexContainer) String() string {
 func (s *IndexContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getIndexReload()
 	if force || reload {
+		logger.InfoG("reload Index", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}
@@ -96,7 +97,7 @@ func (s *IndexContainer) Summarize() {
 func (s *IndexContainer) getIndexReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	ret = file.MustGetLatestFileTime(coreConfig.PathToIndex(s.Chain))
-	reload = ret != s.LastUpdate
+	reload = ret.After(s.LastUpdate)
 	// EXISTING_CODE
 	return
 }

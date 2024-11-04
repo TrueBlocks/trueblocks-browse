@@ -59,6 +59,7 @@ func (s *ManifestContainer) String() string {
 func (s *ManifestContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getManifestReload()
 	if force || reload {
+		logger.InfoG("reload Manifest", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}
@@ -97,7 +98,7 @@ func (s *ManifestContainer) Summarize() {
 func (s *ManifestContainer) getManifestReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	ret = file.MustGetLatestFileTime(coreConfig.PathToManifest(s.Chain))
-	reload = ret != s.LastUpdate
+	reload = ret.After(s.LastUpdate)
 	// EXISTING_CODE
 	return
 }

@@ -12,6 +12,8 @@ export function Pause():Promise<void>;
 
 export function Run():Promise<void>;
 
+export function ShallowCopy():Promise<daemons.Daemon>;
+
 export function Stop():Promise<void>;
 
 export function String():Promise<string>;

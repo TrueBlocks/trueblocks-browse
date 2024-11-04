@@ -1,12 +1,14 @@
+import { Text } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm } from "@components";
 import { GoToAddress, ModifyMonitors } from "@gocode/app/App";
-import { Page } from "@hooks";
+import { Page, useRenderCounter } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { MonitorsTableDef, MonitorFormDef } from ".";
 
 export const MonitorsView = () => {
   const { monitors, fetchMonitors } = useAppState();
+  const renderCount = useRenderCounter();
 
   const handleEnter = (page: Page) => {
     const address = monitors.items[page.getRecord()].address;
@@ -32,6 +34,7 @@ export const MonitorsView = () => {
       onEnter={handleEnter}
       modifyFn={ModifyMonitors}
     >
+      <Text>Render count: {renderCount}</Text>
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

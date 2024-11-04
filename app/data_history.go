@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"sort"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
@@ -17,7 +18,7 @@ import (
 )
 
 func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContainer {
-	address, ok := a.ConvertToAddress(addr)
+	address, ok := a.ensToAddress(addr)
 	if !ok {
 		err := fmt.Errorf("Invalid address: " + addr)
 		a.emitErrorMsg(err, nil)
@@ -69,21 +70,25 @@ func (a *App) txCount(address base.Address) int {
 	}
 }
 
-// var historyLock atomic.Uint32
+var historyLock atomic.Uint32
 
 func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan chan error) error {
-	if wg != nil {
-		defer wg.Done()
-	}
+	defer func() {
+		if wg != nil {
+			wg.Done()
+		}
+	}()
 
+	if !historyLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer historyLock.CompareAndSwap(1, 0)
+
+	// EXISTING_CODE
 	if address.IsZero() {
 		return nil
 	}
-
-	// if !historyLock.CompareAndSwap(0, 1) {
-	// 	return nil
-	// }
-	// defer historyLock.CompareAndSwap(1, 0)
+	// EXISTING_CODE
 
 	history, exists := a.historyCache.Load(address)
 	if exists {
@@ -98,11 +103,18 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 		a.emitAddressErrorMsg(err, address)
 		return err
 	}
-	a.loadProjects(nil, nil)
 
 	return nil
 }
 
+func (a *App) forceHistory() (force bool) {
+	// EXISTING_CODE
+	force = a.forceName()
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
 func (a *App) thing(address base.Address, freq int) error {
 	rCtx := a.registerCtx(address)
 	defer a.unregisterCtx(address)
@@ -177,30 +189,25 @@ func (a *App) thing(address base.Address, freq int) error {
 	return nil
 }
 
-func (a *App) forceHistory() (force bool) {
-	// EXISTING_CODE
-	force = a.forceName()
-	// EXISTING_CODE
-	return
-}
-
-// EXISTING_CODE
 func (a *App) Reload() {
 	switch a.session.LastRoute {
 	case "/names":
-		logger.InfoC("Reloading names")
+		logger.InfoG("Reloading names...")
 		a.names.LastUpdate = time.Time{}
 		if err := a.loadNames(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
+	default:
+		logger.InfoG("Reloading default (history)...")
+		history, _ := a.historyCache.Load(a.GetSelected())
+		history.LastUpdate = time.Time{}
+		a.historyCache.Store(a.GetSelected(), history)
+		a.GoToAddress(history.Address)
 	}
 }
 
 func (a *App) GoToAddress(address base.Address) {
-	logger.InfoW("--------------------------- enter -------------------------------------------")
-	logger.InfoW("GoToAddress: ", address.Hex())
 	if address == base.ZeroAddr {
-		logger.InfoW("--------------------------- zeroAddr exit -------------------------------------------")
 		return
 	}
 
@@ -212,7 +219,6 @@ func (a *App) GoToAddress(address base.Address) {
 
 	a.emitNavigateMsg(a.GetRoute())
 	a.emitInfoMsg("viewing address", address.Hex())
-	logger.InfoW("--------------------------- exit -------------------------------------------")
 }
 
 // EXISTING_CODE

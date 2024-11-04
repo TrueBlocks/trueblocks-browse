@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { Formatter, FormatterProps, CellType, Popup, AddressPopup } from "@components";
-import { AddrToName, ModifyName } from "@gocode/app/App";
+import { GetName, ModifyName } from "@gocode/app/App";
 import { app } from "@gocode/models";
 import { useAppState, useViewState } from "@state";
 import classes from "./Formatter.module.css";
@@ -39,7 +39,7 @@ export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }
           setLine1(givenAddress);
           break;
         case EdMode.Name:
-          AddrToName(value).then((knownName) => {
+          GetName(value).then((knownName) => {
             if (knownName || givenName) {
               setLine1(knownName ? knownName : givenName);
               setLine2("");
@@ -51,7 +51,7 @@ export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }
           break;
         case EdMode.All:
         default:
-          AddrToName(value).then((knownName) => {
+          GetName(value).then((knownName) => {
             if (knownName || givenName) {
               setLine1(knownName ? knownName : givenName);
               setLine2(value);

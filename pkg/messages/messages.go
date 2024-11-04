@@ -11,18 +11,22 @@ import (
 type Message string
 
 const (
-	Progress        Message = "Progress"
-	Completed       Message = "Completed"
-	Cancelled       Message = "Cancelled"
-	Error           Message = "Error"
-	Warn            Message = "Warn"
-	Info            Message = "Info"
+	Progress  Message = "Progress"
+	Completed Message = "Completed"
+	Cancelled Message = "Cancelled"
+
+	Error Message = "Error"
+	Warn  Message = "Warn"
+	Info  Message = "Info"
+
 	SwitchTab       Message = "SwitchTab"
 	ToggleLayout    Message = "ToggleLayout"
 	ToggleAccordion Message = "ToggleAccordion"
-	Daemon          Message = "Daemon"
-	Navigate        Message = "Navigate"
-	Wizard          Message = "Wizard"
+
+	Daemon   Message = "Daemon"
+	Navigate Message = "Navigate"
+
+	Wizard Message = "Wizard"
 )
 
 var AllMessages = []struct {

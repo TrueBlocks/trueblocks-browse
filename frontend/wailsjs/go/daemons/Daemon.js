@@ -22,6 +22,10 @@ export function Run() {
   return window['go']['daemons']['Daemon']['Run']();
 }
 
+export function ShallowCopy() {
+  return window['go']['daemons']['Daemon']['ShallowCopy']();
+}
+
 export function Stop() {
   return window['go']['daemons']['Daemon']['Stop']();
 }

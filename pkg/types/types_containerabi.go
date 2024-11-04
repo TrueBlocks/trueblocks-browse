@@ -56,6 +56,7 @@ func (s *AbiContainer) String() string {
 func (s *AbiContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getAbiReload()
 	if force || reload {
+		logger.InfoG("reload Abi", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}
@@ -100,7 +101,7 @@ func (s *AbiContainer) Summarize() {
 func (s *AbiContainer) getAbiReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	ret = file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "abis"))
-	reload = ret != s.LastUpdate
+	reload = ret.After(s.LastUpdate)
 	// EXISTING_CODE
 	return
 }

@@ -54,7 +54,7 @@ func (s *HistoryContainer) String() string {
 func (s *HistoryContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getHistoryReload()
 	if force || reload {
-		logger.InfoB("HistoryContainer", s.Address.Hex(), s.LastUpdate.String(), latest.String())
+		logger.InfoG("reload History", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}
@@ -62,7 +62,7 @@ func (s *HistoryContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *HistoryContainer) ShallowCopy() Containerer {
-	return &HistoryContainer{
+	ret := &HistoryContainer{
 		Address:    s.Address,
 		Balance:    s.Balance,
 		NErrors:    s.NErrors,
@@ -76,6 +76,7 @@ func (s *HistoryContainer) ShallowCopy() Containerer {
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func (s *HistoryContainer) Summarize() {
@@ -98,13 +99,11 @@ func (s *HistoryContainer) Summarize() {
 func (s *HistoryContainer) getHistoryReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	if s.Address == base.ZeroAddr {
-		logger.Error("getHistoryReload called with zero address")
 		return
 	}
 	fn := coreMonitors.PathToMonitorFile(s.Chain, s.Address)
 	ret, _ = file.GetModTime(fn)
 	reload = ret.After(s.LastUpdate)
-	logger.InfoY("getHistoryReload", s.Address.Hex(), s.LastUpdate.String(), ret.String(), reload)
 	// EXISTING_CODE
 	return
 }

@@ -35,5 +35,5 @@ func (a *App) SetChain(chain string, address base.Address) {
 	a.manifests = types.ManifestContainer{}
 	a.status = types.StatusContainer{}
 	a.settings = types.SettingsGroup{}
-	_ = a.Refresh()
+	_ = a.Freshen()
 }
