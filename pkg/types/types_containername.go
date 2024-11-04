@@ -126,6 +126,7 @@ func (s *NameContainer) Summarize() {
 
 func (s *NameContainer) getNameReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
+	// TODO: Clean this up a bit
 	chain := "mainnet"
 	folder := coreConfig.MustGetPathToChainConfig(chain)
 	ret = file.MustGetLatestFileTime(folder)
