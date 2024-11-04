@@ -17,7 +17,11 @@ export function Caching(arg1:sdk.CacheOp):Promise<void>;
 
 export function CancelAllContexts():Promise<void>;
 
+export function ConfigPage(arg1:number,arg2:number):Promise<types.ConfigContainer>;
+
 export function ConfigView(arg1:menu.CallbackData):Promise<void>;
+
+export function DaemonPage(arg1:number,arg2:number):Promise<types.DaemonContainer>;
 
 export function DaemonsView(arg1:menu.CallbackData):Promise<void>;
 
@@ -152,5 +156,7 @@ export function ToggleMenu(arg1:menu.CallbackData):Promise<void>;
 export function ToggleNextTab(arg1:menu.CallbackData):Promise<void>;
 
 export function TogglePrevTab(arg1:menu.CallbackData):Promise<void>;
+
+export function WizardPage(arg1:number,arg2:number):Promise<types.WizardContainer>;
 
 export function WizardView(arg1:menu.CallbackData):Promise<void>;

@@ -18,8 +18,16 @@ export function CancelAllContexts() {
   return window['go']['app']['App']['CancelAllContexts']();
 }
 
+export function ConfigPage(arg1, arg2) {
+  return window['go']['app']['App']['ConfigPage'](arg1, arg2);
+}
+
 export function ConfigView(arg1) {
   return window['go']['app']['App']['ConfigView'](arg1);
+}
+
+export function DaemonPage(arg1, arg2) {
+  return window['go']['app']['App']['DaemonPage'](arg1, arg2);
 }
 
 export function DaemonsView(arg1) {
@@ -288,6 +296,10 @@ export function ToggleNextTab(arg1) {
 
 export function TogglePrevTab(arg1) {
   return window['go']['app']['App']['TogglePrevTab'](arg1);
+}
+
+export function WizardPage(arg1, arg2) {
+  return window['go']['app']['App']['WizardPage'](arg1, arg2);
 }
 
 export function WizardView(arg1) {
