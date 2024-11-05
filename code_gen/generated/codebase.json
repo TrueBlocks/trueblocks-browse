@@ -392,7 +392,7 @@
             "ui_route": "1090-daemons",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=daemons.Daemon|noChain|noFetch"
+            "attributes": "embedType=daemons.Daemon|noChain"
         },
         {
             "class": "Session",
@@ -400,7 +400,7 @@
             "ui_route": "1100-session",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=coreTypes.Session|noChain|noFetch|initChain"
+            "attributes": "embedType=coreTypes.Session|noChain|initChain"
         },
         {
             "class": "Config",
@@ -408,7 +408,7 @@
             "ui_route": "1110-config",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=configTypes.Config|noFetch",
+            "attributes": "embedType=configTypes.Config",
             "members": [
                 {
                     "name": "nChains",
@@ -423,8 +423,7 @@
             "doc_route": "1120-containers",
             "ui_route": "1120-wizard",
             "cache_by": "range",
-            "cache_type": "cacheable",
-            "attributes": "noFetch"
+            "cache_type": "cacheable"
         }
     ],
     "baseTypes": [
