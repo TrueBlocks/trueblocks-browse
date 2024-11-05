@@ -2,8 +2,8 @@ import { Text } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm } from "@components";
 import { ModifyAbi } from "@gocode/app/App";
+import { useRenderCounter } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { useRenderCounter } from "../../hooks";
 import { AbisFormTable, AbisTableDef } from ".";
 
 export const AbisView = () => {

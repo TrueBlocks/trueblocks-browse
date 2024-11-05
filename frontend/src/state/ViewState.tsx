@@ -2,7 +2,7 @@ import { useState, createContext, useEffect, useContext, ReactNode } from "react
 import { Pager } from "@components";
 import { HistoryPage, IsShowing, SetShowing } from "@gocode/app/App";
 import { types, messages, app } from "@gocode/models";
-import { Page, useKeyboardPaging } from "@hooks";
+import { Page, useKeyboardPaging, useNoops } from "@hooks";
 import { Route } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
 import { useAppState } from "@state";
@@ -33,12 +33,10 @@ type ViewContextType = {
 
 export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnter, children }: ViewContextType) => {
   const [headerShows, setHeaderShows] = useState<boolean | null>(null);
-  const { address, setHistory } = useAppState();
+  const { setHistory } = useAppState();
+  const { enterNoop } = useNoops();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const enterNoop = (_unused: Page) => {};
   const pager = useKeyboardPaging(nItems, lines, onEnter ? onEnter : enterNoop);
-
   const handleCollapse = (newState: string | null) => {
     const isShowing = newState === "header";
     SetShowing(route, isShowing).then(() => {
@@ -89,11 +87,11 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
 
   useEffect(() => {
     if (route === "history") {
-      HistoryPage(String(address), pager.getOffset(), pager.perPage).then((item: types.HistoryContainer) => {
+      HistoryPage(pager.getOffset(), pager.perPage).then((item: types.HistoryContainer) => {
         setHistory(item);
       });
     }
-  }, [address, pager.pageNumber, pager.perPage]);
+  }, [pager.pageNumber, pager.perPage]);
 
   const state = {
     route,

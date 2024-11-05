@@ -104,3 +104,74 @@ func (a *App) Freshen() error {
 	}
 	return nil
 }
+
+/*
+//------------------------------------------------------------
+- Error Channel Placement: Define and initialize the error channel in NewApp and store it as a field in the App struct to make it accessible throughout the app's lifetime.
+- Single Error Channel: Use a single error channel for centralized error handling, making it easier to log errors and optionally send them to the frontend.
+- Background Error Handler: Start a background goroutine in NewApp to read from errorChan, log errors, and optionally forward them to the frontend.
+- Non-blocking Execution: Avoid overlapping executions by using an atomic flag for re-entrancy in spawnLoadRoutines, allowing each run to complete before starting a new one.
+
+package main
+
+import (
+	"fmt"
+	"log"
+	"sync/atomic"
+	"time"
+)
+
+type App struct {
+	errorChan  chan error
+	inProgress int32
+}
+
+func NewApp() *App {
+	app := &App{
+		errorChan: make(chan error, 5),
+	}
+	go app.handleErrors() // Start error handler
+	return app
+}
+
+func (a *App) handleErrors() {
+	for err := range a.errorChan {
+		if err != nil {
+			log.Println("Error:", err)
+			// Optional: send error to frontend if needed
+			// runtime.EventsEmit(context.Background(), "error", err.Error())
+		}
+	}
+}
+
+func (a *App) spawnLoadRoutines() {
+	if !atomic.CompareAndSwapInt32(&a.inProgress, 0, 1) {
+		return
+	}
+	defer atomic.StoreInt32(&a.inProgress, 0)
+
+	go func() { a.errorChan <- a.loadExampleTask("Task 1") }()
+	go func() { a.errorChan <- a.loadExampleTask("Task 2") }()
+	go func() { a.errorChan <- a.loadExampleTask("Task 3") }()
+}
+
+func (a *App) loadExampleTask(name string) error {
+	time.Sleep(1 * time.Second) // Simulate task
+	return fmt.Errorf("%s encountered an error", name)
+}
+
+func main() {
+	app := NewApp()
+	for {
+		app.spawnLoadRoutines()
+		time.Sleep(2 * time.Second)
+	}
+}
+
+Key Points
+-----------
+- Error Channel in App: Initialized in NewApp, used across the app.
+- Background Error Handler: handleErrors reads from errorChan and logs errors.
+- Re-entrancy Control: spawnLoadRoutines uses inProgress flag to prevent overlap.
+//------------------------------------------------------------
+*/

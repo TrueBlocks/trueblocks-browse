@@ -108,14 +108,13 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   }, []);
 
-  const fetchHistory = useCallback(
-    (currentItem: number, itemsPerPage: number) => {
-      HistoryPage(String(address), currentItem, itemsPerPage).then((item: types.HistoryContainer) => {
+  const fetchHistory = useCallback((currentItem: number, itemsPerPage: number) => {
+    HistoryPage(currentItem, itemsPerPage).then((item: types.HistoryContainer) => {
+      if (item) {
         setHistory(item);
-      });
-    },
-    [address]
-  );
+      }
+    });
+  }, []);
 
   const fetchMonitors = useCallback((currentItem: number, itemsPerPage: number) => {
     MonitorPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
@@ -226,7 +225,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   useEffect(() => {
     fetchHistory(0, 15);
-    HistoryPage(address as unknown as string, 0, 15).then((item: types.HistoryContainer) => {
+    HistoryPage(0, 15).then((item: types.HistoryContainer) => {
       setHistory(item);
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

@@ -126,8 +126,8 @@ export function GoToAddress(arg1) {
   return window['go']['app']['App']['GoToAddress'](arg1);
 }
 
-export function HistoryPage(arg1, arg2, arg3) {
-  return window['go']['app']['App']['HistoryPage'](arg1, arg2, arg3);
+export function HistoryPage(arg1, arg2) {
+  return window['go']['app']['App']['HistoryPage'](arg1, arg2);
 }
 
 export function HistoryView(arg1) {

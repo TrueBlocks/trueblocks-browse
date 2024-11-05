@@ -3,7 +3,6 @@
 package app
 
 import (
-	"fmt"
 	"sort"
 	"sync"
 	"sync/atomic"
@@ -17,14 +16,8 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-func (a *App) HistoryPage(addr string, first, pageSize int) *types.HistoryContainer {
-	address, ok := a.ensToAddress(addr)
-	if !ok {
-		err := fmt.Errorf("Invalid address: " + addr)
-		a.emitErrorMsg(err, nil)
-		return &types.HistoryContainer{}
-	}
-
+func (a *App) HistoryPage(first, pageSize int) *types.HistoryContainer {
+	address := a.GetSelected()
 	_, exists := a.historyCache.Load(address)
 	if !exists {
 		return &types.HistoryContainer{}
