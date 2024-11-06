@@ -25,7 +25,7 @@ type App struct {
 	dirty bool
 
 	// Containers
-	projects  types.ProjectContainer
+	project   types.ProjectContainer
 	monitors  types.MonitorContainer
 	names     types.NameContainer
 	abis      types.AbiContainer

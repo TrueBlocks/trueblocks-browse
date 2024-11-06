@@ -18,7 +18,7 @@ func (a *App) newFile() {
 
 	a.historyCache = &types.HistoryMap{}
 	a.historyCache.Store(address, history)
-	a.projects = types.NewProjectContainer(a.getChain(), []types.HistoryContainer{history})
+	a.project = types.NewProjectContainer(a.getChain(), []types.HistoryContainer{history})
 
 	a.emitNavigateMsg("/")
 	a.emitInfoMsg(a.getFullPath(), "new file created")
@@ -41,14 +41,14 @@ func (a *App) readFile(fn string) (bool, error) {
 			histories = append(histories, history)
 			a.historyCache.Store(address, history)
 		}
-		a.projects = types.NewProjectContainer(a.getChain(), histories)
+		a.project = types.NewProjectContainer(a.getChain(), histories)
 		a.dirty = false
 
 		a.session.LastFolder, a.session.LastFile = filepath.Split(fn)
 		a.session.LastSub["/history"] = pF.Selected.Hex()
 		a.saveSession()
 
-		for _, history := range a.projects.Items {
+		for _, history := range a.project.Items {
 			go a.loadHistory(history.Address, nil, nil)
 		}
 

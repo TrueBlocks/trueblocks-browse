@@ -22,10 +22,10 @@ func (a *App) ProjectPage(first, pageSize int) *types.ProjectContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	first = base.Max(0, base.Min(first, len(a.projects.Items)-1))
-	last := base.Min(len(a.projects.Items), first+pageSize)
-	copy, _ := a.projects.ShallowCopy().(*types.ProjectContainer)
-	copy.Items = a.projects.Items[first:last]
+	first = base.Max(0, base.Min(first, len(a.project.Items)-1))
+	last := base.Min(len(a.project.Items), first+pageSize)
+	copy, _ := a.project.ShallowCopy().(*types.ProjectContainer)
+	copy.Items = a.project.Items[first:last]
 	return copy
 }
 
@@ -51,8 +51,8 @@ func (a *App) loadProjects(wg *sync.WaitGroup, errorChan chan error) error {
 	sort.Slice(items, func(i, j int) bool {
 		return items[i].Address.Hex() < items[j].Address.Hex()
 	})
-	a.projects = types.NewProjectContainer(a.session.LastChain, items)
-	if !a.projects.NeedsUpdate(a.forceProject()) {
+	a.project = types.NewProjectContainer(a.session.LastChain, items)
+	if !a.project.NeedsUpdate(a.forceProject()) {
 		return nil
 	}
 
@@ -66,24 +66,24 @@ func (a *App) loadProjects(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 	}
 
-	a.projects.NItems = uint64(len(a.projects.Items))
-	a.projects.NMonitors = uint64(len(a.monitors.Items))
-	a.projects.NNames = uint64(len(a.names.Items))
-	a.projects.NAbis = uint64(len(a.abis.Items))
-	a.projects.NIndexes = uint64(len(a.indexes.Items))
-	a.projects.NManifests = uint64(len(a.manifests.Items))
-	a.projects.NCaches = uint64(len(a.status.Caches))
-	a.projects.ForEveryHistory(func(item *types.HistoryContainer, data any) bool {
+	a.project.NItems = uint64(len(a.project.Items))
+	a.project.NMonitors = uint64(len(a.monitors.Items))
+	a.project.NNames = uint64(len(a.names.Items))
+	a.project.NAbis = uint64(len(a.abis.Items))
+	a.project.NIndexes = uint64(len(a.indexes.Items))
+	a.project.NManifests = uint64(len(a.manifests.Items))
+	a.project.NCaches = uint64(len(a.status.Caches))
+	a.project.ForEveryHistory(func(item *types.HistoryContainer, data any) bool {
 		item.Summarize()
-		a.projects.HistorySize += uint64(item.SizeOf())
+		a.project.HistorySize += uint64(item.SizeOf())
 		return true
 	}, nil)
-	sort.Slice(a.projects.Items, func(i, j int) bool {
-		ai := a.projects.Items[i].Address
-		aj := a.projects.Items[j].Address
+	sort.Slice(a.project.Items, func(i, j int) bool {
+		ai := a.project.Items[i].Address
+		aj := a.project.Items[j].Address
 		return ai.Hex() < aj.Hex()
 	})
-	a.emitInfoMsg("Loaded projects", "")
+	a.emitInfoMsg("Loaded project", "")
 	return nil
 }
 

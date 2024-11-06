@@ -20,7 +20,7 @@ func (a *App) getBalance(address base.Address) string {
 		Globals: sdk.Globals{
 			Ether: true,
 			Cache: true,
-			Chain: a.Chain,
+			Chain: a.session.LastChain,
 		},
 	}
 	if balances, meta, err := opts.State(); err != nil {
