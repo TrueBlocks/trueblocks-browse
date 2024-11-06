@@ -70,7 +70,6 @@ interface AppStateProps {
   isConfigured: boolean;
   wizardState: types.WizState;
   setHistory: React.Dispatch<React.SetStateAction<types.HistoryContainer>>;
-  selectChain: (newChain: string) => void;
   setMeta: (meta: types.MetaData) => void;
   setWizardState: (state: types.WizState) => void;
 }
@@ -214,15 +213,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
-  const selectChain = (newChain: string) => {
-    setChain(newChain);
-    SetChain(newChain, address) // disables refresh
-      .then(() => {})
-      .catch((error) => {
-        console.error("Error setting chain:", error);
-      });
-  };
-
   useEffect(() => {
     fetchHistory(0, 15);
     HistoryPage(0, 15).then((item: types.HistoryContainer) => {
@@ -283,7 +273,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     wizardState,
     setHistory,
     setAddress,
-    selectChain,
     setMeta,
     setWizardState,
   };
