@@ -10,7 +10,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
-	coreMonitors "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
+	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -53,7 +53,7 @@ func (s *HistoryContainer) String() string {
 func (s *HistoryContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
 	latest, reload := s.getHistoryReload(meta)
 	if force || reload {
-		DebugInts("reload History", s.LastUpdate, latest)
+		DebugInts("history", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -96,13 +96,12 @@ func (s *HistoryContainer) Summarize() {
 }
 
 func (s *HistoryContainer) getHistoryReload(meta *coreTypes.MetaData) (ret int64, reload bool) {
+	_ = meta
 	// EXISTING_CODE
 	if s.Address == base.ZeroAddr {
 		return
 	}
-	// very oddly, we use the monitor file's size to determine if we need to reload the history
-	// but we store that size in LastUpdate which is quite weird given that it's a time.Time
-	fn := coreMonitors.PathToMonitorFile(s.Chain, s.Address)
+	fn := coreMonitor.PathToMonitorFile(s.Chain, s.Address)
 	fs := file.FileSize(fn)
 	tm := time.Unix(fs, 0)
 	ret = tm.Unix()

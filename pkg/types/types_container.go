@@ -17,6 +17,7 @@ type Containerer interface {
 type Containerers []Containerer
 
 func DebugInts(label string, lastUpdate, latest int64) {
+	render := true
 	switch label {
 	case "abi":
 	case "config":
@@ -30,10 +31,13 @@ func DebugInts(label string, lastUpdate, latest int64) {
 	case "session":
 	case "status":
 	case "wizard":
-		now := time.Now().Unix()
-		logger.InfoW(label, "lastUpdate", now-lastUpdate, "latest", now-latest)
 	default:
 		// do nothing
+	}
+
+	if render {
+		now := time.Now().Unix()
+		logger.InfoW(label, "lastUpdate", now-lastUpdate, "latest", now-latest)
 	}
 }
 
