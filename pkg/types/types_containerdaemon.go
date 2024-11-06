@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 // EXISTING_CODE
@@ -22,7 +23,7 @@ func NewDaemonContainer(chain string, daemon *daemons.Daemon) DaemonContainer {
 	ret := DaemonContainer{
 		Daemon: *daemon,
 	}
-	ret.LastUpdate, _ = ret.getDaemonReload()
+	ret.LastUpdate, _ = ret.getDaemonReload(nil)
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -33,8 +34,8 @@ func (s *DaemonContainer) String() string {
 	return string(bytes)
 }
 
-func (s *DaemonContainer) NeedsUpdate(force bool) bool {
-	latest, reload := s.getDaemonReload()
+func (s *DaemonContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
+	latest, reload := s.getDaemonReload(meta)
 	if force || reload {
 		DebugInts("reload Daemon", s.LastUpdate, latest)
 		s.LastUpdate = latest
@@ -58,7 +59,8 @@ func (s *DaemonContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *DaemonContainer) getDaemonReload() (ret int64, reload bool) {
+func (s *DaemonContainer) getDaemonReload(meta *coreTypes.MetaData) (ret int64, reload bool) {
+	_ = meta
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return

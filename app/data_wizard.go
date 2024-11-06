@@ -25,7 +25,7 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) {
 	}
 	defer wizardLock.CompareAndSwap(1, 0)
 
-	if !a.wizard.NeedsUpdate(false) {
+	if !a.wizard.NeedsUpdate(&a.meta, false) {
 		return
 	}
 }

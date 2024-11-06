@@ -67,7 +67,7 @@ func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorConta
 		NItems: uint64(len(itemsIn)),
 		Chain:  chain,
 	}
-	ret.LastUpdate, _ = ret.getMonitorReload()
+	ret.LastUpdate, _ = ret.getMonitorReload(nil)
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -78,8 +78,8 @@ func (s *MonitorContainer) String() string {
 	return string(bytes)
 }
 
-func (s *MonitorContainer) NeedsUpdate(force bool) bool {
-	latest, reload := s.getMonitorReload()
+func (s *MonitorContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
+	latest, reload := s.getMonitorReload(meta)
 	if force || reload {
 		DebugInts("reload Monitor", s.LastUpdate, latest)
 		s.LastUpdate = latest
@@ -127,7 +127,8 @@ func (s *MonitorContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *MonitorContainer) getMonitorReload() (ret int64, reload bool) {
+func (s *MonitorContainer) getMonitorReload(meta *coreTypes.MetaData) (ret int64, reload bool) {
+	_ = meta
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "monitors"))
 	ret = tm.Unix()

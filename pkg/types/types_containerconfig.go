@@ -12,6 +12,7 @@ import (
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
@@ -31,7 +32,7 @@ func NewConfigContainer(chain string, config *configTypes.Config) ConfigContaine
 		Config: *config,
 		Chain:  chain,
 	}
-	ret.LastUpdate, _ = ret.getConfigReload()
+	ret.LastUpdate, _ = ret.getConfigReload(nil)
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -42,8 +43,8 @@ func (s *ConfigContainer) String() string {
 	return string(bytes)
 }
 
-func (s *ConfigContainer) NeedsUpdate(force bool) bool {
-	latest, reload := s.getConfigReload()
+func (s *ConfigContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
+	latest, reload := s.getConfigReload(meta)
 	if force || reload {
 		DebugInts("reload Config", s.LastUpdate, latest)
 		s.LastUpdate = latest
@@ -79,7 +80,8 @@ func (s *ConfigContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *ConfigContainer) getConfigReload() (ret int64, reload bool) {
+func (s *ConfigContainer) getConfigReload(meta *coreTypes.MetaData) (ret int64, reload bool) {
+	_ = meta
 	// EXISTING_CODE
 	configFn, _ := utils.GetConfigFn("", "trueBlocks.toml")
 	tm, _ := file.GetModTime(configFn)
@@ -93,7 +95,7 @@ func (s *ConfigContainer) getConfigReload() (ret int64, reload bool) {
 var ErrNoConfigFolder = errors.New("core config folder not found")
 var ErrNoConfigFile = errors.New("trueBlocks.toml file not found")
 
-func (s *ConfigContainer) Load() error {
+func (s *ConfigContainer) Load(meta *coreTypes.MetaData) error {
 	path := coreConfig.PathToRootConfig()
 	if !file.FolderExists(path) {
 		return ErrNoConfigFolder
@@ -107,7 +109,7 @@ func (s *ConfigContainer) Load() error {
 	if err := coreConfig.ReadToml(fn, &s.Config); err != nil {
 		return fmt.Errorf("%w: %v", ErrNoConfigFile, err)
 	}
-	s.NeedsUpdate(true) // update the last update time
+	s.NeedsUpdate(meta, true) // update the last update time
 
 	return nil
 }

@@ -84,7 +84,8 @@ func (a *App) Startup(ctx context.Context) {
 	}
 
 	// Load the trueBlocks.toml file
-	if err = a.config.Load(); err != nil {
+	meta := sdk.MustGetMetaData(a.session.LastChain)
+	if err = a.config.Load(meta); err != nil {
 		a.deferredErrors = append(a.deferredErrors, err)
 	}
 	if a.session.LastChain, err = a.config.IsValidChain(a.session.LastChain); err != nil {

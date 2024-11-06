@@ -37,7 +37,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer nameLock.CompareAndSwap(1, 0)
 
-	if !a.names.NeedsUpdate(a.forceName()) {
+	if !a.names.NeedsUpdate(&a.meta, a.forceName()) {
 		return nil
 	}
 

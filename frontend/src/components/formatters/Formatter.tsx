@@ -4,7 +4,7 @@ import {
   DalleImage,
   AddressFormatter,
   AppearanceFormatter,
-  DateFormatter,
+  // DateFormatter,
   TagFormatter,
   TextFormatter,
   CellType,
@@ -56,11 +56,12 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
     case "time":
     // fall through
     case "date":
-      value = value?.replace("T", " ");
-      if ((value?.match(/ /g)?.length ?? 0) > 0) {
-        return <DateFormatter value={value} size={size} className={cn} />;
-      }
+      // value = value?.replace("T", " ");
+      // if ((value?.match(/ /g)?.length ?? 0) > 0) {
+      //   return <DateFormatter value={value} size={size} className={cn} />;
+      // }
       // else, render using TextFormatter
+      value = formatInteger(n);
       break;
     case "bytes":
       value = formatBytes(n);

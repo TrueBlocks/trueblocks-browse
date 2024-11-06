@@ -35,7 +35,7 @@ func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContai
 		},
 		Chain: chain,
 	}
-	ret.LastUpdate, _ = ret.getIndexReload()
+	ret.LastUpdate, _ = ret.getIndexReload(nil)
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -46,8 +46,8 @@ func (s *IndexContainer) String() string {
 	return string(bytes)
 }
 
-func (s *IndexContainer) NeedsUpdate(force bool) bool {
-	latest, reload := s.getIndexReload()
+func (s *IndexContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
+	latest, reload := s.getIndexReload(meta)
 	if force || reload {
 		DebugInts("reload Index", s.LastUpdate, latest)
 		s.LastUpdate = latest
@@ -92,7 +92,8 @@ func (s *IndexContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *IndexContainer) getIndexReload() (ret int64, reload bool) {
+func (s *IndexContainer) getIndexReload(meta *coreTypes.MetaData) (ret int64, reload bool) {
+	_ = meta
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(coreConfig.PathToIndex(s.Chain))
 	ret = tm.Unix()

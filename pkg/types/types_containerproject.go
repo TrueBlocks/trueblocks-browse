@@ -8,6 +8,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 // EXISTING_CODE
@@ -34,7 +35,7 @@ func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContai
 		NItems: uint64(len(itemsIn)),
 		Chain:  chain,
 	}
-	ret.LastUpdate, _ = ret.getProjectReload()
+	ret.LastUpdate, _ = ret.getProjectReload(nil)
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -45,8 +46,8 @@ func (s *ProjectContainer) String() string {
 	return string(bytes)
 }
 
-func (s *ProjectContainer) NeedsUpdate(force bool) bool {
-	latest, reload := s.getProjectReload()
+func (s *ProjectContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
+	latest, reload := s.getProjectReload(meta)
 	if force || reload {
 		DebugInts("reload Project", s.LastUpdate, latest)
 		s.LastUpdate = latest
@@ -80,7 +81,8 @@ func (s *ProjectContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *ProjectContainer) getProjectReload() (ret int64, reload bool) {
+func (s *ProjectContainer) getProjectReload(meta *coreTypes.MetaData) (ret int64, reload bool) {
+	_ = meta
 	// EXISTING_CODE
 	_ = s.ForEveryHistoryContainer(func(item *HistoryContainer, data any) bool {
 		fn := coreMonitor.PathToMonitorFile(s.Chain, item.Address)

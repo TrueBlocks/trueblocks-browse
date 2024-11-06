@@ -27,7 +27,7 @@ NItems: uint64(len(itemsIn)){{else}}make([]coreTypes.ChunkRecord, 0, len(itemsIn
 {{end}}{{if .NeedsChain}}		Chain: chain,
 {{end}}	}
 {{if .InitChain}}	ret.Chain = chain
-{{end}}	ret.LastUpdate, _ = ret.get{{.Class}}Reload()
+{{end}}	ret.LastUpdate, _ = ret.get{{.Class}}Reload(nil)
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -38,8 +38,8 @@ func (s *{{.Class}}Container) String() string {
 	return string(bytes)
 }
 
-func (s *{{.Class}}Container) NeedsUpdate(force bool) bool {
-	latest, reload := s.get{{.Class}}Reload()
+func (s *{{.Class}}Container) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
+	latest, reload := s.get{{.Class}}Reload(meta)
 	if force || reload {
 		DebugInts("reload {{.Class}}", s.LastUpdate, latest)
 		s.LastUpdate = latest
@@ -68,7 +68,8 @@ func (s *{{.Class}}Container) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *{{.Class}}Container) get{{.Class}}Reload() (ret int64, reload bool) {
+func (s *{{.Class}}Container) get{{.Class}}Reload(meta *coreTypes.MetaData) (ret int64, reload bool) {
+	_ = meta
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return

@@ -29,7 +29,7 @@ func (a *App) loadSessions(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer sessionLock.CompareAndSwap(1, 0)
 
-	if !a.session.NeedsUpdate(a.forceSession()) {
+	if !a.session.NeedsUpdate(&a.meta, a.forceSession()) {
 		return nil
 	}
 

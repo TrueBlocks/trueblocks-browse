@@ -40,7 +40,7 @@ func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 		},
 		Chain: chain,
 	}
-	ret.LastUpdate, _ = ret.getAbiReload()
+	ret.LastUpdate, _ = ret.getAbiReload(nil)
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -51,8 +51,8 @@ func (s *AbiContainer) String() string {
 	return string(bytes)
 }
 
-func (s *AbiContainer) NeedsUpdate(force bool) bool {
-	latest, reload := s.getAbiReload()
+func (s *AbiContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
+	latest, reload := s.getAbiReload(meta)
 	if force || reload {
 		DebugInts("reload Abi", s.LastUpdate, latest)
 		s.LastUpdate = latest
@@ -96,7 +96,8 @@ func (s *AbiContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *AbiContainer) getAbiReload() (ret int64, reload bool) {
+func (s *AbiContainer) getAbiReload(meta *coreTypes.MetaData) (ret int64, reload bool) {
+	_ = meta
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "abis"))
 	ret = tm.Unix()

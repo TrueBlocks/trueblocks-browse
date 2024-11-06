@@ -37,10 +37,10 @@ func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address 
 		Items: make([]coreTypes.Transaction, 0, len(itemsIn)),
 		Chain: chain,
 	}
-	ret.LastUpdate, _ = ret.getHistoryReload()
+	ret.LastUpdate, _ = ret.getHistoryReload(nil)
 	// EXISTING_CODE
 	ret.Address = address
-	ret.LastUpdate, _ = ret.getHistoryReload() // DO NOT REMOVE (needs address)
+	ret.LastUpdate, _ = ret.getHistoryReload(nil) // DO NOT REMOVE (needs address)
 	// EXISTING_CODE
 	return ret
 }
@@ -50,8 +50,8 @@ func (s *HistoryContainer) String() string {
 	return string(bytes)
 }
 
-func (s *HistoryContainer) NeedsUpdate(force bool) bool {
-	latest, reload := s.getHistoryReload()
+func (s *HistoryContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
+	latest, reload := s.getHistoryReload(meta)
 	if force || reload {
 		DebugInts("reload History", s.LastUpdate, latest)
 		s.LastUpdate = latest
@@ -95,7 +95,7 @@ func (s *HistoryContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *HistoryContainer) getHistoryReload() (ret int64, reload bool) {
+func (s *HistoryContainer) getHistoryReload(meta *coreTypes.MetaData) (ret int64, reload bool) {
 	// EXISTING_CODE
 	if s.Address == base.ZeroAddr {
 		return

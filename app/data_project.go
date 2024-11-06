@@ -41,7 +41,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 		return items[i].Address.Hex() < items[j].Address.Hex()
 	})
 	a.project = types.NewProjectContainer(a.session.LastChain, items)
-	if !a.project.NeedsUpdate(a.forceProject()) {
+	if !a.project.NeedsUpdate(&a.meta, a.forceProject()) {
 		return nil
 	}
 

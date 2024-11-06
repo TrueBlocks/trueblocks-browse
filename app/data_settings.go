@@ -25,7 +25,7 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer settingsLock.CompareAndSwap(1, 0)
 
-	if !a.settings.NeedsUpdate(false) {
+	if !a.settings.NeedsUpdate(&a.meta, false) {
 		return nil
 	}
 

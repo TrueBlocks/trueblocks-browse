@@ -25,7 +25,7 @@ func NewSessionContainer(chain string, session *coreTypes.Session) SessionContai
 		Session: *session,
 	}
 	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getSessionReload()
+	ret.LastUpdate, _ = ret.getSessionReload(nil)
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -36,8 +36,8 @@ func (s *SessionContainer) String() string {
 	return string(bytes)
 }
 
-func (s *SessionContainer) NeedsUpdate(force bool) bool {
-	latest, reload := s.getSessionReload()
+func (s *SessionContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
+	latest, reload := s.getSessionReload(meta)
 	if force || reload {
 		DebugInts("reload Session", s.LastUpdate, latest)
 		s.LastUpdate = latest
@@ -72,7 +72,8 @@ func (s *SessionContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *SessionContainer) getSessionReload() (ret int64, reload bool) {
+func (s *SessionContainer) getSessionReload(meta *coreTypes.MetaData) (ret int64, reload bool) {
+	_ = meta
 	// EXISTING_CODE
 	sessionFn, _ := utils.GetConfigFn("browse", "session.json")
 	tm, _ := file.GetModTime(sessionFn)
