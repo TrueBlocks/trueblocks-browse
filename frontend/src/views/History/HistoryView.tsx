@@ -1,11 +1,11 @@
 // import { useEffect } from "react";
-import { Text } from "@mantine/core";
 // import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 // import { useParams } from "wouter";
 // import { View, FormTable, ViewForm } from "@components";
 // import { base } from "@gocode/models";
 // import { useNoops, useRenderCounter, useUtils } from "@hooks";
-import { useRenderCounter } from "@hooks";
+import { DebugState } from "../../components";
+import { useAppState } from "../../state";
 // import { useAppState, ViewStateProvider } from "@state";
 // import { HistoryTableDef, HistoryFormDef } from ".";
 
@@ -13,7 +13,7 @@ export const HistoryView = () => {
   // const { modifyNoop } = useNoops();
   // const { ShortenAddr } = useUtils();
   // const { setAddress, history, fetchHistory } = useAppState();
-  const renderCount = useRenderCounter();
+  const { history } = useAppState();
 
   // const address = useParams().address as unknown as base.Address;
   // useEffect(() => {
@@ -35,7 +35,7 @@ export const HistoryView = () => {
   return (
     // <ViewStateProvider route={route} nItems={history.nItems} fetchFn={fetchHistory} modifyFn={modifyNoop}>
     <>
-      <Text>Render count: {renderCount}</Text>
+      <DebugState n={history.lastUpdate} />
       {/* <View tabs={tabs} forms={forms} /> */}
     </>
   );

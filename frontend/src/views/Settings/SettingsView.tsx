@@ -1,8 +1,7 @@
-import { Text } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { FormTable, View, ViewForm } from "@components";
+import { DebugState, FormTable, View, ViewForm } from "@components";
 import { types } from "@gocode/models";
-import { useNoops, useRenderCounter } from "@hooks";
+import { useNoops } from "@hooks";
 import { ViewStateProvider, useAppState } from "@state";
 import { ConfigFormDef } from "../Config";
 import { SessionFormDef } from "../Session";
@@ -12,7 +11,6 @@ import { SettingsTableDef } from ".";
 export const SettingsView = () => {
   const { modifyNoop } = useNoops();
   const { settings, fetchSettings } = useAppState();
-  const renderCount = useRenderCounter();
 
   const status = settings.status ?? types.StatusContainer.createFrom({});
   const config = settings.config ?? types.ConfigContainer.createFrom({});
@@ -38,7 +36,7 @@ export const SettingsView = () => {
 
   return (
     <ViewStateProvider route={route} fetchFn={fetchSettings} modifyFn={modifyNoop}>
-      <Text>Render count: {renderCount}</Text>
+      <DebugState n={settings.lastUpdate} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

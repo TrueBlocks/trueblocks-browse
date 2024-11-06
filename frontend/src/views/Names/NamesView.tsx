@@ -1,14 +1,12 @@
-import { Text } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, ViewForm } from "@components";
+import { View, FormTable, ViewForm, DebugState } from "@components";
 import { GoToAddress, ModifyName } from "@gocode/app/App";
-import { Page, useRenderCounter } from "@hooks";
+import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { NamesFormDef, NamesTableDef } from ".";
 
 export const NamesView = () => {
   const { names, fetchNames } = useAppState();
-  const renderCount = useRenderCounter();
 
   const handleEnter = (page: Page) => {
     const address = names.items[page.getRecord()].address;
@@ -34,7 +32,7 @@ export const NamesView = () => {
       onEnter={handleEnter}
       modifyFn={ModifyName}
     >
-      <Text>Render count: {renderCount}</Text>
+      <DebugState n={names.lastUpdate} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

@@ -1,6 +1,6 @@
 import { Text } from "@mantine/core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, ViewForm } from "@components";
+import { View, FormTable, ViewForm, DebugState } from "@components";
 import { ModifyAbi } from "@gocode/app/App";
 import { useRenderCounter } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
@@ -23,7 +23,7 @@ export const AbisView = () => {
   };
   return (
     <ViewStateProvider route={route} nItems={abis.nItems} fetchFn={fetchAbis} modifyFn={ModifyAbi}>
-      <Text>Render count: {renderCount}</Text>
+      <DebugState n={abis.lastUpdate} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
