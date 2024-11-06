@@ -27,7 +27,7 @@ export const ViewStatus = () => {
       }, 2000);
     };
 
-    const handleCancelled = (msg: messages.MessageMsg) => {
+    const handleCanceled = (msg: messages.MessageMsg) => {
       setStatusMessage(`Canceled (${msg.address})`);
       setColor("green");
       if (timeoutRef.current) {
@@ -63,7 +63,7 @@ export const ViewStatus = () => {
     };
 
     const { Message } = messages;
-    EventsOn(Message.CANCELLED, handleCancelled);
+    EventsOn(Message.CANCELED, handleCanceled);
     EventsOn(Message.COMPLETED, handleCompleted);
     EventsOn(Message.ERROR, handleError);
     EventsOn(Message.INFO, handleInfo);
@@ -71,7 +71,7 @@ export const ViewStatus = () => {
     EventsOn(Message.WARNING, handleWarning);
 
     return () => {
-      EventsOff(Message.CANCELLED);
+      EventsOff(Message.CANCELED);
       EventsOff(Message.COMPLETED);
       EventsOff(Message.ERROR);
       EventsOff(Message.INFO);

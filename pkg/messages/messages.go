@@ -13,7 +13,7 @@ type Message string
 const (
 	Progress  Message = "Progress"
 	Completed Message = "Completed"
-	Cancelled Message = "Cancelled"
+	Canceled  Message = "Canceled"
 
 	Error Message = "Error"
 	Warn  Message = "Warn"
@@ -35,7 +35,7 @@ var AllMessages = []struct {
 }{
 	{Progress, "PROGRESS"},
 	{Completed, "COMPLETED"},
-	{Cancelled, "CANCELLED"},
+	{Canceled, "CANCELED"},
 
 	{Error, "ERROR"},
 	{Warn, "WARNING"},

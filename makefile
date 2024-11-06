@@ -15,4 +15,5 @@ run:
 	@yarn dev
 
 generate:
+	@echo building goMaker...
 	@cd ~/Development/trueblocks-core/build ; make -j 12 goMaker ; cd - && goMaker
