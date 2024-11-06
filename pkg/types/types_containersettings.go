@@ -8,11 +8,16 @@ import (
 	"time"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
+
+type SettingsProps struct {
+	Chain   string            `json:"chain"`
+	Status  *StatusContainer  `json:"status"`
+	Config  *ConfigContainer  `json:"config"`
+	Session *SessionContainer `json:"session"`
+}
 
 // EXISTING_CODE
 
@@ -25,12 +30,12 @@ type SettingsContainer struct {
 	// EXISTING_CODE
 }
 
-func NewSettingsContainer(status *coreTypes.Status, cfg *configTypes.Config, session *coreTypes.Session) SettingsContainer {
+func NewSettingsContainer(props *SettingsProps) SettingsContainer {
 	latest := getLatestFileTime()
 	ret := SettingsContainer{
-		Status:     NewStatusContainer(status.Chain, status),
-		Config:     NewConfigContainer(status.Chain, cfg),
-		Session:    NewSessionContainer(status.Chain, session),
+		Status:     *props.Status,
+		Config:     *props.Config,
+		Session:    *props.Session,
 		LastUpdate: latest,
 	}
 	// EXISTING_CODE
@@ -50,13 +55,10 @@ func (s *SettingsContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *SettingsContainer) ShallowCopy() Containerer {
-	statusCopy := s.Status.ShallowCopy().(*StatusContainer)
-	configCopy := s.Config.ShallowCopy().(*ConfigContainer)
-	sessionCopy := s.Session.ShallowCopy().(*SessionContainer)
 	ret := &SettingsContainer{
-		Status:     *statusCopy,
-		Config:     *configCopy,
-		Session:    *sessionCopy,
+		Status:     *s.Status.ShallowCopy().(*StatusContainer),
+		Config:     *s.Config.ShallowCopy().(*ConfigContainer),
+		Session:    *s.Session.ShallowCopy().(*SessionContainer),
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
 		// EXISTING_CODE
@@ -68,17 +70,17 @@ func (s *SettingsContainer) Summarize() {
 	// EXISTING_CODE
 	s.Status.Summarize()
 	s.Config.Summarize()
-	// s.Session.Summarize()
+	s.Session.Summarize()
 	// logger.Info("Session:", s.Session.String())
 	// EXISTING_CODE
 }
 
 func getLatestFileTime() time.Time {
+	// EXISTING_CODE
 	configFn := coreConfig.PathToRootConfig()
 	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
 	folders := []string{configFn, sessionFn}
 	ret := file.MustGetLatestFileTime(folders...)
-	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
 }

@@ -82,10 +82,4 @@ func (a *App) forceStatus() (force bool) {
 }
 
 // EXISTING_CODE
-func (a *App) getGlobals() sdk.Globals {
-	return sdk.Globals{
-		Chain: a.session.LastChain,
-	}
-}
-
 // EXISTING_CODE

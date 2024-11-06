@@ -18,7 +18,7 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-var nameMutex sync.Mutex
+var namesMutex sync.Mutex
 var namesChain = "mainnet"
 
 // EXISTING_CODE
@@ -63,8 +63,8 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		return err
 	} else {
 		// EXISTING_CODE
-		nameMutex.Lock()
-		defer nameMutex.Unlock()
+		namesMutex.Lock()
+		defer namesMutex.Unlock()
 		// EXISTING_CODE
 		a.meta = *meta
 		a.names = types.NewNameContainer(opts.Chain, names)
@@ -141,15 +141,15 @@ func (a *App) ModifyName(modData *ModifyData) error {
 					}
 				}
 			}
-			nameMutex.Lock()
+			namesMutex.Lock()
 			a.namesMap[modData.Address] = name
-			nameMutex.Unlock()
+			namesMutex.Unlock()
 		}
 		newArray = append(newArray, name)
 	}
-	nameMutex.Lock()
+	namesMutex.Lock()
 	a.names.Items = newArray
-	nameMutex.Unlock()
+	namesMutex.Unlock()
 
 	return nil
 }

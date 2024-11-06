@@ -36,6 +36,7 @@ type App struct {
 	session   types.SessionContainer
 	config    types.ConfigContainer
 	wizard    types.WizardContainer
+	daemons   types.DaemonContainer
 
 	// Memory caches
 	ensCache     *sync.Map
@@ -64,7 +65,6 @@ func NewApp() *App {
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}
 	a.session.LastSub = make(map[string]string)
-	_ = a.wizard // delint
 
 	return a
 }
@@ -149,4 +149,16 @@ func (a *App) DomReady(ctx context.Context) {
 // Shutdown is called by Wails when the app is closed
 func (a *App) Shutdown(ctx context.Context) {
 	a.saveSession()
+}
+
+func (a *App) getGlobals() sdk.Globals {
+	return sdk.Globals{
+		// Ether:   a.Ether,
+		// Cache:   a.Cache,
+		// Decache: a.Decache,
+		// Verbose: a.Verbose,
+		Chain: a.session.LastChain,
+		// Output:  a.Output,
+		// Append:  a.Append,
+	}
 }

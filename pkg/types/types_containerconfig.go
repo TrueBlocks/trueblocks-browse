@@ -14,6 +14,7 @@ import (
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
 // EXISTING_CODE
@@ -82,7 +83,8 @@ func (s *ConfigContainer) Summarize() {
 
 func (s *ConfigContainer) getConfigReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	ret = file.MustGetLatestFileTime(coreConfig.PathToRootConfig())
+	configFn, _ := utils.GetConfigFn("", "trueBlocks.toml")
+	ret, _ = file.GetModTime(configFn)
 	reload = ret.After(s.LastUpdate)
 	// EXISTING_CODE
 	return
@@ -106,6 +108,7 @@ func (s *ConfigContainer) Load() error {
 	if err := coreConfig.ReadToml(fn, &s.Config); err != nil {
 		return fmt.Errorf("%w: %v", ErrNoConfigFile, err)
 	}
+	s.NeedsUpdate(true) // update the last update time
 
 	return nil
 }

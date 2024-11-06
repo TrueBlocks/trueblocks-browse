@@ -101,8 +101,11 @@ func (s *HistoryContainer) getHistoryReload() (ret time.Time, reload bool) {
 	if s.Address == base.ZeroAddr {
 		return
 	}
+	// very oddly, we use the monitor file's size to determine if we need to reload the history
+	// but we store that size in LastUpdate which is quite weird given that it's a time.Time
 	fn := coreMonitors.PathToMonitorFile(s.Chain, s.Address)
-	ret, _ = file.GetModTime(fn)
+	fs := file.FileSize(fn)
+	ret = time.Unix(fs, 0)
 	reload = ret.After(s.LastUpdate)
 	// EXISTING_CODE
 	return

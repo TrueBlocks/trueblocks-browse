@@ -2,9 +2,7 @@ package app
 
 import (
 	"os"
-
-	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"time"
 )
 
 func (a *App) SetShowing(which string, onOff bool) {
@@ -21,18 +19,29 @@ func (a *App) SetRoute(route, subRoute string) {
 	a.saveSession()
 }
 
-func (a *App) SetChain(chain string, address base.Address) {
+func (a *App) SetChain(chain string) {
+	if len(chain) == 0 {
+		return
+	}
+
 	a.emitInfoMsg("Switching to chain", chain)
-	a.CancelAllContexts()
+
 	a.session.LastChain = chain
 	a.saveSession()
-	a.GoToAddress(address)
-	a.monitors = types.MonitorContainer{}
-	a.names = types.NameContainer{}
-	a.abis = types.AbiContainer{}
-	a.indexes = types.IndexContainer{}
-	a.manifests = types.ManifestContainer{}
-	a.status = types.StatusContainer{}
-	a.settings = types.SettingsContainer{}
+
+	a.CancelAllContexts()
+	// a.project.LastUpdate = time.Time{}
+	a.monitors.LastUpdate = time.Time{}
+	// a.names.LastUpdate = time.Time{}
+	// a.abis.LastUpdate = time.Time{}
+	a.indexes.LastUpdate = time.Time{}
+	a.manifests.LastUpdate = time.Time{}
+	// a.status.LastUpdate = time.Time{}
+	a.settings.LastUpdate = time.Time{}
+	a.session.LastUpdate = time.Time{}
+	a.config.LastUpdate = time.Time{}
+	// a.wizard.LastUpdate = time.Time{}
+	// TODO: must stop and then restart all the daemons on the new chain
+	// a.daemons.LastUpdate = time.Time{}
 	_ = a.Freshen()
 }

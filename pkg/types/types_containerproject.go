@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
 )
 
@@ -84,7 +83,7 @@ func (s *ProjectContainer) Summarize() {
 
 func (s *ProjectContainer) getProjectReload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
-	_ = s.ForEveryHistory(func(item *HistoryContainer, data any) bool {
+	_ = s.ForEveryHistoryContainer(func(item *HistoryContainer, data any) bool {
 		fn := coreMonitor.PathToMonitorFile(s.Chain, item.Address)
 		t, _ := file.GetModTime(fn)
 		if t.After(item.LastUpdate) {

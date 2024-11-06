@@ -51,7 +51,7 @@ func (s *ProjectContainer) Load(fn string) (*ProjectFile, error) {
 func (s *ProjectContainer) Clean(selected base.Address) ([]base.Address, base.Address) {
 	found := false
 	ret := []base.Address{}
-	s.ForEveryHistory(func(history *HistoryContainer, data any) bool {
+	s.ForEveryHistoryContainer(func(history *HistoryContainer, data any) bool {
 		if history.Address.Hex() != base.ZeroAddr.Hex() {
 			ret = append(ret, history.Address)
 			if history.Address.Hex() == selected.Hex() {

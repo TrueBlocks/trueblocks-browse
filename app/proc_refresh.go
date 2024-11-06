@@ -29,52 +29,29 @@ func (a *App) Freshen() error {
 	freshenMutex.Lock()
 	defer freshenMutex.Unlock()
 
-	wg := sync.WaitGroup{}
-	errorChan := make(chan error, 5) // Buffered channel to hold up to 5 errors (one from each goroutine)
-
 	logger.InfoBB("")
 	logger.InfoBB("--------------------- Freshen ---------------------", time.Now().Format("15:04:05"))
+
+	wg := sync.WaitGroup{}
+	errorChan := make(chan error, 5) // Buffered channel to hold up to 5 errors (one from each goroutine)
 
 	// Always make sure names are loaded. We need them throughout (put any errors in the errorChan).
 	_ = a.loadNames(nil, errorChan)
 
 	// The rest of the data is independant of each other and may be loaded in parallel
-	wg.Add(9)
-
-	// app/data_project.go:
-	go a.loadProjects(&wg, errorChan)
-
-	// app/data_history.go:
+	wg.Add(12)
+	go a.loadProject(&wg, errorChan)
 	go a.loadHistory(a.GetSelected(), &wg, errorChan)
-
-	// app/data_monitor.go:
 	go a.loadMonitors(&wg, errorChan)
-
-	// app/data_name.go:
 	// go a.loadNames(&wg, errorChan)
-
-	// app/data_abi.go:
 	go a.loadAbis(&wg, errorChan)
-
-	// app/data_index.go:
 	go a.loadIndexes(&wg, errorChan)
-
-	// app/data_manifest.go:
 	go a.loadManifests(&wg, errorChan)
-
-	// app/data_status.go:
 	go a.loadStatus(&wg, errorChan)
-
-	// app/data_session.go:
 	go a.loadSessions(&wg, errorChan)
-
-	// go a.loadConfig(&wg, errorChan)
-
-	// go a.loadDaemons(&wg, errorChan)
-
-	// go a.loadWizard(&wg, errorChan)
-
-	// app/data_settings.go:
+	go a.loadConfig(&wg, errorChan)
+	go a.loadDaemon(&wg, errorChan)
+	go a.loadWizard(&wg, errorChan)
 	go a.loadSettings(&wg, errorChan)
 
 	go func() {
@@ -102,6 +79,7 @@ func (a *App) Freshen() error {
 			String2: a.freshenController.Color,
 		})
 	}
+
 	return nil
 }
 

@@ -38,7 +38,12 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}
 
-	a.settings = types.NewSettingsContainer(&a.status.Status, &a.config.Config, &a.session.Session)
+	props := types.SettingsProps{
+		Status:  &a.status,
+		Config:  &a.config,
+		Session: &a.session,
+	}
+	a.settings = types.NewSettingsContainer(&props)
 	a.settings.Summarize()
 
 	return nil

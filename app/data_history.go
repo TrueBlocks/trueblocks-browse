@@ -73,7 +73,7 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	}
 
 	_ = errorChan // delint
-	logger.Info("Loading history for address: ", address.Hex())
+	logger.Info("reload History: ", address.Hex())
 	if err := a.thing(address, 15); err != nil {
 		a.emitAddressErrorMsg(err, address)
 		return err
@@ -195,5 +195,41 @@ func (a *App) GoToAddress(address base.Address) {
 	a.emitNavigateMsg(a.GetRoute())
 	a.emitInfoMsg("viewing address", address.Hex())
 }
+
+/*
+// TODO: How to decouple the loadX and XPage routines so there's no resource contention
+import (
+    "sync"
+    "sync/atomic"
+)
+
+type MyStruct struct {
+    itemMap    *map[string]ItemType
+    items      []ItemType
+    otherField string
+    isLoading  int32
+    mu         sync.Mutex
+}
+
+func (s *MyStruct) loadItems(dataStream <-chan ItemType) {
+    atomic.StoreInt32(&s.isLoading, 1)
+    defer atomic.StoreInt32(&s.isLoading, 0)
+    for item := range dataStream {
+        s.mu.Lock()
+        s.mu.Unlock()
+    }
+}
+
+func (s *MyStruct) GetPage() *MyStruct {
+    if atomic.LoadInt32(&s.isLoading) == 1 {
+        return nil
+    }
+    s.mu.Lock()
+    defer s.mu.Unlock()
+    return &MyStruct{
+        otherField: s.otherField,
+    }
+}
+*/
 
 // EXISTING_CODE

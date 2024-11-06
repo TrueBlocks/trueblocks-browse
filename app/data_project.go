@@ -18,8 +18,7 @@ import (
 
 var projectLock atomic.Uint32
 
-func (a *App) loadProjects(wg *sync.WaitGroup, errorChan chan error) error {
-	_ = errorChan
+func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -32,6 +31,7 @@ func (a *App) loadProjects(wg *sync.WaitGroup, errorChan chan error) error {
 	defer projectLock.CompareAndSwap(1, 0)
 
 	// EXISTING_CODE
+	_ = errorChan
 	items := []types.HistoryContainer{}
 	a.historyCache.Range(func(_ base.Address, h types.HistoryContainer) bool {
 		items = append(items, h)
@@ -62,7 +62,7 @@ func (a *App) loadProjects(wg *sync.WaitGroup, errorChan chan error) error {
 	a.project.NIndexes = uint64(len(a.indexes.Items))
 	a.project.NManifests = uint64(len(a.manifests.Items))
 	a.project.NCaches = uint64(len(a.status.Caches))
-	a.project.ForEveryHistory(func(item *types.HistoryContainer, data any) bool {
+	a.project.ForEveryHistoryContainer(func(item *types.HistoryContainer, data any) bool {
 		item.Summarize()
 		a.project.HistorySize += uint64(item.SizeOf())
 		return true
