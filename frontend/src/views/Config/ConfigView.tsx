@@ -1,3 +1,10 @@
+import { DebugState } from "@components";
+
 export const ConfigView = () => {
-  return <div>ConfigView</div>;
+  return (
+    <>
+      <DebugState />
+      <div>ConfigView</div>
+    </>
+  );
 };
