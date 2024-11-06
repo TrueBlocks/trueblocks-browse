@@ -11,7 +11,6 @@ import (
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -56,7 +55,7 @@ func (s *AbiContainer) String() string {
 func (s *AbiContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getAbiReload()
 	if force || reload {
-		logger.InfoG("reload Abi", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		// logger.InfoG("reload Abi", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}

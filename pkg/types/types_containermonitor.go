@@ -82,7 +82,7 @@ func (s *MonitorContainer) String() string {
 func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getMonitorReload()
 	if force || reload {
-		logger.InfoG("reload Monitor", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		// logger.InfoG("reload Monitor", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}

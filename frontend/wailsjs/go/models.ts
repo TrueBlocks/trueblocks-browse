@@ -422,7 +422,7 @@ export namespace messages {
 	export enum Message {
 	    PROGRESS = "Progress",
 	    COMPLETED = "Completed",
-	    CANCELLED = "Cancelled",
+	    CANCELED = "Canceled",
 	    ERROR = "Error",
 	    WARNING = "Warn",
 	    INFO = "Info",

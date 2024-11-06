@@ -16,6 +16,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 

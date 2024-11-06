@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 // EXISTING_CODE
@@ -38,7 +37,7 @@ func (s *DaemonContainer) String() string {
 func (s *DaemonContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getDaemonReload()
 	if force || reload {
-		logger.InfoG("reload Daemon", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		// logger.InfoG("reload Daemon", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}

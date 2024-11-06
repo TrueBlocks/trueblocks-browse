@@ -6,8 +6,6 @@ package types
 import (
 	"encoding/json"
 	"time"
-
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 // EXISTING_CODE
@@ -37,7 +35,7 @@ func (s *WizardContainer) String() string {
 func (s *WizardContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getWizardReload()
 	if force || reload {
-		logger.InfoG("reload Wizard", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		// logger.InfoG("reload Wizard", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}

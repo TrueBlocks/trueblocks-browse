@@ -13,7 +13,6 @@ import (
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
@@ -47,7 +46,7 @@ func (s *ConfigContainer) String() string {
 func (s *ConfigContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getConfigReload()
 	if force || reload {
-		logger.InfoG("reload Config", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		// logger.InfoG("reload Config", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}

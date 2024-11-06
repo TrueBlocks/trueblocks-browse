@@ -49,7 +49,7 @@ func (s *ProjectContainer) String() string {
 func (s *ProjectContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getProjectReload()
 	if force || reload {
-		logger.InfoG("reload Project", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		// logger.InfoG("reload Project", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}

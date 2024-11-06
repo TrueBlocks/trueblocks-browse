@@ -41,7 +41,7 @@ func (s *{{.Class}}Container) String() string {
 func (s *{{.Class}}Container) NeedsUpdate(force bool) bool {
 	latest, reload := s.get{{.Class}}Reload()
 	if force || reload {
-		logger.InfoG("reload {{.Class}}", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		// logger.InfoG("reload {{.Class}}", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
 		s.LastUpdate = latest
 		return true
 	}

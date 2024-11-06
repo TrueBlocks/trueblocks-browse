@@ -10,10 +10,6 @@ export function AbisView(arg1) {
   return window['go']['app']['App']['AbisView'](arg1);
 }
 
-export function Caching(arg1) {
-  return window['go']['app']['App']['Caching'](arg1);
-}
-
 export function CancelAllContexts() {
   return window['go']['app']['App']['CancelAllContexts']();
 }
@@ -218,8 +214,8 @@ export function SessionView(arg1) {
   return window['go']['app']['App']['SessionView'](arg1);
 }
 
-export function SetChain(arg1, arg2) {
-  return window['go']['app']['App']['SetChain'](arg1, arg2);
+export function SetChain(arg1) {
+  return window['go']['app']['App']['SetChain'](arg1);
 }
 
 export function SetEnv(arg1, arg2) {
@@ -252,10 +248,6 @@ export function StatusView(arg1) {
 
 export function StepWizard(arg1) {
   return window['go']['app']['App']['StepWizard'](arg1);
-}
-
-export function String() {
-  return window['go']['app']['App']['String']();
 }
 
 export function SystemAbout(arg1) {
