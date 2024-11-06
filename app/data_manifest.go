@@ -45,7 +45,7 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.ManifestsOptions{
-		Globals: a.toGlobals(),
+		Globals: a.getGlobals(),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE

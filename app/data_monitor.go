@@ -50,7 +50,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.MonitorsOptions{
-		Globals: a.toGlobals(),
+		Globals: a.getGlobals(),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -111,7 +111,7 @@ func (a *App) ModifyMonitors(modData *ModifyData) error {
 		Delete:   op == crud.Delete,
 		Undelete: op == crud.Undelete,
 		Remove:   op == crud.Remove,
-		Globals:  a.toGlobals(),
+		Globals:  a.getGlobals(),
 	}
 
 	if _, _, err := opts.Monitors(); err != nil {

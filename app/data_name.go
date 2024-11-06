@@ -55,7 +55,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.NamesOptions{
-		Globals: a.toGlobals(),
+		Globals: a.getGlobals(),
 	}
 	// EXISTING_CODE
 	names.ClearCustomNames()
@@ -126,7 +126,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 
 	cd := crud.CrudFromName(newName)
 	opts := sdk.NamesOptions{
-		Globals: a.toGlobals(),
+		Globals: a.getGlobals(),
 	}
 	opts.Globals.Chain = namesChain
 

@@ -45,7 +45,7 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.IndexesOptions{
-		Globals: a.toGlobals(),
+		Globals: a.getGlobals(),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE

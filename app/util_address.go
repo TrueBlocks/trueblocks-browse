@@ -25,7 +25,7 @@ func (a *App) ensToAddress(addr string) (base.Address, bool) {
 	// Try to get an ENS or return the same input
 	opts := sdk.NamesOptions{
 		Terms:   []string{addr},
-		Globals: a.toGlobals(),
+		Globals: a.getGlobals(),
 	}
 	if names, meta, err := opts.Names(); err != nil {
 		a.emitErrorMsg(err, nil)

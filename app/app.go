@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -17,13 +16,10 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type App struct {
-	sdk.Globals
-
 	ctx   context.Context
 	meta  coreTypes.MetaData
 	dirty bool
@@ -57,11 +53,6 @@ type App struct {
 	// we have not yet opened the window, so we defer them until we can
 	// decide what to do.
 	deferredErrors []error
-}
-
-func (a *App) String() string {
-	bytes, _ := json.Marshal(a)
-	return string(bytes)
 }
 
 func NewApp() *App {
@@ -98,7 +89,6 @@ func (a *App) Startup(ctx context.Context) {
 	if a.session.LastChain, err = a.config.IsValidChain(a.session.LastChain); err != nil {
 		a.deferredErrors = append(a.deferredErrors, err)
 	}
-	a.Chain = a.session.LastChain
 
 	// We always need names, so let's load it before showing the window
 	if a.namesMap, err = names.LoadNamesMap(namesChain, coreTypes.All, nil); err == nil {

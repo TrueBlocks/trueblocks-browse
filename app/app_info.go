@@ -29,7 +29,7 @@ func (a *App) getFullPath() string {
 
 func (a *App) GetAppInfo() AppInfo {
 	return AppInfo{
-		Chain:        a.Chain,
+		Chain:        a.session.LastChain,
 		Filename:     a.getFullPath(),
 		Dirty:        a.dirty,
 		Meta:         a.meta,

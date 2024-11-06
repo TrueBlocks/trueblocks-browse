@@ -48,7 +48,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.StatusOptions{
-		Globals: a.toGlobals(),
+		Globals: a.getGlobals(),
 	}
 	// EXISTING_CODE
 	w := logger.GetLoggerWriter()
@@ -94,15 +94,9 @@ func (a *App) forceStatus() (force bool) {
 }
 
 // EXISTING_CODE
-func (a *App) toGlobals() sdk.Globals {
+func (a *App) getGlobals() sdk.Globals {
 	return sdk.Globals{
-		Ether:   a.Ether,
-		Cache:   a.Cache,
-		Decache: a.Decache,
-		Verbose: a.Verbose,
-		Chain:   a.Chain,
-		Output:  a.Output,
-		Append:  a.Append,
+		Chain: a.session.LastChain,
 	}
 }
 

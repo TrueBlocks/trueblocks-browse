@@ -36,7 +36,7 @@ func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) 
 	}
 
 	opts := sdk.{{toPlural .Class}}Options{
-		Globals: a.toGlobals(),
+		Globals: a.getGlobals(),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -75,7 +75,7 @@ func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) 
 {{if .IsEditable}}func (a *App) Modify{{.Class}}(modData *ModifyData) error {
 	opts := sdk.{{toPlural .Class}}Options{
 		Addrs:   []string{modData.Address.Hex()},
-		Globals: a.toGlobals(),
+		Globals: a.getGlobals(),
 	}
 	opts.Globals.Decache = true
 

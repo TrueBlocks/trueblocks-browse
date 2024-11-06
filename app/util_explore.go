@@ -18,7 +18,7 @@ func (a *App) GetExploreUrl(term string, google, dalle bool) string {
 		Google:  google,
 		Dalle:   dalle,
 		NoOpen:  true,
-		Globals: a.toGlobals(),
+		Globals: a.getGlobals(),
 	}
 
 	// TODO: Expose this to the user and/or put it in trueBlocks.toml

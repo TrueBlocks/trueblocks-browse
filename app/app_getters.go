@@ -57,7 +57,7 @@ func (a *App) GetSelected() base.Address {
 }
 
 func (a *App) getChain() string {
-	return a.Chain
+	return a.session.LastChain
 }
 
 func (a *App) GetChains() []string {

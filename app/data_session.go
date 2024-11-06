@@ -42,7 +42,7 @@ func (a *App) loadSessions(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.SessionsOptions{
-		Globals: a.toGlobals(),
+		Globals: a.getGlobals(),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE

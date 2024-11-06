@@ -24,7 +24,6 @@ func (a *App) SetRoute(route, subRoute string) {
 func (a *App) SetChain(chain string, address base.Address) {
 	a.emitInfoMsg("Switching to chain", chain)
 	a.CancelAllContexts()
-	a.Chain = chain
 	a.session.LastChain = chain
 	a.saveSession()
 	a.GoToAddress(address)
