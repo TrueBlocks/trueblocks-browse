@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
-	"time"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
@@ -21,8 +20,8 @@ import (
 type ConfigContainer struct {
 	NChains            uint64 `json:"nChains"`
 	configTypes.Config `json:",inline"`
-	Chain              string    `json:"chain"`
-	LastUpdate         time.Time `json:"lastUpdate"`
+	Chain              string `json:"chain"`
+	LastUpdate         int64  `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -46,7 +45,7 @@ func (s *ConfigContainer) String() string {
 func (s *ConfigContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getConfigReload()
 	if force || reload {
-		// logger.InfoG("reload Config", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		DebugInts("reload Config", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -80,11 +79,12 @@ func (s *ConfigContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *ConfigContainer) getConfigReload() (ret time.Time, reload bool) {
+func (s *ConfigContainer) getConfigReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	configFn, _ := utils.GetConfigFn("", "trueBlocks.toml")
-	ret, _ = file.GetModTime(configFn)
-	reload = ret.After(s.LastUpdate)
+	tm, _ := file.GetModTime(configFn)
+	ret = tm.Unix()
+	reload = ret > s.LastUpdate
 	// EXISTING_CODE
 	return
 }

@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"sync"
 	"sync/atomic"
-	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -93,7 +92,7 @@ func (a *App) ModifyAbi(modData *ModifyData) error {
 			}
 			newAbis = append(newAbis, abi)
 		}
-		a.abis.LastUpdate = time.Time{}
+		a.abis.LastUpdate = 0
 		a.abis.Items = newAbis
 		a.emitInfoMsg("ModifyAbi delete", modData.Address.Hex())
 		return nil

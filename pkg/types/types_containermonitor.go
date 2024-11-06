@@ -6,7 +6,6 @@ package types
 import (
 	"encoding/json"
 	"path/filepath"
-	"time"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -55,7 +54,7 @@ type MonitorContainer struct {
 	Items      []coreTypes.Monitor `json:"items"`
 	NItems     uint64              `json:"nItems"`
 	Chain      string              `json:"chain"`
-	LastUpdate time.Time           `json:"lastUpdate"`
+	LastUpdate int64               `json:"lastUpdate"`
 	// EXISTING_CODE
 	// FilteredItems []int         `json:"filteresdItems"`
 	// MonitorFilter MonitorFilter `json:"filter"`
@@ -82,7 +81,7 @@ func (s *MonitorContainer) String() string {
 func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getMonitorReload()
 	if force || reload {
-		// logger.InfoG("reload Monitor", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		DebugInts("reload Monitor", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -128,10 +127,11 @@ func (s *MonitorContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *MonitorContainer) getMonitorReload() (ret time.Time, reload bool) {
+func (s *MonitorContainer) getMonitorReload() (ret int64, reload bool) {
 	// EXISTING_CODE
-	ret = file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "monitors"))
-	reload = ret.After(s.LastUpdate)
+	tm := file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "monitors"))
+	ret = tm.Unix()
+	reload = ret > s.LastUpdate
 	// EXISTING_CODE
 	return
 }

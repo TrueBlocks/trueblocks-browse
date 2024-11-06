@@ -5,7 +5,6 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"time"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -20,7 +19,7 @@ type IndexContainer struct {
 	NItems     uint64                 `json:"nItems"`
 	Sorts      sdk.SortSpec           `json:"sorts"`
 	Chain      string                 `json:"chain"`
-	LastUpdate time.Time              `json:"lastUpdate"`
+	LastUpdate int64                  `json:"lastUpdate"`
 	// EXISTING_CODE
 	coreTypes.ChunkStats
 	// EXISTING_CODE
@@ -50,7 +49,7 @@ func (s *IndexContainer) String() string {
 func (s *IndexContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getIndexReload()
 	if force || reload {
-		// logger.InfoG("reload Index", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		DebugInts("reload Index", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -93,10 +92,11 @@ func (s *IndexContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *IndexContainer) getIndexReload() (ret time.Time, reload bool) {
+func (s *IndexContainer) getIndexReload() (ret int64, reload bool) {
 	// EXISTING_CODE
-	ret = file.MustGetLatestFileTime(coreConfig.PathToIndex(s.Chain))
-	reload = ret.After(s.LastUpdate)
+	tm := file.MustGetLatestFileTime(coreConfig.PathToIndex(s.Chain))
+	ret = tm.Unix()
+	reload = ret > s.LastUpdate
 	// EXISTING_CODE
 	return
 }

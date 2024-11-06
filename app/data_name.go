@@ -83,8 +83,9 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 
 func (a *App) forceName() (force bool) {
 	// EXISTING_CODE
-	latest := file.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(namesChain))
-	force = latest != a.names.LastUpdate
+	tm := file.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(namesChain))
+	ret := tm.Unix()
+	force = ret > a.names.LastUpdate
 	// EXISTING_CODE
 	return
 }

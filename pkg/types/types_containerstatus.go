@@ -17,7 +17,7 @@ type StatusContainer struct {
 	NFiles           uint64 `json:"nFiles"`
 	NFolders         uint64 `json:"nFolders"`
 	coreTypes.Status `json:",inline"`
-	LastUpdate       time.Time `json:"lastUpdate"`
+	LastUpdate       int64 `json:"lastUpdate"`
 	// EXISTING_CODE
 	Items  []coreTypes.CacheItem `json:"items"`
 	NItems uint64                `json:"nItems"`
@@ -31,7 +31,7 @@ func NewStatusContainer(chain string, status *coreTypes.Status) StatusContainer 
 	ret.Chain = chain
 	ret.LastUpdate, _ = ret.getStatusReload()
 	// EXISTING_CODE
-	ret.LastUpdate = time.Now()
+	ret.LastUpdate = time.Now().Unix()
 	ret.Items = status.Caches
 	ret.NItems = uint64(len(ret.Items))
 	// EXISTING_CODE
@@ -46,7 +46,7 @@ func (s *StatusContainer) String() string {
 func (s *StatusContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getStatusReload()
 	if force || reload {
-		// logger.InfoG("reload Status", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		DebugInts("reload Status", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -79,10 +79,10 @@ func (s *StatusContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *StatusContainer) getStatusReload() (ret time.Time, reload bool) {
+func (s *StatusContainer) getStatusReload() (ret int64, reload bool) {
 	// EXISTING_CODE
-	ret = time.Now()
-	reload = ret.After(s.LastUpdate.Add(time.Minute * 2)) // every two minutes
+	ret = time.Now().Unix()
+	reload = ret > s.LastUpdate+(60*2) // every two minutes
 	// EXISTING_CODE
 	return
 }

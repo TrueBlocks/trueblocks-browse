@@ -2,7 +2,6 @@ package app
 
 import (
 	"os"
-	"time"
 )
 
 func (a *App) SetShowing(which string, onOff bool) {
@@ -30,18 +29,18 @@ func (a *App) SetChain(chain string) {
 	a.saveSession()
 
 	a.CancelAllContexts()
-	// a.project.LastUpdate = time.Time{}
-	a.monitors.LastUpdate = time.Time{}
-	// a.names.LastUpdate = time.Time{}
-	// a.abis.LastUpdate = time.Time{}
-	a.indexes.LastUpdate = time.Time{}
-	a.manifests.LastUpdate = time.Time{}
-	// a.status.LastUpdate = time.Time{}
-	a.settings.LastUpdate = time.Time{}
-	a.session.LastUpdate = time.Time{}
-	a.config.LastUpdate = time.Time{}
-	// a.wizard.LastUpdate = time.Time{}
+	// a.project.LastUpdate = 0
+	a.monitors.LastUpdate = 0
+	// a.names.LastUpdate = 0
+	// a.abis.LastUpdate = 0
+	a.indexes.LastUpdate = 0
+	a.manifests.LastUpdate = 0
+	// a.status.LastUpdate = 0
+	a.settings.LastUpdate = 0
+	a.session.LastUpdate = 0
+	a.config.LastUpdate = 0
+	// a.wizard.LastUpdate = 0
 	// TODO: must stop and then restart all the daemons on the new chain
-	// a.daemons.LastUpdate = time.Time{}
+	// a.daemons.LastUpdate = 0
 	_ = a.Freshen()
 }

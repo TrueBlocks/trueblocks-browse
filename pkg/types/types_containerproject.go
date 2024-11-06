@@ -5,7 +5,6 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"time"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
@@ -24,7 +23,7 @@ type ProjectContainer struct {
 	Items       []HistoryContainer `json:"items"`
 	NItems      uint64             `json:"nItems"`
 	Chain       string             `json:"chain"`
-	LastUpdate  time.Time          `json:"lastUpdate"`
+	LastUpdate  int64              `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -49,7 +48,7 @@ func (s *ProjectContainer) String() string {
 func (s *ProjectContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getProjectReload()
 	if force || reload {
-		// logger.InfoG("reload Project", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		DebugInts("reload Project", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -81,14 +80,15 @@ func (s *ProjectContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *ProjectContainer) getProjectReload() (ret time.Time, reload bool) {
+func (s *ProjectContainer) getProjectReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	_ = s.ForEveryHistoryContainer(func(item *HistoryContainer, data any) bool {
 		fn := coreMonitor.PathToMonitorFile(s.Chain, item.Address)
 		t, _ := file.GetModTime(fn)
-		if t.After(item.LastUpdate) {
+		r := t.Unix()
+		if r > item.LastUpdate {
 			reload = true
-			ret = t
+			ret = r
 			return false // all we need is one
 		}
 		return true

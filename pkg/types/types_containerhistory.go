@@ -10,7 +10,6 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreMonitors "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
@@ -28,7 +27,7 @@ type HistoryContainer struct {
 	Items      []coreTypes.Transaction `json:"items"`
 	NItems     uint64                  `json:"nItems"`
 	Chain      string                  `json:"chain"`
-	LastUpdate time.Time               `json:"lastUpdate"`
+	LastUpdate int64                   `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -54,7 +53,7 @@ func (s *HistoryContainer) String() string {
 func (s *HistoryContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getHistoryReload()
 	if force || reload {
-		logger.InfoG("reload History", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		DebugInts("reload History", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -96,7 +95,7 @@ func (s *HistoryContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *HistoryContainer) getHistoryReload() (ret time.Time, reload bool) {
+func (s *HistoryContainer) getHistoryReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	if s.Address == base.ZeroAddr {
 		return
@@ -105,8 +104,9 @@ func (s *HistoryContainer) getHistoryReload() (ret time.Time, reload bool) {
 	// but we store that size in LastUpdate which is quite weird given that it's a time.Time
 	fn := coreMonitors.PathToMonitorFile(s.Chain, s.Address)
 	fs := file.FileSize(fn)
-	ret = time.Unix(fs, 0)
-	reload = ret.After(s.LastUpdate)
+	tm := time.Unix(fs, 0)
+	ret = tm.Unix()
+	reload = ret > s.LastUpdate
 	// EXISTING_CODE
 	return
 }

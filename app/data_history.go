@@ -6,7 +6,6 @@ import (
 	"sort"
 	"sync"
 	"sync/atomic"
-	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
@@ -168,14 +167,14 @@ func (a *App) Reload() {
 	switch a.session.LastRoute {
 	case "/names":
 		logger.InfoG("Reloading names...")
-		a.names.LastUpdate = time.Time{}
+		a.names.LastUpdate = 0
 		if err := a.loadNames(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 	default:
 		logger.InfoG("Reloading default (history)...")
 		history, _ := a.historyCache.Load(a.GetSelected())
-		history.LastUpdate = time.Time{}
+		history.LastUpdate = 0
 		a.historyCache.Store(a.GetSelected(), history)
 		a.GoToAddress(history.Address)
 	}

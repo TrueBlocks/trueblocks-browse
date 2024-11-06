@@ -664,8 +664,7 @@ export namespace types {
 	    nItems: number;
 	    sorts: sdk.SortSpec;
 	    chain: string;
-	    // Go type: time
-	    lastUpdate: any;
+	    lastUpdate: number;
 	    address: base.Address;
 	    fileSize: number;
 	    functions: Function[];
@@ -692,7 +691,7 @@ export namespace types {
 	        this.nItems = source["nItems"];
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.chain = source["chain"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.lastUpdate = source["lastUpdate"];
 	        this.address = this.convertValues(source["address"], base.Address);
 	        this.fileSize = source["fileSize"];
 	        this.functions = this.convertValues(source["functions"], Function);
@@ -894,8 +893,7 @@ export namespace types {
 	    unchained: configtypes.UnchainedGroup;
 	    chains: {[key: string]: configtypes.ChainGroup};
 	    chain: string;
-	    // Go type: time
-	    lastUpdate: any;
+	    lastUpdate: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new ConfigContainer(source);
@@ -911,7 +909,7 @@ export namespace types {
 	        this.unchained = this.convertValues(source["unchained"], configtypes.UnchainedGroup);
 	        this.chains = this.convertValues(source["chains"], configtypes.ChainGroup, true);
 	        this.chain = source["chain"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.lastUpdate = source["lastUpdate"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -940,8 +938,7 @@ export namespace types {
 	    started: any;
 	    ticks: number;
 	    state: daemons.DaemonState;
-	    // Go type: time
-	    lastUpdate: any;
+	    lastUpdate: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new DaemonContainer(source);
@@ -955,7 +952,7 @@ export namespace types {
 	        this.started = this.convertValues(source["started"], null);
 	        this.ticks = source["ticks"];
 	        this.state = source["state"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.lastUpdate = source["lastUpdate"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1460,8 +1457,7 @@ export namespace types {
 	    items: Transaction[];
 	    nItems: number;
 	    chain: string;
-	    // Go type: time
-	    lastUpdate: any;
+	    lastUpdate: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new HistoryContainer(source);
@@ -1479,7 +1475,7 @@ export namespace types {
 	        this.items = this.convertValues(source["items"], Transaction);
 	        this.nItems = source["nItems"];
 	        this.chain = source["chain"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.lastUpdate = source["lastUpdate"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1505,8 +1501,7 @@ export namespace types {
 	    nItems: number;
 	    sorts: sdk.SortSpec;
 	    chain: string;
-	    // Go type: time
-	    lastUpdate: any;
+	    lastUpdate: number;
 	    addrsPerBlock: number;
 	    appsPerAddr: number;
 	    appsPerBlock: number;
@@ -1531,7 +1526,7 @@ export namespace types {
 	        this.nItems = source["nItems"];
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.chain = source["chain"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.lastUpdate = source["lastUpdate"];
 	        this.addrsPerBlock = source["addrsPerBlock"];
 	        this.appsPerAddr = source["appsPerAddr"];
 	        this.appsPerBlock = source["appsPerBlock"];
@@ -1595,8 +1590,7 @@ export namespace types {
 	    nItems: number;
 	    sorts: sdk.SortSpec;
 	    chain: string;
-	    // Go type: time
-	    lastUpdate: any;
+	    lastUpdate: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new ManifestContainer(source);
@@ -1614,7 +1608,7 @@ export namespace types {
 	        this.nItems = source["nItems"];
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.chain = source["chain"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.lastUpdate = source["lastUpdate"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1716,8 +1710,7 @@ export namespace types {
 	    items: Monitor[];
 	    nItems: number;
 	    chain: string;
-	    // Go type: time
-	    lastUpdate: any;
+	    lastUpdate: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new MonitorContainer(source);
@@ -1734,7 +1727,7 @@ export namespace types {
 	        this.items = this.convertValues(source["items"], Monitor);
 	        this.nItems = source["nItems"];
 	        this.chain = source["chain"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.lastUpdate = source["lastUpdate"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1825,8 +1818,7 @@ export namespace types {
 	    items: Name[];
 	    nItems: number;
 	    chain: string;
-	    // Go type: time
-	    lastUpdate: any;
+	    lastUpdate: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new NameContainer(source);
@@ -1846,7 +1838,7 @@ export namespace types {
 	        this.items = this.convertValues(source["items"], Name);
 	        this.nItems = source["nItems"];
 	        this.chain = source["chain"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.lastUpdate = source["lastUpdate"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1879,8 +1871,7 @@ export namespace types {
 	    items: HistoryContainer[];
 	    nItems: number;
 	    chain: string;
-	    // Go type: time
-	    lastUpdate: any;
+	    lastUpdate: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new ProjectContainer(source);
@@ -1898,7 +1889,7 @@ export namespace types {
 	        this.items = this.convertValues(source["items"], HistoryContainer);
 	        this.nItems = source["nItems"];
 	        this.chain = source["chain"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.lastUpdate = source["lastUpdate"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2080,8 +2071,7 @@ export namespace types {
 	    window: Window;
 	    wizard: Wizard;
 	    toggles: Toggles;
-	    // Go type: time
-	    lastUpdate: any;
+	    lastUpdate: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new SessionContainer(source);
@@ -2097,7 +2087,7 @@ export namespace types {
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizard = this.convertValues(source["wizard"], Wizard);
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.lastUpdate = source["lastUpdate"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2144,8 +2134,7 @@ export namespace types {
 	    version?: string;
 	    meta?: MetaData;
 	    diffs?: MetaData;
-	    // Go type: time
-	    lastUpdate: any;
+	    lastUpdate: number;
 	    items: CacheItem[];
 	    nItems: number;
 	
@@ -2180,7 +2169,7 @@ export namespace types {
 	        this.version = source["version"];
 	        this.meta = this.convertValues(source["meta"], MetaData);
 	        this.diffs = this.convertValues(source["diffs"], MetaData);
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.lastUpdate = source["lastUpdate"];
 	        this.items = this.convertValues(source["items"], CacheItem);
 	        this.nItems = source["nItems"];
 	    }
@@ -2207,8 +2196,7 @@ export namespace types {
 	    status: StatusContainer;
 	    config: ConfigContainer;
 	    session: SessionContainer;
-	    // Go type: time
-	    lastUpdate: any;
+	    lastUpdate: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new SettingsContainer(source);
@@ -2219,7 +2207,7 @@ export namespace types {
 	        this.status = this.convertValues(source["status"], StatusContainer);
 	        this.config = this.convertValues(source["config"], ConfigContainer);
 	        this.session = this.convertValues(source["session"], SessionContainer);
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.lastUpdate = source["lastUpdate"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2250,8 +2238,7 @@ export namespace types {
 	
 	export class WizardContainer {
 	    chain: string;
-	    // Go type: time
-	    lastUpdate: any;
+	    lastUpdate: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new WizardContainer(source);
@@ -2260,26 +2247,8 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.chain = source["chain"];
-	        this.lastUpdate = this.convertValues(source["lastUpdate"], null);
+	        this.lastUpdate = source["lastUpdate"];
 	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
 	}
 
 }

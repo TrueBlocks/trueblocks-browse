@@ -5,7 +5,6 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 )
@@ -14,7 +13,7 @@ import (
 
 type DaemonContainer struct {
 	daemons.Daemon `json:",inline"`
-	LastUpdate     time.Time `json:"lastUpdate"`
+	LastUpdate     int64 `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -37,7 +36,7 @@ func (s *DaemonContainer) String() string {
 func (s *DaemonContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getDaemonReload()
 	if force || reload {
-		// logger.InfoG("reload Daemon", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		DebugInts("reload Daemon", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -59,7 +58,7 @@ func (s *DaemonContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *DaemonContainer) getDaemonReload() (ret time.Time, reload bool) {
+func (s *DaemonContainer) getDaemonReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return

@@ -5,7 +5,6 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"time"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -16,7 +15,7 @@ import (
 
 type SessionContainer struct {
 	coreTypes.Session `json:",inline"`
-	LastUpdate        time.Time `json:"lastUpdate"`
+	LastUpdate        int64 `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -40,7 +39,7 @@ func (s *SessionContainer) String() string {
 func (s *SessionContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getSessionReload()
 	if force || reload {
-		// logger.InfoG("reload Session", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		DebugInts("reload Session", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -73,11 +72,12 @@ func (s *SessionContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *SessionContainer) getSessionReload() (ret time.Time, reload bool) {
+func (s *SessionContainer) getSessionReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	sessionFn, _ := utils.GetConfigFn("browse", "session.json")
-	ret, _ = file.GetModTime(sessionFn)
-	reload = ret.After(s.LastUpdate)
+	tm, _ := file.GetModTime(sessionFn)
+	ret = tm.Unix()
+	reload = ret > s.LastUpdate
 	// EXISTING_CODE
 	return
 }

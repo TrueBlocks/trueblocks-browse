@@ -5,7 +5,6 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"time"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -26,7 +25,7 @@ type ManifestContainer struct {
 	NItems        uint64                  `json:"nItems"`
 	Sorts         sdk.SortSpec            `json:"sorts"`
 	Chain         string                  `json:"chain"`
-	LastUpdate    time.Time               `json:"lastUpdate"`
+	LastUpdate    int64                   `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -58,7 +57,7 @@ func (s *ManifestContainer) String() string {
 func (s *ManifestContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getManifestReload()
 	if force || reload {
-		// logger.InfoG("reload Manifest", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		DebugInts("reload Manifest", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -94,10 +93,11 @@ func (s *ManifestContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *ManifestContainer) getManifestReload() (ret time.Time, reload bool) {
+func (s *ManifestContainer) getManifestReload() (ret int64, reload bool) {
 	// EXISTING_CODE
-	ret = file.MustGetLatestFileTime(coreConfig.PathToManifest(s.Chain))
-	reload = ret.After(s.LastUpdate)
+	tm := file.MustGetLatestFileTime(coreConfig.PathToManifest(s.Chain))
+	ret = tm.Unix()
+	reload = ret > s.LastUpdate
 	// EXISTING_CODE
 	return
 }

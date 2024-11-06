@@ -5,14 +5,13 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"time"
 )
 
 // EXISTING_CODE
 
 type WizardContainer struct {
-	Chain      string    `json:"chain"`
-	LastUpdate time.Time `json:"lastUpdate"`
+	Chain      string `json:"chain"`
+	LastUpdate int64  `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -35,7 +34,7 @@ func (s *WizardContainer) String() string {
 func (s *WizardContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getWizardReload()
 	if force || reload {
-		// logger.InfoG("reload Wizard", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		DebugInts("reload Wizard", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -57,7 +56,7 @@ func (s *WizardContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *WizardContainer) getWizardReload() (ret time.Time, reload bool) {
+func (s *WizardContainer) getWizardReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return

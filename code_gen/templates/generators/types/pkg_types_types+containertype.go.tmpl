@@ -13,7 +13,7 @@ type {{.Class}}Container struct {
 	NItems uint64 `json:"nItems"`
 {{end}}{{if .HasSorts}}	Sorts sdk.SortSpec `json:"sorts"`
 {{end}}{{if .NeedsChain}}	Chain string `json:"chain"`
-{{end}}	LastUpdate time.Time `json:"lastUpdate"`
+{{end}}	LastUpdate int64 `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -41,7 +41,7 @@ func (s *{{.Class}}Container) String() string {
 func (s *{{.Class}}Container) NeedsUpdate(force bool) bool {
 	latest, reload := s.get{{.Class}}Reload()
 	if force || reload {
-		// logger.InfoG("reload {{.Class}}", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		DebugInts("reload {{.Class}}", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -68,7 +68,7 @@ func (s *{{.Class}}Container) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *{{.Class}}Container) get{{.Class}}Reload() (ret time.Time, reload bool) {
+func (s *{{.Class}}Container) get{{.Class}}Reload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return

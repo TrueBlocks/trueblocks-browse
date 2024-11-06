@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"path/filepath"
 	"sort"
-	"time"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -30,7 +29,7 @@ type NameContainer struct {
 	Items      []coreTypes.Name `json:"items"`
 	NItems     uint64           `json:"nItems"`
 	Chain      string           `json:"chain"`
-	LastUpdate time.Time        `json:"lastUpdate"`
+	LastUpdate int64            `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -59,7 +58,7 @@ func (s *NameContainer) String() string {
 func (s *NameContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getNameReload()
 	if force || reload {
-		// logger.InfoG("reload Name", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		DebugInts("reload Name", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -123,12 +122,13 @@ func (s *NameContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *NameContainer) getNameReload() (ret time.Time, reload bool) {
+func (s *NameContainer) getNameReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	chain := "mainnet"
 	folder := coreConfig.MustGetPathToChainConfig(chain)
-	ret = file.MustGetLatestFileTime(folder)
-	reload = ret.After(s.LastUpdate)
+	tm := file.MustGetLatestFileTime(folder)
+	ret = tm.Unix()
+	reload = ret > s.LastUpdate
 	// EXISTING_CODE
 	return
 }

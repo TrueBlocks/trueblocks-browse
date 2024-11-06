@@ -5,7 +5,6 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"time"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -25,7 +24,7 @@ type SettingsContainer struct {
 	Status     StatusContainer  `json:"status"`
 	Config     ConfigContainer  `json:"config"`
 	Session    SessionContainer `json:"session"`
-	LastUpdate time.Time        `json:"lastUpdate"`
+	LastUpdate int64            `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -75,12 +74,13 @@ func (s *SettingsContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func getLatestFileTime() time.Time {
+func getLatestFileTime() int64 {
 	// EXISTING_CODE
 	configFn := coreConfig.PathToRootConfig()
 	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
 	folders := []string{configFn, sessionFn}
-	ret := file.MustGetLatestFileTime(folders...)
+	tm := file.MustGetLatestFileTime(folders...)
+	ret := tm.Unix()
 	// EXISTING_CODE
 	return ret
 }

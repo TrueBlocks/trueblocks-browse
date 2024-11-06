@@ -82,7 +82,7 @@ func (a *App) load{{.UiRouteLabel}}(wg *sync.WaitGroup, errorChan chan error) er
 			}
 			new{{.UiRouteLabel}} = append(new{{.UiRouteLabel}}, {{toLower .Class}})
 		}
-		a.{{.UiRouteLower}}.LastUpdate = time.Time{}
+		a.{{.UiRouteLower}}.LastUpdate = 0
 		a.{{.UiRouteLower}}.Items = new{{.UiRouteLabel}}
 		a.emitInfoMsg("Modify{{.Class}} delete", modData.Address.Hex())
 		return nil

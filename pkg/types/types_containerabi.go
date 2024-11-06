@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"path/filepath"
-	"time"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -25,7 +24,7 @@ type AbiContainer struct {
 	NItems        uint64          `json:"nItems"`
 	Sorts         sdk.SortSpec    `json:"sorts"`
 	Chain         string          `json:"chain"`
-	LastUpdate    time.Time       `json:"lastUpdate"`
+	LastUpdate    int64           `json:"lastUpdate"`
 	// EXISTING_CODE
 	coreTypes.Abi
 	// EXISTING_CODE
@@ -55,7 +54,7 @@ func (s *AbiContainer) String() string {
 func (s *AbiContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getAbiReload()
 	if force || reload {
-		// logger.InfoG("reload Abi", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
+		DebugInts("reload Abi", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
@@ -97,10 +96,11 @@ func (s *AbiContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *AbiContainer) getAbiReload() (ret time.Time, reload bool) {
+func (s *AbiContainer) getAbiReload() (ret int64, reload bool) {
 	// EXISTING_CODE
-	ret = file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "abis"))
-	reload = ret.After(s.LastUpdate)
+	tm := file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "abis"))
+	ret = tm.Unix()
+	reload = ret > s.LastUpdate
 	// EXISTING_CODE
 	return
 }
