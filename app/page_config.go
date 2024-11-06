@@ -3,6 +3,8 @@
 package app
 
 // EXISTING_CODE
+import "github.com/TrueBlocks/trueblocks-browse/pkg/types"
+
 // EXISTING_CODE
 
 func (a *App) ConfigPage(first, pageSize int) *types.ConfigContainer {
