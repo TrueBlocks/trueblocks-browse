@@ -49,7 +49,7 @@ func (s *IndexContainer) String() string {
 func (s *IndexContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
 	latest, reload := s.getIndexReload(meta)
 	if force || reload {
-		DebugInts("reload Index", s.LastUpdate, latest)
+		DebugInts("index", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}

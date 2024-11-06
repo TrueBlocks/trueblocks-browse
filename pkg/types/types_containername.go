@@ -58,7 +58,7 @@ func (s *NameContainer) String() string {
 func (s *NameContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
 	latest, reload := s.getNameReload(meta)
 	if force || reload {
-		DebugInts("reload Name", s.LastUpdate, latest)
+		DebugInts("name", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}

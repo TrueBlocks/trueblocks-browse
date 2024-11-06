@@ -72,7 +72,7 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	}
 
 	_ = errorChan // delint
-	logger.Info("reload History: ", address.Hex())
+	logger.Info("history: ", address.Hex())
 	if err := a.thing(address, 15); err != nil {
 		a.emitAddressErrorMsg(err, address)
 		return err

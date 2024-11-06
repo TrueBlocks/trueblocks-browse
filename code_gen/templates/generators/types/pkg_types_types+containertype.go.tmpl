@@ -41,7 +41,7 @@ func (s *{{.Class}}Container) String() string {
 func (s *{{.Class}}Container) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
 	latest, reload := s.get{{.Class}}Reload(meta)
 	if force || reload {
-		DebugInts("reload {{.Class}}", s.LastUpdate, latest)
+		DebugInts("{{toLower .Class}}", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}

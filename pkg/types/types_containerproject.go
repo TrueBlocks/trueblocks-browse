@@ -49,7 +49,7 @@ func (s *ProjectContainer) String() string {
 func (s *ProjectContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
 	latest, reload := s.getProjectReload(meta)
 	if force || reload {
-		DebugInts("reload Project", s.LastUpdate, latest)
+		DebugInts("project", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}

@@ -46,7 +46,7 @@ func (s *ConfigContainer) String() string {
 func (s *ConfigContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
 	latest, reload := s.getConfigReload(meta)
 	if force || reload {
-		DebugInts("reload Config", s.LastUpdate, latest)
+		DebugInts("config", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}

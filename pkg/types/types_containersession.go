@@ -39,7 +39,7 @@ func (s *SessionContainer) String() string {
 func (s *SessionContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
 	latest, reload := s.getSessionReload(meta)
 	if force || reload {
-		DebugInts("reload Session", s.LastUpdate, latest)
+		DebugInts("session", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}

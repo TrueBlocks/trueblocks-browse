@@ -36,7 +36,7 @@ func (s *WizardContainer) String() string {
 func (s *WizardContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
 	latest, reload := s.getWizardReload(meta)
 	if force || reload {
-		DebugInts("reload Wizard", s.LastUpdate, latest)
+		DebugInts("wizard", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}

@@ -57,7 +57,7 @@ func (s *ManifestContainer) String() string {
 func (s *ManifestContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
 	latest, reload := s.getManifestReload(meta)
 	if force || reload {
-		DebugInts("reload Manifest", s.LastUpdate, latest)
+		DebugInts("manifest", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}

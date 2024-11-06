@@ -37,7 +37,7 @@ func (s *DaemonContainer) String() string {
 func (s *DaemonContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
 	latest, reload := s.getDaemonReload(meta)
 	if force || reload {
-		DebugInts("reload Daemon", s.LastUpdate, latest)
+		DebugInts("daemon", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}

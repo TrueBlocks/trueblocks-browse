@@ -54,7 +54,7 @@ func (s *AbiContainer) String() string {
 func (s *AbiContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
 	latest, reload := s.getAbiReload(meta)
 	if force || reload {
-		DebugInts("reload Abi", s.LastUpdate, latest)
+		DebugInts("abi", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}

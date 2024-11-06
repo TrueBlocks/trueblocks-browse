@@ -81,7 +81,7 @@ func (s *MonitorContainer) String() string {
 func (s *MonitorContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
 	latest, reload := s.getMonitorReload(meta)
 	if force || reload {
-		DebugInts("reload Monitor", s.LastUpdate, latest)
+		DebugInts("monitor", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}

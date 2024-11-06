@@ -46,7 +46,7 @@ func (s *StatusContainer) String() string {
 func (s *StatusContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
 	latest, reload := s.getStatusReload(meta)
 	if force || reload {
-		DebugInts("reload Status", s.LastUpdate, latest)
+		DebugInts("status", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
