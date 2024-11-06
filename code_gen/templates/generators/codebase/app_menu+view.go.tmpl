@@ -8,7 +8,7 @@ import (
 )
 
 {{range .Structures -}}
-func (a *App) {{.UiRouteView}}(cb *menu.CallbackData) {
+func (a *App) {{.UiRouteLabel}}View(cb *menu.CallbackData) {
 	{{if .IsHistory -}}
 	address := a.GetSelected()
 	a.Navigate("/{{.UiRouteLower}}", address.Hex())

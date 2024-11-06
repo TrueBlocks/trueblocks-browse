@@ -4,7 +4,7 @@ import {
   // Icons
   {{range .Structures}}{{.UiRouteLabel}}Icon,
   {{end}}// Views
-  {{range .Structures}}{{.UiRouteView}},
+  {{range .Structures}}{{.UiRouteLabel}}View,
   {{end}}} from "@views";
 
 export type Route =
@@ -33,7 +33,7 @@ export const routeItems: RouteItem[] = [
     route: expandRoute("{{if not .IsProject}}{{.UiRouteLower}}{{end}}"),
     label: "{{.UiRouteLabel}}",
     icon: {{.UiRouteLabel}}Icon,
-    component: {{.UiRouteView}},
+    component: {{.UiRouteLabel}}View,
   },
 {{end -}}
 ];

@@ -9,29 +9,11 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
-
-func (a *App) HistoryPage(first, pageSize int) *types.HistoryContainer {
-	address := a.GetSelected()
-	_, exists := a.historyCache.Load(address)
-	if !exists {
-		return &types.HistoryContainer{}
-	}
-
-	first = base.Max(0, base.Min(first, a.txCount(address)-1))
-	last := base.Min(a.txCount(address), first+pageSize)
-	history, _ := a.historyCache.Load(address)
-	history.Summarize()
-	copy := history.ShallowCopy().(*types.HistoryContainer)
-	copy.Balance = a.getBalance(address)
-	copy.Items = history.Items[first:last]
-	return copy
-}
 
 func (a *App) getHistoryCnt(address base.Address) uint64 {
 	opts := sdk.ListOptions{

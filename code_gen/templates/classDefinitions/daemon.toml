@@ -4,7 +4,7 @@
     # doc_descr = "block data as returned from the RPC (with slight enhancements)"
     doc_route = "1090-containers"
     ui_route = "1090-daemons"
-    attributes = "embedType=daemons.Daemon|noChain|noFetch"
+    attributes = "embedType=daemons.Daemon|noChain|noFetch|noPaging"
     # produced_by = "blocks"
     # contains = "transaction, withdrawal"
     cache_type = "cacheable"

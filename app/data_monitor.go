@@ -10,7 +10,6 @@ import (
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -21,17 +20,6 @@ var monitorMutex sync.Mutex
 // EXISTING_CODE
 
 var monitorLock atomic.Uint32
-
-func (a *App) MonitorPage(first, pageSize int) *types.MonitorContainer {
-	// EXISTING_CODE
-	// EXISTING_CODE
-
-	first = base.Max(0, base.Min(first, len(a.monitors.Items)-1))
-	last := base.Min(len(a.monitors.Items), first+pageSize)
-	copy, _ := a.monitors.ShallowCopy().(*types.MonitorContainer)
-	copy.Items = a.monitors.Items[first:last]
-	return copy
-}
 
 func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {

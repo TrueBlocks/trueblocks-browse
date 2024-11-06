@@ -17,14 +17,6 @@ import (
 
 var sessionLock atomic.Uint32
 
-func (a *App) SessionPage(first, pageSize int) *types.SessionContainer {
-	// EXISTING_CODE
-	// EXISTING_CODE
-
-	copy, _ := a.session.ShallowCopy().(*types.SessionContainer)
-	return copy
-}
-
 func (a *App) loadSessions(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {

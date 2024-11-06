@@ -1,4 +1,4 @@
-{{if .NeedsFetch -}}
+{{- if .NeedsFetch -}}
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 package app
@@ -8,18 +8,7 @@ package app
 
 var {{toLower .Class}}Lock atomic.Uint32
 
-func (a *App) {{.UiRoutePage}}(first, pageSize int) *types.{{.UiContainer}} {
-	// EXISTING_CODE
-	// EXISTING_CODE
-
-	first = base.Max(0, base.Min(first, len(a.{{toLowerPlural .Class}}.Items)-1))
-	last := base.Min(len(a.{{toLowerPlural .Class}}.Items), first+pageSize)
-	copy, _ := a.{{toLowerPlural .Class}}.ShallowCopy().(*types.{{.UiContainer}})
-	copy.Items = a.{{toLowerPlural .Class}}.Items[first:last]
-	return copy
-}
-
-func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) error {
+func (a *App) load{{.UiRouteLabel}}(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -31,24 +20,24 @@ func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) 
 	}
 	defer {{toLower .Class}}Lock.CompareAndSwap(1, 0)
 
-	if !a.{{toLowerPlural .Class}}.NeedsUpdate(a.force{{.Class}}()) {
+	if !a.{{.UiRouteLower}}.NeedsUpdate(a.force{{.Class}}()) {
 		return nil
 	}
 
-	opts := sdk.{{toPlural .Class}}Options{
+	opts := sdk.{{.UiRouteLabel}}Options{
 		Globals: a.getGlobals(),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
 	opts.Verbose = true
 
-	if {{toLowerPlural .Class}}, meta, err := opts.{{toPlural .Class}}List(); err != nil {
+	if {{.UiRouteLower}}, meta, err := opts.{{.UiRouteLabel}}List(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if ({{toLowerPlural .Class}} == nil) || (len({{toLowerPlural .Class}}) == 0) {
-		err = fmt.Errorf("no {{toLowerPlural .Class}} found")
+	} else if ({{.UiRouteLower}} == nil) || (len({{.UiRouteLower}}) == 0) {
+		err = fmt.Errorf("no {{.UiRouteLower}} found")
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -57,44 +46,44 @@ func (a *App) load{{toPlural .Class}}(wg *sync.WaitGroup, errorChan chan error) 
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.{{toLowerPlural .Class}} = types.New{{.UiContainer}}(opts.Chain, {{if .HasItems}}{{toLowerPlural .Class}}{{end}}{{if .HasEmbed}}&{{toLowerPlural .Class}}[0]{{end}})
+		a.{{.UiRouteLower}} = types.New{{.Class}}Container(opts.Chain, {{if .HasItems}}{{.UiRouteLower}}{{end}}{{if .HasEmbed}}&{{.UiRouteLower}}[0]{{end}})
 		// EXISTING_CODE
 		// EXISTING_CODE
 {{if .HasSorts -}}
-		if err := sdk.Sort{{toPlural .Class}}(a.{{toLowerPlural .Class}}.Items, a.{{toLowerPlural .Class}}.Sorts); err != nil {
+		if err := sdk.Sort{{.UiRouteLabel}}(a.{{.UiRouteLower}}.Items, a.{{.UiRouteLower}}.Sorts); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 {{end -}}
-		a.{{toLowerPlural .Class}}.Summarize()
-		a.emitInfoMsg("Loaded {{toLowerPlural .Class}}", "")
+		a.{{.UiRouteLower}}.Summarize()
+		a.emitInfoMsg("Loaded {{.UiRouteLower}}", "")
 	}
 
 	return nil
 }
 
 {{if .IsEditable}}func (a *App) Modify{{.Class}}(modData *ModifyData) error {
-	opts := sdk.{{toPlural .Class}}Options{
+	opts := sdk.{{.UiRouteLabel}}Options{
 		Addrs:   []string{modData.Address.Hex()},
 		Globals: a.getGlobals(),
 	}
 	opts.Globals.Decache = true
 
-	if _, _, err := opts.{{toPlural .Class}}(); err != nil {
+	if _, _, err := opts.{{.UiRouteLabel}}(); err != nil {
 		a.emitAddressErrorMsg(err, modData.Address)
 		return err
 	} else {
-		new{{toPlural .Class}} := make([]{{.ItemType}}, 0, len(a.{{toLowerPlural .Class}}.Items))
-		for _, {{toLower .Class}} := range a.{{toLowerPlural .Class}}.Items {
+		new{{.UiRouteLabel}} := make([]{{.ItemType}}, 0, len(a.{{.UiRouteLower}}.Items))
+		for _, {{toLower .Class}} := range a.{{.UiRouteLower}}.Items {
 			if {{toLower .Class}}.Address == modData.Address {
-				a.{{toLowerPlural .Class}}.NItems--
-				a.{{toLowerPlural .Class}}.NEvents -= {{toLower .Class}}.NEvents
-				a.{{toLowerPlural .Class}}.NFunctions -= {{toLower .Class}}.NFunctions
+				a.{{.UiRouteLower}}.NItems--
+				a.{{.UiRouteLower}}.NEvents -= {{toLower .Class}}.NEvents
+				a.{{.UiRouteLower}}.NFunctions -= {{toLower .Class}}.NFunctions
 				continue
 			}
-			new{{toPlural .Class}} = append(new{{toPlural .Class}}, {{toLower .Class}})
+			new{{.UiRouteLabel}} = append(new{{.UiRouteLabel}}, {{toLower .Class}})
 		}
-		a.{{toLowerPlural .Class}}.LastUpdate = time.Time{}
-		a.{{toLowerPlural .Class}}.Items = new{{toPlural .Class}}
+		a.{{.UiRouteLower}}.LastUpdate = time.Time{}
+		a.{{.UiRouteLower}}.Items = new{{.UiRouteLabel}}
 		a.emitInfoMsg("Modify{{.Class}} delete", modData.Address.Hex())
 		return nil
 	}
@@ -109,4 +98,4 @@ func (a *App) force{{.Class}}() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
-{{end}}
+{{end -}}

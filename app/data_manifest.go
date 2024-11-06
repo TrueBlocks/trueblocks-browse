@@ -9,24 +9,12 @@ import (
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
 
 var manifestLock atomic.Uint32
-
-func (a *App) ManifestPage(first, pageSize int) *types.ManifestContainer {
-	// EXISTING_CODE
-	// EXISTING_CODE
-
-	first = base.Max(0, base.Min(first, len(a.manifests.Items)-1))
-	last := base.Min(len(a.manifests.Items), first+pageSize)
-	copy, _ := a.manifests.ShallowCopy().(*types.ManifestContainer)
-	copy.Items = a.manifests.Items[first:last]
-	return copy
-}
 
 func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {

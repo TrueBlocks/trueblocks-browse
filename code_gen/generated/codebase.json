@@ -7,8 +7,7 @@
             "ui_route": "0000-project",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
-            "attributes": "itemType=types.HistoryContainer",
+            "attributes": "itemType=types.HistoryContainer|noFetch",
             "members": [
                 {
                     "name": "nMonitors",
@@ -51,18 +50,6 @@
                     "type": "uint64",
                     "description": "jim",
                     "num": 7
-                },
-                {
-                    "name": "dirty",
-                    "type": "bool",
-                    "description": "jim",
-                    "num": 8
-                },
-                {
-                    "name": "filename",
-                    "type": "string",
-                    "description": "jim",
-                    "num": 9
                 }
             ]
         },
@@ -345,46 +332,7 @@
             "ui_route": "1080-settings",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
-            "attributes": "itemType=",
-            "members": [
-                {
-                    "name": "bloomSz",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 1
-                },
-                {
-                    "name": "chunkSz",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 2
-                },
-                {
-                    "name": "nAddrs",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 3
-                },
-                {
-                    "name": "nApps",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 4
-                },
-                {
-                    "name": "nBlocks",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 5
-                },
-                {
-                    "name": "nBlooms",
-                    "type": "uint64",
-                    "description": "jim",
-                    "num": 6
-                }
-            ]
+            "attributes": "itemType=|inputType=types.SettingsProp|noType|noFetch|noPaging"
         },
         {
             "class": "Daemon",
@@ -392,7 +340,7 @@
             "ui_route": "1090-daemons",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=daemons.Daemon|noChain"
+            "attributes": "embedType=daemons.Daemon|noChain|noFetch|noPaging"
         },
         {
             "class": "Session",
@@ -400,7 +348,7 @@
             "ui_route": "1100-session",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=coreTypes.Session|noChain|initChain"
+            "attributes": "embedType=coreTypes.Session|noChain|initChain|noFetch|noPaging"
         },
         {
             "class": "Config",
@@ -408,7 +356,7 @@
             "ui_route": "1110-config",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=configTypes.Config",
+            "attributes": "embedType=configTypes.Config|noFetch|noPaging",
             "members": [
                 {
                     "name": "nChains",
@@ -423,7 +371,8 @@
             "doc_route": "1120-containers",
             "ui_route": "1120-wizard",
             "cache_by": "range",
-            "cache_type": "cacheable"
+            "cache_type": "cacheable",
+            "attributes": "noFetch|noPaging"
         }
     ],
     "baseTypes": [

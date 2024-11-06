@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -20,17 +19,6 @@ var abisChain = "mainnet"
 // EXISTING_CODE
 
 var abiLock atomic.Uint32
-
-func (a *App) AbiPage(first, pageSize int) *types.AbiContainer {
-	// EXISTING_CODE
-	// EXISTING_CODE
-
-	first = base.Max(0, base.Min(first, len(a.abis.Items)-1))
-	last := base.Min(len(a.abis.Items), first+pageSize)
-	copy, _ := a.abis.ShallowCopy().(*types.AbiContainer)
-	copy.Items = a.abis.Items[first:last]
-	return copy
-}
 
 func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {

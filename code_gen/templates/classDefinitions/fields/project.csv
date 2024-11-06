@@ -6,5 +6,3 @@ nIndexes    ,uint64 ,           ,           ,         ,         ,jim
 nManifests  ,uint64 ,           ,           ,         ,         ,jim
 nCaches     ,uint64 ,           ,           ,         ,         ,jim
 historySize ,uint64 ,           ,           ,         ,         ,jim
-dirty       ,bool   ,           ,           ,         ,         ,jim
-filename    ,string ,           ,           ,         ,         ,jim

@@ -43,9 +43,6 @@ func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContai
 }
 
 func (s *ProjectContainer) String() string {
-	if s.Items == nil {
-		s.Items = []HistoryContainer{}
-	}
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
@@ -61,7 +58,7 @@ func (s *ProjectContainer) NeedsUpdate(force bool) bool {
 }
 
 func (s *ProjectContainer) ShallowCopy() Containerer {
-	return &ProjectContainer{
+	ret := &ProjectContainer{
 		HistorySize: s.HistorySize,
 		NAbis:       s.NAbis,
 		NCaches:     s.NCaches,
@@ -75,6 +72,7 @@ func (s *ProjectContainer) ShallowCopy() Containerer {
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func (s *ProjectContainer) Summarize() {
@@ -100,9 +98,9 @@ func (s *ProjectContainer) getProjectReload() (ret time.Time, reload bool) {
 	return
 }
 
-type EveryAddressFn func(item *HistoryContainer, data any) bool
+type EveryHistoryContainerFn func(item *HistoryContainer, data any) bool
 
-func (s *ProjectContainer) ForEveryHistory(process EveryAddressFn, data any) bool {
+func (s *ProjectContainer) ForEveryHistoryContainer(process EveryHistoryContainerFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false

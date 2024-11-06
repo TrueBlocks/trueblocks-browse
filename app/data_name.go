@@ -25,19 +25,6 @@ var namesChain = "mainnet"
 
 var nameLock atomic.Uint32
 
-func (a *App) NamePage(first, pageSize int) *types.NameContainer {
-	// EXISTING_CODE
-	nameMutex.Lock()
-	defer nameMutex.Unlock()
-	// EXISTING_CODE
-
-	first = base.Max(0, base.Min(first, len(a.names.Items)-1))
-	last := base.Min(len(a.names.Items), first+pageSize)
-	copy, _ := a.names.ShallowCopy().(*types.NameContainer)
-	copy.Items = a.names.Items[first:last]
-	return copy
-}
-
 func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {

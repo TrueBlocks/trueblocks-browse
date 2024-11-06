@@ -11,10 +11,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
-func (a *App) SettingsPage(first, pageSize int) *types.SettingsContainer {
-	return &a.settings
-}
-
 var settingsLock atomic.Uint32
 
 func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {

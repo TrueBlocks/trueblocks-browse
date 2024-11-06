@@ -1,3 +1,4 @@
+{{if .NeedsType -}}
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 package types
@@ -5,7 +6,7 @@ package types
 // EXISTING_CODE
 // EXISTING_CODE
 
-type {{.UiContainer}} struct {
+type {{.Class}}Container struct {
 {{range .Members}}{{if .IsSimpField}}{{.GoName}} {{.GoType}} {{.Tag}}
 {{end}}{{end}}{{if .HasEmbed}}{{.EmbedType}} `json:",inline"`
 {{end}}{{if .HasItems}}	Items []{{.ItemType}} `json:"items"`
@@ -17,8 +18,8 @@ type {{.UiContainer}} struct {
 	// EXISTING_CODE
 }
 
-func New{{.UiContainer}}(chain string{{if .HasItems}}, itemsIn []{{.InputType}}{{end}}{{if .HasEmbed}}, {{toLower .EmbedName}} *{{.EmbedType}}{{end}}{{if .HasOther}}, {{toLower .OtherName}} {{.OtherType}}{{end}}) {{.UiContainer}} {
-	ret := {{.UiContainer}}{
+func New{{.Class}}Container(chain string{{if .HasItems}}, itemsIn []{{.InputType}}{{end}}{{if .HasEmbed}}, {{toLower .EmbedName}} *{{.EmbedType}}{{end}}{{if .HasOther}}, {{toLower .OtherName}} {{.OtherType}}{{end}}) {{.Class}}Container {
+	ret := {{.Class}}Container{
 	{{if .HasItems}}Items: {{if eq .ItemType .InputType}}itemsIn,
 NItems: uint64(len(itemsIn)){{else}}make([]coreTypes.ChunkRecord, 0, len(itemsIn)){{end}},
 {{end}}{{if .HasEmbed}}{{toProper .EmbedName}}: *{{toLower .EmbedName}},
@@ -32,12 +33,12 @@ NItems: uint64(len(itemsIn)){{else}}make([]coreTypes.ChunkRecord, 0, len(itemsIn
 	return ret
 }
 
-func (s *{{.UiContainer}}) String() string {
+func (s *{{.Class}}Container) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-func (s *{{.UiContainer}}) NeedsUpdate(force bool) bool {
+func (s *{{.Class}}Container) NeedsUpdate(force bool) bool {
 	latest, reload := s.get{{.Class}}Reload()
 	if force || reload {
 		logger.InfoG("reload {{.Class}}", s.LastUpdate.Format(dateFmt), latest.Format(dateFmt))
@@ -47,8 +48,8 @@ func (s *{{.UiContainer}}) NeedsUpdate(force bool) bool {
 	return false
 }
 
-func (s *{{.UiContainer}}) ShallowCopy() Containerer {
-	ret := &{{.UiContainer}}{
+func (s *{{.Class}}Container) ShallowCopy() Containerer {
+	ret := &{{.Class}}Container{
 		{{range .Members}}{{if .IsSimpField}}{{.GoName}}: s.{{.GoName}},
 		{{end}}{{end}}{{if .HasEmbed}}{{toProper .EmbedName}}: s.{{toProper .EmbedName}}.ShallowCopy(),
 {{end}}{{if .HasItems}}NItems: s.NItems,
@@ -61,13 +62,13 @@ func (s *{{.UiContainer}}) ShallowCopy() Containerer {
 {{end}}	return ret
 }
 
-func (s *{{.UiContainer}}) Summarize() {
+func (s *{{.Class}}Container) Summarize() {
 {{if .HasItems}}	s.NItems = uint64(len(s.Items))
 {{end}}	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func (s *{{.UiContainer}}) get{{.Class}}Reload() (ret time.Time, reload bool) {
+func (s *{{.Class}}Container) get{{.Class}}Reload() (ret time.Time, reload bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return
@@ -75,7 +76,7 @@ func (s *{{.UiContainer}}) get{{.Class}}Reload() (ret time.Time, reload bool) {
 
 {{if .HasItems}}type Every{{.ItemName}}Fn func(item *{{.ItemType}}, data any) bool
 
-func (s *{{.UiContainer}}) ForEvery{{.ItemName}}(process Every{{.ItemName}}Fn, data any) bool {
+func (s *{{.Class}}Container) ForEvery{{.ItemName}}(process Every{{.ItemName}}Fn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false
@@ -87,3 +88,4 @@ func (s *{{.UiContainer}}) ForEvery{{.ItemName}}(process Every{{.ItemName}}Fn, d
 
 // EXISTING_CODE
 // EXISTING_CODE
+{{end -}}

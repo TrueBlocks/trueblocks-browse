@@ -4,10 +4,9 @@
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "1080-containers"
 	ui_route = "1080-settings"
-	attributes = "itemType="
+	attributes = "itemType=|inputType=types.SettingsProp|noType|noFetch|noPaging"
 	# 1080 -- settings
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"
 	cache_by = "range"
-	disable_go = true

@@ -9,24 +9,12 @@ import (
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
 
 var indexLock atomic.Uint32
-
-func (a *App) IndexPage(first, pageSize int) *types.IndexContainer {
-	// EXISTING_CODE
-	// EXISTING_CODE
-
-	first = base.Max(0, base.Min(first, len(a.indexes.Items)-1))
-	last := base.Min(len(a.indexes.Items), first+pageSize)
-	copy, _ := a.indexes.ShallowCopy().(*types.IndexContainer)
-	copy.Items = a.indexes.Items[first:last]
-	return copy
-}
 
 func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {

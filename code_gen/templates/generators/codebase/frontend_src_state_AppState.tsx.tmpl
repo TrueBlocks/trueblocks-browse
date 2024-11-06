@@ -2,7 +2,7 @@
 // of ExistingCode markers (if any).
 import { useState, useEffect, useContext, useCallback, createContext, ReactNode } from "react";
 import {
-{{range .Structures}}  {{.UiRoutePage}},
+{{range .Structures}}  {{.Class}}Page,
 {{end}}  SetChain,
   GetAppInfo,
 } from "@gocode/app/App";
@@ -10,7 +10,7 @@ import { app, base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
 
 interface AppStateProps {
-{{range .Structures}}  {{.UiRouteLower}}: types.{{.UiContainer}};
+{{range .Structures}}  {{.UiRouteLower}}: types.{{.Class}}Container;
   fetch{{.UiRouteLabel}}: (currentItem: number, itemsPerPage: number) => void;
 
 {{end}}  address: base.Address;
@@ -22,7 +22,6 @@ interface AppStateProps {
   isConfigured: boolean;
   wizardState: types.WizState;
   setHistory: React.Dispatch<React.SetStateAction<types.HistoryContainer>>;
-  selectChain: (newChain: string) => void;
   setMeta: (meta: types.MetaData) => void;
   setWizardState: (state: types.WizState) => void;
 }
@@ -30,7 +29,7 @@ interface AppStateProps {
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
 export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => {
-{{range .Structures}}  const [{{.UiRouteLower}}, set{{.UiRouteLabel}}] = useState<types.{{.UiContainer}}>({} as types.{{.UiContainer}});
+{{range .Structures}}  const [{{.UiRouteLower}}, set{{.UiRouteLabel}}] = useState<types.{{.Class}}Container>({} as types.{{.Class}}Container);
 {{end}}
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
 
@@ -41,7 +40,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
 
 {{range .Structures}}    const fetch{{.UiRouteLabel}} = useCallback((currentItem: number, itemsPerPage: number) => {
-    {{.UiRoutePage}}(currentItem, itemsPerPage).then((item: types.{{.UiContainer}}) => {
+    {{.Class}}Page(currentItem, itemsPerPage).then((item: types.{{.Class}}Container) => {
       if (item) {
         set{{.UiRouteLabel}}(item);
       }
@@ -57,15 +56,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       setIsConfigured(info.isConfigured);
       setInfo(info);
     });
-  };
-
-  const selectChain = (newChain: string) => {
-    setChain(newChain);
-    SetChain(newChain, address) // disables refresh
-      .then(() => {})
-      .catch((error) => {
-        console.error("Error setting chain:", error);
-      });
   };
 
   useEffect(() => {
@@ -104,7 +94,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     wizardState,
     setHistory,
     setAddress,
-    selectChain,
     setMeta,
     setWizardState,
   };
