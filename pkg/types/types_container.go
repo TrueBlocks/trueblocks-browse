@@ -17,8 +17,24 @@ type Containerer interface {
 type Containerers []Containerer
 
 func DebugInts(label string, lastUpdate, latest int64) {
-	now := time.Now().Unix()
-	logger.InfoW(label, "lastUpdate", now-lastUpdate, "latest", now-latest)
+	switch label {
+	case "abi":
+	case "config":
+	case "daemon":
+	case "history":
+	case "index":
+	case "manifest":
+	case "monitor":
+	case "name":
+	case "project":
+	case "session":
+	case "status":
+	case "wizard":
+		now := time.Now().Unix()
+		logger.InfoW(label, "lastUpdate", now-lastUpdate, "latest", now-latest)
+	default:
+		// do nothing
+	}
 }
 
 // var dateFmt string = "15:04:05"
