@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { Button, Text } from "@mantine/core";
 import { StepWizard, GetDeferredErrors } from "@gocode/app/App";
-import { types } from "@gocode/models";
+import { app, types } from "@gocode/models";
 import { useAppState } from "@state";
 import classes from "./WizardView.module.css";
 
 export const WizardView = () => {
   const { isConfigured, wizardState, setWizardState } = useAppState();
   const [cn, setCn] = useState(classes.wizOkay);
-  const [errors, setErrors] = useState<string[]>([]);
+  const [errors, setErrors] = useState<app.WizError[]>([]);
 
   const stepWizard = (step: types.WizStep) => {
     StepWizard(step).then((state) => {
@@ -32,10 +32,8 @@ export const WizardView = () => {
       <Text className={cn}>{`isConfigured: ${isConfigured}`}</Text>
       {errors?.length > 0 && (
         <div>
-          {errors.map((error, index) => (
-            <div key={index}>
-              {error}
-            </div>
+          {errors.map((wizErr, index) => (
+            <div key={index}>{`n: ${wizErr.count} err: ${wizErr.error}`}</div>
           ))}
         </div>
       )}

@@ -10,7 +10,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -70,61 +69,61 @@ func NewApp() *App {
 
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
-
-	// We do various setups prior to showing the window. Improves interactivity.
-	// But...something may fail, so we need to keep track of errors.
-	var err error
-	if err = a.session.Load(); err != nil {
-		a.deferredErrors = append(a.deferredErrors, err)
-	}
-
-	// Load the trueBlocks.toml file
-	if err = a.config.Load(); err != nil {
-		a.deferredErrors = append(a.deferredErrors, err)
-	}
-	if a.session.LastChain, err = a.config.IsValidChain(a.session.LastChain); err != nil {
-		a.deferredErrors = append(a.deferredErrors, err)
-	}
-
-	// We always need names, so let's load it before showing the window
-	if a.namesMap, err = names.LoadNamesMap(namesChain, coreTypes.All, nil); err == nil {
-		wErr := fmt.Errorf("%w: %v", ErrLoadingNames, err)
-		a.deferredErrors = append(a.deferredErrors, wErr)
-	}
 }
 
 // DomReady is called by Wails when the app is ready to go. Adjust the window size and show it.
 func (a *App) DomReady(ctx context.Context) {
-	var err error
-
-	// We're ready to open the window, but first we need to make sure it will show...
-	if a.session.Window, err = a.session.CleanWindowSize(a.ctx); err != nil {
-		wErr := fmt.Errorf("%w: %v", ErrWindowSize, err)
-		a.deferredErrors = append(a.deferredErrors, wErr)
+	initSession := func() {
+		if err := a.session.Load(); err != nil {
+			a.deferredErrors = append(a.deferredErrors, err)
+		} else {
+			a.session.Window.Title = "Browse by TrueBlocks"
+			logger.InfoBW("Loaded session:", len(a.deferredErrors), "errors")
+		}
 	}
-	// DO NOT COLLAPSE - A VALID WINDOW IS RETURNED EVEN ON ERROR
-	runtime.WindowSetPosition(a.ctx, a.session.Window.X, a.session.Window.Y)
-	runtime.WindowSetSize(a.ctx, a.session.Window.Width, a.session.Window.Height)
+	initSession()
+	_ = a.initialize()
+
+	prepareWindow := func() { // window size and placement depends on session file
+		var err error
+		if a.session.Window, err = a.session.CleanWindowSize(a.ctx); err != nil {
+			wErr := fmt.Errorf("%w: %v", ErrWindowSize, err)
+			a.deferredErrors = append(a.deferredErrors, wErr)
+		} else {
+			logger.InfoBW("Window size set...")
+		}
+		runtime.WindowSetPosition(a.ctx, a.session.Window.X, a.session.Window.Y)
+		runtime.WindowSetSize(a.ctx, a.session.Window.Width, a.session.Window.Height)
+	}
+	prepareWindow()
+
+	// A properly sized window is always ready to show even if there were errors...
 	runtime.WindowShow(a.ctx)
-	if err != nil {
-		a.deferredErrors = append(a.deferredErrors, err)
-	}
 
-	// We now have a window, so we can finally show any accumulated errors
-	for _, err := range a.deferredErrors {
-		a.emitErrorMsg(err, nil)
-	}
+	// Now that the window is opened, show any error (and if there are any, enter wizard mode).
+	if len(a.deferredErrors) > 0 {
+		// We now have a window, so we can finally show any accumulated errors
+		for _, err := range a.deferredErrors {
+			a.emitErrorMsg(err, nil)
+		}
+		if a.getWizardState() != coreTypes.Welcome {
+			a.SetWizardState(coreTypes.Error)
+		}
+		logger.Info("There were errors during initialization...")
 
-	fn := a.getFullPath()
-	if file.FileExists(fn) {
-		a.readFile(fn)
 	} else {
-		a.newFile()
+		// We're initialized, let's open the last opened file (or a new file)...
+		fn := a.getFullPath()
+		if file.FileExists(fn) {
+			a.readFile(fn)
+		} else {
+			a.newFile()
+		}
+
+		// freshen the data once...daemons will take over from here...
+		go a.Freshen()
+		logger.Info("Fininished initializing...")
 	}
-
-	go a.Freshen()
-
-	logger.Info("Fininished loading...")
 }
 
 // Shutdown is called by Wails when the app is closed

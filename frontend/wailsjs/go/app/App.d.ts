@@ -48,7 +48,7 @@ export function GetContext():Promise<context.Context>;
 
 export function GetDaemon(arg1:string):Promise<string>;
 
-export function GetDeferredErrors():Promise<Array<string>>;
+export function GetDeferredErrors():Promise<Array<app.WizError>>;
 
 export function GetEnv(arg1:string):Promise<string>;
 
