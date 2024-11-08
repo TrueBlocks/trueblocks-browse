@@ -1,18 +1,23 @@
 import { useEffect, useState, useCallback } from "react";
 import { Select } from "@mantine/core";
-import { GetChains, Logger, SetChain } from "@gocode/app/App";
+import { GetChains, SetChain } from "@gocode/app/App";
 import { useAppState } from "../../state";
 
 export const ChainSelector = () => {
   const { config } = useAppState();
   const [chain, setChain] = useState<string>("mainnet");
-  const [chainList, setChainList] = useState<string[]>([]);
+  const [chainList, setChainList] = useState<string[]>(["mainnet"]);
 
   const selectChain = useCallback((newChain: string) => {
-    Logger([`selectChain: ${newChain}`]).then(() => {});
     setChain(newChain);
     SetChain(newChain).then(() => {});
   }, []);
+
+  const handleChange = (value: string | null) => {
+    if (value) {
+      selectChain(value);
+    }
+  };
 
   useEffect(() => {
     GetChains().then((chains) => {
@@ -22,17 +27,9 @@ export const ChainSelector = () => {
 
   useEffect(() => {
     if (!chainList.includes(chain)) {
-      Logger([`Selected chain "${chain}" not found. Switching to "${chainList[0]}"`]).then(() => {});
-      selectChain(chainList[0]);
+      selectChain("mainnet");
     }
   }, [chain, chainList, selectChain]);
-
-  const handleChange = (value: string | null) => {
-    if (value) {
-      Logger([`handleChange-Selected chain: ${value}`]).then(() => {});
-      selectChain(value);
-    }
-  };
 
   return (
     <div>

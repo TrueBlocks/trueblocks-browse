@@ -62,8 +62,12 @@ func (a *App) getChain() string {
 
 func (a *App) GetChains() []string {
 	ret := []string{}
-	for _, chain := range a.GetConfig().Chains {
-		ret = append(ret, chain.Chain)
+	if len(a.GetConfig().Chains == 0 {
+		ret = append(ret, "mainnet")
+	} else {
+		for _, chain := range a.GetConfig().Chains {
+			ret = append(ret, chain.Chain)
+		}
 	}
 	sort.Strings(ret)
 	return ret
