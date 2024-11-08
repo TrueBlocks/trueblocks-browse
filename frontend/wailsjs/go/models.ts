@@ -499,12 +499,6 @@ export namespace sdk {
 
 export namespace types {
 	
-	export enum WizStep {
-	    RESET = "Reset",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
-	}
 	export enum WizState {
 	    WELCOME = "welcome",
 	    TOMLOKAY = "tomlOkay",
@@ -513,6 +507,12 @@ export namespace types {
 	    INDEXOKAY = "indexOkay",
 	    ERROR = "error",
 	    OKAY = "okay",
+	}
+	export enum WizStep {
+	    RESET = "Reset",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
 	}
 	export class Parameter {
 	    components?: Parameter[];
