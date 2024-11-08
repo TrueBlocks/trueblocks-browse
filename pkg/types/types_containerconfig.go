@@ -99,14 +99,13 @@ func (s *ConfigContainer) Load(meta *coreTypes.MetaData) error {
 	}
 
 	fn := filepath.Join(path, "trueBlocks.toml")
-	if !file.FileExists(path) {
-		return ErrNoConfigFolder
+	if !file.FileExists(fn) {
+		return ErrNoConfigFile
 	}
 
 	if err := coreConfig.ReadToml(fn, &s.Config); err != nil {
-		return fmt.Errorf("%w: %v", ErrNoConfigFile, err)
+		return fmt.Errorf("%w: %v", ErrCantReadToml, err)
 	}
-	s.NeedsUpdate(meta, true) // update the last update time
 
 	return nil
 }
