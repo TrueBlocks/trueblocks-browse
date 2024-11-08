@@ -3,9 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
-	"os"
 	"sync"
-	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -92,14 +90,6 @@ func (a *App) Startup(ctx context.Context) {
 	if a.namesMap, err = names.LoadNamesMap(namesChain, coreTypes.All, nil); err == nil {
 		wErr := fmt.Errorf("%w: %v", ErrLoadingNames, err)
 		a.deferredErrors = append(a.deferredErrors, wErr)
-	}
-
-	freshenRate := time.Duration(3000)
-	if os.Getenv("TB_FRESHEN_RATE") != "" {
-		rate := base.MustParseInt64(os.Getenv("TB_FRESHEN_RATE"))
-		if rate > 0 {
-			freshenRate = time.Duration(rate)
-		}
 	}
 }
 

@@ -62,7 +62,7 @@ func (a *App) getChain() string {
 
 func (a *App) GetChains() []string {
 	ret := []string{}
-	if len(a.GetConfig().Chains == 0 {
+	if len(a.GetConfig().Chains) == 0 {
 		ret = append(ret, "mainnet")
 	} else {
 		for _, chain := range a.GetConfig().Chains {

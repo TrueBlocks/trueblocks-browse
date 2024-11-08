@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { Button } from "@mantine/core";
-import { Text } from "@mantine/core";
-import { StepWizard } from "@gocode/app/App";
+import { Button, Text } from "@mantine/core";
+import { StepWizard, GetDeferredErrors } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState } from "@state";
 import classes from "./WizardView.module.css";
@@ -9,6 +8,8 @@ import classes from "./WizardView.module.css";
 export const WizardView = () => {
   const { isConfigured, wizardState, setWizardState } = useAppState();
   const [cn, setCn] = useState(classes.wizOkay);
+  const [errors, setErrors] = useState<string[]>([]);
+
   const stepWizard = (step: types.WizStep) => {
     StepWizard(step).then((state) => {
       setWizardState(state);
@@ -19,10 +20,25 @@ export const WizardView = () => {
     setCn(wizardState === types.WizState.ERROR ? classes.wizError : classes.wizOkay);
   }, [wizardState]);
 
+  useEffect(() => {
+    GetDeferredErrors().then((errorList) => {
+      setErrors(errorList);
+    });
+  }, [wizardState]);
+
   return (
     <div>
       <Text className={cn}>{`wizardState: ${wizardState}`}</Text>
       <Text className={cn}>{`isConfigured: ${isConfigured}`}</Text>
+      {errors?.length > 0 && (
+        <div>
+          {errors.map((error, index) => (
+            <div key={index}>
+              {error}
+            </div>
+          ))}
+        </div>
+      )}
       <ResetWizard stepWizard={stepWizard} />
       <BumpWizard stepWizard={stepWizard} back />
       <BumpWizard stepWizard={stepWizard} />

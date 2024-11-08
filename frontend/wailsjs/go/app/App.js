@@ -82,6 +82,10 @@ export function GetDaemon(arg1) {
   return window['go']['app']['App']['GetDaemon'](arg1);
 }
 
+export function GetDeferredErrors() {
+  return window['go']['app']['App']['GetDeferredErrors']();
+}
+
 export function GetEnv(arg1) {
   return window['go']['app']['App']['GetEnv'](arg1);
 }

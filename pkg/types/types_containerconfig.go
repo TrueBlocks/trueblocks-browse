@@ -31,7 +31,7 @@ func NewConfigContainer(chain string, config *configTypes.Config) ConfigContaine
 		Config: *config,
 		Chain:  chain,
 	}
-	ret.LastUpdate, _ = ret.getConfigReload()
+	ret.LastUpdate, _ = ret.getConfigReload(nil)
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
