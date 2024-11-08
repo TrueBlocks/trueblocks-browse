@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"sync"
@@ -69,9 +68,6 @@ func NewApp() *App {
 
 	return a
 }
-
-var ErrLoadingNames = errors.New("error loading names")
-var ErrWindowSize = errors.New("error fixing window size")
 
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx

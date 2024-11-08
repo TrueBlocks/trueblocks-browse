@@ -1,16 +1,9 @@
 package app
 
 import (
-	"errors"
-
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
-
-var ErrSavingProject = errors.New("error saving project file")
-var ErrOpeningProject = errors.New("error opening file")
-var ErrLoadingProject = errors.New("error loading file")
-var ErrProjectNotSaved = errors.New("project not saved")
 
 func (a *App) FileNew(cb *menu.CallbackData) {
 	if ok := a.shouldSaveDialog(); !ok {

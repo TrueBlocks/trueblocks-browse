@@ -92,8 +92,11 @@ func (s *ConfigContainer) getConfigReload(meta *coreTypes.MetaData) (ret int64, 
 }
 
 // EXISTING_CODE
-var ErrNoConfigFolder = errors.New("core config folder not found")
-var ErrNoConfigFile = errors.New("trueBlocks.toml file not found")
+var (
+	ErrNoConfigFolder     = errors.New("core config folder not found")
+	ErrNoConfigFile       = errors.New("trueBlocks.toml file not found")
+	ErrChainNotConfigured = errors.New("chain not configured")
+)
 
 func (s *ConfigContainer) Load(meta *coreTypes.MetaData) error {
 	path := coreConfig.PathToRootConfig()
@@ -113,8 +116,6 @@ func (s *ConfigContainer) Load(meta *coreTypes.MetaData) error {
 
 	return nil
 }
-
-var ErrChainNotConfigured = errors.New("chain not configured")
 
 func (s *ConfigContainer) IsValidChain(chain string) (string, error) {
 	for _, ch := range s.Chains {
