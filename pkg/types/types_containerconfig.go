@@ -5,7 +5,6 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"path/filepath"
 
@@ -32,7 +31,7 @@ func NewConfigContainer(chain string, config *configTypes.Config) ConfigContaine
 		Config: *config,
 		Chain:  chain,
 	}
-	ret.LastUpdate, _ = ret.getConfigReload(nil)
+	ret.LastUpdate, _ = ret.getConfigReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -92,11 +91,6 @@ func (s *ConfigContainer) getConfigReload(meta *coreTypes.MetaData) (ret int64, 
 }
 
 // EXISTING_CODE
-var (
-	ErrNoConfigFolder     = errors.New("core config folder not found")
-	ErrNoConfigFile       = errors.New("trueBlocks.toml file not found")
-	ErrChainNotConfigured = errors.New("chain not configured")
-)
 
 func (s *ConfigContainer) Load(meta *coreTypes.MetaData) error {
 	path := coreConfig.PathToRootConfig()
