@@ -46,11 +46,6 @@ type App struct {
 	scraperController *daemons.DaemonScraper
 	freshenController *daemons.DaemonFreshen
 	ipfsController    *daemons.DaemonIpfs
-
-	// During initialization, we do things that may cause errors, but
-	// we have not yet opened the window, so we defer them until we can
-	// decide what to do.
-	deferredErrors []error
 }
 
 func NewApp() *App {
@@ -62,7 +57,6 @@ func NewApp() *App {
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}
 	a.session.LastSub = make(map[string]string)
-	a.deferredErrors = make([]error, 0)
 
 	return a
 }
@@ -75,10 +69,10 @@ func (a *App) Startup(ctx context.Context) {
 func (a *App) DomReady(ctx context.Context) {
 	initSession := func() {
 		if err := a.session.Load(); err != nil {
-			a.deferredErrors = append(a.deferredErrors, err)
+			a.addDeferredError(err)
 		} else {
 			a.session.Window.Title = "Browse by TrueBlocks"
-			logger.InfoBW("Loaded session:", len(a.deferredErrors), "errors")
+			logger.InfoBW("Loaded session:", a.cntDeferredErrors(), "errors")
 		}
 	}
 	initSession()
@@ -88,7 +82,7 @@ func (a *App) DomReady(ctx context.Context) {
 		var err error
 		if a.session.Window, err = a.session.CleanWindowSize(a.ctx); err != nil {
 			wErr := fmt.Errorf("%w: %v", ErrWindowSize, err)
-			a.deferredErrors = append(a.deferredErrors, wErr)
+			a.addDeferredError(wErr)
 		} else {
 			logger.InfoBW("Window size set...")
 		}
@@ -100,12 +94,12 @@ func (a *App) DomReady(ctx context.Context) {
 	// A properly sized window is always ready to show even if there were errors...
 	runtime.WindowShow(a.ctx)
 
+	a.addDeferredError(fmt.Errorf("error for testing purposes"))
+
 	// Now that the window is opened, show any error (and if there are any, enter wizard mode).
-	if len(a.deferredErrors) > 0 {
+	if a.cntDeferredErrors() > 0 {
 		// We now have a window, so we can finally show any accumulated errors
-		for _, err := range a.deferredErrors {
-			a.emitErrorMsg(err, nil)
-		}
+		a.emitDeferredErrors()
 		if a.getWizardState() != coreTypes.Welcome {
 			a.SetWizardState(coreTypes.Error)
 		}

@@ -15,6 +15,10 @@ type WizardContainer struct {
 	Chain      string `json:"chain"`
 	LastUpdate int64  `json:"lastUpdate"`
 	// EXISTING_CODE
+	// During initialization, we do things that may cause errors, but
+	// we have not yet opened the window, so we defer them until we can
+	// decide what to do.
+	DeferredErrors []error
 	// EXISTING_CODE
 }
 
@@ -24,6 +28,7 @@ func NewWizardContainer(chain string) WizardContainer {
 	}
 	ret.LastUpdate, _ = ret.getWizardReload(nil)
 	// EXISTING_CODE
+	ret.DeferredErrors = make([]error, 0)
 	// EXISTING_CODE
 	return ret
 }
@@ -66,4 +71,9 @@ func (s *WizardContainer) getWizardReload(meta *coreTypes.MetaData) (ret int64, 
 }
 
 // EXISTING_CODE
+type WizardError struct {
+	Count int    `json:"count"`
+	Error string `json:"error"`
+}
+
 // EXISTING_CODE

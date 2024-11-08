@@ -8,7 +8,7 @@ import classes from "./WizardView.module.css";
 export const WizardView = () => {
   const { isConfigured, wizardState, setWizardState } = useAppState();
   const [cn, setCn] = useState(classes.wizOkay);
-  const [errors, setErrors] = useState<app.WizError[]>([]);
+  const [errors, setErrors] = useState<types.WizardError[]>([]);
 
   const stepWizard = (step: types.WizStep) => {
     StepWizard(step).then((state) => {

@@ -25,6 +25,12 @@ func (a *App) emitErrorMsg(err1, err2 error) {
 	}
 }
 
+func (a *App) emitDeferredErrors() {
+	for _, err := range a.wizard.DeferredErrors {
+		a.emitErrorMsg(err, nil)
+	}
+}
+
 func (a *App) emitAddressErrorMsg(err error, address base.Address) {
 	messages.EmitMessage(a.ctx, messages.Error, &messages.MessageMsg{
 		String1: err.Error(),

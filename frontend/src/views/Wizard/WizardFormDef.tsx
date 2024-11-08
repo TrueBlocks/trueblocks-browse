@@ -3,7 +3,7 @@ import { Table } from "@tanstack/react-table";
 import { FieldGroup } from "@components";
 import { app, types } from "@gocode/models";
 
-export const AbisFormTable = (table: Table<app.WizError>): FieldGroup<types.WizardContainer>[] => {
+export const AbisFormTable = (table: Table<types.WizardError>): FieldGroup<types.WizardContainer>[] => {
   return [
     // {
     //   label: "Abi Data",

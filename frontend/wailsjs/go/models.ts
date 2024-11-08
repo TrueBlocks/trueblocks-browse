@@ -74,20 +74,6 @@ export namespace app {
 		    return a;
 		}
 	}
-	export class WizError {
-	    count: number;
-	    error: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new WizError(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.count = source["count"];
-	        this.error = source["error"];
-	    }
-	}
 
 }
 
@@ -2262,6 +2248,20 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.chain = source["chain"];
 	        this.lastUpdate = source["lastUpdate"];
+	    }
+	}
+	export class WizardError {
+	    count: number;
+	    error: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new WizardError(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.count = source["count"];
+	        this.error = source["error"];
 	    }
 	}
 
