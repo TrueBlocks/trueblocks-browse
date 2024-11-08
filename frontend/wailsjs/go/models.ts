@@ -431,7 +431,7 @@ export namespace messages {
 	    TOGGLEACCORDION = "ToggleAccordion",
 	    DAEMON = "Daemon",
 	    NAVIGATE = "Navigate",
-	    WIZARD = "Wizard",
+	    REFRESH = "Refresh",
 	}
 	export class MessageMsg {
 	    name: string;

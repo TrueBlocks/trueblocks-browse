@@ -26,7 +26,7 @@ const (
 	Daemon   Message = "Daemon"
 	Navigate Message = "Navigate"
 
-	Wizard Message = "Wizard"
+	Refresh Message = "Refresh"
 )
 
 var AllMessages = []struct {
@@ -48,7 +48,7 @@ var AllMessages = []struct {
 	{Daemon, "DAEMON"},
 	{Navigate, "NAVIGATE"},
 
-	{Wizard, "WIZARD"},
+	{Refresh, "REFRESH"},
 }
 
 func EmitMessage(ctx context.Context, msg Message, data *MessageMsg) {
