@@ -101,9 +101,6 @@ func (a *App) Startup(ctx context.Context) {
 			freshenRate = time.Duration(rate)
 		}
 	}
-	a.freshenController = daemons.NewFreshen(a, "freshen", freshenRate, a.IsShowing("freshen"))
-	a.scraperController = daemons.NewScraper(a, "scraper", 7000, a.IsShowing("scraper"))
-	a.ipfsController = daemons.NewIpfs(a, "ipfs", 10000, a.IsShowing("ipfs"))
 }
 
 // DomReady is called by Wails when the app is ready to go. Adjust the window size and show it.
@@ -136,10 +133,6 @@ func (a *App) DomReady(ctx context.Context) {
 	}
 
 	go a.Freshen()
-
-	go a.freshenController.Run()
-	go a.scraperController.Run()
-	go a.ipfsController.Run()
 
 	logger.Info("Fininished loading...")
 }
