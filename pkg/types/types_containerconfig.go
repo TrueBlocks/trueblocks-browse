@@ -92,7 +92,7 @@ func (s *ConfigContainer) getConfigReload(meta *coreTypes.MetaData) (ret int64, 
 
 // EXISTING_CODE
 
-func (s *ConfigContainer) Load(meta *coreTypes.MetaData) error {
+func (s *ConfigContainer) Load() error {
 	path := coreConfig.PathToRootConfig()
 	if !file.FolderExists(path) {
 		return ErrNoConfigFolder

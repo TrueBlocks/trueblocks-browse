@@ -63,6 +63,7 @@ func NewApp() *App {
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}
 	a.session.LastSub = make(map[string]string)
+	a.deferredErrors = make([]error, 0)
 
 	return a
 }
@@ -78,8 +79,7 @@ func (a *App) Startup(ctx context.Context) {
 	}
 
 	// Load the trueBlocks.toml file
-	meta := sdk.MustGetMetaData(a.session.LastChain)
-	if err = a.config.Load(meta); err != nil {
+	if err = a.config.Load(); err != nil {
 		a.deferredErrors = append(a.deferredErrors, err)
 	}
 	if a.session.LastChain, err = a.config.IsValidChain(a.session.LastChain); err != nil {

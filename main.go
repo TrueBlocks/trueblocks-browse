@@ -22,9 +22,9 @@ var assets embed.FS
 func main() {
 	a := app.NewApp()
 	opts := options.App{
-		Title:            a.GetSession().Window.Title,
-		Width:            a.GetSession().Window.Width,
-		Height:           a.GetSession().Window.Height,
+		Title:            "Browse by TrueBlocks",
+		Width:            1024,
+		Height:           768,
 		OnStartup:        a.Startup,
 		OnDomReady:       a.DomReady,
 		OnShutdown:       a.Shutdown,

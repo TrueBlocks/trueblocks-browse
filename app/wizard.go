@@ -25,3 +25,7 @@ func (a *App) StepWizard(step coreTypes.WizStep) coreTypes.WizState {
 	a.saveSession()
 	return a.getWizardState()
 }
+
+func (a *App) SetWizardState(state coreTypes.WizState) {
+	a.session.Wizard.State = state
+}

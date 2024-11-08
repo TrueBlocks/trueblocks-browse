@@ -3,7 +3,7 @@
         "dev": "wails dev --debounce 5000",
         "lint": "cd frontend && yarn lint",
         "edit": "code ~/Library/Application\\ Support/TrueBlocks/browse/session.json",
-        "clean": "rm -f ~/Libarary/TrueBlocks\\ Suppoer/TrueBlocks/browse/session.json",
+        "clean": "rm -f ~/Library/Application\\ Support/TrueBlocks/browse/session.json",
         "restart": "yarn clean && yarn start",
         "start": "wails dev --debounce 5000"
     },

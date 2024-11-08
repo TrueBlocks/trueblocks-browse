@@ -19,7 +19,7 @@ func (a *App) startDaemons() {
 			}
 		}
 		if a.freshenController = daemons.NewFreshen(a, "freshen", freshenRate, a.IsShowing("freshen")); a.freshenController == nil {
-			a.emitErrorMsg(fmt.Errorf("%d: %s", ErrDaemonLoad, "freshen"), nil)
+			a.deferredErrors = append(a.deferredErrors, fmt.Errorf("%d: %s", ErrDaemonLoad, "freshen"))
 		} else {
 			go a.freshenController.Run()
 		}
