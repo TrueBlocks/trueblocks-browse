@@ -1,8 +1,9 @@
 {
     "scripts": {
+        "edit": "code ~/Library/Application\\ Support/TrueBlocks/browse/session.json",
         "dev": "wails dev --debounce 5000",
         "start": "wails dev --debounce 5000",
-	"lint": "cd frontend && yarn lint"
+        "lint": "cd frontend && yarn lint"
     },
     "name": "trueblocks-browse",
     "version": "1.0.0",
