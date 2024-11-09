@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function InputDialog({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+export function InputDialog({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [inputValue, setInputValue] = useState("");
 
   const handleSubmit = () => {

@@ -1,7 +1,7 @@
 import { Table } from "@tanstack/react-table";
 // import { DataTable, FieldGroup, PublishButton, CleanButton, AddButton } from "@components";
 import { FieldGroup } from "@components";
-import { app, types } from "@gocode/models";
+import { types } from "@gocode/models";
 
 export const AbisFormTable = (table: Table<types.WizardError>): FieldGroup<types.WizardContainer>[] => {
   return [

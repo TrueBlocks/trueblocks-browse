@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Pager, EmptyPager } from "@components";
 import { CancelAllContexts, Reload } from "@gocode/app/App";
-import { useAppState } from "@state";
 
 export type Page = {
   selected: number;

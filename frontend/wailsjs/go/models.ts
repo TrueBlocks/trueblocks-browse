@@ -498,20 +498,21 @@ export namespace sdk {
 
 export namespace types {
 	
+	export enum WizState {
+	    WELCOME = "welcome",
+	    ERROR = "error",
+	    CONFIG = "config",
+	    RPC = "rpc",
+	    BLOOMS = "blooms",
+	    INDEX = "index",
+	    FINISHED = "finished",
+	}
 	export enum WizStep {
 	    RESET = "Reset",
+	    FIRST = "First",
 	    PREVIOUS = "Previous",
 	    NEXT = "Next",
 	    FINISH = "Finish",
-	}
-	export enum WizState {
-	    WELCOME = "welcome",
-	    TOMLOKAY = "tomlOkay",
-	    RPCOKAY = "rpcOkay",
-	    BLOOMSOKAY = "bloomsOkay",
-	    INDEXOKAY = "indexOkay",
-	    ERROR = "error",
-	    OKAY = "okay",
 	}
 	export class Parameter {
 	    components?: Parameter[];
@@ -1985,18 +1986,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class Wizard {
-	    state: WizState;
-	
-	    static createFrom(source: any = {}) {
-	        return new Wizard(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.state = source["state"];
-	    }
-	}
 	export class Window {
 	    x: number;
 	    y: number;
@@ -2024,7 +2013,7 @@ export namespace types {
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
 	    window: Window;
-	    wizard: Wizard;
+	    wizard: WizState;
 	    toggles: Toggles;
 	
 	    static createFrom(source: any = {}) {
@@ -2039,7 +2028,7 @@ export namespace types {
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
 	        this.window = this.convertValues(source["window"], Window);
-	        this.wizard = this.convertValues(source["wizard"], Wizard);
+	        this.wizard = source["wizard"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	    }
 	
@@ -2068,7 +2057,7 @@ export namespace types {
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
 	    window: Window;
-	    wizard: Wizard;
+	    wizard: WizState;
 	    toggles: Toggles;
 	    lastUpdate: number;
 	
@@ -2084,7 +2073,7 @@ export namespace types {
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
 	        this.window = this.convertValues(source["window"], Window);
-	        this.wizard = this.convertValues(source["wizard"], Wizard);
+	        this.wizard = source["wizard"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	        this.lastUpdate = source["lastUpdate"];
 	    }
@@ -2227,7 +2216,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	
 	
 	
 	

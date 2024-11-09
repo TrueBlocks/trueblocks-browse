@@ -4,6 +4,10 @@ all:
 build: all
 	@open build/bin/TrueBlocks\ Browse.app/Contents/MacOs/TrueBlocks\ Browse
 
+
+lint:
+	@cd frontend && yarn lint && cd -
+
 update:
 	@go get github.com/TrueBlocks/trueblocks-sdk/v3@latest
 	@go get github.com/TrueBlocks/trueblocks-core/src/apps/chifra@latest

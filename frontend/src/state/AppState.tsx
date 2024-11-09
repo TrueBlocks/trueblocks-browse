@@ -15,7 +15,6 @@ import {
   SessionPage,
   ConfigPage,
   WizardPage,
-  SetChain,
   GetAppInfo,
 } from "@gocode/app/App";
 import { app, base, messages, types } from "@gocode/models";

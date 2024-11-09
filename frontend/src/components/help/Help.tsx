@@ -7,6 +7,7 @@ import { CloseButton } from "@components";
 import { messages } from "@gocode/models";
 import { useViewName } from "@hooks";
 import { EventsEmit } from "@runtime";
+import { useAppState } from "../../state";
 import classes from "./Help.module.css";
 
 // Glob import for markdown files as raw content
@@ -16,6 +17,7 @@ const helpFiles = import.meta.glob("/src/assets/help/*.md", { query: "?raw", imp
 >;
 
 export function Help(): JSX.Element {
+  const { wizardState } = useAppState();
   const [location] = useLocation();
   const [markdown, setMarkdown] = useState<string>("Loading...");
   const [error, setError] = useState<boolean>(false);
@@ -27,7 +29,8 @@ export function Help(): JSX.Element {
 
   useEffect(() => {
     const baseRoute = location.split("/")[1];
-    const helpFileName: string = `${baseRoute === "" ? "project" : baseRoute}.md`;
+    const helpFileName: string =
+      baseRoute === "wizard" ? `wizard-${String(wizardState)}.md` : `${baseRoute === "" ? "project" : baseRoute}.md`;
     const filePath = Object.keys(helpFiles).find((key) => key.endsWith(`/help/${helpFileName}`));
 
     const loadMarkdown = async (): Promise<void> => {
@@ -46,7 +49,7 @@ export function Help(): JSX.Element {
     };
 
     loadMarkdown();
-  }, [location]);
+  }, [location, wizardState]);
 
   return (
     <div className={classes.helpPanel}>

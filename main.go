@@ -35,7 +35,6 @@ func main() {
 			a,
 			&app.AppInfo{},
 			&messages.MessageMsg{},
-			&coreTypes.Wizard{},
 			&coreTypes.Transaction{},
 			&configTypes.Config{},
 			&editors.Name{},
