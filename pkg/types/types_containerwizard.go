@@ -11,24 +11,24 @@ import (
 // EXISTING_CODE
 
 type WizardContainer struct {
-	Chain      string `json:"chain"`
-	LastUpdate int64  `json:"lastUpdate"`
+	Items      []WizError `json:"items"`
+	NItems     uint64     `json:"nItems"`
+	Chain      string     `json:"chain"`
+	LastUpdate int64      `json:"lastUpdate"`
 	// EXISTING_CODE
-	// During initialization, we do things that may cause errors, but
-	// we have not yet opened the window, so we defer them until we can
-	// decide what to do.
-	Items []error
-	State WizState
+	State WizState `json:"state"`
 	// EXISTING_CODE
 }
 
-func NewWizardContainer(chain string) WizardContainer {
+func NewWizardContainer(chain string, wizErrs []WizError) WizardContainer {
 	ret := WizardContainer{
-		Chain: chain,
+		Items:  wizErrs,
+		NItems: uint64(len(wizErrs)),
+		Chain:  chain,
 	}
 	ret.LastUpdate, _ = ret.getWizardReload()
 	// EXISTING_CODE
-	ret.Items = make([]error, 0)
+	ret.State = WizWelcome
 	// EXISTING_CODE
 	return ret
 }
@@ -50,9 +50,11 @@ func (s *WizardContainer) NeedsUpdate(force bool) bool {
 
 func (s *WizardContainer) ShallowCopy() Containerer {
 	ret := &WizardContainer{
+		NItems:     s.NItems,
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
+		State: s.State,
 		// EXISTING_CODE
 	}
 	return ret
@@ -60,6 +62,7 @@ func (s *WizardContainer) ShallowCopy() Containerer {
 
 func (s *WizardContainer) Summarize() {
 	// EXISTING_CODE
+	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
 }
 

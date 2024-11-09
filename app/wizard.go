@@ -7,11 +7,7 @@ import (
 )
 
 func (a *App) GetWizErrs() []types.WizError {
-	var wizErrs []types.WizError
-	for i, err := range a.wizard.Items {
-		wizErrs = append(wizErrs, types.WizError{Count: i, Error: err.Error()})
-	}
-	return wizErrs
+	return a.wizard.Items
 }
 
 func (a *App) isConfigured() bool {
@@ -23,7 +19,8 @@ func (a *App) setWizardState(state types.WizState) {
 }
 
 func (a *App) addWizErr(err error) {
-	a.wizard.Items = append(a.wizard.Items, err)
+	wizError := types.WizError{Count: a.cntWizErrs(), Error: err.Error()}
+	a.wizard.Items = append(a.wizard.Items, wizError)
 }
 
 func (a *App) cntWizErrs() int {
@@ -31,8 +28,8 @@ func (a *App) cntWizErrs() int {
 }
 
 func (a *App) emitWizErrs() {
-	for _, err := range a.wizard.Items {
-		a.emitErrorMsg(err, nil)
+	for _, wizErr := range a.wizard.Items {
+		a.emitErrorMsg(wizErr.ToErr(), nil)
 	}
 }
 

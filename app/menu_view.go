@@ -3,6 +3,7 @@
 package app
 
 import (
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
@@ -58,7 +59,12 @@ func (a *App) ConfigView(cb *menu.CallbackData) {
 
 func (a *App) WizardView(cb *menu.CallbackData) {
 	if a.isConfigured() {
-		a.StepWizard(types.WizFirst)
+		a.wizard.State = types.WizWelcome
+		a.emitMsg(messages.Refresh, &messages.MessageMsg{
+			State: string(a.wizard.State),
+			Num1:  2, // 2 is the wizard step if needed
+		})
+		a.Navigate("/wizard", "")
 	} else {
 		a.StepWizard(types.WizNext)
 	}
