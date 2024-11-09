@@ -39,7 +39,7 @@ func (a *App) SetChain(chain string) {
 	a.settings.LastUpdate = 0
 	a.session.LastUpdate = 0
 	a.config.LastUpdate = 0
-	// a.wizard.LastUpdate = 0
+	a.wizard.LastUpdate = 0
 	// TODO: must stop and then restart all the daemons on the new chain
 	// a.daemons.LastUpdate = 0
 	_ = a.Freshen()

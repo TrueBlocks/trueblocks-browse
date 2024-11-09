@@ -17,8 +17,8 @@ type WizardContainer struct {
 	// During initialization, we do things that may cause errors, but
 	// we have not yet opened the window, so we defer them until we can
 	// decide what to do.
-	DeferredErrors []error
-	State          WizState
+	Items []error
+	State WizState
 	// EXISTING_CODE
 }
 
@@ -28,7 +28,7 @@ func NewWizardContainer(chain string) WizardContainer {
 	}
 	ret.LastUpdate, _ = ret.getWizardReload()
 	// EXISTING_CODE
-	ret.DeferredErrors = make([]error, 0)
+	ret.Items = make([]error, 0)
 	// EXISTING_CODE
 	return ret
 }
