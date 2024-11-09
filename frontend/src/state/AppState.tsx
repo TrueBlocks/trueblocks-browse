@@ -67,10 +67,10 @@ interface AppStateProps {
   chain: string;
   meta: types.MetaData;
   isConfigured: boolean;
-  wizardState: types.WizState;
+  wizState: types.WizState;
   setHistory: React.Dispatch<React.SetStateAction<types.HistoryContainer>>;
   setMeta: (meta: types.MetaData) => void;
-  setWizardState: (state: types.WizState) => void;
+  setWizState: (state: types.WizState) => void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -94,7 +94,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const [chain, setChain] = useState<string>("mainnet");
   const [isConfigured, setIsConfigured] = useState<boolean>(false);
-  const [wizardState, setWizardState] = useState<types.WizState>(types.WizState.WELCOME);
+  const [wizState, setWizState] = useState<types.WizState>(types.WizState.WELCOME);
   const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
 
@@ -206,7 +206,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     GetAppInfo().then((info) => {
       setChain(info.chain);
       setMeta(info.meta);
-      setWizardState(info.state);
+      setWizState(info.state);
       setIsConfigured(info.isConfigured);
       setInfo(info);
     });
@@ -267,11 +267,11 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     chain,
     meta,
     isConfigured,
-    wizardState,
+    wizState,
     setHistory,
     setAddress,
     setMeta,
-    setWizardState,
+    setWizState,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;

@@ -4,7 +4,7 @@ import { DebugState } from "../../components";
 
 export const ConfigView = () => {
   const { config, fetchConfig } = useAppState();
-  const { modifyNoop, enterNoop } = useNoops();
+  const { modifyNoop } = useNoops();
 
   const route = "config";
   // const tabs = ["config"];
@@ -12,7 +12,7 @@ export const ConfigView = () => {
   //   names: <div>ViewForm</div>,
   // };
   return (
-    <ViewStateProvider route={route} nItems={0} fetchFn={fetchConfig} onEnter={enterNoop} modifyFn={modifyNoop}>
+    <ViewStateProvider route={route} nItems={0} fetchFn={fetchConfig} modifyFn={modifyNoop}>
       <DebugState n={config.lastUpdate} />
       <pre>{JSON.stringify(config?.settings, null, 2)}</pre>
     </ViewStateProvider>

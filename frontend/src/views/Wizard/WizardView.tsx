@@ -5,7 +5,7 @@ import { types } from "@gocode/models";
 import { useAppState } from "@state";
 
 export const WizardView = () => {
-  const { isConfigured, wizardState, setWizardState } = useAppState();
+  const { isConfigured, wizState, setWizState } = useAppState();
   const [errors, setErrors] = useState<types.WizardError[]>([]);
   const [prevDisabled, setPrevDisabled] = useState(false);
   const [nextDisabled, setNextDisabled] = useState(false);
@@ -13,7 +13,7 @@ export const WizardView = () => {
 
   const stepWizard = (step: types.WizStep) => {
     StepWizard(step).then((state) => {
-      setWizardState(state);
+      setWizState(state);
       setPrevDisabled(state === types.WizState.WELCOME);
       setNextDisabled(state === types.WizState.FINISHED);
     });
@@ -24,11 +24,11 @@ export const WizardView = () => {
       setErrors(errorList);
       setFinishDisabled(errorList?.length > 0);
     });
-  }, [wizardState]);
+  }, [wizState]);
 
   return (
     <div>
-      <Text>{`wizardState: ${wizardState}`}</Text>
+      <Text>{`wizState: ${wizState}`}</Text>
       <Text>{`isConfigured: ${isConfigured}`}</Text>
       {errors?.length > 0 && (
         <div>

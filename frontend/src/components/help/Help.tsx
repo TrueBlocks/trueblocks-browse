@@ -17,7 +17,7 @@ const helpFiles = import.meta.glob("/src/assets/help/*.md", { query: "?raw", imp
 >;
 
 export function Help(): JSX.Element {
-  const { wizardState } = useAppState();
+  const { wizState } = useAppState();
   const [location] = useLocation();
   const [markdown, setMarkdown] = useState<string>("Loading...");
   const [error, setError] = useState<boolean>(false);
@@ -30,7 +30,7 @@ export function Help(): JSX.Element {
   useEffect(() => {
     const baseRoute = location.split("/")[1];
     const helpFileName: string =
-      baseRoute === "wizard" ? `wizard-${String(wizardState)}.md` : `${baseRoute === "" ? "project" : baseRoute}.md`;
+      baseRoute === "wizard" ? `wizard-${String(wizState)}.md` : `${baseRoute === "" ? "project" : baseRoute}.md`;
     const filePath = Object.keys(helpFiles).find((key) => key.endsWith(`/help/${helpFileName}`));
 
     const loadMarkdown = async (): Promise<void> => {
@@ -49,7 +49,7 @@ export function Help(): JSX.Element {
     };
 
     loadMarkdown();
-  }, [location, wizardState]);
+  }, [location, wizState]);
 
   return (
     <div className={classes.helpPanel}>
