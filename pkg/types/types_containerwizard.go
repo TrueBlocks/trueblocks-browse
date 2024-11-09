@@ -5,6 +5,7 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
+	"errors"
 )
 
 // EXISTING_CODE
@@ -69,9 +70,13 @@ func (s *WizardContainer) getWizardReload() (ret int64, reload bool) {
 }
 
 // EXISTING_CODE
-type WizardError struct {
+type WizError struct {
 	Count int    `json:"count"`
 	Error string `json:"error"`
+}
+
+func (w *WizError) ToErr() error {
+	return errors.New(w.Error)
 }
 
 type WizState string

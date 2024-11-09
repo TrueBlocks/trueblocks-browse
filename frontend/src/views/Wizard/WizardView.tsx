@@ -6,7 +6,7 @@ import { useAppState } from "@state";
 
 export const WizardView = () => {
   const { isConfigured, wizState, setWizState } = useAppState();
-  const [errors, setErrors] = useState<types.WizardError[]>([]);
+  const [errors, setErrors] = useState<types.WizError[]>([]);
   const [prevDisabled, setPrevDisabled] = useState(false);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [finishDisabled, setFinishDisabled] = useState(false);

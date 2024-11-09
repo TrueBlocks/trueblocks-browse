@@ -6,10 +6,10 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-func (a *App) GetDeferredErrors() []types.WizardError {
-	var wizErrs []types.WizardError
+func (a *App) GetDeferredErrors() []types.WizError {
+	var wizErrs []types.WizError
 	for i, err := range a.wizard.DeferredErrors {
-		wizErrs = append(wizErrs, types.WizardError{Count: i, Error: err.Error()})
+		wizErrs = append(wizErrs, types.WizError{Count: i, Error: err.Error()})
 	}
 	return wizErrs
 }
