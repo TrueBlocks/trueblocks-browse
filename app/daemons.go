@@ -20,7 +20,7 @@ func (a *App) startDaemons() {
 		}
 		if a.freshenController = daemons.NewFreshen(a, "freshen", freshenRate, a.IsShowing("freshen")); a.freshenController == nil {
 			err := fmt.Errorf("%d: %s", ErrDaemonLoad, "freshen")
-			a.addDeferredError(err)
+			a.addWizErr(err)
 		} else {
 			go a.freshenController.Run()
 		}
@@ -30,7 +30,7 @@ func (a *App) startDaemons() {
 	initScraper := func() {
 		if a.scraperController = daemons.NewScraper(a, "scraper", 7000, a.IsShowing("scraper")); a.scraperController == nil {
 			err := fmt.Errorf("%d: %s", ErrDaemonLoad, "scraper")
-			a.addDeferredError(err)
+			a.addWizErr(err)
 		} else {
 			go a.scraperController.Run()
 		}
@@ -40,7 +40,7 @@ func (a *App) startDaemons() {
 	initIpfs := func() {
 		if a.ipfsController = daemons.NewIpfs(a, "ipfs", 10000, a.IsShowing("ipfs")); a.ipfsController == nil {
 			err := fmt.Errorf("%d: %s", ErrDaemonLoad, "ipfs")
-			a.addDeferredError(err)
+			a.addWizErr(err)
 		} else {
 			go a.ipfsController.Run()
 		}

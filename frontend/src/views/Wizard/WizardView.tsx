@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button, Text } from "@mantine/core";
-import { StepWizard, GetDeferredErrors } from "@gocode/app/App";
+import { StepWizard, GetWizErrs } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState } from "@state";
 
@@ -20,7 +20,7 @@ export const WizardView = () => {
   };
 
   useEffect(() => {
-    GetDeferredErrors().then((errorList) => {
+    GetWizErrs().then((errorList) => {
       setErrors(errorList);
       setFinishDisabled(errorList?.length > 0);
     });

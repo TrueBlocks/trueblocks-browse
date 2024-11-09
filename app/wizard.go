@@ -6,7 +6,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-func (a *App) GetDeferredErrors() []types.WizError {
+func (a *App) GetWizErrs() []types.WizError {
 	var wizErrs []types.WizError
 	for i, err := range a.wizard.DeferredErrors {
 		wizErrs = append(wizErrs, types.WizError{Count: i, Error: err.Error()})
@@ -22,12 +22,18 @@ func (a *App) setWizardState(state types.WizState) {
 	a.wizard.State = state
 }
 
-func (a *App) addDeferredError(err error) {
+func (a *App) addWizErr(err error) {
 	a.wizard.DeferredErrors = append(a.wizard.DeferredErrors, err)
 }
 
-func (a *App) cntDeferredErrors() int {
+func (a *App) cntWizErrs() int {
 	return len(a.wizard.DeferredErrors)
+}
+
+func (a *App) emitWizErrs() {
+	for _, err := range a.wizard.DeferredErrors {
+		a.emitErrorMsg(err, nil)
+	}
 }
 
 var stateOrder = []types.WizState{

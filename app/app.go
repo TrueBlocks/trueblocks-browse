@@ -81,10 +81,10 @@ func (a *App) DomReady(ctx context.Context) {
 	runtime.WindowShow(a.ctx)
 
 	// Now that the window is opened...
-	if a.cntDeferredErrors() > 0 {
+	if a.cntWizErrs() > 0 {
 
 		// ...show any error (if there are any)...
-		a.emitDeferredErrors()
+		a.emitWizErrs()
 		a.setWizardState(types.WizWelcome)
 		logger.Info("There were errors during initialization...")
 

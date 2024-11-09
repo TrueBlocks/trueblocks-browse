@@ -15,13 +15,13 @@ import (
 func (a *App) initialize() bool {
 	initSession := func() bool {
 		if err := a.session.Load(); err != nil {
-			a.addDeferredError(err)
+			a.addWizErr(err)
 			return false
 		} else {
 			// we serialize the wizard state in a session string
 			a.wizard.State = types.WizState(a.session.WizardStr)
 			a.session.Window.Title = "Browse by TrueBlocks"
-			logger.InfoBW("Loaded session:", a.cntDeferredErrors(), "errors")
+			logger.InfoBW("Loaded session:", a.cntWizErrs(), "errors")
 			return true
 		}
 	}
@@ -31,13 +31,13 @@ func (a *App) initialize() bool {
 	// so we always start fresh...
 	initConfig := func() bool { // window can open, but we need an RPC provider...which means we need a config file.
 		if err := a.config.Load(); err != nil {
-			a.addDeferredError(err)
+			a.addWizErr(err)
 			return false
 		} else if a.session.LastChain, err = a.config.IsValidChain(a.session.LastChain); err != nil {
-			a.addDeferredError(err)
+			a.addWizErr(err)
 			return false
 		} else {
-			logger.InfoBW("Loaded config", a.cntDeferredErrors(), "errors")
+			logger.InfoBW("Loaded config", a.cntWizErrs(), "errors")
 			return true
 		}
 	}
@@ -48,11 +48,11 @@ func (a *App) initialize() bool {
 		os.Setenv("TB_NO_PROVIDER_CHECK", "true")
 		if err := rpc.PingRpc(a.config.Chains[a.session.LastChain].RpcProvider); err != nil {
 			wErr := fmt.Errorf("%w: %v", ErrLoadingRpc, err)
-			a.addDeferredError(wErr)
+			a.addWizErr(wErr)
 			os.Unsetenv("TB_NO_PROVIDER_CHECK")
 			return false
 		} else {
-			logger.InfoBW("Connected to RPC", a.cntDeferredErrors(), "errors")
+			logger.InfoBW("Connected to RPC", a.cntWizErrs(), "errors")
 			os.Unsetenv("TB_NO_PROVIDER_CHECK")
 			return true
 		}
@@ -65,10 +65,10 @@ func (a *App) initialize() bool {
 			var err error
 			if a.namesMap, err = names.LoadNamesMap(namesChain, coreTypes.All, nil); err != nil {
 				wErr := fmt.Errorf("%w: %v", ErrLoadingNames, err)
-				a.addDeferredError(wErr)
+				a.addWizErr(wErr)
 				return false
 			} else {
-				logger.InfoBW("Loaded names", a.cntDeferredErrors(), "errors")
+				logger.InfoBW("Loaded names", a.cntWizErrs(), "errors")
 				return true
 			}
 		}
@@ -85,7 +85,7 @@ func (a *App) initialize() bool {
 		var err error
 		if a.session.Window, err = a.session.CleanWindowSize(a.ctx); err != nil {
 			wErr := fmt.Errorf("%w: %v", ErrWindowSize, err)
-			a.addDeferredError(wErr)
+			a.addWizErr(wErr)
 		} else {
 			logger.InfoBW("Window size set...")
 			ret = true
@@ -97,7 +97,7 @@ func (a *App) initialize() bool {
 	_ = prepareWindow()
 
 	// returns true if there are no errors...
-	if a.cntDeferredErrors() > 0 {
+	if a.cntWizErrs() > 0 {
 		// ...goes to wizard mode and returns false otherwise
 		a.setWizardState(types.WizWelcome)
 		return false

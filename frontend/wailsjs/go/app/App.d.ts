@@ -48,8 +48,6 @@ export function GetContext():Promise<context.Context>;
 
 export function GetDaemon(arg1:string):Promise<string>;
 
-export function GetDeferredErrors():Promise<Array<types.WizError>>;
-
 export function GetEnv(arg1:string):Promise<string>;
 
 export function GetExploreUrl(arg1:string,arg2:boolean,arg3:boolean):Promise<string>;
@@ -67,6 +65,8 @@ export function GetSession():Promise<types.Session>;
 export function GetState(arg1:string):Promise<string>;
 
 export function GetWindow():Promise<types.Window>;
+
+export function GetWizErrs():Promise<Array<types.WizError>>;
 
 export function GoToAddress(arg1:base.Address):Promise<void>;
 
