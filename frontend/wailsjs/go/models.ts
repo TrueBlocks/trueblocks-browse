@@ -5,8 +5,6 @@ export namespace app {
 	    filename: string;
 	    dirty: boolean;
 	    meta: types.MetaData;
-	    state: types.WizState;
-	    isConfigured: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new AppInfo(source);
@@ -18,8 +16,6 @@ export namespace app {
 	        this.filename = source["filename"];
 	        this.dirty = source["dirty"];
 	        this.meta = this.convertValues(source["meta"], types.MetaData);
-	        this.state = source["state"];
-	        this.isConfigured = source["isConfigured"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -498,12 +494,6 @@ export namespace sdk {
 
 export namespace types {
 	
-	export enum WizStep {
-	    FIRST = "First",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
-	}
 	export enum WizState {
 	    WELCOME = "welcome",
 	    CONFIG = "config",
@@ -511,6 +501,12 @@ export namespace types {
 	    BLOOMS = "blooms",
 	    INDEX = "index",
 	    FINISHED = "finished",
+	}
+	export enum WizStep {
+	    FIRST = "First",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
 	}
 	export class Parameter {
 	    components?: Parameter[];

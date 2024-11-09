@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { StyledNavLink } from "@components";
 import { GetRoute, GetSelected, SetRoute } from "@gocode/app/App";
-import { messages } from "@gocode/models";
+import { messages, types } from "@gocode/models";
 import { routeItems, RouteItem } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
 import { useAppState } from "@state";
@@ -11,7 +11,7 @@ export const Menu = () => {
   const [activeRoute, setActiveRoute] = useState("/");
   const [, setLocation] = useLocation();
   const [filteredMenu, setFilteredMenu] = useState<RouteItem[]>([]);
-  const { isConfigured } = useAppState();
+  const { wizard } = useAppState();
 
   useEffect(() => {
     GetRoute().then((route) => {
@@ -55,10 +55,12 @@ export const Menu = () => {
   useEffect(() => {
     setFilteredMenu(
       routeItems
-        .filter((item: RouteItem) => (isConfigured ? item.route !== "/wizard" : item.route === "/wizard"))
+        .filter((item: RouteItem) =>
+          wizard.state === types.WizState.FINISHED ? item.route !== "/wizard" : item.route === "/wizard"
+        )
         .sort((a, b) => a.order - b.order)
     );
-  }, [isConfigured]);
+  }, [wizard.state]);
 
   return (
     <div style={{ flexGrow: 1 }}>

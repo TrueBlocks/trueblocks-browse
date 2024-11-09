@@ -1,41 +1,28 @@
-import { useState, useEffect } from "react";
-import { Text } from "@mantine/core";
-import { StepWizard, GetWizErrs } from "@gocode/app/App";
-import { types } from "@gocode/models";
-import { useAppState } from "@state";
-import { WizFiniButton, WizHomeButton, WizNextButton, WizPrevButton } from "./WizardFormDef";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { View, FormTable, ViewForm, DebugState } from "@components";
+import { useNoops } from "@hooks";
+import { useAppState, ViewStateProvider } from "@state";
+import { WizardFormTable, WizardTableDef } from ".";
 
 export const WizardView = () => {
-  const { isConfigured, wizState, setWizState } = useAppState();
-  const [errors, setErrors] = useState<types.WizError[]>([]);
+  const { modifyNoop } = useNoops();
+  const { wizard, fetchWizard } = useAppState();
 
-  const stepWizard = (step: types.WizStep) => {
-    StepWizard(step).then((state) => {
-      setWizState(state);
-    });
+  const table = useReactTable({
+    data: wizard.items || [],
+    columns: WizardTableDef,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  const route = "wizard";
+  const tabs = ["wizard"];
+  const forms: ViewForm = {
+    wizard: <FormTable data={wizard} groups={WizardFormTable(table, wizard.nItems)} />,
   };
-
-  useEffect(() => {
-    GetWizErrs().then((errorList) => {
-      setErrors(errorList);
-    });
-  }, [wizState]);
-
   return (
-    <div>
-      <Text>{`wizState: ${wizState}`}</Text>
-      <Text>{`isConfigured: ${isConfigured}`}</Text>
-      {errors?.length > 0 && (
-        <div>
-          {errors.map((wizErr, index) => (
-            <div key={index}>{`n: ${wizErr.count} err: ${wizErr.error}`}</div>
-          ))}
-        </div>
-      )}
-      <WizHomeButton key="home" wizState={wizState} onClick={stepWizard} />{" "}
-      <WizPrevButton key="prev" wizState={wizState} onClick={stepWizard} />{" "}
-      <WizNextButton key="next" wizState={wizState} onClick={stepWizard} />{" "}
-      <WizFiniButton key="fini" wizState={wizState} disabled={errors?.length > 0} onClick={stepWizard} />,
-    </div>
+    <ViewStateProvider route={route} nItems={wizard.nItems} fetchFn={fetchWizard} modifyFn={modifyNoop}>
+      <DebugState n={wizard.lastUpdate} />
+      <View tabs={tabs} forms={forms} />
+    </ViewStateProvider>
   );
 };

@@ -67,11 +67,8 @@ interface AppStateProps {
   info: app.AppInfo;
   chain: string;
   meta: types.MetaData;
-  isConfigured: boolean;
-  wizState: types.WizState;
   setHistory: React.Dispatch<React.SetStateAction<types.HistoryContainer>>;
   setMeta: (meta: types.MetaData) => void;
-  setWizState: (state: types.WizState) => void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -94,8 +91,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
 
   const [chain, setChain] = useState<string>("mainnet");
-  const [isConfigured, setIsConfigured] = useState<boolean>(false);
-  const [wizState, setWizState] = useState<types.WizState>(types.WizState.WELCOME);
   const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
 
@@ -209,8 +204,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     GetAppInfo().then((info) => {
       setChain(info.chain);
       setMeta(info.meta);
-      setWizState(info.state);
-      setIsConfigured(info.isConfigured);
       setInfo(info);
     });
   };
@@ -225,6 +218,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   useEffect(() => {
     const handleRefresh = () => {
       fetchAppInfo();
+      fetchWizard(0, 15);
       fetchStatus(0, 100);
     };
     handleRefresh(); // first load
@@ -235,7 +229,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     return () => {
       EventsOff(Message.REFRESH);
     };
-  }, [fetchStatus]);
+  }, [fetchStatus, fetchWizard]);
 
   const state = {
     project,
@@ -269,12 +263,9 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     info,
     chain,
     meta,
-    isConfigured,
-    wizState,
     setHistory,
     setAddress,
     setMeta,
-    setWizState,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;

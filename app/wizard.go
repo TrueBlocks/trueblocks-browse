@@ -6,10 +6,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-func (a *App) GetWizErrs() []types.WizError {
-	return a.wizard.Items
-}
-
 func (a *App) isConfigured() bool {
 	return a.wizard.State == types.WizFinished
 }
@@ -19,7 +15,7 @@ func (a *App) setWizardState(state types.WizState) {
 }
 
 func (a *App) addWizErr(err error) {
-	wizError := types.WizError{Count: a.cntWizErrs(), Error: err.Error()}
+	wizError := types.WizError{Count: a.cntWizErrs() + 1, Error: err.Error()}
 	a.wizard.Items = append(a.wizard.Items, wizError)
 }
 

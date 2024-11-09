@@ -3,17 +3,14 @@ package app
 import (
 	"path/filepath"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 type AppInfo struct {
-	Chain        string             `json:"chain"`
-	Filename     string             `json:"filename"`
-	Dirty        bool               `json:"dirty"`
-	Meta         coreTypes.MetaData `json:"meta"`
-	State        types.WizState     `json:"state"`
-	IsConfigured bool               `json:"isConfigured"`
+	Chain    string             `json:"chain"`
+	Filename string             `json:"filename"`
+	Dirty    bool               `json:"dirty"`
+	Meta     coreTypes.MetaData `json:"meta"`
 }
 
 func (a *App) getFolder() string {
@@ -30,11 +27,9 @@ func (a *App) getFullPath() string {
 
 func (a *App) GetAppInfo() AppInfo {
 	return AppInfo{
-		Chain:        a.session.LastChain,
-		Filename:     a.getFullPath(),
-		Dirty:        a.dirty,
-		Meta:         a.meta,
-		State:        a.wizard.State,
-		IsConfigured: a.isConfigured(),
+		Chain:    a.session.LastChain,
+		Filename: a.getFullPath(),
+		Dirty:    a.dirty,
+		Meta:     a.meta,
 	}
 }

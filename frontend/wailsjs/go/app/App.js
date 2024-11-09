@@ -118,10 +118,6 @@ export function GetWindow() {
   return window['go']['app']['App']['GetWindow']();
 }
 
-export function GetWizErrs() {
-  return window['go']['app']['App']['GetWizErrs']();
-}
-
 export function GoToAddress(arg1) {
   return window['go']['app']['App']['GoToAddress'](arg1);
 }

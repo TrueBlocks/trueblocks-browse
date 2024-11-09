@@ -3,7 +3,9 @@
 package app
 
 // EXISTING_CODE
-import "github.com/TrueBlocks/trueblocks-browse/pkg/types"
+import (
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
+)
 
 // EXISTING_CODE
 
@@ -11,6 +13,7 @@ func (a *App) WizardPage(first, pageSize int) *types.WizardContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	copy, _ := a.wizard.ShallowCopy().(*types.WizardContainer)
-	return copy
+	// logger.InfoBY("len:", len(a.wizard.Items))
+	a.wizard.Summarize()
+	return &a.wizard
 }

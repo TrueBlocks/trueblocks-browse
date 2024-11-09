@@ -66,8 +66,6 @@ export function GetState(arg1:string):Promise<string>;
 
 export function GetWindow():Promise<types.Window>;
 
-export function GetWizErrs():Promise<Array<types.WizError>>;
-
 export function GoToAddress(arg1:base.Address):Promise<void>;
 
 export function HistoryPage(arg1:number,arg2:number):Promise<types.HistoryContainer>;

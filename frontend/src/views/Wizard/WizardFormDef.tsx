@@ -7,11 +7,11 @@ import { StepWizard } from "../../../wailsjs/go/app/App";
 import { useAppState } from "../../state";
 
 export const WizardFormTable = (table: Table<types.WizError>, nItems: number): FieldGroup<types.WizardContainer>[] => {
-  const { wizState, setWizState } = useAppState();
+  const { wizard, fetchWizard } = useAppState();
 
   const stepWizard = (step: types.WizStep) => {
-    StepWizard(step).then((state) => {
-      setWizState(state);
+    StepWizard(step).then(() => {
+      fetchWizard(0, 100);
     });
   };
 
@@ -30,10 +30,10 @@ export const WizardFormTable = (table: Table<types.WizError>, nItems: number): F
     {
       label: "Buttons",
       buttons: [
-        <WizHomeButton key="home" wizState={wizState} onClick={stepWizard} />,
-        <WizPrevButton key="prev" wizState={wizState} onClick={stepWizard} />,
-        <WizNextButton key="next" wizState={wizState} onClick={stepWizard} />,
-        <WizFiniButton key="fini" wizState={wizState} disabled={nItems > 0} onClick={stepWizard} />,
+        <WizHomeButton key="home" state={wizard.state} onClick={stepWizard} />,
+        <WizPrevButton key="prev" state={wizard.state} onClick={stepWizard} />,
+        <WizNextButton key="next" state={wizard.state} onClick={stepWizard} />,
+        <WizFiniButton key="fini" state={wizard.state} disabled={nItems > 0} onClick={stepWizard} />,
       ],
     },
     {
@@ -45,13 +45,13 @@ export const WizardFormTable = (table: Table<types.WizError>, nItems: number): F
 };
 
 type StepProps = {
-  wizState: types.WizState;
+  state: types.WizState;
   disabled?: boolean;
   onClick: (step: types.WizStep) => void;
 };
 
-export const WizHomeButton = ({ wizState, onClick, disabled = false }: StepProps) => {
-  disabled = wizState === types.WizState.WELCOME || disabled;
+export const WizHomeButton = ({ state, onClick, disabled = false }: StepProps) => {
+  disabled = state === types.WizState.WELCOME || disabled;
   return (
     <Button disabled={disabled} size={"xs"} onClick={() => onClick(types.WizStep.FIRST)}>
       First
@@ -59,8 +59,8 @@ export const WizHomeButton = ({ wizState, onClick, disabled = false }: StepProps
   );
 };
 
-export const WizPrevButton = ({ wizState, onClick, disabled = false }: StepProps) => {
-  disabled = wizState === types.WizState.WELCOME || disabled;
+export const WizPrevButton = ({ state, onClick, disabled = false }: StepProps) => {
+  disabled = state === types.WizState.WELCOME || disabled;
   return (
     <Button disabled={disabled} size={"xs"} onClick={() => onClick(types.WizStep.PREVIOUS)}>
       Back
@@ -68,8 +68,8 @@ export const WizPrevButton = ({ wizState, onClick, disabled = false }: StepProps
   );
 };
 
-export const WizNextButton = ({ wizState, onClick, disabled = false }: StepProps) => {
-  disabled = wizState === types.WizState.FINISHED || disabled;
+export const WizNextButton = ({ state, onClick, disabled = false }: StepProps) => {
+  disabled = state === types.WizState.INDEX || disabled;
   return (
     <Button disabled={disabled} size={"xs"} onClick={() => onClick(types.WizStep.NEXT)}>
       Next
