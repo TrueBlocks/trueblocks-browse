@@ -29,7 +29,7 @@ func NewStatusContainer(chain string, status *coreTypes.Status) StatusContainer 
 		Status: *status,
 	}
 	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getStatusReload(nil)
+	ret.LastUpdate, _ = ret.getStatusReload()
 	// EXISTING_CODE
 	ret.LastUpdate = time.Now().Unix()
 	ret.Items = status.Caches
@@ -43,8 +43,8 @@ func (s *StatusContainer) String() string {
 	return string(bytes)
 }
 
-func (s *StatusContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
-	latest, reload := s.getStatusReload(meta)
+func (s *StatusContainer) NeedsUpdate(force bool) bool {
+	latest, reload := s.getStatusReload()
 	if force || reload {
 		DebugInts("status", s.LastUpdate, latest)
 		s.LastUpdate = latest
@@ -79,8 +79,7 @@ func (s *StatusContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *StatusContainer) getStatusReload(meta *coreTypes.MetaData) (ret int64, reload bool) {
-	_ = meta
+func (s *StatusContainer) getStatusReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	ret = time.Now().Unix()
 	reload = ret > s.LastUpdate+(60*2) // every two minutes

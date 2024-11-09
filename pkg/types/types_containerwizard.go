@@ -5,8 +5,6 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 // EXISTING_CODE
@@ -26,7 +24,7 @@ func NewWizardContainer(chain string) WizardContainer {
 	ret := WizardContainer{
 		Chain: chain,
 	}
-	ret.LastUpdate, _ = ret.getWizardReload(nil)
+	ret.LastUpdate, _ = ret.getWizardReload()
 	// EXISTING_CODE
 	ret.DeferredErrors = make([]error, 0)
 	// EXISTING_CODE
@@ -38,8 +36,8 @@ func (s *WizardContainer) String() string {
 	return string(bytes)
 }
 
-func (s *WizardContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
-	latest, reload := s.getWizardReload(meta)
+func (s *WizardContainer) NeedsUpdate(force bool) bool {
+	latest, reload := s.getWizardReload()
 	if force || reload {
 		DebugInts("wizard", s.LastUpdate, latest)
 		s.LastUpdate = latest
@@ -63,8 +61,7 @@ func (s *WizardContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *WizardContainer) getWizardReload(meta *coreTypes.MetaData) (ret int64, reload bool) {
-	_ = meta
+func (s *WizardContainer) getWizardReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return

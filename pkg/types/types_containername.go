@@ -40,7 +40,7 @@ func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 		NItems: uint64(len(itemsIn)),
 		Chain:  chain,
 	}
-	ret.LastUpdate, _ = ret.getNameReload(nil)
+	ret.LastUpdate, _ = ret.getNameReload()
 	// EXISTING_CODE
 	ret.Chain = "mainnet" // all names are on mainnet
 	sort.Slice(ret.Items, func(i, j int) bool {
@@ -55,8 +55,8 @@ func (s *NameContainer) String() string {
 	return string(bytes)
 }
 
-func (s *NameContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
-	latest, reload := s.getNameReload(meta)
+func (s *NameContainer) NeedsUpdate(force bool) bool {
+	latest, reload := s.getNameReload()
 	if force || reload {
 		DebugInts("name", s.LastUpdate, latest)
 		s.LastUpdate = latest
@@ -122,8 +122,7 @@ func (s *NameContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *NameContainer) getNameReload(meta *coreTypes.MetaData) (ret int64, reload bool) {
-	_ = meta
+func (s *NameContainer) getNameReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	chain := "mainnet"
 	folder := coreConfig.MustGetPathToChainConfig(chain)

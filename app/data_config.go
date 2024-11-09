@@ -25,7 +25,13 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) {
 	}
 	defer configLock.CompareAndSwap(1, 0)
 
-	if !a.config.NeedsUpdate(&a.meta, a.forceAbi()) {
+	if !a.config.NeedsUpdate(a.forceConfig()) {
 		return
 	}
+}
+
+func (a *App) forceConfig() (force bool) {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return
 }

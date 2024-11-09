@@ -6,6 +6,9 @@ import (
 )
 
 func (a *App) FileNew(cb *menu.CallbackData) {
+	if !a.isConfigured() {
+		return
+	}
 	if ok := a.shouldSaveDialog(); !ok {
 		return
 	}
@@ -14,6 +17,9 @@ func (a *App) FileNew(cb *menu.CallbackData) {
 }
 
 func (a *App) FileOpen(cb *menu.CallbackData) {
+	if !a.isConfigured() {
+		return
+	}
 	if ok := a.shouldSaveDialog(); !ok {
 		return
 	}
@@ -46,10 +52,16 @@ func (a *App) FileOpen(cb *menu.CallbackData) {
 }
 
 func (a *App) FileSave(cb *menu.CallbackData) {
+	if !a.isConfigured() {
+		return
+	}
 	a.dirty, _ = a.saveFileDialog()
 }
 
 func (a *App) FileSaveAs(cb *menu.CallbackData) {
+	if !a.isConfigured() {
+		return
+	}
 	a.dirty = true // force the dialog
 	a.dirty, _ = a.saveFileDialog()
 }

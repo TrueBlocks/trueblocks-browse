@@ -66,7 +66,7 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 
 	history, exists := a.historyCache.Load(address)
 	if exists {
-		if !history.NeedsUpdate(&a.meta, a.forceHistory()) {
+		if !history.NeedsUpdate(a.forceHistory()) {
 			return nil
 		}
 	}

@@ -8,26 +8,41 @@ import (
 )
 
 func (a *App) ToggleHeader(cb *menu.CallbackData) {
+	if !a.isConfigured() {
+		return
+	}
 	which := "header"
 	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
 func (a *App) ToggleMenu(cb *menu.CallbackData) {
+	if !a.isConfigured() {
+		return
+	}
 	which := "menu"
 	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
 func (a *App) ToggleHelp(cb *menu.CallbackData) {
+	if !a.isConfigured() {
+		return
+	}
 	which := "help"
 	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
 func (a *App) ToggleFooter(cb *menu.CallbackData) {
+	if !a.isConfigured() {
+		return
+	}
 	which := "footer"
 	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
 func (a *App) ToggleAccordion(cb *menu.CallbackData) {
+	if !a.isConfigured() {
+		return
+	}
 	route := a.GetRoute()
 	route = strings.TrimPrefix(route, "/")
 	parts := strings.Split(route, "/")

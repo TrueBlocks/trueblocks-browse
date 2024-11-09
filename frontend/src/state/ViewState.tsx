@@ -79,9 +79,9 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
     };
 
     const { Message } = messages;
-    EventsOn(Message.DAEMON, handleRefresh);
+    EventsOn(Message.REFRESH, handleRefresh);
     return () => {
-      EventsOff(Message.DAEMON);
+      EventsOff(Message.REFRESH);
     };
   }, [fetchFn, nItems, pager]);
 

@@ -39,7 +39,7 @@ func NewManifestContainer(chain string, itemsIn []coreTypes.Manifest) ManifestCo
 		},
 		Chain: chain,
 	}
-	ret.LastUpdate, _ = ret.getManifestReload(nil)
+	ret.LastUpdate, _ = ret.getManifestReload()
 	// EXISTING_CODE
 	ret.Specification = itemsIn[0].Specification.String()
 	ret.Version = itemsIn[0].Version
@@ -54,8 +54,8 @@ func (s *ManifestContainer) String() string {
 	return string(bytes)
 }
 
-func (s *ManifestContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
-	latest, reload := s.getManifestReload(meta)
+func (s *ManifestContainer) NeedsUpdate(force bool) bool {
+	latest, reload := s.getManifestReload()
 	if force || reload {
 		DebugInts("manifest", s.LastUpdate, latest)
 		s.LastUpdate = latest
@@ -93,8 +93,7 @@ func (s *ManifestContainer) Summarize() {
 	// EXISTING_CODE
 }
 
-func (s *ManifestContainer) getManifestReload(meta *coreTypes.MetaData) (ret int64, reload bool) {
-	_ = meta
+func (s *ManifestContainer) getManifestReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(coreConfig.PathToManifest(s.Chain))
 	ret = tm.Unix()

@@ -19,7 +19,10 @@ func (a *App) StepWizard(step coreTypes.WizStep) coreTypes.WizState {
 		if a.isConfigured() {
 			a.Navigate("/", "")
 		}
-		a.emitMsg(messages.Refresh, &messages.MessageMsg{State: a.session.Wizard.State})
+		a.emitMsg(messages.Refresh, &messages.MessageMsg{
+			State: a.session.Wizard.State,
+			Num1:  2, // 2 is the wizard step if needed
+		})
 	}()
 
 	a.session.Wizard.Step(step)

@@ -73,10 +73,11 @@ func (a *App) Freshen() error {
 			time.Sleep(500 * time.Millisecond)
 		}
 	} else {
-		a.emitMsg(messages.Daemon, &messages.MessageMsg{
+		a.emitMsg(messages.Refresh, &messages.MessageMsg{
 			Name:    a.freshenController.Name,
-			String1: "Freshen...",
+			String1: "Refresh...",
 			String2: a.freshenController.Color,
+			Num1:    1, // 1 means daemon if we need it
 		})
 	}
 

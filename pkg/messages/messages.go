@@ -23,10 +23,8 @@ const (
 	ToggleLayout    Message = "ToggleLayout"
 	ToggleAccordion Message = "ToggleAccordion"
 
-	Daemon   Message = "Daemon"
 	Navigate Message = "Navigate"
-
-	Refresh Message = "Refresh"
+	Refresh  Message = "Refresh"
 )
 
 var AllMessages = []struct {
@@ -45,9 +43,7 @@ var AllMessages = []struct {
 	{ToggleLayout, "TOGGLELAYOUT"},
 	{ToggleAccordion, "TOGGLEACCORDION"},
 
-	{Daemon, "DAEMON"},
 	{Navigate, "NAVIGATE"},
-
 	{Refresh, "REFRESH"},
 }
 

@@ -20,7 +20,7 @@ func (a *App) load{{.UiRouteLabel}}(wg *sync.WaitGroup, errorChan chan error) er
 	}
 	defer {{toLower .Class}}Lock.CompareAndSwap(1, 0)
 
-	if !a.{{.UiRouteLower}}.NeedsUpdate(&a.meta, a.force{{.Class}}()) {
+	if !a.{{.UiRouteLower}}.NeedsUpdate(a.force{{.Class}}()) {
 		return nil
 	}
 

@@ -8,7 +8,6 @@ import (
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
@@ -48,10 +47,10 @@ func (s *SettingsContainer) String() string {
 	return string(bytes)
 }
 
-func (s *SettingsContainer) NeedsUpdate(meta *coreTypes.MetaData, force bool) bool {
-	return s.Session.NeedsUpdate(meta, force) ||
-		s.Config.NeedsUpdate(meta, force) ||
-		s.Status.NeedsUpdate(meta, force)
+func (s *SettingsContainer) NeedsUpdate(force bool) bool {
+	return s.Session.NeedsUpdate(force) ||
+		s.Config.NeedsUpdate(force) ||
+		s.Status.NeedsUpdate(force)
 }
 
 func (s *SettingsContainer) ShallowCopy() Containerer {

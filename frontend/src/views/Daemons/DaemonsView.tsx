@@ -39,6 +39,7 @@ export const DaemonsView = () => {
   }, []);
 
   const handleMessage = (msg: messages.MessageMsg) => {
+    if (msg.num1 != 1) return; // ignore non-daemon refreshes here
     switch (msg.name) {
       case "scraper":
         updateDaemon("scraper", setScraper);
@@ -60,9 +61,9 @@ export const DaemonsView = () => {
 
   useEffect(() => {
     const { Message } = messages;
-    EventsOn(Message.DAEMON, handleMessage);
+    EventsOn(Message.REFRESH, handleMessage);
     return () => {
-      EventsOff(Message.DAEMON);
+      EventsOff(Message.REFRESH);
     };
   });
 

@@ -4,14 +4,13 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 type Containerer interface {
 	String() string
 	ShallowCopy() Containerer
 	Summarize()
-	NeedsUpdate(meta *coreTypes.MetaData, force bool) bool
+	NeedsUpdate(force bool) bool
 }
 
 type Containerers []Containerer
