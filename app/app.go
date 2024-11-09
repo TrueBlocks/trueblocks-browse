@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"sync"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
@@ -67,48 +66,31 @@ func (a *App) Startup(ctx context.Context) {
 
 // DomReady is called by Wails when the app is ready to go. Adjust the window size and show it.
 func (a *App) DomReady(ctx context.Context) {
-	initSession := func() {
-		if err := a.session.Load(); err != nil {
-			a.addDeferredError(err)
-		} else {
-			a.session.Window.Title = "Browse by TrueBlocks"
-			logger.InfoBW("Loaded session:", a.cntDeferredErrors(), "errors")
-		}
-	}
-	initSession()
+	// This call does a number of things. If any errors occur, they are deferred until
+	// the window is open. This is because we can't show errors until the window is open.
+	// The process is:
+	// 1. Loads the session file (session.json)
+	// 2. Loads the configuration file (trueBlocks.toml)
+	// 3. Pings the rpcProvider (read from config file)
+	// 4. If ping works, loads the names database
+	// 5. If loading the names database works, starts the daemons
+	// 6. In any case, makes sure the window is positioned and sized (even if all others fail)
 	_ = a.initialize()
-
-	prepareWindow := func() { // window size and placement depends on session file
-		var err error
-		if a.session.Window, err = a.session.CleanWindowSize(a.ctx); err != nil {
-			wErr := fmt.Errorf("%w: %v", ErrWindowSize, err)
-			a.addDeferredError(wErr)
-		} else {
-			logger.InfoBW("Window size set...")
-		}
-		runtime.WindowSetPosition(a.ctx, a.session.Window.X, a.session.Window.Y)
-		runtime.WindowSetSize(a.ctx, a.session.Window.Width, a.session.Window.Height)
-	}
-	prepareWindow()
 
 	// A properly sized window is always ready to show even if there were errors...
 	runtime.WindowShow(a.ctx)
 
-	if a.cntDeferredErrors() == 0 {
-		a.addDeferredError(fmt.Errorf("error for testing purposes"))
-	}
-
-	// Now that the window is opened, show any error (and if there are any, enter wizard mode).
+	// Now that the window is opened...
 	if a.cntDeferredErrors() > 0 {
-		// We now have a window, so we can finally show any accumulated errors
+
+		// ...show any error (if there are any)...
 		a.emitDeferredErrors()
-		if a.getWizardState() != coreTypes.WizWelcome {
-			a.SetWizardState(coreTypes.WizError)
-		}
+		a.setWizardState(types.WizWelcome)
 		logger.Info("There were errors during initialization...")
 
 	} else {
-		// We're initialized, let's open the last opened file (or a new file)...
+		// we are initialized sucessfully, so load the latest project file
+		// and freshen it.
 		fn := a.getFullPath()
 		if file.FileExists(fn) {
 			a.readFile(fn)
@@ -118,6 +100,7 @@ func (a *App) DomReady(ctx context.Context) {
 
 		// freshen the data once...daemons will take over from here...
 		go a.Freshen()
+
 		logger.Info("Fininished initializing...")
 	}
 }

@@ -3,7 +3,7 @@
 package app
 
 import (
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
 
@@ -58,9 +58,9 @@ func (a *App) ConfigView(cb *menu.CallbackData) {
 
 func (a *App) WizardView(cb *menu.CallbackData) {
 	if a.isConfigured() {
-		a.StepWizard(coreTypes.WizReset)
+		a.StepWizard(types.WizFirst)
 	} else {
-		a.StepWizard(coreTypes.WizNext)
+		a.StepWizard(types.WizNext)
 	}
 	a.Navigate("/wizard", "")
 }

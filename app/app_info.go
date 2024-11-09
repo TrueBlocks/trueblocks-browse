@@ -3,6 +3,7 @@ package app
 import (
 	"path/filepath"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -11,7 +12,7 @@ type AppInfo struct {
 	Filename     string             `json:"filename"`
 	Dirty        bool               `json:"dirty"`
 	Meta         coreTypes.MetaData `json:"meta"`
-	State        coreTypes.WizState `json:"state"`
+	State        types.WizState     `json:"state"`
 	IsConfigured bool               `json:"isConfigured"`
 }
 
@@ -33,7 +34,7 @@ func (a *App) GetAppInfo() AppInfo {
 		Filename:     a.getFullPath(),
 		Dirty:        a.dirty,
 		Meta:         a.meta,
-		State:        a.getWizardState(),
+		State:        a.wizard.State,
 		IsConfigured: a.isConfigured(),
 	}
 }

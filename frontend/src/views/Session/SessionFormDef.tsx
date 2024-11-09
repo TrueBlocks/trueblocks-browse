@@ -26,11 +26,6 @@ export const SessionFormDef = (): FieldGroup<types.Session>[] => {
       components: [<SessionWindow key={"window"} />],
     },
     {
-      label: "Wizard",
-      collapsable: false,
-      components: [<SessionWizard key={"window"} />],
-    },
-    {
       label: "Toggles",
       collapsable: false,
       components: [<SessionToggles key={"window"} />],
@@ -44,11 +39,6 @@ export const SessionFormDef = (): FieldGroup<types.Session>[] => {
 const SessionWindow = () => {
   const { session } = useAppState();
   return <div>{`${JSON.stringify(session.window, null, 2)}`}</div>;
-};
-
-const SessionWizard = () => {
-  const { session } = useAppState();
-  return <div>{`${JSON.stringify(session.wizard, null, 2)}`}</div>;
 };
 
 const SessionToggles = () => {

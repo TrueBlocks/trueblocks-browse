@@ -3,11 +3,9 @@ import { Button, Text } from "@mantine/core";
 import { StepWizard, GetDeferredErrors } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState } from "@state";
-import classes from "./WizardView.module.css";
 
 export const WizardView = () => {
   const { isConfigured, wizardState, setWizardState } = useAppState();
-  const [cn, setCn] = useState(classes.wizOkay);
   const [errors, setErrors] = useState<types.WizardError[]>([]);
   const [prevDisabled, setPrevDisabled] = useState(false);
   const [nextDisabled, setNextDisabled] = useState(false);
@@ -16,14 +14,10 @@ export const WizardView = () => {
   const stepWizard = (step: types.WizStep) => {
     StepWizard(step).then((state) => {
       setWizardState(state);
-      setPrevDisabled(state === types.WizState.WELCOME || state === types.WizState.ERROR);
+      setPrevDisabled(state === types.WizState.WELCOME);
       setNextDisabled(state === types.WizState.FINISHED);
     });
   };
-
-  useEffect(() => {
-    setCn(wizardState === types.WizState.ERROR ? classes.wizError : classes.wizOkay);
-  }, [wizardState]);
 
   useEffect(() => {
     GetDeferredErrors().then((errorList) => {
@@ -34,8 +28,8 @@ export const WizardView = () => {
 
   return (
     <div>
-      <Text className={cn}>{`wizardState: ${wizardState}`}</Text>
-      <Text className={cn}>{`isConfigured: ${isConfigured}`}</Text>
+      <Text>{`wizardState: ${wizardState}`}</Text>
+      <Text>{`isConfigured: ${isConfigured}`}</Text>
       {errors?.length > 0 && (
         <div>
           {errors.map((wizErr, index) => (
@@ -43,25 +37,24 @@ export const WizardView = () => {
           ))}
         </div>
       )}
-      <WizResetButton disabled={false} step={stepWizard} state={wizardState} />
-      <WizBumpButton disabled={prevDisabled} step={stepWizard} state={wizardState} back />
-      <WizBumpButton disabled={nextDisabled} step={stepWizard} state={wizardState} />
-      <WizFinishButton disabled={finishDisabled} step={stepWizard} state={wizardState} />
+      <WizFirstButton disabled={false} step={stepWizard} />{" "}
+      <WizBumpButton disabled={prevDisabled} step={stepWizard} back />{" "}
+      <WizBumpButton disabled={nextDisabled} step={stepWizard} />{" "}
+      <WizFinishButton disabled={finishDisabled} step={stepWizard} />
     </div>
   );
 };
 
 type StepProps = {
   step: (step: types.WizStep) => void;
-  state: types.WizState;
   disabled: boolean;
   back?: boolean;
 };
 
-export const WizResetButton = ({ step }: StepProps) => {
+export const WizFirstButton = ({ step }: StepProps) => {
   return (
-    <Button size={"xs"} onClick={() => step(types.WizStep.RESET)}>
-      Reset
+    <Button size={"xs"} onClick={() => step(types.WizStep.FIRST)}>
+      First
     </Button>
   );
 };

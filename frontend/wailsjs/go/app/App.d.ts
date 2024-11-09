@@ -124,8 +124,6 @@ export function SetRoute(arg1:string,arg2:string):Promise<void>;
 
 export function SetShowing(arg1:string,arg2:boolean):Promise<void>;
 
-export function SetWizardState(arg1:types.WizState):Promise<void>;
-
 export function SettingsPage(arg1:number,arg2:number):Promise<types.SettingsContainer>;
 
 export function SettingsView(arg1:menu.CallbackData):Promise<void>;

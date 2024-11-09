@@ -435,7 +435,7 @@ export namespace messages {
 	export class MessageMsg {
 	    name: string;
 	    address: base.Address;
-	    state: types.WizState;
+	    state: string;
 	    num1: number;
 	    num2: number;
 	    string1: string;
@@ -500,7 +500,6 @@ export namespace types {
 	
 	export enum WizState {
 	    WELCOME = "welcome",
-	    ERROR = "error",
 	    CONFIG = "config",
 	    RPC = "rpc",
 	    BLOOMS = "blooms",
@@ -508,7 +507,6 @@ export namespace types {
 	    FINISHED = "finished",
 	}
 	export enum WizStep {
-	    RESET = "Reset",
 	    FIRST = "First",
 	    PREVIOUS = "Previous",
 	    NEXT = "Next",
@@ -2013,7 +2011,7 @@ export namespace types {
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
 	    window: Window;
-	    wizard: WizState;
+	    wizardStr: string;
 	    toggles: Toggles;
 	
 	    static createFrom(source: any = {}) {
@@ -2028,7 +2026,7 @@ export namespace types {
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
 	        this.window = this.convertValues(source["window"], Window);
-	        this.wizard = source["wizard"];
+	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	    }
 	
@@ -2057,7 +2055,7 @@ export namespace types {
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
 	    window: Window;
-	    wizard: WizState;
+	    wizardStr: string;
 	    toggles: Toggles;
 	    lastUpdate: number;
 	
@@ -2073,7 +2071,7 @@ export namespace types {
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
 	        this.window = this.convertValues(source["window"], Window);
-	        this.wizard = source["wizard"];
+	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	        this.lastUpdate = source["lastUpdate"];
 	    }

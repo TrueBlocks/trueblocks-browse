@@ -8,6 +8,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/editors"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/wailsapp/wails/v2"
@@ -43,8 +44,8 @@ func main() {
 		EnumBind: []interface{}{
 			daemons.AllStates,
 			messages.AllMessages,
-			coreTypes.AllStates,
-			coreTypes.AllSteps,
+			types.AllStates,
+			types.AllSteps,
 		},
 		StartHidden: true,
 		AssetServer: &assetserver.Options{

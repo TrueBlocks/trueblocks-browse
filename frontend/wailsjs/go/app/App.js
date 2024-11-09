@@ -234,10 +234,6 @@ export function SetShowing(arg1, arg2) {
   return window['go']['app']['App']['SetShowing'](arg1, arg2);
 }
 
-export function SetWizardState(arg1) {
-  return window['go']['app']['App']['SetWizardState'](arg1);
-}
-
 export function SettingsPage(arg1, arg2) {
   return window['go']['app']['App']['SettingsPage'](arg1, arg2);
 }

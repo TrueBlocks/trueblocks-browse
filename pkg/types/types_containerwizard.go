@@ -17,6 +17,7 @@ type WizardContainer struct {
 	// we have not yet opened the window, so we defer them until we can
 	// decide what to do.
 	DeferredErrors []error
+	State          WizState
 	// EXISTING_CODE
 }
 
@@ -71,6 +72,60 @@ func (s *WizardContainer) getWizardReload() (ret int64, reload bool) {
 type WizardError struct {
 	Count int    `json:"count"`
 	Error string `json:"error"`
+}
+
+type WizState string
+
+const (
+	WizWelcome  WizState = "welcome"
+	WizConfig   WizState = "config"
+	WizRpc      WizState = "rpc"
+	WizBlooms   WizState = "blooms"
+	WizIndex    WizState = "index"
+	WizFinished WizState = "finished"
+)
+
+// String returns the string representation of the WizState.
+func (s WizState) String() string {
+	return string(s)
+}
+
+// AllStates - all possible WizStates for the frontend codegen
+var AllStates = []struct {
+	Value  WizState `json:"value"`
+	TSName string   `json:"tsName"`
+}{
+	{WizWelcome, "WELCOME"},
+	{WizConfig, "CONFIG"},
+	{WizRpc, "RPC"},
+	{WizBlooms, "BLOOMS"},
+	{WizIndex, "INDEX"},
+	{WizFinished, "FINISHED"},
+}
+
+type WizStep string
+
+const (
+	WizFirst    WizStep = "First"
+	WizPrevious WizStep = "Previous"
+	WizNext     WizStep = "Next"
+	WizFinish   WizStep = "Finish"
+)
+
+// String returns the string representation of the Step.
+func (s WizStep) String() string {
+	return string(s)
+}
+
+// AllSteps - all possible steps for the frontend codegen
+var AllSteps = []struct {
+	Value  WizStep `json:"value"`
+	TSName string  `json:"tsName"`
+}{
+	{WizFirst, "FIRST"},
+	{WizPrevious, "PREVIOUS"},
+	{WizNext, "NEXT"},
+	{WizFinish, "FINISH"},
 }
 
 // EXISTING_CODE

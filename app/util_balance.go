@@ -6,10 +6,6 @@ import (
 )
 
 func (a *App) getBalance(address base.Address) string {
-	if !a.isConfigured() {
-		return "0"
-	}
-
 	b, exists := a.balanceCache.Load(address)
 	if exists {
 		return b.(string)
