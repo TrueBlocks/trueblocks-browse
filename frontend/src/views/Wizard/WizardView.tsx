@@ -9,10 +9,15 @@ export const WizardView = () => {
   const { isConfigured, wizardState, setWizardState } = useAppState();
   const [cn, setCn] = useState(classes.wizOkay);
   const [errors, setErrors] = useState<types.WizardError[]>([]);
+  const [prevDisabled, setPrevDisabled] = useState(false);
+  const [nextDisabled, setNextDisabled] = useState(false);
+  const [finishDisabled, setFinishDisabled] = useState(false);
 
   const stepWizard = (step: types.WizStep) => {
     StepWizard(step).then((state) => {
       setWizardState(state);
+      setPrevDisabled(state === types.WizState.WELCOME || state === types.WizState.ERROR);
+      setNextDisabled(state === types.WizState.FINISHED);
     });
   };
 
@@ -23,6 +28,7 @@ export const WizardView = () => {
   useEffect(() => {
     GetDeferredErrors().then((errorList) => {
       setErrors(errorList);
+      setFinishDisabled(errorList?.length > 0);
     });
   }, [wizardState]);
 
@@ -37,10 +43,10 @@ export const WizardView = () => {
           ))}
         </div>
       )}
-      <WizResetButton step={stepWizard} state={wizardState} />
-      <WizBumpButton step={stepWizard} state={wizardState} back />
-      <WizBumpButton step={stepWizard} state={wizardState} />
-      <WizFinishButton step={stepWizard} state={wizardState} />
+      <WizResetButton disabled={false} step={stepWizard} state={wizardState} />
+      <WizBumpButton disabled={prevDisabled} step={stepWizard} state={wizardState} back />
+      <WizBumpButton disabled={nextDisabled} step={stepWizard} state={wizardState} />
+      <WizFinishButton disabled={finishDisabled} step={stepWizard} state={wizardState} />
     </div>
   );
 };
@@ -48,6 +54,7 @@ export const WizardView = () => {
 type StepProps = {
   step: (step: types.WizStep) => void;
   state: types.WizState;
+  disabled: boolean;
   back?: boolean;
 };
 
@@ -59,23 +66,17 @@ export const WizResetButton = ({ step }: StepProps) => {
   );
 };
 
-export const WizBumpButton = ({ step, state, back = false }: StepProps) => {
-  const bDis = back && (state === types.WizState.WELCOME || state === types.WizState.ERROR);
-  const fDis = !back && state === types.WizState.OKAY;
+export const WizBumpButton = ({ step, disabled, back = false }: StepProps) => {
   return (
-    <Button
-      disabled={bDis || fDis}
-      size={"xs"}
-      onClick={() => step(back ? types.WizStep.PREVIOUS : types.WizStep.NEXT)}
-    >
+    <Button disabled={disabled} size={"xs"} onClick={() => step(back ? types.WizStep.PREVIOUS : types.WizStep.NEXT)}>
       {back ? "Back" : "Next"}
     </Button>
   );
 };
 
-export const WizFinishButton = ({ step }: StepProps) => {
+export const WizFinishButton = ({ step, disabled }: StepProps) => {
   return (
-    <Button size={"xs"} onClick={() => step(types.WizStep.FINISH)}>
+    <Button disabled={disabled} size={"xs"} onClick={() => step(types.WizStep.FINISH)}>
       Finish
     </Button>
   );

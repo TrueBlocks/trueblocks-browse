@@ -58,9 +58,9 @@ func (a *App) ConfigView(cb *menu.CallbackData) {
 
 func (a *App) WizardView(cb *menu.CallbackData) {
 	if a.isConfigured() {
-		a.StepWizard(coreTypes.Reset)
+		a.StepWizard(coreTypes.WizReset)
 	} else {
-		a.StepWizard(coreTypes.Next)
+		a.StepWizard(coreTypes.WizNext)
 	}
 	a.Navigate("/wizard", "")
 }

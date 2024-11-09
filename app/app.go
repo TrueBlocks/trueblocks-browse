@@ -94,14 +94,16 @@ func (a *App) DomReady(ctx context.Context) {
 	// A properly sized window is always ready to show even if there were errors...
 	runtime.WindowShow(a.ctx)
 
-	a.addDeferredError(fmt.Errorf("error for testing purposes"))
+	if a.cntDeferredErrors() == 0 {
+		a.addDeferredError(fmt.Errorf("error for testing purposes"))
+	}
 
 	// Now that the window is opened, show any error (and if there are any, enter wizard mode).
 	if a.cntDeferredErrors() > 0 {
 		// We now have a window, so we can finally show any accumulated errors
 		a.emitDeferredErrors()
-		if a.getWizardState() != coreTypes.Welcome {
-			a.SetWizardState(coreTypes.Error)
+		if a.getWizardState() != coreTypes.WizWelcome {
+			a.SetWizardState(coreTypes.WizError)
 		}
 		logger.Info("There were errors during initialization...")
 
