@@ -16,6 +16,7 @@ import {
   ConfigPage,
   WizardPage,
   GetAppInfo,
+  Logger,
 } from "@gocode/app/App";
 import { app, base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
@@ -195,8 +196,10 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchWizard = useCallback((currentItem: number, itemsPerPage: number) => {
+    Logger(["Calling into WizardPage"]);
     WizardPage(currentItem, itemsPerPage).then((item: types.WizardContainer) => {
       if (item) {
+        Logger(["got items", JSON.stringify(item)]);
         setWizard(item);
       }
     });
