@@ -1,8 +1,6 @@
 import { Button } from "@mantine/core";
 import { Table } from "@tanstack/react-table";
-// import { DataTable, FieldGroup, PublishButton, CleanButton, AddButton } from "@components";
 import { DataTable, FieldGroup } from "@components";
-import { StepWizard } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState } from "@state";
 
@@ -20,7 +18,7 @@ export const WizardFormTable = (
       collapsable: false,
       fields: [
         { label: "nItems", type: "int", accessor: "nItems" },
-        { label: "Chain", type: "text", accessor: "chain" },
+        { label: "chain", type: "text", accessor: "chain" },
         { label: "lastUpdate", type: "date", accessor: "lastUpdate" },
         { label: "state", type: "text", accessor: "state" },
       ],

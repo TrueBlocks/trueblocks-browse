@@ -4,12 +4,12 @@ import { GetChains, SetChain } from "@gocode/app/App";
 import { useAppState } from "@state";
 
 export const ChainSelector = () => {
-  const { config } = useAppState();
-  const [chain, setChain] = useState<string>("mainnet");
+  const { info, config } = useAppState();
+  const [selected, setSelected] = useState<string>(info.chain);
   const [chainList, setChainList] = useState<string[]>(["mainnet"]);
 
   const selectChain = useCallback((newChain: string) => {
-    setChain(newChain);
+    setSelected(newChain);
     SetChain(newChain).then(() => {});
   }, []);
 
@@ -26,18 +26,18 @@ export const ChainSelector = () => {
   }, [config]);
 
   useEffect(() => {
-    if (!chainList.includes(chain)) {
+    if (!chainList.includes(selected)) {
       selectChain("mainnet");
     }
-  }, [chain, chainList, selectChain]);
+  }, [selected, chainList, selectChain]);
 
   return (
     <div>
       <Select
         id="chain-selector"
-        value={chain}
+        value={selected}
         onChange={handleChange}
-        data={chainList.map((chain) => ({ value: chain, label: chain }))}
+        data={chainList.map((ch) => ({ value: ch, label: ch }))}
         placeholder="Choose a chain"
       />
     </div>

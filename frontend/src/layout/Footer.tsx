@@ -2,7 +2,7 @@ import { Text } from "@mantine/core";
 import { useAppState } from "@state";
 
 export const Footer = () => {
-  const { info, chain } = useAppState();
+  const { info } = useAppState();
   const { status } = useAppState();
 
   const fn = () => {
@@ -17,7 +17,7 @@ export const Footer = () => {
 
   return (
     <Text size={"sm"}>
-      {`${status.clientVersion} / ${chain} / not loaded / ${status.lastUpdate} file: `}
+      {`${status.clientVersion} / ${info.chain} / not loaded / ${status.lastUpdate} file: `}
       {fn()}
     </Text>
   );
