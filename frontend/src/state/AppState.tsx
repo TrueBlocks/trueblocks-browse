@@ -64,7 +64,6 @@ interface AppStateProps {
   setAddress: (address: base.Address) => void;
 
   info: app.AppInfo;
-  chain: string;
   setHistory: React.Dispatch<React.SetStateAction<types.HistoryContainer>>;
 }
 
@@ -86,8 +85,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [wizard, setWizard] = useState<types.WizardContainer>({} as types.WizardContainer);
 
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
-
-  const [chain, setChain] = useState<string>("mainnet");
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
 
   const fetchProject = useCallback((currentItem: number, itemsPerPage: number) => {
@@ -196,7 +193,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const fetchAppInfo = () => {
     GetAppInfo().then((info) => {
-      setChain(info.chain);
       setInfo(info);
     });
   };
@@ -254,7 +250,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     address,
     info,
-    chain,
     setHistory,
     setAddress,
   };

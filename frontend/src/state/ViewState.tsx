@@ -37,6 +37,15 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
   const { enterNoop } = useNoops();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
   const pager = useKeyboardPaging(nItems, lines, onEnter ? onEnter : enterNoop);
+
+  useEffect(() => {
+    if (route === "history") {
+      HistoryPage(pager.getOffset(), pager.perPage).then((item: types.HistoryContainer) => {
+        setHistory(item);
+      });
+    }
+  }, [pager.pageNumber, pager.perPage]);
+
   const handleCollapse = (newState: string | null) => {
     const isShowing = newState === "header";
     SetShowing(route, isShowing).then(() => {
@@ -84,14 +93,6 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
       EventsOff(Message.REFRESH);
     };
   }, [fetchFn, nItems, pager]);
-
-  useEffect(() => {
-    if (route === "history") {
-      HistoryPage(pager.getOffset(), pager.perPage).then((item: types.HistoryContainer) => {
-        setHistory(item);
-      });
-    }
-  }, [pager.pageNumber, pager.perPage]);
 
   const state = {
     route,
