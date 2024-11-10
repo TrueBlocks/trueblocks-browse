@@ -2,6 +2,7 @@
 // of ExistingCode markers (if any).
 package app
 
+// EXISTING_CODE
 import (
 	"sync"
 	"sync/atomic"
@@ -10,6 +11,8 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
+
+// EXISTING_CODE
 
 var historyLock atomic.Uint32
 

@@ -17,7 +17,13 @@ type Containerer interface {
 
 type Containerers []Containerer
 
+var debugging = true
+
 func DebugInts(label string, lastUpdate, latest int64) {
+	if !debugging {
+		return
+	}
+
 	render := true
 	switch label {
 	case "abi":
@@ -38,7 +44,7 @@ func DebugInts(label string, lastUpdate, latest int64) {
 
 	if render {
 		now := time.Now().Unix()
-		logger.InfoW(label, "lastUpdate", now-lastUpdate, "latest", now-latest)
+		logger.InfoBG("NeedsUpdate:", label, "lastUpdate", now-lastUpdate, "latest", now-latest)
 	}
 }
 

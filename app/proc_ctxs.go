@@ -19,22 +19,29 @@ func (a *App) registerCtx(address base.Address) *output.RenderCtx {
 	return rCtx
 }
 
-func (a *App) unregisterCtx(address base.Address) bool {
-	return a.cancelContext(address)
-}
-
-func (a *App) cancelContext(address base.Address) (removed bool) {
+func (a *App) unregisterCtx(address base.Address) (removed bool) {
 	ctxMutex.Lock()
 	defer ctxMutex.Unlock()
 	if ctxArrays, ok := a.renderCtxs[address]; ok {
 		for _, ctx := range ctxArrays {
-			a.emitMsg(messages.Canceled, &messages.MessageMsg{Address: address})
 			ctx.Cancel()
 		}
 		delete(a.renderCtxs, address)
 		removed = true
 	}
 	return
+}
+
+func (a *App) cancelContext(address base.Address) bool {
+	ctxMutex.Lock()
+	if ctxArrays, ok := a.renderCtxs[address]; ok {
+		for _, ctx := range ctxArrays {
+			a.emitMsg(messages.Canceled, &messages.MessageMsg{Address: address})
+			ctx.Cancel()
+		}
+	}
+	ctxMutex.Unlock()
+	return a.unregisterCtx(address)
 }
 
 func (a *App) CancelAllContexts() {
