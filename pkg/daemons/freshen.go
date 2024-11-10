@@ -40,7 +40,7 @@ func (s *DaemonFreshen) IsRunning() bool {
 }
 
 func (s *DaemonFreshen) Run() {
-	logger.InfoBW("Starting fresheners...")
+	logger.InfoBW("Starting fresheners...", s.IsRunning(), s.Sleep)
 	for {
 		if s.IsRunning() {
 			s.Tick("Freshen")

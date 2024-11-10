@@ -41,8 +41,7 @@ func (s *DaemonScraper) IsRunning() bool {
 }
 
 func (s *DaemonScraper) Run() {
-	logger.InfoBW("Starting scraper...")
-
+	logger.InfoBW("Starting scraper...", s.IsRunning())
 	for {
 		if s.IsRunning() {
 			opts := sdk.ScrapeOptions{
