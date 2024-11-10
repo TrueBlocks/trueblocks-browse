@@ -2,9 +2,9 @@ import { Button } from "@mantine/core";
 import { Table } from "@tanstack/react-table";
 // import { DataTable, FieldGroup, PublishButton, CleanButton, AddButton } from "@components";
 import { DataTable, FieldGroup } from "@components";
+import { StepWizard } from "@gocode/app/App";
 import { types } from "@gocode/models";
-import { StepWizard } from "../../../wailsjs/go/app/App";
-import { useAppState } from "../../state";
+import { useAppState } from "@state";
 
 export const WizardFormTable = (table: Table<types.WizError>, nItems: number): FieldGroup<types.WizardContainer>[] => {
   const { wizard, fetchWizard } = useAppState();

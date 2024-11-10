@@ -1,6 +1,6 @@
 import { DataTable, FieldGroup, AddButton } from "@components";
 import { types } from "@gocode/models";
-import { useAppState } from "../../state";
+import { useAppState } from "@state";
 
 export const ProjectFormDef = (table: any): FieldGroup<types.ProjectContainer>[] => {
   const { info } = useAppState();

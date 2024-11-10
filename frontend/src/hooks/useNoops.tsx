@@ -1,4 +1,4 @@
-import { app } from "../../wailsjs/go/models";
+import { app } from "@gocode/models";
 import { Page } from "./useKeyboardPaging";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

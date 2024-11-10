@@ -7,7 +7,7 @@ import { CloseButton } from "@components";
 import { messages } from "@gocode/models";
 import { useViewName } from "@hooks";
 import { EventsEmit } from "@runtime";
-import { useAppState } from "../../state";
+import { useAppState } from "@state";
 import classes from "./Help.module.css";
 
 // Glob import for markdown files as raw content

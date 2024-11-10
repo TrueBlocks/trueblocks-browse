@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Select } from "@mantine/core";
 import { GetChains, SetChain } from "@gocode/app/App";
-import { useAppState } from "../../state";
+import { useAppState } from "@state";
 
 export const ChainSelector = () => {
   const { config } = useAppState();

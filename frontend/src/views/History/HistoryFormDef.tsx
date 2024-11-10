@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Table } from "@tanstack/react-table";
 import { ExploreButton, ExportButton, DataTable, FieldGroup, GoogleButton } from "@components";
+import { GetName } from "@gocode/app/App";
 import { types, base } from "@gocode/models";
-import { GetName } from "../../../wailsjs/go/app/App";
-import { useUtils } from "../../hooks";
+import { useUtils } from "@hooks";
 
 export const HistoryFormDef = (
   address: base.Address,

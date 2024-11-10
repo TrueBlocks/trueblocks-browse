@@ -1,6 +1,6 @@
 import { Text } from "@mantine/core";
-import { useRenderCounter } from "../../hooks";
-import { useViewState } from "../../state";
+import { useRenderCounter } from "@hooks";
+import { useViewState } from "@state";
 
 export const DebugState = ({ n }: { n: number }) => {
   const { nItems } = useViewState();

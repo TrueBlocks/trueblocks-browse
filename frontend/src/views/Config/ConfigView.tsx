@@ -1,6 +1,6 @@
+import { DebugState } from "@components";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { DebugState } from "../../components";
 
 export const ConfigView = () => {
   const { config, fetchConfig } = useAppState();
