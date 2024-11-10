@@ -74,8 +74,10 @@ func (s *WizardContainer) getWizardReload() (ret int64, reload bool) {
 
 // EXISTING_CODE
 type WizError struct {
-	Count int    `json:"count"`
-	Error string `json:"error"`
+	Index  int      `json:"index"`
+	State  WizState `json:"state"`
+	Reason string   `json:"reason"`
+	Error  string   `json:"error"`
 }
 
 func (w *WizError) ToErr() error {

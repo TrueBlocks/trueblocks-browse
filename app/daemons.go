@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
@@ -20,7 +21,7 @@ func (a *App) startDaemons() {
 		}
 		if a.freshenController = daemons.NewFreshen(a, "freshen", freshenRate, a.IsShowing("freshen")); a.freshenController == nil {
 			err := fmt.Errorf("%d: %s", ErrDaemonLoad, "freshen")
-			a.addWizErr(err)
+			a.addWizErr(WizReasonNoFreshenDaemon, types.WizRpc, err)
 		} else {
 			go a.freshenController.Run()
 		}
@@ -30,7 +31,7 @@ func (a *App) startDaemons() {
 	initScraper := func() {
 		if a.scraperController = daemons.NewScraper(a, "scraper", 7000, a.IsShowing("scraper")); a.scraperController == nil {
 			err := fmt.Errorf("%d: %s", ErrDaemonLoad, "scraper")
-			a.addWizErr(err)
+			a.addWizErr(WizReasonNoScraperDaemon, types.WizRpc, err)
 		} else {
 			go a.scraperController.Run()
 		}
@@ -40,7 +41,7 @@ func (a *App) startDaemons() {
 	initIpfs := func() {
 		if a.ipfsController = daemons.NewIpfs(a, "ipfs", 10000, a.IsShowing("ipfs")); a.ipfsController == nil {
 			err := fmt.Errorf("%d: %s", ErrDaemonLoad, "ipfs")
-			a.addWizErr(err)
+			a.addWizErr(WizReasonNoIpfsDaemon, types.WizRpc, err)
 		} else {
 			go a.ipfsController.Run()
 		}

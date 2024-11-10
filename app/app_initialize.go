@@ -15,7 +15,7 @@ import (
 func (a *App) initialize() bool {
 	initSession := func() bool {
 		if err := a.session.Load(); err != nil {
-			a.addWizErr(err)
+			a.addWizErr(WizReasonNoSession, types.WizConfig, err)
 			return false
 		} else {
 			// we serialize the wizard state in a session string
@@ -33,10 +33,10 @@ func (a *App) initialize() bool {
 	// so we always start fresh...
 	initConfig := func() bool { // window can open, but we need an RPC provider...which means we need a config file.
 		if err := a.config.Load(); err != nil {
-			a.addWizErr(err)
+			a.addWizErr(WizReasonNoConfig, types.WizConfig, err)
 			return false
 		} else if a.session.LastChain, err = a.config.IsValidChain(a.getChain()); err != nil {
-			a.addWizErr(err)
+			a.addWizErr(WizReasonChainNotConfigured, types.WizConfig, err)
 			return false
 		} else {
 			logger.InfoBW("Loaded config", a.cntWizErrs(), "errors")
@@ -50,7 +50,7 @@ func (a *App) initialize() bool {
 		os.Setenv("TB_NO_PROVIDER_CHECK", "true")
 		if err := rpc.PingRpc(a.config.Chains[a.session.LastChain].RpcProvider); err != nil {
 			wErr := fmt.Errorf("%w: %v", ErrLoadingRpc, err)
-			a.addWizErr(wErr)
+			a.addWizErr(WizReasonFailedRpcPing, types.WizRpc, wErr)
 			os.Unsetenv("TB_NO_PROVIDER_CHECK")
 			return false
 		} else {
@@ -67,7 +67,7 @@ func (a *App) initialize() bool {
 			var err error
 			if a.namesMap, err = names.LoadNamesMap(namesChain, coreTypes.All, nil); err != nil {
 				wErr := fmt.Errorf("%w: %v", ErrLoadingNames, err)
-				a.addWizErr(wErr)
+				a.addWizErr(WizReasonFailedNamesLoad, types.WizRpc, wErr)
 				return false
 			} else {
 				logger.InfoBW("Loaded names", a.cntWizErrs(), "errors")
@@ -87,7 +87,7 @@ func (a *App) initialize() bool {
 		var err error
 		if a.session.Window, err = a.session.CleanWindowSize(a.ctx); err != nil {
 			wErr := fmt.Errorf("%w: %v", ErrWindowSize, err)
-			a.addWizErr(wErr)
+			a.addWizErr(WizReasonFailedPrepareWindow, types.WizRpc, wErr)
 		} else {
 			logger.InfoBW("Window size set...")
 			ret = true

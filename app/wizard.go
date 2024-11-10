@@ -14,8 +14,13 @@ func (a *App) setWizardState(state types.WizState) {
 	a.wizard.State = state
 }
 
-func (a *App) addWizErr(err error) {
-	wizError := types.WizError{Count: a.cntWizErrs() + 1, Error: err.Error()}
+func (a *App) addWizErr(reason string, state types.WizState, err error) {
+	wizError := types.WizError{
+		Index:  a.cntWizErrs() + 1,
+		State:  state,
+		Reason: reason,
+		Error:  err.Error(),
+	}
 	a.wizard.Items = append(a.wizard.Items, wizError)
 }
 
@@ -78,3 +83,15 @@ func (a *App) StepWizard(step types.WizStep) types.WizState {
 
 	return a.wizard.State
 }
+
+const (
+	WizReasonNoSession           = "could not load session file"
+	WizReasonNoConfig            = "could not load config file"
+	WizReasonChainNotConfigured  = "chain is not configured"
+	WizReasonFailedRpcPing       = "could not connect to Rpc"
+	WizReasonFailedNamesLoad     = "could not load names"
+	WizReasonFailedPrepareWindow = "could not prepare window"
+	WizReasonNoFreshenDaemon     = "could not start freshen daemon"
+	WizReasonNoScraperDaemon     = "could not start scraper daemon"
+	WizReasonNoIpfsDaemon        = "could not start Ipfs daemon"
+)
