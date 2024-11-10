@@ -162,8 +162,8 @@ export function ModifyAbi(arg1) {
   return window['go']['app']['App']['ModifyAbi'](arg1);
 }
 
-export function ModifyHistory(arg1) {
-  return window['go']['app']['App']['ModifyHistory'](arg1);
+export function ModifyProject(arg1) {
+  return window['go']['app']['App']['ModifyProject'](arg1);
 }
 
 export function ModifyMonitors(arg1) {

@@ -11,36 +11,6 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-func (a *App) getHistoryCnt(address base.Address) uint64 {
-	opts := sdk.ListOptions{
-		Addrs:   []string{address.Hex()},
-		Globals: a.getGlobals(),
-	}
-	if appearances, meta, err := opts.ListCount(); err != nil {
-		a.emitAddressErrorMsg(err, address)
-		return 0
-	} else if len(appearances) == 0 {
-		return 0
-	} else {
-		a.meta = *meta
-		return uint64(appearances[0].NRecords)
-	}
-}
-
-func (a *App) isFileOpen(address base.Address) bool {
-	_, isOpen := a.historyCache.Load(address)
-	return isOpen
-}
-
-func (a *App) txCount(address base.Address) int {
-	if a.isFileOpen(address) {
-		history, _ := a.historyCache.Load(address)
-		return len(history.Items)
-	} else {
-		return 0
-	}
-}
-
 var historyLock atomic.Uint32
 
 func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan chan error) error {
@@ -183,49 +153,43 @@ func (a *App) GoToAddress(address base.Address) {
 	}
 
 	a.SetRoute("/history", address.Hex())
-
 	a.cancelContext(address)
 	a.historyCache.Delete(address)
+
 	a.loadHistory(address, nil, nil)
 
 	a.emitNavigateMsg(a.GetRoute())
 	a.emitInfoMsg("viewing address", address.Hex())
 }
 
-/*
-// TODO: How to decouple the loadX and XPage routines so there's no resource contention
-import (
-    "sync"
-    "sync/atomic"
-)
-
-type MyStruct struct {
-    itemMap    *map[string]ItemType
-    items      []ItemType
-    otherField string
-    isLoading  int32
-    mu         sync.Mutex
+func (a *App) getHistoryCnt(address base.Address) uint64 {
+	opts := sdk.ListOptions{
+		Addrs:   []string{address.Hex()},
+		Globals: a.getGlobals(),
+	}
+	if appearances, meta, err := opts.ListCount(); err != nil {
+		a.emitAddressErrorMsg(err, address)
+		return 0
+	} else if len(appearances) == 0 {
+		return 0
+	} else {
+		a.meta = *meta
+		return uint64(appearances[0].NRecords)
+	}
 }
 
-func (s *MyStruct) loadItems(dataStream <-chan ItemType) {
-    atomic.StoreInt32(&s.isLoading, 1)
-    defer atomic.StoreInt32(&s.isLoading, 0)
-    for item := range dataStream {
-        s.mu.Lock()
-        s.mu.Unlock()
-    }
+func (a *App) isFileOpen(address base.Address) bool {
+	_, isOpen := a.historyCache.Load(address)
+	return isOpen
 }
 
-func (s *MyStruct) GetPage() *MyStruct {
-    if atomic.LoadInt32(&s.isLoading) == 1 {
-        return nil
-    }
-    s.mu.Lock()
-    defer s.mu.Unlock()
-    return &MyStruct{
-        otherField: s.otherField,
-    }
+func (a *App) txCount(address base.Address) int {
+	if a.isFileOpen(address) {
+		history, _ := a.historyCache.Load(address)
+		return len(history.Items)
+	} else {
+		return 0
+	}
 }
-*/
 
 // EXISTING_CODE

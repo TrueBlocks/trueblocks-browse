@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm, DebugState } from "@components";
-import { GoToAddress, ModifyHistory } from "@gocode/app/App";
+import { GoToAddress, ModifyProject } from "@gocode/app/App";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { ProjectTableDefNoDelete, ProjectTableDef, ProjectFormDef } from ".";
@@ -46,7 +46,7 @@ export const ProjectView = () => {
       nItems={project.nItems}
       fetchFn={fetchProject}
       onEnter={handleEnter}
-      modifyFn={ModifyHistory}
+      modifyFn={ModifyProject}
     >
       <DebugState n={project.lastUpdate} />
       <View tabs={tabs} forms={forms} />

@@ -88,7 +88,7 @@ export function ManifestsView(arg1:menu.CallbackData):Promise<void>;
 
 export function ModifyAbi(arg1:app.ModifyData):Promise<void>;
 
-export function ModifyHistory(arg1:app.ModifyData):Promise<void>;
+export function ModifyProject(arg1:app.ModifyData):Promise<void>;
 
 export function ModifyMonitors(arg1:app.ModifyData):Promise<void>;
 
