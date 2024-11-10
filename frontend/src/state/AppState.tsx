@@ -199,9 +199,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   useEffect(() => {
     fetchHistory(0, 15);
-    HistoryPage(0, 15).then((item: types.HistoryContainer) => {
-      setHistory(item);
-    });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
