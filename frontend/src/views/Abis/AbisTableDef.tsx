@@ -51,7 +51,7 @@ export const AbisTableDef: CustomColumnDef<types.Abi, any>[] = [
   }),
   columnHelper.accessor("lastModDate", {
     header: () => "lastModDate",
-    cell: (info) => <Formatter type="date" value={info.renderValue()} />,
+    cell: (info) => <Formatter type="int" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
   columnHelper.accessor("address", {

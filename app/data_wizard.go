@@ -6,8 +6,6 @@ package app
 import (
 	"sync"
 	"sync/atomic"
-
-	// TOOD: BOGUS "github.com/TrueBlocks/trueblocks-browse/pkg/types"
 )
 
 // EXISTING_CODE
@@ -30,7 +28,4 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) {
 	if !a.wizard.NeedsUpdate(false) {
 		return
 	}
-
-	// TOOD: BOGUS a.wizard = types.NewWizardContainer(a.session.LastChain, a.wizard.Items)
-	// TOOD: BOGUS a.wizard.Summarize()
 }

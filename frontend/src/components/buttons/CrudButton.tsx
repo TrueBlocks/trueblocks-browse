@@ -22,7 +22,7 @@ export const CrudButton = ({ value, isDeleted = false, withEdit = false, ...prop
   }
 
   return (
-    <Group justify="flex-end">
+    <Group justify="flex-end" wrap="nowrap">
       {withEdit ? <EditButton value={value} {...props} /> : <></>}
       <DeleteButton value={value} {...props} />
     </Group>

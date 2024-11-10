@@ -40,7 +40,7 @@ func (s *DaemonIpfs) IsRunning() bool {
 }
 
 func (s *DaemonIpfs) Run() {
-	logger.Info("Starting ipfs...")
+	logger.InfoBW("Starting ipfs...")
 
 	for {
 		if s.IsRunning() {

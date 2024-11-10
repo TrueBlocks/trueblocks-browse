@@ -2218,7 +2218,9 @@ export namespace types {
 	
 	
 	export class WizError {
-	    count: number;
+	    index: number;
+	    state: WizState;
+	    reason: string;
 	    error: string;
 	
 	    static createFrom(source: any = {}) {
@@ -2227,7 +2229,9 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.count = source["count"];
+	        this.index = source["index"];
+	        this.state = source["state"];
+	        this.reason = source["reason"];
 	        this.error = source["error"];
 	    }
 	}

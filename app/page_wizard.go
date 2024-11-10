@@ -13,7 +13,6 @@ func (a *App) WizardPage(first, pageSize int) *types.WizardContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	// logger.InfoBY("len:", len(a.wizard.Items))
 	a.wizard.Summarize()
 	return &a.wizard
 }

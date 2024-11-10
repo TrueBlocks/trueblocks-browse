@@ -43,7 +43,6 @@ func (a *App) Freshen() error {
 	go a.loadProject(&wg, errorChan)
 	go a.loadHistory(a.GetSelected(), &wg, errorChan)
 	go a.loadMonitors(&wg, errorChan)
-	// go a.loadNames(&wg, errorChan)
 	go a.loadAbis(&wg, errorChan)
 	go a.loadIndexes(&wg, errorChan)
 	go a.loadManifests(&wg, errorChan)

@@ -44,7 +44,7 @@ const baseColumns: CustomColumnDef<types.HistoryContainer, any>[] = [
 
 const defButtons = (address: base.Address | undefined) => {
   return (
-    <Group>
+    <Group wrap="nowrap">
       <ExploreButton value={address} />
       <DalleButton value={address} />
       <GoogleButton value={address} />
@@ -63,7 +63,7 @@ export const ProjectTableDef: CustomColumnDef<types.HistoryContainer, any>[] = [
     cell: (info) => {
       const { address } = info.row.original;
       return (
-        <Group wrap={"nowrap"}>
+        <Group wrap="nowrap">
           {defButtons(address)}
           <CrudButton value={address} />
         </Group>
@@ -79,7 +79,7 @@ export const ProjectTableDefNoDelete: CustomColumnDef<types.HistoryContainer, an
     header: () => " ",
     cell: (info) => {
       const { address } = info.row.original;
-      return <Group wrap={"nowrap"}>{defButtons(address)}</Group>;
+      return <Group wrap="nowrap">{defButtons(address)}</Group>;
     },
     meta: { className: "wide cell" },
   }),

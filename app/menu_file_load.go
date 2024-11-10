@@ -25,8 +25,8 @@ func (a *App) newFile() {
 }
 
 func (a *App) readFile(fn string) (bool, error) {
-	newProject := types.NewProjectContainer(a.getChain(), []types.HistoryContainer{})
-	if pF, err := newProject.Load(fn); err != nil {
+	tmpProject := types.NewProjectContainer(a.getChain(), []types.HistoryContainer{})
+	if pF, err := tmpProject.Load(fn); err != nil {
 		return false, fmt.Errorf("%w: %v", ErrLoadingProject, err)
 
 	} else if len(pF.Addresses) == 0 {
