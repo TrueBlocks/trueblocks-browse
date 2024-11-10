@@ -118,3 +118,30 @@ func (a *App) getGlobals() sdk.Globals {
 		// Append:  a.Append,
 	}
 }
+
+/*
+Here’s a summary of the decisions we made for each feature, organized by category:
+
+Included Features
+These functionalities are actively included in your function.
+
+Search: Allows locating specific items within a container based on defined keywords or criteria.
+Sort: Orders items in ascending or descending order based on specified attributes.
+Filter: Displays only items that meet certain conditions for focused analysis.
+Aggregate: Summarizes data by performing operations like sum, average, or count on grouped items.
+Group: Organizes items into categories or groups, such as by month or year, for comparative analysis.
+Transform: Modifies item attributes to new forms, supporting data normalization or enrichment.
+Excluded Features
+These functionalities are permanently excluded.
+
+Export: Allows exporting processed data into formats like CSV or JSON for external use.
+Visualize: Generates visual data representations, such as charts or graphs.
+Audit: Tracks changes or access patterns within the data for security and compliance.
+Potential Future Upgrades
+These are excluded for now but could be added later if needed.
+
+Validate: Checks items against rules or schemas to ensure data integrity.
+Merge: Combines data from multiple containers or sources for comprehensive analysis.
+Annotate: Adds metadata or notes to items, providing context for future reference.
+This structure provides flexibility for handling data while keeping future expansions in mind. Let me know if there’s anything else you’d like to adjust or explore further!
+*/

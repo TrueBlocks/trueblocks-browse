@@ -51,6 +51,14 @@ func (s *AbiContainer) String() string {
 	return string(bytes)
 }
 
+func (s *AbiContainer) GetItems() interface{} {
+	return s.Items
+}
+
+func (s *AbiContainer) SetItems(items interface{}) {
+	s.Items = items.([]coreTypes.Abi)
+}
+
 func (s *AbiContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getAbiReload()
 	if force || reload {

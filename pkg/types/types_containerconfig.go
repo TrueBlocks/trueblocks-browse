@@ -41,6 +41,14 @@ func (s *ConfigContainer) String() string {
 	return string(bytes)
 }
 
+func (s *ConfigContainer) GetItems() interface{} {
+	return nil
+}
+
+func (s *ConfigContainer) SetItems(items interface{}) {
+	// s.Items = items.([].)
+}
+
 func (s *ConfigContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getConfigReload()
 	if force || reload {

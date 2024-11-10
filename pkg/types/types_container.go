@@ -11,6 +11,8 @@ type Containerer interface {
 	ShallowCopy() Containerer
 	Summarize()
 	NeedsUpdate(force bool) bool
+	GetItems() interface{}
+	SetItems(items interface{})
 }
 
 type Containerers []Containerer

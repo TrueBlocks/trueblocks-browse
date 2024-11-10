@@ -304,7 +304,7 @@
             "ui_route": "1070-status",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=coreTypes.Status|noChain|initChain",
+            "attributes": "itemType=coreTypes.CacheItem|embedType=coreTypes.Status|noChain|initChain|noFetch",
             "members": [
                 {
                     "name": "nFolders",
@@ -332,7 +332,7 @@
             "ui_route": "1080-settings",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=|inputType=types.SettingsProp|noType|noFetch|noPaging"
+            "attributes": "inputType=types.SettingsProp|noType|noFetch|noPaging"
         },
         {
             "class": "Daemon",
@@ -372,7 +372,7 @@
             "ui_route": "1120-wizard",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "noFetch|noPaging"
+            "attributes": "itemType=types.WizError|noFetch|noPaging"
         }
     ],
     "baseTypes": [

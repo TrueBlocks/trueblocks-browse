@@ -45,6 +45,14 @@ func (s *ProjectContainer) String() string {
 	return string(bytes)
 }
 
+func (s *ProjectContainer) GetItems() interface{} {
+	return s.Items
+}
+
+func (s *ProjectContainer) SetItems(items interface{}) {
+	s.Items = items.([]HistoryContainer)
+}
+
 func (s *ProjectContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getProjectReload()
 	if force || reload {

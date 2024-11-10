@@ -50,6 +50,14 @@ func (s *HistoryContainer) String() string {
 	return string(bytes)
 }
 
+func (s *HistoryContainer) GetItems() interface{} {
+	return s.Items
+}
+
+func (s *HistoryContainer) SetItems(items interface{}) {
+	s.Items = items.([]coreTypes.Transaction)
+}
+
 func (s *HistoryContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getHistoryReload()
 	if force || reload {

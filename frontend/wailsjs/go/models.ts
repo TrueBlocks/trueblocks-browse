@@ -2116,9 +2116,9 @@ export namespace types {
 	    version?: string;
 	    meta?: MetaData;
 	    diffs?: MetaData;
-	    lastUpdate: number;
 	    items: CacheItem[];
 	    nItems: number;
+	    lastUpdate: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new StatusContainer(source);
@@ -2151,9 +2151,9 @@ export namespace types {
 	        this.version = source["version"];
 	        this.meta = this.convertValues(source["meta"], MetaData);
 	        this.diffs = this.convertValues(source["diffs"], MetaData);
-	        this.lastUpdate = source["lastUpdate"];
 	        this.items = this.convertValues(source["items"], CacheItem);
 	        this.nItems = source["nItems"];
+	        this.lastUpdate = source["lastUpdate"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

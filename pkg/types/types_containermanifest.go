@@ -54,6 +54,14 @@ func (s *ManifestContainer) String() string {
 	return string(bytes)
 }
 
+func (s *ManifestContainer) GetItems() interface{} {
+	return s.Items
+}
+
+func (s *ManifestContainer) SetItems(items interface{}) {
+	s.Items = items.([]coreTypes.ChunkRecord)
+}
+
 func (s *ManifestContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getManifestReload()
 	if force || reload {

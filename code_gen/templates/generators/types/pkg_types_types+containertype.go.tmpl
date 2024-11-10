@@ -18,7 +18,17 @@ type {{.Class}}Container struct {
 	// EXISTING_CODE
 }
 
-func New{{.Class}}Container(chain string{{if .HasItems}}, itemsIn []{{.InputType}}{{end}}{{if .HasEmbed}}, {{toLower .EmbedName}} *{{.EmbedType}}{{end}}{{if .HasOther}}, {{toLower .OtherName}} {{.OtherType}}{{end}}) {{.Class}}Container {
+func New{{.Class}}Container(chain string
+{{- if .HasItems -}}
+, itemsIn []{{.InputType}}
+{{- end -}}
+{{- if .HasEmbed -}}
+, {{toLower .EmbedName}} *{{.EmbedType}}
+{{- end -}}
+{{- if .HasOther -}}
+, {{toLower .OtherName}} {{.OtherType}}
+{{- end -}}
+) {{.Class}}Container {
 	ret := {{.Class}}Container{
 	{{if .HasItems}}Items: {{if eq .ItemType .InputType}}itemsIn,
 NItems: uint64(len(itemsIn)){{else}}make([]coreTypes.ChunkRecord, 0, len(itemsIn)){{end}},
@@ -36,6 +46,22 @@ NItems: uint64(len(itemsIn)){{else}}make([]coreTypes.ChunkRecord, 0, len(itemsIn
 func (s *{{.Class}}Container) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
+}
+
+func (s *{{.Class}}Container) GetItems() interface{} {
+{{if .HasItems -}}
+	return s.Items
+{{- else -}}
+	return nil
+{{- end}}
+}
+
+func (s *{{.Class}}Container) SetItems(items interface{}) {
+{{if .HasItems -}}
+	s.Items = items.([]{{.ItemType}})
+{{- else -}}
+	// s.Items = items.([]{{.ItemType}})
+{{- end}}
 }
 
 func (s *{{.Class}}Container) NeedsUpdate(force bool) bool {

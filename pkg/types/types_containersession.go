@@ -36,6 +36,14 @@ func (s *SessionContainer) String() string {
 	return string(bytes)
 }
 
+func (s *SessionContainer) GetItems() interface{} {
+	return nil
+}
+
+func (s *SessionContainer) SetItems(items interface{}) {
+	// s.Items = items.([].)
+}
+
 func (s *SessionContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getSessionReload()
 	if force || reload {

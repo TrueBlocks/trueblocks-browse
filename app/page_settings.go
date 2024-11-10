@@ -13,6 +13,7 @@ func (a *App) SettingsPage(first, pageSize int) *types.SettingsContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
+	// a.settings.Summarize()
 	copy, _ := a.settings.ShallowCopy().(*types.SettingsContainer)
 	return copy
 }

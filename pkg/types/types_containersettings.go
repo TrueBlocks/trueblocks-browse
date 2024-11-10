@@ -47,6 +47,14 @@ func (s *SettingsContainer) String() string {
 	return string(bytes)
 }
 
+func (s *SettingsContainer) GetItems() interface{} {
+	return nil
+}
+
+func (s *SettingsContainer) SetItems(items interface{}) {
+	// s.Items = items.([]string)
+}
+
 func (s *SettingsContainer) NeedsUpdate(force bool) bool {
 	return s.Session.NeedsUpdate(force) ||
 		s.Config.NeedsUpdate(force) ||

@@ -14,6 +14,7 @@ func (a *App) StatusPage(first, pageSize int) *types.StatusContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
+	// a.status.Summarize()
 	first = base.Max(0, base.Min(first, len(a.status.Items)-1))
 	last := base.Min(len(a.status.Items), first+pageSize)
 	copy, _ := a.status.ShallowCopy().(*types.StatusContainer)

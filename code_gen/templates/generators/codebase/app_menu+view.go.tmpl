@@ -2,10 +2,8 @@
 // of ExistingCode markers (if any).
 package app
 
-import (
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	"github.com/wailsapp/wails/v2/pkg/menu"
-)
+// EXISTING_CODE
+// EXISTING_CODE
 
 {{range .Structures -}}
 func (a *App) {{.UiRouteLabel}}View(cb *menu.CallbackData) {
@@ -14,9 +12,14 @@ func (a *App) {{.UiRouteLabel}}View(cb *menu.CallbackData) {
 	a.Navigate("/{{.UiRouteLower}}", address.Hex())
 	{{- else if .IsWizard -}}
 	if a.isConfigured() {
-		a.StepWizard(coreTypes.Reset)
+		a.wizard.State = types.WizWelcome
+		a.emitMsg(messages.Refresh, &messages.MessageMsg{
+			State: string(a.wizard.State),
+			Num1:  2, // 2 is the wizard step if needed
+		})
+		a.Navigate("/wizard", "")
 	} else {
-		a.StepWizard(coreTypes.Next)
+		a.StepWizard(types.WizNext)
 	}
 	a.Navigate("/{{.UiRouteLower}}", "")
 	{{- else -}}

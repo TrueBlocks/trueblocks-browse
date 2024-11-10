@@ -55,6 +55,14 @@ func (s *NameContainer) String() string {
 	return string(bytes)
 }
 
+func (s *NameContainer) GetItems() interface{} {
+	return s.Items
+}
+
+func (s *NameContainer) SetItems(items interface{}) {
+	s.Items = items.([]coreTypes.Name)
+}
+
 func (s *NameContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getNameReload()
 	if force || reload {

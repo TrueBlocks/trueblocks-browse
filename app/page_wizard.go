@@ -13,6 +13,6 @@ func (a *App) WizardPage(first, pageSize int) *types.WizardContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	a.wizard.Summarize()
+	// a.wizard.Summarize()
 	return &a.wizard
 }

@@ -46,6 +46,14 @@ func (s *IndexContainer) String() string {
 	return string(bytes)
 }
 
+func (s *IndexContainer) GetItems() interface{} {
+	return s.Items
+}
+
+func (s *IndexContainer) SetItems(items interface{}) {
+	s.Items = items.([]coreTypes.ChunkStats)
+}
+
 func (s *IndexContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getIndexReload()
 	if force || reload {

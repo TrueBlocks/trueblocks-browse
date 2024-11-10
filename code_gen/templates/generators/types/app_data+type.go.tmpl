@@ -46,7 +46,14 @@ func (a *App) load{{.UiRouteLabel}}(wg *sync.WaitGroup, errorChan chan error) er
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.{{.UiRouteLower}} = types.New{{.Class}}Container(opts.Chain, {{if .HasItems}}{{.UiRouteLower}}{{end}}{{if .HasEmbed}}&{{.UiRouteLower}}[0]{{end}})
+		a.{{.UiRouteLower}} = types.New{{.Class}}Container(opts.Chain
+{{- if .HasItems -}}
+, {{.UiRouteLower}}
+{{- end -}}
+{{- if .HasEmbed -}}
+, &{{.UiRouteLower}}[0]
+{{- end -}}
+)
 		// EXISTING_CODE
 		// EXISTING_CODE
 {{if .HasSorts -}}

@@ -17,15 +17,17 @@ type StatusContainer struct {
 	NFiles           uint64 `json:"nFiles"`
 	NFolders         uint64 `json:"nFolders"`
 	coreTypes.Status `json:",inline"`
-	LastUpdate       int64 `json:"lastUpdate"`
+	Items            []coreTypes.CacheItem `json:"items"`
+	NItems           uint64                `json:"nItems"`
+	LastUpdate       int64                 `json:"lastUpdate"`
 	// EXISTING_CODE
-	Items  []coreTypes.CacheItem `json:"items"`
-	NItems uint64                `json:"nItems"`
 	// EXISTING_CODE
 }
 
-func NewStatusContainer(chain string, status *coreTypes.Status) StatusContainer {
+func NewStatusContainer(chain string, itemsIn []coreTypes.CacheItem, status *coreTypes.Status) StatusContainer {
 	ret := StatusContainer{
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
 		Status: *status,
 	}
 	ret.Chain = chain
@@ -41,6 +43,14 @@ func NewStatusContainer(chain string, status *coreTypes.Status) StatusContainer 
 func (s *StatusContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
+}
+
+func (s *StatusContainer) GetItems() interface{} {
+	return s.Items
+}
+
+func (s *StatusContainer) SetItems(items interface{}) {
+	s.Items = items.([]coreTypes.CacheItem)
 }
 
 func (s *StatusContainer) NeedsUpdate(force bool) bool {
@@ -59,9 +69,9 @@ func (s *StatusContainer) ShallowCopy() Containerer {
 		NFiles:     s.NFiles,
 		NFolders:   s.NFolders,
 		Status:     s.Status.ShallowCopy(),
+		NItems:     s.NItems,
 		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
-		NItems: s.NItems,
 		// EXISTING_CODE
 	}
 	ret.Chain = s.Chain
@@ -69,8 +79,8 @@ func (s *StatusContainer) ShallowCopy() Containerer {
 }
 
 func (s *StatusContainer) Summarize() {
-	// EXISTING_CODE
 	s.NItems = uint64(len(s.Items))
+	// EXISTING_CODE
 	for _, cache := range s.Caches {
 		s.NFolders += cache.NFolders
 		s.NFiles += cache.NFiles
@@ -85,6 +95,17 @@ func (s *StatusContainer) getStatusReload() (ret int64, reload bool) {
 	reload = ret > s.LastUpdate+(60*2) // every two minutes
 	// EXISTING_CODE
 	return
+}
+
+type EveryCacheItemFn func(item *coreTypes.CacheItem, data any) bool
+
+func (s *StatusContainer) ForEveryCacheItem(process EveryCacheItemFn, data any) bool {
+	for i := 0; i < len(s.Items); i++ {
+		if !process(&s.Items[i], data) {
+			return false
+		}
+	}
+	return true
 }
 
 // EXISTING_CODE

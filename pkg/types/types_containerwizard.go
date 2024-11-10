@@ -20,10 +20,10 @@ type WizardContainer struct {
 	// EXISTING_CODE
 }
 
-func NewWizardContainer(chain string, wizErrs []WizError) WizardContainer {
+func NewWizardContainer(chain string, itemsIn []WizError) WizardContainer {
 	ret := WizardContainer{
-		Items:  wizErrs,
-		NItems: uint64(len(wizErrs)),
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
 		Chain:  chain,
 	}
 	ret.LastUpdate, _ = ret.getWizardReload()
@@ -36,6 +36,14 @@ func NewWizardContainer(chain string, wizErrs []WizError) WizardContainer {
 func (s *WizardContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
+}
+
+func (s *WizardContainer) GetItems() interface{} {
+	return s.Items
+}
+
+func (s *WizardContainer) SetItems(items interface{}) {
+	s.Items = items.([]WizError)
 }
 
 func (s *WizardContainer) NeedsUpdate(force bool) bool {
@@ -61,8 +69,8 @@ func (s *WizardContainer) ShallowCopy() Containerer {
 }
 
 func (s *WizardContainer) Summarize() {
-	// EXISTING_CODE
 	s.NItems = uint64(len(s.Items))
+	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
@@ -70,6 +78,17 @@ func (s *WizardContainer) getWizardReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return
+}
+
+type EveryWizErrorFn func(item *WizError, data any) bool
+
+func (s *WizardContainer) ForEveryWizError(process EveryWizErrorFn, data any) bool {
+	for i := 0; i < len(s.Items); i++ {
+		if !process(&s.Items[i], data) {
+			return false
+		}
+	}
+	return true
 }
 
 // EXISTING_CODE

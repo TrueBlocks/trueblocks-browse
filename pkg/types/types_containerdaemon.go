@@ -33,6 +33,14 @@ func (s *DaemonContainer) String() string {
 	return string(bytes)
 }
 
+func (s *DaemonContainer) GetItems() interface{} {
+	return nil
+}
+
+func (s *DaemonContainer) SetItems(items interface{}) {
+	// s.Items = items.([].)
+}
+
 func (s *DaemonContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getDaemonReload()
 	if force || reload {

@@ -2,11 +2,14 @@
 // of ExistingCode markers (if any).
 package app
 
+// EXISTING_CODE
 import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
+
+// EXISTING_CODE
 
 func (a *App) ProjectView(cb *menu.CallbackData) {
 	a.Navigate("/", "")

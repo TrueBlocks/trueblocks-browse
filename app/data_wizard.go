@@ -12,7 +12,7 @@ import (
 
 var wizardLock atomic.Uint32
 
-func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) {
+func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	_ = errorChan
 	defer func() {
 		if wg != nil {
@@ -21,11 +21,51 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) {
 	}()
 
 	if !wizardLock.CompareAndSwap(0, 1) {
-		return
+		return nil
 	}
 	defer wizardLock.CompareAndSwap(1, 0)
 
-	if !a.wizard.NeedsUpdate(false) {
-		return
+	if !a.wizard.NeedsUpdate(a.forceWizard()) {
+		return nil
 	}
+
+	// opts := sdk.WizardOptions{
+	// 	Globals: a.getGlobals(),
+	// }
+	// // EXISTING_CODE
+	// // EXISTING_CODE
+	// opts.Verbose = true
+
+	// if wizard, meta, err := opts.WizardList(); err != nil {
+	// 	if errorChan != nil {
+	// 		errorChan <- err
+	// 	}
+	// 	return err
+	// } else if (wizard == nil) || (len(wizard) == 0) {
+	// 	err = fmt.Errorf("no wizard found")
+	// 	if errorChan != nil {
+	// 		errorChan <- err
+	// 	}
+	// 	return err
+	// } else {
+	// 	// EXISTING_CODE
+	// 	// EXISTING_CODE
+	// 	a.meta = *meta
+	// 	a.wizard = types.NewWizardContainer(opts.Chain, wizard)
+	// 	// EXISTING_CODE
+	// 	// EXISTING_CODE
+	// 	a.wizard.Summarize()
+	// 	a.emitInfoMsg("Loaded wizard", "")
+	// }
+
+	return nil
 }
+
+func (a *App) forceWizard() (force bool) {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
+// EXISTING_CODE

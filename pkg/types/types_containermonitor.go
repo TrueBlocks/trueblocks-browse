@@ -78,6 +78,14 @@ func (s *MonitorContainer) String() string {
 	return string(bytes)
 }
 
+func (s *MonitorContainer) GetItems() interface{} {
+	return s.Items
+}
+
+func (s *MonitorContainer) SetItems(items interface{}) {
+	s.Items = items.([]coreTypes.Monitor)
+}
+
 func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getMonitorReload()
 	if force || reload {
