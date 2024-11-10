@@ -2,7 +2,8 @@ import { Text } from "@mantine/core";
 import { useAppState } from "@state";
 
 export const Footer = () => {
-  const { chain, status, info } = useAppState();
+  const { info, chain } = useAppState();
+  const { status } = useAppState();
 
   const fn = () => {
     if (info.filename) {

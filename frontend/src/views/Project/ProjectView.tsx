@@ -7,7 +7,8 @@ import { useAppState, ViewStateProvider } from "@state";
 import { ProjectTableDefNoDelete, ProjectTableDef, ProjectFormDef } from ".";
 
 export const ProjectView = () => {
-  const { project, fetchProject, info } = useAppState();
+  const { info } = useAppState();
+  const { project, fetchProject } = useAppState();
 
   useEffect(() => {
     fetchProject(0, 100);

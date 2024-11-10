@@ -65,9 +65,7 @@ interface AppStateProps {
 
   info: app.AppInfo;
   chain: string;
-  meta: types.MetaData;
   setHistory: React.Dispatch<React.SetStateAction<types.HistoryContainer>>;
-  setMeta: (meta: types.MetaData) => void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -90,7 +88,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
 
   const [chain, setChain] = useState<string>("mainnet");
-  const [meta, setMeta] = useState<types.MetaData>({} as types.MetaData);
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
 
   const fetchProject = useCallback((currentItem: number, itemsPerPage: number) => {
@@ -200,7 +197,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const fetchAppInfo = () => {
     GetAppInfo().then((info) => {
       setChain(info.chain);
-      setMeta(info.meta);
       setInfo(info);
     });
   };
@@ -259,10 +255,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     address,
     info,
     chain,
-    meta,
     setHistory,
     setAddress,
-    setMeta,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;
