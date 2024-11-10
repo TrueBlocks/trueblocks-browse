@@ -10,7 +10,8 @@ import { HistoryTableDef, HistoryFormDef } from ".";
 export const HistoryView = () => {
   const { modifyNoop } = useNoops();
   const { ShortenAddr } = useUtils();
-  const { setAddress, history, fetchHistory } = useAppState();
+  const { setAddress } = useAppState();
+  const { history, fetchHistory } = useAppState();
 
   const address = useParams().address as unknown as base.Address;
   useEffect(() => {

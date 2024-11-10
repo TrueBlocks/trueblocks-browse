@@ -34,7 +34,6 @@ func main() {
 		Menu:             a.GetMenus(),
 		Bind: []interface{}{
 			a,
-			&app.AppInfo{},
 			&messages.MessageMsg{},
 			&coreTypes.Transaction{},
 			&configTypes.Config{},

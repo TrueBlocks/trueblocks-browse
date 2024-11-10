@@ -16,7 +16,8 @@ interface AddressEditorProps extends FormatterProps {
 }
 
 export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }: Omit<AddressEditorProps, "size">) => {
-  const { address, fetchNames } = useAppState();
+  const { address } = useAppState();
+  const { fetchNames } = useAppState();
   const { pager } = useViewState();
 
   const [line1, setLine1] = useState<string>("");

@@ -27,7 +27,7 @@ export const SettingsView = () => {
   const forms: ViewForm = {
     status: <FormTable data={status} groups={StatusFormDef(table)} />,
     config: <FormTable data={config} groups={ConfigFormDef(config)} />,
-    session: <FormTable data={session} groups={SessionFormDef()} />,
+    session: <FormTable data={session} groups={SessionFormDef(session)} />,
   };
 
   if (!settings) {

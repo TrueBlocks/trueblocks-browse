@@ -1,8 +1,7 @@
 import { FieldGroup, EditButton } from "@components";
 import { types } from "@gocode/models";
-import { useAppState } from "@state";
 
-export const SessionFormDef = (): FieldGroup<types.Session>[] => {
+export const SessionFormDef = (session: types.SessionContainer): FieldGroup<types.Session>[] => {
   return [
     {
       label: "Last",
@@ -23,12 +22,12 @@ export const SessionFormDef = (): FieldGroup<types.Session>[] => {
     {
       label: "Window",
       collapsable: false,
-      components: [<SessionWindow key={"window"} />],
+      components: [<SessionWindow key={"window"} session={session} />],
     },
     {
       label: "Toggles",
       collapsable: false,
-      components: [<SessionToggles key={"window"} />],
+      components: [<SessionToggles key={"window"} session={session} />],
     },
     /*
       LastSub: string;
@@ -36,12 +35,14 @@ export const SessionFormDef = (): FieldGroup<types.Session>[] => {
   ];
 };
 
-const SessionWindow = () => {
-  const { session } = useAppState();
+type SessionProps = {
+  session: types.SessionContainer;
+};
+
+const SessionWindow = ({ session }: SessionProps) => {
   return <div>{`${JSON.stringify(session.window, null, 2)}`}</div>;
 };
 
-const SessionToggles = () => {
-  const { session } = useAppState();
+const SessionToggles = ({ session }: SessionProps) => {
   return <div>{`${JSON.stringify(session.toggles, null, 2)}`}</div>;
 };

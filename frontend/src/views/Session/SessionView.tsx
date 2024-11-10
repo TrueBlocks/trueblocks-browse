@@ -10,7 +10,7 @@ export const SessionView = () => {
   const route = "session";
   const tabs = ["session"];
   const forms: ViewForm = {
-    session: <FormTable data={session} groups={SessionFormDef()} />,
+    session: <FormTable data={session} groups={SessionFormDef(session)} />,
   };
   return (
     <ViewStateProvider route={route} fetchFn={fetchSession} modifyFn={modifyNoop}>
