@@ -6,14 +6,12 @@ import { StepWizard } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useAppState } from "@state";
 
-export const WizardFormTable = (table: Table<types.WizError>, nItems: number): FieldGroup<types.WizardContainer>[] => {
-  const { wizard, fetchWizard } = useAppState();
-
-  const stepWizard = (step: types.WizStep) => {
-    StepWizard(step).then(() => {
-      fetchWizard(0, 100);
-    });
-  };
+export const WizardFormTable = (
+  table: Table<types.WizError>,
+  nItems: number,
+  stepWizard: (step: types.WizStep) => void
+): FieldGroup<types.WizardContainer>[] => {
+  const { wizard } = useAppState();
 
   return [
     {

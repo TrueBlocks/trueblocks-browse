@@ -98,9 +98,6 @@ func (a *App) DomReady(ctx context.Context) {
 			a.newFile()
 		}
 
-		// freshen the data once...daemons will take over from here...
-		go a.Freshen()
-
 		logger.Info("Fininished initializing...")
 	}
 }

@@ -5,9 +5,19 @@ import { types } from "@gocode/models";
 const columnHelper = createColumnHelper<types.WizError>();
 
 export const WizardTableDef: CustomColumnDef<types.WizError, any>[] = [
-  columnHelper.accessor("count", {
-    header: () => "count",
+  columnHelper.accessor("index", {
+    header: () => "index",
     cell: (info) => <Formatter type="int" value={info.renderValue()} />,
+    meta: { className: "small cell" },
+  }),
+  columnHelper.accessor("state", {
+    header: () => "state",
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
+    meta: { className: "small cell" },
+  }),
+  columnHelper.accessor("reason", {
+    header: () => "reason",
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
     meta: { className: "small cell" },
   }),
   columnHelper.accessor("error", {
