@@ -218,7 +218,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   useEffect(() => {
     const handleRefresh = () => {
       fetchAppInfo();
-      fetchWizard(0, 15);
+      fetchWizard(0, 100);
       fetchStatus(0, 100);
     };
     handleRefresh(); // first load

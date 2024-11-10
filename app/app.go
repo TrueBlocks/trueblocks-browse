@@ -116,7 +116,7 @@ func (a *App) getGlobals() sdk.Globals {
 		// Cache:   a.Cache,
 		// Decache: a.Decache,
 		// Verbose: a.Verbose,
-		Chain: a.session.LastChain,
+		Chain: a.getChain(),
 		// Output:  a.Output,
 		// Append:  a.Append,
 	}

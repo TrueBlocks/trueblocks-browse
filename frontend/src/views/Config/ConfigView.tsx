@@ -14,7 +14,7 @@ export const ConfigView = () => {
   return (
     <ViewStateProvider route={route} nItems={0} fetchFn={fetchConfig} modifyFn={modifyNoop}>
       <DebugState n={config.lastUpdate} />
-      <pre>{JSON.stringify(config?.settings, null, 2)}</pre>
+      <pre>{JSON.stringify(config, null, 2)}</pre>
     </ViewStateProvider>
   );
 };

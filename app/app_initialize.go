@@ -19,8 +19,8 @@ func (a *App) initialize() bool {
 			return false
 		} else {
 			// we serialize the wizard state in a session string
-			// TODO: BOGUS a.wizard = types.NewWizzardContainer(a.session.LastChain, []types.WizError{})
-			a.wizard.Chain = a.session.LastChain
+			// TODO: BOGUS a.wizard = types.NewWizzardContainer(a.getChain(), []types.WizError{})
+			a.wizard.Chain = a.getChain()
 			a.wizard.State = types.WizState(a.session.WizardStr)
 			a.session.Window.Title = "Browse by TrueBlocks"
 			logger.InfoBW("Loaded session:", a.cntWizErrs(), "errors")
@@ -35,7 +35,7 @@ func (a *App) initialize() bool {
 		if err := a.config.Load(); err != nil {
 			a.addWizErr(err)
 			return false
-		} else if a.session.LastChain, err = a.config.IsValidChain(a.session.LastChain); err != nil {
+		} else if a.session.LastChain, err = a.config.IsValidChain(a.getChain()); err != nil {
 			a.addWizErr(err)
 			return false
 		} else {

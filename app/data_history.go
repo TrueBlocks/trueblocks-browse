@@ -96,7 +96,7 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	// 		Globals: sdk.Globals{
 	// 			Cache: true,
 	// 			Ether: true,
-	// 			Chain: a.session.LastChain,
+	// 			Chain: a.getChain(),
 	// 		},
 	// 	}
 

@@ -40,7 +40,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	sort.Slice(items, func(i, j int) bool {
 		return items[i].Address.Hex() < items[j].Address.Hex()
 	})
-	a.project = types.NewProjectContainer(a.session.LastChain, items)
+	a.project = types.NewProjectContainer(a.getChain(), items)
 	if !a.project.NeedsUpdate(a.forceProject()) {
 		return nil
 	}

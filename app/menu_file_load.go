@@ -25,7 +25,7 @@ func (a *App) newFile() {
 }
 
 func (a *App) readFile(fn string) (bool, error) {
-	newProject := types.NewProjectContainer(a.session.LastChain, []types.HistoryContainer{})
+	newProject := types.NewProjectContainer(a.getChain(), []types.HistoryContainer{})
 	if pF, err := newProject.Load(fn); err != nil {
 		return false, fmt.Errorf("%w: %v", ErrLoadingProject, err)
 
@@ -33,7 +33,6 @@ func (a *App) readFile(fn string) (bool, error) {
 		return false, fmt.Errorf("project file contains no records: %s", fn)
 
 	} else {
-		a.CancelAllContexts()
 		a.historyCache = &types.HistoryMap{}
 		histories := []types.HistoryContainer{}
 		for _, address := range pF.Addresses {
