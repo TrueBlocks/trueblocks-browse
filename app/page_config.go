@@ -11,7 +11,7 @@ func (a *App) ConfigPage(first, pageSize int) *types.ConfigContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	// a.config.Summarize()
+	a.config.Summarize()
 	copy, _ := a.config.ShallowCopy().(*types.ConfigContainer)
 	return copy
 }

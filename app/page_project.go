@@ -14,7 +14,7 @@ func (a *App) ProjectPage(first, pageSize int) *types.ProjectContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	// a.project.Summarize()
+	a.project.Summarize()
 	first = base.Max(0, base.Min(first, len(a.project.Items)-1))
 	last := base.Min(len(a.project.Items), first+pageSize)
 	copy, _ := a.project.ShallowCopy().(*types.ProjectContainer)

@@ -11,7 +11,7 @@ func (a *App) DaemonPage(first, pageSize int) *types.DaemonContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	// a.daemons.Summarize()
+	a.daemons.Summarize()
 	copy, _ := a.daemons.ShallowCopy().(*types.DaemonContainer)
 	return copy
 }

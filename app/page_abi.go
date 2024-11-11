@@ -35,7 +35,7 @@ func (a *App) AbiPage(first, pageSize int) *types.AbiContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	// a.abis.Summarize()
+	a.abis.Summarize()
 	first = base.Max(0, base.Min(first, len(a.abis.Items)-1))
 	last := base.Min(len(a.abis.Items), first+pageSize)
 	copy, _ := a.abis.ShallowCopy().(*types.AbiContainer)

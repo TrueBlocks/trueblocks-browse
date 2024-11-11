@@ -372,7 +372,7 @@
             "ui_route": "1120-wizard",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.WizError|noFetch|noPaging"
+            "attributes": "itemType=types.WizError|noFetch"
         }
     ],
     "baseTypes": [
