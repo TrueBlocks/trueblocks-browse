@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm, DebugState } from "@components";
-import { GoToAddress, ModifyProject } from "@gocode/app/App";
+import { LoadAddress, ModifyProject } from "@gocode/app/App";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { ProjectTableDefNoDelete, ProjectTableDef, ProjectFormDef } from ".";
@@ -18,7 +18,8 @@ export const ProjectView = () => {
     if (project && project.items) {
       const history = project.items[page.getRecord()];
       if (history && history.address) {
-        GoToAddress(history.address).then(() => {});
+        const addressStr = history.address as unknown as string;
+        LoadAddress(addressStr).then(() => {});
       }
     }
   };

@@ -5,6 +5,7 @@ package app
 // EXISTING_CODE
 import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
 // EXISTING_CODE

@@ -66,8 +66,6 @@ export function GetState(arg1:string):Promise<string>;
 
 export function GetWindow():Promise<types.Window>;
 
-export function GoToAddress(arg1:base.Address):Promise<void>;
-
 export function HistoryPage(arg1:number,arg2:number):Promise<types.HistoryContainer>;
 
 export function HistoryView(arg1:menu.CallbackData):Promise<void>;
@@ -77,6 +75,8 @@ export function IndexPage(arg1:number,arg2:number):Promise<types.IndexContainer>
 export function IndexesView(arg1:menu.CallbackData):Promise<void>;
 
 export function IsShowing(arg1:string):Promise<boolean>;
+
+export function LoadAddress(arg1:string):Promise<void>;
 
 export function LoadName(arg1:string):Promise<editors.Name>;
 

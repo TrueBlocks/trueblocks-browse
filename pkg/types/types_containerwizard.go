@@ -103,6 +103,11 @@ func (w *WizError) ToErr() error {
 	return errors.New(w.Error)
 }
 
+func (w *WizError) String() string {
+	bytes, _ := json.Marshal(w)
+	return string(bytes)
+}
+
 type WizState string
 
 const (

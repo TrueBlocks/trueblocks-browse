@@ -146,23 +146,8 @@ func (a *App) Reload() {
 		history, _ := a.historyCache.Load(a.GetSelected())
 		history.LastUpdate = 0
 		a.historyCache.Store(a.GetSelected(), history)
-		a.GoToAddress(history.Address)
+		a.goToAddress(history.Address)
 	}
-}
-
-func (a *App) GoToAddress(address base.Address) {
-	if address == base.ZeroAddr {
-		return
-	}
-
-	a.SetRoute("/history", address.Hex())
-	a.cancelContext(address)
-	a.historyCache.Delete(address)
-
-	a.loadHistory(address, nil, nil)
-
-	a.emitNavigateMsg(a.GetRoute())
-	a.emitInfoMsg("viewing address", address.Hex())
 }
 
 func (a *App) getHistoryCnt(address base.Address) uint64 {
@@ -192,6 +177,29 @@ func (a *App) txCount(address base.Address) int {
 		return len(history.Items)
 	} else {
 		return 0
+	}
+}
+
+func (a *App) goToAddress(address base.Address) {
+	if address == base.ZeroAddr {
+		return
+	}
+
+	a.SetRoute("/history", address.Hex())
+	a.cancelContext(address)
+	a.historyCache.Delete(address)
+
+	a.loadHistory(address, nil, nil)
+
+	a.emitNavigateMsg(a.GetRoute())
+	a.emitInfoMsg("viewing address", address.Hex())
+}
+
+func (a *App) LoadAddress(addrOrEns string) {
+	if address, ok := a.ensToAddress(addrOrEns); ok {
+		a.goToAddress(address)
+	} else {
+		a.emitErrorMsg(ErrInvalidAddress, nil)
 	}
 }
 

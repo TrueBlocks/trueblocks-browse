@@ -118,10 +118,6 @@ export function GetWindow() {
   return window['go']['app']['App']['GetWindow']();
 }
 
-export function GoToAddress(arg1) {
-  return window['go']['app']['App']['GoToAddress'](arg1);
-}
-
 export function HistoryPage(arg1, arg2) {
   return window['go']['app']['App']['HistoryPage'](arg1, arg2);
 }
@@ -140,6 +136,10 @@ export function IndexesView(arg1) {
 
 export function IsShowing(arg1) {
   return window['go']['app']['App']['IsShowing'](arg1);
+}
+
+export function LoadAddress(arg1) {
+  return window['go']['app']['App']['LoadAddress'](arg1);
 }
 
 export function LoadName(arg1) {

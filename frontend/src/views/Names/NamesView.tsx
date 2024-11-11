@@ -1,6 +1,6 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm, DebugState } from "@components";
-import { GoToAddress, ModifyName } from "@gocode/app/App";
+import { LoadAddress, ModifyName } from "@gocode/app/App";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { NamesFormDef, NamesTableDef } from ".";
@@ -10,7 +10,8 @@ export const NamesView = () => {
 
   const handleEnter = (page: Page) => {
     const address = names.items[page.getRecord()].address;
-    GoToAddress(address).then(() => {});
+    const addressStr = address as unknown as string;
+    LoadAddress(addressStr).then(() => {});
   };
 
   const table = useReactTable({
