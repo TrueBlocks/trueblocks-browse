@@ -24,7 +24,7 @@ export type FormatterProps = {
 };
 
 export const Formatter = ({ type, value, value2, className, size = "md" }: FormatterProps) => {
-  const { address } = useAppState();
+  const { info } = useAppState();
 
   const cn = GetDebugColor(type) || className;
   const n = value as number;
@@ -45,7 +45,7 @@ export const Formatter = ({ type, value, value2, className, size = "md" }: Forma
     case "tag":
       return <TagFormatter value={value} size={size} className={cn} />;
     case "gas":
-      value = from !== address ? "-" : formatEther(bi);
+      value = from !== info.address ? "-" : formatEther(bi);
       break;
     case "ether":
       value = bool ? "" : formatEther(bi);

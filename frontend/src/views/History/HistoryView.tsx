@@ -10,13 +10,7 @@ import { HistoryTableDef, HistoryFormDef } from ".";
 export const HistoryView = () => {
   const { modifyNoop } = useNoops();
   const { ShortenAddr } = useUtils();
-  const { setAddress } = useAppState();
-  const { history, fetchHistory } = useAppState();
-
-  const address = useParams().address as unknown as base.Address;
-  useEffect(() => {
-    setAddress(address);
-  }, [address, setAddress]);
+  const { history, fetchHistory, info } = useAppState();
 
   const table = useReactTable({
     data: history.items || [],
@@ -25,10 +19,10 @@ export const HistoryView = () => {
   });
 
   const route = "history";
-  const addrStr = ShortenAddr(address.toString());
+  const addrStr = ShortenAddr(info.address.toString());
   const tabs = [addrStr];
   const forms: ViewForm = {
-    [addrStr]: <FormTable data={history} groups={HistoryFormDef(address, table)} />,
+    [addrStr]: <FormTable data={history} groups={HistoryFormDef(info.address, table)} />,
   };
   return (
     <ViewStateProvider route={route} nItems={history.nItems} fetchFn={fetchHistory} modifyFn={modifyNoop}>

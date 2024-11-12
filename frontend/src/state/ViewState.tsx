@@ -33,18 +33,9 @@ type ViewContextType = {
 
 export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnter, children }: ViewContextType) => {
   const [headerShows, setHeaderShows] = useState<boolean | null>(null);
-  const { setHistory } = useAppState();
   const { enterNoop } = useNoops();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
   const pager = useKeyboardPaging(nItems, lines, onEnter ? onEnter : enterNoop);
-
-  useEffect(() => {
-    if (route === "history") {
-      HistoryPage(pager.getOffset(), pager.perPage).then((item: types.HistoryContainer) => {
-        setHistory(item);
-      });
-    }
-  }, [pager.pageNumber, pager.perPage]);
 
   const handleCollapse = (newState: string | null) => {
     const isShowing = newState === "header";

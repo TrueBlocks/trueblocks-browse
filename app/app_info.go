@@ -3,6 +3,7 @@ package app
 import (
 	"path/filepath"
 
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -11,6 +12,7 @@ type AppInfo struct {
 	Filename string             `json:"filename"`
 	Dirty    bool               `json:"dirty"`
 	Meta     coreTypes.MetaData `json:"meta"`
+	Address  base.Address       `json:"address"`
 }
 
 func (a *App) getFolder() string {
@@ -26,10 +28,12 @@ func (a *App) getFullPath() string {
 }
 
 func (a *App) GetAppInfo() AppInfo {
+	address := a.GetSelected()
 	return AppInfo{
 		Chain:    a.getChain(),
 		Filename: a.getFullPath(),
 		Dirty:    a.dirty,
 		Meta:     a.meta,
+		Address:  address,
 	}
 }

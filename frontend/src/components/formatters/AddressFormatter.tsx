@@ -16,7 +16,7 @@ interface AddressEditorProps extends FormatterProps {
 }
 
 export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }: Omit<AddressEditorProps, "size">) => {
-  const { address } = useAppState();
+  const { info } = useAppState();
   const { fetchNames } = useAppState();
   const { pager } = useViewState();
 
@@ -90,7 +90,7 @@ export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }
     />
   ) : null;
 
-  const isCurrent = value === address;
+  const isCurrent = value === info.address;
   const line1Class = isCurrent ? classes.bold : className;
 
   return (

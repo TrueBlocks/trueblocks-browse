@@ -16,6 +16,7 @@ import {
   ConfigPage,
   WizardPage,
   GetAppInfo,
+  LoadAddress,
 } from "@gocode/app/App";
 import { app, base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
@@ -60,11 +61,8 @@ interface AppStateProps {
   wizard: types.WizardContainer;
   fetchWizard: (currentItem: number, itemsPerPage: number) => void;
 
-  address: base.Address;
-  setAddress: (address: base.Address) => void;
-
   info: app.AppInfo;
-  setHistory: React.Dispatch<React.SetStateAction<types.HistoryContainer>>;
+  loadAddress: (address: base.Address) => void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -83,8 +81,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [session, setSession] = useState<types.SessionContainer>({} as types.SessionContainer);
   const [config, setConfig] = useState<types.ConfigContainer>({} as types.ConfigContainer);
   const [wizard, setWizard] = useState<types.WizardContainer>({} as types.WizardContainer);
-
-  const [address, setAddress] = useState<base.Address>("0x0" as unknown as base.Address);
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
 
   const fetchProject = useCallback((currentItem: number, itemsPerPage: number) => {
@@ -197,6 +193,14 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   };
 
+  const loadAddress = (address: base.Address) => {
+    const addressStr = address as unknown as string;
+    LoadAddress(addressStr).then(() => {
+      info.address = address;
+      setInfo(info);
+    });
+  };
+
   useEffect(() => {
     fetchHistory(0, 15);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -244,11 +248,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchConfig,
     wizard,
     fetchWizard,
-
-    address,
     info,
-    setHistory,
-    setAddress,
+    loadAddress,
   };
 
   return <AppState.Provider value={state}>{children}</AppState.Provider>;
