@@ -23,6 +23,7 @@ import (
 var historyLock atomic.Uint32
 
 func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan chan error) error {
+	defer a.trackPerformance("loadHistory")()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -148,6 +149,8 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) error 
 }
 
 func (a *App) Reload() {
+	defer a.trackPerformance("Reload")()
+
 	switch a.session.LastRoute {
 	case "/names":
 		logger.InfoG("Reloading names...")
@@ -178,6 +181,8 @@ func (a *App) txCount(address base.Address) int {
 }
 
 func (a *App) goToAddress(address base.Address) {
+	defer a.trackPerformance("goToAddress")()
+
 	if address == base.ZeroAddr {
 		return
 	}

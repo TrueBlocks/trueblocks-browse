@@ -45,6 +45,8 @@ type App struct {
 	scraperController *daemons.DaemonScraper
 	freshenController *daemons.DaemonFreshen
 	ipfsController    *daemons.DaemonIpfs
+
+	timer Timer
 }
 
 func NewApp() *App {
@@ -56,16 +58,20 @@ func NewApp() *App {
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}
 	a.session.LastSub = make(map[string]string)
+	a.timer = NewTimer()
 
 	return a
 }
 
 func (a *App) Startup(ctx context.Context) {
+	defer a.trackPerformance("Startup")()
 	a.ctx = ctx
 }
 
 // DomReady is called by Wails when the app is ready to go. Adjust the window size and show it.
 func (a *App) DomReady(ctx context.Context) {
+	defer a.trackPerformance("DomReady")()
+
 	// This call does a number of things. If any errors occur, they are deferred until
 	// the window is open. This is because we can't show errors until the window is open.
 	// The process is:
