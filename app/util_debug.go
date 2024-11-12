@@ -7,7 +7,7 @@ import (
 )
 
 func (a *App) Logger(msg []string) {
-	logger.Info(msg)
+	logger.InfoBY(msg)
 }
 
 var isTesting bool

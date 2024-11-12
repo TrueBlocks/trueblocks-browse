@@ -14,8 +14,8 @@ import (
 // TODO: all the options that chifra export has. Also, this should stream
 // TODO: it output to a Writer not a string. Much fast for much larger files.
 func (a *App) ExportAddress(address base.Address) {
-	isOpen := a.isFileOpen(address)
-	if !isOpen {
+	_, exists := a.historyCache.Load(address)
+	if !exists {
 		return
 	}
 

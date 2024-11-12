@@ -11,6 +11,8 @@ func (a *App) GetExploreUrl(term string, google, dalle bool) string {
 	if len(term) != 42 {
 		google = false
 		dalle = false
+	} else if len(term) == 0 {
+		return ""
 	}
 
 	opts := sdk.ExploreOptions{

@@ -17,11 +17,12 @@ func (a *App) HistoryPage(first, pageSize int) *types.HistoryContainer {
 	address := a.GetSelected()
 	_, exists := a.historyCache.Load(address)
 	if !exists {
-		return &types.HistoryContainer{}
+		return nil
 	}
 
-	first = base.Max(0, base.Min(first, a.txCount(address)-1))
-	last := base.Min(a.txCount(address), first+pageSize)
+	txCount := a.txCount(address)
+	first = base.Max(0, base.Min(first, txCount-1))
+	last := base.Min(txCount, first+pageSize)
 	history, _ := a.historyCache.Load(address)
 	history.Summarize()
 	copy := history.ShallowCopy().(*types.HistoryContainer)

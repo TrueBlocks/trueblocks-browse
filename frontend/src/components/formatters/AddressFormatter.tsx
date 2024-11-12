@@ -19,10 +19,15 @@ export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }
   const { info } = useAppState();
   const { fetchNames } = useAppState();
   const { pager } = useViewState();
-
+  const [line1Class, setLine1Class] = useState<string>("");
   const [line1, setLine1] = useState<string>("");
   const [line2, setLine2] = useState<string>("");
   const [isPopupOpen, setPopupOpen] = useState(false);
+
+  useEffect(() => {
+    const isCurrent = value === info.address;
+    setLine1Class(isCurrent ? classes.bold : className || "");
+  }, [info, value, className]);
 
   const givenName = value2 as string;
   const givenAddress = value as unknown as string;
@@ -89,9 +94,6 @@ export const AddressFormatter = ({ value, value2, className, mode = EdMode.All }
       }}
     />
   ) : null;
-
-  const isCurrent = value === info.address;
-  const line1Class = isCurrent ? classes.bold : className;
 
   return (
     <Popup editor={editor}>

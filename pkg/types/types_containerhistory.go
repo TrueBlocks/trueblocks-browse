@@ -5,7 +5,6 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"time"
 	"unsafe"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
@@ -109,9 +108,7 @@ func (s *HistoryContainer) getHistoryReload() (ret int64, reload bool) {
 		return
 	}
 	fn := coreMonitor.PathToMonitorFile(s.Chain, s.Address)
-	fs := file.FileSize(fn)
-	tm := time.Unix(fs, 0)
-	ret = tm.Unix()
+	ret = file.FileSize(fn)
 	reload = ret > s.LastUpdate
 	// EXISTING_CODE
 	return

@@ -47,9 +47,8 @@ func (a *App) readFile(fn string) (bool, error) {
 		a.session.LastSub["/history"] = pF.Selected.Hex()
 		a.saveSession()
 
-		for _, history := range a.project.Items {
-			go a.loadHistory(history.Address, nil, nil)
-		}
+		address := a.GetSelected()
+		go a.loadHistory(address, nil, nil)
 
 		a.emitInfoMsg(a.getFullPath(), "file was opened")
 

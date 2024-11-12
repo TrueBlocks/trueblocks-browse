@@ -418,6 +418,7 @@ export namespace editors {
 export namespace messages {
 	
 	export enum Message {
+	    STARTED = "Started",
 	    PROGRESS = "Progress",
 	    COMPLETED = "Completed",
 	    CANCELED = "Canceled",

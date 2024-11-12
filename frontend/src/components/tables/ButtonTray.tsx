@@ -11,9 +11,16 @@ export const ButtonTray = ({ buttonGroup }: ButtonTrayProps) => {
   }
 
   return (
-    <Group justify="flex-end">
-      {buttonGroup.buttons.map((b) => b)}
-      <div>{/*spacer*/}</div>
+    <Group
+      style={{
+        marginLeft: "auto",
+        display: "flex",
+        gap: "4px",
+      }}
+    >
+      {buttonGroup.buttons.map((b, index) => (
+        <div key={index}>{b}</div>
+      ))}
     </Group>
   );
 };

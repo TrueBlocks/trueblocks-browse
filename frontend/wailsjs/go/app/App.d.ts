@@ -78,6 +78,8 @@ export function IsShowing(arg1:string):Promise<boolean>;
 
 export function LoadAddress(arg1:string):Promise<void>;
 
+export function LoadDalleImage(arg1:base.Address):Promise<boolean>;
+
 export function LoadName(arg1:string):Promise<editors.Name>;
 
 export function Logger(arg1:Array<string>):Promise<void>;

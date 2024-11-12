@@ -1,17 +1,15 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm, DebugState } from "@components";
-import { LoadAddress, ModifyMonitors } from "@gocode/app/App";
+import { ModifyMonitors } from "@gocode/app/App";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { MonitorsTableDef, MonitorFormDef } from ".";
 
 export const MonitorsView = () => {
-  const { monitors, fetchMonitors } = useAppState();
+  const { monitors, fetchMonitors, loadAddress } = useAppState();
 
   const handleEnter = (page: Page) => {
-    const address = monitors.items[page.getRecord()].address;
-    const addressStr = address as unknown as string;
-    LoadAddress(addressStr).then(() => {});
+    loadAddress(monitors.items[page.getRecord()].address);
   };
 
   const table = useReactTable({

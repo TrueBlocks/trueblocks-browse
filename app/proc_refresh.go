@@ -30,7 +30,8 @@ func (a *App) Freshen() error {
 	defer freshenMutex.Unlock()
 
 	logger.InfoBB("")
-	logger.InfoBB("--------------------- Freshen ---------------------", time.Now().Format("15:04:05"))
+	logger.InfoBB("--------------------- Freshen in ---------------------", time.Now().Format("15:04:05"))
+	defer logger.InfoBB("--------------------- Freshen out ---------------------", time.Now().Format("15:04:05"))
 
 	wg := sync.WaitGroup{}
 	errorChan := make(chan error, 5) // Buffered channel to hold up to 5 errors (one from each goroutine)
@@ -39,9 +40,9 @@ func (a *App) Freshen() error {
 	_ = a.loadNames(nil, errorChan)
 
 	// The rest of the data is independant of each other and may be loaded in parallel
-	wg.Add(11)
+	wg.Add(10)
 	go a.loadProject(&wg, errorChan)
-	go a.loadHistory(a.GetSelected(), &wg, errorChan)
+	// go a.loadHistory(a.GetSelected(), &wg, errorChan)
 	go a.loadMonitors(&wg, errorChan)
 	go a.loadAbis(&wg, errorChan)
 	go a.loadIndexes(&wg, errorChan)

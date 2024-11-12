@@ -90,17 +90,17 @@ func (s *ProjectContainer) Summarize() {
 
 func (s *ProjectContainer) getProjectReload() (ret int64, reload bool) {
 	// EXISTING_CODE
+	var totalSize int64 = 0
 	_ = s.ForEveryHistoryContainer(func(item *HistoryContainer, data any) bool {
 		fn := coreMonitor.PathToMonitorFile(s.Chain, item.Address)
-		t, _ := file.GetModTime(fn)
-		r := t.Unix()
-		if r > item.LastUpdate {
-			reload = true
-			ret = r
-			return false // all we need is one
-		}
+		fs := file.FileSize(fn)
+		totalSize += fs
 		return true
 	}, nil)
+	if totalSize > s.LastUpdate {
+		reload = true
+		ret = totalSize
+	}
 	// EXISTING_CODE
 	return
 }

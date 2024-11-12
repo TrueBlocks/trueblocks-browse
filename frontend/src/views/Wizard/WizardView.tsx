@@ -1,9 +1,9 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm, DebugState } from "@components";
+import { StepWizard } from "@gocode/app/App";
+import { types } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { StepWizard } from "../../../wailsjs/go/app/App";
-import { types } from "../../../wailsjs/go/models";
 import { WizardFormTable, WizardTableDef } from ".";
 
 export const WizardView = () => {

@@ -4,11 +4,17 @@ package app
 
 // EXISTING_CODE
 import (
+	"sort"
 	"sync"
 	"sync/atomic"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/index"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -23,113 +29,121 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 		}
 	}()
 
-	// 	if !historyLock.CompareAndSwap(0, 1) {
-	// 		return nil
-	// 	}
-	// 	defer historyLock.CompareAndSwap(1, 0)
+	if !historyLock.CompareAndSwap(0, 1) {
+		return nil
+	}
+	defer historyLock.CompareAndSwap(1, 0)
 
-	// 	// EXISTING_CODE
-	// 	if address.IsZero() {
-	// 		return nil
-	// 	}
-	// 	// EXISTING_CODE
+	// EXISTING_CODE
+	_ = a.forceHistory()
+	if address.IsZero() {
+		return nil
+	}
+	// EXISTING_CODE
 
-	// 	history, exists := a.historyCache.Load(address)
-	// 	if exists {
-	// 		if !history.NeedsUpdate(a.forceHistory()) {
-	// 			return nil
-	// 		}
-	// 	}
+	history, exists := a.historyCache.Load(address)
+	if exists && len(history.Items) > 0 {
+		// if !history.NeedsUpdate(a.forceHistory()) {
+		return nil // we only update with a Reload
+		// }
+	}
 
-	// 	_ = errorChan // delint
-	// 	logger.Info("history: ", address.Hex())
-	// 	if err := a.thing(address, 15); err != nil {
-	// 		a.emitAddressErrorMsg(err, address)
-	// 		return err
-	// 	}
+	if err := a.thing(address, 150, errorChan); err != nil {
+		a.emitAddressErrorMsg(err, address)
+		return err
+	}
 
-	// 	return nil
-	// }
+	return nil
+}
 
-	// func (a *App) forceHistory() (force bool) {
-	// 	// EXISTING_CODE
-	// 	force = a.forceName()
-	// 	// EXISTING_CODE
-	// 	return
-	// }
+func (a *App) forceHistory() (force bool) {
+	// EXISTING_CODE
+	force = a.forceName()
+	// EXISTING_CODE
+	return
+}
 
-	// // EXISTING_CODE
-	// func (a *App) thing(address base.Address, freq int) error {
-	// 	rCtx := a.registerCtx(address)
-	// 	defer a.unregisterCtx(address)
+// EXISTING_CODE
+func (a *App) thing(address base.Address, freq int, errorChan chan error) error {
+	txCnt := a.txCount(address)
+	a.emitProgressMsg(messages.Started, address, 0, 0)
+	defer func() {
+		a.emitProgressMsg(messages.Completed, address, txCnt, txCnt)
+	}()
+	_ = errorChan // delint
+	rCtx := a.registerCtx(address)
+	defer a.unregisterCtx(address)
 
-	// 	opts := sdk.ExportOptions{
-	// 		Addrs:     []string{address.Hex()},
-	// 		RenderCtx: rCtx,
-	// 		Globals: sdk.Globals{
-	// 			Cache: true,
-	// 			Ether: true,
-	// 			Chain: a.getChain(),
-	// 		},
-	// 	}
+	opts := sdk.ExportOptions{
+		Addrs:     []string{address.Hex()},
+		RenderCtx: rCtx,
+		Globals: sdk.Globals{
+			Cache: true,
+			Ether: true,
+			Chain: a.getChain(),
+		},
+	}
 
-	// 	go func() {
-	// 		nItems := a.getHistoryCnt(address)
-	// 		for {
-	// 			select {
-	// 			case model := <-opts.RenderCtx.ModelChan:
-	// 				tx, ok := model.(*coreTypes.Transaction)
-	// 				if !ok {
-	// 					continue
-	// 				}
-	// 				summary, _ := a.historyCache.Load(address)
-	// 				summary.NTotal = nItems
-	// 				summary.Address = address
-	// 				summary.Name = a.namesMap[address].Name
-	// 				summary.Items = append(summary.Items, *tx)
-	// 				if len(summary.Items)%(freq*3) == 0 {
-	// 					sort.Slice(summary.Items, func(i, j int) bool {
-	// 						if summary.Items[i].BlockNumber == summary.Items[j].BlockNumber {
-	// 							return summary.Items[i].TransactionIndex > summary.Items[j].TransactionIndex
-	// 						}
-	// 						return summary.Items[i].BlockNumber > summary.Items[j].BlockNumber
-	// 					})
-	// 					a.emitProgressMsg(messages.Progress, address, len(summary.Items), int(nItems))
-	// 				}
+	expectedCnt := a.getHistoryCnt(address)
 
-	// 				if len(summary.Items) == 0 {
-	// 					a.historyCache.Delete(address)
-	// 				} else {
-	// 					a.historyCache.Store(address, summary)
-	// 				}
+	// we always have a currently opened history which contains the entire history so far...
+	history, _ := a.historyCache.Load(address)
+	history.NTotal = uint64(expectedCnt)
+	history.Address = address
+	history.Name = a.namesMap[address].Name
+	go func() {
+		for {
+			select {
+			case model := <-opts.RenderCtx.ModelChan:
+				tx, ok := model.(*coreTypes.Transaction)
+				if !ok {
+					continue
+				}
+				history.Items = append(history.Items, *tx)
+				// ...periodically, we store it back into the map...
+				if len(history.Items)%freq == 0 {
+					// sort it first...
+					sort.Slice(history.Items, func(i, j int) bool {
+						if history.Items[i].BlockNumber == history.Items[j].BlockNumber {
+							return history.Items[i].TransactionIndex > history.Items[j].TransactionIndex
+						}
+						return history.Items[i].BlockNumber > history.Items[j].BlockNumber
+					})
+					history.Summarize()
+					// put it back into the history cache so other processes can use it...
+					a.historyCache.Store(address, history)
+				}
+				// ...let the front end know and keep going...(note we use the same history)
+				a.emitProgressMsg(messages.Progress, address, len(history.Items), int(expectedCnt))
 
-	// 			case err := <-opts.RenderCtx.ErrorChan:
-	// 				a.emitAddressErrorMsg(err, address)
+			case err := <-opts.RenderCtx.ErrorChan:
+				a.emitAddressErrorMsg(err, address)
 
-	// 			default:
-	// 				if opts.RenderCtx.WasCanceled() {
-	// 					return
-	// 				}
-	// 			}
-	// 		}
-	// 	}()
+			default:
+				if opts.RenderCtx.WasCanceled() {
+					return
+				}
+			}
+		}
+	}()
 
-	// 	_, meta, err := opts.Export() // blocks until forever loop above finishes
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// 	a.meta = *meta
+	_, meta, err := opts.Export() // blocks until forever loop above finishes
+	if err != nil {
+		a.emitProgressMsg(messages.Canceled, address, txCnt, txCnt)
+		return err
+	}
 
-	// 	history, _ := a.historyCache.Load(address)
-	// 	sort.Slice(history.Items, func(i, j int) bool {
-	// 		if history.Items[i].BlockNumber == history.Items[j].BlockNumber {
-	// 			return history.Items[i].TransactionIndex > history.Items[j].TransactionIndex
-	// 		}
-	// 		return history.Items[i].BlockNumber > history.Items[j].BlockNumber
-	// 	})
-	// 	history.Summarize()
-	// 	a.historyCache.Store(address, history)
-	// 	a.emitProgressMsg(messages.Completed, address, a.txCount(address), a.txCount(address))
+	txCnt = a.txCount(address)
+	a.meta = *meta
+	sort.Slice(history.Items, func(i, j int) bool {
+		if history.Items[i].BlockNumber == history.Items[j].BlockNumber {
+			return history.Items[i].TransactionIndex > history.Items[j].TransactionIndex
+		}
+		return history.Items[i].BlockNumber > history.Items[j].BlockNumber
+	})
+	history.Summarize()
+	a.historyCache.Store(address, history)
+
 	return nil
 }
 
@@ -150,30 +164,13 @@ func (a *App) Reload() {
 	}
 }
 
-func (a *App) getHistoryCnt(address base.Address) uint64 {
-	opts := sdk.ListOptions{
-		Addrs:   []string{address.Hex()},
-		Globals: a.getGlobals(),
-	}
-	if appearances, meta, err := opts.ListCount(); err != nil {
-		a.emitAddressErrorMsg(err, address)
-		return 0
-	} else if len(appearances) == 0 {
-		return 0
-	} else {
-		a.meta = *meta
-		return uint64(appearances[0].NRecords)
-	}
-}
-
-func (a *App) isFileOpen(address base.Address) bool {
-	_, isOpen := a.historyCache.Load(address)
-	return isOpen
+func (a *App) getHistoryCnt(address base.Address) int64 {
+	fn := coreMonitor.PathToMonitorFile(a.getChain(), address)
+	return (file.FileSize(fn) / index.AppRecordWidth) - 1 // header
 }
 
 func (a *App) txCount(address base.Address) int {
-	if a.isFileOpen(address) {
-		history, _ := a.historyCache.Load(address)
+	if history, exists := a.historyCache.Load(address); exists {
 		return len(history.Items)
 	} else {
 		return 0
@@ -185,14 +182,18 @@ func (a *App) goToAddress(address base.Address) {
 		return
 	}
 
-	a.SetRoute("/history", address.Hex())
 	a.cancelContext(address)
-	a.historyCache.Delete(address)
-
-	a.loadHistory(address, nil, nil)
-
+	a.SetRoute("/history", address.Hex())
+	history, exists := a.historyCache.Load(address)
+	if exists {
+		history.Items = make([]coreTypes.Transaction, 0, len(history.Items))
+		a.historyCache.Store(address, history)
+	}
+	go a.loadHistory(address, nil, nil)
 	a.emitNavigateMsg(a.GetRoute())
-	a.emitInfoMsg("viewing address", address.Hex())
+	a.emitMsg(messages.Refresh, &messages.MessageMsg{
+		Num1: 3, // 3 means refresh
+	})
 }
 
 func (a *App) LoadAddress(addrOrEns string) {

@@ -39,6 +39,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		Globals: a.getGlobals(),
 	}
 	// EXISTING_CODE
+	opts.Cache = true
 	opts.Chain = abisChain
 	// EXISTING_CODE
 	opts.Verbose = true

@@ -17,7 +17,7 @@ type Containerer interface {
 
 type Containerers []Containerer
 
-var debugging = true
+var debugging = false
 
 func DebugInts(label string, lastUpdate, latest int64) {
 	if !debugging {

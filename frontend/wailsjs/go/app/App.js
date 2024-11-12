@@ -142,6 +142,10 @@ export function LoadAddress(arg1) {
   return window['go']['app']['App']['LoadAddress'](arg1);
 }
 
+export function LoadDalleImage(arg1) {
+  return window['go']['app']['App']['LoadDalleImage'](arg1);
+}
+
 export function LoadName(arg1) {
   return window['go']['app']['App']['LoadName'](arg1);
 }

@@ -1,11 +1,10 @@
 import { useState, createContext, useEffect, useContext, ReactNode } from "react";
 import { Pager } from "@components";
-import { HistoryPage, IsShowing, SetShowing } from "@gocode/app/App";
-import { types, messages, app } from "@gocode/models";
+import { IsShowing, SetShowing } from "@gocode/app/App";
+import { messages, app } from "@gocode/models";
 import { Page, useKeyboardPaging, useNoops } from "@hooks";
 import { Route } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
-import { useAppState } from "@state";
 
 type ModifyFnType = (arg1: app.ModifyData) => Promise<void>;
 type FetchFnType = (selected: number, perPage: number) => void;

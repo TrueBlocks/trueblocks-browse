@@ -12,7 +12,7 @@ import (
 
 func (a *App) startDaemons() {
 	initFreshener := func() bool {
-		freshenRate := time.Duration(3000)
+		freshenRate := time.Duration(5000)
 		if os.Getenv("TB_FRESHEN_RATE") != "" {
 			rate := base.MustParseInt64(os.Getenv("TB_FRESHEN_RATE"))
 			if rate > 0 {

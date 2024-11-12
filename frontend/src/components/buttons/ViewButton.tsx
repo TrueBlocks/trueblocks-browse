@@ -1,12 +1,13 @@
 import { IconLink } from "@tabler/icons-react";
 import { BaseButton, ButtonProps } from "@components";
-import { LoadAddress } from "@gocode/app/App";
+import { base } from "@gocode/models";
+import { useAppState } from "@state";
 
 // ViewButton opens the history page for a given address.
 export const ViewButton = ({ value, ...props }: ButtonProps) => {
-  const addressStr = value as string;
+  const { loadAddress } = useAppState();
   const handleClick = () => {
-    LoadAddress(addressStr).then(() => {});
+    loadAddress(value as base.Address);
   };
 
   return <BaseButton {...props} tip="View" onClick={handleClick} icon={<IconLink />} />;

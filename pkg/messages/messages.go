@@ -11,6 +11,7 @@ import (
 type Message string
 
 const (
+	Started   Message = "Started"
 	Progress  Message = "Progress"
 	Completed Message = "Completed"
 	Canceled  Message = "Canceled"
@@ -31,6 +32,7 @@ var AllMessages = []struct {
 	Value  Message `json:"value"`
 	TSName string  `json:"tsname"`
 }{
+	{Started, "STARTED"},
 	{Progress, "PROGRESS"},
 	{Completed, "COMPLETED"},
 	{Canceled, "CANCELED"},

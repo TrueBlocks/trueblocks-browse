@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm, DebugState } from "@components";
-import { LoadAddress, ModifyProject } from "@gocode/app/App";
+import { ModifyProject } from "@gocode/app/App";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { ProjectTableDefNoDelete, ProjectTableDef, ProjectFormDef } from ".";
 
 export const ProjectView = () => {
-  const { info } = useAppState();
+  const { info, loadAddress } = useAppState();
   const { project, fetchProject } = useAppState();
 
   useEffect(() => {
@@ -15,13 +15,7 @@ export const ProjectView = () => {
   }, [info.filename, fetchProject]);
 
   const handleEnter = (page: Page) => {
-    if (project && project.items) {
-      const history = project.items[page.getRecord()];
-      if (history && history.address) {
-        const addressStr = history.address as unknown as string;
-        LoadAddress(addressStr).then(() => {});
-      }
-    }
+    loadAddress(project.items[page.getRecord()].address);
   };
 
   const projColumns = project?.nItems < 2 ? ProjectTableDefNoDelete : ProjectTableDef;

@@ -1,5 +1,6 @@
+import { ReactNode } from "react";
 import { Container, Fieldset, Grid, Accordion } from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
+import { IconChevronsUp } from "@tabler/icons-react";
 import { FieldRenderer, FieldGroup, isCollapsable, isButton, ButtonTray } from "@components";
 import { useViewState } from "@state";
 import classes from "./FormTable.module.css";
@@ -22,22 +23,36 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
   }
 
   // TODO: This is pretty dumb
-  const style1 = { root: { marginBottom: "-50px", marginTop: "-45px" } };
-  const style2 = { root: { marginTop: "40px", backgroundColor: "white" } };
+  const style1 = {
+    root: {
+      paddingRight: "0px",
+      paddingLeft: "0px",
+      marginBottom: "-50px",
+      marginTop: "-50px",
+    },
+  };
+  const style2 = {
+    root: {
+      paddingRight: "12px",
+      paddingLeft: "12px",
+      marginTop: "40px",
+      backgroundColor: "white",
+    },
+  };
   return (
-    <Container styles={{ root: { minWidth: "95%" } }}>
+    <Container styles={{ root: { minWidth: "100%" } }}>
       <Accordion
         classNames={{ chevron: classes.chevron }}
         data-rotate={headerShows ? "true" : "false"}
         styles={style1}
         value={headerShows ? "header" : null}
         onChange={handleCollapse}
-        chevron={<IconPlus className={classes.icon} />}
+        chevron={null}
       >
         <Accordion.Item value="header">
-          <Accordion.Control c={"black"} bg="white">
+          <CustomAccordionControl isOpen={headerShows} onToggle={() => handleCollapse(headerShows ? null : "header")}>
             <ButtonTray buttonGroup={buttonGroup} />
-          </Accordion.Control>
+          </CustomAccordionControl>
           <Accordion.Panel>
             <Grid>
               {collapsableGroups.map((group, gIndex) => {
@@ -69,5 +84,38 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
         ))}
       </Grid>
     </Container>
+  );
+};
+
+type CustomAccordionControlProps = {
+  isOpen: boolean;
+  onToggle: () => void;
+  children: ReactNode;
+};
+
+export const CustomAccordionControl = ({ isOpen, onToggle, children }: CustomAccordionControlProps) => {
+  return (
+    <div
+      onClick={onToggle}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        gap: "8px",
+        cursor: "pointer",
+        padding: "10px",
+      }}
+      role="button"
+      tabIndex={0}
+    >
+      {children}
+      <IconChevronsUp
+        className={`${classes.icon} ${classes.chevron} ${classes.buttonIcon}`}
+        data-rotate={isOpen ? "true" : "false"}
+        style={{
+          paddingBottom: "2px",
+        }}
+      />
+    </div>
   );
 };
