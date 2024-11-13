@@ -10,7 +10,7 @@ import (
 
 // EXISTING_CODE
 
-func (a *App) StatusPage(first, pageSize int) *types.StatusContainer {
+func (a *App) FetchStatus(first, pageSize int) *types.StatusContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 

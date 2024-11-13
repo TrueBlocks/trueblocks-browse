@@ -27,7 +27,7 @@ func (a *App) getFullPath() string {
 	return filepath.Join(a.getFolder(), a.getFilename())
 }
 
-func (a *App) GetAppInfo() AppInfo {
+func (a *App) FetchAppInfo() AppInfo {
 	address := a.GetSelected()
 	return AppInfo{
 		Chain:    a.getChain(),

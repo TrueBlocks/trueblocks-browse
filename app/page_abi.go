@@ -31,7 +31,7 @@ import (
 
 // EXISTING_CODE
 
-func (a *App) AbiPage(first, pageSize int) *types.AbiContainer {
+func (a *App) FetchAbi(first, pageSize int) *types.AbiContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 

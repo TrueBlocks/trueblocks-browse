@@ -10,7 +10,7 @@ import (
 
 // EXISTING_CODE
 
-func (a *App) NamePage(first, pageSize int) *types.NameContainer {
+func (a *App) FetchName(first, pageSize int) *types.NameContainer {
 	// EXISTING_CODE
 	namesMutex.Lock()
 	defer namesMutex.Unlock()

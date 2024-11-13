@@ -9,7 +9,7 @@ import (
 
 // EXISTING_CODE
 
-func (a *App) SettingsPage(first, pageSize int) *types.SettingsContainer {
+func (a *App) FetchSettings(first, pageSize int) *types.SettingsContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 

@@ -10,7 +10,7 @@ import (
 
 // EXISTING_CODE
 
-func (a *App) ManifestPage(first, pageSize int) *types.ManifestContainer {
+func (a *App) FetchManifest(first, pageSize int) *types.ManifestContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 

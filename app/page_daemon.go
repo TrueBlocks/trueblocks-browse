@@ -7,7 +7,7 @@ import "github.com/TrueBlocks/trueblocks-browse/pkg/types"
 
 // EXISTING_CODE
 
-func (a *App) DaemonPage(first, pageSize int) *types.DaemonContainer {
+func (a *App) FetchDaemon(first, pageSize int) *types.DaemonContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 

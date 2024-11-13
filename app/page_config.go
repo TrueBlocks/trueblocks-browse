@@ -7,7 +7,7 @@ import "github.com/TrueBlocks/trueblocks-browse/pkg/types"
 
 // EXISTING_CODE
 
-func (a *App) ConfigPage(first, pageSize int) *types.ConfigContainer {
+func (a *App) FetchConfig(first, pageSize int) *types.ConfigContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 

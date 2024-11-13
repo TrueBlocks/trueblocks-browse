@@ -10,7 +10,7 @@ import (
 
 // EXISTING_CODE
 
-func (a *App) MonitorPage(first, pageSize int) *types.MonitorContainer {
+func (a *App) FetchMonitor(first, pageSize int) *types.MonitorContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 

@@ -10,7 +10,7 @@ import (
 
 // EXISTING_CODE
 
-func (a *App) HistoryPage(first, pageSize int) *types.HistoryContainer {
+func (a *App) FetchHistory(first, pageSize int) *types.HistoryContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 

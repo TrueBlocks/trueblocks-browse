@@ -10,7 +10,7 @@ import (
 
 // EXISTING_CODE
 
-func (a *App) ProjectPage(first, pageSize int) *types.ProjectContainer {
+func (a *App) FetchProject(first, pageSize int) *types.ProjectContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 

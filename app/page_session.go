@@ -9,7 +9,7 @@ import (
 
 // EXISTING_CODE
 
-func (a *App) SessionPage(first, pageSize int) *types.SessionContainer {
+func (a *App) FetchSession(first, pageSize int) *types.SessionContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 

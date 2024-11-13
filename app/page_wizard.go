@@ -10,7 +10,7 @@ import (
 
 // EXISTING_CODE
 
-func (a *App) WizardPage(first, pageSize int) *types.WizardContainer {
+func (a *App) FetchWizard(first, pageSize int) *types.WizardContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 

@@ -2,20 +2,20 @@
 // of ExistingCode markers (if any).
 import { useState, useEffect, useContext, useCallback, createContext, ReactNode } from "react";
 import {
-  ProjectPage,
-  HistoryPage,
-  MonitorPage,
-  NamePage,
-  AbiPage,
-  IndexPage,
-  ManifestPage,
-  StatusPage,
-  SettingsPage,
-  DaemonPage,
-  SessionPage,
-  ConfigPage,
-  WizardPage,
-  GetAppInfo,
+  FetchProject,
+  FetchHistory,
+  FetchMonitor,
+  FetchName,
+  FetchAbi,
+  FetchIndex,
+  FetchManifest,
+  FetchStatus,
+  FetchSettings,
+  FetchDaemon,
+  FetchSession,
+  FetchConfig,
+  FetchWizard,
+  FetchAppInfo,
   LoadAddress,
 } from "@gocode/app/App";
 import { app, base, messages, types } from "@gocode/models";
@@ -24,43 +24,30 @@ import { EventsOff, EventsOn } from "@runtime";
 interface AppStateProps {
   project: types.ProjectContainer;
   fetchProject: (currentItem: number, itemsPerPage: number) => void;
-
   history: types.HistoryContainer;
   fetchHistory: (currentItem: number, itemsPerPage: number) => void;
-
   monitors: types.MonitorContainer;
   fetchMonitors: (currentItem: number, itemsPerPage: number) => void;
-
   names: types.NameContainer;
   fetchNames: (currentItem: number, itemsPerPage: number) => void;
-
   abis: types.AbiContainer;
   fetchAbis: (currentItem: number, itemsPerPage: number) => void;
-
   indexes: types.IndexContainer;
   fetchIndexes: (currentItem: number, itemsPerPage: number) => void;
-
   manifests: types.ManifestContainer;
   fetchManifests: (currentItem: number, itemsPerPage: number) => void;
-
   status: types.StatusContainer;
   fetchStatus: (currentItem: number, itemsPerPage: number) => void;
-
   settings: types.SettingsContainer;
   fetchSettings: (currentItem: number, itemsPerPage: number) => void;
-
   daemons: types.DaemonContainer;
   fetchDaemons: (currentItem: number, itemsPerPage: number) => void;
-
   session: types.SessionContainer;
   fetchSession: (currentItem: number, itemsPerPage: number) => void;
-
   config: types.ConfigContainer;
   fetchConfig: (currentItem: number, itemsPerPage: number) => void;
-
   wizard: types.WizardContainer;
   fetchWizard: (currentItem: number, itemsPerPage: number) => void;
-
   info: app.AppInfo;
   loadAddress: (address: base.Address) => void;
 }
@@ -84,7 +71,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
 
   const fetchProject = useCallback((currentItem: number, itemsPerPage: number) => {
-    ProjectPage(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchProject(currentItem, itemsPerPage).then((item: types.ProjectContainer) => {
       if (item) {
         setProject(item);
       }
@@ -92,7 +80,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchHistory = useCallback((currentItem: number, itemsPerPage: number) => {
-    HistoryPage(currentItem, itemsPerPage).then((item: types.HistoryContainer) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchHistory(currentItem, itemsPerPage).then((item: types.HistoryContainer) => {
       if (item) {
         setHistory(item);
       }
@@ -100,7 +89,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchMonitors = useCallback((currentItem: number, itemsPerPage: number) => {
-    MonitorPage(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchMonitor(currentItem, itemsPerPage).then((item: types.MonitorContainer) => {
       if (item) {
         setMonitors(item);
       }
@@ -108,7 +98,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchNames = useCallback((currentItem: number, itemsPerPage: number) => {
-    NamePage(currentItem, itemsPerPage).then((item: types.NameContainer) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchName(currentItem, itemsPerPage).then((item: types.NameContainer) => {
       if (item) {
         setNames(item);
       }
@@ -116,7 +107,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchAbis = useCallback((currentItem: number, itemsPerPage: number) => {
-    AbiPage(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchAbi(currentItem, itemsPerPage).then((item: types.AbiContainer) => {
       if (item) {
         setAbis(item);
       }
@@ -124,7 +116,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchIndexes = useCallback((currentItem: number, itemsPerPage: number) => {
-    IndexPage(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchIndex(currentItem, itemsPerPage).then((item: types.IndexContainer) => {
       if (item) {
         setIndexes(item);
       }
@@ -132,7 +125,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchManifests = useCallback((currentItem: number, itemsPerPage: number) => {
-    ManifestPage(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchManifest(currentItem, itemsPerPage).then((item: types.ManifestContainer) => {
       if (item) {
         setManifests(item);
       }
@@ -140,7 +134,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchStatus = useCallback((currentItem: number, itemsPerPage: number) => {
-    StatusPage(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchStatus(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
       if (item) {
         setStatus(item);
       }
@@ -148,7 +143,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchSettings = useCallback((currentItem: number, itemsPerPage: number) => {
-    SettingsPage(currentItem, itemsPerPage).then((item: types.SettingsContainer) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchSettings(currentItem, itemsPerPage).then((item: types.SettingsContainer) => {
       if (item) {
         setSettings(item);
       }
@@ -156,7 +152,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchDaemons = useCallback((currentItem: number, itemsPerPage: number) => {
-    DaemonPage(currentItem, itemsPerPage).then((item: types.DaemonContainer) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchDaemon(currentItem, itemsPerPage).then((item: types.DaemonContainer) => {
       if (item) {
         setDaemons(item);
       }
@@ -164,7 +161,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchSession = useCallback((currentItem: number, itemsPerPage: number) => {
-    SessionPage(currentItem, itemsPerPage).then((item: types.SessionContainer) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchSession(currentItem, itemsPerPage).then((item: types.SessionContainer) => {
       if (item) {
         setSession(item);
       }
@@ -172,7 +170,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchConfig = useCallback((currentItem: number, itemsPerPage: number) => {
-    ConfigPage(currentItem, itemsPerPage).then((item: types.ConfigContainer) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchConfig(currentItem, itemsPerPage).then((item: types.ConfigContainer) => {
       if (item) {
         setConfig(item);
       }
@@ -180,7 +179,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchWizard = useCallback((currentItem: number, itemsPerPage: number) => {
-    WizardPage(currentItem, itemsPerPage).then((item: types.WizardContainer) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchWizard(currentItem, itemsPerPage).then((item: types.WizardContainer) => {
       if (item) {
         setWizard(item);
       }
@@ -188,7 +188,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   const fetchAppInfo = () => {
-    GetAppInfo().then((info) => {
+    FetchAppInfo().then((info) => {
       setInfo(info);
     });
   };

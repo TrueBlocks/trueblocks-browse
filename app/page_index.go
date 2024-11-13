@@ -10,7 +10,7 @@ import (
 
 // EXISTING_CODE
 
-func (a *App) IndexPage(first, pageSize int) *types.IndexContainer {
+func (a *App) FetchIndex(first, pageSize int) *types.IndexContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
