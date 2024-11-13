@@ -85,9 +85,12 @@ func (s *HistoryContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *HistoryContainer) Summarize() {
+func (s *HistoryContainer) CollateAndFilter() {
 	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
+	s.NLogs = 0
+	s.NTokens = 0
+	s.NErrors = 0
 	for _, tx := range s.Items {
 		if tx.Receipt != nil {
 			s.NLogs += uint64(len(tx.Receipt.Logs))

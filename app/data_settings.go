@@ -44,7 +44,6 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 		Session: &a.session,
 	}
 	a.settings = types.NewSettingsContainer(&props)
-	a.settings.Summarize()
 
 	return nil
 }

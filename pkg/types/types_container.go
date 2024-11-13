@@ -9,7 +9,7 @@ import (
 type Containerer interface {
 	String() string
 	ShallowCopy() Containerer
-	Summarize()
+	CollateAndFilter()
 	NeedsUpdate(force bool) bool
 	GetItems() interface{}
 	SetItems(items interface{})

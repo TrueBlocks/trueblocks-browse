@@ -88,7 +88,7 @@ func (s *{{.Class}}Container) ShallowCopy() Containerer {
 {{end}}	return ret
 }
 
-func (s *{{.Class}}Container) Summarize() {
+func (s *{{.Class}}Container) CollateAndFilter() {
 {{if .HasItems}}	s.NItems = uint64(len(s.Items))
 {{end}}	// EXISTING_CODE
 	// EXISTING_CODE

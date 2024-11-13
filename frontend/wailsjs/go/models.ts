@@ -2009,6 +2009,7 @@ export namespace types {
 	    lastFolder: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
+	    lastSearch: {[key: string]: string};
 	    window: Window;
 	    wizardStr: string;
 	    toggles: Toggles;
@@ -2024,6 +2025,7 @@ export namespace types {
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
+	        this.lastSearch = source["lastSearch"];
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
@@ -2053,6 +2055,7 @@ export namespace types {
 	    lastFolder: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
+	    lastSearch: {[key: string]: string};
 	    window: Window;
 	    wizardStr: string;
 	    toggles: Toggles;
@@ -2069,6 +2072,7 @@ export namespace types {
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
+	        this.lastSearch = source["lastSearch"];
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);

@@ -62,7 +62,6 @@ func (a *App) loadSessions(wg *sync.WaitGroup, errorChan chan error) error {
 		// ... and put it back
 		a.session.Session = ss
 		// EXISTING_CODE
-		a.session.Summarize()
 		// a.emitInfoMsg("Loaded sessions", "")
 	}
 	return nil

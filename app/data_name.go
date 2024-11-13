@@ -74,7 +74,6 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 			a.namesMap[name.Address] = name
 		}
 		// EXISTING_CODE
-		a.names.Summarize()
 		a.emitInfoMsg("Loaded names", "")
 	}
 

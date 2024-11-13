@@ -113,9 +113,15 @@ func (s *MonitorContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *MonitorContainer) Summarize() {
+func (s *MonitorContainer) CollateAndFilter() {
 	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
+	s.FileSize = 0
+	s.NDeleted = 0
+	s.NEmpty = 0
+	s.NNamed = 0
+	s.NRecords = 0
+	s.NStaged = 0
 	for _, mon := range s.Items {
 		if mon.Deleted {
 			s.NDeleted++

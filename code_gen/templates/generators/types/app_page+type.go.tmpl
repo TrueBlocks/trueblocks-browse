@@ -9,7 +9,7 @@ func (a *App) {{.Class}}Page(first, pageSize int) *types.{{.Class}}Container {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	a.{{.UiRouteLower}}.Summarize()
+	a.{{.UiRouteLower}}.CollateAndFilter()
 {{if .NeedsPaging -}}
 	first = base.Max(0, base.Min(first, len(a.{{.UiRouteLower}}.Items)-1))
 	last := base.Min(len(a.{{.UiRouteLower}}.Items), first+pageSize)

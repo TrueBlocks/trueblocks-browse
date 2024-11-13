@@ -81,10 +81,10 @@ func (s *ProjectContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *ProjectContainer) Summarize() {
+func (s *ProjectContainer) CollateAndFilter() {
 	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
-	// do nothing
+	// do nothing - summaries are already calculated
 	// EXISTING_CODE
 }
 

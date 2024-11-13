@@ -68,9 +68,10 @@ func (s *WizardContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *WizardContainer) Summarize() {
+func (s *WizardContainer) CollateAndFilter() {
 	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
+	// nothing to do here
 	// EXISTING_CODE
 }
 

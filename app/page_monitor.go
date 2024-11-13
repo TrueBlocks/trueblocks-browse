@@ -14,7 +14,7 @@ func (a *App) MonitorPage(first, pageSize int) *types.MonitorContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	a.monitors.Summarize()
+	a.monitors.CollateAndFilter()
 	first = base.Max(0, base.Min(first, len(a.monitors.Items)-1))
 	last := base.Min(len(a.monitors.Items), first+pageSize)
 	copy, _ := a.monitors.ShallowCopy().(*types.MonitorContainer)

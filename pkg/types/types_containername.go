@@ -93,9 +93,17 @@ func (s *NameContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *NameContainer) Summarize() {
+func (s *NameContainer) CollateAndFilter() {
 	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
+	s.NContracts = 0
+	s.NCustom = 0
+	s.NDeleted = 0
+	s.NErc20s = 0
+	s.NErc721s = 0
+	s.NPrefund = 0
+	s.NRegular = 0
+	s.NSystem = 0
 	for _, name := range s.Items {
 		if name.Parts&coreTypes.Regular > 0 {
 			s.NRegular++

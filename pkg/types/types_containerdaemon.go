@@ -61,7 +61,7 @@ func (s *DaemonContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *DaemonContainer) Summarize() {
+func (s *DaemonContainer) CollateAndFilter() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }

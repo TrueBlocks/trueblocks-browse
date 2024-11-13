@@ -13,7 +13,7 @@ func (a *App) SessionPage(first, pageSize int) *types.SessionContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	a.session.Summarize()
+	a.session.CollateAndFilter()
 	copy, _ := a.session.ShallowCopy().(*types.SessionContainer)
 	return copy
 }

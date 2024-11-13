@@ -73,11 +73,11 @@ func (s *SettingsContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *SettingsContainer) Summarize() {
+func (s *SettingsContainer) CollateAndFilter() {
 	// EXISTING_CODE
-	s.Status.Summarize()
-	s.Config.Summarize()
-	s.Session.Summarize()
+	s.Status.CollateAndFilter()
+	s.Config.CollateAndFilter()
+	s.Session.CollateAndFilter()
 	// logger.Info("Session:", s.Session.String())
 	// EXISTING_CODE
 }

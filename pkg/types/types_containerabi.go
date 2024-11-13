@@ -84,9 +84,12 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *AbiContainer) Summarize() {
+func (s *AbiContainer) CollateAndFilter() {
 	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
+	s.FileSize = 0
+	s.NEvents = 0
+	s.NFunctions = 0
 	var lF comparison
 	var mF comparison
 	var mE comparison

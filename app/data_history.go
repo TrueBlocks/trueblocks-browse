@@ -110,7 +110,6 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) error 
 						}
 						return history.Items[i].BlockNumber > history.Items[j].BlockNumber
 					})
-					history.Summarize()
 					// put it back into the history cache so other processes can use it...
 					a.historyCache.Store(address, history)
 				}
@@ -142,7 +141,6 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) error 
 		}
 		return history.Items[i].BlockNumber > history.Items[j].BlockNumber
 	})
-	history.Summarize()
 	a.historyCache.Store(address, history)
 
 	return nil

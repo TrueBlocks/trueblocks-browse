@@ -16,7 +16,7 @@ func (a *App) NamePage(first, pageSize int) *types.NameContainer {
 	defer namesMutex.Unlock()
 	// EXISTING_CODE
 
-	a.names.Summarize()
+	a.names.CollateAndFilter()
 	first = base.Max(0, base.Min(first, len(a.names.Items)-1))
 	last := base.Min(len(a.names.Items), first+pageSize)
 	copy, _ := a.names.ShallowCopy().(*types.NameContainer)

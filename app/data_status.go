@@ -68,7 +68,6 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		})
 		logger.SetLoggerWriter(w)
 		// EXISTING_CODE
-		a.status.Summarize()
 		a.emitInfoMsg("Loaded status", "")
 	}
 

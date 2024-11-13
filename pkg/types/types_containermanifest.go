@@ -89,9 +89,13 @@ func (s *ManifestContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *ManifestContainer) Summarize() {
+func (s *ManifestContainer) CollateAndFilter() {
 	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
+	s.BloomsSize = 0
+	s.IndexSize = 0
+	s.NBlooms = 0
+	s.NIndexes = 0
 	for _, item := range s.Items {
 		s.BloomsSize += uint64(item.BloomSize)
 		s.IndexSize += uint64(item.IndexSize)

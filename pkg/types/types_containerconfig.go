@@ -71,18 +71,9 @@ func (s *ConfigContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *ConfigContainer) Summarize() {
+func (s *ConfigContainer) CollateAndFilter() {
 	// EXISTING_CODE
-	// logger.Info("Version:", s.Config.Version.String())
-	// logger.Info("Settings:", s.Config.Settings.String())
-	// for _, key := range s.Config.Keys {
-	// 	logger.Info("Keys:", key.String())
-	// }
-	// logger.Info("Pinning:", s.Config.Pinning.String())
-	// logger.Info("Unchained:", s.Config.Unchained.String())
-	// for _, chain := range s.Config.Chains {
-	// 	logger.Info("Chains:", chain.String())
-	// }
+	// nothing to collate
 	// EXISTING_CODE
 }
 

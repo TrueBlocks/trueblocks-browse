@@ -60,7 +60,6 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 		if err := sdk.SortManifests(a.manifests.Items, a.manifests.Sorts); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-		a.manifests.Summarize()
 		a.emitInfoMsg("Loaded manifests", "")
 	}
 

@@ -77,9 +77,15 @@ func (s *IndexContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *IndexContainer) Summarize() {
+func (s *IndexContainer) CollateAndFilter() {
 	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
+	s.BloomSz = 0
+	s.ChunkSz = 0
+	s.NAddrs = 0
+	s.NApps = 0
+	s.NBlocks = 0
+	s.NBlooms = 0
 	for _, chunk := range s.Items {
 		s.BloomSz += chunk.BloomSz
 		s.ChunkSz += chunk.ChunkSz

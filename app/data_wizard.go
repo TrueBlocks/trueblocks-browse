@@ -54,7 +54,6 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	// 	a.wizard = types.NewWizardContainer(opts.Chain, wizard)
 	// 	// EXISTING_CODE
 	// 	// EXISTING_CODE
-	// 	a.wizard.Summarize()
 	// 	a.emitInfoMsg("Loaded wizard", "")
 	// }
 

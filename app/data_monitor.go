@@ -72,7 +72,6 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 			return a.monitors.Items[i].NRecords < a.monitors.Items[j].NRecords
 		})
 		// EXISTING_CODE
-		a.monitors.Summarize()
 		a.emitInfoMsg("Loaded monitors", "")
 	}
 
@@ -125,7 +124,6 @@ func (a *App) ModifyMonitors(modData *ModifyData) error {
 	defer monitorMutex.Unlock()
 
 	a.monitors.Items = newArray
-	a.monitors.Summarize()
 	return nil
 }
 

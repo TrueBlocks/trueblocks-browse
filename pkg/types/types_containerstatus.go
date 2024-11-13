@@ -78,9 +78,12 @@ func (s *StatusContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *StatusContainer) Summarize() {
+func (s *StatusContainer) CollateAndFilter() {
 	s.NItems = uint64(len(s.Items))
 	// EXISTING_CODE
+	s.NFolders = 0
+	s.NFiles = 0
+	s.NBytes = 0
 	for _, cache := range s.Caches {
 		s.NFolders += cache.NFolders
 		s.NFiles += cache.NFiles

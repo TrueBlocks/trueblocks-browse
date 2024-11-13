@@ -61,7 +61,6 @@ func (a *App) load{{.UiRouteLabel}}(wg *sync.WaitGroup, errorChan chan error) er
 			a.emitErrorMsg(err, nil)
 		}
 {{end -}}
-		a.{{.UiRouteLower}}.Summarize()
 		a.emitInfoMsg("Loaded {{.UiRouteLower}}", "")
 	}
 
