@@ -30,9 +30,11 @@ func (a *App) FetchName(first, pageSize int) *types.NameContainer {
 			s := strings.ToLower(filterStr)
 			n := strings.ToLower(item.Name)
 			a := strings.ToLower(item.Address.Hex())
+			t := strings.ToLower(item.Tags)
 			c1 := strings.Contains(n, s)
 			c2 := strings.Contains(a, s)
-			if c1 || c2 {
+			c3 := strings.Contains(t, s)
+			if c1 || c2 || c3 {
 				filtered = append(filtered, item)
 			}
 		}

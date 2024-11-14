@@ -48,7 +48,9 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
 
   const updateFilter = (criteria: string) => {
     setFilter(criteria);
-    SetFilter(route, criteria);
+    SetFilter(route, criteria).then(() => {
+      fetchFn(pager.getOffset(), pager.perPage);
+    });
   };
 
   useEffect(() => {
