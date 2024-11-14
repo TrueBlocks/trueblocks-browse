@@ -24,7 +24,7 @@ func (a *App) FetchHistory(first, pageSize int) *types.HistoryContainer {
 	first = base.Max(0, base.Min(first, txCount-1))
 	last := base.Min(txCount, first+pageSize)
 	history, _ := a.historyCache.Load(address)
-	history.CollateAndFilter()
+	_ = history.CollateAndFilter(a.filterMap)
 	copy := history.ShallowCopy().(*types.HistoryContainer)
 	copy.Balance = a.getBalance(address)
 	copy.Items = history.Items[first:last]

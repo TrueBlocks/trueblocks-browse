@@ -37,7 +37,7 @@ type App struct {
 	// Memory caches
 	ensCache     *sync.Map
 	balanceCache *sync.Map
-	filterMap    *sync.Map
+	filterMap    *types.FilterMap
 	namesMap     map[base.Address]coreTypes.Name
 	historyCache *types.HistoryMap
 	renderCtxs   map[base.Address][]*output.RenderCtx
@@ -54,7 +54,7 @@ func NewApp() *App {
 	a := &App{
 		ensCache:     &sync.Map{},
 		balanceCache: &sync.Map{},
-		filterMap:    &sync.Map{},
+		filterMap:    &types.FilterMap{},
 		namesMap:     make(map[base.Address]coreTypes.Name),
 		historyCache: &types.HistoryMap{},
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),

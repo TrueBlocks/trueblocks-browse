@@ -13,7 +13,7 @@ func (a *App) FetchSettings(first, pageSize int) *types.SettingsContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	a.settings.CollateAndFilter()
+	_ = a.settings.CollateAndFilter(a.filterMap)
 	copy, _ := a.settings.ShallowCopy().(*types.SettingsContainer)
 	return copy
 }

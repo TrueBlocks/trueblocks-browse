@@ -30,13 +30,12 @@ type SettingsContainer struct {
 }
 
 func NewSettingsContainer(props *SettingsProps) SettingsContainer {
-	latest := getLatestFileTime()
 	ret := SettingsContainer{
-		Status:     *props.Status,
-		Config:     *props.Config,
-		Session:    *props.Session,
-		LastUpdate: latest,
+		Status:  *props.Status,
+		Config:  *props.Config,
+		Session: *props.Session,
 	}
+	ret.LastUpdate, _ = ret.getSettingsReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -73,24 +72,52 @@ func (s *SettingsContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *SettingsContainer) CollateAndFilter() {
+func (s *SettingsContainer) Clear() {
 	// EXISTING_CODE
-	s.Status.CollateAndFilter()
-	s.Config.CollateAndFilter()
-	s.Session.CollateAndFilter()
-	// logger.Info("Session:", s.Session.String())
 	// EXISTING_CODE
 }
 
-func getLatestFileTime() int64 {
+func (s *SettingsContainer) passesFilter(filter *Filter) (ret bool) {
+	ret = true
+	if filter.HasCriteria() {
+		ret = false
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
+	return
+}
+
+func (s *SettingsContainer) Accumulate() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *SettingsContainer) Finalize() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *SettingsContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+	filtered := []Nothing{}
+
+	// EXISTING_CODE
+	s.Status.CollateAndFilter(theMap)
+	s.Config.CollateAndFilter(theMap)
+	s.Session.CollateAndFilter(theMap)
+	// EXISTING_CODE
+
+	return filtered
+}
+
+func (s *SettingsContainer) getSettingsReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	configFn := coreConfig.PathToRootConfig()
 	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
 	folders := []string{configFn, sessionFn}
 	tm := file.MustGetLatestFileTime(folders...)
-	ret := tm.Unix()
+	ret = tm.Unix()
 	// EXISTING_CODE
-	return ret
+	return
 }
 
 // EXISTING_CODE

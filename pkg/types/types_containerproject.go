@@ -81,17 +81,58 @@ func (s *ProjectContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *ProjectContainer) CollateAndFilter() {
-	s.NItems = uint64(len(s.Items))
+func (s *ProjectContainer) Clear() {
+	s.NItems = 0
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *ProjectContainer) passesFilter(item *HistoryContainer, filter *Filter) (ret bool) {
+	ret = true
+	if filter.HasCriteria() {
+		ret = false
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
+	return
+}
+
+func (s *ProjectContainer) Accumulate(item *HistoryContainer) {
+	s.NItems++
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *ProjectContainer) Finalize() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *ProjectContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+	s.Clear()
+
+	filter, _ := theMap.Load("project") // may be empty
+	filtered := []HistoryContainer{}
+	s.ForEveryItem(func(item *HistoryContainer, data any) bool {
+		if s.passesFilter(item, &filter) {
+			s.Accumulate(item)
+			filtered = append(filtered, *item)
+		}
+		return true
+	}, nil)
+	s.Finalize()
+
 	// EXISTING_CODE
 	// do nothing - summaries are already calculated
 	// EXISTING_CODE
+
+	return filtered
 }
 
 func (s *ProjectContainer) getProjectReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	var totalSize int64 = 0
-	_ = s.ForEveryHistoryContainer(func(item *HistoryContainer, data any) bool {
+	_ = s.ForEveryItem(func(item *HistoryContainer, data any) bool {
 		fn := coreMonitor.PathToMonitorFile(s.Chain, item.Address)
 		fs := file.FileSize(fn)
 		totalSize += fs
@@ -107,7 +148,7 @@ func (s *ProjectContainer) getProjectReload() (ret int64, reload bool) {
 
 type EveryHistoryContainerFn func(item *HistoryContainer, data any) bool
 
-func (s *ProjectContainer) ForEveryHistoryContainer(process EveryHistoryContainerFn, data any) bool {
+func (s *ProjectContainer) ForEveryItem(process EveryHistoryContainerFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false

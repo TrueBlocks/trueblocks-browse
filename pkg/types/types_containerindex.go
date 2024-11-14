@@ -77,8 +77,8 @@ func (s *IndexContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *IndexContainer) CollateAndFilter() {
-	s.NItems = uint64(len(s.Items))
+func (s *IndexContainer) Clear() {
+	s.NItems = 0
 	// EXISTING_CODE
 	s.BloomSz = 0
 	s.ChunkSz = 0
@@ -86,14 +86,33 @@ func (s *IndexContainer) CollateAndFilter() {
 	s.NApps = 0
 	s.NBlocks = 0
 	s.NBlooms = 0
-	for _, chunk := range s.Items {
-		s.BloomSz += chunk.BloomSz
-		s.ChunkSz += chunk.ChunkSz
-		s.NAddrs += chunk.NAddrs
-		s.NApps += chunk.NApps
-		s.NBlocks += chunk.NBlocks
-		s.NBlooms += chunk.NBlooms
+	// EXISTING_CODE
+}
+
+func (s *IndexContainer) passesFilter(item *coreTypes.ChunkStats, filter *Filter) (ret bool) {
+	ret = true
+	if filter.HasCriteria() {
+		ret = false
+		// EXISTING_CODE
+		// EXISTING_CODE
 	}
+	return
+}
+
+func (s *IndexContainer) Accumulate(item *coreTypes.ChunkStats) {
+	s.NItems++
+	// EXISTING_CODE
+	s.BloomSz += item.BloomSz
+	s.ChunkSz += item.ChunkSz
+	s.NAddrs += item.NAddrs
+	s.NApps += item.NApps
+	s.NBlocks += item.NBlocks
+	s.NBlooms += item.NBlooms
+	// EXISTING_CODE
+}
+
+func (s *IndexContainer) Finalize() {
+	// EXISTING_CODE
 	if s.NBlocks > 0 {
 		s.AddrsPerBlock = float64(s.NAddrs) / float64(s.NBlocks)
 	}
@@ -104,6 +123,26 @@ func (s *IndexContainer) CollateAndFilter() {
 		s.AppsPerBlock = float64(s.NApps) / float64(s.NBlocks)
 	}
 	// EXISTING_CODE
+}
+
+func (s *IndexContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+	s.Clear()
+
+	filter, _ := theMap.Load("indexes") // may be empty
+	filtered := []coreTypes.ChunkStats{}
+	s.ForEveryItem(func(item *coreTypes.ChunkStats, data any) bool {
+		if s.passesFilter(item, &filter) {
+			s.Accumulate(item)
+			filtered = append(filtered, *item)
+		}
+		return true
+	}, nil)
+	s.Finalize()
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	return filtered
 }
 
 func (s *IndexContainer) getIndexReload() (ret int64, reload bool) {
@@ -117,7 +156,7 @@ func (s *IndexContainer) getIndexReload() (ret int64, reload bool) {
 
 type EveryChunkStatsFn func(item *coreTypes.ChunkStats, data any) bool
 
-func (s *IndexContainer) ForEveryChunkStats(process EveryChunkStatsFn, data any) bool {
+func (s *IndexContainer) ForEveryItem(process EveryChunkStatsFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false

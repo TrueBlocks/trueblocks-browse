@@ -89,20 +89,59 @@ func (s *ManifestContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *ManifestContainer) CollateAndFilter() {
-	s.NItems = uint64(len(s.Items))
+func (s *ManifestContainer) Clear() {
+	s.NItems = 0
 	// EXISTING_CODE
 	s.BloomsSize = 0
 	s.IndexSize = 0
 	s.NBlooms = 0
 	s.NIndexes = 0
-	for _, item := range s.Items {
-		s.BloomsSize += uint64(item.BloomSize)
-		s.IndexSize += uint64(item.IndexSize)
-		s.NBlooms++
-		s.NIndexes++
-	}
 	// EXISTING_CODE
+}
+
+func (s *ManifestContainer) passesFilter(item *coreTypes.ChunkRecord, filter *Filter) (ret bool) {
+	ret = true
+	if filter.HasCriteria() {
+		ret = false
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
+	return
+}
+
+func (s *ManifestContainer) Accumulate(item *coreTypes.ChunkRecord) {
+	s.NItems++
+	// EXISTING_CODE
+	s.BloomsSize += uint64(item.BloomSize)
+	s.IndexSize += uint64(item.IndexSize)
+	s.NBlooms++
+	s.NIndexes++
+	// EXISTING_CODE
+}
+
+func (s *ManifestContainer) Finalize() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *ManifestContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+	s.Clear()
+
+	filter, _ := theMap.Load("manifests") // may be empty
+	filtered := []coreTypes.ChunkRecord{}
+	s.ForEveryItem(func(item *coreTypes.ChunkRecord, data any) bool {
+		if s.passesFilter(item, &filter) {
+			s.Accumulate(item)
+			filtered = append(filtered, *item)
+		}
+		return true
+	}, nil)
+	s.Finalize()
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	return filtered
 }
 
 func (s *ManifestContainer) getManifestReload() (ret int64, reload bool) {
@@ -116,7 +155,7 @@ func (s *ManifestContainer) getManifestReload() (ret int64, reload bool) {
 
 type EveryChunkRecordFn func(item *coreTypes.ChunkRecord, data any) bool
 
-func (s *ManifestContainer) ForEveryChunkRecord(process EveryChunkRecordFn, data any) bool {
+func (s *ManifestContainer) ForEveryItem(process EveryChunkRecordFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false

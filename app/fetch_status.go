@@ -6,6 +6,7 @@ package app
 import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 // EXISTING_CODE
@@ -14,10 +15,10 @@ func (a *App) FetchStatus(first, pageSize int) *types.StatusContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	a.status.CollateAndFilter()
-	first = base.Max(0, base.Min(first, len(a.status.Items)-1))
-	last := base.Min(len(a.status.Items), first+pageSize)
+	filtered := a.status.CollateAndFilter(a.filterMap).([]coreTypes.CacheItem)
+	first = base.Max(0, base.Min(first, len(filtered)-1))
+	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.status.ShallowCopy().(*types.StatusContainer)
-	copy.Items = a.status.Items[first:last]
+	copy.Items = filtered[first:last]
 	return copy
 }

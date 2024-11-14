@@ -71,10 +71,39 @@ func (s *ConfigContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *ConfigContainer) CollateAndFilter() {
+func (s *ConfigContainer) Clear() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *ConfigContainer) passesFilter(filter *Filter) (ret bool) {
+	ret = true
+	if filter.HasCriteria() {
+		ret = false
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
+	return
+}
+
+func (s *ConfigContainer) Accumulate() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *ConfigContainer) Finalize() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *ConfigContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+	filtered := []Nothing{}
+
 	// EXISTING_CODE
 	// nothing to collate
 	// EXISTING_CODE
+
+	return filtered
 }
 
 func (s *ConfigContainer) getConfigReload() (ret int64, reload bool) {

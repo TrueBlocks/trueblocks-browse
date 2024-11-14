@@ -6,6 +6,7 @@ package types
 import (
 	"encoding/json"
 	"path/filepath"
+	"strings"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -113,8 +114,8 @@ func (s *MonitorContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *MonitorContainer) CollateAndFilter() {
-	s.NItems = uint64(len(s.Items))
+func (s *MonitorContainer) Clear() {
+	s.NItems = 0
 	// EXISTING_CODE
 	s.FileSize = 0
 	s.NDeleted = 0
@@ -122,23 +123,68 @@ func (s *MonitorContainer) CollateAndFilter() {
 	s.NNamed = 0
 	s.NRecords = 0
 	s.NStaged = 0
-	for _, mon := range s.Items {
-		if mon.Deleted {
-			s.NDeleted++
-		}
-		if mon.IsStaged {
-			s.NStaged++
-		}
-		if mon.IsEmpty {
-			s.NEmpty++
-		}
-		if len(mon.Name) > 0 {
-			s.NNamed++
-		}
-		s.FileSize += uint64(mon.FileSize)
-		s.NRecords += uint64(mon.NRecords)
-	}
 	// EXISTING_CODE
+}
+
+func (s *MonitorContainer) passesFilter(item *coreTypes.Monitor, filter *Filter) (ret bool) {
+	ret = true
+	if filter.HasCriteria() {
+		ret = false
+		// EXISTING_CODE
+		ss := strings.ToLower(filter.Criteria)
+		n := strings.ToLower(item.Name)
+		a := strings.ToLower(item.Address.Hex())
+		c1 := strings.Contains(n, ss)
+		c2 := strings.Contains(a, ss)
+		ret = c1 || c2
+		// EXISTING_CODE
+	}
+	return
+}
+
+func (s *MonitorContainer) Accumulate(item *coreTypes.Monitor) {
+	s.NItems++
+	// EXISTING_CODE
+	if item.Deleted {
+		s.NDeleted++
+	}
+	if item.IsStaged {
+		s.NStaged++
+	}
+	if item.IsEmpty {
+		s.NEmpty++
+	}
+	if len(item.Name) > 0 {
+		s.NNamed++
+	}
+	s.FileSize += uint64(item.FileSize)
+	s.NRecords += uint64(item.NRecords)
+	// EXISTING_CODE
+}
+
+func (s *MonitorContainer) Finalize() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *MonitorContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+	s.Clear()
+
+	filter, _ := theMap.Load("monitors") // may be empty
+	filtered := []coreTypes.Monitor{}
+	s.ForEveryItem(func(item *coreTypes.Monitor, data any) bool {
+		if s.passesFilter(item, &filter) {
+			s.Accumulate(item)
+			filtered = append(filtered, *item)
+		}
+		return true
+	}, nil)
+	s.Finalize()
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	return filtered
 }
 
 func (s *MonitorContainer) getMonitorReload() (ret int64, reload bool) {
@@ -152,7 +198,7 @@ func (s *MonitorContainer) getMonitorReload() (ret int64, reload bool) {
 
 type EveryMonitorFn func(item *coreTypes.Monitor, data any) bool
 
-func (s *MonitorContainer) ForEveryMonitor(process EveryMonitorFn, data any) bool {
+func (s *MonitorContainer) ForEveryItem(process EveryMonitorFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false

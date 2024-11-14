@@ -65,10 +65,39 @@ func (s *SessionContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *SessionContainer) CollateAndFilter() {
+func (s *SessionContainer) Clear() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *SessionContainer) passesFilter(filter *Filter) (ret bool) {
+	ret = true
+	if filter.HasCriteria() {
+		ret = false
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
+	return
+}
+
+func (s *SessionContainer) Accumulate() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *SessionContainer) Finalize() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *SessionContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+	filtered := []Nothing{}
+
 	// EXISTING_CODE
 	// nothing to do here
 	// EXISTING_CODE
+
+	return filtered
 }
 
 func (s *SessionContainer) getSessionReload() (ret int64, reload bool) {

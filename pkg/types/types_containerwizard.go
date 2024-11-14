@@ -68,11 +68,52 @@ func (s *WizardContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *WizardContainer) CollateAndFilter() {
-	s.NItems = uint64(len(s.Items))
+func (s *WizardContainer) Clear() {
+	s.NItems = 0
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *WizardContainer) passesFilter(item *WizError, filter *Filter) (ret bool) {
+	ret = true
+	if filter.HasCriteria() {
+		ret = false
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
+	return
+}
+
+func (s *WizardContainer) Accumulate(item *WizError) {
+	s.NItems++
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *WizardContainer) Finalize() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *WizardContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+	s.Clear()
+
+	filter, _ := theMap.Load("wizard") // may be empty
+	filtered := []WizError{}
+	s.ForEveryItem(func(item *WizError, data any) bool {
+		if s.passesFilter(item, &filter) {
+			s.Accumulate(item)
+			filtered = append(filtered, *item)
+		}
+		return true
+	}, nil)
+	s.Finalize()
+
 	// EXISTING_CODE
 	// nothing to do here
 	// EXISTING_CODE
+
+	return filtered
 }
 
 func (s *WizardContainer) getWizardReload() (ret int64, reload bool) {
@@ -83,7 +124,7 @@ func (s *WizardContainer) getWizardReload() (ret int64, reload bool) {
 
 type EveryWizErrorFn func(item *WizError, data any) bool
 
-func (s *WizardContainer) ForEveryWizError(process EveryWizErrorFn, data any) bool {
+func (s *WizardContainer) ForEveryItem(process EveryWizErrorFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false

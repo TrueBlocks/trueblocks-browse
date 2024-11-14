@@ -9,7 +9,7 @@ import (
 type Containerer interface {
 	String() string
 	ShallowCopy() Containerer
-	CollateAndFilter()
+	CollateAndFilter(theMap *FilterMap) interface{}
 	NeedsUpdate(force bool) bool
 	GetItems() interface{}
 	SetItems(items interface{})

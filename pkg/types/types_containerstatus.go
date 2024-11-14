@@ -78,18 +78,57 @@ func (s *StatusContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *StatusContainer) CollateAndFilter() {
-	s.NItems = uint64(len(s.Items))
+func (s *StatusContainer) Clear() {
+	s.NItems = 0
 	// EXISTING_CODE
 	s.NFolders = 0
 	s.NFiles = 0
 	s.NBytes = 0
-	for _, cache := range s.Caches {
-		s.NFolders += cache.NFolders
-		s.NFiles += cache.NFiles
-		s.NBytes += uint64(cache.SizeInBytes)
-	}
 	// EXISTING_CODE
+}
+
+func (s *StatusContainer) passesFilter(item *coreTypes.CacheItem, filter *Filter) (ret bool) {
+	ret = true
+	if filter.HasCriteria() {
+		ret = false
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
+	return
+}
+
+func (s *StatusContainer) Accumulate(item *coreTypes.CacheItem) {
+	s.NItems++
+	// EXISTING_CODE
+	s.NFolders += item.NFolders
+	s.NFiles += item.NFiles
+	s.NBytes += uint64(item.SizeInBytes)
+	// EXISTING_CODE
+}
+
+func (s *StatusContainer) Finalize() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *StatusContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+	s.Clear()
+
+	filter, _ := theMap.Load("status") // may be empty
+	filtered := []coreTypes.CacheItem{}
+	s.ForEveryItem(func(item *coreTypes.CacheItem, data any) bool {
+		if s.passesFilter(item, &filter) {
+			s.Accumulate(item)
+			filtered = append(filtered, *item)
+		}
+		return true
+	}, nil)
+	s.Finalize()
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	return filtered
 }
 
 func (s *StatusContainer) getStatusReload() (ret int64, reload bool) {
@@ -102,7 +141,7 @@ func (s *StatusContainer) getStatusReload() (ret int64, reload bool) {
 
 type EveryCacheItemFn func(item *coreTypes.CacheItem, data any) bool
 
-func (s *StatusContainer) ForEveryCacheItem(process EveryCacheItemFn, data any) bool {
+func (s *StatusContainer) ForEveryItem(process EveryCacheItemFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false

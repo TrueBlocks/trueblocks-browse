@@ -60,7 +60,7 @@ func (a *App) ExportAddress(address base.Address) {
 	}
 
 	h, _ := a.historyCache.Load(address)
-	completed := h.ForEveryTransaction(exportLine, nil)
+	completed := h.ForEveryItem(exportLine, nil)
 	if !completed {
 		err := fmt.Errorf("export for %s interrupted after %d lines", address.Hex(), len(lines))
 		a.emitErrorMsg(err, nil)

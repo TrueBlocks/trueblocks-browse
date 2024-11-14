@@ -13,7 +13,7 @@ func (a *App) FetchSession(first, pageSize int) *types.SessionContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	a.session.CollateAndFilter()
+	_ = a.session.CollateAndFilter(a.filterMap)
 	copy, _ := a.session.ShallowCopy().(*types.SessionContainer)
 	return copy
 }

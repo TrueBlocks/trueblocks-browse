@@ -62,7 +62,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	a.project.NIndexes = uint64(len(a.indexes.Items))
 	a.project.NManifests = uint64(len(a.manifests.Items))
 	a.project.NCaches = uint64(len(a.status.Caches))
-	a.project.ForEveryHistoryContainer(func(item *types.HistoryContainer, data any) bool {
+	a.project.ForEveryItem(func(item *types.HistoryContainer, data any) bool {
 		a.project.HistorySize += uint64(item.SizeOf())
 		return true
 	}, nil)

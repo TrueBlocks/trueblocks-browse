@@ -11,7 +11,7 @@ func (a *App) FetchConfig(first, pageSize int) *types.ConfigContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	a.config.CollateAndFilter()
+	_ = a.config.CollateAndFilter(a.filterMap)
 	copy, _ := a.config.ShallowCopy().(*types.ConfigContainer)
 	return copy
 }

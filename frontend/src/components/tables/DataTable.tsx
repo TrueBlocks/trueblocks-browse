@@ -1,4 +1,5 @@
 import "./DataTable.css";
+import { useState } from "react";
 import { Table, Title, Box, Alert } from "@mantine/core";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
@@ -59,13 +60,15 @@ function TableHeader<T>({ table }: TablePartProps<T>) {
 }
 
 function TableBody<T>({ table, selectedRow }: TablePartProps<T>) {
-  const { pager } = useViewState(); // Access pager to use setSelected
+  const { pager, route } = useViewState();
+  const [isWizard] = useState(route === "wizard");
+
   const inner = table.getRowModel().rows.map((row, rowIndex) => {
     const rowKey = `row-${rowIndex}-${row.id}`;
     return (
       <Table.Tr
         key={rowKey}
-        className={rowIndex === selectedRow ? "selected-row" : ""}
+        className={rowIndex === selectedRow ? (isWizard ? "selected-wizard" : "selected-row") : ""}
         onClick={() => pager.setRecord(pager.getOffset() + rowIndex)}
       >
         {row.getVisibleCells().map((cell, cellIndex) => {

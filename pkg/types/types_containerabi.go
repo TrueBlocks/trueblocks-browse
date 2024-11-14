@@ -84,8 +84,47 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *AbiContainer) CollateAndFilter() {
-	s.NItems = uint64(len(s.Items))
+func (s *AbiContainer) Clear() {
+	s.NItems = 0
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *AbiContainer) passesFilter(item *coreTypes.Abi, filter *Filter) (ret bool) {
+	ret = true
+	if filter.HasCriteria() {
+		ret = false
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
+	return
+}
+
+func (s *AbiContainer) Accumulate(item *coreTypes.Abi) {
+	s.NItems++
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *AbiContainer) Finalize() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *AbiContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+	s.Clear()
+
+	filter, _ := theMap.Load("abis") // may be empty
+	filtered := []coreTypes.Abi{}
+	s.ForEveryItem(func(item *coreTypes.Abi, data any) bool {
+		if s.passesFilter(item, &filter) {
+			s.Accumulate(item)
+			filtered = append(filtered, *item)
+		}
+		return true
+	}, nil)
+	s.Finalize()
+
 	// EXISTING_CODE
 	s.FileSize = 0
 	s.NEvents = 0
@@ -105,6 +144,8 @@ func (s *AbiContainer) CollateAndFilter() {
 	s.MostFunctions = fmt.Sprintf("%s (%d functions)", mF.Name, mF.Value)
 	s.MostEvents = fmt.Sprintf("%s (%d events)", mE.Name, mE.Value)
 	// EXISTING_CODE
+
+	return filtered
 }
 
 func (s *AbiContainer) getAbiReload() (ret int64, reload bool) {
@@ -118,7 +159,7 @@ func (s *AbiContainer) getAbiReload() (ret int64, reload bool) {
 
 type EveryAbiFn func(item *coreTypes.Abi, data any) bool
 
-func (s *AbiContainer) ForEveryAbi(process EveryAbiFn, data any) bool {
+func (s *AbiContainer) ForEveryItem(process EveryAbiFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false

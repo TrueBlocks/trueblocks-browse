@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"path/filepath"
 	"sort"
+	"strings"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -93,8 +94,8 @@ func (s *NameContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *NameContainer) CollateAndFilter() {
-	s.NItems = uint64(len(s.Items))
+func (s *NameContainer) Clear() {
+	s.NItems = 0
 	// EXISTING_CODE
 	s.NContracts = 0
 	s.NCustom = 0
@@ -104,38 +105,84 @@ func (s *NameContainer) CollateAndFilter() {
 	s.NPrefund = 0
 	s.NRegular = 0
 	s.NSystem = 0
-	for _, name := range s.Items {
-		if name.Parts&coreTypes.Regular > 0 {
-			s.NRegular++
-		}
-		if name.Parts&coreTypes.Custom > 0 {
-			s.NCustom++
-		}
-		if name.Parts&coreTypes.Prefund > 0 {
-			s.NPrefund++
-		}
-		if name.Parts&coreTypes.Baddress > 0 {
-			s.NSystem++
-		}
-		if name.Deleted {
-			s.NDeleted++
-		}
-		if name.IsErc20 {
-			s.NErc20s++
-		}
-		if name.IsErc721 {
-			s.NErc721s++
-		}
-		if name.IsContract {
-			s.NContracts++
-		}
+	// EXISTING_CODE
+}
+
+func (s *NameContainer) passesFilter(item *coreTypes.Name, filter *Filter) (ret bool) {
+	ret = true
+	if filter.HasCriteria() {
+		ret = false
+		// EXISTING_CODE
+		ss := strings.ToLower(filter.Criteria)
+		n := strings.ToLower(item.Name)
+		a := strings.ToLower(item.Address.Hex())
+		t := strings.ToLower(item.Tags)
+		c1 := strings.Contains(n, ss)
+		c2 := strings.Contains(a, ss)
+		c3 := strings.Contains(t, ss)
+		ret = c1 || c2 || c3
+		// EXISTING_CODE
 	}
+	return
+}
+
+func (s *NameContainer) Accumulate(item *coreTypes.Name) {
+	s.NItems++
+	// EXISTING_CODE
+	if item.Parts&coreTypes.Regular > 0 {
+		s.NRegular++
+	}
+	if item.Parts&coreTypes.Custom > 0 {
+		s.NCustom++
+	}
+	if item.Parts&coreTypes.Prefund > 0 {
+		s.NPrefund++
+	}
+	if item.Parts&coreTypes.Baddress > 0 {
+		s.NSystem++
+	}
+	if item.Deleted {
+		s.NDeleted++
+	}
+	if item.IsErc20 {
+		s.NErc20s++
+	}
+	if item.IsErc721 {
+		s.NErc721s++
+	}
+	if item.IsContract {
+		s.NContracts++
+	}
+	// EXISTING_CODE
+}
+
+func (s *NameContainer) Finalize() {
+	// EXISTING_CODE
 	chain := "mainnet"
 	customPath := filepath.Join(coreConfig.MustGetPathToChainConfig(chain), string(names.DatabaseCustom))
-	s.SizeOnDisc = uint64(file.FileSize(customPath))
 	regularPath := filepath.Join(coreConfig.MustGetPathToChainConfig(chain), string(names.DatabaseRegular))
-	s.SizeOnDisc += uint64(file.FileSize(regularPath))
+	s.SizeOnDisc = uint64(file.FileSize(customPath)) + uint64(file.FileSize(regularPath))
 	// EXISTING_CODE
+}
+
+func (s *NameContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+	s.Clear()
+
+	filter, _ := theMap.Load("names") // may be empty
+	filtered := []coreTypes.Name{}
+	s.ForEveryItem(func(item *coreTypes.Name, data any) bool {
+		if s.passesFilter(item, &filter) {
+			s.Accumulate(item)
+			filtered = append(filtered, *item)
+		}
+		return true
+	}, nil)
+	s.Finalize()
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	return filtered
 }
 
 func (s *NameContainer) getNameReload() (ret int64, reload bool) {
@@ -151,7 +198,7 @@ func (s *NameContainer) getNameReload() (ret int64, reload bool) {
 
 type EveryNameFn func(item *coreTypes.Name, data any) bool
 
-func (s *NameContainer) ForEveryName(process EveryNameFn, data any) bool {
+func (s *NameContainer) ForEveryItem(process EveryNameFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false

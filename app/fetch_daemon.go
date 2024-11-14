@@ -11,7 +11,7 @@ func (a *App) FetchDaemon(first, pageSize int) *types.DaemonContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	a.daemons.CollateAndFilter()
+	_ = a.daemons.CollateAndFilter(a.filterMap)
 	copy, _ := a.daemons.ShallowCopy().(*types.DaemonContainer)
 	return copy
 }

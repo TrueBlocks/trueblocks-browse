@@ -61,9 +61,38 @@ func (s *DaemonContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *DaemonContainer) CollateAndFilter() {
+func (s *DaemonContainer) Clear() {
 	// EXISTING_CODE
 	// EXISTING_CODE
+}
+
+func (s *DaemonContainer) passesFilter(filter *Filter) (ret bool) {
+	ret = true
+	if filter.HasCriteria() {
+		ret = false
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
+	return
+}
+
+func (s *DaemonContainer) Accumulate() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *DaemonContainer) Finalize() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (s *DaemonContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+	filtered := []Nothing{}
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	return filtered
 }
 
 func (s *DaemonContainer) getDaemonReload() (ret int64, reload bool) {

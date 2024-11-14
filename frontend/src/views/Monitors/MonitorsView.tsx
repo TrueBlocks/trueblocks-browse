@@ -32,7 +32,7 @@ export const MonitorsView = () => {
       modifyFn={ModifyMonitors}
     >
       <DebugState n={monitors.lastUpdate} />
-      <View tabs={tabs} forms={forms} />
+      <View tabs={tabs} forms={forms} searchable />
     </ViewStateProvider>
   );
 };

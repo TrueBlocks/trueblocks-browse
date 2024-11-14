@@ -42,6 +42,7 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	}
 	// EXISTING_CODE
 
+	// EXISTING_CODE
 	history, exists := a.historyCache.Load(address)
 	if exists && len(history.Items) > 0 {
 		// if !history.NeedsUpdate(a.forceHistory()) {
@@ -49,10 +50,15 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 		// }
 	}
 
+	// EXISTING_CODE
+
+	// EXISTING_CODE
 	if err := a.thing(address, 150, errorChan); err != nil {
 		a.emitAddressErrorMsg(err, address)
 		return err
 	}
+	// EXISTING_CODE
+	a.emitInfoMsg("Loaded history", "")
 
 	return nil
 }
