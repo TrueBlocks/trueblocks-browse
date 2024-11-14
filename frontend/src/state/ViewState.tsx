@@ -1,6 +1,6 @@
 import { useState, createContext, useEffect, useContext, ReactNode } from "react";
 import { Pager } from "@components";
-import { IsShowing, SetShowing } from "@gocode/app/App";
+import { IsShowing, SetShowing, SetFilter, GetFilter } from "@gocode/app/App";
 import { messages, app } from "@gocode/models";
 import { Page, useKeyboardPaging, useNoops } from "@hooks";
 import { Route } from "@layout";
@@ -17,6 +17,8 @@ interface ViewStateProps {
   pager: Pager;
   fetchFn: FetchFnType;
   modifyFn: ModifyFnType;
+  filter: string;
+  updateFilter: (criteria: string) => void;
 }
 
 const ViewContext = createContext<ViewStateProps | undefined>(undefined);
@@ -32,6 +34,7 @@ type ViewContextType = {
 
 export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnter, children }: ViewContextType) => {
   const [headerShows, setHeaderShows] = useState<boolean | null>(null);
+  const [filter, setFilter] = useState<string>("");
   const { enterNoop } = useNoops();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
   const pager = useKeyboardPaging(nItems, lines, onEnter ? onEnter : enterNoop);
@@ -43,9 +46,18 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
     });
   };
 
+  const updateFilter = (criteria: string) => {
+    setFilter(criteria);
+    SetFilter(route, criteria);
+  };
+
   useEffect(() => {
     IsShowing(route).then((onOff) => {
       setHeaderShows(onOff);
+    });
+
+    GetFilter(route).then((filterData) => {
+      setFilter(filterData.criteria);
     });
   }, [route]);
 
@@ -92,6 +104,8 @@ export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnt
     pager,
     fetchFn,
     modifyFn,
+    filter,
+    updateFilter,
   };
 
   return <ViewContext.Provider value={state}>{children}</ViewContext.Provider>;

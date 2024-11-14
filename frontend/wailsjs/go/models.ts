@@ -38,6 +38,18 @@ export namespace app {
 		    return a;
 		}
 	}
+	export class Filter {
+	    criteria: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Filter(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.criteria = source["criteria"];
+	    }
+	}
 	export class ModifyData {
 	    operation: string;
 	    address: base.Address;
@@ -2009,7 +2021,6 @@ export namespace types {
 	    lastFolder: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
-	    lastSearch: {[key: string]: string};
 	    window: Window;
 	    wizardStr: string;
 	    toggles: Toggles;
@@ -2025,7 +2036,6 @@ export namespace types {
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
-	        this.lastSearch = source["lastSearch"];
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
@@ -2055,7 +2065,6 @@ export namespace types {
 	    lastFolder: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
-	    lastSearch: {[key: string]: string};
 	    window: Window;
 	    wizardStr: string;
 	    toggles: Toggles;
@@ -2072,7 +2081,6 @@ export namespace types {
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
-	        this.lastSearch = source["lastSearch"];
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);

@@ -1,6 +1,6 @@
 import { ReactNode, useState, useEffect } from "react";
-import { Stack, Tabs } from "@mantine/core";
-import { ViewTitle } from "@components";
+import { Group, Stack, Tabs } from "@mantine/core";
+import { SearchBar, ViewTitle } from "@components";
 import { messages } from "@gocode/models";
 import { EventsOn, EventsOff } from "@runtime";
 import classes from "./View.module.css";
@@ -10,9 +10,10 @@ export type ViewForm = Record<string, ReactNode>;
 export type ViewProps = {
   tabs: string[];
   forms: ViewForm;
+  searchable?: boolean;
 };
 
-export const View = ({ tabs, forms }: ViewProps) => {
+export const View = ({ tabs, forms, searchable = false }: ViewProps) => {
   const [activeTab, setActiveTab] = useState<string>(tabs[0]);
 
   useEffect(() => {
@@ -53,7 +54,16 @@ export const View = ({ tabs, forms }: ViewProps) => {
 
   return (
     <Stack className={classes.viewContainer}>
-      <ViewTitle />
+      <Group style={{ justifyContent: "space-between", alignItems: "center" }}>
+        <ViewTitle />
+        {searchable ? (
+          <div style={{ width: "30%" }}>
+            <SearchBar />
+          </div>
+        ) : (
+          <></>
+        )}
+      </Group>
       <Tabs
         value={activeTab}
         onChange={(t) => {

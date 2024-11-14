@@ -32,7 +32,7 @@ export const NamesView = () => {
       modifyFn={ModifyName}
     >
       <DebugState n={names.lastUpdate} />
-      <View tabs={tabs} forms={forms} />
+      <View tabs={tabs} forms={forms} searchable />
     </ViewStateProvider>
   );
 };

@@ -130,6 +130,10 @@ export function GetExploreUrl(arg1, arg2, arg3) {
   return window['go']['app']['App']['GetExploreUrl'](arg1, arg2, arg3);
 }
 
+export function GetFilter(arg1) {
+  return window['go']['app']['App']['GetFilter'](arg1);
+}
+
 export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
@@ -236,6 +240,10 @@ export function SetChain(arg1) {
 
 export function SetEnv(arg1, arg2) {
   return window['go']['app']['App']['SetEnv'](arg1, arg2);
+}
+
+export function SetFilter(arg1, arg2) {
+  return window['go']['app']['App']['SetFilter'](arg1, arg2);
 }
 
 export function SetRoute(arg1, arg2) {
