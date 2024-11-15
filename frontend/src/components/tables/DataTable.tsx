@@ -21,7 +21,7 @@ export function DataTable<T>({ table, loading }: DataTableProps<T>) {
   if (nItems <= 0) {
     return (
       <Box style={{ width: "100%" }}>
-        <Alert variant="light" color="blue" title="No data found" icon={<IconInfoCircle />} style={{ width: "100%" }} />
+        <Alert variant="light" color="blue" title="Loading..." icon={<IconInfoCircle />} style={{ width: "100%" }} />
       </Box>
     );
   }

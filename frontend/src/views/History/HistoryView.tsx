@@ -29,36 +29,6 @@ export const HistoryView = () => {
     <ViewStateProvider route={route} nItems={history.nItems} fetchFn={fetchHistory} modifyFn={modifyNoop}>
       <DebugState n={history.lastUpdate} />
       <View tabs={tabs} forms={forms} />
-      <HistoryRefreshListener fetchHistory={fetchHistory} />
     </ViewStateProvider>
   );
-};
-
-const HistoryRefreshListener = ({
-  fetchHistory,
-}: {
-  fetchHistory: (currentItem: number, itemsPerPage: number) => void;
-}) => {
-  const { pager } = useViewState();
-
-  useEffect(() => {
-    const handleRefresh = () => {
-      fetchHistory(pager.getOffset(), pager.perPage);
-    };
-
-    const { Message } = messages;
-    EventsOn(Message.STARTED, handleRefresh);
-    // EventsOn(Message.PROGRESS, handleRefresh);
-    EventsOn(Message.COMPLETED, handleRefresh);
-    EventsOn(Message.CANCELED, handleRefresh);
-
-    return () => {
-      EventsOff(Message.STARTED);
-      // EventsOff(Message.PROGRESS);
-      EventsOff(Message.COMPLETED);
-      EventsOff(Message.CANCELED);
-    };
-  }, [fetchHistory, pager]);
-
-  return null;
 };

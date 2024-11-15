@@ -31,13 +31,14 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	}()
 
 	if !historyLock.CompareAndSwap(0, 1) {
+		logger.InfoBR("load History is busy", "address", address.Hex())
 		return nil
 	}
 	defer historyLock.CompareAndSwap(1, 0)
 
 	// EXISTING_CODE
-	_ = a.forceHistory()
 	if address.IsZero() {
+		logger.InfoBR("Zero address", "address", address.Hex())
 		return nil
 	}
 	// EXISTING_CODE
@@ -46,6 +47,7 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	history, exists := a.historyCache.Load(address)
 	if exists && len(history.Items) > 0 {
 		// if !history.NeedsUpdate(a.forceHistory()) {
+		logger.InfoBB("History does not need a refresh", "address", address.Hex())
 		return nil // we only update with a Reload
 		// }
 	}
@@ -53,7 +55,8 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	// EXISTING_CODE
 
 	// EXISTING_CODE
-	if err := a.thing(address, 150, errorChan); err != nil {
+	if err := a.thing(address, 250, errorChan); err != nil {
+		logger.InfoBM("thing shit the bed")
 		a.emitAddressErrorMsg(err, address)
 		return err
 	}
@@ -137,6 +140,7 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) error 
 
 	_, meta, err := opts.Export() // blocks until forever loop above finishes
 	if err != nil {
+		logger.InfoBM("thing: error in Export")
 		a.emitProgressMsg(messages.Canceled, address, txCnt, txCnt)
 		return err
 	}
@@ -150,12 +154,15 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) error 
 		return history.Items[i].BlockNumber > history.Items[j].BlockNumber
 	})
 	a.historyCache.Store(address, history)
+	a.emitMsg(messages.Refresh, &messages.MessageMsg{
+		Num1: 3, // 3 means refresh
+	})
 
 	return nil
 }
 
 func (a *App) Reload() {
-	defer a.trackPerformance("Reload")()
+	defer a.trackPerformance("Reload", false)()
 
 	switch a.session.LastRoute {
 	case "/names":
@@ -187,7 +194,7 @@ func (a *App) txCount(address base.Address) int {
 }
 
 func (a *App) goToAddress(address base.Address) {
-	defer a.trackPerformance("goToAddress")()
+	defer a.trackPerformance("goToAddress", false)()
 
 	if address == base.ZeroAddr {
 		return
@@ -197,18 +204,16 @@ func (a *App) goToAddress(address base.Address) {
 	a.SetRoute("/history", address.Hex())
 	history, exists := a.historyCache.Load(address)
 	if exists {
-		history.Items = make([]coreTypes.Transaction, 0, len(history.Items))
+		history.Items = history.Items[:0]
 		a.historyCache.Store(address, history)
 	}
 	go a.loadHistory(address, nil, nil)
 	a.emitNavigateMsg(a.GetRoute())
-	a.emitMsg(messages.Refresh, &messages.MessageMsg{
-		Num1: 3, // 3 means refresh
-	})
 }
 
 func (a *App) LoadAddress(addrOrEns string) {
 	if address, ok := a.ensToAddress(addrOrEns); ok {
+		logger.InfoBM("LoadAddress", "address", address.Hex())
 		a.goToAddress(address)
 	} else {
 		a.emitErrorMsg(ErrInvalidAddress, nil)
