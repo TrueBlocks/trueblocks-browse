@@ -72,7 +72,7 @@ export function GetEnv(arg1:string):Promise<string>;
 
 export function GetExploreUrl(arg1:string,arg2:boolean,arg3:boolean):Promise<string>;
 
-export function GetFilter(arg1:string):Promise<app.Filter>;
+export function GetFilter(arg1:string):Promise<types.Filter>;
 
 export function GetMenus():Promise<menu.Menu>;
 

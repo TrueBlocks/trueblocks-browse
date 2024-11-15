@@ -38,18 +38,6 @@ export namespace app {
 		    return a;
 		}
 	}
-	export class Filter {
-	    criteria: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Filter(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.criteria = source["criteria"];
-	    }
-	}
 	export class ModifyData {
 	    operation: string;
 	    address: base.Address;
@@ -996,6 +984,18 @@ export namespace types {
 	        this.freshen = source["freshen"];
 	        this.scraper = source["scraper"];
 	        this.ipfs = source["ipfs"];
+	    }
+	}
+	export class Filter {
+	    criteria: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Filter(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.criteria = source["criteria"];
 	    }
 	}
 	

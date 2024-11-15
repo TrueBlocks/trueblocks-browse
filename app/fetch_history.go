@@ -15,11 +15,6 @@ func (a *App) FetchHistory(first, pageSize int) *types.HistoryContainer {
 	// EXISTING_CODE
 
 	address := a.GetSelected()
-	_, exists := a.historyCache.Load(address)
-	if !exists {
-		return nil
-	}
-
 	txCount := a.txCount(address)
 	first = base.Max(0, base.Min(first, txCount-1))
 	last := base.Min(txCount, first+pageSize)

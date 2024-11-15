@@ -36,7 +36,7 @@ func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address 
 		Items: make([]coreTypes.Transaction, 0, len(itemsIn)),
 		Chain: chain,
 	}
-	ret.LastUpdate, _ = ret.getHistoryReload()
+	// ret.LastUpdate, _ = ret.getHistoryReload()
 	// EXISTING_CODE
 	ret.Address = address
 	ret.LastUpdate, _ = ret.getHistoryReload() // DO NOT REMOVE (needs address)
@@ -128,6 +128,15 @@ func (s *HistoryContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
 	filter, _ := theMap.Load("history") // may be empty
+	if !filter.HasCriteria() {
+		s.ForEveryItem(func(item *coreTypes.Transaction, data any) bool {
+			s.Accumulate(item)
+			return true
+		}, nil)
+		s.Finalize()
+		return s.Items
+	}
+
 	filtered := []coreTypes.Transaction{}
 	s.ForEveryItem(func(item *coreTypes.Transaction, data any) bool {
 		if s.passesFilter(item, &filter) {

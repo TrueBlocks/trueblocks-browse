@@ -169,6 +169,15 @@ func (s *NameContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
 	filter, _ := theMap.Load("names") // may be empty
+	if !filter.HasCriteria() {
+		s.ForEveryItem(func(item *coreTypes.Name, data any) bool {
+			s.Accumulate(item)
+			return true
+		}, nil)
+		s.Finalize()
+		return s.Items
+	}
+
 	filtered := []coreTypes.Name{}
 	s.ForEveryItem(func(item *coreTypes.Name, data any) bool {
 		if s.passesFilter(item, &filter) {
