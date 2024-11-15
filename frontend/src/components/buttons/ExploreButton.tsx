@@ -19,7 +19,9 @@ export const ExploreButton = ({ type = "explore", value, ...props }: ExploreButt
     const google = type === "google";
     const dalle = type === "dalle";
     GetExploreUrl(value as string, google, dalle).then((url) => {
-      setUrl(url);
+      if (url) {
+        setUrl(url);
+      }
     });
     switch (type) {
       case "explore":
