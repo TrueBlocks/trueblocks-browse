@@ -16,7 +16,7 @@ export const WizardView = () => {
     });
   };
 
-  const onEnter = () => {
+  const handleEnter = () => {
     stepWizard(types.WizStep.NEXT);
   };
 
@@ -37,7 +37,7 @@ export const WizardView = () => {
       nItems={wizard.nItems}
       fetchFn={fetchWizard}
       modifyFn={modifyNoop}
-      onEnter={onEnter}
+      onEnter={handleEnter}
     >
       <DebugState n={wizard.lastUpdate} />
       <View tabs={tabs} forms={forms} />

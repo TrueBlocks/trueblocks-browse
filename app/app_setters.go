@@ -19,7 +19,7 @@ func (a *App) SetRoute(route, subRoute string) {
 }
 
 func (a *App) SetChain(chain string) {
-	defer a.trackPerformance("SetChain")()
+	defer a.trackPerformance("SetChain", false)()
 	if len(chain) == 0 || chain == a.session.LastChain {
 		return
 	}

@@ -23,7 +23,7 @@ import (
 var historyLock atomic.Uint32
 
 func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan chan error) error {
-	defer a.trackPerformance("loadHistory")()
+	defer a.trackPerformance("loadHistory", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -72,6 +72,8 @@ func (a *App) forceHistory() (force bool) {
 
 // EXISTING_CODE
 func (a *App) thing(address base.Address, freq int, errorChan chan error) error {
+	defer a.trackPerformance("thing", false)()
+
 	txCnt := a.txCount(address)
 	a.emitProgressMsg(messages.Started, address, 0, 0)
 	defer func() {

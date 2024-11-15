@@ -76,11 +76,23 @@ func (t *Timer) Report(msg string) {
 	t.lastReport = time.Now()
 }
 
-func (a *App) trackPerformance(fnc string) func() {
+func (a *App) trackPerformance(fnc string, force bool) func() {
+	if force {
+		save := a.enableTiming(true)
+		defer func() {
+			a.enableTiming(save)
+		}()
+	}
 	a.timer.Report("-->" + fnc)
 	a.timer.LevelUp()
 	return func() {
 		a.timer.LevelDown()
 		a.timer.Report("<--" + fnc)
 	}
+}
+
+func (a *App) enableTiming(onOff bool) bool {
+	ret := perfTiming
+	perfTiming = onOff
+	return ret
 }

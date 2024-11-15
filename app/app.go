@@ -66,13 +66,13 @@ func NewApp() *App {
 }
 
 func (a *App) Startup(ctx context.Context) {
-	defer a.trackPerformance("Startup")()
+	defer a.trackPerformance("Startup", false)()
 	a.ctx = ctx
 }
 
 // DomReady is called by Wails when the app is ready to go. Adjust the window size and show it.
 func (a *App) DomReady(ctx context.Context) {
-	defer a.trackPerformance("DomReady")()
+	defer a.trackPerformance("DomReady", false)()
 
 	// This call does a number of things. If any errors occur, they are deferred until
 	// the window is open. This is because we can't show errors until the window is open.
