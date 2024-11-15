@@ -171,6 +171,12 @@ func (a *App) Reload() {
 		if err := a.loadNames(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
+	case "/monitors":
+		logger.InfoG("Reloading monitors...")
+		a.monitors.LastUpdate = 0
+		if err := a.loadMonitors(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 	default:
 		logger.InfoG("Reloading default (history)...")
 		history, _ := a.historyCache.Load(a.GetSelected())
