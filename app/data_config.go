@@ -12,8 +12,7 @@ import (
 
 var configLock atomic.Uint32
 
-func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) {
-	_ = errorChan
+func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -21,13 +20,22 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) {
 	}()
 
 	if !configLock.CompareAndSwap(0, 1) {
-		return
+		return nil
 	}
 	defer configLock.CompareAndSwap(1, 0)
 
 	if !a.config.NeedsUpdate(a.forceConfig()) {
-		return
+		return nil
 	}
+
+	// EXISTING_CODE
+	_ = errorChan
+	// EXISTING_CODE
+	// EXISTING_CODE
+	// do not remove
+	// EXISTING_CODE
+
+	return nil
 }
 
 func (a *App) forceConfig() (force bool) {
@@ -35,3 +43,6 @@ func (a *App) forceConfig() (force bool) {
 	// EXISTING_CODE
 	return
 }
+
+// EXISTING_CODE
+// EXISTING_CODE

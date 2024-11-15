@@ -30,6 +30,10 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer projectLock.CompareAndSwap(1, 0)
 
+	if !a.project.NeedsUpdate(a.forceProject()) {
+		return nil
+	}
+
 	// EXISTING_CODE
 	_ = errorChan
 	items := []types.HistoryContainer{}
@@ -46,15 +50,10 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	// EXISTING_CODE
-
-	{
-
-		// EXISTING_CODE
-		// EXISTING_CODE
-		// EXISTING_CODE
-		// EXISTING_CODE
-	}
-
+	// EXISTING_CODE
+	// do not remove
+	// EXISTING_CODE
+	// EXISTING_CODE
 	a.project.NItems = uint64(len(a.project.Items))
 	a.project.NMonitors = uint64(len(a.monitors.Items))
 	a.project.NNames = uint64(len(a.names.Items))
@@ -72,6 +71,8 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 		return ai.Hex() < aj.Hex()
 	})
 	a.emitInfoMsg("Loaded project", "")
+	// EXISTING_CODE
+
 	return nil
 }
 

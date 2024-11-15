@@ -12,8 +12,7 @@ import (
 
 var daemonLock atomic.Uint32
 
-func (a *App) loadDaemon(wg *sync.WaitGroup, errorChan chan error) {
-	_ = errorChan
+func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -21,13 +20,25 @@ func (a *App) loadDaemon(wg *sync.WaitGroup, errorChan chan error) {
 	}()
 
 	if !daemonLock.CompareAndSwap(0, 1) {
-		return
+		return nil
 	}
 	defer daemonLock.CompareAndSwap(1, 0)
 
 	if !a.daemons.NeedsUpdate(a.forceDaemon()) {
-		return
+		return nil
 	}
+
+	// EXISTING_CODE
+	_ = errorChan
+	// EXISTING_CODE
+	// EXISTING_CODE
+	// do not remove
+	// EXISTING_CODE
+	// EXISTING_CODE
+	// do not remove
+	// EXISTING_CODE
+
+	return nil
 }
 
 func (a *App) forceDaemon() (force bool) {
@@ -35,3 +46,6 @@ func (a *App) forceDaemon() (force bool) {
 	// EXISTING_CODE
 	return
 }
+
+// EXISTING_CODE
+// EXISTING_CODE

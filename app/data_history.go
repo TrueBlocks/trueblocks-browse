@@ -31,7 +31,6 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	}()
 
 	if !historyLock.CompareAndSwap(0, 1) {
-		logger.InfoBR("load History is busy", "address", address.Hex())
 		return nil
 	}
 	defer historyLock.CompareAndSwap(1, 0)
@@ -42,7 +41,6 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 		return nil
 	}
 	// EXISTING_CODE
-
 	// EXISTING_CODE
 	history, exists := a.historyCache.Load(address)
 	if exists && len(history.Items) > 0 {
@@ -51,9 +49,7 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 		return nil // we only update with a Reload
 		// }
 	}
-
 	// EXISTING_CODE
-
 	// EXISTING_CODE
 	if err := a.thing(address, 250, errorChan); err != nil {
 		logger.InfoBM("thing shit the bed")

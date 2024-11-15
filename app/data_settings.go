@@ -2,6 +2,7 @@
 // of ExistingCode markers (if any).
 package app
 
+// EXISTING_CODE
 import (
 	"sync"
 	"sync/atomic"
@@ -10,6 +11,7 @@ import (
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
+// EXISTING_CODE
 
 var settingsLock atomic.Uint32
 
@@ -25,10 +27,11 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer settingsLock.CompareAndSwap(1, 0)
 
-	if !a.settings.NeedsUpdate(false) {
+	if !a.settings.NeedsUpdate(a.forceSettings()) {
 		return nil
 	}
 
+	// EXISTING_CODE
 	_ = errorChan // delint
 	if path, err := utils.GetConfigFn("", "trueBlocks.toml"); err != nil {
 		a.emitErrorMsg(err, nil)
@@ -44,6 +47,23 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 		Session: &a.session,
 	}
 	a.settings = types.NewSettingsContainer(&props)
+	// EXISTING_CODE
+	// EXISTING_CODE
+	// do not remove
+	// EXISTING_CODE
+	// EXISTING_CODE
+	// do not remove
+	// EXISTING_CODE
+	a.emitInfoMsg("Loaded settings", "")
 
 	return nil
 }
+
+func (a *App) forceSettings() (force bool) {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return
+}
+
+// EXISTING_CODE
+// EXISTING_CODE

@@ -13,7 +13,6 @@ import (
 var wizardLock atomic.Uint32
 
 func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
-	_ = errorChan
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -29,33 +28,15 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
-	// opts := sdk.WizardOptions{
-	// 	Globals: a.getGlobals(),
-	// }
-	// // EXISTING_CODE
-	// // EXISTING_CODE
-	// opts.Verbose = true
-
-	// if wizard, meta, err := opts.WizardList(); err != nil {
-	// 	if errorChan != nil {
-	// 		errorChan <- err
-	// 	}
-	// 	return err
-	// } else if (wizard == nil) || (len(wizard) == 0) {
-	// 	err = fmt.Errorf("no wizard found")
-	// 	if errorChan != nil {
-	// 		errorChan <- err
-	// 	}
-	// 	return err
-	// } else {
-	// 	// EXISTING_CODE
-	// 	// EXISTING_CODE
-	// 	a.meta = *meta
-	// 	a.wizard = types.NewWizardContainer(opts.Chain, wizard)
-	// 	// EXISTING_CODE
-	// 	// EXISTING_CODE
-	// 	a.emitInfoMsg("Loaded wizard", "")
-	// }
+	// EXISTING_CODE
+	_ = errorChan
+	// EXISTING_CODE
+	// EXISTING_CODE
+	// do not remove
+	// EXISTING_CODE
+	// EXISTING_CODE
+	// do not remove
+	// EXISTING_CODE
 
 	return nil
 }
