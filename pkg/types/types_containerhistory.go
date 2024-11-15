@@ -36,7 +36,7 @@ func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address 
 		Items: make([]coreTypes.Transaction, 0, len(itemsIn)),
 		Chain: chain,
 	}
-	// ret.LastUpdate, _ = ret.getHistoryReload()
+	ret.LastUpdate, _ = ret.getHistoryReload()
 	// EXISTING_CODE
 	ret.Address = address
 	ret.LastUpdate, _ = ret.getHistoryReload() // DO NOT REMOVE (needs address)
