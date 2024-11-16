@@ -7,10 +7,10 @@ package app
 
 {{range .Structures -}}
 func (a *App) {{.UiRouteLabel}}View(cb *menu.CallbackData) {
-	{{if .IsHistory -}}
+{{if .IsHistory -}}
 	address := a.GetSelected()
 	a.Navigate("/{{.UiRouteLower}}", address.Hex())
-	{{- else if .IsWizard -}}
+{{- else if .IsWizard -}}
 	if a.isConfigured() {
 		a.wizard.State = types.WizWelcome
 		a.emitMsg(messages.Refresh, &messages.MessageMsg{
@@ -22,9 +22,9 @@ func (a *App) {{.UiRouteLabel}}View(cb *menu.CallbackData) {
 		a.StepWizard(types.WizNext)
 	}
 	a.Navigate("/{{.UiRouteLower}}", "")
-	{{- else -}}
+{{- else -}}
 	a.Navigate("/{{if not .IsProject}}{{.UiRouteLower}}{{end}}", "")
-	{{end -}}
+{{end -}}
 }
 
 {{end}}

@@ -37,6 +37,7 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// do not remove
 	// EXISTING_CODE
+	a.emitInfoMsg("Loaded wizard", "")
 
 	return nil
 }

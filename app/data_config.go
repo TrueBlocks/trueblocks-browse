@@ -34,6 +34,9 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// do not remove
 	// EXISTING_CODE
+	// EXISTING_CODE
+	// EXISTING_CODE
+	a.emitInfoMsg("Loaded config", "")
 
 	return nil
 }

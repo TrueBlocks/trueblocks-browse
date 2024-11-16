@@ -70,8 +70,8 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 		aj := a.project.Items[j].Address
 		return ai.Hex() < aj.Hex()
 	})
-	a.emitInfoMsg("Loaded project", "")
 	// EXISTING_CODE
+	a.emitInfoMsg("Loaded project", "")
 
 	return nil
 }

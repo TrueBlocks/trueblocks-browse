@@ -37,6 +37,7 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// do not remove
 	// EXISTING_CODE
+	a.emitInfoMsg("Loaded daemons", "")
 
 	return nil
 }

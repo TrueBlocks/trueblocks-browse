@@ -17,7 +17,7 @@ import (
 
 var sessionLock atomic.Uint32
 
-func (a *App) loadSessions(wg *sync.WaitGroup, errorChan chan error) error {
+func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -33,20 +33,20 @@ func (a *App) loadSessions(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	}
 
-	opts := sdk.SessionsOptions{
+	opts := sdk.SessionOptions{
 		Globals: a.getGlobals(),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
 	opts.Verbose = true
 
-	if sessions, meta, err := opts.SessionsList(); err != nil {
+	if session, meta, err := opts.SessionList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (sessions == nil) || (len(sessions) == 0) {
-		err = fmt.Errorf("no sessions found")
+	} else if (session == nil) || (len(session) == 0) {
+		err = fmt.Errorf("no session found")
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -57,13 +57,14 @@ func (a *App) loadSessions(wg *sync.WaitGroup, errorChan chan error) error {
 		ss := a.session.Session
 		// EXISTING_CODE
 		a.meta = *meta
-		a.session = types.NewSessionContainer(opts.Chain, &sessions[0])
+		a.session = types.NewSessionContainer(opts.Chain, &session[0])
 		// EXISTING_CODE
 		// ... and put it back
 		a.session.Session = ss
 		// EXISTING_CODE
-		// a.emitInfoMsg("Loaded sessions", "")
+		a.emitInfoMsg("Loaded session", "")
 	}
+
 	return nil
 }
 

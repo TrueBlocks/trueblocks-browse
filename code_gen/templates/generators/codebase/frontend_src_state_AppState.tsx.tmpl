@@ -49,10 +49,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   useEffect(() => {
-    fetchHistory(0, 15);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
     const handleRefresh = () => {
       fetchAppInfo();
       fetchWizard(0, 100);
