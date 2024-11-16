@@ -17,6 +17,7 @@ import (
 
 // EXISTING_CODE
 
+// -------------------------------------------------------------------
 type NameContainer struct {
 	NContracts uint64           `json:"nContracts"`
 	NCustom    uint64           `json:"nCustom"`
@@ -35,6 +36,7 @@ type NameContainer struct {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	ret := NameContainer{
 		Items:  itemsIn,
@@ -51,19 +53,23 @@ func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *NameContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
+// -------------------------------------------------------------------
 func (s *NameContainer) GetItems() interface{} {
 	return s.Items
 }
 
+// -------------------------------------------------------------------
 func (s *NameContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.Name)
 }
 
+// -------------------------------------------------------------------
 func (s *NameContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getNameReload()
 	if force || reload {
@@ -74,6 +80,7 @@ func (s *NameContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
+// -------------------------------------------------------------------
 func (s *NameContainer) ShallowCopy() Containerer {
 	ret := &NameContainer{
 		NContracts: s.NContracts,
@@ -94,6 +101,7 @@ func (s *NameContainer) ShallowCopy() Containerer {
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *NameContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
@@ -108,6 +116,7 @@ func (s *NameContainer) Clear() {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *NameContainer) passesFilter(item *coreTypes.Name, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -126,6 +135,7 @@ func (s *NameContainer) passesFilter(item *coreTypes.Name, filter *Filter) (ret 
 	return
 }
 
+// -------------------------------------------------------------------
 func (s *NameContainer) Accumulate(item *coreTypes.Name) {
 	s.NItems++
 	// EXISTING_CODE
@@ -156,6 +166,7 @@ func (s *NameContainer) Accumulate(item *coreTypes.Name) {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *NameContainer) Finalize() {
 	// EXISTING_CODE
 	chain := "mainnet"
@@ -165,6 +176,7 @@ func (s *NameContainer) Finalize() {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *NameContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
@@ -177,7 +189,6 @@ func (s *NameContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 		s.Finalize()
 		return s.Items
 	}
-
 	filtered := []coreTypes.Name{}
 	s.ForEveryItem(func(item *coreTypes.Name, data any) bool {
 		if s.passesFilter(item, &filter) {
@@ -194,6 +205,7 @@ func (s *NameContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
+// -------------------------------------------------------------------
 func (s *NameContainer) getNameReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	chain := "mainnet"
@@ -205,8 +217,10 @@ func (s *NameContainer) getNameReload() (ret int64, reload bool) {
 	return
 }
 
+// -------------------------------------------------------------------
 type EveryNameFn func(item *coreTypes.Name, data any) bool
 
+// -------------------------------------------------------------------
 func (s *NameContainer) ForEveryItem(process EveryNameFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
@@ -236,3 +250,26 @@ func compare(nameI, nameJ coreTypes.Name) bool {
 }
 
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Name
+// lower:         name
+// routeLabel:    Names
+// routeLower:    names
+// embedName:
+// embedType:     .
+// otherName:
+// otherType:     .
+// itemName:      Name
+// itemType:      coreTypes.Name
+// inputType:     coreTypes.Name
+// hasEmbed:      false
+// hasItems:      true
+// hasOther:      false
+// hasSorts:      false
+// initChain:     false
+// isEditable:    false
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      true

@@ -45,6 +45,7 @@ func (m *MonitorContainer) Filter(f func(*coreTypes.Monitor) bool) []int {
 
 // EXISTING_CODE
 
+// -------------------------------------------------------------------
 type MonitorContainer struct {
 	FileSize   uint64              `json:"fileSize"`
 	NDeleted   uint64              `json:"nDeleted"`
@@ -62,6 +63,7 @@ type MonitorContainer struct {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorContainer {
 	ret := MonitorContainer{
 		Items:  itemsIn,
@@ -74,19 +76,23 @@ func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorConta
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *MonitorContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
+// -------------------------------------------------------------------
 func (s *MonitorContainer) GetItems() interface{} {
 	return s.Items
 }
 
+// -------------------------------------------------------------------
 func (s *MonitorContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.Monitor)
 }
 
+// -------------------------------------------------------------------
 func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getMonitorReload()
 	if force || reload {
@@ -97,6 +103,7 @@ func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
+// -------------------------------------------------------------------
 func (s *MonitorContainer) ShallowCopy() Containerer {
 	ret := &MonitorContainer{
 		FileSize:   s.FileSize,
@@ -114,6 +121,7 @@ func (s *MonitorContainer) ShallowCopy() Containerer {
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *MonitorContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
@@ -126,6 +134,7 @@ func (s *MonitorContainer) Clear() {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *MonitorContainer) passesFilter(item *coreTypes.Monitor, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -142,6 +151,7 @@ func (s *MonitorContainer) passesFilter(item *coreTypes.Monitor, filter *Filter)
 	return
 }
 
+// -------------------------------------------------------------------
 func (s *MonitorContainer) Accumulate(item *coreTypes.Monitor) {
 	s.NItems++
 	// EXISTING_CODE
@@ -162,15 +172,25 @@ func (s *MonitorContainer) Accumulate(item *coreTypes.Monitor) {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *MonitorContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *MonitorContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
 	filter, _ := theMap.Load("monitors") // may be empty
+	if !filter.HasCriteria() {
+		s.ForEveryItem(func(item *coreTypes.Monitor, data any) bool {
+			s.Accumulate(item)
+			return true
+		}, nil)
+		s.Finalize()
+		return s.Items
+	}
 	filtered := []coreTypes.Monitor{}
 	s.ForEveryItem(func(item *coreTypes.Monitor, data any) bool {
 		if s.passesFilter(item, &filter) {
@@ -187,6 +207,7 @@ func (s *MonitorContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
+// -------------------------------------------------------------------
 func (s *MonitorContainer) getMonitorReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "monitors"))
@@ -196,8 +217,10 @@ func (s *MonitorContainer) getMonitorReload() (ret int64, reload bool) {
 	return
 }
 
+// -------------------------------------------------------------------
 type EveryMonitorFn func(item *coreTypes.Monitor, data any) bool
 
+// -------------------------------------------------------------------
 func (s *MonitorContainer) ForEveryItem(process EveryMonitorFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
@@ -209,3 +232,26 @@ func (s *MonitorContainer) ForEveryItem(process EveryMonitorFn, data any) bool {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Monitor
+// lower:         monitor
+// routeLabel:    Monitors
+// routeLower:    monitors
+// embedName:
+// embedType:     .
+// otherName:
+// otherType:     .
+// itemName:      Monitor
+// itemType:      coreTypes.Monitor
+// inputType:     coreTypes.Monitor
+// hasEmbed:      false
+// hasItems:      true
+// hasOther:      false
+// hasSorts:      false
+// initChain:     false
+// isEditable:    false
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      true

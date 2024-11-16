@@ -15,6 +15,7 @@ import (
 
 // EXISTING_CODE
 
+// -------------------------------------------------------------------
 type HistoryContainer struct {
 	Address    base.Address            `json:"address"`
 	Balance    string                  `json:"balance"`
@@ -31,10 +32,12 @@ type HistoryContainer struct {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address base.Address) HistoryContainer {
 	ret := HistoryContainer{
-		Items: make([]coreTypes.Transaction, 0, len(itemsIn)),
-		Chain: chain,
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Chain:  chain,
 	}
 	ret.LastUpdate, _ = ret.getHistoryReload()
 	// EXISTING_CODE
@@ -44,19 +47,23 @@ func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address 
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *HistoryContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
+// -------------------------------------------------------------------
 func (s *HistoryContainer) GetItems() interface{} {
 	return s.Items
 }
 
+// -------------------------------------------------------------------
 func (s *HistoryContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.Transaction)
 }
 
+// -------------------------------------------------------------------
 func (s *HistoryContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getHistoryReload()
 	if force || reload {
@@ -67,6 +74,7 @@ func (s *HistoryContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
+// -------------------------------------------------------------------
 func (s *HistoryContainer) ShallowCopy() Containerer {
 	ret := &HistoryContainer{
 		Address:    s.Address,
@@ -85,6 +93,7 @@ func (s *HistoryContainer) ShallowCopy() Containerer {
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *HistoryContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
@@ -94,6 +103,7 @@ func (s *HistoryContainer) Clear() {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *HistoryContainer) passesFilter(item *coreTypes.Transaction, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -104,6 +114,7 @@ func (s *HistoryContainer) passesFilter(item *coreTypes.Transaction, filter *Fil
 	return
 }
 
+// -------------------------------------------------------------------
 func (s *HistoryContainer) Accumulate(item *coreTypes.Transaction) {
 	s.NItems++
 	// EXISTING_CODE
@@ -119,11 +130,13 @@ func (s *HistoryContainer) Accumulate(item *coreTypes.Transaction) {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *HistoryContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *HistoryContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
@@ -136,7 +149,6 @@ func (s *HistoryContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 		s.Finalize()
 		return s.Items
 	}
-
 	filtered := []coreTypes.Transaction{}
 	s.ForEveryItem(func(item *coreTypes.Transaction, data any) bool {
 		if s.passesFilter(item, &filter) {
@@ -153,6 +165,7 @@ func (s *HistoryContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
+// -------------------------------------------------------------------
 func (s *HistoryContainer) getHistoryReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	if s.Address == base.ZeroAddr {
@@ -165,8 +178,10 @@ func (s *HistoryContainer) getHistoryReload() (ret int64, reload bool) {
 	return
 }
 
+// -------------------------------------------------------------------
 type EveryTransactionFn func(item *coreTypes.Transaction, data any) bool
 
+// -------------------------------------------------------------------
 func (s *HistoryContainer) ForEveryItem(process EveryTransactionFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
@@ -186,3 +201,26 @@ func (s *HistoryContainer) SizeOf() int {
 }
 
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         History
+// lower:         history
+// routeLabel:    History
+// routeLower:    history
+// embedName:
+// embedType:     .
+// otherName:     address
+// otherType:     base.Address
+// itemName:      Transaction
+// itemType:      coreTypes.Transaction
+// inputType:     coreTypes.Transaction
+// hasEmbed:      false
+// hasItems:      true
+// hasOther:      true
+// hasSorts:      false
+// initChain:     false
+// isEditable:    false
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      true

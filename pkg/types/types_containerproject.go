@@ -12,6 +12,7 @@ import (
 
 // EXISTING_CODE
 
+// -------------------------------------------------------------------
 type ProjectContainer struct {
 	HistorySize uint64             `json:"historySize"`
 	NAbis       uint64             `json:"nAbis"`
@@ -28,6 +29,7 @@ type ProjectContainer struct {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContainer {
 	ret := ProjectContainer{
 		Items:  itemsIn,
@@ -40,19 +42,23 @@ func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContai
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *ProjectContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
+// -------------------------------------------------------------------
 func (s *ProjectContainer) GetItems() interface{} {
 	return s.Items
 }
 
+// -------------------------------------------------------------------
 func (s *ProjectContainer) SetItems(items interface{}) {
 	s.Items = items.([]HistoryContainer)
 }
 
+// -------------------------------------------------------------------
 func (s *ProjectContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getProjectReload()
 	if force || reload {
@@ -63,6 +69,7 @@ func (s *ProjectContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
+// -------------------------------------------------------------------
 func (s *ProjectContainer) ShallowCopy() Containerer {
 	ret := &ProjectContainer{
 		HistorySize: s.HistorySize,
@@ -81,12 +88,14 @@ func (s *ProjectContainer) ShallowCopy() Containerer {
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *ProjectContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *ProjectContainer) passesFilter(item *HistoryContainer, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -97,21 +106,32 @@ func (s *ProjectContainer) passesFilter(item *HistoryContainer, filter *Filter) 
 	return
 }
 
+// -------------------------------------------------------------------
 func (s *ProjectContainer) Accumulate(item *HistoryContainer) {
 	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *ProjectContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *ProjectContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
 	filter, _ := theMap.Load("project") // may be empty
+	if !filter.HasCriteria() {
+		s.ForEveryItem(func(item *HistoryContainer, data any) bool {
+			s.Accumulate(item)
+			return true
+		}, nil)
+		s.Finalize()
+		return s.Items
+	}
 	filtered := []HistoryContainer{}
 	s.ForEveryItem(func(item *HistoryContainer, data any) bool {
 		if s.passesFilter(item, &filter) {
@@ -129,6 +149,7 @@ func (s *ProjectContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
+// -------------------------------------------------------------------
 func (s *ProjectContainer) getProjectReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	var totalSize int64 = 0
@@ -146,8 +167,10 @@ func (s *ProjectContainer) getProjectReload() (ret int64, reload bool) {
 	return
 }
 
+// -------------------------------------------------------------------
 type EveryHistoryContainerFn func(item *HistoryContainer, data any) bool
 
+// -------------------------------------------------------------------
 func (s *ProjectContainer) ForEveryItem(process EveryHistoryContainerFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
@@ -159,3 +182,26 @@ func (s *ProjectContainer) ForEveryItem(process EveryHistoryContainerFn, data an
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Project
+// lower:         project
+// routeLabel:    Project
+// routeLower:    project
+// embedName:
+// embedType:     .
+// otherName:
+// otherType:     .
+// itemName:      HistoryContainer
+// itemType:      HistoryContainer
+// inputType:     HistoryContainer
+// hasEmbed:      false
+// hasItems:      true
+// hasOther:      false
+// hasSorts:      false
+// initChain:     false
+// isEditable:    false
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      false

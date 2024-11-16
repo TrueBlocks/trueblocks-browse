@@ -16,6 +16,7 @@ import (
 
 // EXISTING_CODE
 
+// -------------------------------------------------------------------
 type AbiContainer struct {
 	LargestFile   string          `json:"largestFile"`
 	MostEvents    string          `json:"mostEvents"`
@@ -30,6 +31,7 @@ type AbiContainer struct {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 	ret := AbiContainer{
 		Items:  itemsIn,
@@ -46,19 +48,23 @@ func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *AbiContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
+// -------------------------------------------------------------------
 func (s *AbiContainer) GetItems() interface{} {
 	return s.Items
 }
 
+// -------------------------------------------------------------------
 func (s *AbiContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.Abi)
 }
 
+// -------------------------------------------------------------------
 func (s *AbiContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getAbiReload()
 	if force || reload {
@@ -69,6 +75,7 @@ func (s *AbiContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
+// -------------------------------------------------------------------
 func (s *AbiContainer) ShallowCopy() Containerer {
 	ret := &AbiContainer{
 		LargestFile:   s.LargestFile,
@@ -84,12 +91,14 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *AbiContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *AbiContainer) passesFilter(item *coreTypes.Abi, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -100,21 +109,32 @@ func (s *AbiContainer) passesFilter(item *coreTypes.Abi, filter *Filter) (ret bo
 	return
 }
 
+// -------------------------------------------------------------------
 func (s *AbiContainer) Accumulate(item *coreTypes.Abi) {
 	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *AbiContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *AbiContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
 	filter, _ := theMap.Load("abis") // may be empty
+	if !filter.HasCriteria() {
+		s.ForEveryItem(func(item *coreTypes.Abi, data any) bool {
+			s.Accumulate(item)
+			return true
+		}, nil)
+		s.Finalize()
+		return s.Items
+	}
 	filtered := []coreTypes.Abi{}
 	s.ForEveryItem(func(item *coreTypes.Abi, data any) bool {
 		if s.passesFilter(item, &filter) {
@@ -148,6 +168,7 @@ func (s *AbiContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
+// -------------------------------------------------------------------
 func (s *AbiContainer) getAbiReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "abis"))
@@ -157,8 +178,10 @@ func (s *AbiContainer) getAbiReload() (ret int64, reload bool) {
 	return
 }
 
+// -------------------------------------------------------------------
 type EveryAbiFn func(item *coreTypes.Abi, data any) bool
 
+// -------------------------------------------------------------------
 func (s *AbiContainer) ForEveryItem(process EveryAbiFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
@@ -189,3 +212,26 @@ func (c *comparison) MarkMin(name string, value int) {
 }
 
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Abi
+// lower:         abi
+// routeLabel:    Abis
+// routeLower:    abis
+// embedName:
+// embedType:     .
+// otherName:
+// otherType:     .
+// itemName:      Abi
+// itemType:      coreTypes.Abi
+// inputType:     coreTypes.Abi
+// hasEmbed:      false
+// hasItems:      true
+// hasOther:      false
+// hasSorts:      true
+// initChain:     false
+// isEditable:    true
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      true

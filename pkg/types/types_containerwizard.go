@@ -10,6 +10,7 @@ import (
 
 // EXISTING_CODE
 
+// -------------------------------------------------------------------
 type WizardContainer struct {
 	Items      []WizError `json:"items"`
 	NItems     uint64     `json:"nItems"`
@@ -20,6 +21,7 @@ type WizardContainer struct {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func NewWizardContainer(chain string, itemsIn []WizError) WizardContainer {
 	ret := WizardContainer{
 		Items:  itemsIn,
@@ -33,19 +35,23 @@ func NewWizardContainer(chain string, itemsIn []WizError) WizardContainer {
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *WizardContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
+// -------------------------------------------------------------------
 func (s *WizardContainer) GetItems() interface{} {
 	return s.Items
 }
 
+// -------------------------------------------------------------------
 func (s *WizardContainer) SetItems(items interface{}) {
 	s.Items = items.([]WizError)
 }
 
+// -------------------------------------------------------------------
 func (s *WizardContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getWizardReload()
 	if force || reload {
@@ -56,6 +62,7 @@ func (s *WizardContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
+// -------------------------------------------------------------------
 func (s *WizardContainer) ShallowCopy() Containerer {
 	ret := &WizardContainer{
 		NItems:     s.NItems,
@@ -68,12 +75,14 @@ func (s *WizardContainer) ShallowCopy() Containerer {
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *WizardContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *WizardContainer) passesFilter(item *WizError, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -84,21 +93,32 @@ func (s *WizardContainer) passesFilter(item *WizError, filter *Filter) (ret bool
 	return
 }
 
+// -------------------------------------------------------------------
 func (s *WizardContainer) Accumulate(item *WizError) {
 	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *WizardContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *WizardContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
 	filter, _ := theMap.Load("wizard") // may be empty
+	if !filter.HasCriteria() {
+		s.ForEveryItem(func(item *WizError, data any) bool {
+			s.Accumulate(item)
+			return true
+		}, nil)
+		s.Finalize()
+		return s.Items
+	}
 	filtered := []WizError{}
 	s.ForEveryItem(func(item *WizError, data any) bool {
 		if s.passesFilter(item, &filter) {
@@ -116,14 +136,17 @@ func (s *WizardContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
+// -------------------------------------------------------------------
 func (s *WizardContainer) getWizardReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return
 }
 
+// -------------------------------------------------------------------
 type EveryWizErrorFn func(item *WizError, data any) bool
 
+// -------------------------------------------------------------------
 func (s *WizardContainer) ForEveryItem(process EveryWizErrorFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
@@ -205,3 +228,26 @@ var AllSteps = []struct {
 }
 
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Wizard
+// lower:         wizard
+// routeLabel:    Wizard
+// routeLower:    wizard
+// embedName:
+// embedType:     .
+// otherName:
+// otherType:     .
+// itemName:      WizError
+// itemType:      WizError
+// inputType:     WizError
+// hasEmbed:      false
+// hasItems:      true
+// hasOther:      false
+// hasSorts:      false
+// initChain:     false
+// isEditable:    false
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      false

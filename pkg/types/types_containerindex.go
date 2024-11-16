@@ -14,6 +14,7 @@ import (
 
 // EXISTING_CODE
 
+// -------------------------------------------------------------------
 type IndexContainer struct {
 	Items      []coreTypes.ChunkStats `json:"items"`
 	NItems     uint64                 `json:"nItems"`
@@ -25,6 +26,7 @@ type IndexContainer struct {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContainer {
 	ret := IndexContainer{
 		Items:  itemsIn,
@@ -41,19 +43,23 @@ func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContai
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *IndexContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
+// -------------------------------------------------------------------
 func (s *IndexContainer) GetItems() interface{} {
 	return s.Items
 }
 
+// -------------------------------------------------------------------
 func (s *IndexContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.ChunkStats)
 }
 
+// -------------------------------------------------------------------
 func (s *IndexContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getIndexReload()
 	if force || reload {
@@ -64,6 +70,7 @@ func (s *IndexContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
+// -------------------------------------------------------------------
 func (s *IndexContainer) ShallowCopy() Containerer {
 	ret := &IndexContainer{
 		NItems:     s.NItems,
@@ -77,6 +84,7 @@ func (s *IndexContainer) ShallowCopy() Containerer {
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *IndexContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
@@ -89,6 +97,7 @@ func (s *IndexContainer) Clear() {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *IndexContainer) passesFilter(item *coreTypes.ChunkStats, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -99,6 +108,7 @@ func (s *IndexContainer) passesFilter(item *coreTypes.ChunkStats, filter *Filter
 	return
 }
 
+// -------------------------------------------------------------------
 func (s *IndexContainer) Accumulate(item *coreTypes.ChunkStats) {
 	s.NItems++
 	// EXISTING_CODE
@@ -111,6 +121,7 @@ func (s *IndexContainer) Accumulate(item *coreTypes.ChunkStats) {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *IndexContainer) Finalize() {
 	// EXISTING_CODE
 	if s.NBlocks > 0 {
@@ -125,10 +136,19 @@ func (s *IndexContainer) Finalize() {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *IndexContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
 	filter, _ := theMap.Load("indexes") // may be empty
+	if !filter.HasCriteria() {
+		s.ForEveryItem(func(item *coreTypes.ChunkStats, data any) bool {
+			s.Accumulate(item)
+			return true
+		}, nil)
+		s.Finalize()
+		return s.Items
+	}
 	filtered := []coreTypes.ChunkStats{}
 	s.ForEveryItem(func(item *coreTypes.ChunkStats, data any) bool {
 		if s.passesFilter(item, &filter) {
@@ -145,6 +165,7 @@ func (s *IndexContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
+// -------------------------------------------------------------------
 func (s *IndexContainer) getIndexReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(coreConfig.PathToIndex(s.Chain))
@@ -154,8 +175,10 @@ func (s *IndexContainer) getIndexReload() (ret int64, reload bool) {
 	return
 }
 
+// -------------------------------------------------------------------
 type EveryChunkStatsFn func(item *coreTypes.ChunkStats, data any) bool
 
+// -------------------------------------------------------------------
 func (s *IndexContainer) ForEveryItem(process EveryChunkStatsFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
@@ -167,3 +190,26 @@ func (s *IndexContainer) ForEveryItem(process EveryChunkStatsFn, data any) bool 
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Index
+// lower:         index
+// routeLabel:    Indexes
+// routeLower:    indexes
+// embedName:
+// embedType:     .
+// otherName:
+// otherType:     .
+// itemName:      ChunkStats
+// itemType:      coreTypes.ChunkStats
+// inputType:     coreTypes.ChunkStats
+// hasEmbed:      false
+// hasItems:      true
+// hasOther:      false
+// hasSorts:      true
+// initChain:     false
+// isEditable:    false
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      true

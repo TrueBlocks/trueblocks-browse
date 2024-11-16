@@ -11,6 +11,7 @@ import (
 
 // EXISTING_CODE
 
+// -------------------------------------------------------------------
 type DaemonContainer struct {
 	daemons.Daemon `json:",inline"`
 	LastUpdate     int64 `json:"lastUpdate"`
@@ -18,6 +19,7 @@ type DaemonContainer struct {
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func NewDaemonContainer(chain string, daemon *daemons.Daemon) DaemonContainer {
 	ret := DaemonContainer{
 		Daemon: *daemon,
@@ -28,19 +30,23 @@ func NewDaemonContainer(chain string, daemon *daemons.Daemon) DaemonContainer {
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *DaemonContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
+// -------------------------------------------------------------------
 func (s *DaemonContainer) GetItems() interface{} {
 	return nil
 }
 
+// -------------------------------------------------------------------
 func (s *DaemonContainer) SetItems(items interface{}) {
 	// s.Items = items.([].)
 }
 
+// -------------------------------------------------------------------
 func (s *DaemonContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getDaemonReload()
 	if force || reload {
@@ -51,6 +57,7 @@ func (s *DaemonContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
+// -------------------------------------------------------------------
 func (s *DaemonContainer) ShallowCopy() Containerer {
 	ret := &DaemonContainer{
 		Daemon:     s.Daemon.ShallowCopy(),
@@ -61,11 +68,13 @@ func (s *DaemonContainer) ShallowCopy() Containerer {
 	return ret
 }
 
+// -------------------------------------------------------------------
 func (s *DaemonContainer) Clear() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *DaemonContainer) passesFilter(filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -76,16 +85,19 @@ func (s *DaemonContainer) passesFilter(filter *Filter) (ret bool) {
 	return
 }
 
+// -------------------------------------------------------------------
 func (s *DaemonContainer) Accumulate() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *DaemonContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
+// -------------------------------------------------------------------
 func (s *DaemonContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	filtered := []Nothing{}
 
@@ -95,11 +107,37 @@ func (s *DaemonContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
+// -------------------------------------------------------------------
 func (s *DaemonContainer) getDaemonReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return
 }
 
+//-------------------------------------------------------------------
+
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Daemon
+// lower:         daemon
+// routeLabel:    Daemons
+// routeLower:    daemons
+// embedName:     daemon
+// embedType:     daemons.Daemon
+// otherName:
+// otherType:     .
+// itemName:
+// itemType:      .
+// inputType:     .
+// hasEmbed:      true
+// hasItems:      false
+// hasOther:      false
+// hasSorts:      false
+// initChain:     false
+// isEditable:    false
+// needsChain:    false
+// needsLoad:     true
+// needsSdk:      false
