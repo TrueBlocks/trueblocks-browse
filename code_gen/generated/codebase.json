@@ -7,7 +7,7 @@
             "ui_route": "0000-project",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.HistoryContainer|noFetch",
+            "attributes": "itemType=types.HistoryContainer|noSdk",
             "members": [
                 {
                     "name": "nMonitors",
@@ -304,7 +304,7 @@
             "ui_route": "1070-status",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.CacheItem|embedType=coreTypes.Status|noChain|initChain|noFetch",
+            "attributes": "itemType=coreTypes.CacheItem|embedType=coreTypes.Status|noChain|initChain",
             "members": [
                 {
                     "name": "nFolders",
@@ -332,7 +332,7 @@
             "ui_route": "1080-settings",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "inputType=types.SettingsProp|noType|noFetch|noPaging"
+            "attributes": "inputType=types.SettingsProp|noType|noLoad|noSdk|noPaging"
         },
         {
             "class": "Daemon",
@@ -340,7 +340,7 @@
             "ui_route": "1090-daemons",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=daemons.Daemon|noChain|noFetch|noPaging"
+            "attributes": "embedType=daemons.Daemon|noChain|noSdk|noPaging"
         },
         {
             "class": "Session",
@@ -348,7 +348,7 @@
             "ui_route": "1100-session",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=coreTypes.Session|noChain|initChain|noFetch|noPaging"
+            "attributes": "embedType=coreTypes.Session|noChain|initChain|noPaging"
         },
         {
             "class": "Config",
@@ -356,7 +356,7 @@
             "ui_route": "1110-config",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=configTypes.Config|noFetch|noPaging",
+            "attributes": "embedType=configTypes.Config|noSdk|noPaging",
             "members": [
                 {
                     "name": "nChains",
@@ -372,7 +372,7 @@
             "ui_route": "1120-wizard",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.WizError|noFetch"
+            "attributes": "itemType=types.WizError|noSdk"
         }
     ],
     "baseTypes": [

@@ -4,7 +4,7 @@
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "1070-containers"
 	ui_route = "1070-status"
-	attributes = "itemType=coreTypes.CacheItem|embedType=coreTypes.Status|noChain|initChain|noFetch"
+	attributes = "itemType=coreTypes.CacheItem|embedType=coreTypes.Status|noChain|initChain"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"

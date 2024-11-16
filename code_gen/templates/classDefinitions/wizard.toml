@@ -4,7 +4,7 @@
     # doc_descr = "block data as returned from the RPC (with slight enhancements)"
     doc_route = "1120-containers"
     ui_route = "1120-wizard"
-    attributes = "itemType=types.WizError|noFetch"
+    attributes = "itemType=types.WizError|noSdk"
     # produced_by = "blocks"
     # contains = "transaction, withdrawal"
     cache_type = "cacheable"
