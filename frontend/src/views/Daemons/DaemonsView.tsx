@@ -1,12 +1,12 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { SimpleGrid, Stack, Box } from "@mantine/core";
 import { FieldGroup, FieldsetWrapper, FormTable, ViewForm, PinButton, View, DebugState } from "@components";
+import { DaemonCard, DaemonLog } from "@components";
 import { GetDaemon, ToggleDaemon } from "@gocode/app/App";
 import { daemons, messages } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { EventsOn, EventsOff } from "@runtime";
 import { ViewStateProvider } from "@state";
-import { DaemonCard, DaemonLog } from ".";
 
 const empty = {} as daemons.Daemon;
 
