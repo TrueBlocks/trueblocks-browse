@@ -5,6 +5,8 @@
 
 {{ $isAbi := eq $class "Abi" }}
 {{ $isName := eq $class "Name" }}
+{{ $isMonitor := eq $class "Monitor" }}
+{{ $isSearchable := or $isAbi (or $isName $isMonitor) }}
 {{ $hasEnter := or $isAbi $isName }}
 {{ $hasModify := $isName }}
 {{ $hasItems := and (gt (len .ItemName) 0) true }}
@@ -66,7 +68,7 @@ export const {{$routeLabel}}View = () => {
       modifyFn={handleModify}
     >
       <DebugState n={ {{$routeLower}}.lastUpdate} />
-      <View tabs={tabs} forms={forms} />
+      <View tabs={tabs} forms={forms}{{if $isSearchable}} searchable{{end}} />
     </ViewStateProvider>
   );
 };

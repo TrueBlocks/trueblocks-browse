@@ -42,7 +42,7 @@ export const AbisView = () => {
       modifyFn={handleModify}
     >
       <DebugState n={abis.lastUpdate} />
-      <View tabs={tabs} forms={forms} />
+      <View tabs={tabs} forms={forms} searchable />
     </ViewStateProvider>
   );
 };
