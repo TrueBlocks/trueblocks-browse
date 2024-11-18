@@ -29,6 +29,7 @@ export const StatusView = () => {
   const forms: ViewForm = {
     status: <FormTable data={status} groups={StatusFormDef(table)} />,
   };
+
   return (
     <ViewStateProvider
       // do not remove - delint

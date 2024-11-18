@@ -31,6 +31,7 @@ export const MonitorsView = () => {
   const forms: ViewForm = {
     monitors: <FormTable data={monitors} groups={MonitorsFormDef(table)} />,
   };
+
   return (
     <ViewStateProvider
       // do not remove - delint

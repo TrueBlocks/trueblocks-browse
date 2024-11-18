@@ -29,6 +29,7 @@ export const ManifestsView = () => {
   const forms: ViewForm = {
     manifests: <FormTable data={manifests} groups={ManifestsFormDef(table)} />,
   };
+
   return (
     <ViewStateProvider
       // do not remove - delint

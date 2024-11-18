@@ -22,6 +22,7 @@ export const SessionView = () => {
   const forms: ViewForm = {
     session: <FormTable data={session} groups={SessionFormDef(session)} />,
   };
+
   return (
     <ViewStateProvider
       // do not remove - delint

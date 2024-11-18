@@ -31,6 +31,7 @@ export const AbisView = () => {
   const forms: ViewForm = {
     abis: <FormTable data={abis} groups={AbisFormDef(table)} />,
   };
+
   return (
     <ViewStateProvider
       // do not remove - delint

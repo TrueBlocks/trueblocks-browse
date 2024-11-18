@@ -38,6 +38,7 @@ export const WizardView = () => {
   const forms: ViewForm = {
     wizard: <FormTable data={wizard} groups={WizardFormDef(table, wizard.nItems, stepWizard)} />,
   };
+
   return (
     <ViewStateProvider
       // do not remove - delint

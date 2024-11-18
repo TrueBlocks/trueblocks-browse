@@ -31,6 +31,7 @@ export const NamesView = () => {
   const forms: ViewForm = {
     names: <FormTable data={names} groups={NamesFormDef(table)} />,
   };
+
   return (
     <ViewStateProvider
       // do not remove - delint

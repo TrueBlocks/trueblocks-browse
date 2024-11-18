@@ -1,0 +1,82 @@
+{{ $class := .Class }}
+{{ $lower := toLower .Class }}
+{{ $routeLabel := .UiRouteLabel }}
+{{ $routeLower := .UiRouteLower }}
+
+{{ $isAbi := eq $class "Abi" }}
+{{ $isName := eq $class "Name" }}
+{{ $hasEnter := or $isAbi $isName }}
+{{ $hasModify := $isName }}
+{{ $hasItems := and (gt (len .ItemName) 0) true }}
+
+{{ $noops := print "const { enterNoop, modifyNoop } = useNoops();" }}
+{{ if or $hasEnter $hasModify }}
+  {{ if and $hasEnter $hasModify}}
+    {{ $noops = "" }}
+  {{ else if $hasEnter }}
+    {{ $noops = print "const { modifyNoop } = useNoops();" }}
+  {{ else }}
+    {{ $noops = print "const { enterNoop } = useNoops();" }}
+  {{ end }}
+{{ end }}
+
+{{ $nItems := print $routeLower ".nItems" }}
+{{ if not $hasItems }}
+  {{ $nItems = "0" }}
+{{ end }}
+
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+export const {{$routeLabel}}View = () => {
+  const { {{$routeLower}}, fetch{{$routeLabel}}{{if $hasEnter}}, loadAddress{{end}}} = useAppState();
+  {{ $noops }}
+{{if $hasEnter}}
+  const handleEnter = (page: Page) => {
+    loadAddress({{$routeLower}}.items[page.getRecord()].address);
+  };
+{{end}}
+  // EXISTING_CODE
+  // EXISTING_CODE
+
+  const table = useReactTable({
+    data: {{$routeLower}}.items || [],
+    columns: {{$routeLabel}}TableDef,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  const route = "{{$routeLower}}";
+  const tabs = ["{{$routeLower}}"];
+  const forms: ViewForm = {
+    {{$routeLower}}: <FormTable
+      data={ {{$routeLower}} }
+      groups={ {{$routeLabel}}FormDef(table) } />,
+  };
+
+  return (
+    <ViewStateProvider
+      // do not remove - delint
+      route={route}
+      nItems={ {{$nItems}}}
+      fetchFn={fetch{{$routeLabel}}}
+      onEnter={handleEnter}
+      modifyFn={handleModify}
+    >
+      <DebugState n={ {{$routeLower}}.lastUpdate} />
+      <View tabs={tabs} forms={forms} />
+    </ViewStateProvider>
+  );
+};
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         {{$class}}
+// lower:         {{$lower}}
+// routeLabel:    {{$routeLabel}}
+// routeLower:    {{$routeLower}}

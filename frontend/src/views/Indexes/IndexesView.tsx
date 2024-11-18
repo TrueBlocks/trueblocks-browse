@@ -29,6 +29,7 @@ export const IndexesView = () => {
   const forms: ViewForm = {
     indexes: <FormTable data={indexes} groups={IndexesFormDef(table)} />,
   };
+
   return (
     <ViewStateProvider
       // do not remove - delint
