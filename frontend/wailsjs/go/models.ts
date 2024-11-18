@@ -497,6 +497,12 @@ export namespace sdk {
 
 export namespace types {
 	
+	export enum WizStep {
+	    FIRST = "First",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
+	}
 	export enum WizState {
 	    WELCOME = "welcome",
 	    CONFIG = "config",
@@ -504,12 +510,6 @@ export namespace types {
 	    BLOOMS = "blooms",
 	    INDEX = "index",
 	    FINISHED = "finished",
-	}
-	export enum WizStep {
-	    FIRST = "First",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
 	}
 	export class Parameter {
 	    components?: Parameter[];
