@@ -12,20 +12,19 @@ import { WizardFormDef, WizardTableDef } from ".";
 // EXISTING_CODE
 
 export const WizardView = () => {
-  const { modifyNoop } = useNoops();
   const { wizard, fetchWizard } = useAppState();
+  const { modifyNoop } = useNoops();
+  const handleEnter = () => {
+    stepWizard(types.WizStep.NEXT);
+  };
+  const handleModify = modifyNoop;
 
+  // EXISTING_CODE
   const stepWizard = (step: types.WizStep) => {
     StepWizard(step).then(() => {
       fetchWizard(0, 100);
     });
   };
-
-  const handleEnter = () => {
-    stepWizard(types.WizStep.NEXT);
-  };
-
-  // EXISTING_CODE
   // EXISTING_CODE
 
   const table = useReactTable({
@@ -45,8 +44,8 @@ export const WizardView = () => {
       route={route}
       nItems={wizard.nItems}
       fetchFn={fetchWizard}
-      modifyFn={modifyNoop}
       onEnter={handleEnter}
+      modifyFn={handleModify}
     >
       <DebugState n={wizard.lastUpdate} />
       <View tabs={tabs} forms={forms} />
@@ -56,3 +55,10 @@ export const WizardView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Wizard
+// lower:         wizard
+// routeLabel:    Wizard
+// routeLower:    wizard

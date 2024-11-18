@@ -12,10 +12,10 @@ import { MonitorsTableDef, MonitorsFormDef } from ".";
 
 export const MonitorsView = () => {
   const { monitors, fetchMonitors, loadAddress } = useAppState();
-
   const handleEnter = (page: Page) => {
     loadAddress(monitors.items[page.getRecord()].address);
   };
+  const handleModify = ModifyMonitor;
 
   // EXISTING_CODE
   // EXISTING_CODE
@@ -38,7 +38,7 @@ export const MonitorsView = () => {
       nItems={monitors.nItems}
       fetchFn={fetchMonitors}
       onEnter={handleEnter}
-      modifyFn={ModifyMonitor}
+      modifyFn={handleModify}
     >
       <DebugState n={monitors.lastUpdate} />
       <View tabs={tabs} forms={forms} searchable />
@@ -48,3 +48,10 @@ export const MonitorsView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Monitor
+// lower:         monitor
+// routeLabel:    Monitors
+// routeLower:    monitors

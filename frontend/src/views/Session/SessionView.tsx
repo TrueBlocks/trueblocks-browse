@@ -11,6 +11,8 @@ import { SessionFormDef } from "./SessionFormDef";
 export const SessionView = () => {
   const { session, fetchSession } = useAppState();
   const { enterNoop, modifyNoop } = useNoops();
+  const handleEnter = enterNoop;
+  const handleModify = modifyNoop;
 
   // EXISTING_CODE
   // EXISTING_CODE
@@ -26,8 +28,8 @@ export const SessionView = () => {
       route={route}
       nItems={0}
       fetchFn={fetchSession}
-      onEnter={enterNoop}
-      modifyFn={modifyNoop}
+      onEnter={handleEnter}
+      modifyFn={handleModify}
     >
       <DebugState n={session.lastUpdate} />
       <View tabs={tabs} forms={forms} />
@@ -37,3 +39,10 @@ export const SessionView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Session
+// lower:         session
+// routeLabel:    Session
+// routeLower:    session

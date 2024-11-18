@@ -12,20 +12,18 @@ import { ProjectTableDefNoDelete, ProjectTableDef, ProjectFormDef } from ".";
 // EXISTING_CODE
 
 export const ProjectView = () => {
-  const { info, loadAddress } = useAppState();
-  const { project, fetchProject } = useAppState();
-
-  useEffect(() => {
-    fetchProject(0, 100);
-  }, [info.filename, fetchProject]);
-
+  const { project, fetchProject, loadAddress } = useAppState();
   const handleEnter = (page: Page) => {
     loadAddress(project.items[page.getRecord()].address);
   };
-
-  const projColumns = project?.nItems < 2 ? ProjectTableDefNoDelete : ProjectTableDef;
+  const handleModify = ModifyProject;
 
   // EXISTING_CODE
+  const { info } = useAppState();
+  useEffect(() => {
+    fetchProject(0, 100);
+  }, [info.filename, fetchProject]);
+  const projColumns = project?.nItems < 2 ? ProjectTableDefNoDelete : ProjectTableDef;
   // EXISTING_CODE
 
   const table = useReactTable({
@@ -41,7 +39,7 @@ export const ProjectView = () => {
   };
 
   if (project?.items?.length === 0) {
-    return <></>;
+    return <>Loading...</>;
   }
 
   return (
@@ -51,7 +49,7 @@ export const ProjectView = () => {
       nItems={project.nItems}
       fetchFn={fetchProject}
       onEnter={handleEnter}
-      modifyFn={ModifyProject}
+      modifyFn={handleModify}
     >
       <DebugState n={project.lastUpdate} />
       <View tabs={tabs} forms={forms} />
@@ -61,3 +59,10 @@ export const ProjectView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Project
+// lower:         project
+// routeLabel:    Project
+// routeLower:    project

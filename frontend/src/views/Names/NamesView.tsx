@@ -15,6 +15,7 @@ export const NamesView = () => {
   const handleEnter = (page: Page) => {
     loadAddress(names.items[page.getRecord()].address);
   };
+  const handleModify = ModifyName;
 
   // EXISTING_CODE
   // EXISTING_CODE
@@ -37,7 +38,7 @@ export const NamesView = () => {
       nItems={names.nItems}
       fetchFn={fetchNames}
       onEnter={handleEnter}
-      modifyFn={ModifyName}
+      modifyFn={handleModify}
     >
       <DebugState n={names.lastUpdate} />
       <View tabs={tabs} forms={forms} searchable />
@@ -47,3 +48,10 @@ export const NamesView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Name
+// lower:         name
+// routeLabel:    Names
+// routeLower:    names

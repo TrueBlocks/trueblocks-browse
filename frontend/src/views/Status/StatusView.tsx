@@ -12,6 +12,8 @@ import { StatusFormDef, StatusTableDef } from ".";
 export const StatusView = () => {
   const { status, fetchStatus } = useAppState();
   const { enterNoop, modifyNoop } = useNoops();
+  const handleEnter = enterNoop;
+  const handleModify = modifyNoop;
 
   // EXISTING_CODE
   // EXISTING_CODE
@@ -33,8 +35,8 @@ export const StatusView = () => {
       route={route}
       nItems={status.nItems}
       fetchFn={fetchStatus}
-      onEnter={enterNoop}
-      modifyFn={modifyNoop}
+      onEnter={handleEnter}
+      modifyFn={handleModify}
     >
       <DebugState n={status.lastUpdate} />
       <View tabs={tabs} forms={forms} />
@@ -44,3 +46,10 @@ export const StatusView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Status
+// lower:         status
+// routeLabel:    Status
+// routeLower:    status

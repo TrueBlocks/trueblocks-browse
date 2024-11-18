@@ -16,6 +16,8 @@ import { SettingsTableDef } from ".";
 export const SettingsView = () => {
   const { settings, fetchSettings } = useAppState();
   const { enterNoop, modifyNoop } = useNoops();
+  const handleEnter = enterNoop;
+  const handleModify = modifyNoop;
 
   // EXISTING_CODE
   const status = settings.status ?? types.StatusContainer.createFrom({});
@@ -47,8 +49,8 @@ export const SettingsView = () => {
       route={route}
       nItems={0}
       fetchFn={fetchSettings}
-      onEnter={enterNoop}
-      modifyFn={modifyNoop}
+      onEnter={handleEnter}
+      modifyFn={handleModify}
     >
       <DebugState n={settings.lastUpdate} />
       <View tabs={tabs} forms={forms} />
@@ -58,3 +60,10 @@ export const SettingsView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Settings
+// lower:         settings
+// routeLabel:    Settings
+// routeLower:    settings

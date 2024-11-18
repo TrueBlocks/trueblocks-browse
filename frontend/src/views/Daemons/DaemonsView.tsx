@@ -11,7 +11,6 @@ import { daemons, messages } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { EventsOn, EventsOff } from "@runtime";
 import { ViewStateProvider } from "@state";
-// EXISTING_CODE
 
 const empty = {} as daemons.Daemon;
 
@@ -22,9 +21,13 @@ interface Nope {
   logMessages: messages.MessageMsg[];
   toggleDaemon: (name: string) => void;
 }
+// EXISTING_CODE
 
 export const DaemonsView = () => {
   const { fetchNoop, enterNoop, modifyNoop } = useNoops();
+  const handleFetch = fetchNoop;
+  const handleEnter = enterNoop;
+  const handleModify = modifyNoop;
 
   // EXISTING_CODE
   // TODO BOGUS: The daemon state should be in the AppState
@@ -98,9 +101,9 @@ export const DaemonsView = () => {
       // do not remove - delint
       route={route}
       nItems={0}
-      fetchFn={fetchNoop}
-      onEnter={enterNoop}
-      modifyFn={modifyNoop}
+      fetchFn={handleFetch}
+      onEnter={handleEnter}
+      modifyFn={handleModify}
     >
       <DebugState n={0} />
       <View tabs={tabs} forms={forms} />
@@ -108,6 +111,7 @@ export const DaemonsView = () => {
   );
 };
 
+// EXISTING_CODE
 const createDaemonForm = (data: Nope): FieldGroup<Nope>[] => {
   return [
     {
@@ -133,6 +137,11 @@ const createDaemonForm = (data: Nope): FieldGroup<Nope>[] => {
     },
   ];
 };
+// EXISTING_CODE
 
-// EXISTING_CODE
-// EXISTING_CODE
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Daemon
+// lower:         daemon
+// routeLabel:    Daemons
+// routeLower:    daemons

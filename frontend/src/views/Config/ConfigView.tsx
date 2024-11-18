@@ -10,23 +10,21 @@ import { useAppState, ViewStateProvider } from "@state";
 export const ConfigView = () => {
   const { config, fetchConfig } = useAppState();
   const { enterNoop, modifyNoop } = useNoops();
+  const handleEnter = enterNoop;
+  const handleModify = modifyNoop;
 
   // EXISTING_CODE
   // EXISTING_CODE
 
   const route = "config";
-  // const tabs = ["config"];
-  // const forms: ViewForm = {
-  //   names: <div>ViewForm</div>,
-  // };
   return (
     <ViewStateProvider
       // do not remove - delint
       route={route}
       nItems={0}
       fetchFn={fetchConfig}
-      onEnter={enterNoop}
-      modifyFn={modifyNoop}
+      onEnter={handleEnter}
+      modifyFn={handleModify}
     >
       <DebugState n={config.lastUpdate} />
       <pre>{JSON.stringify(config, null, 2)}</pre>
@@ -36,3 +34,10 @@ export const ConfigView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Config
+// lower:         config
+// routeLabel:    Config
+// routeLower:    config

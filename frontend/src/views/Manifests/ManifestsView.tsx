@@ -12,6 +12,8 @@ import { ManifestsTableDef, ManifestsFormDef } from ".";
 export const ManifestsView = () => {
   const { manifests, fetchManifests } = useAppState();
   const { enterNoop, modifyNoop } = useNoops();
+  const handleEnter = enterNoop;
+  const handleModify = modifyNoop;
 
   // EXISTING_CODE
   // EXISTING_CODE
@@ -33,8 +35,8 @@ export const ManifestsView = () => {
       route={route}
       nItems={manifests.nItems}
       fetchFn={fetchManifests}
-      onEnter={enterNoop}
-      modifyFn={modifyNoop}
+      onEnter={handleEnter}
+      modifyFn={handleModify}
     >
       <DebugState n={manifests.lastUpdate} />
       <View tabs={tabs} forms={forms} />
@@ -44,3 +46,10 @@ export const ManifestsView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Manifest
+// lower:         manifest
+// routeLabel:    Manifests
+// routeLower:    manifests

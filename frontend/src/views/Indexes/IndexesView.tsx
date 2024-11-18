@@ -12,6 +12,8 @@ import { IndexesTableDef, IndexesFormDef } from ".";
 export const IndexesView = () => {
   const { indexes, fetchIndexes } = useAppState();
   const { enterNoop, modifyNoop } = useNoops();
+  const handleEnter = enterNoop;
+  const handleModify = modifyNoop;
 
   // EXISTING_CODE
   // EXISTING_CODE
@@ -33,8 +35,8 @@ export const IndexesView = () => {
       route={route}
       nItems={indexes.nItems}
       fetchFn={fetchIndexes}
-      onEnter={enterNoop}
-      modifyFn={modifyNoop}
+      onEnter={handleEnter}
+      modifyFn={handleModify}
     >
       <DebugState n={indexes.lastUpdate} />
       <View tabs={tabs} forms={forms} />
@@ -44,3 +46,10 @@ export const IndexesView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Index
+// lower:         index
+// routeLabel:    Indexes
+// routeLower:    indexes

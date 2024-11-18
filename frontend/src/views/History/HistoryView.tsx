@@ -11,16 +11,18 @@ import { HistoryTableDef, HistoryFormDef } from ".";
 // EXISTING_CODE
 
 export const HistoryView = () => {
-  const { ShortenAddr } = useUtils();
-  const { info, history, fetchHistory } = useAppState();
+  const { history, fetchHistory } = useAppState();
   const { enterNoop, modifyNoop } = useNoops();
+  const handleEnter = enterNoop;
+  const handleModify = modifyNoop;
 
+  // EXISTING_CODE
+  const { info } = useAppState();
+  const { ShortenAddr } = useUtils();
   const addrStr = useMemo(
     () => (info?.address ? ShortenAddr(info.address.toString()) : ""),
     [ShortenAddr, info?.address]
   );
-
-  // EXISTING_CODE
   // EXISTING_CODE
 
   const table = useReactTable({
@@ -49,8 +51,8 @@ export const HistoryView = () => {
       route={route}
       nItems={history.nItems}
       fetchFn={fetchHistory}
-      onEnter={enterNoop}
-      modifyFn={modifyNoop}
+      onEnter={handleEnter}
+      modifyFn={handleModify}
     >
       <DebugState n={history.lastUpdate} />
       <View tabs={tabs} forms={forms} />
@@ -60,3 +62,10 @@ export const HistoryView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         History
+// lower:         history
+// routeLabel:    History
+// routeLower:    history

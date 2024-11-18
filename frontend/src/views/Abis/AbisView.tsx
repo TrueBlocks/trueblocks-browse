@@ -5,14 +5,17 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm, DebugState } from "@components";
 import { ModifyAbi } from "@gocode/app/App";
-import { useNoops } from "@hooks";
+import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { AbisTableDef, AbisFormDef } from ".";
 // EXISTING_CODE
 
 export const AbisView = () => {
-  const { abis, fetchAbis } = useAppState();
-  const { enterNoop } = useNoops();
+  const { abis, fetchAbis, loadAddress } = useAppState();
+  const handleEnter = (page: Page) => {
+    loadAddress(abis.items[page.getRecord()].address);
+  };
+  const handleModify = ModifyAbi;
 
   // EXISTING_CODE
   // EXISTING_CODE
@@ -34,8 +37,8 @@ export const AbisView = () => {
       route={route}
       nItems={abis.nItems}
       fetchFn={fetchAbis}
-      onEnter={enterNoop}
-      modifyFn={ModifyAbi}
+      onEnter={handleEnter}
+      modifyFn={handleModify}
     >
       <DebugState n={abis.lastUpdate} />
       <View tabs={tabs} forms={forms} />
@@ -45,3 +48,10 @@ export const AbisView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Abi
+// lower:         abi
+// routeLabel:    Abis
+// routeLower:    abis
