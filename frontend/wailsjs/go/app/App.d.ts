@@ -106,7 +106,7 @@ export function ManifestsView(arg1:menu.CallbackData):Promise<void>;
 
 export function ModifyAbi(arg1:app.ModifyData):Promise<void>;
 
-export function ModifyMonitors(arg1:app.ModifyData):Promise<void>;
+export function ModifyMonitor(arg1:app.ModifyData):Promise<void>;
 
 export function ModifyName(arg1:app.ModifyData):Promise<void>;
 

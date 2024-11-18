@@ -198,8 +198,8 @@ export function ModifyAbi(arg1) {
   return window['go']['app']['App']['ModifyAbi'](arg1);
 }
 
-export function ModifyMonitors(arg1) {
-  return window['go']['app']['App']['ModifyMonitors'](arg1);
+export function ModifyMonitor(arg1) {
+  return window['go']['app']['App']['ModifyMonitor'](arg1);
 }
 
 export function ModifyName(arg1) {

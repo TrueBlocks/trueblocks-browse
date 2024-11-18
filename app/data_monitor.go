@@ -89,7 +89,7 @@ func (a *App) forceMonitor() (force bool) {
 }
 
 // EXISTING_CODE
-func (a *App) ModifyMonitors(modData *ModifyData) error {
+func (a *App) ModifyMonitor(modData *ModifyData) error {
 	if !monitorLock.CompareAndSwap(0, 1) {
 		return nil
 	}

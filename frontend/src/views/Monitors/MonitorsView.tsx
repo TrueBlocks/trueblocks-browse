@@ -1,6 +1,6 @@
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm, DebugState } from "@components";
-import { ModifyMonitors } from "@gocode/app/App";
+import { ModifyMonitor } from "@gocode/app/App";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { MonitorsTableDef, MonitorsFormDef } from ".";
@@ -29,7 +29,7 @@ export const MonitorsView = () => {
       nItems={monitors.nItems}
       fetchFn={fetchMonitors}
       onEnter={handleEnter}
-      modifyFn={ModifyMonitors}
+      modifyFn={ModifyMonitor}
     >
       <DebugState n={monitors.lastUpdate} />
       <View tabs={tabs} forms={forms} searchable />
