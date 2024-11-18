@@ -6,11 +6,16 @@ package app
 // EXISTING_CODE
 
 {{range .Structures -}}
-func (a *App) {{.UiRouteLabel}}View(cb *menu.CallbackData) {
-{{if .IsHistory -}}
+{{ $isHistory := eq .Class "History" }}
+{{ $isProject := eq .Class "Project" }}
+{{ $isWizard := eq .Class "Wizard" }}
+{{ $routeLabel := .UiRouteLabel }}
+{{ $routeLower := .UiRouteLower }}
+func (a *App) {{$routeLabel}}View(cb *menu.CallbackData) {
+{{if $isHistory -}}
 	address := a.GetSelected()
-	a.Navigate("/{{.UiRouteLower}}", address.Hex())
-{{- else if .IsWizard -}}
+	a.Navigate("/{{$routeLower}}", address.Hex())
+{{- else if $isWizard -}}
 	if a.isConfigured() {
 		a.wizard.State = types.WizWelcome
 		a.emitMsg(messages.Refresh, &messages.MessageMsg{
@@ -21,9 +26,9 @@ func (a *App) {{.UiRouteLabel}}View(cb *menu.CallbackData) {
 	} else {
 		a.StepWizard(types.WizNext)
 	}
-	a.Navigate("/{{.UiRouteLower}}", "")
+	a.Navigate("/{{$routeLower}}", "")
 {{- else -}}
-	a.Navigate("/{{if not .IsProject}}{{.UiRouteLower}}{{end}}", "")
+	a.Navigate("/{{if not $isProject}}{{$routeLower}}{{end}}", "")
 {{end -}}
 }
 

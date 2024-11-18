@@ -226,8 +226,8 @@ func (c *comparison) MarkMin(name string, value int) {
 // itemName:      Abi
 // itemType:      coreTypes.Abi
 // inputType:     coreTypes.Abi
-// hasEmbed:      false
 // hasItems:      true
+// hasEmbed:      false
 // hasOther:      false
 // hasSorts:      true
 // initChain:     false

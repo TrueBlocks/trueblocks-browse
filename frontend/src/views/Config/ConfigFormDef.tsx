@@ -1,23 +1,17 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
 import { Stack, Group } from "@mantine/core";
 import { EditButton, FieldGroup } from "@components";
 import { configtypes, types } from "@gocode/models";
+// EXISTING_CODE
 
-export const ConfigFormDef = (cfg: types.ConfigContainer): FieldGroup<types.ConfigContainer>[] => {
-  /*
-  	    version: configtypes.VersionGroup;
-	    settings: configtypes.SettingsContainer;
-	    keys: {[key: string]: configtypes.KeyGroup};
-	    pinning: configtypes.PinningGroup;
-	    unchained: configtypes.UnchainedGroup;
-	    chains: {[key: string]: configtypes.ChainGroup};
-	    // Go type: time
-	    lastUpdate: any;
- */
-  // const vg = <VG key={"version"} version={cfg.version} />;
+export const ConfigFormDef = (config: types.ConfigContainer): FieldGroup<types.ConfigContainer>[] => {
   return [
+    // EXISTING_CODE
     {
       label: "Version",
-      components: [<VG key={"version"} version={cfg.version} />, <SG key={"settings"} settings={cfg.settings} />],
+      components: [<VG key={"version"} version={config.version} />, <SG key={"settings"} settings={config.settings} />],
     },
     {
       label: "Buttons",
@@ -28,9 +22,11 @@ export const ConfigFormDef = (cfg: types.ConfigContainer): FieldGroup<types.Conf
     //   colSpan: 12, // Full width since it's the only field
     //   components: [<div key={"1"}>Hello world</div>],
     // },
+    // EXISTING_CODE
   ];
 };
 
+// EXISTING_CODE
 type ConfigProps = {
   version?: configtypes.VersionGroup;
   settings?: configtypes.SettingsGroup;
@@ -69,3 +65,14 @@ const SG = ({ settings }: ConfigProps) => {
     </Stack>
   );
 };
+
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Config
+// routeLabel:    Config
+// itemName:
+// isHistory:     false
+// isSession:     false
+// isConfig:      true

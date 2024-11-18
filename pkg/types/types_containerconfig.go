@@ -175,8 +175,8 @@ func (s *ConfigContainer) IsValidChain(chain string) (string, error) {
 // itemName:
 // itemType:      .
 // inputType:     .
-// hasEmbed:      true
 // hasItems:      false
+// hasEmbed:      true
 // hasOther:      false
 // hasSorts:      false
 // initChain:     false

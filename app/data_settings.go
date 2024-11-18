@@ -16,7 +16,9 @@ import (
 
 var settingsLock atomic.Uint32
 
+// -------------------------------------------------------------------
 func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
+	defer a.trackPerformance("loadSettings", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -60,6 +62,7 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
+// -------------------------------------------------------------------
 func (a *App) forceSettings() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -68,3 +71,25 @@ func (a *App) forceSettings() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Settings
+// lower:         settings
+// routeLabel:    Settings
+// routeLower:    settings
+// embedName:
+// embedType:     .
+// otherName:
+// otherType:     .
+// itemName:      CacheItem
+// itemType:      coreTypes.CacheItem
+// inputType:     SettingsProp
+// hasItems:      true
+// hasEmbed:      false
+// hasSorts:      false
+// initChain:     false
+// isEditable:    false
+// needsChain:    true
+// needsLoad:     false
+// needsSdk:      false

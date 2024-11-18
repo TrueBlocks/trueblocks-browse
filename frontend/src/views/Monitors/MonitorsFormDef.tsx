@@ -1,8 +1,14 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
+import { Table } from "@tanstack/react-table";
 import { DataTable, FieldGroup, CleanButton, AddButton } from "@components";
 import { types } from "@gocode/models";
+// EXISTING_CODE
 
-export const MonitorFormDef = (table: any): FieldGroup<types.MonitorContainer>[] => {
+export const MonitorsFormDef = (table: Table<types.Monitor>): FieldGroup<types.MonitorContainer>[] => {
   return [
+    // EXISTING_CODE
     {
       label: "Monitor Data",
       colSpan: 6,
@@ -34,5 +40,18 @@ export const MonitorFormDef = (table: any): FieldGroup<types.MonitorContainer>[]
       collapsable: false,
       components: [<DataTable<types.Monitor> key={"dataTable"} table={table} loading={false} />],
     },
+    // EXISTING_CODE
   ];
 };
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Monitor
+// routeLabel:    Monitors
+// itemName:      Monitor
+// isHistory:     false
+// isSession:     false
+// isConfig:      false

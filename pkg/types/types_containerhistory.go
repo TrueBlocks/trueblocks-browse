@@ -215,12 +215,12 @@ func (s *HistoryContainer) SizeOf() int {
 // itemName:      Transaction
 // itemType:      coreTypes.Transaction
 // inputType:     coreTypes.Transaction
-// hasEmbed:      false
 // hasItems:      true
+// hasEmbed:      false
 // hasOther:      true
 // hasSorts:      false
 // initChain:     false
 // isEditable:    false
 // needsChain:    true
 // needsLoad:     true
-// needsSdk:      true
+// needsSdk:      false

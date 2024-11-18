@@ -264,8 +264,8 @@ func compare(nameI, nameJ coreTypes.Name) bool {
 // itemName:      Name
 // itemType:      coreTypes.Name
 // inputType:     coreTypes.Name
-// hasEmbed:      false
 // hasItems:      true
+// hasEmbed:      false
 // hasOther:      false
 // hasSorts:      false
 // initChain:     false

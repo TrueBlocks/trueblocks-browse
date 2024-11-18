@@ -1,10 +1,16 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
+import { Table } from "@tanstack/react-table";
 import { DataTable, FieldGroup, AddButton } from "@components";
 import { types } from "@gocode/models";
 import { useAppState } from "@state";
+// EXISTING_CODE
 
-export const ProjectFormDef = (table: any): FieldGroup<types.ProjectContainer>[] => {
+export const ProjectFormDef = (table: Table<types.HistoryContainer>): FieldGroup<types.ProjectContainer>[] => {
   const { info } = useAppState();
   return [
+    // EXISTING_CODE
     {
       label: "Data 1",
       colSpan: 4,
@@ -43,5 +49,18 @@ export const ProjectFormDef = (table: any): FieldGroup<types.ProjectContainer>[]
       collapsable: false,
       components: [<DataTable<types.HistoryContainer> key={"dataTable"} table={table} loading={false} />],
     },
+    // EXISTING_CODE
   ];
 };
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Project
+// routeLabel:    Project
+// itemName:      HistoryContainer
+// isHistory:     false
+// isSession:     false
+// isConfig:      false

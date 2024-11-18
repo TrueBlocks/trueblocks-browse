@@ -19,7 +19,9 @@ var abisChain = "mainnet"
 
 var abiLock atomic.Uint32
 
+// -------------------------------------------------------------------
 func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
+	defer a.trackPerformance("loadAbis", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -71,6 +73,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
+// -------------------------------------------------------------------
 func (a *App) ModifyAbi(modData *ModifyData) error {
 	opts := sdk.AbisOptions{
 		Addrs:   []string{modData.Address.Hex()},
@@ -99,6 +102,7 @@ func (a *App) ModifyAbi(modData *ModifyData) error {
 	}
 }
 
+// -------------------------------------------------------------------
 func (a *App) forceAbi() (force bool) {
 	// EXISTING_CODE
 	force = a.forceName()
@@ -108,3 +112,25 @@ func (a *App) forceAbi() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Abi
+// lower:         abi
+// routeLabel:    Abis
+// routeLower:    abis
+// embedName:
+// embedType:     .
+// otherName:
+// otherType:     .
+// itemName:      Abi
+// itemType:      coreTypes.Abi
+// inputType:     coreTypes.Abi
+// hasItems:      true
+// hasEmbed:      false
+// hasSorts:      true
+// initChain:     false
+// isEditable:    true
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      true

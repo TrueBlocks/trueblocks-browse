@@ -19,7 +19,9 @@ import (
 
 var statusLock atomic.Uint32
 
+// -------------------------------------------------------------------
 func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
+	defer a.trackPerformance("loadStatus", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -74,6 +76,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
+// -------------------------------------------------------------------
 func (a *App) forceStatus() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -82,3 +85,25 @@ func (a *App) forceStatus() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Status
+// lower:         status
+// routeLabel:    Status
+// routeLower:    status
+// embedName:     status
+// embedType:     coreTypes.Status
+// otherName:
+// otherType:     .
+// itemName:      CacheItem
+// itemType:      coreTypes.CacheItem
+// inputType:     coreTypes.CacheItem
+// hasItems:      true
+// hasEmbed:      true
+// hasSorts:      false
+// initChain:     true
+// isEditable:    false
+// needsChain:    false
+// needsLoad:     true
+// needsSdk:      true

@@ -1,10 +1,15 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter } from "@components";
 import { types } from "@gocode/models";
+// EXISTING_CODE
 
 const columnHelper = createColumnHelper<types.ChunkStats>();
 
 export const IndexesTableDef: CustomColumnDef<types.ChunkStats, any>[] = [
+  // EXISTING_CODE
   columnHelper.accessor("range", {
     header: () => "range",
     cell: (info) => <Formatter type="range" value={info.renderValue()} />,
@@ -55,4 +60,17 @@ export const IndexesTableDef: CustomColumnDef<types.ChunkStats, any>[] = [
     cell: (info) => <Formatter type="float" value={info.renderValue()} />,
     meta: { className: "small cell" },
   }),
+  // EXISTING_CODE
 ];
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Index
+// lower:         index
+// routeLabel:    Indexes
+// routeLower:    indexes
+// itemName:      ChunkStats
+// embedType:     .

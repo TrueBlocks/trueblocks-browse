@@ -16,7 +16,9 @@ import (
 
 var indexLock atomic.Uint32
 
+// -------------------------------------------------------------------
 func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
+	defer a.trackPerformance("loadIndexes", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -66,6 +68,7 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
+// -------------------------------------------------------------------
 func (a *App) forceIndex() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -74,3 +77,25 @@ func (a *App) forceIndex() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Index
+// lower:         index
+// routeLabel:    Indexes
+// routeLower:    indexes
+// embedName:
+// embedType:     .
+// otherName:
+// otherType:     .
+// itemName:      ChunkStats
+// itemType:      coreTypes.ChunkStats
+// inputType:     coreTypes.ChunkStats
+// hasItems:      true
+// hasEmbed:      false
+// hasSorts:      true
+// initChain:     false
+// isEditable:    false
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      true

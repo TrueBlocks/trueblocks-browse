@@ -203,8 +203,8 @@ func (s *ManifestContainer) ForEveryItem(process EveryChunkRecordFn, data any) b
 // itemName:      ChunkRecord
 // itemType:      coreTypes.ChunkRecord
 // inputType:     coreTypes.Manifest
-// hasEmbed:      false
 // hasItems:      true
+// hasEmbed:      false
 // hasOther:      false
 // hasSorts:      true
 // initChain:     false

@@ -242,8 +242,8 @@ var AllSteps = []struct {
 // itemName:      WizError
 // itemType:      WizError
 // inputType:     WizError
-// hasEmbed:      false
 // hasItems:      true
+// hasEmbed:      false
 // hasOther:      false
 // hasSorts:      false
 // initChain:     false

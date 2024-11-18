@@ -1,8 +1,13 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
 import { FieldGroup, EditButton } from "@components";
 import { types } from "@gocode/models";
+// EXISTING_CODE
 
 export const SessionFormDef = (session: types.SessionContainer): FieldGroup<types.Session>[] => {
   return [
+    // EXISTING_CODE
     {
       label: "Last",
       colSpan: 6,
@@ -29,12 +34,11 @@ export const SessionFormDef = (session: types.SessionContainer): FieldGroup<type
       collapsable: false,
       components: [<SessionToggles key={"window"} session={session} />],
     },
-    /*
-      LastSub: string;
- */
+    // EXISTING_CODE
   ];
 };
 
+// EXISTING_CODE
 type SessionProps = {
   session: types.SessionContainer;
 };
@@ -46,3 +50,13 @@ const SessionWindow = ({ session }: SessionProps) => {
 const SessionToggles = ({ session }: SessionProps) => {
   return <div>{`${JSON.stringify(session.toggles, null, 2)}`}</div>;
 };
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Session
+// routeLabel:    Session
+// itemName:
+// isHistory:     false
+// isSession:     true
+// isConfig:      false

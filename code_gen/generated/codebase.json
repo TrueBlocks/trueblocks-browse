@@ -59,8 +59,7 @@
             "ui_route": "1010-history",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "disable_go": true,
-            "attributes": "itemType=coreTypes.Transaction|otherType=base.Address",
+            "attributes": "itemType=coreTypes.Transaction|otherType=base.Address|noSdk",
             "members": [
                 {
                     "name": "address",
@@ -332,7 +331,7 @@
             "ui_route": "1080-settings",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "inputType=types.SettingsProp|noType|noLoad|noSdk|noPaging"
+            "attributes": "itemType=coreTypes.CacheItem|inputType=types.SettingsProp|noType|noLoad|noSdk|noPaging"
         },
         {
             "class": "Daemon",

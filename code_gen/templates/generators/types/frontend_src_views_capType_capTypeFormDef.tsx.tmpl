@@ -1,0 +1,93 @@
+{{ $class := .Class }}
+{{ $lower := toLower .Class }}
+{{ $routeLabel := .UiRouteLabel }}
+{{ $routeLower := .UiRouteLower }}
+{{ $itemName := .ItemName }}
+{{ $embedName := .EmbedName }}
+{{ $embedType := .EmbedType }}
+
+{{ $hasItems := and (gt (len .ItemName) 0) true }}
+
+{{ $isHistory := eq $class "History" }}
+{{ $isSession := eq $class "Session" }}
+{{ $isConfig := eq $class "Config" }}
+{{ $isWizard := eq $class "Wizard" }}
+{{ $isProject := eq $class "Project" }}
+{{ $isSessConf := or $isSession $isConfig }}
+
+{{ $formDef := print $routeLabel "FormDef" }}
+
+{{ $param1 := "" }}
+{{ if $hasItems }}
+  {{ $param1 = print "table: Table<types." $itemName ">" }}
+{{ else }}
+  {{ if $isSessConf }}
+    {{ $param1 = print $routeLower ": types." $class "Container" }}
+  {{ end }}
+{{ end }}
+
+{{ $param2 := "" }}
+{{ if $isHistory }}
+  {{ $param2 = `,
+    address: base.Address,` }}
+{{ else if $isWizard }}
+  {{ $param2 = `,
+    nItems: number,
+    stepWizard: (step: types.WizStep) => void` }}
+{{ end }}
+
+{{ $fieldGroup := print "types." $class }}
+{{ if (or $hasItems $isConfig) }}
+  {{ $fieldGroup = print "types." $class "Container"}}
+{{ end }}
+
+{{ $returns := "" }}
+{{ if (or $hasItems $isSessConf) }}
+  {{ $returns = print ": FieldGroup<" $fieldGroup ">[]" }}
+{{ end }}
+
+{{ $leadMatter := "" }}
+{{ if $isWizard }}
+  {{ $leadMatter = print "const { wizard } = useAppState();" }}
+{{ else if $isProject }}
+  {{ $leadMatter = print "const { info } = useAppState();" }}
+{{ else if $isHistory }}
+  {{ $leadMatter = print `      const [named, setNamed] = useState(address as unknown as string);
+      const { ShortenAddr } = useUtils();
+      useEffect(() => {
+        GetName(address).then((name) => {
+          setNamed(name === "" ? ShortenAddr(address as unknown as string) : name);
+        });
+      }, [address, ShortenAddr]);` }}
+{{ end }}
+
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
+// EXISTING_CODE
+
+export const {{$formDef}} = ({{$param1}}{{$param2}}){{$returns}} => {
+{{if (or $hasItems $isSessConf) }}
+  {{$leadMatter}}
+  return [
+{{end}}
+    // EXISTING_CODE
+    // EXISTING_CODE
+{{if (or $hasItems $isSessConf) }}
+  ];
+{{else}}
+  return <div>Unused{{$formDef}}</div>;
+{{end}}
+};
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         {{$class}}
+// routeLabel:    {{$routeLabel}}
+// itemName:      {{$itemName}}
+// isHistory:     {{$isHistory}}
+// isSession:     {{$isSession}}
+// isConfig:      {{$isConfig}}

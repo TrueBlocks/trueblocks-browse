@@ -204,8 +204,8 @@ func (s *IndexContainer) ForEveryItem(process EveryChunkStatsFn, data any) bool 
 // itemName:      ChunkStats
 // itemType:      coreTypes.ChunkStats
 // inputType:     coreTypes.ChunkStats
-// hasEmbed:      false
 // hasItems:      true
+// hasEmbed:      false
 // hasOther:      false
 // hasSorts:      true
 // initChain:     false

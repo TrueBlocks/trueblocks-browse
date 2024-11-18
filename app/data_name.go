@@ -25,7 +25,9 @@ var namesChain = "mainnet"
 
 var nameLock atomic.Uint32
 
+// -------------------------------------------------------------------
 func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
+	defer a.trackPerformance("loadNames", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -80,6 +82,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
+// -------------------------------------------------------------------
 func (a *App) forceName() (force bool) {
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(namesChain))
@@ -155,3 +158,25 @@ func (a *App) ModifyName(modData *ModifyData) error {
 }
 
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Name
+// lower:         name
+// routeLabel:    Names
+// routeLower:    names
+// embedName:
+// embedType:     .
+// otherName:
+// otherType:     .
+// itemName:      Name
+// itemType:      coreTypes.Name
+// inputType:     coreTypes.Name
+// hasItems:      true
+// hasEmbed:      false
+// hasSorts:      false
+// initChain:     false
+// isEditable:    false
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      true

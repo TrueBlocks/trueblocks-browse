@@ -1,0 +1,54 @@
+{{ $class := .Class }}
+{{ $lower := toLower .Class }}
+{{ $routeLabel := .UiRouteLabel }}
+{{ $routeLower := .UiRouteLower }}
+{{ $itemName := .ItemName }}
+{{ $embedName := .EmbedName }}
+{{ $embedType := .EmbedType }}
+
+{{ $hasItems := and (gt (len .ItemName) 0) true }}
+
+{{ $isHistory := eq $class "History" }}
+{{ $isSession := eq $class "Session" }}
+{{ $isConfig := eq $class "Config" }}
+{{ $isWizard := eq $class "Wizard" }}
+{{ $isProject := eq $class "Project" }}
+{{ $isSessConf := or $isSession $isConfig }}
+
+{{ $tableDef := $routeLabel }}
+{{ if $isProject }}
+  {{ $tableDef = "base" }}
+{{ end -}}
+
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
+// EXISTING_CODE
+
+{{if $hasItems -}}
+const columnHelper = createColumnHelper<types.{{$itemName}}>();
+
+export const {{$tableDef}}TableDef: CustomColumnDef<types.{{$itemName}}, any>[] = [
+{{- else -}}
+export const Unused{{$routeLabel}} = () => {
+{{- end}}
+	// EXISTING_CODE
+	// EXISTING_CODE
+{{if $hasItems -}}
+];
+{{- else -}}
+  return <div>Unused{{$routeLabel}}</div>;
+};
+{{- end}}
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         {{$class}}
+// lower:         {{$lower}}
+// routeLabel:    {{$routeLabel}}
+// routeLower:    {{$routeLower}}
+// itemName:      {{$itemName}}
+// embedType:     {{$embedType}}

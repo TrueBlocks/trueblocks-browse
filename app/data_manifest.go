@@ -16,7 +16,9 @@ import (
 
 var manifestLock atomic.Uint32
 
+// -------------------------------------------------------------------
 func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
+	defer a.trackPerformance("loadManifests", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -66,6 +68,7 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
+// -------------------------------------------------------------------
 func (a *App) forceManifest() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -74,3 +77,25 @@ func (a *App) forceManifest() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Manifest
+// lower:         manifest
+// routeLabel:    Manifests
+// routeLower:    manifests
+// embedName:
+// embedType:     .
+// otherName:
+// otherType:     .
+// itemName:      ChunkRecord
+// itemType:      coreTypes.ChunkRecord
+// inputType:     coreTypes.Manifest
+// hasItems:      true
+// hasEmbed:      false
+// hasSorts:      true
+// initChain:     false
+// isEditable:    false
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      true

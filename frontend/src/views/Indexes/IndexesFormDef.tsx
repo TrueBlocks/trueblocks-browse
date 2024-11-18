@@ -1,8 +1,14 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
+import { Table } from "@tanstack/react-table";
 import { DataTable, FieldGroup, SpecButton, PinButton } from "@components";
 import { types } from "@gocode/models";
+// EXISTING_CODE
 
-export const IndexedFormDef = (table: any): FieldGroup<types.IndexContainer>[] => {
+export const IndexesFormDef = (table: Table<types.ChunkStats>): FieldGroup<types.IndexContainer>[] => {
   return [
+    // EXISTING_CODE
     {
       label: "Index Data",
       colSpan: 6,
@@ -40,5 +46,18 @@ export const IndexedFormDef = (table: any): FieldGroup<types.IndexContainer>[] =
       collapsable: false,
       components: [<DataTable<types.ChunkStats> key={"dataTable"} table={table} loading={false} />],
     },
+    // EXISTING_CODE
   ];
 };
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Index
+// routeLabel:    Indexes
+// itemName:      ChunkStats
+// isHistory:     false
+// isSession:     false
+// isConfig:      false

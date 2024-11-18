@@ -1,8 +1,14 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
+import { Table } from "@tanstack/react-table";
 import { DataTable, FieldGroup, SpecButton, PublishButton } from "@components";
 import { types } from "@gocode/models";
+// EXISTING_CODE
 
-export const ManifestsFormDef = (table: any): FieldGroup<types.ManifestContainer>[] => {
+export const ManifestsFormDef = (table: Table<types.ChunkRecord>): FieldGroup<types.ManifestContainer>[] => {
   return [
+    // EXISTING_CODE
     {
       label: "Manifest Data",
       colSpan: 6,
@@ -38,5 +44,18 @@ export const ManifestsFormDef = (table: any): FieldGroup<types.ManifestContainer
       collapsable: false,
       components: [<DataTable<types.ChunkRecord> key={"dataTable"} table={table} loading={false} />],
     },
+    // EXISTING_CODE
   ];
 };
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Manifest
+// routeLabel:    Manifests
+// itemName:      ChunkRecord
+// isHistory:     false
+// isSession:     false
+// isConfig:      false

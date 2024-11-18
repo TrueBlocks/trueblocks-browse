@@ -12,7 +12,9 @@ import (
 
 var wizardLock atomic.Uint32
 
+// -------------------------------------------------------------------
 func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
+	defer a.trackPerformance("loadWizard", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -42,6 +44,7 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
+// -------------------------------------------------------------------
 func (a *App) forceWizard() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -50,3 +53,25 @@ func (a *App) forceWizard() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Wizard
+// lower:         wizard
+// routeLabel:    Wizard
+// routeLower:    wizard
+// embedName:
+// embedType:     .
+// otherName:
+// otherType:     .
+// itemName:      WizError
+// itemType:      WizError
+// inputType:     WizError
+// hasItems:      true
+// hasEmbed:      false
+// hasSorts:      false
+// initChain:     false
+// isEditable:    false
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      false

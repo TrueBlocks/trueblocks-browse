@@ -1,17 +1,21 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
 import { Button } from "@mantine/core";
 import { Table } from "@tanstack/react-table";
 import { DataTable, FieldGroup } from "@components";
 import { types } from "@gocode/models";
 import { useAppState } from "@state";
+// EXISTING_CODE
 
-export const WizardFormTable = (
+export const WizardFormDef = (
   table: Table<types.WizError>,
   nItems: number,
   stepWizard: (step: types.WizStep) => void
 ): FieldGroup<types.WizardContainer>[] => {
   const { wizard } = useAppState();
-
   return [
+    // EXISTING_CODE
     {
       label: "Wizard State",
       colSpan: 12,
@@ -37,9 +41,11 @@ export const WizardFormTable = (
       collapsable: false,
       components: [<DataTable<types.WizError> key={"dataTable"} table={table} loading={false} />],
     },
+    // EXISTING_CODE
   ];
 };
 
+// EXISTING_CODE
 type StepProps = {
   state: types.WizState;
   disabled?: boolean;
@@ -80,3 +86,14 @@ export const WizFiniButton = ({ onClick, disabled = false }: StepProps) => {
     </Button>
   );
 };
+
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Wizard
+// routeLabel:    Wizard
+// itemName:      WizError
+// isHistory:     false
+// isSession:     false
+// isConfig:      false

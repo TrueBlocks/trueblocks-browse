@@ -196,8 +196,8 @@ func (s *ProjectContainer) ForEveryItem(process EveryHistoryContainerFn, data an
 // itemName:      HistoryContainer
 // itemType:      HistoryContainer
 // inputType:     HistoryContainer
-// hasEmbed:      false
 // hasItems:      true
+// hasEmbed:      false
 // hasOther:      false
 // hasSorts:      false
 // initChain:     false

@@ -12,15 +12,14 @@ import (
 
 func (a *App) FetchHistory(first, pageSize int) *types.HistoryContainer {
 	// EXISTING_CODE
+	address := a.GetSelected()
+	history, _ := a.historyCache.Load(address)
 	// EXISTING_CODE
 
-	address := a.GetSelected()
-	txCount := a.txCount(address)
-	first = base.Max(0, base.Min(first, txCount-1))
-	last := base.Min(txCount, first+pageSize)
-	history, _ := a.historyCache.Load(address)
 	_ = history.CollateAndFilter(a.filterMap)
-	copy := history.ShallowCopy().(*types.HistoryContainer)
+	first = base.Max(0, base.Min(first, len(history.Items)-1))
+	last := base.Min(len(history.Items), first+pageSize)
+	copy, _ := history.ShallowCopy().(*types.HistoryContainer)
 	copy.Balance = a.getBalance(address)
 	copy.Items = history.Items[first:last]
 	return copy

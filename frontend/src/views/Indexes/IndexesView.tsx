@@ -2,7 +2,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { DebugState, FormTable, View, ViewForm } from "@components";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { IndexesTableDef, IndexedFormDef } from ".";
+import { IndexesTableDef, IndexesFormDef } from ".";
 
 export const IndexesView = () => {
   const { modifyNoop } = useNoops();
@@ -17,7 +17,7 @@ export const IndexesView = () => {
   const route = "indexes";
   const tabs = ["indexes"];
   const forms: ViewForm = {
-    indexes: <FormTable data={indexes} groups={IndexedFormDef(table)} />,
+    indexes: <FormTable data={indexes} groups={IndexesFormDef(table)} />,
   };
   return (
     <ViewStateProvider route={route} nItems={indexes.nItems} fetchFn={fetchIndexes} modifyFn={modifyNoop}>

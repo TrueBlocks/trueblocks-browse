@@ -21,7 +21,9 @@ var monitorMutex sync.Mutex
 
 var monitorLock atomic.Uint32
 
+// -------------------------------------------------------------------
 func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
+	defer a.trackPerformance("loadMonitors", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -78,6 +80,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
+// -------------------------------------------------------------------
 func (a *App) forceMonitor() (force bool) {
 	// EXISTING_CODE
 	force = a.forceName()
@@ -128,3 +131,25 @@ func (a *App) ModifyMonitors(modData *ModifyData) error {
 }
 
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Monitor
+// lower:         monitor
+// routeLabel:    Monitors
+// routeLower:    monitors
+// embedName:
+// embedType:     .
+// otherName:
+// otherType:     .
+// itemName:      Monitor
+// itemType:      coreTypes.Monitor
+// inputType:     coreTypes.Monitor
+// hasItems:      true
+// hasEmbed:      false
+// hasSorts:      false
+// initChain:     false
+// isEditable:    false
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      true

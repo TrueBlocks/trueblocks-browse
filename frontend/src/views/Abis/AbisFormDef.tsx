@@ -1,9 +1,14 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
 import { Table } from "@tanstack/react-table";
 import { DataTable, FieldGroup, PublishButton, CleanButton, AddButton } from "@components";
 import { types } from "@gocode/models";
+// EXISTING_CODE
 
-export const AbisFormTable = (table: Table<types.Abi>): FieldGroup<types.AbiContainer>[] => {
+export const AbisFormDef = (table: Table<types.Abi>): FieldGroup<types.AbiContainer>[] => {
   return [
+    // EXISTING_CODE
     {
       label: "Abi Data",
       colSpan: 6,
@@ -36,5 +41,18 @@ export const AbisFormTable = (table: Table<types.Abi>): FieldGroup<types.AbiCont
       collapsable: false,
       components: [<DataTable<types.Abi> key={"dataTable"} table={table} loading={false} />],
     },
+    // EXISTING_CODE
   ];
 };
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Abi
+// routeLabel:    Abis
+// itemName:      Abi
+// isHistory:     false
+// isSession:     false
+// isConfig:      false

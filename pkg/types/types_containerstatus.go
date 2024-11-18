@@ -189,8 +189,8 @@ func (s *StatusContainer) ForEveryItem(process EveryCacheItemFn, data any) bool 
 // itemName:      CacheItem
 // itemType:      coreTypes.CacheItem
 // inputType:     coreTypes.CacheItem
-// hasEmbed:      true
 // hasItems:      true
+// hasEmbed:      true
 // hasOther:      false
 // hasSorts:      false
 // initChain:     true

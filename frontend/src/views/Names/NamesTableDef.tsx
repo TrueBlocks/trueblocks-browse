@@ -1,11 +1,16 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter, CrudButton } from "@components";
 import { NameTags } from "@components";
 import { types } from "@gocode/models";
+// EXISTING_CODE
 
 const columnHelper = createColumnHelper<types.Name>();
 
 export const NamesTableDef: CustomColumnDef<types.Name, any>[] = [
+  // EXISTING_CODE
   columnHelper.accessor("parts", {
     header: () => "Type",
     cell: (row) => <NameTags name={row.row.original} />,
@@ -56,4 +61,17 @@ export const NamesTableDef: CustomColumnDef<types.Name, any>[] = [
     },
     meta: { className: "small center cell" },
   }),
+  // EXISTING_CODE
 ];
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Name
+// lower:         name
+// routeLabel:    Names
+// routeLower:    names
+// itemName:      Name
+// embedType:     .

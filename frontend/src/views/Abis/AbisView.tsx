@@ -2,7 +2,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm, DebugState } from "@components";
 import { ModifyAbi } from "@gocode/app/App";
 import { useAppState, ViewStateProvider } from "@state";
-import { AbisFormTable, AbisTableDef } from ".";
+import { AbisTableDef, AbisFormDef } from ".";
 
 export const AbisView = () => {
   const { abis, fetchAbis } = useAppState();
@@ -16,7 +16,7 @@ export const AbisView = () => {
   const route = "abis";
   const tabs = ["abis"];
   const forms: ViewForm = {
-    abis: <FormTable data={abis} groups={AbisFormTable(table)} />,
+    abis: <FormTable data={abis} groups={AbisFormDef(table)} />,
   };
   return (
     <ViewStateProvider route={route} nItems={abis.nItems} fetchFn={fetchAbis} modifyFn={ModifyAbi}>

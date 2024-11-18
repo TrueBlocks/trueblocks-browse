@@ -12,7 +12,9 @@ import (
 
 var daemonLock atomic.Uint32
 
+// -------------------------------------------------------------------
 func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
+	defer a.trackPerformance("loadDaemons", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -42,6 +44,7 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
+// -------------------------------------------------------------------
 func (a *App) forceDaemon() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -50,3 +53,25 @@ func (a *App) forceDaemon() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Daemon
+// lower:         daemon
+// routeLabel:    Daemons
+// routeLower:    daemons
+// embedName:     daemon
+// embedType:     daemons.Daemon
+// otherName:
+// otherType:     .
+// itemName:
+// itemType:      .
+// inputType:     .
+// hasItems:      false
+// hasEmbed:      true
+// hasSorts:      false
+// initChain:     false
+// isEditable:    false
+// needsChain:    false
+// needsLoad:     true
+// needsSdk:      false

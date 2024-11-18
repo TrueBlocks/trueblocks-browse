@@ -4,7 +4,7 @@ import { StepWizard } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { WizardFormTable, WizardTableDef } from ".";
+import { WizardFormDef, WizardTableDef } from ".";
 
 export const WizardView = () => {
   const { modifyNoop } = useNoops();
@@ -29,7 +29,7 @@ export const WizardView = () => {
   const route = "wizard";
   const tabs = ["wizard"];
   const forms: ViewForm = {
-    wizard: <FormTable data={wizard} groups={WizardFormTable(table, wizard.nItems, stepWizard)} />,
+    wizard: <FormTable data={wizard} groups={WizardFormDef(table, wizard.nItems, stepWizard)} />,
   };
   return (
     <ViewStateProvider

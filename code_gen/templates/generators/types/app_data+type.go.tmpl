@@ -1,3 +1,29 @@
+{{ $class := .Class }}
+{{ $lower := toLower .Class }}
+{{ $routeLabel := .UiRouteLabel}}
+{{ $routeLower := .UiRouteLower -}}
+{{ $embedType := .EmbedType }}
+{{ $embedName := .EmbedName }}
+{{ $hasSorts := .HasSorts }}
+{{ $initChain := .InitChain }}
+{{ $inputType := .InputType }}
+{{ $isEditable := .IsEditable}}
+{{ $itemType := .ItemType}}
+{{ $itemName := .ItemName}}
+{{ $members := .Members }}
+{{ $needsChain := .NeedsChain }}
+{{ $needsSdk := .NeedsSdk}}
+{{ $needsLoad := .NeedsLoad}}
+{{ $otherName := .OtherName }}
+{{ $otherType := .OtherType }}
+{{ $sortsInstance := .SortsInstance }}
+
+{{ $hasItems := and (gt (len .ItemName) 0) true }}
+{{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
+
+{{ $isHistory := eq $class "History" }}
+{{ $isStatus := eq $class "Status" }}
+
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 package app
@@ -5,97 +31,103 @@ package app
 // EXISTING_CODE
 // EXISTING_CODE
 
-var {{toLower .Class}}Lock atomic.Uint32
+var {{$lower}}Lock atomic.Uint32
 
-func (a *App) load{{.UiRouteLabel}}(wg *sync.WaitGroup, errorChan chan error) error {
+//-------------------------------------------------------------------
+func (a *App) load{{$routeLabel}}({{if $isHistory}}address base.Address, {{end}}wg *sync.WaitGroup, errorChan chan error) error {
+	defer a.trackPerformance("load{{$routeLabel}}", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
 		}
 	}()
 
-	if !{{toLower .Class}}Lock.CompareAndSwap(0, 1) {
+	if !{{$lower}}Lock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer {{toLower .Class}}Lock.CompareAndSwap(1, 0)
+	defer {{$lower}}Lock.CompareAndSwap(1, 0)
+{{- if not $isHistory}}
 
-	if !a.{{.UiRouteLower}}.NeedsUpdate(a.force{{.Class}}()) {
+	if !a.{{$routeLower}}.NeedsUpdate(a.force{{$class}}()) {
 		return nil
 	}
-
-	opts := sdk.{{.UiRouteLabel}}Options{
+{{end}}
+{{if $needsSdk}}
+	opts := sdk.{{$routeLabel}}Options{
 		Globals: a.getGlobals(),
 	}
+{{end}}	// EXISTING_CODE
 	// EXISTING_CODE
-	// EXISTING_CODE
-	opts.Verbose = true
+{{if $needsSdk}}	opts.Verbose = true
 
-	if {{.UiRouteLower}}, meta, err := opts.{{.UiRouteLabel}}List(); err != nil {
+	if {{$routeLower}}, meta, err := opts.{{$routeLabel}}List(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if ({{.UiRouteLower}} == nil) || (len({{.UiRouteLower}}) == 0) {
-		err = fmt.Errorf("no {{.UiRouteLower}} found")
+	} else if ({{$routeLower}} == nil) || (len({{$routeLower}}) == 0) {
+		err = fmt.Errorf("no {{$routeLower}} found")
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
 	} else {
+{{end}}		// EXISTING_CODE
 		// EXISTING_CODE
-		// EXISTING_CODE
-		a.meta = *meta
-		a.{{.UiRouteLower}} = types.New{{.Class}}Container(opts.Chain
-{{- if .HasItems -}}
-, {{.UiRouteLower}}
+{{if $needsSdk}}		a.meta = *meta
+		a.{{$routeLower}} = types.New{{$class}}Container(opts.Chain
+{{- if $hasItems -}}
+, {{$routeLower}}{{if $isStatus}}[0].Caches{{end}}
 {{- end -}}
-{{- if .HasEmbed -}}
-, &{{.UiRouteLower}}[0]
+{{- if $hasEmbed -}}
+, &{{$routeLower}}[0]
 {{- end -}}
 )
+{{end}}		// EXISTING_CODE
 		// EXISTING_CODE
-		// EXISTING_CODE
-{{if .HasSorts -}}
-		if err := sdk.Sort{{.UiRouteLabel}}(a.{{.UiRouteLower}}.Items, a.{{.UiRouteLower}}.Sorts); err != nil {
+{{if $hasSorts -}}
+		if err := sdk.Sort{{$routeLabel}}(a.{{$routeLower}}.Items, a.{{$routeLower}}.Sorts); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 {{end -}}
-		a.emitInfoMsg("Loaded {{.UiRouteLower}}", "")
-	}
-
+		a.emitInfoMsg("Loaded {{$routeLower}}", "")
+{{if $needsSdk}}	}
+{{end}}
 	return nil
 }
 
-{{if .IsEditable}}func (a *App) Modify{{.Class}}(modData *ModifyData) error {
-	opts := sdk.{{.UiRouteLabel}}Options{
+{{if $isEditable}}//-------------------------------------------------------------------
+func (a *App) Modify{{$class}}(modData *ModifyData) error {
+	opts := sdk.{{$routeLabel}}Options{
 		Addrs:   []string{modData.Address.Hex()},
 		Globals: a.getGlobals(),
 	}
 	opts.Globals.Decache = true
 
-	if _, _, err := opts.{{.UiRouteLabel}}(); err != nil {
+	if _, _, err := opts.{{$routeLabel}}(); err != nil {
 		a.emitAddressErrorMsg(err, modData.Address)
 		return err
 	} else {
-		new{{.UiRouteLabel}} := make([]{{.ItemType}}, 0, len(a.{{.UiRouteLower}}.Items))
-		for _, {{toLower .Class}} := range a.{{.UiRouteLower}}.Items {
-			if {{toLower .Class}}.Address == modData.Address {
-				a.{{.UiRouteLower}}.NItems--
-				a.{{.UiRouteLower}}.NEvents -= {{toLower .Class}}.NEvents
-				a.{{.UiRouteLower}}.NFunctions -= {{toLower .Class}}.NFunctions
+		new{{$routeLabel}} := make([]{{$itemType}}, 0, len(a.{{$routeLower}}.Items))
+		for _, {{$lower}} := range a.{{$routeLower}}.Items {
+			if {{$lower}}.Address == modData.Address {
+				a.{{$routeLower}}.NItems--
+				a.{{$routeLower}}.NEvents -= {{$lower}}.NEvents
+				a.{{$routeLower}}.NFunctions -= {{$lower}}.NFunctions
 				continue
 			}
-			new{{.UiRouteLabel}} = append(new{{.UiRouteLabel}}, {{toLower .Class}})
+			new{{$routeLabel}} = append(new{{$routeLabel}}, {{$lower}})
 		}
-		a.{{.UiRouteLower}}.LastUpdate = 0
-		a.{{.UiRouteLower}}.Items = new{{.UiRouteLabel}}
-		a.emitInfoMsg("Modify{{.Class}} delete", modData.Address.Hex())
+		a.{{$routeLower}}.LastUpdate = 0
+		a.{{$routeLower}}.Items = new{{$routeLabel}}
+		a.emitInfoMsg("Modify{{$class}} delete", modData.Address.Hex())
 		return nil
 	}
 }
 {{end}}
 
-func (a *App) force{{.Class}}() (force bool) {
+//-------------------------------------------------------------------
+func (a *App) force{{$class}}() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return
@@ -103,3 +135,25 @@ func (a *App) force{{.Class}}() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         {{$class}}
+// lower:         {{$lower}}
+// routeLabel:    {{$routeLabel}}
+// routeLower:    {{$routeLower}}
+// embedName:     {{$embedName}}
+// embedType:     {{$embedType}}
+// otherName:     {{$otherName}}
+// otherType:     {{$otherType}}
+// itemName:      {{$itemName}}
+// itemType:      {{$itemType}}
+// inputType:     {{$inputType}}
+// hasItems:      {{if $hasItems}}true{{else}}false{{end}}
+// hasEmbed:      {{if $hasEmbed}}true{{else}}false{{end}}
+// hasSorts:      {{$hasSorts}}
+// initChain:     {{$initChain}}
+// isEditable:    {{$isEditable}}
+// needsChain:    {{$needsChain}}
+// needsLoad:     {{$needsLoad}}
+// needsSdk:      {{$needsSdk}}

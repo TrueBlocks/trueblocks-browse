@@ -4,7 +4,7 @@
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "1080-containers"
 	ui_route = "1080-settings"
-	attributes = "inputType=types.SettingsProp|noType|noLoad|noSdk|noPaging"
+	attributes = "itemType=coreTypes.CacheItem|inputType=types.SettingsProp|noType|noLoad|noSdk|noPaging"
 	# 1080 -- settings
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"

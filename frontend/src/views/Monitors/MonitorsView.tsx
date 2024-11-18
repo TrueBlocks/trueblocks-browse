@@ -3,7 +3,7 @@ import { View, FormTable, ViewForm, DebugState } from "@components";
 import { ModifyMonitors } from "@gocode/app/App";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { MonitorsTableDef, MonitorFormDef } from ".";
+import { MonitorsTableDef, MonitorsFormDef } from ".";
 
 export const MonitorsView = () => {
   const { monitors, fetchMonitors, loadAddress } = useAppState();
@@ -21,7 +21,7 @@ export const MonitorsView = () => {
   const route = "monitors";
   const tabs = ["monitors"];
   const forms: ViewForm = {
-    monitors: <FormTable data={monitors} groups={MonitorFormDef(table)} />,
+    monitors: <FormTable data={monitors} groups={MonitorsFormDef(table)} />,
   };
   return (
     <ViewStateProvider

@@ -1,3 +1,6 @@
+{{ $hasItems := and (gt (len .ItemName) 0) true }}
+{{ $isHistory := eq .Class "History" -}}
+
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 package app
@@ -10,15 +13,23 @@ func (a *App) Fetch{{.Class}}(first, pageSize int) *types.{{.Class}}Container {
 	// EXISTING_CODE
 
 {{if .NeedsPaging -}}
-	filtered := a.{{.UiRouteLower}}.CollateAndFilter(a.filterMap){{if .HasItems}}.([]{{.ItemFullType}}){{end}}
+{{if $isHistory -}}
+	_ = history.CollateAndFilter(a.filterMap)
+	first = base.Max(0, base.Min(first, len(history.Items)-1))
+	last := base.Min(len(history.Items), first+pageSize)
+	copy, _ := history.ShallowCopy().(*types.HistoryContainer)
+	copy.Balance = a.getBalance(address)
+	copy.Items = history.Items[first:last]
+{{- else -}}
+	filtered := a.{{.UiRouteLower}}.CollateAndFilter(a.filterMap){{if $hasItems}}.([]{{.ItemFullType}}){{end}}
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.{{.UiRouteLower}}.ShallowCopy().(*types.{{.Class}}Container)
 	copy.Items = filtered[first:last]
-	return copy
+{{- end}}
 {{- else -}}
 	_ = a.{{.UiRouteLower}}.CollateAndFilter(a.filterMap)
 	copy, _ := a.{{.UiRouteLower}}.ShallowCopy().(*types.{{.Class}}Container)
-	return copy
 {{- end}}
+	return copy
 }

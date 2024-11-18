@@ -1,8 +1,14 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
+import { Table } from "@tanstack/react-table";
 import { DataTable, FieldGroup, CleanButton } from "@components";
 import { types } from "@gocode/models";
+// EXISTING_CODE
 
-export const StatusFormDef = (table: any): FieldGroup<types.StatusContainer>[] => {
+export const StatusFormDef = (table: Table<types.CacheItem>): FieldGroup<types.StatusContainer>[] => {
   return [
+    // EXISTING_CODE
     {
       label: "System Data",
       colSpan: 7,
@@ -53,5 +59,18 @@ export const StatusFormDef = (table: any): FieldGroup<types.StatusContainer>[] =
       collapsable: false,
       components: [<DataTable<types.CacheItem> key={"dataTable"} table={table} loading={false} />],
     },
+    // EXISTING_CODE
   ];
 };
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Status
+// routeLabel:    Status
+// itemName:      CacheItem
+// isHistory:     false
+// isSession:     false
+// isConfig:      false

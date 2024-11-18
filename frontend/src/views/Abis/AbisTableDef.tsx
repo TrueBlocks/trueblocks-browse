@@ -1,10 +1,15 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter, CrudButton } from "@components";
 import { types } from "@gocode/models";
+// EXISTING_CODE
 
 const columnHelper = createColumnHelper<types.Abi>();
 
 export const AbisTableDef: CustomColumnDef<types.Abi, any>[] = [
+  // EXISTING_CODE
   columnHelper.accessor("address", {
     header: () => "Name/Address",
     cell: (info) => {
@@ -62,4 +67,17 @@ export const AbisTableDef: CustomColumnDef<types.Abi, any>[] = [
     },
     meta: { className: "small center cell" },
   }),
+  // EXISTING_CODE
 ];
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Abi
+// lower:         abi
+// routeLabel:    Abis
+// routeLower:    abis
+// itemName:      Abi
+// embedType:     .

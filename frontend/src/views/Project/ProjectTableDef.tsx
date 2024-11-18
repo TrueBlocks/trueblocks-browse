@@ -1,3 +1,6 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
 import { Group } from "@mantine/core";
 import { createColumnHelper } from "@tanstack/react-table";
 import {
@@ -13,10 +16,12 @@ import {
   CopyButton,
 } from "@components";
 import { base, types } from "@gocode/models";
+// EXISTING_CODE
 
 const columnHelper = createColumnHelper<types.HistoryContainer>();
 
-const baseColumns: CustomColumnDef<types.HistoryContainer, any>[] = [
+export const baseTableDef: CustomColumnDef<types.HistoryContainer, any>[] = [
+  // EXISTING_CODE
   columnHelper.accessor("address", {
     header: () => "Dalle",
     cell: (info) => <Formatter type="dalle-small" value={info.renderValue()} />,
@@ -45,8 +50,10 @@ const baseColumns: CustomColumnDef<types.HistoryContainer, any>[] = [
     cell: (info) => <Formatter type="ether" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
+  // EXISTING_CODE
 ];
 
+// EXISTING_CODE
 const defButtons = (address: base.Address | undefined) => {
   return (
     <Group wrap="nowrap">
@@ -62,7 +69,7 @@ const defButtons = (address: base.Address | undefined) => {
 };
 
 export const ProjectTableDef: CustomColumnDef<types.HistoryContainer, any>[] = [
-  ...baseColumns,
+  ...baseTableDef,
   columnHelper.accessor("address", {
     header: () => " ",
     cell: (info) => {
@@ -79,7 +86,7 @@ export const ProjectTableDef: CustomColumnDef<types.HistoryContainer, any>[] = [
 ];
 
 export const ProjectTableDefNoDelete: CustomColumnDef<types.HistoryContainer, any>[] = [
-  ...baseColumns,
+  ...baseTableDef,
   columnHelper.accessor("address", {
     header: () => " ",
     cell: (info) => {
@@ -89,3 +96,13 @@ export const ProjectTableDefNoDelete: CustomColumnDef<types.HistoryContainer, an
     meta: { className: "wide cell" },
   }),
 ];
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Project
+// lower:         project
+// routeLabel:    Project
+// routeLower:    project
+// itemName:      HistoryContainer
+// embedType:     .

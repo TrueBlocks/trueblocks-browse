@@ -22,6 +22,7 @@ import (
 
 var historyLock atomic.Uint32
 
+// -------------------------------------------------------------------
 func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadHistory", false)()
 	defer func() {
@@ -34,7 +35,6 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 		return nil
 	}
 	defer historyLock.CompareAndSwap(1, 0)
-
 	// EXISTING_CODE
 	if address.IsZero() {
 		logger.InfoBR("Zero address", "address", address.Hex())
@@ -62,6 +62,7 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	return nil
 }
 
+// -------------------------------------------------------------------
 func (a *App) forceHistory() (force bool) {
 	// EXISTING_CODE
 	force = a.forceName()
@@ -223,3 +224,25 @@ func (a *App) LoadAddress(addrOrEns string) {
 }
 
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         History
+// lower:         history
+// routeLabel:    History
+// routeLower:    history
+// embedName:
+// embedType:     .
+// otherName:     address
+// otherType:     base.Address
+// itemName:      Transaction
+// itemType:      coreTypes.Transaction
+// inputType:     coreTypes.Transaction
+// hasItems:      true
+// hasEmbed:      false
+// hasSorts:      false
+// initChain:     false
+// isEditable:    false
+// needsChain:    true
+// needsLoad:     true
+// needsSdk:      false

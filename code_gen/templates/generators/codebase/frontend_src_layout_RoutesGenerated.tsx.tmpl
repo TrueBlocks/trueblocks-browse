@@ -7,8 +7,13 @@ import {
   {{range .Structures}}{{.UiRouteLabel}}View,
   {{end}}} from "@views";
 
-export type Route =
-{{range .Structures}}  | "{{.UiRouteRoute}}"
+export type Route ={{range .Structures}}
+{{ $isProject := eq .Class "Project" }}
+{{ $route := .UiRouteLower }}
+{{ if $isProject }}
+  {{ $route = "" }}
+{{end}}
+  | "{{$route}}"
 {{end -}};
 
 export type RouteItem = {
@@ -29,8 +34,9 @@ const expandRoute = (r: Route): string => {
 
 export const routeItems: RouteItem[] = [
 {{range .Structures}}  {
+{{ $isProject := eq .Class "Project" }}
     order: {{.UiRouteNum}},
-    route: expandRoute("{{if not .IsProject}}{{.UiRouteLower}}{{end}}"),
+    route: expandRoute("{{if not $isProject}}{{.UiRouteLower}}{{end}}"),
     label: "{{.UiRouteLabel}}",
     icon: {{.UiRouteLabel}}Icon,
     component: {{.UiRouteLabel}}View,

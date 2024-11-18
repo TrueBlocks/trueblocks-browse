@@ -48,7 +48,7 @@ func (a *App) Freshen() error {
 	go a.loadIndexes(&wg, errorChan)
 	go a.loadManifests(&wg, errorChan)
 	go a.loadStatus(&wg, errorChan)
-	go a.loadSessions(&wg, errorChan)
+	go a.loadSession(&wg, errorChan)
 	go a.loadConfig(&wg, errorChan)
 	go a.loadDaemons(&wg, errorChan)
 	// go a.loadWizard(&wg, errorChan)

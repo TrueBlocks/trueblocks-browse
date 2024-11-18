@@ -17,7 +17,9 @@ import (
 
 var sessionLock atomic.Uint32
 
+// -------------------------------------------------------------------
 func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
+	defer a.trackPerformance("loadSession", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -68,6 +70,7 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
+// -------------------------------------------------------------------
 func (a *App) forceSession() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -87,3 +90,25 @@ func (a *App) saveSession() {
 }
 
 // EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Session
+// lower:         session
+// routeLabel:    Session
+// routeLower:    session
+// embedName:     session
+// embedType:     coreTypes.Session
+// otherName:
+// otherType:     .
+// itemName:
+// itemType:      .
+// inputType:     .
+// hasItems:      false
+// hasEmbed:      true
+// hasSorts:      false
+// initChain:     true
+// isEditable:    false
+// needsChain:    false
+// needsLoad:     true
+// needsSdk:      true

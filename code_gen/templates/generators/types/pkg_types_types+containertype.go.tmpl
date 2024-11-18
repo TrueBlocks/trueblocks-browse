@@ -1,9 +1,6 @@
 {{ $class := .Class }}
 {{ $embedType := .EmbedType }}
 {{ $embedName := .EmbedName }}
-{{ $hasEmbed := .HasEmbed }}
-{{ $hasItems := .HasItems }}
-{{ $hasOther := .HasOther }}
 {{ $hasSorts := .HasSorts }}
 {{ $initChain := .InitChain }}
 {{ $inputType := .InputType }}
@@ -20,6 +17,10 @@
 {{ $sortsInstance := .SortsInstance }}
 {{ $routeLabel := .UiRouteLabel}}
 {{ $routeLower := .UiRouteLower -}}
+
+{{ $hasItems := and (gt (len .ItemName) 0) true }}
+{{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
+{{ $hasOther := and (gt (len .OtherName) 0) true }}
 
 {{if $needsLoad}}
 // This file is auto-generated. Edit only code inside
@@ -218,9 +219,9 @@ func (s *{{$class}}Container) ForEveryItem(process Every{{$itemName}}Fn, data an
 // itemName:      {{$itemName}}
 // itemType:      {{$itemType}}
 // inputType:     {{$inputType}}
-// hasEmbed:      {{$hasEmbed}}
-// hasItems:      {{$hasItems}}
-// hasOther:      {{$hasOther}}
+// hasItems:      {{if $hasItems}}true{{else}}false{{end}}
+// hasEmbed:      {{if $hasEmbed}}true{{else}}false{{end}}
+// hasOther:      {{if $hasOther}}true{{else}}false{{end}}
 // hasSorts:      {{$hasSorts}}
 // initChain:     {{$initChain}}
 // isEditable:    {{$isEditable}}

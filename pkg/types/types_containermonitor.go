@@ -246,8 +246,8 @@ func (s *MonitorContainer) ForEveryItem(process EveryMonitorFn, data any) bool {
 // itemName:      Monitor
 // itemType:      coreTypes.Monitor
 // inputType:     coreTypes.Monitor
-// hasEmbed:      false
 // hasItems:      true
+// hasEmbed:      false
 // hasOther:      false
 // hasSorts:      false
 // initChain:     false

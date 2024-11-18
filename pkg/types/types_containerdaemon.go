@@ -132,8 +132,8 @@ func (s *DaemonContainer) getDaemonReload() (ret int64, reload bool) {
 // itemName:
 // itemType:      .
 // inputType:     .
-// hasEmbed:      true
 // hasItems:      false
+// hasEmbed:      true
 // hasOther:      false
 // hasSorts:      false
 // initChain:     false

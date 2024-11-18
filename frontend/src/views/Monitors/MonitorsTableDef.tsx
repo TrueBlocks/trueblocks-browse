@@ -1,10 +1,15 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+// EXISTING_CODE
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnDef, Formatter, CrudButton } from "@components";
 import { types } from "@gocode/models";
+// EXISTING_CODE
 
 const columnHelper = createColumnHelper<types.Monitor>();
 
 export const MonitorsTableDef: CustomColumnDef<types.Monitor, any>[] = [
+  // EXISTING_CODE
   columnHelper.accessor("address", {
     header: () => "Name/Address",
     cell: (info) => {
@@ -50,4 +55,17 @@ export const MonitorsTableDef: CustomColumnDef<types.Monitor, any>[] = [
     },
     meta: { className: "small center cell" },
   }),
+  // EXISTING_CODE
 ];
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+//-------------------------------------------------------------------
+// Template variables:
+// class:         Monitor
+// lower:         monitor
+// routeLabel:    Monitors
+// routeLower:    monitors
+// itemName:      Monitor
+// embedType:     .
