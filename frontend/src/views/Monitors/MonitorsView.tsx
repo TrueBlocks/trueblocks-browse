@@ -1,9 +1,14 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+
+// EXISTING_CODE
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm, DebugState } from "@components";
 import { ModifyMonitor } from "@gocode/app/App";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { MonitorsTableDef, MonitorsFormDef } from ".";
+// EXISTING_CODE
 
 export const MonitorsView = () => {
   const { monitors, fetchMonitors, loadAddress } = useAppState();
@@ -11,6 +16,9 @@ export const MonitorsView = () => {
   const handleEnter = (page: Page) => {
     loadAddress(monitors.items[page.getRecord()].address);
   };
+
+  // EXISTING_CODE
+  // EXISTING_CODE
 
   const table = useReactTable({
     data: monitors.items || [],
@@ -25,6 +33,7 @@ export const MonitorsView = () => {
   };
   return (
     <ViewStateProvider
+      // do not remove - delint
       route={route}
       nItems={monitors.nItems}
       fetchFn={fetchMonitors}
@@ -36,3 +45,6 @@ export const MonitorsView = () => {
     </ViewStateProvider>
   );
 };
+
+// EXISTING_CODE
+// EXISTING_CODE

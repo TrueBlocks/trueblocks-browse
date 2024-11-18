@@ -25,19 +25,18 @@ const ViewContext = createContext<ViewStateProps | undefined>(undefined);
 
 type ViewContextType = {
   route: Route;
-  nItems?: number;
+  nItems: number;
   fetchFn: FetchFnType;
   modifyFn: ModifyFnType;
-  onEnter?: (page: Page) => void;
+  onEnter: (page: Page) => void;
   children: ReactNode;
 };
 
-export const ViewStateProvider = ({ route, nItems = -1, fetchFn, modifyFn, onEnter, children }: ViewContextType) => {
+export const ViewStateProvider = ({ route, nItems, fetchFn, modifyFn, onEnter, children }: ViewContextType) => {
   const [headerShows, setHeaderShows] = useState<boolean | null>(null);
   const [filter, setFilter] = useState<string>("");
-  const { enterNoop } = useNoops();
   const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
-  const pager = useKeyboardPaging(nItems, lines, onEnter ? onEnter : enterNoop);
+  const pager = useKeyboardPaging(nItems, lines, onEnter);
 
   const handleCollapse = (newState: string | null) => {
     const isShowing = newState === "header";

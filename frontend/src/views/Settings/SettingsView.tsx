@@ -1,3 +1,7 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+
+// EXISTING_CODE
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { DebugState, FormTable, View, ViewForm } from "@components";
 import { types } from "@gocode/models";
@@ -7,14 +11,17 @@ import { ConfigFormDef } from "../Config";
 import { SessionFormDef } from "../Session";
 import { StatusFormDef } from "../Status";
 import { SettingsTableDef } from ".";
+// EXISTING_CODE
 
 export const SettingsView = () => {
-  const { modifyNoop } = useNoops();
   const { settings, fetchSettings } = useAppState();
+  const { enterNoop, modifyNoop } = useNoops();
 
+  // EXISTING_CODE
   const status = settings.status ?? types.StatusContainer.createFrom({});
   const config = settings.config ?? types.ConfigContainer.createFrom({});
   const session = settings.session ?? types.SessionContainer.createFrom({});
+  // EXISTING_CODE
 
   const table = useReactTable({
     data: status.items || [],
@@ -35,9 +42,19 @@ export const SettingsView = () => {
   }
 
   return (
-    <ViewStateProvider route={route} fetchFn={fetchSettings} modifyFn={modifyNoop}>
+    <ViewStateProvider
+      // do not remove - delint
+      route={route}
+      nItems={0}
+      fetchFn={fetchSettings}
+      onEnter={enterNoop}
+      modifyFn={modifyNoop}
+    >
       <DebugState n={settings.lastUpdate} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
 };
+
+// EXISTING_CODE
+// EXISTING_CODE

@@ -1,3 +1,7 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+
+// EXISTING_CODE
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm, DebugState } from "@components";
 import { StepWizard } from "@gocode/app/App";
@@ -5,6 +9,7 @@ import { types } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { WizardFormDef, WizardTableDef } from ".";
+// EXISTING_CODE
 
 export const WizardView = () => {
   const { modifyNoop } = useNoops();
@@ -20,6 +25,9 @@ export const WizardView = () => {
     stepWizard(types.WizStep.NEXT);
   };
 
+  // EXISTING_CODE
+  // EXISTING_CODE
+
   const table = useReactTable({
     data: wizard.items || [],
     columns: WizardTableDef,
@@ -33,6 +41,7 @@ export const WizardView = () => {
   };
   return (
     <ViewStateProvider
+      // do not remove - delint
       route={route}
       nItems={wizard.nItems}
       fetchFn={fetchWizard}
@@ -44,3 +53,6 @@ export const WizardView = () => {
     </ViewStateProvider>
   );
 };
+
+// EXISTING_CODE
+// EXISTING_CODE

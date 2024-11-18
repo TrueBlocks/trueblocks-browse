@@ -1,19 +1,27 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+
+// EXISTING_CODE
 import { useMemo } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm, DebugState, UnderConstruction } from "@components";
 import { useNoops, useUtils } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { HistoryTableDef, HistoryFormDef } from ".";
+// EXISTING_CODE
 
 export const HistoryView = () => {
-  const { modifyNoop } = useNoops();
   const { ShortenAddr } = useUtils();
   const { info, history, fetchHistory } = useAppState();
+  const { enterNoop, modifyNoop } = useNoops();
 
   const addrStr = useMemo(
     () => (info?.address ? ShortenAddr(info.address.toString()) : ""),
     [ShortenAddr, info?.address]
   );
+
+  // EXISTING_CODE
+  // EXISTING_CODE
 
   const table = useReactTable({
     data: history.items || [],
@@ -36,9 +44,19 @@ export const HistoryView = () => {
   };
 
   return (
-    <ViewStateProvider route={route} nItems={history.nItems} fetchFn={fetchHistory} modifyFn={modifyNoop}>
+    <ViewStateProvider
+      // do not remove - delint
+      route={route}
+      nItems={history.nItems}
+      fetchFn={fetchHistory}
+      onEnter={enterNoop}
+      modifyFn={modifyNoop}
+    >
       <DebugState n={history.lastUpdate} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
 };
+
+// EXISTING_CODE
+// EXISTING_CODE

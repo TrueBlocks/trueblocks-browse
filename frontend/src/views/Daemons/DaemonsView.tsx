@@ -1,3 +1,7 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+
+// EXISTING_CODE
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { SimpleGrid, Stack, Box } from "@mantine/core";
 import { FieldGroup, FieldsetWrapper, FormTable, ViewForm, PinButton, View, DebugState } from "@components";
@@ -7,6 +11,7 @@ import { daemons, messages } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { EventsOn, EventsOff } from "@runtime";
 import { ViewStateProvider } from "@state";
+// EXISTING_CODE
 
 const empty = {} as daemons.Daemon;
 
@@ -19,7 +24,9 @@ interface Nope {
 }
 
 export const DaemonsView = () => {
-  const { fetchNoop, modifyNoop } = useNoops();
+  const { fetchNoop, enterNoop, modifyNoop } = useNoops();
+
+  // EXISTING_CODE
   // TODO BOGUS: The daemon state should be in the AppState
   const [scraper, setScraper] = useState<daemons.Daemon>(empty);
   const [freshen, setFreshen] = useState<daemons.Daemon>(empty);
@@ -78,6 +85,7 @@ export const DaemonsView = () => {
     ipfs,
     logMessages,
   };
+  // EXISTING_CODE
 
   const route = "daemons";
   const tabs = ["daemons"];
@@ -86,7 +94,14 @@ export const DaemonsView = () => {
   };
 
   return (
-    <ViewStateProvider route={route} fetchFn={fetchNoop} modifyFn={modifyNoop}>
+    <ViewStateProvider
+      // do not remove - delint
+      route={route}
+      nItems={0}
+      fetchFn={fetchNoop}
+      onEnter={enterNoop}
+      modifyFn={modifyNoop}
+    >
       <DebugState n={0} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
@@ -118,3 +133,6 @@ const createDaemonForm = (data: Nope): FieldGroup<Nope>[] => {
     },
   ];
 };
+
+// EXISTING_CODE
+// EXISTING_CODE

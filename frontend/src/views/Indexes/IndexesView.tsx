@@ -1,12 +1,20 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+
+// EXISTING_CODE
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { DebugState, FormTable, View, ViewForm } from "@components";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { IndexesTableDef, IndexesFormDef } from ".";
+// EXISTING_CODE
 
 export const IndexesView = () => {
-  const { modifyNoop } = useNoops();
   const { indexes, fetchIndexes } = useAppState();
+  const { enterNoop, modifyNoop } = useNoops();
+
+  // EXISTING_CODE
+  // EXISTING_CODE
 
   const table = useReactTable({
     data: indexes.items || [],
@@ -20,9 +28,19 @@ export const IndexesView = () => {
     indexes: <FormTable data={indexes} groups={IndexesFormDef(table)} />,
   };
   return (
-    <ViewStateProvider route={route} nItems={indexes.nItems} fetchFn={fetchIndexes} modifyFn={modifyNoop}>
+    <ViewStateProvider
+      // do not remove - delint
+      route={route}
+      nItems={indexes.nItems}
+      fetchFn={fetchIndexes}
+      onEnter={enterNoop}
+      modifyFn={modifyNoop}
+    >
       <DebugState n={indexes.lastUpdate} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
 };
+
+// EXISTING_CODE
+// EXISTING_CODE

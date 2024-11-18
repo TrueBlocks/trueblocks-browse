@@ -1,3 +1,7 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+
+// EXISTING_CODE
 import { useEffect } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, FormTable, ViewForm, DebugState } from "@components";
@@ -5,6 +9,7 @@ import { ModifyProject } from "@gocode/app/App";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { ProjectTableDefNoDelete, ProjectTableDef, ProjectFormDef } from ".";
+// EXISTING_CODE
 
 export const ProjectView = () => {
   const { info, loadAddress } = useAppState();
@@ -19,6 +24,10 @@ export const ProjectView = () => {
   };
 
   const projColumns = project?.nItems < 2 ? ProjectTableDefNoDelete : ProjectTableDef;
+
+  // EXISTING_CODE
+  // EXISTING_CODE
+
   const table = useReactTable({
     data: project.items ?? [],
     columns: projColumns,
@@ -37,6 +46,7 @@ export const ProjectView = () => {
 
   return (
     <ViewStateProvider
+      // do not remove - delint
       route={route}
       nItems={project.nItems}
       fetchFn={fetchProject}
@@ -48,3 +58,6 @@ export const ProjectView = () => {
     </ViewStateProvider>
   );
 };
+
+// EXISTING_CODE
+// EXISTING_CODE
