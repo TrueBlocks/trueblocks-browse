@@ -6,9 +6,10 @@
 {{ $isAbi := eq $class "Abi" }}
 {{ $isName := eq $class "Name" }}
 {{ $isMonitor := eq $class "Monitor" }}
+{{ $isProject := eq $class "Project" }}
 {{ $isSearchable := or $isAbi (or $isName $isMonitor) }}
-{{ $hasEnter := or $isAbi $isName }}
-{{ $hasModify := $isName }}
+{{ $hasEnter := or (or $isAbi $isName) (or $isProject $isMonitor) }}
+{{ $hasModify := or (or $isAbi $isName) (or $isProject $isMonitor) }}
 {{ $hasItems := and (gt (len .ItemName) 0) true }}
 
 {{ $noops := print "const { enterNoop, modifyNoop } = useNoops();" }}
@@ -36,11 +37,20 @@
 export const {{$routeLabel}}View = () => {
   const { {{$routeLower}}, fetch{{$routeLabel}}{{if $hasEnter}}, loadAddress{{end}}} = useAppState();
   {{ $noops }}
-{{if $hasEnter}}
+{{- if and $hasEnter $hasModify }}
   const handleEnter = (page: Page) => {
     loadAddress({{$routeLower}}.items[page.getRecord()].address);
   };
-{{end}}
+  const handleModify = Modify{{$class}};
+{{- else }}
+  {{ if $hasEnter }}  const handleEnter = (page: Page) => {
+      loadAddress({{$routeLower}}.items[page.getRecord()].address);
+    };
+  {{ else }}  const handleEnter = enterNoop;{{ end }}
+  {{ if $hasModify }}  const handleModify = Modify{{$class}};
+  {{ else }}  const handleModify = modifyNoop;{{ end }}
+{{ end }}
+
   // EXISTING_CODE
   // EXISTING_CODE
 

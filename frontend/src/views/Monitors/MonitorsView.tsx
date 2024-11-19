@@ -12,6 +12,7 @@ import { MonitorsTableDef, MonitorsFormDef } from ".";
 
 export const MonitorsView = () => {
   const { monitors, fetchMonitors, loadAddress } = useAppState();
+
   const handleEnter = (page: Page) => {
     loadAddress(monitors.items[page.getRecord()].address);
   };

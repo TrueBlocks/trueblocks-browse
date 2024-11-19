@@ -8,11 +8,12 @@ import { View, FormTable, ViewForm, DebugState } from "@components";
 import { ModifyProject } from "@gocode/app/App";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { ProjectTableDefNoDelete, ProjectTableDef, ProjectFormDef } from ".";
+import { ProjectTableDefNoDelete, ProjectTableDef as tmpProjectTableDef, ProjectFormDef } from ".";
 // EXISTING_CODE
 
 export const ProjectView = () => {
   const { project, fetchProject, loadAddress } = useAppState();
+
   const handleEnter = (page: Page) => {
     loadAddress(project.items[page.getRecord()].address);
   };
@@ -23,12 +24,15 @@ export const ProjectView = () => {
   useEffect(() => {
     fetchProject(0, 100);
   }, [info.filename, fetchProject]);
-  const projColumns = project?.nItems < 2 ? ProjectTableDefNoDelete : ProjectTableDef;
+  let ProjectTableDef = tmpProjectTableDef;
+  if (project?.nItems <= 2) {
+    ProjectTableDef = ProjectTableDefNoDelete;
+  }
   // EXISTING_CODE
 
   const table = useReactTable({
     data: project.items ?? [],
-    columns: projColumns,
+    columns: ProjectTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
 

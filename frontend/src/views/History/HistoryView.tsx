@@ -32,17 +32,9 @@ export const HistoryView = () => {
   });
 
   const route = "history";
-  const tabs = [addrStr, "logs", "statements", "neighbors", "charts", "contracts", "erc20", "erc721", "poaps"];
+  const tabs = ["history"];
   const forms: ViewForm = {
-    [addrStr]: <FormTable data={history} groups={HistoryFormDef(table, info.address)} />,
-    logs: <UnderConstruction message="Coming soon...a list of all logs" />,
-    statements: <UnderConstruction message="Coming soon...accounting statements" />,
-    neighbors: <UnderConstruction message="Coming soon...all addresses you've interacted with" />,
-    charts: <UnderConstruction message="Coming soon...balance history charts, activity charts, etc." />,
-    contracts: <UnderConstruction message="Coming soon...all smart contracts you've interacted with" />,
-    erc20: <UnderConstruction message="Coming soon...all Tokens you own" />,
-    erc721: <UnderConstruction message="Coming soon...all NFTs you own" />,
-    poaps: <UnderConstruction message="Coming soon...all POAPs you own" />,
+    history: <FormTable data={history} groups={HistoryFormDef(table, info.address)} />,
   };
 
   return (

@@ -12,6 +12,7 @@ import { NamesFormDef, NamesTableDef } from ".";
 
 export const NamesView = () => {
   const { names, fetchNames, loadAddress } = useAppState();
+
   const handleEnter = (page: Page) => {
     loadAddress(names.items[page.getRecord()].address);
   };

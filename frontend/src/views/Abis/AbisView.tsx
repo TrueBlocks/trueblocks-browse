@@ -12,6 +12,7 @@ import { AbisTableDef, AbisFormDef } from ".";
 
 export const AbisView = () => {
   const { abis, fetchAbis, loadAddress } = useAppState();
+
   const handleEnter = (page: Page) => {
     loadAddress(abis.items[page.getRecord()].address);
   };
