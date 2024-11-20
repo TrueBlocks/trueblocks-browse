@@ -6,7 +6,6 @@
 {{ $isEditable := .IsEditable}}
 {{ $itemType := .ItemType}}
 {{ $itemName := .ItemName}}
-{{ $lower := toLower .Class }}
 {{ $members := .Members }}
 {{ $container := print $class "Container" }}
 
@@ -24,8 +23,8 @@
 {{ $hasSorts := .HasSorts }}
 {{ $sortsInstance := .SortsInstance }}
 
-{{ $hasItems := and (gt (len .ItemName) 0) true }}
-{{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
+{{ $hasItems := and (gt (len $itemName) 0) true }}
+{{ $hasEmbed := and (gt (len $embedName) 0) true }}
 
 {{ $needsLoad := .Needs "load"}}
 {{if $needsLoad}}

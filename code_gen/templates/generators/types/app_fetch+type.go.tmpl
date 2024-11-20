@@ -1,4 +1,5 @@
-{{ $hasItems := and (gt (len .ItemName) 0) true }}
+{{ $itemName := .ItemName}}
+{{ $hasItems := and (gt (len $itemName) 0) true }}
 {{ $isHistory := eq .Class "History" -}}
 {{ $routeLower := toLower .UiRouteName }}
 {{ $needsPaging := .Needs "paging" }}

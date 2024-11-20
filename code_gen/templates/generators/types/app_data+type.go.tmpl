@@ -13,8 +13,8 @@
 {{ $hasSorts := .HasSorts }}
 {{ $sortsInstance := .SortsInstance }}
 
-{{ $hasItems := and (gt (len .ItemName) 0) true }}
-{{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
+{{ $hasItems := and (gt (len $itemName) 0) true }}
+{{ $hasEmbed := and (gt (len $embedName) 0) true }}
 
 {{ $isHistory := eq $class "History" }}
 {{ $isStatus := eq $class "Status" }}
