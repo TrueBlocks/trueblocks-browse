@@ -3,7 +3,7 @@
     # doc_group = "20-Routes"
     # doc_descr = "block data as returned from the RPC (with slight enhancements)"
     doc_route = "1050-containers"
-    ui_route = "1050-indexes"
+    ui_route = "1050-indexes-6"
     attributes = "itemType=coreTypes.ChunkStats|sorts=range+Dec,"
     # produced_by = "blocks"
     # contains = "transaction, withdrawal"
