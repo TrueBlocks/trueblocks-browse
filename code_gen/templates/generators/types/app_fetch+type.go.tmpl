@@ -1,6 +1,7 @@
 {{ $hasItems := and (gt (len .ItemName) 0) true }}
 {{ $isHistory := eq .Class "History" -}}
 {{ $routeLower := toLower .UiRouteName }}
+{{ $needsPaging := .Needs "paging" }}
 
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
@@ -13,7 +14,7 @@ func (a *App) Fetch{{.Class}}(first, pageSize int) *types.{{.Class}}Container {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-{{if .NeedsPaging -}}
+{{if $needsPaging -}}
 {{if $isHistory -}}
 	_ = history.CollateAndFilter(a.filterMap)
 	first = base.Max(0, base.Min(first, len(history.Items)-1))

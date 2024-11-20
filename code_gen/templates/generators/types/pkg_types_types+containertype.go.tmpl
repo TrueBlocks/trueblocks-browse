@@ -3,24 +3,31 @@
 {{ $routeLower := toLower .UiRouteName -}}
 {{ $embedType := .EmbedType }}
 {{ $embedName := .EmbedName }}
-{{ $hasSorts := .HasSorts }}
-{{ $inputType := .InputType }}
 {{ $isEditable := .IsEditable}}
 {{ $itemType := .ItemType}}
 {{ $itemName := .ItemName}}
 {{ $lower := toLower .Class }}
 {{ $members := .Members }}
-{{ $needsSdk := .NeedsSdk}}
-{{ $needsLoad := .NeedsLoad}}
-{{ $otherName := .OtherName }}
-{{ $otherType := .OtherType }}
-{{ $sortsInstance := .SortsInstance }}
 {{ $container := print $class "Container" }}
+
+{{ $isHistory := eq $class "History" }}
+{{ $isManifest := eq $class "Manifest" }}
+{{ $isSettings := eq $class "Settings" }}
+
+{{ $inputType := $itemType }}
+{{ if $isManifest }}
+	{{ $inputType = "coreTypes.Manifest" }}
+{{ else if $isSettings }}
+	{{ $inputType = "types.SettingsProp" }}
+{{ end }}
+
+{{ $hasSorts := .HasSorts }}
+{{ $sortsInstance := .SortsInstance }}
 
 {{ $hasItems := and (gt (len .ItemName) 0) true }}
 {{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
-{{ $hasOther := and (gt (len .OtherName) 0) true }}
 
+{{ $needsLoad := .Needs "load"}}
 {{if $needsLoad}}
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
@@ -48,8 +55,8 @@ func New{{$container}}(chain string
 {{- if $hasEmbed -}}
 , {{toLower $embedName}} *{{$embedType}}
 {{- end -}}
-{{- if $hasOther -}}
-, {{toLower $otherName}} {{$otherType}}
+{{- if $isHistory -}}
+, address base.Address
 {{- end -}}
 ) {{$container}} {
 	ret := {{$container}}{

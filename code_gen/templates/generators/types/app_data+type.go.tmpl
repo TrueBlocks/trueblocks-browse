@@ -4,16 +4,13 @@
 {{ $routeLower := toLower .UiRouteName -}}
 {{ $embedType := .EmbedType }}
 {{ $embedName := .EmbedName }}
-{{ $hasSorts := .HasSorts }}
-{{ $inputType := .InputType }}
 {{ $isEditable := .IsEditable}}
 {{ $itemType := .ItemType}}
 {{ $itemName := .ItemName}}
 {{ $members := .Members }}
-{{ $needsSdk := .NeedsSdk}}
-{{ $needsLoad := .NeedsLoad}}
-{{ $otherName := .OtherName }}
-{{ $otherType := .OtherType }}
+{{ $needsSdk := .Needs "sdk" }}
+
+{{ $hasSorts := .HasSorts }}
 {{ $sortsInstance := .SortsInstance }}
 
 {{ $hasItems := and (gt (len .ItemName) 0) true }}
