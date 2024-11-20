@@ -2,9 +2,10 @@
 // of ExistingCode markers (if any).
 
 // EXISTING_CODE
-import { DebugState } from "@components";
+import { DebugState, FormTable, View, ViewForm } from "@components";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
+import { ConfigFormDef } from "./ConfigFormDef";
 // EXISTING_CODE
 
 export const ConfigView = () => {
@@ -14,9 +15,14 @@ export const ConfigView = () => {
   const handleModify = modifyNoop;
 
   // EXISTING_CODE
+  const table = config;
   // EXISTING_CODE
 
   const route = "config";
+  const tabs = ["config"];
+  const forms: ViewForm = {
+    config: <FormTable data={config} groups={ConfigFormDef(table)} />,
+  };
 
   return (
     <ViewStateProvider
@@ -28,17 +34,10 @@ export const ConfigView = () => {
       modifyFn={handleModify}
     >
       <DebugState n={config.lastUpdate} />
-      <pre>{JSON.stringify(config, null, 2)}</pre>
+      <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
 };
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Config
-// lower:         config
-// routeLabel:    Config
-// routeLower:    config

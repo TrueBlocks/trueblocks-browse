@@ -12,7 +12,6 @@ import { AbisTableDef, AbisFormDef } from ".";
 
 export const AbisView = () => {
   const { abis, fetchAbis, loadAddress } = useAppState();
-
   const handleEnter = (page: Page) => {
     loadAddress(abis.items[page.getRecord()].address);
   };
@@ -22,7 +21,7 @@ export const AbisView = () => {
   // EXISTING_CODE
 
   const table = useReactTable({
-    data: abis.items || [],
+    data: abis?.items || [],
     columns: AbisTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -32,6 +31,10 @@ export const AbisView = () => {
   const forms: ViewForm = {
     abis: <FormTable data={abis} groups={AbisFormDef(table)} />,
   };
+
+  // if (!(abis?.items?.length > 0)) {
+  //   return <>Loading...</>;
+  // }
 
   return (
     <ViewStateProvider
@@ -50,10 +53,3 @@ export const AbisView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Abi
-// lower:         abi
-// routeLabel:    Abis
-// routeLower:    abis

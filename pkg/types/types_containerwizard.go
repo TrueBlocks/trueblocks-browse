@@ -228,26 +228,3 @@ var AllSteps = []struct {
 }
 
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Wizard
-// lower:         wizard
-// routeLabel:    Wizard
-// routeLower:    wizard
-// embedName:
-// embedType:     .
-// otherName:
-// otherType:     .
-// itemName:      WizError
-// itemType:      WizError
-// inputType:     WizError
-// hasItems:      true
-// hasEmbed:      false
-// hasOther:      false
-// hasSorts:      false
-// initChain:     false
-// isEditable:    false
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      false

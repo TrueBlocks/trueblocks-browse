@@ -71,25 +71,3 @@ func (a *App) forceSettings() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Settings
-// lower:         settings
-// routeLabel:    Settings
-// routeLower:    settings
-// embedName:
-// embedType:     .
-// otherName:
-// otherType:     .
-// itemName:      CacheItem
-// itemType:      coreTypes.CacheItem
-// inputType:     SettingsProp
-// hasItems:      true
-// hasEmbed:      false
-// hasSorts:      false
-// initChain:     false
-// isEditable:    false
-// needsChain:    true
-// needsLoad:     false
-// needsSdk:      false

@@ -189,26 +189,3 @@ func (s *ManifestContainer) ForEveryItem(process EveryChunkRecordFn, data any) b
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Manifest
-// lower:         manifest
-// routeLabel:    Manifests
-// routeLower:    manifests
-// embedName:
-// embedType:     .
-// otherName:
-// otherType:     .
-// itemName:      ChunkRecord
-// itemType:      coreTypes.ChunkRecord
-// inputType:     coreTypes.Manifest
-// hasItems:      true
-// hasEmbed:      false
-// hasOther:      false
-// hasSorts:      true
-// initChain:     false
-// isEditable:    false
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      true

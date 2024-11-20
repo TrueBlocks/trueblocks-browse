@@ -15,12 +15,13 @@ export const SessionView = () => {
   const handleModify = modifyNoop;
 
   // EXISTING_CODE
+  const table = session;
   // EXISTING_CODE
 
   const route = "session";
   const tabs = ["session"];
   const forms: ViewForm = {
-    session: <FormTable data={session} groups={SessionFormDef(session)} />,
+    session: <FormTable data={session} groups={SessionFormDef(table)} />,
   };
 
   return (
@@ -40,10 +41,3 @@ export const SessionView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Session
-// lower:         session
-// routeLabel:    Session
-// routeLower:    session

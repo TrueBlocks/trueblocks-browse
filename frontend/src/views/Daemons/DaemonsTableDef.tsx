@@ -11,12 +11,3 @@ export const UnusedDaemons = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Daemon
-// lower:         daemon
-// routeLabel:    Daemons
-// routeLower:    daemons
-// itemName:
-// embedType:     daemons.Daemon

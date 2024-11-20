@@ -190,26 +190,3 @@ func (s *IndexContainer) ForEveryItem(process EveryChunkStatsFn, data any) bool 
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Index
-// lower:         index
-// routeLabel:    Indexes
-// routeLower:    indexes
-// embedName:
-// embedType:     .
-// otherName:
-// otherType:     .
-// itemName:      ChunkStats
-// itemType:      coreTypes.ChunkStats
-// inputType:     coreTypes.ChunkStats
-// hasItems:      true
-// hasEmbed:      false
-// hasOther:      false
-// hasSorts:      true
-// initChain:     false
-// isEditable:    false
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      true

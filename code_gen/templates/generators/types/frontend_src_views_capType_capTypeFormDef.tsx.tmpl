@@ -1,7 +1,7 @@
 {{ $class := .Class }}
 {{ $lower := toLower .Class }}
-{{ $routeLabel := .UiRouteLabel }}
-{{ $routeLower := .UiRouteLower }}
+{{ $routeName := .UiRouteName }}
+{{ $routeLower := toLower .UiRouteName }}
 {{ $itemName := .ItemName }}
 {{ $embedName := .EmbedName }}
 {{ $embedType := .EmbedType }}
@@ -13,9 +13,10 @@
 {{ $isConfig := eq $class "Config" }}
 {{ $isWizard := eq $class "Wizard" }}
 {{ $isProject := eq $class "Project" }}
+{{ $isDaemon := eq $class "Daemon" }}
 {{ $isSessConf := or $isSession $isConfig }}
 
-{{ $formDef := print $routeLabel "FormDef" }}
+{{ $formDef := print $routeName "FormDef" }}
 
 {{ $param1 := "" }}
 {{ if $hasItems }}
@@ -23,6 +24,8 @@
 {{ else }}
   {{ if $isSessConf }}
     {{ $param1 = print $routeLower ": types." $class "Container" }}
+  {{ else if $isDaemon }}
+    {{ $param1 = printf "data: Nope" }}
   {{ end }}
 {{ end }}
 
@@ -39,26 +42,20 @@
 {{ $fieldGroup := print "types." $class }}
 {{ if (or $hasItems $isConfig) }}
   {{ $fieldGroup = print "types." $class "Container"}}
+{{ else if $isDaemon }}
+  {{ $fieldGroup = print "Nope"}}
 {{ end }}
 
 {{ $returns := "" }}
-{{ if (or $hasItems $isSessConf) }}
+{{ if (or (or $hasItems $isSessConf) $isDaemon) }}
   {{ $returns = print ": FieldGroup<" $fieldGroup ">[]" }}
 {{ end }}
 
 {{ $leadMatter := "" }}
-{{ if $isWizard }}
-  {{ $leadMatter = print "const { wizard } = useAppState();" }}
-{{ else if $isProject }}
+{{ if $isProject }}
   {{ $leadMatter = print "const { info } = useAppState();" }}
-{{ else if $isHistory }}
-  {{ $leadMatter = print `      const [named, setNamed] = useState(address as unknown as string);
-      const { ShortenAddr } = useUtils();
-      useEffect(() => {
-        GetName(address).then((name) => {
-          setNamed(name === "" ? ShortenAddr(address as unknown as string) : name);
-        });
-      }, [address, ShortenAddr]);` }}
+{{ else if $isWizard }}
+  {{ $leadMatter = print "const { wizard } = useAppState();" }}
 {{ end }}
 
 // This file is auto-generated. Edit only code inside
@@ -67,27 +64,12 @@
 // EXISTING_CODE
 
 export const {{$formDef}} = ({{$param1}}{{$param2}}){{$returns}} => {
-{{if (or $hasItems $isSessConf) }}
   {{$leadMatter}}
   return [
-{{end}}
     // EXISTING_CODE
     // EXISTING_CODE
-{{if (or $hasItems $isSessConf) }}
   ];
-{{else}}
-  return <div>Unused{{$formDef}}</div>;
-{{end}}
 };
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         {{$class}}
-// routeLabel:    {{$routeLabel}}
-// itemName:      {{$itemName}}
-// isHistory:     {{$isHistory}}
-// isSession:     {{$isSession}}
-// isConfig:      {{$isConfig}}

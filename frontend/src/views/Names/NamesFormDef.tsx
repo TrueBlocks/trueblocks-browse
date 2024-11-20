@@ -50,12 +50,3 @@ export const NamesFormDef = (table: Table<types.Name>): FieldGroup<types.NameCon
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Name
-// routeLabel:    Names
-// itemName:      Name
-// isHistory:     false
-// isSession:     false
-// isConfig:      false

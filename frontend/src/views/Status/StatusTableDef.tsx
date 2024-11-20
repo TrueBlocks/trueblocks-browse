@@ -45,12 +45,3 @@ export const StatusTableDef: CustomColumnDef<types.CacheItem, any>[] = [
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Status
-// lower:         status
-// routeLabel:    Status
-// routeLower:    status
-// itemName:      CacheItem
-// embedType:     coreTypes.Status

@@ -175,26 +175,3 @@ func (s *StatusContainer) ForEveryItem(process EveryCacheItemFn, data any) bool 
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Status
-// lower:         status
-// routeLabel:    Status
-// routeLower:    status
-// embedName:     status
-// embedType:     coreTypes.Status
-// otherName:
-// otherType:     .
-// itemName:      CacheItem
-// itemType:      coreTypes.CacheItem
-// inputType:     coreTypes.CacheItem
-// hasItems:      true
-// hasEmbed:      true
-// hasOther:      false
-// hasSorts:      false
-// initChain:     true
-// isEditable:    false
-// needsChain:    false
-// needsLoad:     true
-// needsSdk:      true

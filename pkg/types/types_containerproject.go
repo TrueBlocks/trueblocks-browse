@@ -182,26 +182,3 @@ func (s *ProjectContainer) ForEveryItem(process EveryHistoryContainerFn, data an
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Project
-// lower:         project
-// routeLabel:    Project
-// routeLower:    project
-// embedName:
-// embedType:     .
-// otherName:
-// otherType:     .
-// itemName:      HistoryContainer
-// itemType:      HistoryContainer
-// inputType:     HistoryContainer
-// hasItems:      true
-// hasEmbed:      false
-// hasOther:      false
-// hasSorts:      false
-// initChain:     false
-// isEditable:    false
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      false

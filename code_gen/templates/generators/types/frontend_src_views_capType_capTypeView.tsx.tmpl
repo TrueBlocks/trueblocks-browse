@@ -1,23 +1,32 @@
 {{ $class := .Class }}
 {{ $lower := toLower .Class }}
-{{ $routeLabel := .UiRouteLabel }}
-{{ $routeLower := .UiRouteLower }}
+{{ $routeName := .UiRouteName }}
+{{ $routeLower := toLower .UiRouteName }}
+
+{{ $hasItems := and (gt (len .ItemName) 0) true }}
+{{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
 
 {{ $isAbi := eq $class "Abi" }}
 {{ $isName := eq $class "Name" }}
 {{ $isMonitor := eq $class "Monitor" }}
 {{ $isProject := eq $class "Project" }}
-{{ $isSearchable := or $isAbi (or $isName $isMonitor) }}
+{{ $isSettings := eq $class "Settings" }}
+{{ $isHistory := eq $class "History" }}
+{{ $isWizard := eq $class "Wizard" }}
+{{ $isDaemon := eq $class "Daemon" }}
+
+{{ $isSearchable := or (or $isAbi $isName) (or $isProject $isMonitor) }}
 {{ $hasEnter := or (or $isAbi $isName) (or $isProject $isMonitor) }}
 {{ $hasModify := or (or $isAbi $isName) (or $isProject $isMonitor) }}
-{{ $hasItems := and (gt (len .ItemName) 0) true }}
 
 {{ $noops := print "const { enterNoop, modifyNoop } = useNoops();" }}
-{{ if or $hasEnter $hasModify }}
+{{ if or (or $hasEnter $hasModify) (or $isWizard $isDaemon) }}
   {{ if and $hasEnter $hasModify}}
     {{ $noops = "" }}
-  {{ else if $hasEnter }}
+  {{ else if or $hasEnter $isWizard }}
     {{ $noops = print "const { modifyNoop } = useNoops();" }}
+  {{ else if $isDaemon }}
+    {{ $noops = print "const { fetchNoop, enterNoop, modifyNoop } = useNoops();" }}
   {{ else }}
     {{ $noops = print "const { enterNoop } = useNoops();" }}
   {{ end }}
@@ -26,6 +35,8 @@
 {{ $nItems := print $routeLower ".nItems" }}
 {{ if not $hasItems }}
   {{ $nItems = "0" }}
+{{ else if $isSettings }}
+  {{ $nItems = "status.nItems" }}
 {{ end }}
 
 // This file is auto-generated. Edit only code inside
@@ -34,11 +45,10 @@
 // EXISTING_CODE
 // EXISTING_CODE
 
-export const {{$routeLabel}}View = () => {
-  const { {{$routeLower}}, fetch{{$routeLabel}}{{if $hasEnter}}, loadAddress{{end}}} = useAppState();
+export const {{$routeName}}View = () => {
+{{if not $isDaemon}}  const { {{$routeLower}}, fetch{{$routeName}}{{if $hasEnter}}, loadAddress{{end}}} = useAppState();{{end}}
   {{ $noops }}
-{{- if and $hasEnter $hasModify }}
-  const handleEnter = (page: Page) => {
+{{- if and $hasEnter $hasModify }} const handleEnter = (page: Page) => {
     loadAddress({{$routeLower}}.items[page.getRecord()].address);
   };
   const handleModify = Modify{{$class}};
@@ -46,7 +56,10 @@ export const {{$routeLabel}}View = () => {
   {{ if $hasEnter }}  const handleEnter = (page: Page) => {
       loadAddress({{$routeLower}}.items[page.getRecord()].address);
     };
-  {{ else }}  const handleEnter = enterNoop;{{ end }}
+  {{- else if $isWizard }}  const handleEnter = () => {
+      stepWizard(types.WizStep.NEXT);
+    };
+  {{- else }}  const handleEnter = enterNoop;{{ end }}
   {{ if $hasModify }}  const handleModify = Modify{{$class}};
   {{ else }}  const handleModify = modifyNoop;{{ end }}
 {{ end }}
@@ -54,30 +67,34 @@ export const {{$routeLabel}}View = () => {
   // EXISTING_CODE
   // EXISTING_CODE
 
-  const table = useReactTable({
-    data: {{$routeLower}}.items || [],
-    columns: {{$routeLabel}}TableDef,
+{{if not $isSettings}}{{if $hasItems}}  const table = useReactTable({
+    data: {{$routeLower}}?.items || [],
+    columns: {{$routeName}}TableDef,
     getCoreRowModel: getCoreRowModel(),
-  });
+  });{{end}}
 
-  const route = "{{$routeLower}}";
+  const route = "{{if $isProject}}{{else}}{{$routeLower}}{{end}}";
   const tabs = ["{{$routeLower}}"];
   const forms: ViewForm = {
     {{$routeLower}}: <FormTable
       data={ {{$routeLower}} }
-      groups={ {{$routeLabel}}FormDef(table) } />,
+      groups={ {{$routeName}}FormDef(table{{if $isHistory}}, info.address{{else if $isWizard}}, wizard.nItems, stepWizard{{end}})} />,
   };
+{{if and $hasItems (not $isSettings)}}
+  // if (!({{$routeLower}}?.items?.length > 0)) {
+  //   return <>Loading...</>;
+  // }{{end}}{{end}}
 
   return (
     <ViewStateProvider
       // do not remove - delint
       route={route}
       nItems={ {{$nItems}}}
-      fetchFn={fetch{{$routeLabel}}}
+      fetchFn={fetch{{$routeName}}}
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState n={ {{$routeLower}}.lastUpdate} />
+      <DebugState n={ {{if not $isDaemon}}{{$routeLower}}.lastUpdate}{{else}}0}{{end}} />
       <View tabs={tabs} forms={forms}{{if $isSearchable}} searchable{{end}} />
     </ViewStateProvider>
   );
@@ -85,10 +102,3 @@ export const {{$routeLabel}}View = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         {{$class}}
-// lower:         {{$lower}}
-// routeLabel:    {{$routeLabel}}
-// routeLower:    {{$routeLower}}

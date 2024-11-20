@@ -212,26 +212,3 @@ func (c *comparison) MarkMin(name string, value int) {
 }
 
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Abi
-// lower:         abi
-// routeLabel:    Abis
-// routeLower:    abis
-// embedName:
-// embedType:     .
-// otherName:
-// otherType:     .
-// itemName:      Abi
-// itemType:      coreTypes.Abi
-// inputType:     coreTypes.Abi
-// hasItems:      true
-// hasEmbed:      false
-// hasOther:      false
-// hasSorts:      true
-// initChain:     false
-// isEditable:    true
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      true

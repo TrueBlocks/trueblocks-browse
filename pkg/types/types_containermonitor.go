@@ -232,26 +232,3 @@ func (s *MonitorContainer) ForEveryItem(process EveryMonitorFn, data any) bool {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Monitor
-// lower:         monitor
-// routeLabel:    Monitors
-// routeLower:    monitors
-// embedName:
-// embedType:     .
-// otherName:
-// otherType:     .
-// itemName:      Monitor
-// itemType:      coreTypes.Monitor
-// inputType:     coreTypes.Monitor
-// hasItems:      true
-// hasEmbed:      false
-// hasOther:      false
-// hasSorts:      false
-// initChain:     false
-// isEditable:    false
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      true

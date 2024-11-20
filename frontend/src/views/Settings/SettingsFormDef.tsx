@@ -15,12 +15,3 @@ export const SettingsFormDef = (table: Table<types.CacheItem>): FieldGroup<types
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Settings
-// routeLabel:    Settings
-// itemName:      CacheItem
-// isHistory:     false
-// isSession:     false
-// isConfig:      false

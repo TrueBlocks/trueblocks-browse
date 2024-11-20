@@ -88,12 +88,3 @@ export const WizFiniButton = ({ onClick, disabled = false }: StepProps) => {
 };
 
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Wizard
-// routeLabel:    Wizard
-// itemName:      WizError
-// isHistory:     false
-// isSession:     false
-// isConfig:      false

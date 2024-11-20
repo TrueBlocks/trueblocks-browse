@@ -1,7 +1,7 @@
 {{ $class := .Class }}
 {{ $lower := toLower .Class }}
-{{ $routeLabel := .UiRouteLabel}}
-{{ $routeLower := .UiRouteLower -}}
+{{ $routeName := .UiRouteName}}
+{{ $routeLower := toLower .UiRouteName -}}
 {{ $embedType := .EmbedType }}
 {{ $embedName := .EmbedName }}
 {{ $hasSorts := .HasSorts }}
@@ -34,8 +34,8 @@ package app
 var {{$lower}}Lock atomic.Uint32
 
 //-------------------------------------------------------------------
-func (a *App) load{{$routeLabel}}({{if $isHistory}}address base.Address, {{end}}wg *sync.WaitGroup, errorChan chan error) error {
-	defer a.trackPerformance("load{{$routeLabel}}", false)()
+func (a *App) load{{$routeName}}({{if $isHistory}}address base.Address, {{end}}wg *sync.WaitGroup, errorChan chan error) error {
+	defer a.trackPerformance("load{{$routeName}}", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -53,14 +53,14 @@ func (a *App) load{{$routeLabel}}({{if $isHistory}}address base.Address, {{end}}
 	}
 {{end}}
 {{if $needsSdk}}
-	opts := sdk.{{$routeLabel}}Options{
+	opts := sdk.{{$routeName}}Options{
 		Globals: a.getGlobals(),
 	}
 {{end}}	// EXISTING_CODE
 	// EXISTING_CODE
 {{if $needsSdk}}	opts.Verbose = true
 
-	if {{$routeLower}}, meta, err := opts.{{$routeLabel}}List(); err != nil {
+	if {{$routeLower}}, meta, err := opts.{{$routeName}}List(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -86,7 +86,7 @@ func (a *App) load{{$routeLabel}}({{if $isHistory}}address base.Address, {{end}}
 {{end}}		// EXISTING_CODE
 		// EXISTING_CODE
 {{if $hasSorts -}}
-		if err := sdk.Sort{{$routeLabel}}(a.{{$routeLower}}.Items, a.{{$routeLower}}.Sorts); err != nil {
+		if err := sdk.Sort{{$routeName}}(a.{{$routeLower}}.Items, a.{{$routeLower}}.Sorts); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 {{end -}}
@@ -98,17 +98,17 @@ func (a *App) load{{$routeLabel}}({{if $isHistory}}address base.Address, {{end}}
 
 {{if $isEditable}}//-------------------------------------------------------------------
 func (a *App) Modify{{$class}}(modData *ModifyData) error {
-	opts := sdk.{{$routeLabel}}Options{
+	opts := sdk.{{$routeName}}Options{
 		Addrs:   []string{modData.Address.Hex()},
 		Globals: a.getGlobals(),
 	}
 	opts.Globals.Decache = true
 
-	if _, _, err := opts.{{$routeLabel}}(); err != nil {
+	if _, _, err := opts.{{$routeName}}(); err != nil {
 		a.emitAddressErrorMsg(err, modData.Address)
 		return err
 	} else {
-		new{{$routeLabel}} := make([]{{$itemType}}, 0, len(a.{{$routeLower}}.Items))
+		new{{$routeName}} := make([]{{$itemType}}, 0, len(a.{{$routeLower}}.Items))
 		for _, {{$lower}} := range a.{{$routeLower}}.Items {
 			if {{$lower}}.Address == modData.Address {
 				a.{{$routeLower}}.NItems--
@@ -116,10 +116,10 @@ func (a *App) Modify{{$class}}(modData *ModifyData) error {
 				a.{{$routeLower}}.NFunctions -= {{$lower}}.NFunctions
 				continue
 			}
-			new{{$routeLabel}} = append(new{{$routeLabel}}, {{$lower}})
+			new{{$routeName}} = append(new{{$routeName}}, {{$lower}})
 		}
 		a.{{$routeLower}}.LastUpdate = 0
-		a.{{$routeLower}}.Items = new{{$routeLabel}}
+		a.{{$routeLower}}.Items = new{{$routeName}}
 		a.emitInfoMsg("Modify{{$class}} delete", modData.Address.Hex())
 		return nil
 	}
@@ -135,25 +135,3 @@ func (a *App) force{{$class}}() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         {{$class}}
-// lower:         {{$lower}}
-// routeLabel:    {{$routeLabel}}
-// routeLower:    {{$routeLower}}
-// embedName:     {{$embedName}}
-// embedType:     {{$embedType}}
-// otherName:     {{$otherName}}
-// otherType:     {{$otherType}}
-// itemName:      {{$itemName}}
-// itemType:      {{$itemType}}
-// inputType:     {{$inputType}}
-// hasItems:      {{if $hasItems}}true{{else}}false{{end}}
-// hasEmbed:      {{if $hasEmbed}}true{{else}}false{{end}}
-// hasSorts:      {{$hasSorts}}
-// initChain:     {{$initChain}}
-// isEditable:    {{$isEditable}}
-// needsChain:    {{$needsChain}}
-// needsLoad:     {{$needsLoad}}
-// needsSdk:      {{$needsSdk}}

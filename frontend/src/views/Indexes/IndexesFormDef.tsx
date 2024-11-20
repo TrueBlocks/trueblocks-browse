@@ -52,12 +52,3 @@ export const IndexesFormDef = (table: Table<types.ChunkStats>): FieldGroup<types
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Index
-// routeLabel:    Indexes
-// itemName:      ChunkStats
-// isHistory:     false
-// isSession:     false
-// isConfig:      false

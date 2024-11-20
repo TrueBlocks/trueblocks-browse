@@ -60,12 +60,3 @@ export const MonitorsTableDef: CustomColumnDef<types.Monitor, any>[] = [
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Monitor
-// lower:         monitor
-// routeLabel:    Monitors
-// routeLower:    monitors
-// itemName:      Monitor
-// embedType:     .

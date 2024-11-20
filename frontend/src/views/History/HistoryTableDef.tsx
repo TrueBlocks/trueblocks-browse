@@ -65,12 +65,3 @@ export const HistoryTableDef: CustomColumnDef<types.Transaction, any>[] = [
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         History
-// lower:         history
-// routeLabel:    History
-// routeLower:    history
-// itemName:      Transaction
-// embedType:     .

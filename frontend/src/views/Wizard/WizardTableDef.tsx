@@ -35,12 +35,3 @@ export const WizardTableDef: CustomColumnDef<types.WizError, any>[] = [
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Wizard
-// lower:         wizard
-// routeLabel:    Wizard
-// routeLower:    wizard
-// itemName:      WizError
-// embedType:     .

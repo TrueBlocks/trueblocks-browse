@@ -46,12 +46,3 @@ export const MonitorsFormDef = (table: Table<types.Monitor>): FieldGroup<types.M
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Monitor
-// routeLabel:    Monitors
-// itemName:      Monitor
-// isHistory:     false
-// isSession:     false
-// isConfig:      false

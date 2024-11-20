@@ -15,12 +15,3 @@ export const ManifestsTableDef: CustomColumnDef<types.ChunkRecord, any>[] = [
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Manifest
-// lower:         manifest
-// routeLabel:    Manifests
-// routeLower:    manifests
-// itemName:      ChunkRecord
-// embedType:     .

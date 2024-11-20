@@ -67,12 +67,3 @@ const SG = ({ settings }: ConfigProps) => {
 };
 
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Config
-// routeLabel:    Config
-// itemName:
-// isHistory:     false
-// isSession:     false
-// isConfig:      true

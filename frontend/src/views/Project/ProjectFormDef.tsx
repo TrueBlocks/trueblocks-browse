@@ -55,12 +55,3 @@ export const ProjectFormDef = (table: Table<types.HistoryContainer>): FieldGroup
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Project
-// routeLabel:    Project
-// itemName:      HistoryContainer
-// isHistory:     false
-// isSession:     false
-// isConfig:      false

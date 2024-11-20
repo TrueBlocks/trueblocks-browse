@@ -72,12 +72,3 @@ export const AbisTableDef: CustomColumnDef<types.Abi, any>[] = [
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Abi
-// lower:         abi
-// routeLabel:    Abis
-// routeLower:    abis
-// itemName:      Abi
-// embedType:     .

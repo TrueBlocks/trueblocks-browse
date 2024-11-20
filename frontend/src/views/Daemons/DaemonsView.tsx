@@ -2,98 +2,94 @@
 // of ExistingCode markers (if any).
 
 // EXISTING_CODE
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { SimpleGrid, Stack, Box } from "@mantine/core";
-import { FieldGroup, FieldsetWrapper, FormTable, ViewForm, PinButton, View, DebugState } from "@components";
-import { DaemonCard, DaemonLog } from "@components";
-import { GetDaemon, ToggleDaemon } from "@gocode/app/App";
+import { useState } from "react";
+import { FormTable, ViewForm, View, DebugState } from "@components";
+import { ToggleDaemon } from "@gocode/app/App";
 import { daemons, messages } from "@gocode/models";
 import { useNoops } from "@hooks";
-import { EventsOn, EventsOff } from "@runtime";
 import { ViewStateProvider } from "@state";
+import { DaemonsFormDef, Nope } from "./DaemonsFormDef";
 
 const empty = {} as daemons.Daemon;
 
-interface Nope {
-  scraper: daemons.Daemon;
-  freshen: daemons.Daemon;
-  ipfs: daemons.Daemon;
-  logMessages: messages.MessageMsg[];
-  toggleDaemon: (name: string) => void;
-}
 // EXISTING_CODE
 
 export const DaemonsView = () => {
   const { fetchNoop, enterNoop, modifyNoop } = useNoops();
-  const handleFetch = fetchNoop;
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
   // EXISTING_CODE
   // TODO BOGUS: The daemon state should be in the AppState
-  const [scraper, setScraper] = useState<daemons.Daemon>(empty);
-  const [freshen, setFreshen] = useState<daemons.Daemon>(empty);
-  const [ipfs, setIpfs] = useState<daemons.Daemon>(empty);
-  const [logMessages, setLogMessages] = useState<messages.MessageMsg[]>([]);
+  const [scraper] = useState<daemons.Daemon>(empty);
+  const [freshen] = useState<daemons.Daemon>(empty);
+  const [ipfs] = useState<daemons.Daemon>(empty);
+  const [logMessages] = useState<messages.MessageMsg[]>([]);
+  // const [scraper, setScraper] = useState<daemons.Daemon>(empty);
+  // const [freshen, setFreshen] = useState<daemons.Daemon>(empty);
+  // const [ipfs, setIpfs] = useState<daemons.Daemon>(empty);
+  // const [logMessages, setLogMessages] = useState<messages.MessageMsg[]>([]);
 
-  const updateDaemon = (daemon: string, setDaemon: Dispatch<SetStateAction<daemons.Daemon>>) => {
-    GetDaemon(daemon).then((json: string) => {
-      setDaemon(daemons.Daemon.createFrom(json));
-    });
-  };
+  // const updateDaemon = (daemon: string, setDaemon: Dispatch<SetStateAction<daemons.Daemon>>) => {
+  //   GetDaemon(daemon).then((json: string) => {
+  //     setDaemon(daemons.Daemon.createFrom(json));
+  //   });
+  // };
 
-  useEffect(() => {
-    updateDaemon("scraper", setScraper);
-    updateDaemon("freshen", setFreshen);
-    updateDaemon("ipfs", setIpfs);
-  }, []);
+  // useEffect(() => {
+  //   updateDaemon("scraper", setScraper);
+  //   updateDaemon("freshen", setFreshen);
+  //   updateDaemon("ipfs", setIpfs);
+  // }, []);
 
-  const handleMessage = (msg: messages.MessageMsg) => {
-    if (msg.num1 != 1) return; // ignore non-daemon refreshes here
-    switch (msg.name) {
-      case "scraper":
-        updateDaemon("scraper", setScraper);
-        break;
-      case "freshen":
-        updateDaemon("freshen", setFreshen);
-        break;
-      case "ipfs":
-        updateDaemon("ipfs", setIpfs);
-        break;
-      default:
-        break;
-    }
-    setLogMessages((prev) => {
-      const newLogs = [...prev, msg];
-      return newLogs.length > 8 ? newLogs.slice(-8) : newLogs;
-    });
-  };
+  // const handleMessage = (msg: messages.MessageMsg) => {
+  //   if (msg.num1 != 1) return; // ignore non-daemon refreshes here
+  //   switch (msg.name) {
+  //     case "scraper":
+  //       updateDaemon("scraper", setScraper);
+  //       break;
+  //     case "freshen":
+  //       updateDaemon("freshen", setFreshen);
+  //       break;
+  //     case "ipfs":
+  //       updateDaemon("ipfs", setIpfs);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   setLogMessages((prev) => {
+  //     const newLogs = [...prev, msg];
+  //     return newLogs.length > 8 ? newLogs.slice(-8) : newLogs;
+  //   });
+  // };
 
-  useEffect(() => {
-    const { Message } = messages;
-    EventsOn(Message.REFRESH, handleMessage);
-    return () => {
-      EventsOff(Message.REFRESH);
-    };
-  });
+  // useEffect(() => {
+  //   const { Message } = messages;
+  //   EventsOn(Message.REFRESH, handleMessage);
+  //   return () => {
+  //     EventsOff(Message.REFRESH);
+  //   };
+  // });
 
   const toggleDaemon = (name: string) => {
     ToggleDaemon(name);
   };
 
-  const data: Nope = {
+  const daemons: Nope = {
     toggleDaemon,
     scraper,
     freshen,
     ipfs,
     logMessages,
   };
+  const table = daemons;
+  const fetchDaemons = fetchNoop;
   // EXISTING_CODE
 
   const route = "daemons";
   const tabs = ["daemons"];
   const forms: ViewForm = {
-    daemons: <FormTable data={data} groups={createDaemonForm(data)} />,
+    daemons: <FormTable data={daemons} groups={DaemonsFormDef(table)} />,
   };
 
   return (
@@ -101,7 +97,7 @@ export const DaemonsView = () => {
       // do not remove - delint
       route={route}
       nItems={0}
-      fetchFn={handleFetch}
+      fetchFn={fetchDaemons}
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
@@ -112,36 +108,4 @@ export const DaemonsView = () => {
 };
 
 // EXISTING_CODE
-const createDaemonForm = (data: Nope): FieldGroup<Nope>[] => {
-  return [
-    {
-      label: "Daemons",
-      collapsable: false,
-      components: [
-        <SimpleGrid key={"cards"} cols={2}>
-          <DaemonCard daemon={data.scraper} toggle={data.toggleDaemon} />
-          <DaemonCard daemon={data.freshen} toggle={data.toggleDaemon} />
-          <DaemonCard daemon={data.ipfs} toggle={data.toggleDaemon} />
-        </SimpleGrid>,
-        <Stack key={"logs"}>
-          <Box />
-          <FieldsetWrapper legend="Logs">
-            <DaemonLog logMessages={data.logMessages} />
-          </FieldsetWrapper>
-        </Stack>,
-      ],
-    },
-    {
-      label: "Buttons",
-      buttons: [<PinButton key={"pin"} value="https://trueblocks.io" />],
-    },
-  ];
-};
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Daemon
-// lower:         daemon
-// routeLabel:    Daemons
-// routeLower:    daemons

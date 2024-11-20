@@ -47,12 +47,3 @@ export const AbisFormDef = (table: Table<types.Abi>): FieldGroup<types.AbiContai
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Abi
-// routeLabel:    Abis
-// itemName:      Abi
-// isHistory:     false
-// isSession:     false
-// isConfig:      false

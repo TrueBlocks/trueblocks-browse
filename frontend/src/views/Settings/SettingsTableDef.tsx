@@ -45,12 +45,3 @@ export const SettingsTableDef: CustomColumnDef<types.CacheItem, any>[] = [
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Settings
-// lower:         settings
-// routeLabel:    Settings
-// routeLower:    settings
-// itemName:      CacheItem
-// embedType:     .

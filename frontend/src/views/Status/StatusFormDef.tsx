@@ -65,12 +65,3 @@ export const StatusFormDef = (table: Table<types.CacheItem>): FieldGroup<types.S
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Status
-// routeLabel:    Status
-// itemName:      CacheItem
-// isHistory:     false
-// isSession:     false
-// isConfig:      false

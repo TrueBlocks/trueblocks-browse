@@ -77,25 +77,3 @@ func (a *App) forceIndex() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Index
-// lower:         index
-// routeLabel:    Indexes
-// routeLower:    indexes
-// embedName:
-// embedType:     .
-// otherName:
-// otherType:     .
-// itemName:      ChunkStats
-// itemType:      coreTypes.ChunkStats
-// inputType:     coreTypes.ChunkStats
-// hasItems:      true
-// hasEmbed:      false
-// hasSorts:      true
-// initChain:     false
-// isEditable:    false
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      true

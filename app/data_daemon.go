@@ -53,25 +53,3 @@ func (a *App) forceDaemon() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Daemon
-// lower:         daemon
-// routeLabel:    Daemons
-// routeLower:    daemons
-// embedName:     daemon
-// embedType:     daemons.Daemon
-// otherName:
-// otherType:     .
-// itemName:
-// itemType:      .
-// inputType:     .
-// hasItems:      false
-// hasEmbed:      true
-// hasSorts:      false
-// initChain:     false
-// isEditable:    false
-// needsChain:    false
-// needsLoad:     true
-// needsSdk:      false

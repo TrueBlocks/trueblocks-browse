@@ -250,26 +250,3 @@ func compare(nameI, nameJ coreTypes.Name) bool {
 }
 
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Name
-// lower:         name
-// routeLabel:    Names
-// routeLower:    names
-// embedName:
-// embedType:     .
-// otherName:
-// otherType:     .
-// itemName:      Name
-// itemType:      coreTypes.Name
-// inputType:     coreTypes.Name
-// hasItems:      true
-// hasEmbed:      false
-// hasOther:      false
-// hasSorts:      false
-// initChain:     false
-// isEditable:    false
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      true

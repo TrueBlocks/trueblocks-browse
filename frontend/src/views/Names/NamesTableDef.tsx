@@ -66,12 +66,3 @@ export const NamesTableDef: CustomColumnDef<types.Name, any>[] = [
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Name
-// lower:         name
-// routeLabel:    Names
-// routeLower:    names
-// itemName:      Name
-// embedType:     .

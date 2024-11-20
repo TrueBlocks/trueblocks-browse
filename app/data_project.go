@@ -99,25 +99,3 @@ func (a *App) ModifyProject(modData *ModifyData) {
 }
 
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Project
-// lower:         project
-// routeLabel:    Project
-// routeLower:    project
-// embedName:
-// embedType:     .
-// otherName:
-// otherType:     .
-// itemName:      HistoryContainer
-// itemType:      HistoryContainer
-// inputType:     HistoryContainer
-// hasItems:      true
-// hasEmbed:      false
-// hasSorts:      false
-// initChain:     false
-// isEditable:    false
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      false

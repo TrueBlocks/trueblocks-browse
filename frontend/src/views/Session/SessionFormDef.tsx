@@ -51,12 +51,3 @@ const SessionToggles = ({ session }: SessionProps) => {
   return <div>{`${JSON.stringify(session.toggles, null, 2)}`}</div>;
 };
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Session
-// routeLabel:    Session
-// itemName:
-// isHistory:     false
-// isSession:     true
-// isConfig:      false

@@ -13,7 +13,6 @@ import { ProjectTableDefNoDelete, ProjectTableDef as tmpProjectTableDef, Project
 
 export const ProjectView = () => {
   const { project, fetchProject, loadAddress } = useAppState();
-
   const handleEnter = (page: Page) => {
     loadAddress(project.items[page.getRecord()].address);
   };
@@ -31,7 +30,7 @@ export const ProjectView = () => {
   // EXISTING_CODE
 
   const table = useReactTable({
-    data: project.items ?? [],
+    data: project?.items || [],
     columns: ProjectTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -42,9 +41,9 @@ export const ProjectView = () => {
     project: <FormTable data={project} groups={ProjectFormDef(table)} />,
   };
 
-  if (project?.items?.length === 0) {
-    return <>Loading...</>;
-  }
+  // if (!(project?.items?.length > 0)) {
+  //   return <>Loading...</>;
+  // }
 
   return (
     <ViewStateProvider
@@ -56,17 +55,10 @@ export const ProjectView = () => {
       modifyFn={handleModify}
     >
       <DebugState n={project.lastUpdate} />
-      <View tabs={tabs} forms={forms} />
+      <View tabs={tabs} forms={forms} searchable />
     </ViewStateProvider>
   );
 };
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Project
-// lower:         project
-// routeLabel:    Project
-// routeLower:    project

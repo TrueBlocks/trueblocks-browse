@@ -90,25 +90,3 @@ func (a *App) saveSession() {
 }
 
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Session
-// lower:         session
-// routeLabel:    Session
-// routeLower:    session
-// embedName:     session
-// embedType:     coreTypes.Session
-// otherName:
-// otherType:     .
-// itemName:
-// itemType:      .
-// inputType:     .
-// hasItems:      false
-// hasEmbed:      true
-// hasSorts:      false
-// initChain:     true
-// isEditable:    false
-// needsChain:    false
-// needsLoad:     true
-// needsSdk:      true

@@ -26,7 +26,7 @@ export const HistoryView = () => {
   // EXISTING_CODE
 
   const table = useReactTable({
-    data: history.items || [],
+    data: history?.items || [],
     columns: HistoryTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -36,6 +36,10 @@ export const HistoryView = () => {
   const forms: ViewForm = {
     history: <FormTable data={history} groups={HistoryFormDef(table, info.address)} />,
   };
+
+  // if (!(history?.items?.length > 0)) {
+  //   return <>Loading...</>;
+  // }
 
   return (
     <ViewStateProvider
@@ -54,10 +58,3 @@ export const HistoryView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         History
-// lower:         history
-// routeLabel:    History
-// routeLower:    history

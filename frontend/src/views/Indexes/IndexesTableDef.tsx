@@ -65,12 +65,3 @@ export const IndexesTableDef: CustomColumnDef<types.ChunkStats, any>[] = [
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Index
-// lower:         index
-// routeLabel:    Indexes
-// routeLower:    indexes
-// itemName:      ChunkStats
-// embedType:     .

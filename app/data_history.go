@@ -224,25 +224,3 @@ func (a *App) LoadAddress(addrOrEns string) {
 }
 
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         History
-// lower:         history
-// routeLabel:    History
-// routeLower:    history
-// embedName:
-// embedType:     .
-// otherName:     address
-// otherType:     base.Address
-// itemName:      Transaction
-// itemType:      coreTypes.Transaction
-// inputType:     coreTypes.Transaction
-// hasItems:      true
-// hasEmbed:      false
-// hasSorts:      false
-// initChain:     false
-// isEditable:    false
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      false

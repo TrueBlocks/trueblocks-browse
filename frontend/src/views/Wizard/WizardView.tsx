@@ -28,7 +28,7 @@ export const WizardView = () => {
   // EXISTING_CODE
 
   const table = useReactTable({
-    data: wizard.items || [],
+    data: wizard?.items || [],
     columns: WizardTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -38,6 +38,10 @@ export const WizardView = () => {
   const forms: ViewForm = {
     wizard: <FormTable data={wizard} groups={WizardFormDef(table, wizard.nItems, stepWizard)} />,
   };
+
+  // if (!(wizard?.items?.length > 0)) {
+  //   return <>Loading...</>;
+  // }
 
   return (
     <ViewStateProvider
@@ -56,10 +60,3 @@ export const WizardView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Wizard
-// lower:         wizard
-// routeLabel:    Wizard
-// routeLower:    wizard

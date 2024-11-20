@@ -112,25 +112,3 @@ func (a *App) forceAbi() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Abi
-// lower:         abi
-// routeLabel:    Abis
-// routeLower:    abis
-// embedName:
-// embedType:     .
-// otherName:
-// otherType:     .
-// itemName:      Abi
-// itemType:      coreTypes.Abi
-// inputType:     coreTypes.Abi
-// hasItems:      true
-// hasEmbed:      false
-// hasSorts:      true
-// initChain:     false
-// isEditable:    true
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      true

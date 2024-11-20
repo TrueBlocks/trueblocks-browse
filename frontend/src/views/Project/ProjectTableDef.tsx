@@ -97,12 +97,3 @@ export const ProjectTableDefNoDelete: CustomColumnDef<types.HistoryContainer, an
   }),
 ];
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Project
-// lower:         project
-// routeLabel:    Project
-// routeLower:    project
-// itemName:      HistoryContainer
-// embedType:     .

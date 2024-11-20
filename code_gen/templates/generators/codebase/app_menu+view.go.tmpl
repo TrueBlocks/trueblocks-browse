@@ -9,9 +9,9 @@ package app
 {{ $isHistory := eq .Class "History" }}
 {{ $isProject := eq .Class "Project" }}
 {{ $isWizard := eq .Class "Wizard" }}
-{{ $routeLabel := .UiRouteLabel }}
-{{ $routeLower := .UiRouteLower }}
-func (a *App) {{$routeLabel}}View(cb *menu.CallbackData) {
+{{ $routeName := .UiRouteName }}
+{{ $routeLower := toLower .UiRouteName }}
+func (a *App) {{$routeName}}View(cb *menu.CallbackData) {
 {{if $isHistory -}}
 	address := a.GetSelected()
 	a.Navigate("/{{$routeLower}}", address.Hex())

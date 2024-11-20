@@ -23,10 +23,9 @@ export const SettingsView = () => {
   const status = settings.status ?? types.StatusContainer.createFrom({});
   const config = settings.config ?? types.ConfigContainer.createFrom({});
   const session = settings.session ?? types.SessionContainer.createFrom({});
-  // EXISTING_CODE
 
   const table = useReactTable({
-    data: status.items || [],
+    data: status?.items || [],
     columns: SettingsTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -39,15 +38,16 @@ export const SettingsView = () => {
     session: <FormTable data={session} groups={SessionFormDef(session)} />,
   };
 
-  if (!settings) {
-    return <div>Loading...</div>;
+  if (!(status?.items?.length > 0)) {
+    return <>Loading...</>;
   }
+  // EXISTING_CODE
 
   return (
     <ViewStateProvider
       // do not remove - delint
       route={route}
-      nItems={0}
+      nItems={status.nItems}
       fetchFn={fetchSettings}
       onEnter={handleEnter}
       modifyFn={handleModify}
@@ -60,10 +60,3 @@ export const SettingsView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Settings
-// lower:         settings
-// routeLabel:    Settings
-// routeLower:    settings

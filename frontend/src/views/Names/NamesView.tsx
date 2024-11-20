@@ -12,7 +12,6 @@ import { NamesFormDef, NamesTableDef } from ".";
 
 export const NamesView = () => {
   const { names, fetchNames, loadAddress } = useAppState();
-
   const handleEnter = (page: Page) => {
     loadAddress(names.items[page.getRecord()].address);
   };
@@ -22,7 +21,7 @@ export const NamesView = () => {
   // EXISTING_CODE
 
   const table = useReactTable({
-    data: names.items || [],
+    data: names?.items || [],
     columns: NamesTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -32,6 +31,10 @@ export const NamesView = () => {
   const forms: ViewForm = {
     names: <FormTable data={names} groups={NamesFormDef(table)} />,
   };
+
+  // if (!(names?.items?.length > 0)) {
+  //   return <>Loading...</>;
+  // }
 
   return (
     <ViewStateProvider
@@ -50,10 +53,3 @@ export const NamesView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Name
-// lower:         name
-// routeLabel:    Names
-// routeLower:    names

@@ -1,4 +1,6 @@
 {{ $class := .Class }}
+{{ $routeName := .UiRouteName}}
+{{ $routeLower := toLower .UiRouteName -}}
 {{ $embedType := .EmbedType }}
 {{ $embedName := .EmbedName }}
 {{ $hasSorts := .HasSorts }}
@@ -15,8 +17,6 @@
 {{ $otherName := .OtherName }}
 {{ $otherType := .OtherType }}
 {{ $sortsInstance := .SortsInstance }}
-{{ $routeLabel := .UiRouteLabel}}
-{{ $routeLower := .UiRouteLower -}}
 
 {{ $hasItems := and (gt (len .ItemName) 0) true }}
 {{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
@@ -205,27 +205,4 @@ func (s *{{$class}}Container) ForEveryItem(process Every{{$itemName}}Fn, data an
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         {{$class}}
-// lower:         {{$lower}}
-// routeLabel:    {{$routeLabel}}
-// routeLower:    {{$routeLower}}
-// embedName:     {{$embedName}}
-// embedType:     {{$embedType}}
-// otherName:     {{$otherName}}
-// otherType:     {{$otherType}}
-// itemName:      {{$itemName}}
-// itemType:      {{$itemType}}
-// inputType:     {{$inputType}}
-// hasItems:      {{if $hasItems}}true{{else}}false{{end}}
-// hasEmbed:      {{if $hasEmbed}}true{{else}}false{{end}}
-// hasOther:      {{if $hasOther}}true{{else}}false{{end}}
-// hasSorts:      {{$hasSorts}}
-// initChain:     {{$initChain}}
-// isEditable:    {{$isEditable}}
-// needsChain:    {{$needsChain}}
-// needsLoad:     {{$needsLoad}}
-// needsSdk:      {{$needsSdk}}
 {{end}}

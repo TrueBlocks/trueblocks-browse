@@ -19,7 +19,7 @@ export const ManifestsView = () => {
   // EXISTING_CODE
 
   const table = useReactTable({
-    data: manifests.items || [],
+    data: manifests?.items || [],
     columns: ManifestsTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -29,6 +29,10 @@ export const ManifestsView = () => {
   const forms: ViewForm = {
     manifests: <FormTable data={manifests} groups={ManifestsFormDef(table)} />,
   };
+
+  // if (!(manifests?.items?.length > 0)) {
+  //   return <>Loading...</>;
+  // }
 
   return (
     <ViewStateProvider
@@ -47,10 +51,3 @@ export const ManifestsView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Manifest
-// lower:         manifest
-// routeLabel:    Manifests
-// routeLower:    manifests

@@ -12,7 +12,6 @@ import { MonitorsTableDef, MonitorsFormDef } from ".";
 
 export const MonitorsView = () => {
   const { monitors, fetchMonitors, loadAddress } = useAppState();
-
   const handleEnter = (page: Page) => {
     loadAddress(monitors.items[page.getRecord()].address);
   };
@@ -22,7 +21,7 @@ export const MonitorsView = () => {
   // EXISTING_CODE
 
   const table = useReactTable({
-    data: monitors.items || [],
+    data: monitors?.items || [],
     columns: MonitorsTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -32,6 +31,10 @@ export const MonitorsView = () => {
   const forms: ViewForm = {
     monitors: <FormTable data={monitors} groups={MonitorsFormDef(table)} />,
   };
+
+  // if (!(monitors?.items?.length > 0)) {
+  //   return <>Loading...</>;
+  // }
 
   return (
     <ViewStateProvider
@@ -50,10 +53,3 @@ export const MonitorsView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Monitor
-// lower:         monitor
-// routeLabel:    Monitors
-// routeLower:    monitors

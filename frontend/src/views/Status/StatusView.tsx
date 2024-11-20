@@ -19,7 +19,7 @@ export const StatusView = () => {
   // EXISTING_CODE
 
   const table = useReactTable({
-    data: status.items || [],
+    data: status?.items || [],
     columns: StatusTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -29,6 +29,10 @@ export const StatusView = () => {
   const forms: ViewForm = {
     status: <FormTable data={status} groups={StatusFormDef(table)} />,
   };
+
+  // if (!(status?.items?.length > 0)) {
+  //   return <>Loading...</>;
+  // }
 
   return (
     <ViewStateProvider
@@ -47,10 +51,3 @@ export const StatusView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Status
-// lower:         status
-// routeLabel:    Status
-// routeLower:    status

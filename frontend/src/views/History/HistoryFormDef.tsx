@@ -1,25 +1,15 @@
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 // EXISTING_CODE
-import { useState, useEffect } from "react";
 import { Table } from "@tanstack/react-table";
 import { ExploreButton, ExportButton, DataTable, FieldGroup, GoogleButton } from "@components";
-import { GetName } from "@gocode/app/App";
 import { types, base } from "@gocode/models";
-import { useUtils } from "@hooks";
 // EXISTING_CODE
 
 export const HistoryFormDef = (
   table: Table<types.Transaction>,
   address: base.Address
 ): FieldGroup<types.HistoryContainer>[] => {
-  const [named, setNamed] = useState(address as unknown as string);
-  const { ShortenAddr } = useUtils();
-  useEffect(() => {
-    GetName(address).then((name) => {
-      setNamed(name === "" ? ShortenAddr(address as unknown as string) : name);
-    });
-  }, [address, ShortenAddr]);
   return [
     // EXISTING_CODE
     {
@@ -55,7 +45,7 @@ export const HistoryFormDef = (
       ],
     },
     {
-      label: named,
+      label: "Transactions",
       collapsable: false,
       components: [<DataTable<types.Transaction> key={"dataTable"} table={table} loading={false} />],
     },
@@ -65,12 +55,3 @@ export const HistoryFormDef = (
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         History
-// routeLabel:    History
-// itemName:      Transaction
-// isHistory:     true
-// isSession:     false
-// isConfig:      false

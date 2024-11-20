@@ -11,12 +11,3 @@ export const UnusedConfig = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Config
-// lower:         config
-// routeLabel:    Config
-// routeLower:    config
-// itemName:
-// embedType:     configTypes.Config

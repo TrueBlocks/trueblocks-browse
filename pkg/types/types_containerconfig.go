@@ -161,26 +161,3 @@ func (s *ConfigContainer) IsValidChain(chain string) (string, error) {
 }
 
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Config
-// lower:         config
-// routeLabel:    Config
-// routeLower:    config
-// embedName:     config
-// embedType:     configTypes.Config
-// otherName:
-// otherType:     .
-// itemName:
-// itemType:      .
-// inputType:     .
-// hasItems:      false
-// hasEmbed:      true
-// hasOther:      false
-// hasSorts:      false
-// initChain:     false
-// isEditable:    false
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      false

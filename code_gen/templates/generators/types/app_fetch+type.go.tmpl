@@ -1,5 +1,6 @@
 {{ $hasItems := and (gt (len .ItemName) 0) true }}
 {{ $isHistory := eq .Class "History" -}}
+{{ $routeLower := toLower .UiRouteName }}
 
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
@@ -21,15 +22,15 @@ func (a *App) Fetch{{.Class}}(first, pageSize int) *types.{{.Class}}Container {
 	copy.Balance = a.getBalance(address)
 	copy.Items = history.Items[first:last]
 {{- else -}}
-	filtered := a.{{.UiRouteLower}}.CollateAndFilter(a.filterMap){{if $hasItems}}.([]{{.ItemFullType}}){{end}}
+	filtered := a.{{$routeLower}}.CollateAndFilter(a.filterMap){{if $hasItems}}.([]{{.ItemFullType}}){{end}}
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
-	copy, _ := a.{{.UiRouteLower}}.ShallowCopy().(*types.{{.Class}}Container)
+	copy, _ := a.{{$routeLower}}.ShallowCopy().(*types.{{.Class}}Container)
 	copy.Items = filtered[first:last]
 {{- end}}
 {{- else -}}
-	_ = a.{{.UiRouteLower}}.CollateAndFilter(a.filterMap)
-	copy, _ := a.{{.UiRouteLower}}.ShallowCopy().(*types.{{.Class}}Container)
+	_ = a.{{$routeLower}}.CollateAndFilter(a.filterMap)
+	copy, _ := a.{{$routeLower}}.ShallowCopy().(*types.{{.Class}}Container)
 {{- end}}
 	return copy
 }

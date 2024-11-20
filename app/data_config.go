@@ -53,25 +53,3 @@ func (a *App) forceConfig() (force bool) {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Config
-// lower:         config
-// routeLabel:    Config
-// routeLower:    config
-// embedName:     config
-// embedType:     configTypes.Config
-// otherName:
-// otherType:     .
-// itemName:
-// itemType:      .
-// inputType:     .
-// hasItems:      false
-// hasEmbed:      true
-// hasSorts:      false
-// initChain:     false
-// isEditable:    false
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      false

@@ -50,12 +50,3 @@ export const ManifestsFormDef = (table: Table<types.ChunkRecord>): FieldGroup<ty
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Manifest
-// routeLabel:    Manifests
-// itemName:      ChunkRecord
-// isHistory:     false
-// isSession:     false
-// isConfig:      false

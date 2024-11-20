@@ -158,25 +158,3 @@ func (a *App) ModifyName(modData *ModifyData) error {
 }
 
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Name
-// lower:         name
-// routeLabel:    Names
-// routeLower:    names
-// embedName:
-// embedType:     .
-// otherName:
-// otherType:     .
-// itemName:      Name
-// itemType:      coreTypes.Name
-// inputType:     coreTypes.Name
-// hasItems:      true
-// hasEmbed:      false
-// hasSorts:      false
-// initChain:     false
-// isEditable:    false
-// needsChain:    true
-// needsLoad:     true
-// needsSdk:      true

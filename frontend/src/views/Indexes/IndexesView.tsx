@@ -19,7 +19,7 @@ export const IndexesView = () => {
   // EXISTING_CODE
 
   const table = useReactTable({
-    data: indexes.items || [],
+    data: indexes?.items || [],
     columns: IndexesTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -29,6 +29,10 @@ export const IndexesView = () => {
   const forms: ViewForm = {
     indexes: <FormTable data={indexes} groups={IndexesFormDef(table)} />,
   };
+
+  // if (!(indexes?.items?.length > 0)) {
+  //   return <>Loading...</>;
+  // }
 
   return (
     <ViewStateProvider
@@ -47,10 +51,3 @@ export const IndexesView = () => {
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         Index
-// lower:         index
-// routeLabel:    Indexes
-// routeLower:    indexes

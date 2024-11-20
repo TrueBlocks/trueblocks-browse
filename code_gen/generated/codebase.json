@@ -4,7 +4,7 @@
         {
             "class": "Project",
             "doc_route": "0000-containers",
-            "ui_route": "0000-project",
+            "ui_route": "0000-project-1",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=types.HistoryContainer|noSdk",
@@ -56,7 +56,7 @@
         {
             "class": "History",
             "doc_route": "1010-containers",
-            "ui_route": "1010-history",
+            "ui_route": "1010-history-2",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=coreTypes.Transaction|otherType=base.Address|noSdk",
@@ -108,7 +108,7 @@
         {
             "class": "Monitor",
             "doc_route": "1020-containers",
-            "ui_route": "1020-monitors",
+            "ui_route": "1020-monitors-3",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=coreTypes.Monitor",
@@ -154,7 +154,7 @@
         {
             "class": "Name",
             "doc_route": "1030-containers",
-            "ui_route": "1030-names",
+            "ui_route": "1030-names-4",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=coreTypes.Name",
@@ -218,7 +218,7 @@
         {
             "class": "Abi",
             "doc_route": "1040-containers",
-            "ui_route": "1040-abis",
+            "ui_route": "1040-abis-5",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=coreTypes.Abi|editable|sorts=isEmpty+Asc,isKnown+Asc,address+Asc,",
@@ -246,7 +246,7 @@
         {
             "class": "Index",
             "doc_route": "1050-containers",
-            "ui_route": "1050-indexes",
+            "ui_route": "1050-indexes-6",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=coreTypes.ChunkStats|sorts=range+Dec,"
@@ -254,7 +254,7 @@
         {
             "class": "Manifest",
             "doc_route": "1060-containers",
-            "ui_route": "1060-manifests",
+            "ui_route": "1060-manifests-7",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=coreTypes.ChunkRecord|inputType=coreTypes.Manifest|sorts=range+Dec,",
@@ -300,7 +300,7 @@
         {
             "class": "Status",
             "doc_route": "1070-containers",
-            "ui_route": "1070-status",
+            "ui_route": "1070-status-8",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=coreTypes.CacheItem|embedType=coreTypes.Status|noChain|initChain",
@@ -328,7 +328,7 @@
         {
             "class": "Settings",
             "doc_route": "1080-containers",
-            "ui_route": "1080-settings",
+            "ui_route": "1080-settings-9",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=coreTypes.CacheItem|inputType=types.SettingsProp|noType|noLoad|noSdk|noPaging"
@@ -336,7 +336,7 @@
         {
             "class": "Daemon",
             "doc_route": "1090-containers",
-            "ui_route": "1090-daemons",
+            "ui_route": "1090-daemons-0",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "embedType=daemons.Daemon|noChain|noSdk|noPaging"
@@ -344,7 +344,7 @@
         {
             "class": "Session",
             "doc_route": "1100-containers",
-            "ui_route": "1100-session",
+            "ui_route": "1100-session-u",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "embedType=coreTypes.Session|noChain|initChain|noPaging"
@@ -352,7 +352,7 @@
         {
             "class": "Config",
             "doc_route": "1110-containers",
-            "ui_route": "1110-config",
+            "ui_route": "1110-config-v",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "embedType=configTypes.Config|noSdk|noPaging",
@@ -368,7 +368,7 @@
         {
             "class": "Wizard",
             "doc_route": "1120-containers",
-            "ui_route": "1120-wizard",
+            "ui_route": "1120-wizard-w",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=types.WizError|noSdk"

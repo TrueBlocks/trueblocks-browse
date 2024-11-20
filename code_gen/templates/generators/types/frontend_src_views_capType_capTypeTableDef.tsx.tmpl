@@ -1,7 +1,7 @@
 {{ $class := .Class }}
 {{ $lower := toLower .Class }}
-{{ $routeLabel := .UiRouteLabel }}
-{{ $routeLower := .UiRouteLower }}
+{{ $routeName := .UiRouteName }}
+{{ $routeLower := toLower .UiRouteName }}
 {{ $itemName := .ItemName }}
 {{ $embedName := .EmbedName }}
 {{ $embedType := .EmbedType }}
@@ -15,7 +15,7 @@
 {{ $isProject := eq $class "Project" }}
 {{ $isSessConf := or $isSession $isConfig }}
 
-{{ $tableDef := $routeLabel }}
+{{ $tableDef := $routeName }}
 {{ if $isProject }}
   {{ $tableDef = "base" }}
 {{ end -}}
@@ -30,25 +30,16 @@ const columnHelper = createColumnHelper<types.{{$itemName}}>();
 
 export const {{$tableDef}}TableDef: CustomColumnDef<types.{{$itemName}}, any>[] = [
 {{- else -}}
-export const Unused{{$routeLabel}} = () => {
+export const Unused{{$routeName}} = () => {
 {{- end}}
 	// EXISTING_CODE
 	// EXISTING_CODE
 {{if $hasItems -}}
 ];
 {{- else -}}
-  return <div>Unused{{$routeLabel}}</div>;
+  return <div>Unused{{$routeName}}</div>;
 };
 {{- end}}
 
 // EXISTING_CODE
 // EXISTING_CODE
-
-//-------------------------------------------------------------------
-// Template variables:
-// class:         {{$class}}
-// lower:         {{$lower}}
-// routeLabel:    {{$routeLabel}}
-// routeLower:    {{$routeLower}}
-// itemName:      {{$itemName}}
-// embedType:     {{$embedType}}
