@@ -12,7 +12,6 @@ import (
 
 var wizardLock atomic.Uint32
 
-// -------------------------------------------------------------------
 func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadWizard", false)()
 	defer func() {
@@ -44,7 +43,6 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-// -------------------------------------------------------------------
 func (a *App) forceWizard() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE

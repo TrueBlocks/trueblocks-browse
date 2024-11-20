@@ -17,7 +17,6 @@ import (
 
 var sessionLock atomic.Uint32
 
-// -------------------------------------------------------------------
 func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadSession", false)()
 	defer func() {
@@ -70,7 +69,6 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-// -------------------------------------------------------------------
 func (a *App) forceSession() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE

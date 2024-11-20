@@ -17,27 +17,25 @@ import (
 
 // EXISTING_CODE
 
-// -------------------------------------------------------------------
 type NameContainer struct {
-	Chain      string           `json:"chain"`
-	LastUpdate int64            `json:"lastUpdate"`
-	NContracts uint64           `json:"nContracts"`
-	NCustom    uint64           `json:"nCustom"`
-	NDeleted   uint64           `json:"nDeleted"`
-	NErc20s    uint64           `json:"nErc20s"`
-	NErc721s   uint64           `json:"nErc721s"`
-	NPrefund   uint64           `json:"nPrefund"`
-	NRegular   uint64           `json:"nRegular"`
-	NSystem    uint64           `json:"nSystem"`
-	SizeOnDisc uint64           `json:"sizeOnDisc"`
-	Items      []coreTypes.Name `json:"items"`
-	NItems     uint64           `json:"nItems"`
+	Chain      string `json:"chain"`
+	LastUpdate int64  `json:"lastUpdate"`
+	NContracts uint64 `json:"nContracts"`
+	NCustom    uint64 `json:"nCustom"`
+	NDeleted   uint64 `json:"nDeleted"`
+	NErc20s    uint64 `json:"nErc20s"`
+	NErc721s   uint64 `json:"nErc721s"`
+	NPrefund   uint64 `json:"nPrefund"`
+	NRegular   uint64 `json:"nRegular"`
+	NSystem    uint64 `json:"nSystem"`
+	SizeOnDisc uint64 `json:"sizeOnDisc"`
 
+	Items  []coreTypes.Name `json:"items"`
+	NItems uint64           `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	ret := NameContainer{
 		Items:  itemsIn,
@@ -54,34 +52,29 @@ func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *NameContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-// -------------------------------------------------------------------
 func (s *NameContainer) GetItems() interface{} {
 	return s.Items
 }
 
-// -------------------------------------------------------------------
 func (s *NameContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.Name)
 }
 
-// -------------------------------------------------------------------
 func (s *NameContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getNameReload()
 	if force || reload {
-		DebugInts("name", s.LastUpdate, latest)
+		DebugInts("names", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
 	return false
 }
 
-// -------------------------------------------------------------------
 func (s *NameContainer) ShallowCopy() Containerer {
 	ret := &NameContainer{
 		Chain:      s.Chain,
@@ -95,14 +88,14 @@ func (s *NameContainer) ShallowCopy() Containerer {
 		NRegular:   s.NRegular,
 		NSystem:    s.NSystem,
 		SizeOnDisc: s.SizeOnDisc,
-		NItems:     s.NItems,
+
+		NItems: s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *NameContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
@@ -117,7 +110,6 @@ func (s *NameContainer) Clear() {
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *NameContainer) passesFilter(item *coreTypes.Name, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -136,7 +128,6 @@ func (s *NameContainer) passesFilter(item *coreTypes.Name, filter *Filter) (ret 
 	return
 }
 
-// -------------------------------------------------------------------
 func (s *NameContainer) Accumulate(item *coreTypes.Name) {
 	s.NItems++
 	// EXISTING_CODE
@@ -167,7 +158,6 @@ func (s *NameContainer) Accumulate(item *coreTypes.Name) {
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *NameContainer) Finalize() {
 	// EXISTING_CODE
 	chain := "mainnet"
@@ -177,7 +167,6 @@ func (s *NameContainer) Finalize() {
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *NameContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
@@ -206,7 +195,6 @@ func (s *NameContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-// -------------------------------------------------------------------
 func (s *NameContainer) getNameReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	chain := "mainnet"
@@ -218,10 +206,8 @@ func (s *NameContainer) getNameReload() (ret int64, reload bool) {
 	return
 }
 
-// -------------------------------------------------------------------
 type EveryNameFn func(item *coreTypes.Name, data any) bool
 
-// -------------------------------------------------------------------
 func (s *NameContainer) ForEveryItem(process EveryNameFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {

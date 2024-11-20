@@ -22,7 +22,6 @@ import (
 
 var historyLock atomic.Uint32
 
-// -------------------------------------------------------------------
 func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadHistory", false)()
 	defer func() {
@@ -62,7 +61,6 @@ func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan ch
 	return nil
 }
 
-// -------------------------------------------------------------------
 func (a *App) forceHistory() (force bool) {
 	// EXISTING_CODE
 	force = a.forceName()

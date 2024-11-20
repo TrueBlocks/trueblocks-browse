@@ -10,19 +10,17 @@ import (
 
 // EXISTING_CODE
 
-// -------------------------------------------------------------------
 type WizardContainer struct {
-	Chain      string     `json:"chain"`
-	LastUpdate int64      `json:"lastUpdate"`
-	Items      []WizError `json:"items"`
-	NItems     uint64     `json:"nItems"`
+	Chain      string `json:"chain"`
+	LastUpdate int64  `json:"lastUpdate"`
 
+	Items  []WizError `json:"items"`
+	NItems uint64     `json:"nItems"`
 	// EXISTING_CODE
 	State WizState `json:"state"`
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func NewWizardContainer(chain string, itemsIn []WizError) WizardContainer {
 	ret := WizardContainer{
 		Items:  itemsIn,
@@ -36,23 +34,19 @@ func NewWizardContainer(chain string, itemsIn []WizError) WizardContainer {
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *WizardContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-// -------------------------------------------------------------------
 func (s *WizardContainer) GetItems() interface{} {
 	return s.Items
 }
 
-// -------------------------------------------------------------------
 func (s *WizardContainer) SetItems(items interface{}) {
 	s.Items = items.([]WizError)
 }
 
-// -------------------------------------------------------------------
 func (s *WizardContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getWizardReload()
 	if force || reload {
@@ -63,12 +57,12 @@ func (s *WizardContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
-// -------------------------------------------------------------------
 func (s *WizardContainer) ShallowCopy() Containerer {
 	ret := &WizardContainer{
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
-		NItems:     s.NItems,
+
+		NItems: s.NItems,
 		// EXISTING_CODE
 		State: s.State,
 		// EXISTING_CODE
@@ -76,14 +70,12 @@ func (s *WizardContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *WizardContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *WizardContainer) passesFilter(item *WizError, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -94,20 +86,17 @@ func (s *WizardContainer) passesFilter(item *WizError, filter *Filter) (ret bool
 	return
 }
 
-// -------------------------------------------------------------------
 func (s *WizardContainer) Accumulate(item *WizError) {
 	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *WizardContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *WizardContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
@@ -137,17 +126,14 @@ func (s *WizardContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-// -------------------------------------------------------------------
 func (s *WizardContainer) getWizardReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return
 }
 
-// -------------------------------------------------------------------
 type EveryWizErrorFn func(item *WizError, data any) bool
 
-// -------------------------------------------------------------------
 func (s *WizardContainer) ForEveryItem(process EveryWizErrorFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {

@@ -3,9 +3,7 @@
 {{ $routeLower := toLower .UiRouteName }}
 
 {{ $itemName := .ItemName }}
-{{ $embedName := .EmbedName }}
 {{ $hasItems := and (gt (len $itemName) 0) true }}
-{{ $hasEmbed := and (gt (len $embedName) 0) true }}
 
 {{ $isAbi := eq $class "Abi" }}
 {{ $isName := eq $class "Name" }}

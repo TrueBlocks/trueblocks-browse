@@ -16,7 +16,6 @@ import (
 
 var manifestLock atomic.Uint32
 
-// -------------------------------------------------------------------
 func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadManifests", false)()
 	defer func() {
@@ -68,7 +67,6 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-// -------------------------------------------------------------------
 func (a *App) forceManifest() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE

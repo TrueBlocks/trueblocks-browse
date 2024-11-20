@@ -12,25 +12,23 @@ import (
 
 // EXISTING_CODE
 
-// -------------------------------------------------------------------
 type ProjectContainer struct {
-	Chain       string             `json:"chain"`
-	HistorySize uint64             `json:"historySize"`
-	LastUpdate  int64              `json:"lastUpdate"`
-	NAbis       uint64             `json:"nAbis"`
-	NCaches     uint64             `json:"nCaches"`
-	NIndexes    uint64             `json:"nIndexes"`
-	NManifests  uint64             `json:"nManifests"`
-	NMonitors   uint64             `json:"nMonitors"`
-	NNames      uint64             `json:"nNames"`
-	Items       []HistoryContainer `json:"items"`
-	NItems      uint64             `json:"nItems"`
+	Chain       string `json:"chain"`
+	HistorySize uint64 `json:"historySize"`
+	LastUpdate  int64  `json:"lastUpdate"`
+	NAbis       uint64 `json:"nAbis"`
+	NCaches     uint64 `json:"nCaches"`
+	NIndexes    uint64 `json:"nIndexes"`
+	NManifests  uint64 `json:"nManifests"`
+	NMonitors   uint64 `json:"nMonitors"`
+	NNames      uint64 `json:"nNames"`
 
+	Items  []HistoryContainer `json:"items"`
+	NItems uint64             `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContainer {
 	ret := ProjectContainer{
 		Items:  itemsIn,
@@ -43,23 +41,19 @@ func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContai
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *ProjectContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-// -------------------------------------------------------------------
 func (s *ProjectContainer) GetItems() interface{} {
 	return s.Items
 }
 
-// -------------------------------------------------------------------
 func (s *ProjectContainer) SetItems(items interface{}) {
 	s.Items = items.([]HistoryContainer)
 }
 
-// -------------------------------------------------------------------
 func (s *ProjectContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getProjectReload()
 	if force || reload {
@@ -70,7 +64,6 @@ func (s *ProjectContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
-// -------------------------------------------------------------------
 func (s *ProjectContainer) ShallowCopy() Containerer {
 	ret := &ProjectContainer{
 		Chain:       s.Chain,
@@ -82,21 +75,20 @@ func (s *ProjectContainer) ShallowCopy() Containerer {
 		NManifests:  s.NManifests,
 		NMonitors:   s.NMonitors,
 		NNames:      s.NNames,
-		NItems:      s.NItems,
+
+		NItems: s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *ProjectContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *ProjectContainer) passesFilter(item *HistoryContainer, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -107,20 +99,17 @@ func (s *ProjectContainer) passesFilter(item *HistoryContainer, filter *Filter) 
 	return
 }
 
-// -------------------------------------------------------------------
 func (s *ProjectContainer) Accumulate(item *HistoryContainer) {
 	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *ProjectContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *ProjectContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
@@ -150,7 +139,6 @@ func (s *ProjectContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-// -------------------------------------------------------------------
 func (s *ProjectContainer) getProjectReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	var totalSize int64 = 0
@@ -168,10 +156,8 @@ func (s *ProjectContainer) getProjectReload() (ret int64, reload bool) {
 	return
 }
 
-// -------------------------------------------------------------------
 type EveryHistoryContainerFn func(item *HistoryContainer, data any) bool
 
-// -------------------------------------------------------------------
 func (s *ProjectContainer) ForEveryItem(process EveryHistoryContainerFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {

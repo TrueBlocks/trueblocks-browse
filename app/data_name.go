@@ -25,7 +25,6 @@ var namesChain = "mainnet"
 
 var nameLock atomic.Uint32
 
-// -------------------------------------------------------------------
 func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadNames", false)()
 	defer func() {
@@ -82,7 +81,6 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-// -------------------------------------------------------------------
 func (a *App) forceName() (force bool) {
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(namesChain))

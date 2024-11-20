@@ -19,7 +19,6 @@ var abisChain = "mainnet"
 
 var abiLock atomic.Uint32
 
-// -------------------------------------------------------------------
 func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadAbis", false)()
 	defer func() {
@@ -73,7 +72,6 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-// -------------------------------------------------------------------
 func (a *App) ModifyAbi(modData *ModifyData) error {
 	opts := sdk.AbisOptions{
 		Addrs:   []string{modData.Address.Hex()},
@@ -102,7 +100,6 @@ func (a *App) ModifyAbi(modData *ModifyData) error {
 	}
 }
 
-// -------------------------------------------------------------------
 func (a *App) forceAbi() (force bool) {
 	// EXISTING_CODE
 	force = a.forceName()

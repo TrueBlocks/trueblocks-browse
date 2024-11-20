@@ -14,20 +14,19 @@ import (
 
 // EXISTING_CODE
 
-// -------------------------------------------------------------------
 type IndexContainer struct {
-	Chain      string                 `json:"chain"`
-	LastUpdate int64                  `json:"lastUpdate"`
-	Items      []coreTypes.ChunkStats `json:"items"`
-	NItems     uint64                 `json:"nItems"`
-	Sorts      sdk.SortSpec           `json:"sorts"`
+	Chain      string `json:"chain"`
+	LastUpdate int64  `json:"lastUpdate"`
+
+	Items  []coreTypes.ChunkStats `json:"items"`
+	NItems uint64                 `json:"nItems"`
+	Sorts  sdk.SortSpec           `json:"sorts"`
 
 	// EXISTING_CODE
 	coreTypes.ChunkStats
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContainer {
 	ret := IndexContainer{
 		Items:  itemsIn,
@@ -44,39 +43,35 @@ func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContai
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *IndexContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-// -------------------------------------------------------------------
 func (s *IndexContainer) GetItems() interface{} {
 	return s.Items
 }
 
-// -------------------------------------------------------------------
 func (s *IndexContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.ChunkStats)
 }
 
-// -------------------------------------------------------------------
 func (s *IndexContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getIndexReload()
 	if force || reload {
-		DebugInts("index", s.LastUpdate, latest)
+		DebugInts("indexes", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
 	return false
 }
 
-// -------------------------------------------------------------------
 func (s *IndexContainer) ShallowCopy() Containerer {
 	ret := &IndexContainer{
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
-		NItems:     s.NItems,
+
+		NItems: s.NItems,
 		// EXISTING_CODE
 		ChunkStats: s.ChunkStats,
 		Sorts:      s.Sorts,
@@ -85,7 +80,6 @@ func (s *IndexContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *IndexContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
@@ -98,7 +92,6 @@ func (s *IndexContainer) Clear() {
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *IndexContainer) passesFilter(item *coreTypes.ChunkStats, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -109,7 +102,6 @@ func (s *IndexContainer) passesFilter(item *coreTypes.ChunkStats, filter *Filter
 	return
 }
 
-// -------------------------------------------------------------------
 func (s *IndexContainer) Accumulate(item *coreTypes.ChunkStats) {
 	s.NItems++
 	// EXISTING_CODE
@@ -122,7 +114,6 @@ func (s *IndexContainer) Accumulate(item *coreTypes.ChunkStats) {
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *IndexContainer) Finalize() {
 	// EXISTING_CODE
 	if s.NBlocks > 0 {
@@ -137,7 +128,6 @@ func (s *IndexContainer) Finalize() {
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *IndexContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
@@ -166,7 +156,6 @@ func (s *IndexContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-// -------------------------------------------------------------------
 func (s *IndexContainer) getIndexReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(coreConfig.PathToIndex(s.Chain))
@@ -176,10 +165,8 @@ func (s *IndexContainer) getIndexReload() (ret int64, reload bool) {
 	return
 }
 
-// -------------------------------------------------------------------
 type EveryChunkStatsFn func(item *coreTypes.ChunkStats, data any) bool
 
-// -------------------------------------------------------------------
 func (s *IndexContainer) ForEveryItem(process EveryChunkStatsFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {

@@ -16,23 +16,22 @@ import (
 
 // EXISTING_CODE
 
-// -------------------------------------------------------------------
 type AbiContainer struct {
-	Chain         string          `json:"chain"`
-	LargestFile   string          `json:"largestFile"`
-	LastUpdate    int64           `json:"lastUpdate"`
-	MostEvents    string          `json:"mostEvents"`
-	MostFunctions string          `json:"mostFunctions"`
-	Items         []coreTypes.Abi `json:"items"`
-	NItems        uint64          `json:"nItems"`
-	Sorts         sdk.SortSpec    `json:"sorts"`
+	Chain         string `json:"chain"`
+	LargestFile   string `json:"largestFile"`
+	LastUpdate    int64  `json:"lastUpdate"`
+	MostEvents    string `json:"mostEvents"`
+	MostFunctions string `json:"mostFunctions"`
+
+	Items  []coreTypes.Abi `json:"items"`
+	NItems uint64          `json:"nItems"`
+	Sorts  sdk.SortSpec    `json:"sorts"`
 
 	// EXISTING_CODE
 	coreTypes.Abi
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 	ret := AbiContainer{
 		Items:  itemsIn,
@@ -49,34 +48,29 @@ func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *AbiContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-// -------------------------------------------------------------------
 func (s *AbiContainer) GetItems() interface{} {
 	return s.Items
 }
 
-// -------------------------------------------------------------------
 func (s *AbiContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.Abi)
 }
 
-// -------------------------------------------------------------------
 func (s *AbiContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getAbiReload()
 	if force || reload {
-		DebugInts("abi", s.LastUpdate, latest)
+		DebugInts("abis", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
 	return false
 }
 
-// -------------------------------------------------------------------
 func (s *AbiContainer) ShallowCopy() Containerer {
 	ret := &AbiContainer{
 		Chain:         s.Chain,
@@ -84,7 +78,8 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 		LastUpdate:    s.LastUpdate,
 		MostEvents:    s.MostEvents,
 		MostFunctions: s.MostFunctions,
-		NItems:        s.NItems,
+
+		NItems: s.NItems,
 		// EXISTING_CODE
 		Abi: s.Abi,
 		// EXISTING_CODE
@@ -92,14 +87,12 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *AbiContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *AbiContainer) passesFilter(item *coreTypes.Abi, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -110,20 +103,17 @@ func (s *AbiContainer) passesFilter(item *coreTypes.Abi, filter *Filter) (ret bo
 	return
 }
 
-// -------------------------------------------------------------------
 func (s *AbiContainer) Accumulate(item *coreTypes.Abi) {
 	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *AbiContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *AbiContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
@@ -169,7 +159,6 @@ func (s *AbiContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-// -------------------------------------------------------------------
 func (s *AbiContainer) getAbiReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "abis"))
@@ -179,10 +168,8 @@ func (s *AbiContainer) getAbiReload() (ret int64, reload bool) {
 	return
 }
 
-// -------------------------------------------------------------------
 type EveryAbiFn func(item *coreTypes.Abi, data any) bool
 
-// -------------------------------------------------------------------
 func (s *AbiContainer) ForEveryItem(process EveryAbiFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {

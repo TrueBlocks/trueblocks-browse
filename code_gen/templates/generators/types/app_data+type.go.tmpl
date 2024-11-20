@@ -1,8 +1,6 @@
 {{ $class := .Class }}
 {{ $routeName := .UiRouteName}}
 {{ $routeLower := toLower .UiRouteName -}}
-{{ $embedType := .EmbedType }}
-{{ $embedName := .EmbedName }}
 {{ $isEditable := .IsEditable}}
 {{ $itemType := .ItemType}}
 {{ $itemName := .ItemName}}
@@ -13,7 +11,7 @@
 {{ $sortsInstance := .SortsInstance }}
 
 {{ $hasItems := and (gt (len $itemName) 0) true }}
-{{ $hasEmbed := and (gt (len $embedName) 0) true }}
+{{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
 
 {{ $isHistory := eq $class "History" }}
 {{ $isStatus := eq $class "Status" }}
@@ -27,7 +25,6 @@ package app
 
 var {{toLower .Class}}Lock atomic.Uint32
 
-//-------------------------------------------------------------------
 func (a *App) load{{$routeName}}({{if $isHistory}}address base.Address, {{end}}wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("load{{$routeName}}", false)()
 	defer func() {
@@ -90,8 +87,7 @@ func (a *App) load{{$routeName}}({{if $isHistory}}address base.Address, {{end}}w
 	return nil
 }
 
-{{if $isEditable}}//-------------------------------------------------------------------
-func (a *App) Modify{{$class}}(modData *ModifyData) error {
+{{if $isEditable}}func (a *App) Modify{{$class}}(modData *ModifyData) error {
 	opts := sdk.{{$routeName}}Options{
 		Addrs:   []string{modData.Address.Hex()},
 		Globals: a.getGlobals(),
@@ -120,7 +116,6 @@ func (a *App) Modify{{$class}}(modData *ModifyData) error {
 }
 {{end}}
 
-//-------------------------------------------------------------------
 func (a *App) force{{$class}}() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE

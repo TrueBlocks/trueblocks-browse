@@ -16,18 +16,16 @@ import (
 
 // EXISTING_CODE
 
-// -------------------------------------------------------------------
 type ConfigContainer struct {
-	Chain              string `json:"chain"`
-	LastUpdate         int64  `json:"lastUpdate"`
-	NChains            uint64 `json:"nChains"`
-	configTypes.Config `json:",inline"`
+	Chain      string `json:"chain"`
+	LastUpdate int64  `json:"lastUpdate"`
+	NChains    uint64 `json:"nChains"`
 
+	configTypes.Config `json:",inline"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func NewConfigContainer(chain string, config *configTypes.Config) ConfigContainer {
 	ret := ConfigContainer{
 		Config: *config,
@@ -39,23 +37,19 @@ func NewConfigContainer(chain string, config *configTypes.Config) ConfigContaine
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *ConfigContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-// -------------------------------------------------------------------
 func (s *ConfigContainer) GetItems() interface{} {
 	return nil
 }
 
-// -------------------------------------------------------------------
 func (s *ConfigContainer) SetItems(items interface{}) {
 	// s.Items = items.([].)
 }
 
-// -------------------------------------------------------------------
 func (s *ConfigContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getConfigReload()
 	if force || reload {
@@ -66,26 +60,24 @@ func (s *ConfigContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
-// -------------------------------------------------------------------
 func (s *ConfigContainer) ShallowCopy() Containerer {
 	ret := &ConfigContainer{
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
 		NChains:    s.NChains,
-		Config:     s.Config.ShallowCopy(),
+
+		Config: s.Config.ShallowCopy(),
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *ConfigContainer) Clear() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *ConfigContainer) passesFilter(filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -96,19 +88,16 @@ func (s *ConfigContainer) passesFilter(filter *Filter) (ret bool) {
 	return
 }
 
-// -------------------------------------------------------------------
 func (s *ConfigContainer) Accumulate() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *ConfigContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *ConfigContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	filtered := []Nothing{}
 
@@ -119,7 +108,6 @@ func (s *ConfigContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-// -------------------------------------------------------------------
 func (s *ConfigContainer) getConfigReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	configFn, _ := utils.GetConfigFn("", "trueBlocks.toml")
@@ -129,8 +117,6 @@ func (s *ConfigContainer) getConfigReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	return
 }
-
-//-------------------------------------------------------------------
 
 // EXISTING_CODE
 

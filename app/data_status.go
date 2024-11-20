@@ -19,7 +19,6 @@ import (
 
 var statusLock atomic.Uint32
 
-// -------------------------------------------------------------------
 func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadStatus", false)()
 	defer func() {
@@ -76,7 +75,6 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-// -------------------------------------------------------------------
 func (a *App) forceStatus() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE

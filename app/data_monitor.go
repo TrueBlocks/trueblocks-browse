@@ -21,7 +21,6 @@ var monitorMutex sync.Mutex
 
 var monitorLock atomic.Uint32
 
-// -------------------------------------------------------------------
 func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadMonitors", false)()
 	defer func() {
@@ -80,7 +79,6 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-// -------------------------------------------------------------------
 func (a *App) forceMonitor() (force bool) {
 	// EXISTING_CODE
 	force = a.forceName()

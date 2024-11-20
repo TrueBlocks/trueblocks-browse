@@ -13,58 +13,24 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-/*
-type MonitorFilter struct {
-	Address     base.Address `json:"address"`
-	Deleted     bool         `json:"deleted"`
-	FileSize    int64        `json:"fileSize"`
-	LastScanned uint32       `json:"lastScanned"`
-	NRecords    int64        `json:"nRecords"`
-	Name        string       `json:"name"`
-}
-
-type OutDataType interface {
-	coreTypes.Monitor | coreTypes.Receipt
-}
-
-type Filterer[T OutDataType] interface {
-	Filter(func(*T) bool) []int
-	Sort()
-}
-
-func (m *MonitorContainer) Filter(f func(*coreTypes.Monitor) bool) []int {
-	items := make([]int, len(m.Items))
-	for i, item := range m.Items {
-		if f(&item) {
-			items = append(items, i)
-		}
-	}
-	return items
-}
-*/
-
 // EXISTING_CODE
 
-// -------------------------------------------------------------------
 type MonitorContainer struct {
-	Chain      string              `json:"chain"`
-	FileSize   uint64              `json:"fileSize"`
-	LastUpdate int64               `json:"lastUpdate"`
-	NDeleted   uint64              `json:"nDeleted"`
-	NEmpty     uint64              `json:"nEmpty"`
-	NNamed     uint64              `json:"nNamed"`
-	NRecords   uint64              `json:"nRecords"`
-	NStaged    uint64              `json:"nStaged"`
-	Items      []coreTypes.Monitor `json:"items"`
-	NItems     uint64              `json:"nItems"`
+	Chain      string `json:"chain"`
+	FileSize   uint64 `json:"fileSize"`
+	LastUpdate int64  `json:"lastUpdate"`
+	NDeleted   uint64 `json:"nDeleted"`
+	NEmpty     uint64 `json:"nEmpty"`
+	NNamed     uint64 `json:"nNamed"`
+	NRecords   uint64 `json:"nRecords"`
+	NStaged    uint64 `json:"nStaged"`
 
+	Items  []coreTypes.Monitor `json:"items"`
+	NItems uint64              `json:"nItems"`
 	// EXISTING_CODE
-	// FilteredItems []int         `json:"filteresdItems"`
-	// MonitorFilter MonitorFilter `json:"filter"`
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorContainer {
 	ret := MonitorContainer{
 		Items:  itemsIn,
@@ -77,34 +43,29 @@ func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorConta
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *MonitorContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-// -------------------------------------------------------------------
 func (s *MonitorContainer) GetItems() interface{} {
 	return s.Items
 }
 
-// -------------------------------------------------------------------
 func (s *MonitorContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.Monitor)
 }
 
-// -------------------------------------------------------------------
 func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getMonitorReload()
 	if force || reload {
-		DebugInts("monitor", s.LastUpdate, latest)
+		DebugInts("monitors", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
 	return false
 }
 
-// -------------------------------------------------------------------
 func (s *MonitorContainer) ShallowCopy() Containerer {
 	ret := &MonitorContainer{
 		Chain:      s.Chain,
@@ -115,14 +76,14 @@ func (s *MonitorContainer) ShallowCopy() Containerer {
 		NNamed:     s.NNamed,
 		NRecords:   s.NRecords,
 		NStaged:    s.NStaged,
-		NItems:     s.NItems,
+
+		NItems: s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *MonitorContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
@@ -135,7 +96,6 @@ func (s *MonitorContainer) Clear() {
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *MonitorContainer) passesFilter(item *coreTypes.Monitor, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -152,7 +112,6 @@ func (s *MonitorContainer) passesFilter(item *coreTypes.Monitor, filter *Filter)
 	return
 }
 
-// -------------------------------------------------------------------
 func (s *MonitorContainer) Accumulate(item *coreTypes.Monitor) {
 	s.NItems++
 	// EXISTING_CODE
@@ -173,13 +132,11 @@ func (s *MonitorContainer) Accumulate(item *coreTypes.Monitor) {
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *MonitorContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *MonitorContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
@@ -208,7 +165,6 @@ func (s *MonitorContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-// -------------------------------------------------------------------
 func (s *MonitorContainer) getMonitorReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "monitors"))
@@ -218,10 +174,8 @@ func (s *MonitorContainer) getMonitorReload() (ret int64, reload bool) {
 	return
 }
 
-// -------------------------------------------------------------------
 type EveryMonitorFn func(item *coreTypes.Monitor, data any) bool
 
-// -------------------------------------------------------------------
 func (s *MonitorContainer) ForEveryItem(process EveryMonitorFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {

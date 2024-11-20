@@ -12,7 +12,6 @@ import (
 
 var daemonLock atomic.Uint32
 
-// -------------------------------------------------------------------
 func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadDaemons", false)()
 	defer func() {
@@ -44,7 +43,6 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-// -------------------------------------------------------------------
 func (a *App) forceDaemon() (force bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE

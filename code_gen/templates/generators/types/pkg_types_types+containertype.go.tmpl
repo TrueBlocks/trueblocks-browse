@@ -14,14 +14,17 @@
 {{ $isSettings := eq $class "Settings" }}
 
 {{ $inputType := $itemType }}
+{{ $itemsInit1 := "\n  Items: itemsIn," }}
+{{ $itemsInit2 := "\n  NItems: uint64(len(itemsIn))," }}
 {{ if $isManifest }}
 	{{ $inputType = "coreTypes.Manifest" }}
+	{{ $itemsInit1 = print "\n  Items: make([]" $itemType ", 0, len(itemsIn))," }}
+	{{ $itemsInit2 = "" }}
 {{ else if $isSettings }}
 	{{ $inputType = "types.SettingsProp" }}
 {{ end }}
 
 {{ $hasSorts := .HasSorts }}
-{{ $sortsInstance := .SortsInstance }}
 
 {{ $hasItems := and (gt (len $itemName) 0) true }}
 {{ $hasEmbed := and (gt (len $embedName) 0) true }}
@@ -41,11 +44,42 @@
 	{{ $param3 = ", address base.Address" }}
 {{end}}
 
-{{ $sorts := "" }}
-{{ if $hasSorts }}
-	{{ $sorts = print "Sorts sdk.SortSpec `json:\"sorts\"`\n" }}
+{{ $embed1 := "" }}
+{{ $embed2 := "" }}
+{{ $embed3 := "" }}
+{{ if $hasEmbed }}
+	{{ $embed1 = print "\n  " $embedType "`json:\",inline\"`" }}
+	{{ $embed2 = print "\n  " (toProper $embedName) ": *" (toLower $embedName) "," }}
+	{{ $embed3 = print "\n  " (toProper $embedName) ": s." (toProper $embedName) ".ShallowCopy()," }}
 {{ end }}
 
+{{ $items1 := "" }}
+{{ $items2 := "" }}
+{{ $items3 := "" }}
+{{ if $hasItems }}
+	{{ $items1 = print "\n  Items []" $itemType "`json:\"items\"`\nNItems uint64 `json:\"nItems\"`" }}
+	{{ $items2 = print $itemsInit1 $itemsInit2 }}
+	{{ $items3 = print "\n  NItems: s.NItems," }}
+{{ end }}
+
+{{ $sorts1 := "" }}
+{{ $sorts2 := "" }}
+{{ if $hasSorts }}
+	{{ $sorts1 = print "\n  Sorts sdk.SortSpec `json:\"sorts\"`\n" }}
+	{{ $sorts2 = print "\n  Sorts: " .SortsInstance }}
+{{ end }}
+
+{{ $setItems := print "s.Items = items.([]" $itemType ")" }}
+{{ if not $hasItems }}
+	{{ $setItems = print "// " $setItems }}
+{{end}}
+
+{{ $getItems := print "s.Items" }}
+{{ if not $hasItems }}
+	{{ $getItems = print "nil" }}
+{{end}}
+
+{{/*==============================================================*/}}
 {{ $needsLoad := .Needs "load"}}
 {{if $needsLoad}}
 // This file is auto-generated. Edit only code inside
@@ -55,25 +89,20 @@ package types
 // EXISTING_CODE
 // EXISTING_CODE
 
-//-------------------------------------------------------------------
 type {{$container}} struct {
-{{range $members}}{{if .IsSimpField}}{{.GoName}} {{.GoType}} {{.Tag}}
-{{end}}{{end}}{{if $hasEmbed}}{{$embedType}} `json:",inline"`
-{{end}}{{if $hasItems}}	Items []{{$itemType}} `json:"items"`
-	NItems uint64 `json:"nItems"`
-{{end}}{{$sorts}}
+	{{range $members -}}
+		{{- if .IsSimpField -}}
+			{{.GoName}} {{.GoType}} {{.Tag}}
+		{{end -}}
+	{{end -}}
+	{{$items1}}{{$embed1}}{{$sorts1}}
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-//-------------------------------------------------------------------
 func New{{$container}}(chain string{{$param1}}{{$param2}}{{$param3}}) {{$container}} {
-	ret := {{$container}}{
-	{{if $hasItems}}Items: {{if eq $itemType $inputType}}itemsIn,
-NItems: uint64(len(itemsIn)){{else}}make([]coreTypes.ChunkRecord, 0, len(itemsIn)){{end}},
-{{end}}{{if $hasEmbed}}{{toProper $embedName}}: *{{toLower $embedName}},
-{{end}}{{if $hasSorts}}Sorts: {{$sortsInstance}}
-{{end}}	}
+	ret := {{$container}}{ {{$items2}}{{$embed2}}{{$sorts2}}
+ 	}
 	ret.Chain = chain
 	ret.LastUpdate, _ = ret.get{{$class}}Reload()
 	// EXISTING_CODE
@@ -81,61 +110,45 @@ NItems: uint64(len(itemsIn)){{else}}make([]coreTypes.ChunkRecord, 0, len(itemsIn
 	return ret
 }
 
-//-------------------------------------------------------------------
 func (s *{{$container}}) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-//-------------------------------------------------------------------
 func (s *{{$container}}) GetItems() interface{} {
-{{if $hasItems -}}
-	return s.Items
-{{- else -}}
-	return nil
-{{- end}}
+	return {{$getItems}}
 }
 
-//-------------------------------------------------------------------
 func (s *{{$container}}) SetItems(items interface{}) {
-{{if $hasItems -}}
-	s.Items = items.([]{{$itemType}})
-{{- else -}}
-	// s.Items = items.([]{{$itemType}})
-{{- end}}
+	{{$setItems}}
 }
 
-//-------------------------------------------------------------------
 func (s *{{$container}}) NeedsUpdate(force bool) bool {
 	latest, reload := s.get{{$class}}Reload()
 	if force || reload {
-		DebugInts("{{toLower $class}}", s.LastUpdate, latest)
+		DebugInts("{{toLower $routeName}}", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
 	return false
 }
 
-//-------------------------------------------------------------------
 func (s *{{$container}}) ShallowCopy() Containerer {
 	ret := &{{$container}}{
-		{{range $members}}{{if .IsSimpField}}{{.GoName}}: s.{{.GoName}},
-		{{end}}{{end}}{{if $hasEmbed}}{{toProper $embedName}}: s.{{toProper $embedName}}.ShallowCopy(),
-{{end}}{{if $hasItems}}NItems: s.NItems,
-{{end}}	// EXISTING_CODE
-			// EXISTING_CODE
+{{range $members}}{{if .IsSimpField}}{{.GoName}}: s.{{.GoName}},
+{{end -}}{{- end -}}{{$embed3 -}}{{$items3}}
+		// EXISTING_CODE
+		// EXISTING_CODE
 	}
 	return ret
 }
 
-//-------------------------------------------------------------------
 func (s *{{$container}}) Clear() {
-{{if $hasItems}}	s.NItems = 0
-{{end}}	// EXISTING_CODE
+	{{if $hasItems}}  s.NItems = 0
+	{{end}}	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-//-------------------------------------------------------------------
 func (s *{{$container}}) passesFilter({{if $hasItems}}item *{{$itemType}}, {{else}}{{end}}filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -146,20 +159,17 @@ func (s *{{$container}}) passesFilter({{if $hasItems}}item *{{$itemType}}, {{els
 	return
 }
 
-//-------------------------------------------------------------------
 func (s *{{$container}}) Accumulate({{if $hasItems}}item *{{$itemType}}{{end}}) {
-{{if $hasItems}}	s.NItems++
-{{end}}	// EXISTING_CODE
+	{{if $hasItems}}	s.NItems++
+	{{end}}	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-//-------------------------------------------------------------------
 func (s *{{$container}}) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-//-------------------------------------------------------------------
 func (s *{{$container}}) CollateAndFilter(theMap *FilterMap) interface{} {
 {{- if $hasItems}}
 	s.Clear()
@@ -191,17 +201,14 @@ func (s *{{$container}}) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-//-------------------------------------------------------------------
 func (s *{{$container}}) get{{$class}}Reload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return
 }
 
-//-------------------------------------------------------------------
 {{if $hasItems}}type Every{{$itemName}}Fn func(item *{{$itemType}}, data any) bool
 
-//-------------------------------------------------------------------
 func (s *{{$container}}) ForEveryItem(process Every{{$itemName}}Fn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {

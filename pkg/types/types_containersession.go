@@ -13,16 +13,14 @@ import (
 
 // EXISTING_CODE
 
-// -------------------------------------------------------------------
 type SessionContainer struct {
-	LastUpdate        int64 `json:"lastUpdate"`
-	coreTypes.Session `json:",inline"`
+	LastUpdate int64 `json:"lastUpdate"`
 
+	coreTypes.Session `json:",inline"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func NewSessionContainer(chain string, session *coreTypes.Session) SessionContainer {
 	ret := SessionContainer{
 		Session: *session,
@@ -34,23 +32,19 @@ func NewSessionContainer(chain string, session *coreTypes.Session) SessionContai
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *SessionContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-// -------------------------------------------------------------------
 func (s *SessionContainer) GetItems() interface{} {
 	return nil
 }
 
-// -------------------------------------------------------------------
 func (s *SessionContainer) SetItems(items interface{}) {
 	// s.Items = items.([].)
 }
 
-// -------------------------------------------------------------------
 func (s *SessionContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getSessionReload()
 	if force || reload {
@@ -61,24 +55,22 @@ func (s *SessionContainer) NeedsUpdate(force bool) bool {
 	return false
 }
 
-// -------------------------------------------------------------------
 func (s *SessionContainer) ShallowCopy() Containerer {
 	ret := &SessionContainer{
 		LastUpdate: s.LastUpdate,
-		Session:    s.Session.ShallowCopy(),
+
+		Session: s.Session.ShallowCopy(),
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *SessionContainer) Clear() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *SessionContainer) passesFilter(filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -89,19 +81,16 @@ func (s *SessionContainer) passesFilter(filter *Filter) (ret bool) {
 	return
 }
 
-// -------------------------------------------------------------------
 func (s *SessionContainer) Accumulate() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *SessionContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *SessionContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	filtered := []Nothing{}
 
@@ -112,7 +101,6 @@ func (s *SessionContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-// -------------------------------------------------------------------
 func (s *SessionContainer) getSessionReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	sessionFn, _ := utils.GetConfigFn("browse", "session.json")
@@ -122,8 +110,6 @@ func (s *SessionContainer) getSessionReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	return
 }
-
-//-------------------------------------------------------------------
 
 // EXISTING_CODE
 // EXISTING_CODE

@@ -14,25 +14,24 @@ import (
 
 // EXISTING_CODE
 
-// -------------------------------------------------------------------
 type ManifestContainer struct {
-	BloomsSize    uint64                  `json:"bloomsSize"`
-	Chain         string                  `json:"chain"`
-	IndexSize     uint64                  `json:"indexSize"`
-	LastUpdate    int64                   `json:"lastUpdate"`
-	NBlooms       uint64                  `json:"nBlooms"`
-	NIndexes      uint64                  `json:"nIndexes"`
-	Specification string                  `json:"specification"`
-	Version       string                  `json:"version"`
-	Items         []coreTypes.ChunkRecord `json:"items"`
-	NItems        uint64                  `json:"nItems"`
-	Sorts         sdk.SortSpec            `json:"sorts"`
+	BloomsSize    uint64 `json:"bloomsSize"`
+	Chain         string `json:"chain"`
+	IndexSize     uint64 `json:"indexSize"`
+	LastUpdate    int64  `json:"lastUpdate"`
+	NBlooms       uint64 `json:"nBlooms"`
+	NIndexes      uint64 `json:"nIndexes"`
+	Specification string `json:"specification"`
+	Version       string `json:"version"`
+
+	Items  []coreTypes.ChunkRecord `json:"items"`
+	NItems uint64                  `json:"nItems"`
+	Sorts  sdk.SortSpec            `json:"sorts"`
 
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func NewManifestContainer(chain string, itemsIn []coreTypes.Manifest) ManifestContainer {
 	ret := ManifestContainer{
 		Items: make([]coreTypes.ChunkRecord, 0, len(itemsIn)),
@@ -52,34 +51,29 @@ func NewManifestContainer(chain string, itemsIn []coreTypes.Manifest) ManifestCo
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *ManifestContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-// -------------------------------------------------------------------
 func (s *ManifestContainer) GetItems() interface{} {
 	return s.Items
 }
 
-// -------------------------------------------------------------------
 func (s *ManifestContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.ChunkRecord)
 }
 
-// -------------------------------------------------------------------
 func (s *ManifestContainer) NeedsUpdate(force bool) bool {
 	latest, reload := s.getManifestReload()
 	if force || reload {
-		DebugInts("manifest", s.LastUpdate, latest)
+		DebugInts("manifests", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
 	}
 	return false
 }
 
-// -------------------------------------------------------------------
 func (s *ManifestContainer) ShallowCopy() Containerer {
 	ret := &ManifestContainer{
 		BloomsSize:    s.BloomsSize,
@@ -90,14 +84,14 @@ func (s *ManifestContainer) ShallowCopy() Containerer {
 		NIndexes:      s.NIndexes,
 		Specification: s.Specification,
 		Version:       s.Version,
-		NItems:        s.NItems,
+
+		NItems: s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
 	return ret
 }
 
-// -------------------------------------------------------------------
 func (s *ManifestContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
@@ -108,7 +102,6 @@ func (s *ManifestContainer) Clear() {
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *ManifestContainer) passesFilter(item *coreTypes.ChunkRecord, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
@@ -119,7 +112,6 @@ func (s *ManifestContainer) passesFilter(item *coreTypes.ChunkRecord, filter *Fi
 	return
 }
 
-// -------------------------------------------------------------------
 func (s *ManifestContainer) Accumulate(item *coreTypes.ChunkRecord) {
 	s.NItems++
 	// EXISTING_CODE
@@ -130,13 +122,11 @@ func (s *ManifestContainer) Accumulate(item *coreTypes.ChunkRecord) {
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *ManifestContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-// -------------------------------------------------------------------
 func (s *ManifestContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
@@ -165,7 +155,6 @@ func (s *ManifestContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-// -------------------------------------------------------------------
 func (s *ManifestContainer) getManifestReload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(coreConfig.PathToManifest(s.Chain))
@@ -175,10 +164,8 @@ func (s *ManifestContainer) getManifestReload() (ret int64, reload bool) {
 	return
 }
 
-// -------------------------------------------------------------------
 type EveryChunkRecordFn func(item *coreTypes.ChunkRecord, data any) bool
 
-// -------------------------------------------------------------------
 func (s *ManifestContainer) ForEveryItem(process EveryChunkRecordFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
