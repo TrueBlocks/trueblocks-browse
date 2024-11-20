@@ -1,6 +1,3 @@
 name       ,type               ,strDefault ,attributes ,upgrades ,docOrder ,description
-# status     ,coreTypes.Status   ,           ,           ,         ,         ,jim
-# config     ,configTypes.Config ,           ,           ,         ,         ,jim
-# session    ,types.Session      ,           ,           ,         ,         ,jim
 chain      ,string             ,           ,           ,         ,         ,jim
 lastUpdate ,int64              ,           ,           ,         ,         ,jim

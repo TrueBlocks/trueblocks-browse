@@ -19,6 +19,8 @@ import (
 
 // -------------------------------------------------------------------
 type NameContainer struct {
+	Chain      string           `json:"chain"`
+	LastUpdate int64            `json:"lastUpdate"`
 	NContracts uint64           `json:"nContracts"`
 	NCustom    uint64           `json:"nCustom"`
 	NDeleted   uint64           `json:"nDeleted"`
@@ -30,8 +32,6 @@ type NameContainer struct {
 	SizeOnDisc uint64           `json:"sizeOnDisc"`
 	Items      []coreTypes.Name `json:"items"`
 	NItems     uint64           `json:"nItems"`
-	Chain      string           `json:"chain"`
-	LastUpdate int64            `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -41,8 +41,8 @@ func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	ret := NameContainer{
 		Items:  itemsIn,
 		NItems: uint64(len(itemsIn)),
-		Chain:  chain,
 	}
+	ret.Chain = chain
 	ret.LastUpdate, _ = ret.getNameReload()
 	// EXISTING_CODE
 	ret.Chain = "mainnet" // all names are on mainnet
@@ -83,6 +83,8 @@ func (s *NameContainer) NeedsUpdate(force bool) bool {
 // -------------------------------------------------------------------
 func (s *NameContainer) ShallowCopy() Containerer {
 	ret := &NameContainer{
+		Chain:      s.Chain,
+		LastUpdate: s.LastUpdate,
 		NContracts: s.NContracts,
 		NCustom:    s.NCustom,
 		NDeleted:   s.NDeleted,
@@ -93,8 +95,6 @@ func (s *NameContainer) ShallowCopy() Containerer {
 		NSystem:    s.NSystem,
 		SizeOnDisc: s.SizeOnDisc,
 		NItems:     s.NItems,
-		Chain:      s.Chain,
-		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

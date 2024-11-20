@@ -4,19 +4,18 @@
 {{ $embedType := .EmbedType }}
 {{ $embedName := .EmbedName }}
 {{ $hasSorts := .HasSorts }}
-{{ $initChain := .InitChain }}
 {{ $inputType := .InputType }}
 {{ $isEditable := .IsEditable}}
 {{ $itemType := .ItemType}}
 {{ $itemName := .ItemName}}
 {{ $lower := toLower .Class }}
 {{ $members := .Members }}
-{{ $needsChain := .NeedsChain }}
 {{ $needsSdk := .NeedsSdk}}
 {{ $needsLoad := .NeedsLoad}}
 {{ $otherName := .OtherName }}
 {{ $otherType := .OtherType }}
 {{ $sortsInstance := .SortsInstance }}
+{{ $container := print $class "Container" }}
 
 {{ $hasItems := and (gt (len .ItemName) 0) true }}
 {{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
@@ -31,20 +30,18 @@ package types
 // EXISTING_CODE
 
 //-------------------------------------------------------------------
-type {{$class}}Container struct {
+type {{$container}} struct {
 {{range $members}}{{if .IsSimpField}}{{.GoName}} {{.GoType}} {{.Tag}}
 {{end}}{{end}}{{if $hasEmbed}}{{$embedType}} `json:",inline"`
 {{end}}{{if $hasItems}}	Items []{{$itemType}} `json:"items"`
 	NItems uint64 `json:"nItems"`
 {{end}}{{if $hasSorts}}	Sorts sdk.SortSpec `json:"sorts"`
-{{end}}{{if $needsChain}}	Chain string `json:"chain"`
-{{end}}	LastUpdate int64 `json:"lastUpdate"`
-	// EXISTING_CODE
+{{end}}	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 //-------------------------------------------------------------------
-func New{{$class}}Container(chain string
+func New{{$container}}(chain string
 {{- if $hasItems -}}
 , itemsIn []{{$inputType}}
 {{- end -}}
@@ -54,29 +51,28 @@ func New{{$class}}Container(chain string
 {{- if $hasOther -}}
 , {{toLower $otherName}} {{$otherType}}
 {{- end -}}
-) {{$class}}Container {
-	ret := {{$class}}Container{
+) {{$container}} {
+	ret := {{$container}}{
 	{{if $hasItems}}Items: {{if eq $itemType $inputType}}itemsIn,
 NItems: uint64(len(itemsIn)){{else}}make([]coreTypes.ChunkRecord, 0, len(itemsIn)){{end}},
 {{end}}{{if $hasEmbed}}{{toProper $embedName}}: *{{toLower $embedName}},
 {{end}}{{if $hasSorts}}Sorts: {{$sortsInstance}}
-{{end}}{{if $needsChain}}		Chain: chain,
 {{end}}	}
-{{if $initChain}}	ret.Chain = chain
-{{end}}	ret.LastUpdate, _ = ret.get{{$class}}Reload()
+	ret.Chain = chain
+	ret.LastUpdate, _ = ret.get{{$class}}Reload()
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
 }
 
 //-------------------------------------------------------------------
-func (s *{{$class}}Container) String() string {
+func (s *{{$container}}) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
 //-------------------------------------------------------------------
-func (s *{{$class}}Container) GetItems() interface{} {
+func (s *{{$container}}) GetItems() interface{} {
 {{if $hasItems -}}
 	return s.Items
 {{- else -}}
@@ -85,7 +81,7 @@ func (s *{{$class}}Container) GetItems() interface{} {
 }
 
 //-------------------------------------------------------------------
-func (s *{{$class}}Container) SetItems(items interface{}) {
+func (s *{{$container}}) SetItems(items interface{}) {
 {{if $hasItems -}}
 	s.Items = items.([]{{$itemType}})
 {{- else -}}
@@ -94,7 +90,7 @@ func (s *{{$class}}Container) SetItems(items interface{}) {
 }
 
 //-------------------------------------------------------------------
-func (s *{{$class}}Container) NeedsUpdate(force bool) bool {
+func (s *{{$container}}) NeedsUpdate(force bool) bool {
 	latest, reload := s.get{{$class}}Reload()
 	if force || reload {
 		DebugInts("{{toLower $class}}", s.LastUpdate, latest)
@@ -105,29 +101,26 @@ func (s *{{$class}}Container) NeedsUpdate(force bool) bool {
 }
 
 //-------------------------------------------------------------------
-func (s *{{$class}}Container) ShallowCopy() Containerer {
-	ret := &{{$class}}Container{
+func (s *{{$container}}) ShallowCopy() Containerer {
+	ret := &{{$container}}{
 		{{range $members}}{{if .IsSimpField}}{{.GoName}}: s.{{.GoName}},
 		{{end}}{{end}}{{if $hasEmbed}}{{toProper $embedName}}: s.{{toProper $embedName}}.ShallowCopy(),
 {{end}}{{if $hasItems}}NItems: s.NItems,
-{{end}}{{if $needsChain}}			Chain: s.Chain,
-{{end}}			LastUpdate: s.LastUpdate,
-			// EXISTING_CODE
+{{end}}	// EXISTING_CODE
 			// EXISTING_CODE
 	}
-{{if $initChain}}	ret.Chain = s.Chain
-{{end}}	return ret
+	return ret
 }
 
 //-------------------------------------------------------------------
-func (s *{{$class}}Container) Clear() {
+func (s *{{$container}}) Clear() {
 {{if $hasItems}}	s.NItems = 0
 {{end}}	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 //-------------------------------------------------------------------
-func (s *{{$class}}Container) passesFilter({{if $hasItems}}item *{{$itemType}}, {{else}}{{end}}filter *Filter) (ret bool) {
+func (s *{{$container}}) passesFilter({{if $hasItems}}item *{{$itemType}}, {{else}}{{end}}filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -138,20 +131,20 @@ func (s *{{$class}}Container) passesFilter({{if $hasItems}}item *{{$itemType}}, 
 }
 
 //-------------------------------------------------------------------
-func (s *{{$class}}Container) Accumulate({{if $hasItems}}item *{{$itemType}}{{end}}) {
+func (s *{{$container}}) Accumulate({{if $hasItems}}item *{{$itemType}}{{end}}) {
 {{if $hasItems}}	s.NItems++
 {{end}}	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 //-------------------------------------------------------------------
-func (s *{{$class}}Container) Finalize() {
+func (s *{{$container}}) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 //-------------------------------------------------------------------
-func (s *{{$class}}Container) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *{{$container}}) CollateAndFilter(theMap *FilterMap) interface{} {
 {{- if $hasItems}}
 	s.Clear()
 
@@ -183,7 +176,7 @@ func (s *{{$class}}Container) CollateAndFilter(theMap *FilterMap) interface{} {
 }
 
 //-------------------------------------------------------------------
-func (s *{{$class}}Container) get{{$class}}Reload() (ret int64, reload bool) {
+func (s *{{$container}}) get{{$class}}Reload() (ret int64, reload bool) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return
@@ -193,7 +186,7 @@ func (s *{{$class}}Container) get{{$class}}Reload() (ret int64, reload bool) {
 {{if $hasItems}}type Every{{$itemName}}Fn func(item *{{$itemType}}, data any) bool
 
 //-------------------------------------------------------------------
-func (s *{{$class}}Container) ForEveryItem(process Every{{$itemName}}Fn, data any) bool {
+func (s *{{$container}}) ForEveryItem(process Every{{$itemName}}Fn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false

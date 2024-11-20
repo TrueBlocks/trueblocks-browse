@@ -14,13 +14,13 @@ import (
 
 // -------------------------------------------------------------------
 type StatusContainer struct {
+	LastUpdate       int64  `json:"lastUpdate"`
 	NBytes           uint64 `json:"nBytes"`
 	NFiles           uint64 `json:"nFiles"`
 	NFolders         uint64 `json:"nFolders"`
 	coreTypes.Status `json:",inline"`
 	Items            []coreTypes.CacheItem `json:"items"`
 	NItems           uint64                `json:"nItems"`
-	LastUpdate       int64                 `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -72,16 +72,15 @@ func (s *StatusContainer) NeedsUpdate(force bool) bool {
 // -------------------------------------------------------------------
 func (s *StatusContainer) ShallowCopy() Containerer {
 	ret := &StatusContainer{
+		LastUpdate: s.LastUpdate,
 		NBytes:     s.NBytes,
 		NFiles:     s.NFiles,
 		NFolders:   s.NFolders,
 		Status:     s.Status.ShallowCopy(),
 		NItems:     s.NItems,
-		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
-	ret.Chain = s.Chain
 	return ret
 }
 

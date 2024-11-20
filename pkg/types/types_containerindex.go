@@ -16,11 +16,11 @@ import (
 
 // -------------------------------------------------------------------
 type IndexContainer struct {
+	Chain      string                 `json:"chain"`
+	LastUpdate int64                  `json:"lastUpdate"`
 	Items      []coreTypes.ChunkStats `json:"items"`
 	NItems     uint64                 `json:"nItems"`
 	Sorts      sdk.SortSpec           `json:"sorts"`
-	Chain      string                 `json:"chain"`
-	LastUpdate int64                  `json:"lastUpdate"`
 	// EXISTING_CODE
 	coreTypes.ChunkStats
 	// EXISTING_CODE
@@ -35,8 +35,8 @@ func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContai
 			Fields: []string{"range"},
 			Order:  []sdk.SortOrder{sdk.Dec},
 		},
-		Chain: chain,
 	}
+	ret.Chain = chain
 	ret.LastUpdate, _ = ret.getIndexReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -73,9 +73,9 @@ func (s *IndexContainer) NeedsUpdate(force bool) bool {
 // -------------------------------------------------------------------
 func (s *IndexContainer) ShallowCopy() Containerer {
 	ret := &IndexContainer{
-		NItems:     s.NItems,
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
+		NItems:     s.NItems,
 		// EXISTING_CODE
 		ChunkStats: s.ChunkStats,
 		Sorts:      s.Sorts,

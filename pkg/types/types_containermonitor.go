@@ -47,7 +47,9 @@ func (m *MonitorContainer) Filter(f func(*coreTypes.Monitor) bool) []int {
 
 // -------------------------------------------------------------------
 type MonitorContainer struct {
+	Chain      string              `json:"chain"`
 	FileSize   uint64              `json:"fileSize"`
+	LastUpdate int64               `json:"lastUpdate"`
 	NDeleted   uint64              `json:"nDeleted"`
 	NEmpty     uint64              `json:"nEmpty"`
 	NNamed     uint64              `json:"nNamed"`
@@ -55,8 +57,6 @@ type MonitorContainer struct {
 	NStaged    uint64              `json:"nStaged"`
 	Items      []coreTypes.Monitor `json:"items"`
 	NItems     uint64              `json:"nItems"`
-	Chain      string              `json:"chain"`
-	LastUpdate int64               `json:"lastUpdate"`
 	// EXISTING_CODE
 	// FilteredItems []int         `json:"filteresdItems"`
 	// MonitorFilter MonitorFilter `json:"filter"`
@@ -68,8 +68,8 @@ func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorConta
 	ret := MonitorContainer{
 		Items:  itemsIn,
 		NItems: uint64(len(itemsIn)),
-		Chain:  chain,
 	}
+	ret.Chain = chain
 	ret.LastUpdate, _ = ret.getMonitorReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -106,15 +106,15 @@ func (s *MonitorContainer) NeedsUpdate(force bool) bool {
 // -------------------------------------------------------------------
 func (s *MonitorContainer) ShallowCopy() Containerer {
 	ret := &MonitorContainer{
+		Chain:      s.Chain,
 		FileSize:   s.FileSize,
+		LastUpdate: s.LastUpdate,
 		NDeleted:   s.NDeleted,
 		NEmpty:     s.NEmpty,
 		NNamed:     s.NNamed,
 		NRecords:   s.NRecords,
 		NStaged:    s.NStaged,
 		NItems:     s.NItems,
-		Chain:      s.Chain,
-		LastUpdate: s.LastUpdate,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

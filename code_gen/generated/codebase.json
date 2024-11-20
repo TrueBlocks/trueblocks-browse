@@ -50,6 +50,18 @@
                     "type": "uint64",
                     "description": "jim",
                     "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "lastUpdate",
+                    "type": "int64",
+                    "description": "jim",
+                    "num": 9
                 }
             ]
         },
@@ -102,6 +114,18 @@
                     "type": "uint64",
                     "description": "jim",
                     "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "lastUpdate",
+                    "type": "int64",
+                    "description": "jim",
+                    "num": 9
                 }
             ]
         },
@@ -148,6 +172,18 @@
                     "type": "uint64",
                     "description": "jim",
                     "num": 6
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "lastUpdate",
+                    "type": "int64",
+                    "description": "jim",
+                    "num": 8
                 }
             ]
         },
@@ -212,6 +248,18 @@
                     "type": "uint64",
                     "description": "jim",
                     "num": 9
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 10
+                },
+                {
+                    "name": "lastUpdate",
+                    "type": "int64",
+                    "description": "jim",
+                    "num": 11
                 }
             ]
         },
@@ -240,6 +288,18 @@
                     "type": "string",
                     "description": "jim",
                     "num": 3
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "lastUpdate",
+                    "type": "int64",
+                    "description": "jim",
+                    "num": 5
                 }
             ]
         },
@@ -249,7 +309,21 @@
             "ui_route": "1050-indexes-6",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.ChunkStats|sorts=range+Dec,"
+            "attributes": "itemType=coreTypes.ChunkStats|sorts=range+Dec,",
+            "members": [
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "lastUpdate",
+                    "type": "int64",
+                    "description": "jim",
+                    "num": 2
+                }
+            ]
         },
         {
             "class": "Manifest",
@@ -294,6 +368,18 @@
                     "type": "string",
                     "description": "jim",
                     "num": 6
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "lastUpdate",
+                    "type": "int64",
+                    "description": "jim",
+                    "num": 8
                 }
             ]
         },
@@ -303,7 +389,7 @@
             "ui_route": "1070-status-8",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.CacheItem|embedType=coreTypes.Status|noChain|initChain",
+            "attributes": "itemType=coreTypes.CacheItem|embedType=coreTypes.Status",
             "members": [
                 {
                     "name": "nFolders",
@@ -322,6 +408,12 @@
                     "type": "uint64",
                     "description": "jim",
                     "num": 3
+                },
+                {
+                    "name": "lastUpdate",
+                    "type": "int64",
+                    "description": "jim",
+                    "num": 4
                 }
             ]
         },
@@ -331,7 +423,21 @@
             "ui_route": "1080-settings-9",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.CacheItem|inputType=types.SettingsProp|noType|noLoad|noSdk|noPaging"
+            "attributes": "itemType=coreTypes.CacheItem|inputType=types.SettingsProp|noType|noLoad|noSdk|noPaging",
+            "members": [
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "lastUpdate",
+                    "type": "int64",
+                    "description": "jim",
+                    "num": 2
+                }
+            ]
         },
         {
             "class": "Daemon",
@@ -339,7 +445,15 @@
             "ui_route": "1090-daemons-0",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=daemons.Daemon|noChain|noSdk|noPaging"
+            "attributes": "embedType=daemons.Daemon|noSdk|noPaging",
+            "members": [
+                {
+                    "name": "lastUpdate",
+                    "type": "int64",
+                    "description": "jim",
+                    "num": 1
+                }
+            ]
         },
         {
             "class": "Session",
@@ -347,7 +461,15 @@
             "ui_route": "1100-session-u",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=coreTypes.Session|noChain|initChain|noPaging"
+            "attributes": "embedType=coreTypes.Session|noPaging",
+            "members": [
+                {
+                    "name": "lastUpdate",
+                    "type": "int64",
+                    "description": "jim",
+                    "num": 1
+                }
+            ]
         },
         {
             "class": "Config",
@@ -362,6 +484,18 @@
                     "type": "uint64",
                     "description": "jim",
                     "num": 1
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "lastUpdate",
+                    "type": "int64",
+                    "description": "jim",
+                    "num": 3
                 }
             ]
         },
@@ -371,7 +505,21 @@
             "ui_route": "1120-wizard-w",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.WizError|noSdk"
+            "attributes": "itemType=types.WizError|noSdk",
+            "members": [
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "lastUpdate",
+                    "type": "int64",
+                    "description": "jim",
+                    "num": 2
+                }
+            ]
         }
     ],
     "baseTypes": [

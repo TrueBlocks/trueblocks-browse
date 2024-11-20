@@ -13,9 +13,10 @@ import (
 
 // -------------------------------------------------------------------
 type DaemonContainer struct {
-	daemons.Daemon `json:",inline"`
 	LastUpdate     int64 `json:"lastUpdate"`
+	daemons.Daemon `json:",inline"`
 	// EXISTING_CODE
+	Chain string `-` // actually unused
 	// EXISTING_CODE
 }
 
@@ -24,6 +25,7 @@ func NewDaemonContainer(chain string, daemon *daemons.Daemon) DaemonContainer {
 	ret := DaemonContainer{
 		Daemon: *daemon,
 	}
+	ret.Chain = chain
 	ret.LastUpdate, _ = ret.getDaemonReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -60,9 +62,10 @@ func (s *DaemonContainer) NeedsUpdate(force bool) bool {
 // -------------------------------------------------------------------
 func (s *DaemonContainer) ShallowCopy() Containerer {
 	ret := &DaemonContainer{
-		Daemon:     s.Daemon.ShallowCopy(),
 		LastUpdate: s.LastUpdate,
+		Daemon:     s.Daemon.ShallowCopy(),
 		// EXISTING_CODE
+		Chain: s.Chain,
 		// EXISTING_CODE
 	}
 	return ret

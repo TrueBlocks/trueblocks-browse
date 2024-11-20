@@ -8,3 +8,5 @@ nPrefund   ,uint64 ,           ,           ,         ,         ,jim
 nRegular   ,uint64 ,           ,           ,         ,         ,jim
 nSystem    ,uint64 ,           ,           ,         ,         ,jim
 sizeOnDisc ,uint64 ,           ,           ,         ,         ,jim
+chain      ,string ,           ,           ,         ,         ,jim
+lastUpdate ,int64  ,           ,           ,         ,         ,jim

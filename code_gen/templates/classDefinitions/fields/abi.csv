@@ -2,3 +2,5 @@ name          ,type   ,strDefault ,attributes ,upgrades ,docOrder ,description
 largestFile   ,string ,           ,           ,         ,         ,jim
 mostFunctions ,string ,           ,           ,         ,         ,jim
 mostEvents    ,string ,           ,           ,         ,         ,jim
+chain         ,string ,           ,           ,         ,         ,jim
+lastUpdate    ,int64  ,           ,           ,         ,         ,jim

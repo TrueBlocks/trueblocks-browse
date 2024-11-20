@@ -18,10 +18,10 @@ import (
 
 // -------------------------------------------------------------------
 type ConfigContainer struct {
-	NChains            uint64 `json:"nChains"`
-	configTypes.Config `json:",inline"`
 	Chain              string `json:"chain"`
 	LastUpdate         int64  `json:"lastUpdate"`
+	NChains            uint64 `json:"nChains"`
+	configTypes.Config `json:",inline"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -30,8 +30,8 @@ type ConfigContainer struct {
 func NewConfigContainer(chain string, config *configTypes.Config) ConfigContainer {
 	ret := ConfigContainer{
 		Config: *config,
-		Chain:  chain,
 	}
+	ret.Chain = chain
 	ret.LastUpdate, _ = ret.getConfigReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -68,10 +68,10 @@ func (s *ConfigContainer) NeedsUpdate(force bool) bool {
 // -------------------------------------------------------------------
 func (s *ConfigContainer) ShallowCopy() Containerer {
 	ret := &ConfigContainer{
-		NChains:    s.NChains,
-		Config:     s.Config.ShallowCopy(),
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
+		NChains:    s.NChains,
+		Config:     s.Config.ShallowCopy(),
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

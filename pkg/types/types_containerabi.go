@@ -18,14 +18,14 @@ import (
 
 // -------------------------------------------------------------------
 type AbiContainer struct {
+	Chain         string          `json:"chain"`
 	LargestFile   string          `json:"largestFile"`
+	LastUpdate    int64           `json:"lastUpdate"`
 	MostEvents    string          `json:"mostEvents"`
 	MostFunctions string          `json:"mostFunctions"`
 	Items         []coreTypes.Abi `json:"items"`
 	NItems        uint64          `json:"nItems"`
 	Sorts         sdk.SortSpec    `json:"sorts"`
-	Chain         string          `json:"chain"`
-	LastUpdate    int64           `json:"lastUpdate"`
 	// EXISTING_CODE
 	coreTypes.Abi
 	// EXISTING_CODE
@@ -40,8 +40,8 @@ func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 			Fields: []string{"isEmpty", "isKnown", "address"},
 			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},
 		},
-		Chain: chain,
 	}
+	ret.Chain = chain
 	ret.LastUpdate, _ = ret.getAbiReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -78,12 +78,12 @@ func (s *AbiContainer) NeedsUpdate(force bool) bool {
 // -------------------------------------------------------------------
 func (s *AbiContainer) ShallowCopy() Containerer {
 	ret := &AbiContainer{
+		Chain:         s.Chain,
 		LargestFile:   s.LargestFile,
+		LastUpdate:    s.LastUpdate,
 		MostEvents:    s.MostEvents,
 		MostFunctions: s.MostFunctions,
 		NItems:        s.NItems,
-		Chain:         s.Chain,
-		LastUpdate:    s.LastUpdate,
 		// EXISTING_CODE
 		Abi: s.Abi,
 		// EXISTING_CODE

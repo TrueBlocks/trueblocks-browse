@@ -14,7 +14,9 @@ import (
 
 // -------------------------------------------------------------------
 type ProjectContainer struct {
+	Chain       string             `json:"chain"`
 	HistorySize uint64             `json:"historySize"`
+	LastUpdate  int64              `json:"lastUpdate"`
 	NAbis       uint64             `json:"nAbis"`
 	NCaches     uint64             `json:"nCaches"`
 	NIndexes    uint64             `json:"nIndexes"`
@@ -23,8 +25,6 @@ type ProjectContainer struct {
 	NNames      uint64             `json:"nNames"`
 	Items       []HistoryContainer `json:"items"`
 	NItems      uint64             `json:"nItems"`
-	Chain       string             `json:"chain"`
-	LastUpdate  int64              `json:"lastUpdate"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -34,8 +34,8 @@ func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContai
 	ret := ProjectContainer{
 		Items:  itemsIn,
 		NItems: uint64(len(itemsIn)),
-		Chain:  chain,
 	}
+	ret.Chain = chain
 	ret.LastUpdate, _ = ret.getProjectReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -72,7 +72,9 @@ func (s *ProjectContainer) NeedsUpdate(force bool) bool {
 // -------------------------------------------------------------------
 func (s *ProjectContainer) ShallowCopy() Containerer {
 	ret := &ProjectContainer{
+		Chain:       s.Chain,
 		HistorySize: s.HistorySize,
+		LastUpdate:  s.LastUpdate,
 		NAbis:       s.NAbis,
 		NCaches:     s.NCaches,
 		NIndexes:    s.NIndexes,
@@ -80,8 +82,6 @@ func (s *ProjectContainer) ShallowCopy() Containerer {
 		NMonitors:   s.NMonitors,
 		NNames:      s.NNames,
 		NItems:      s.NItems,
-		Chain:       s.Chain,
-		LastUpdate:  s.LastUpdate,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
