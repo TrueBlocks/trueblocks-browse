@@ -6,6 +6,7 @@ package app
 import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 // EXISTING_CODE
@@ -16,7 +17,7 @@ func (a *App) FetchHistory(first, pageSize int) *types.HistoryContainer {
 	history, _ := a.historyCache.Load(address)
 	// EXISTING_CODE
 
-	_ = history.CollateAndFilter(a.filterMap)
+	_ = history.CollateAndFilter(a.filterMap).([]coreTypes.Transaction)
 	first = base.Max(0, base.Min(first, len(history.Items)-1))
 	last := base.Min(len(history.Items), first+pageSize)
 	copy, _ := history.ShallowCopy().(*types.HistoryContainer)

@@ -17,10 +17,10 @@ func (a *App) Fetch{{.Class}}(first, pageSize int) *types.{{.Class}}Container {
 
 {{if $needsPaging -}}
 {{if $isHistory -}}
-	_ = history.CollateAndFilter(a.filterMap)
+	_ = {{$routeLower}}.CollateAndFilter(a.filterMap){{if $hasItems}}.([]{{.ItemFullType}}){{end}}
 	first = base.Max(0, base.Min(first, len(history.Items)-1))
 	last := base.Min(len(history.Items), first+pageSize)
-	copy, _ := history.ShallowCopy().(*types.HistoryContainer)
+	copy, _ := {{$routeLower}}.ShallowCopy().(*types.HistoryContainer)
 	copy.Balance = a.getBalance(address)
 	copy.Items = history.Items[first:last]
 {{- else -}}
@@ -31,7 +31,7 @@ func (a *App) Fetch{{.Class}}(first, pageSize int) *types.{{.Class}}Container {
 	copy.Items = filtered[first:last]
 {{- end}}
 {{- else -}}
-	_ = a.{{$routeLower}}.CollateAndFilter(a.filterMap)
+	_ = a.{{$routeLower}}.CollateAndFilter(a.filterMap){{if $hasItems}}.([]{{.ItemFullType}}){{end}}
 	copy, _ := a.{{$routeLower}}.ShallowCopy().(*types.{{.Class}}Container)
 {{- end}}
 	return copy

@@ -1,5 +1,4 @@
 {{ $class := .Class }}
-{{ $lower := toLower .Class }}
 {{ $routeName := .UiRouteName}}
 {{ $routeLower := toLower .UiRouteName -}}
 {{ $embedType := .EmbedType }}
@@ -26,7 +25,7 @@ package app
 // EXISTING_CODE
 // EXISTING_CODE
 
-var {{$lower}}Lock atomic.Uint32
+var {{toLower .Class}}Lock atomic.Uint32
 
 //-------------------------------------------------------------------
 func (a *App) load{{$routeName}}({{if $isHistory}}address base.Address, {{end}}wg *sync.WaitGroup, errorChan chan error) error {
@@ -37,10 +36,10 @@ func (a *App) load{{$routeName}}({{if $isHistory}}address base.Address, {{end}}w
 		}
 	}()
 
-	if !{{$lower}}Lock.CompareAndSwap(0, 1) {
+	if !{{toLower .Class}}Lock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer {{$lower}}Lock.CompareAndSwap(1, 0)
+	defer {{toLower .Class}}Lock.CompareAndSwap(1, 0)
 {{- if not $isHistory}}
 
 	if !a.{{$routeLower}}.NeedsUpdate(a.force{{$class}}()) {
@@ -104,14 +103,14 @@ func (a *App) Modify{{$class}}(modData *ModifyData) error {
 		return err
 	} else {
 		new{{$routeName}} := make([]{{$itemType}}, 0, len(a.{{$routeLower}}.Items))
-		for _, {{$lower}} := range a.{{$routeLower}}.Items {
-			if {{$lower}}.Address == modData.Address {
+		for _, {{toLower .Class}} := range a.{{$routeLower}}.Items {
+			if {{toLower .Class}}.Address == modData.Address {
 				a.{{$routeLower}}.NItems--
-				a.{{$routeLower}}.NEvents -= {{$lower}}.NEvents
-				a.{{$routeLower}}.NFunctions -= {{$lower}}.NFunctions
+				a.{{$routeLower}}.NEvents -= {{toLower .Class}}.NEvents
+				a.{{$routeLower}}.NFunctions -= {{toLower .Class}}.NFunctions
 				continue
 			}
-			new{{$routeName}} = append(new{{$routeName}}, {{$lower}})
+			new{{$routeName}} = append(new{{$routeName}}, {{toLower .Class}})
 		}
 		a.{{$routeLower}}.LastUpdate = 0
 		a.{{$routeLower}}.Items = new{{$routeName}}
