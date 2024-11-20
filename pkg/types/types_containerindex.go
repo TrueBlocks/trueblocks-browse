@@ -21,6 +21,7 @@ type IndexContainer struct {
 	Items      []coreTypes.ChunkStats `json:"items"`
 	NItems     uint64                 `json:"nItems"`
 	Sorts      sdk.SortSpec           `json:"sorts"`
+
 	// EXISTING_CODE
 	coreTypes.ChunkStats
 	// EXISTING_CODE

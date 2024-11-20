@@ -26,6 +26,7 @@ type AbiContainer struct {
 	Items         []coreTypes.Abi `json:"items"`
 	NItems        uint64          `json:"nItems"`
 	Sorts         sdk.SortSpec    `json:"sorts"`
+
 	// EXISTING_CODE
 	coreTypes.Abi
 	// EXISTING_CODE

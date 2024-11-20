@@ -22,6 +22,7 @@ type ConfigContainer struct {
 	LastUpdate         int64  `json:"lastUpdate"`
 	NChains            uint64 `json:"nChains"`
 	configTypes.Config `json:",inline"`
+
 	// EXISTING_CODE
 	// EXISTING_CODE
 }

@@ -57,6 +57,7 @@ type MonitorContainer struct {
 	NStaged    uint64              `json:"nStaged"`
 	Items      []coreTypes.Monitor `json:"items"`
 	NItems     uint64              `json:"nItems"`
+
 	// EXISTING_CODE
 	// FilteredItems []int         `json:"filteresdItems"`
 	// MonitorFilter MonitorFilter `json:"filter"`

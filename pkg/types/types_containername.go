@@ -32,6 +32,7 @@ type NameContainer struct {
 	SizeOnDisc uint64           `json:"sizeOnDisc"`
 	Items      []coreTypes.Name `json:"items"`
 	NItems     uint64           `json:"nItems"`
+
 	// EXISTING_CODE
 	// EXISTING_CODE
 }

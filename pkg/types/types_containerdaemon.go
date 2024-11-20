@@ -15,6 +15,7 @@ import (
 type DaemonContainer struct {
 	LastUpdate     int64 `json:"lastUpdate"`
 	daemons.Daemon `json:",inline"`
+
 	// EXISTING_CODE
 	Chain string `-` // actually unused
 	// EXISTING_CODE

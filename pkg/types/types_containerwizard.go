@@ -16,6 +16,7 @@ type WizardContainer struct {
 	LastUpdate int64      `json:"lastUpdate"`
 	Items      []WizError `json:"items"`
 	NItems     uint64     `json:"nItems"`
+
 	// EXISTING_CODE
 	State WizState `json:"state"`
 	// EXISTING_CODE

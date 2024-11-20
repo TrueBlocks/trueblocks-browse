@@ -26,6 +26,26 @@
 {{ $hasItems := and (gt (len $itemName) 0) true }}
 {{ $hasEmbed := and (gt (len $embedName) 0) true }}
 
+{{ $param1 := "" }}
+{{ if $hasItems }}
+	{{ $param1 = print ", itemsIn []" $inputType }}
+{{ end }}
+
+{{ $param2 := "" }}
+{{ if $hasEmbed }}
+	{{ $param2 = print ", " (toLower $embedName) " *" $embedType }}
+{{ end }}
+
+{{ $param3 := "" }}
+{{ if $isHistory }}
+	{{ $param3 = ", address base.Address" }}
+{{end}}
+
+{{ $sorts := "" }}
+{{ if $hasSorts }}
+	{{ $sorts = print "Sorts sdk.SortSpec `json:\"sorts\"`\n" }}
+{{ end }}
+
 {{ $needsLoad := .Needs "load"}}
 {{if $needsLoad}}
 // This file is auto-generated. Edit only code inside
@@ -41,23 +61,13 @@ type {{$container}} struct {
 {{end}}{{end}}{{if $hasEmbed}}{{$embedType}} `json:",inline"`
 {{end}}{{if $hasItems}}	Items []{{$itemType}} `json:"items"`
 	NItems uint64 `json:"nItems"`
-{{end}}{{if $hasSorts}}	Sorts sdk.SortSpec `json:"sorts"`
-{{end}}	// EXISTING_CODE
+{{end}}{{$sorts}}
+	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 //-------------------------------------------------------------------
-func New{{$container}}(chain string
-{{- if $hasItems -}}
-, itemsIn []{{$inputType}}
-{{- end -}}
-{{- if $hasEmbed -}}
-, {{toLower $embedName}} *{{$embedType}}
-{{- end -}}
-{{- if $isHistory -}}
-, address base.Address
-{{- end -}}
-) {{$container}} {
+func New{{$container}}(chain string{{$param1}}{{$param2}}{{$param3}}) {{$container}} {
 	ret := {{$container}}{
 	{{if $hasItems}}Items: {{if eq $itemType $inputType}}itemsIn,
 NItems: uint64(len(itemsIn)){{else}}make([]coreTypes.ChunkRecord, 0, len(itemsIn)){{end}},

@@ -21,6 +21,7 @@ type StatusContainer struct {
 	coreTypes.Status `json:",inline"`
 	Items            []coreTypes.CacheItem `json:"items"`
 	NItems           uint64                `json:"nItems"`
+
 	// EXISTING_CODE
 	// EXISTING_CODE
 }

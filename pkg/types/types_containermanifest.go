@@ -27,6 +27,7 @@ type ManifestContainer struct {
 	Items         []coreTypes.ChunkRecord `json:"items"`
 	NItems        uint64                  `json:"nItems"`
 	Sorts         sdk.SortSpec            `json:"sorts"`
+
 	// EXISTING_CODE
 	// EXISTING_CODE
 }

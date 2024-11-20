@@ -28,6 +28,7 @@ type HistoryContainer struct {
 	Name       string                  `json:"name"`
 	Items      []coreTypes.Transaction `json:"items"`
 	NItems     uint64                  `json:"nItems"`
+
 	// EXISTING_CODE
 	// EXISTING_CODE
 }

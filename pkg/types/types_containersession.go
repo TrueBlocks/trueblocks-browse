@@ -17,6 +17,7 @@ import (
 type SessionContainer struct {
 	LastUpdate        int64 `json:"lastUpdate"`
 	coreTypes.Session `json:",inline"`
+
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
