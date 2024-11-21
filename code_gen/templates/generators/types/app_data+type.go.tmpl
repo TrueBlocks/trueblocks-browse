@@ -29,7 +29,7 @@
 
 {{ $loadFn := print "load" $routeName }}
 {{ $lockName := print (toLower $class) "Lock" }}
-{{ $array := $routeLower }}
+{{ $dataName := $routeLower }}
 
 {{/*==============================================================*/}}
 // This file is auto-generated. Edit only code inside
@@ -54,7 +54,7 @@ func (a *App) {{$loadFn}}({{$param1}}{{$param2}}) error {
 	}
 	defer {{$lockName}}.CompareAndSwap(1, 0)
 
-{{if not $isHistory}}	if !a.{{$array}}.NeedsUpdate() {
+{{if not $isHistory}}	if !a.{{$dataName}}.NeedsUpdate() {
 		return nil
 	}
 
@@ -64,13 +64,13 @@ func (a *App) {{$loadFn}}({{$param1}}{{$param2}}) error {
 	}
 {{end}}	// EXISTING_CODE
 	// EXISTING_CODE
-{{if $needsSdk}}	if {{$array}}, meta, err := opts.{{$routeName}}List(); err != nil {
+{{if $needsSdk}}	if {{$dataName}}, meta, err := opts.{{$routeName}}List(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if ({{$array}} == nil) || (len({{$array}}) == 0) {
-		err = fmt.Errorf("no {{$array}} found")
+	} else if ({{$dataName}} == nil) || (len({{$dataName}}) == 0) {
+		err = fmt.Errorf("no {{$dataName}} found")
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -79,22 +79,22 @@ func (a *App) {{$loadFn}}({{$param1}}{{$param2}}) error {
 {{end}}		// EXISTING_CODE
 		// EXISTING_CODE
 {{if $needsSdk}}		a.meta = *meta
-		a.{{$array}} = types.New{{$container}}(opts.Chain
+		a.{{$dataName}} = types.New{{$container}}(opts.Chain
 {{- if $hasItems -}}
-, {{$array}}{{if $isStatus}}[0].Caches{{end}}
+, {{$dataName}}{{if $isStatus}}[0].Caches{{end}}
 {{- end -}}
 {{- if $hasEmbed -}}
-, &{{$array}}[0]
+, &{{$dataName}}[0]
 {{- end -}}
 )
 {{end}}		// EXISTING_CODE
 		// EXISTING_CODE
 {{if $hasSorts -}}
-		if err := sdk.Sort{{$routeName}}(a.{{$array}}.Items, a.{{$array}}.Sorts); err != nil {
+		if err := sdk.Sort{{$routeName}}(a.{{$dataName}}.Items, a.{{$dataName}}.Sorts); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 {{end -}}
-		a.emitInfoMsg("Loaded {{$array}}", "")
+		a.emitLoadingMsg(messages.Loaded, "{{$dataName}}")
 {{if $needsSdk}}	}
 {{end}}
 	return nil

@@ -42,7 +42,6 @@ export const StatusFormDef = (table: Table<types.CacheItem>): FieldGroup<types.S
       label: "Statistics",
       colSpan: 5,
       fields: [
-        { label: "lastUpdate", type: "date", accessor: "lastUpdate" },
         { label: "nCaches", type: "int", accessor: "nItems" },
         { label: "nFiles", type: "int", accessor: "nFiles" },
         { label: "nFolders", type: "int", accessor: "nFolders" },

@@ -5,14 +5,16 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 // EXISTING_CODE
 
 type DaemonContainer struct {
-	LastUpdate     int64 `json:"lastUpdate"`
+	Updater        walk.Updater `json:"updater"`
 	daemons.Daemon `json:",inline"`
 	// EXISTING_CODE
 	Chain string `json:"-"` // actually unused
@@ -21,13 +23,22 @@ type DaemonContainer struct {
 
 func NewDaemonContainer(chain string, daemon *daemons.Daemon) DaemonContainer {
 	ret := DaemonContainer{
-		Daemon: *daemon,
+		Chain:   chain,
+		Daemon:  *daemon,
+		Updater: NewDaemonUpdater(chain),
 	}
 	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getDaemonReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
+}
+
+func NewDaemonUpdater(chain string) walk.Updater {
+	// EXISTING_CODE
+	paths := []string{}
+	updater, _ := walk.NewUpdater("daemon", paths, walk.TypeUnknown, 2*time.Minute)
+	// EXISTING_CODE
+	return updater
 }
 
 func (s *DaemonContainer) String() string {
@@ -44,10 +55,9 @@ func (s *DaemonContainer) SetItems(items interface{}) {
 }
 
 func (s *DaemonContainer) NeedsUpdate() bool {
-	latest, reload := s.getDaemonReload()
-	if reload {
-		DebugInts("daemons", s.LastUpdate, latest)
-		s.LastUpdate = latest
+	if updater, reload := s.Updater.NeedsUpdate(); reload {
+		DebugInts("daemon", s.Updater, updater)
+		s.Updater = updater
 		return true
 	}
 	return false
@@ -55,8 +65,8 @@ func (s *DaemonContainer) NeedsUpdate() bool {
 
 func (s *DaemonContainer) ShallowCopy() Containerer {
 	ret := &DaemonContainer{
-		LastUpdate: s.LastUpdate,
-		Daemon:     s.Daemon.ShallowCopy(),
+		Updater: s.Updater,
+		Daemon:  s.Daemon.ShallowCopy(),
 		// EXISTING_CODE
 		Chain: s.Chain,
 		// EXISTING_CODE
@@ -96,12 +106,6 @@ func (s *DaemonContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
-}
-
-func (s *DaemonContainer) getDaemonReload() (ret int64, reload bool) {
-	// EXISTING_CODE
-	// EXISTING_CODE
-	return
 }
 
 // EXISTING_CODE

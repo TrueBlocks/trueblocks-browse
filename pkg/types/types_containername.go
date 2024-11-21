@@ -13,6 +13,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 var namesChain = "mainnet"
@@ -21,7 +22,7 @@ var namesChain = "mainnet"
 
 type NameContainer struct {
 	Chain      string           `json:"chain"`
-	LastUpdate int64            `json:"lastUpdate"`
+	Updater    walk.Updater     `json:"updater"`
 	NContracts uint64           `json:"nContracts"`
 	NCustom    uint64           `json:"nCustom"`
 	NDeleted   uint64           `json:"nDeleted"`
@@ -39,11 +40,12 @@ type NameContainer struct {
 
 func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	ret := NameContainer{
-		Items:  itemsIn,
-		NItems: uint64(len(itemsIn)),
+		Items:   itemsIn,
+		NItems:  uint64(len(itemsIn)),
+		Chain:   chain,
+		Updater: NewNameUpdater(chain),
 	}
-	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getNameReload()
+
 	// EXISTING_CODE
 	ret.Chain = "mainnet" // all names are on mainnet
 	sort.Slice(ret.Items, func(i, j int) bool {
@@ -51,6 +53,17 @@ func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	})
 	// EXISTING_CODE
 	return ret
+}
+
+func NewNameUpdater(chain string) walk.Updater {
+	// EXISTING_CODE
+	paths := []string{
+		filepath.Join(coreConfig.MustGetPathToChainConfig(chain), string(names.DatabaseCustom)),
+		filepath.Join(coreConfig.MustGetPathToChainConfig(chain), string(names.DatabaseRegular)),
+	}
+	updater, _ := walk.NewUpdater("name", paths, walk.TypeFiles)
+	// EXISTING_CODE
+	return updater
 }
 
 func (s *NameContainer) String() string {
@@ -67,10 +80,9 @@ func (s *NameContainer) SetItems(items interface{}) {
 }
 
 func (s *NameContainer) NeedsUpdate() bool {
-	latest, reload := s.getNameReload()
-	if reload {
-		DebugInts("names", s.LastUpdate, latest)
-		s.LastUpdate = latest
+	if updater, reload := s.Updater.NeedsUpdate(); reload {
+		DebugInts("name", s.Updater, updater)
+		s.Updater = updater
 		return true
 	}
 	return false
@@ -79,7 +91,7 @@ func (s *NameContainer) NeedsUpdate() bool {
 func (s *NameContainer) ShallowCopy() Containerer {
 	ret := &NameContainer{
 		Chain:      s.Chain,
-		LastUpdate: s.LastUpdate,
+		Updater:    s.Updater,
 		NContracts: s.NContracts,
 		NCustom:    s.NCustom,
 		NDeleted:   s.NDeleted,
@@ -195,13 +207,6 @@ func (s *NameContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-func (s *NameContainer) getNameReload() (ret int64, reload bool) {
-	// EXISTING_CODE
-	ret, reload = checkNameReload(s.LastUpdate)
-	// EXISTING_CODE
-	return
-}
-
 type EveryNameFn func(item *coreTypes.Name, data any) bool
 
 func (s *NameContainer) ForEveryItem(process EveryNameFn, data any) bool {
@@ -214,13 +219,6 @@ func (s *NameContainer) ForEveryItem(process EveryNameFn, data any) bool {
 }
 
 // EXISTING_CODE
-func checkNameReload(last int64) (ret int64, reload bool) {
-	tm := file.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(namesChain))
-	ret = tm.Unix()
-	reload = ret > last
-	return
-}
-
 func compare(nameI, nameJ coreTypes.Name) bool {
 	ti := nameI.Parts
 	if ti == coreTypes.Regular {

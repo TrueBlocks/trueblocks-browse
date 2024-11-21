@@ -12,14 +12,15 @@ import (
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 // EXISTING_CODE
 
 type ConfigContainer struct {
-	Chain              string `json:"chain"`
-	LastUpdate         int64  `json:"lastUpdate"`
-	NChains            uint64 `json:"nChains"`
+	Chain              string       `json:"chain"`
+	Updater            walk.Updater `json:"updater"`
+	NChains            uint64       `json:"nChains"`
 	configTypes.Config `json:",inline"`
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -27,10 +28,10 @@ type ConfigContainer struct {
 
 func NewConfigContainer(chain string, config *configTypes.Config) ConfigContainer {
 	ret := ConfigContainer{
-		Config: *config,
+		Chain:   chain,
+		Updater: NewConfigUpdater(chain),
+		Config:  *config,
 	}
-	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getConfigReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -39,6 +40,14 @@ func NewConfigContainer(chain string, config *configTypes.Config) ConfigContaine
 func (s *ConfigContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
+}
+
+func NewConfigUpdater(chain string) walk.Updater {
+	// EXISTING_CODE
+	paths := []string{utils.MustGetConfigFn("", "trueBlocks.toml")}
+	updater, _ := walk.NewUpdater("config", paths, walk.TypeFiles)
+	// EXISTING_CODE
+	return updater
 }
 
 func (s *ConfigContainer) GetItems() interface{} {
@@ -50,10 +59,9 @@ func (s *ConfigContainer) SetItems(items interface{}) {
 }
 
 func (s *ConfigContainer) NeedsUpdate() bool {
-	latest, reload := s.getConfigReload()
-	if reload {
-		DebugInts("config", s.LastUpdate, latest)
-		s.LastUpdate = latest
+	if updater, reload := s.Updater.NeedsUpdate(); reload {
+		DebugInts("config", s.Updater, updater)
+		s.Updater = updater
 		return true
 	}
 	return false
@@ -61,10 +69,10 @@ func (s *ConfigContainer) NeedsUpdate() bool {
 
 func (s *ConfigContainer) ShallowCopy() Containerer {
 	ret := &ConfigContainer{
-		Chain:      s.Chain,
-		LastUpdate: s.LastUpdate,
-		NChains:    s.NChains,
-		Config:     s.Config.ShallowCopy(),
+		Chain:   s.Chain,
+		Updater: s.Updater,
+		NChains: s.NChains,
+		Config:  s.Config.ShallowCopy(),
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -104,15 +112,6 @@ func (s *ConfigContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
-}
-
-func (s *ConfigContainer) getConfigReload() (ret int64, reload bool) {
-	// EXISTING_CODE
-	tm, _ := file.GetModTime(utils.MustGetConfigFn("", "trueBlocks.toml"))
-	ret = tm.Unix()
-	reload = ret > s.LastUpdate
-	// EXISTING_CODE
-	return
 }
 
 // EXISTING_CODE

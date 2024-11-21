@@ -54,7 +54,7 @@ export const ProjectView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={project.lastUpdate} />
+      <DebugState u={project.updater} />
       <View tabs={tabs} forms={forms} searchable />
     </ViewStateProvider>
   );

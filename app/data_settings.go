@@ -49,7 +49,7 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 		Config:  &a.config,
 		Session: &a.session,
 	}
-	a.settings = types.NewSettingsContainer(&props)
+	a.settings = types.NewSettingsContainer(a.getChain(), &props)
 	// EXISTING_CODE
 	// EXISTING_CODE
 	// do not remove

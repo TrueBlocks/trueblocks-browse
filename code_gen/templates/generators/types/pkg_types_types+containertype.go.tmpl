@@ -85,11 +85,6 @@
 	{{ $getItems = print "nil" }}
 {{end}}
 
-{{ $nameCheck := "" }}
-{{ if $isNameDependant }}
-	{{ $nameCheck = "if ret, reload = checkNameReload(s.LastUpdate); reload {\nreturn\n}\n" }}
-{{ end }}
-
 {{/*==============================================================*/}}
 {{ $needsLoad := .Needs "load"}}
 {{if $needsLoad}}
@@ -127,6 +122,12 @@ func (s *{{$container}}) String() string {
 	return string(bytes)
 }
 
+func New{{$class}}Updater(chain string) walk.Updater {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return updater
+}
+
 func (s *{{$container}}) GetItems() interface{} {
 	return {{$getItems}}
 }
@@ -136,10 +137,9 @@ func (s *{{$container}}) SetItems(items interface{}) {
 }
 
 func (s *{{$container}}) NeedsUpdate() bool {
-	latest, reload := s.get{{$class}}Reload()
-	if reload {
-		DebugInts("{{toLower $routeName}}", s.LastUpdate, latest)
-		s.LastUpdate = latest
+	if updater, reload := s.Updater.NeedsReload(); reload {
+		DebugInts("{{toLower $routeName}}", s.Updater, updater)
+		s.Updater = updater
 		return true
 	}
 	return false
@@ -215,12 +215,6 @@ func (s *{{$container}}) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
-}
-
-func (s *{{$container}}) get{{$class}}Reload() (ret int64, reload bool) {
-	{{$nameCheck}} // EXISTING_CODE
-	// EXISTING_CODE
-	return
 }
 
 {{if $hasItems}}type Every{{$itemName}}Fn func(item *{{$itemType}}, data any) bool

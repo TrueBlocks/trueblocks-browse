@@ -26,7 +26,7 @@ func (a *App) ModifyAbi(modData *ModifyData) error {
 			}
 			newAbis = append(newAbis, abi)
 		}
-		a.abis.LastUpdate = 0
+		a.abis.Updater.Reset()
 		a.abis.Items = newAbis
 		a.emitInfoMsg("ModifyAbi delete", modData.Address.Hex())
 		return nil

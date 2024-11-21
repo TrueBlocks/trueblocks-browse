@@ -43,7 +43,7 @@ export const ManifestsView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={manifests.lastUpdate} />
+      <DebugState u={manifests.updater} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

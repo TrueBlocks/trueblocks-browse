@@ -5,42 +5,44 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
+	"path/filepath"
 	"unsafe"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 // EXISTING_CODE
 
 type HistoryContainer struct {
-	Address    base.Address            `json:"address"`
-	Balance    string                  `json:"balance"`
-	Chain      string                  `json:"chain"`
-	LastUpdate int64                   `json:"lastUpdate"`
-	NErrors    uint64                  `json:"nErrors"`
-	NLogs      uint64                  `json:"nLogs"`
-	NTokens    uint64                  `json:"nTokens"`
-	NTotal     uint64                  `json:"nTotal"`
-	Name       string                  `json:"name"`
-	Items      []coreTypes.Transaction `json:"items"`
-	NItems     uint64                  `json:"nItems"`
+	Updater walk.Updater            `json:"updater"`
+	Address base.Address            `json:"address"`
+	Balance string                  `json:"balance"`
+	Chain   string                  `json:"chain"`
+	NErrors uint64                  `json:"nErrors"`
+	NLogs   uint64                  `json:"nLogs"`
+	NTokens uint64                  `json:"nTokens"`
+	NTotal  uint64                  `json:"nTotal"`
+	Name    string                  `json:"name"`
+	Items   []coreTypes.Transaction `json:"items"`
+	NItems  uint64                  `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address base.Address) HistoryContainer {
 	ret := HistoryContainer{
-		Items:  itemsIn,
-		NItems: uint64(len(itemsIn)),
+		Items:   itemsIn,
+		NItems:  uint64(len(itemsIn)),
+		Chain:   chain,
+		Address: address,
+		Updater: NewHistoryUpdater(chain, address),
 	}
-	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getHistoryReload()
 	// EXISTING_CODE
-	ret.Address = address
-	ret.LastUpdate, _ = ret.getHistoryReload() // DO NOT REMOVE (needs address)
 	// EXISTING_CODE
 	return ret
 }
@@ -48,6 +50,18 @@ func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address 
 func (s *HistoryContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
+}
+
+func NewHistoryUpdater(chain string, address base.Address) walk.Updater {
+	// EXISTING_CODE
+	paths := []string{
+		coreMonitor.PathToMonitorFile(chain, address),
+		filepath.Join(coreConfig.MustGetPathToChainConfig(namesChain), string(names.DatabaseCustom)),
+		filepath.Join(coreConfig.MustGetPathToChainConfig(namesChain), string(names.DatabaseRegular)),
+	}
+	updater, _ := walk.NewUpdater("history", paths, walk.TypeFiles)
+	// EXISTING_CODE
+	return updater
 }
 
 func (s *HistoryContainer) GetItems() interface{} {
@@ -59,10 +73,9 @@ func (s *HistoryContainer) SetItems(items interface{}) {
 }
 
 func (s *HistoryContainer) NeedsUpdate() bool {
-	latest, reload := s.getHistoryReload()
-	if reload {
-		DebugInts("history", s.LastUpdate, latest)
-		s.LastUpdate = latest
+	if updater, reload := s.Updater.NeedsUpdate(); reload {
+		DebugInts("history", s.Updater, updater)
+		s.Updater = updater
 		return true
 	}
 	return false
@@ -70,16 +83,17 @@ func (s *HistoryContainer) NeedsUpdate() bool {
 
 func (s *HistoryContainer) ShallowCopy() Containerer {
 	ret := &HistoryContainer{
-		Address:    s.Address,
-		Balance:    s.Balance,
-		Chain:      s.Chain,
-		LastUpdate: s.LastUpdate,
-		NErrors:    s.NErrors,
-		NLogs:      s.NLogs,
-		NTokens:    s.NTokens,
-		NTotal:     s.NTotal,
-		Name:       s.Name,
-		NItems:     s.NItems,
+		Updater: s.Updater,
+		Address: s.Address,
+		Balance: s.Balance,
+		Chain:   s.Chain,
+		NErrors: s.NErrors,
+		NLogs:   s.NLogs,
+		NTokens: s.NTokens,
+		NTotal:  s.NTotal,
+		Name:    s.Name,
+		NItems:  s.NItems,
+		Items:   append([]coreTypes.Transaction{}, s.Items...),
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -151,18 +165,6 @@ func (s *HistoryContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
-}
-
-func (s *HistoryContainer) getHistoryReload() (ret int64, reload bool) {
-	if ret, reload = checkNameReload(s.LastUpdate); reload {
-		return
-	}
-	// EXISTING_CODE
-	fn := coreMonitor.PathToMonitorFile(s.Chain, s.Address)
-	ret = file.FileSize(fn)
-	reload = ret > s.LastUpdate
-	// EXISTING_CODE
-	return
 }
 
 type EveryTransactionFn func(item *coreTypes.Transaction, data any) bool

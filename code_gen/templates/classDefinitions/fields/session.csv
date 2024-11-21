@@ -1,2 +1,2 @@
-name       ,type   ,strDefault ,attributes ,upgrades ,docOrder ,description
-lastUpdate ,int64  ,           ,           ,         ,         ,jim
+name    ,type         ,strDefault ,attributes ,upgrades ,docOrder ,description
+updater ,walk.Updater ,           ,           ,         ,         ,jim

@@ -1,9 +1,8 @@
 package types
 
 import (
-	"time"
-
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 type Containerer interface {
@@ -19,7 +18,7 @@ type Containerers []Containerer
 
 var debugging = true
 
-func DebugInts(label string, lastUpdate, latest int64) {
+func DebugInts(label string, lastUp, up walk.Updater) {
 	if !debugging {
 		return
 	}
@@ -43,9 +42,7 @@ func DebugInts(label string, lastUpdate, latest int64) {
 	}
 
 	if render {
-		now := time.Now().Unix()
-		logger.InfoBG("NeedsUpdate:", label, "lastUpdate", now-lastUpdate, "latest", now-latest)
+		logger.InfoBG("NeedsUpdate:", label, "lastUpdate", lastUp.String(), "latest", up.String())
 	}
 }
 
-// var dateFmt string = "15:04:05"

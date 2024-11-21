@@ -16,7 +16,6 @@ export const ManifestsFormDef = (table: Table<types.ChunkRecord>): FieldGroup<ty
         { label: "version", type: "text", accessor: "version" },
         { label: "chain", type: "text", accessor: "chain" },
         { label: "specification", type: "hash", accessor: "specification" },
-        { label: "lastUpdate", type: "date", accessor: "lastUpdate" },
       ],
     },
     {

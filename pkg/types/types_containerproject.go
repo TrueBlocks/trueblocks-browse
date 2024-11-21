@@ -5,9 +5,12 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
+	"path/filepath"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 // EXISTING_CODE
@@ -15,7 +18,7 @@ import (
 type ProjectContainer struct {
 	Chain       string             `json:"chain"`
 	HistorySize uint64             `json:"historySize"`
-	LastUpdate  int64              `json:"lastUpdate"`
+	Updater     walk.Updater       `json:"updater"`
 	NAbis       uint64             `json:"nAbis"`
 	NCaches     uint64             `json:"nCaches"`
 	NIndexes    uint64             `json:"nIndexes"`
@@ -30,14 +33,29 @@ type ProjectContainer struct {
 
 func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContainer {
 	ret := ProjectContainer{
-		Items:  itemsIn,
-		NItems: uint64(len(itemsIn)),
+		Items:   itemsIn,
+		NItems:  uint64(len(itemsIn)),
+		Updater: NewProjectUpdater(chain, itemsIn),
+		Chain:   chain,
 	}
-	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getProjectReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
+}
+
+func NewProjectUpdater(chain string, itemsIn []HistoryContainer) walk.Updater {
+	// EXISTING_CODE
+	paths := []string{
+		filepath.Join(coreConfig.MustGetPathToChainConfig("mainnet"), string(names.DatabaseCustom)),
+		filepath.Join(coreConfig.MustGetPathToChainConfig("mainnet"), string(names.DatabaseRegular)),
+	}
+	for _, item := range itemsIn {
+		path := coreMonitor.PathToMonitorFile(chain, item.Address)
+		paths = append(paths, path)
+	}
+	updater, _ := walk.NewUpdater("project", paths, walk.TypeFiles)
+	// EXISTING_CODE
+	return updater
 }
 
 func (s *ProjectContainer) String() string {
@@ -54,10 +72,9 @@ func (s *ProjectContainer) SetItems(items interface{}) {
 }
 
 func (s *ProjectContainer) NeedsUpdate() bool {
-	latest, reload := s.getProjectReload()
-	if reload {
-		DebugInts("project", s.LastUpdate, latest)
-		s.LastUpdate = latest
+	if updater, reload := s.Updater.NeedsUpdate(); reload {
+		DebugInts("project", s.Updater, updater)
+		s.Updater = updater
 		return true
 	}
 	return false
@@ -67,7 +84,7 @@ func (s *ProjectContainer) ShallowCopy() Containerer {
 	ret := &ProjectContainer{
 		Chain:       s.Chain,
 		HistorySize: s.HistorySize,
-		LastUpdate:  s.LastUpdate,
+		Updater:     s.Updater,
 		NAbis:       s.NAbis,
 		NCaches:     s.NCaches,
 		NIndexes:    s.NIndexes,
@@ -135,26 +152,6 @@ func (s *ProjectContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
-}
-
-func (s *ProjectContainer) getProjectReload() (ret int64, reload bool) {
-	if ret, reload = checkNameReload(s.LastUpdate); reload {
-		return
-	}
-	// EXISTING_CODE
-	var totalSize int64 = 0
-	_ = s.ForEveryItem(func(item *HistoryContainer, data any) bool {
-		fn := coreMonitor.PathToMonitorFile(s.Chain, item.Address)
-		fs := file.FileSize(fn)
-		totalSize += fs
-		return true
-	}, nil)
-	if totalSize > s.LastUpdate {
-		reload = true
-		ret = totalSize
-	}
-	// EXISTING_CODE
-	return
 }
 
 type EveryHistoryContainerFn func(item *HistoryContainer, data any) bool

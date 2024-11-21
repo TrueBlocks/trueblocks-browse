@@ -7,8 +7,8 @@ import (
 	"encoding/json"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -18,7 +18,7 @@ type ManifestContainer struct {
 	BloomsSize    uint64                  `json:"bloomsSize"`
 	Chain         string                  `json:"chain"`
 	IndexSize     uint64                  `json:"indexSize"`
-	LastUpdate    int64                   `json:"lastUpdate"`
+	Updater       walk.Updater            `json:"updater"`
 	NBlooms       uint64                  `json:"nBlooms"`
 	NIndexes      uint64                  `json:"nIndexes"`
 	Specification string                  `json:"specification"`
@@ -38,9 +38,9 @@ func NewManifestContainer(chain string, itemsIn []coreTypes.Manifest) ManifestCo
 			Fields: []string{"range"},
 			Order:  []sdk.SortOrder{sdk.Dec},
 		},
+		Updater: NewManifestUpdater(chain),
+		Chain:   chain,
 	}
-	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getManifestReload()
 	// EXISTING_CODE
 	ret.Specification = itemsIn[0].Specification.String()
 	ret.Version = itemsIn[0].Version
@@ -48,6 +48,16 @@ func NewManifestContainer(chain string, itemsIn []coreTypes.Manifest) ManifestCo
 	ret.NItems = uint64(len(ret.Items))
 	// EXISTING_CODE
 	return ret
+}
+
+func NewManifestUpdater(chain string) walk.Updater {
+	// EXISTING_CODE
+	paths := []string{
+		coreConfig.PathToManifest(chain),
+	}
+	updater, _ := walk.NewUpdater("manifest", paths, walk.TypeFolders)
+	// EXISTING_CODE
+	return updater
 }
 
 func (s *ManifestContainer) String() string {
@@ -64,10 +74,9 @@ func (s *ManifestContainer) SetItems(items interface{}) {
 }
 
 func (s *ManifestContainer) NeedsUpdate() bool {
-	latest, reload := s.getManifestReload()
-	if reload {
-		DebugInts("manifests", s.LastUpdate, latest)
-		s.LastUpdate = latest
+	if updater, reload := s.Updater.NeedsUpdate(); reload {
+		DebugInts("manifest", s.Updater, updater)
+		s.Updater = updater
 		return true
 	}
 	return false
@@ -78,7 +87,7 @@ func (s *ManifestContainer) ShallowCopy() Containerer {
 		BloomsSize:    s.BloomsSize,
 		Chain:         s.Chain,
 		IndexSize:     s.IndexSize,
-		LastUpdate:    s.LastUpdate,
+		Updater:       s.Updater,
 		NBlooms:       s.NBlooms,
 		NIndexes:      s.NIndexes,
 		Specification: s.Specification,
@@ -151,15 +160,6 @@ func (s *ManifestContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
-}
-
-func (s *ManifestContainer) getManifestReload() (ret int64, reload bool) {
-	// EXISTING_CODE
-	tm := file.MustGetLatestFileTime(coreConfig.PathToManifest(s.Chain))
-	ret = tm.Unix()
-	reload = ret > s.LastUpdate
-	// EXISTING_CODE
-	return
 }
 
 type EveryChunkRecordFn func(item *coreTypes.ChunkRecord, data any) bool

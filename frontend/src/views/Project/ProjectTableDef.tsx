@@ -40,11 +40,6 @@ export const baseTableDef: CustomColumnDef<types.HistoryContainer, any>[] = [
     },
     meta: { className: "medium cell" },
   }),
-  columnHelper.accessor("lastUpdate", {
-    header: () => "LastUpdate",
-    cell: (info) => <Formatter type="int" value={info.renderValue()} />,
-    meta: { className: "medium cell" },
-  }),
   columnHelper.accessor("balance", {
     header: () => "Balance",
     cell: (info) => <Formatter type="ether" value={info.renderValue()} />,

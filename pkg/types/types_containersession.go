@@ -6,15 +6,15 @@ package types
 import (
 	"encoding/json"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 // EXISTING_CODE
 
 type SessionContainer struct {
-	LastUpdate        int64 `json:"lastUpdate"`
+	Updater           walk.Updater `json:"updater"`
 	coreTypes.Session `json:",inline"`
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -22,13 +22,23 @@ type SessionContainer struct {
 
 func NewSessionContainer(chain string, session *coreTypes.Session) SessionContainer {
 	ret := SessionContainer{
+		// Chain:   chain,
 		Session: *session,
+		Updater: NewSessionUpdater(chain),
 	}
-	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getSessionReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
+}
+
+func NewSessionUpdater(chain string) walk.Updater {
+	// EXISTING_CODE
+	paths := []string{
+		utils.MustGetConfigFn("browse", "session.json"),
+	}
+	updater, _ := walk.NewUpdater("session", paths, walk.TypeFiles)
+	// EXISTING_CODE
+	return updater
 }
 
 func (s *SessionContainer) String() string {
@@ -45,10 +55,9 @@ func (s *SessionContainer) SetItems(items interface{}) {
 }
 
 func (s *SessionContainer) NeedsUpdate() bool {
-	latest, reload := s.getSessionReload()
-	if reload {
-		DebugInts("session", s.LastUpdate, latest)
-		s.LastUpdate = latest
+	if updater, reload := s.Updater.NeedsUpdate(); reload {
+		DebugInts("session", s.Updater, updater)
+		s.Updater = updater
 		return true
 	}
 	return false
@@ -56,8 +65,8 @@ func (s *SessionContainer) NeedsUpdate() bool {
 
 func (s *SessionContainer) ShallowCopy() Containerer {
 	ret := &SessionContainer{
-		LastUpdate: s.LastUpdate,
-		Session:    s.Session.ShallowCopy(),
+		Updater: s.Updater,
+		Session: s.Session.ShallowCopy(),
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -97,16 +106,6 @@ func (s *SessionContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
-}
-
-func (s *SessionContainer) getSessionReload() (ret int64, reload bool) {
-	// EXISTING_CODE
-	sessionFn, _ := utils.GetConfigFn("browse", "session.json")
-	tm, _ := file.GetModTime(sessionFn)
-	ret = tm.Unix()
-	reload = ret > s.LastUpdate
-	// EXISTING_CODE
-	return
 }
 
 // EXISTING_CODE

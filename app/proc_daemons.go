@@ -19,9 +19,6 @@ func (a *App) GetDaemon(name string) string {
 }
 
 func (a *App) GetState(name string) string {
-	if a == nil || a.getDaemon(name) == nil {
-		return "not found"
-	}
 	return a.getDaemon(name).GetState().String()
 }
 

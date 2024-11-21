@@ -8,12 +8,13 @@ import (
 	"time"
 
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 // EXISTING_CODE
 
 type StatusContainer struct {
-	LastUpdate       int64                 `json:"lastUpdate"`
+	Updater          walk.Updater          `json:"updater"`
 	NBytes           uint64                `json:"nBytes"`
 	NFiles           uint64                `json:"nFiles"`
 	NFolders         uint64                `json:"nFolders"`
@@ -26,18 +27,24 @@ type StatusContainer struct {
 
 func NewStatusContainer(chain string, itemsIn []coreTypes.CacheItem, status *coreTypes.Status) StatusContainer {
 	ret := StatusContainer{
-		Items:  itemsIn,
-		NItems: uint64(len(itemsIn)),
-		Status: *status,
+		Items:   itemsIn,
+		NItems:  uint64(len(itemsIn)),
+		Status:  *status,
+		Updater: NewStatusUpdater(chain),
 	}
-	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getStatusReload()
 	// EXISTING_CODE
-	ret.LastUpdate = time.Now().Unix()
 	ret.Items = status.Caches
 	ret.NItems = uint64(len(ret.Items))
 	// EXISTING_CODE
 	return ret
+}
+
+func NewStatusUpdater(chain string) walk.Updater {
+	// EXISTING_CODE
+	paths := []string{}
+	updater, _ := walk.NewUpdater("status", paths, walk.TypeUnknown, 2*time.Minute)
+	// EXISTING_CODE
+	return updater
 }
 
 func (s *StatusContainer) String() string {
@@ -54,10 +61,9 @@ func (s *StatusContainer) SetItems(items interface{}) {
 }
 
 func (s *StatusContainer) NeedsUpdate() bool {
-	latest, reload := s.getStatusReload()
-	if reload {
-		DebugInts("status", s.LastUpdate, latest)
-		s.LastUpdate = latest
+	if updater, reload := s.Updater.NeedsUpdate(); reload {
+		DebugInts("status", s.Updater, updater)
+		s.Updater = updater
 		return true
 	}
 	return false
@@ -65,12 +71,12 @@ func (s *StatusContainer) NeedsUpdate() bool {
 
 func (s *StatusContainer) ShallowCopy() Containerer {
 	ret := &StatusContainer{
-		LastUpdate: s.LastUpdate,
-		NBytes:     s.NBytes,
-		NFiles:     s.NFiles,
-		NFolders:   s.NFolders,
-		NItems:     s.NItems,
-		Status:     s.Status.ShallowCopy(),
+		Updater:  s.Updater,
+		NBytes:   s.NBytes,
+		NFiles:   s.NFiles,
+		NFolders: s.NFolders,
+		NItems:   s.NItems,
+		Status:   s.Status.ShallowCopy(),
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -136,14 +142,6 @@ func (s *StatusContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
-}
-
-func (s *StatusContainer) getStatusReload() (ret int64, reload bool) {
-	// EXISTING_CODE
-	ret = time.Now().Unix()
-	reload = ret > s.LastUpdate+(60*2) // every two minutes
-	// EXISTING_CODE
-	return
 }
 
 type EveryCacheItemFn func(item *coreTypes.CacheItem, data any) bool

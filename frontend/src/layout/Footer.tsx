@@ -17,7 +17,7 @@ export const Footer = () => {
 
   return (
     <Text size={"sm"}>
-      {`${status.clientVersion} / ${info.chain} / not loaded / ${status.lastUpdate} file: `}
+      {`${status.clientVersion} / ${info.chain} / file: `}
       {fn()}
     </Text>
   );

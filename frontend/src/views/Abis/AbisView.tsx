@@ -45,7 +45,7 @@ export const AbisView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={abis.lastUpdate} />
+      <DebugState u={abis.updater} />
       <View tabs={tabs} forms={forms} searchable />
     </ViewStateProvider>
   );

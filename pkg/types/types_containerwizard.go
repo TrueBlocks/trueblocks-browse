@@ -6,15 +6,18 @@ package types
 import (
 	"encoding/json"
 	"errors"
+	"time"
+
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 // EXISTING_CODE
 
 type WizardContainer struct {
-	Chain      string     `json:"chain"`
-	LastUpdate int64      `json:"lastUpdate"`
-	Items      []WizError `json:"items"`
-	NItems     uint64     `json:"nItems"`
+	Chain   string       `json:"chain"`
+	Updater walk.Updater `json:"updater"`
+	Items   []WizError   `json:"items"`
+	NItems  uint64       `json:"nItems"`
 	// EXISTING_CODE
 	State WizState `json:"state"`
 	// EXISTING_CODE
@@ -22,15 +25,23 @@ type WizardContainer struct {
 
 func NewWizardContainer(chain string, itemsIn []WizError) WizardContainer {
 	ret := WizardContainer{
-		Items:  itemsIn,
-		NItems: uint64(len(itemsIn)),
+		Items:   itemsIn,
+		NItems:  uint64(len(itemsIn)),
+		Updater: NewWizardUpdater(chain),
+		Chain:   chain,
 	}
-	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getWizardReload()
 	// EXISTING_CODE
 	ret.State = WizWelcome
 	// EXISTING_CODE
 	return ret
+}
+
+func NewWizardUpdater(chain string) walk.Updater {
+	// EXISTING_CODE
+	paths := []string{}
+	updater, _ := walk.NewUpdater("wizard", paths, walk.TypeUnknown, 2*time.Minute)
+	// EXISTING_CODE
+	return updater
 }
 
 func (s *WizardContainer) String() string {
@@ -47,10 +58,9 @@ func (s *WizardContainer) SetItems(items interface{}) {
 }
 
 func (s *WizardContainer) NeedsUpdate() bool {
-	latest, reload := s.getWizardReload()
-	if reload {
-		DebugInts("wizard", s.LastUpdate, latest)
-		s.LastUpdate = latest
+	if updater, reload := s.Updater.NeedsUpdate(); reload {
+		DebugInts("wizard", s.Updater, updater)
+		s.Updater = updater
 		return true
 	}
 	return false
@@ -58,9 +68,9 @@ func (s *WizardContainer) NeedsUpdate() bool {
 
 func (s *WizardContainer) ShallowCopy() Containerer {
 	ret := &WizardContainer{
-		Chain:      s.Chain,
-		LastUpdate: s.LastUpdate,
-		NItems:     s.NItems,
+		Chain:   s.Chain,
+		Updater: s.Updater,
+		NItems:  s.NItems,
 		// EXISTING_CODE
 		State: s.State,
 		// EXISTING_CODE
@@ -122,12 +132,6 @@ func (s *WizardContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
-}
-
-func (s *WizardContainer) getWizardReload() (ret int64, reload bool) {
-	// EXISTING_CODE
-	// EXISTING_CODE
-	return
 }
 
 type EveryWizErrorFn func(item *WizError, data any) bool

@@ -7,8 +7,8 @@ import (
 	"encoding/json"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 type SettingsProps struct {
@@ -21,24 +21,35 @@ type SettingsProps struct {
 // EXISTING_CODE
 
 type SettingsContainer struct {
-	Status     StatusContainer  `json:"status"`
-	Config     ConfigContainer  `json:"config"`
-	Session    SessionContainer `json:"session"`
-	LastUpdate int64            `json:"lastUpdate"`
+	Status  StatusContainer  `json:"status"`
+	Config  ConfigContainer  `json:"config"`
+	Session SessionContainer `json:"session"`
+	Updater walk.Updater     `json:"updater"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewSettingsContainer(props *SettingsProps) SettingsContainer {
+func NewSettingsContainer(chain string, props *SettingsProps) SettingsContainer {
 	ret := SettingsContainer{
 		Status:  *props.Status,
 		Config:  *props.Config,
 		Session: *props.Session,
+		Updater: NewSettingsUpdater(chain),
 	}
-	ret.LastUpdate, _ = ret.getSettingsReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
+}
+
+func NewSettingsUpdater(chain string) walk.Updater {
+	// EXISTING_CODE
+	paths := []string{
+		coreConfig.PathToRootConfig(),
+		utils.MustGetConfigFn("browse", ""),
+	}
+	updater, _ := walk.NewUpdater("settings", paths, walk.TypeFolders)
+	// EXISTING_CODE
+	return updater
 }
 
 func (s *SettingsContainer) String() string {
@@ -62,10 +73,10 @@ func (s *SettingsContainer) NeedsUpdate() bool {
 
 func (s *SettingsContainer) ShallowCopy() Containerer {
 	ret := &SettingsContainer{
-		Status:     *s.Status.ShallowCopy().(*StatusContainer),
-		Config:     *s.Config.ShallowCopy().(*ConfigContainer),
-		Session:    *s.Session.ShallowCopy().(*SessionContainer),
-		LastUpdate: s.LastUpdate,
+		Status:  *s.Status.ShallowCopy().(*StatusContainer),
+		Config:  *s.Config.ShallowCopy().(*ConfigContainer),
+		Session: *s.Session.ShallowCopy().(*SessionContainer),
+		Updater: s.Updater,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -107,17 +118,6 @@ func (s *SettingsContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
-}
-
-func (s *SettingsContainer) getSettingsReload() (ret int64, reload bool) {
-	// EXISTING_CODE
-	configFn := coreConfig.PathToRootConfig()
-	sessionFn, _ := utils.GetConfigFn("browse", "") /* session.json */
-	folders := []string{configFn, sessionFn}
-	tm := file.MustGetLatestFileTime(folders...)
-	ret = tm.Unix()
-	// EXISTING_CODE
-	return
 }
 
 // EXISTING_CODE

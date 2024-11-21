@@ -45,7 +45,7 @@ export const MonitorsView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={monitors.lastUpdate} />
+      <DebugState u={monitors.updater} />
       <View tabs={tabs} forms={forms} searchable />
     </ViewStateProvider>
   );

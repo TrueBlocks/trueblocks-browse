@@ -19,7 +19,7 @@ func (a *App) initialize() bool {
 			return false
 		} else {
 			// we serialize the wizard state in a session string
-			// TODO: BOGUS a.wizard = types.NewWizzardContainer(a.getChain(), []types.WizError{})
+			// TODO: BOGUS a.wizard = types. NewWizzardContainer(a.getChain(), []types.WizError{})
 			a.wizard.Chain = a.getChain()
 			a.wizard.State = types.WizState(a.session.WizardStr)
 			a.session.Window.Title = "Browse by TrueBlocks"
@@ -44,6 +44,25 @@ func (a *App) initialize() bool {
 		}
 	}
 	_ = initConfig()
+
+	// initialize the Updaters
+	initUpdaters := func() bool {
+		chain := a.getChain()
+		a.project.Updater = types.NewProjectUpdater(chain, []types.HistoryContainer{})
+		a.monitors.Updater = types.NewMonitorUpdater(chain)
+		a.names.Updater = types.NewNameUpdater(chain)
+		a.abis.Updater = types.NewAbiUpdater(chain)
+		a.indexes.Updater = types.NewIndexUpdater(chain)
+		a.manifests.Updater = types.NewManifestUpdater(chain)
+		a.status.Updater = types.NewStatusUpdater(chain)
+		a.settings.Updater = types.NewSettingsUpdater(chain)
+		a.session.Updater = types.NewSessionUpdater(chain)
+		a.config.Updater = types.NewConfigUpdater(chain)
+		a.wizard.Updater = types.NewWizardUpdater(chain)
+		a.daemons.Updater = types.NewDaemonUpdater(chain)
+		return true
+	}
+	_ = initUpdaters()
 
 	// The rest depends on the rpc...
 	initRpc := func() bool {

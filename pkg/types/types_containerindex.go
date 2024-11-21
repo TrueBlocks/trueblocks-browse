@@ -7,19 +7,19 @@ import (
 	"encoding/json"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
 
 type IndexContainer struct {
-	Chain      string                 `json:"chain"`
-	LastUpdate int64                  `json:"lastUpdate"`
-	Items      []coreTypes.ChunkStats `json:"items"`
-	NItems     uint64                 `json:"nItems"`
-	Sorts      sdk.SortSpec           `json:"sorts"`
+	Chain   string                 `json:"chain"`
+	Updater walk.Updater           `json:"updater"`
+	Items   []coreTypes.ChunkStats `json:"items"`
+	NItems  uint64                 `json:"nItems"`
+	Sorts   sdk.SortSpec           `json:"sorts"`
 	// EXISTING_CODE
 	coreTypes.ChunkStats
 	// EXISTING_CODE
@@ -33,9 +33,9 @@ func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContai
 			Fields: []string{"range"},
 			Order:  []sdk.SortOrder{sdk.Dec},
 		},
+		Updater: NewIndexUpdater(chain),
+		Chain:   chain,
 	}
-	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getIndexReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -44,6 +44,16 @@ func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContai
 func (s *IndexContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
+}
+
+func NewIndexUpdater(chain string) walk.Updater {
+	// EXISTING_CODE
+	paths := []string{
+		coreConfig.PathToIndex(chain),
+	}
+	updater, _ := walk.NewUpdater("index", paths, walk.TypeFolders)
+	// EXISTING_CODE
+	return updater
 }
 
 func (s *IndexContainer) GetItems() interface{} {
@@ -55,10 +65,9 @@ func (s *IndexContainer) SetItems(items interface{}) {
 }
 
 func (s *IndexContainer) NeedsUpdate() bool {
-	latest, reload := s.getIndexReload()
-	if reload {
-		DebugInts("indexes", s.LastUpdate, latest)
-		s.LastUpdate = latest
+	if updater, reload := s.Updater.NeedsUpdate(); reload {
+		DebugInts("index", s.Updater, updater)
+		s.Updater = updater
 		return true
 	}
 	return false
@@ -66,9 +75,9 @@ func (s *IndexContainer) NeedsUpdate() bool {
 
 func (s *IndexContainer) ShallowCopy() Containerer {
 	ret := &IndexContainer{
-		Chain:      s.Chain,
-		LastUpdate: s.LastUpdate,
-		NItems:     s.NItems,
+		Chain:   s.Chain,
+		Updater: s.Updater,
+		NItems:  s.NItems,
 		// EXISTING_CODE
 		ChunkStats: s.ChunkStats,
 		Sorts:      s.Sorts,
@@ -151,15 +160,6 @@ func (s *IndexContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
-}
-
-func (s *IndexContainer) getIndexReload() (ret int64, reload bool) {
-	// EXISTING_CODE
-	tm := file.MustGetLatestFileTime(coreConfig.PathToIndex(s.Chain))
-	ret = tm.Unix()
-	reload = ret > s.LastUpdate
-	// EXISTING_CODE
-	return
 }
 
 type EveryChunkStatsFn func(item *coreTypes.ChunkStats, data any) bool

@@ -1,4 +1,4 @@
-name       ,type   ,strDefault ,attributes ,upgrades ,docOrder ,description
-nChains    ,uint64 ,           ,           ,         ,         ,jim
-chain      ,string ,           ,           ,         ,         ,jim
-lastUpdate ,int64  ,           ,           ,         ,         ,jim
+name    ,type         ,strDefault ,attributes ,upgrades ,docOrder ,description
+nChains ,uint64       ,           ,           ,         ,         ,jim
+chain   ,string       ,           ,           ,         ,         ,jim
+updater ,walk.Updater

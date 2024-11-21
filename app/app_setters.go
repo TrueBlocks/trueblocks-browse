@@ -18,30 +18,32 @@ func (a *App) SetRoute(route, subRoute string) {
 	a.saveSession()
 }
 
-func (a *App) SetChain(chain string) {
+func (a *App) SetChain(newChain string) {
 	defer a.trackPerformance("SetChain", false)()
-	if len(chain) == 0 || chain == a.session.LastChain {
+
+	oldChain := a.session.LastChain
+	if len(newChain) == 0 || newChain == oldChain {
 		return
 	}
 
-	a.emitInfoMsg("Switching to chain", chain)
+	a.emitInfoMsg("Switching to chain", newChain)
 
-	a.session.LastChain = chain
+	a.session.LastChain = newChain
 	a.saveSession()
 
 	a.CancelAllContexts()
-	// a.project.LastUpdate = 0
-	a.monitors.LastUpdate = 0
-	// a.names.LastUpdate = 0
-	// a.abis.LastUpdate = 0
-	a.indexes.LastUpdate = 0
-	a.manifests.LastUpdate = 0
-	// a.status.LastUpdate = 0
-	a.settings.LastUpdate = 0
-	a.session.LastUpdate = 0
-	a.config.LastUpdate = 0
-	// a.wizard.LastUpdate = 0
-	// TODO: must stop and then restart all the daemons on the new chain
-	// a.daemons.LastUpdate = 0
+	a.project.Updater.SetChain(oldChain, newChain)
+	a.monitors.Updater.SetChain(oldChain, newChain)
+	// a.names.Updater.SetChain(oldChain, newChain)
+	// a.abis.Updater.SetChain(oldChain, newChain)
+	a.indexes.Updater.SetChain(oldChain, newChain)
+	a.manifests.Updater.SetChain(oldChain, newChain)
+	a.status.Updater.SetChain(oldChain, newChain)
+	a.settings.Updater.SetChain(oldChain, newChain)
+	a.session.Updater.SetChain(oldChain, newChain)
+	a.config.Updater.SetChain(oldChain, newChain)
+	a.wizard.Updater.SetChain(oldChain, newChain)
+	// TODO: must stop and then restart all the daemons on the new newChain
+	a.daemons.Updater.SetChain(oldChain, newChain)
 	_ = a.Freshen()
 }

@@ -9,8 +9,9 @@ import (
 	"path/filepath"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -19,7 +20,7 @@ import (
 type AbiContainer struct {
 	Chain         string          `json:"chain"`
 	LargestFile   string          `json:"largestFile"`
-	LastUpdate    int64           `json:"lastUpdate"`
+	Updater       walk.Updater    `json:"updater"`
 	MostEvents    string          `json:"mostEvents"`
 	MostFunctions string          `json:"mostFunctions"`
 	Items         []coreTypes.Abi `json:"items"`
@@ -38,9 +39,9 @@ func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 			Fields: []string{"isEmpty", "isKnown", "address"},
 			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},
 		},
+		Updater: NewAbiUpdater(chain),
+		Chain:   chain,
 	}
-	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getAbiReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -49,6 +50,18 @@ func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 func (s *AbiContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
+}
+
+func NewAbiUpdater(chain string) walk.Updater {
+	// EXISTING_CODE
+	paths := []string{
+		filepath.Join(coreConfig.PathToCache(chain), "abis"),
+		filepath.Join(coreConfig.MustGetPathToChainConfig(namesChain), string(names.DatabaseCustom)),
+		filepath.Join(coreConfig.MustGetPathToChainConfig(namesChain), string(names.DatabaseRegular)),
+	}
+	updater, _ := walk.NewUpdater("abis", paths, walk.TypeFolders)
+	// EXISTING_CODE
+	return updater
 }
 
 func (s *AbiContainer) GetItems() interface{} {
@@ -60,10 +73,9 @@ func (s *AbiContainer) SetItems(items interface{}) {
 }
 
 func (s *AbiContainer) NeedsUpdate() bool {
-	latest, reload := s.getAbiReload()
-	if reload {
-		DebugInts("abis", s.LastUpdate, latest)
-		s.LastUpdate = latest
+	if updater, reload := s.Updater.NeedsUpdate(); reload {
+		DebugInts("abis", s.Updater, updater)
+		s.Updater = updater
 		return true
 	}
 	return false
@@ -73,7 +85,7 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 	ret := &AbiContainer{
 		Chain:         s.Chain,
 		LargestFile:   s.LargestFile,
-		LastUpdate:    s.LastUpdate,
+		Updater:       s.Updater,
 		MostEvents:    s.MostEvents,
 		MostFunctions: s.MostFunctions,
 		NItems:        s.NItems,
@@ -140,13 +152,13 @@ func (s *AbiContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	var lF comparison
 	var mF comparison
 	var mE comparison
-	for _, file := range s.Items {
-		s.NFunctions += file.NFunctions
-		s.NEvents += file.NEvents
-		s.FileSize += file.FileSize
-		lF.MarkMax(file.Name, int(file.FileSize))
-		mF.MarkMax(file.Name, int(file.NFunctions))
-		mE.MarkMax(file.Name, int(file.NEvents))
+	for _, fil := range s.Items {
+		s.NFunctions += fil.NFunctions
+		s.NEvents += fil.NEvents
+		s.FileSize += fil.FileSize
+		lF.MarkMax(fil.Name, int(fil.FileSize))
+		mF.MarkMax(fil.Name, int(fil.NFunctions))
+		mE.MarkMax(fil.Name, int(fil.NEvents))
 	}
 	s.LargestFile = fmt.Sprintf("%s (%d bytes)", lF.Name, lF.Value)
 	s.MostFunctions = fmt.Sprintf("%s (%d functions)", mF.Name, mF.Value)
@@ -154,18 +166,6 @@ func (s *AbiContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
-}
-
-func (s *AbiContainer) getAbiReload() (ret int64, reload bool) {
-	if ret, reload = checkNameReload(s.LastUpdate); reload {
-		return
-	}
-	// EXISTING_CODE
-	tm := file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "abis"))
-	ret = tm.Unix()
-	reload = ret > s.LastUpdate
-	// EXISTING_CODE
-	return
 }
 
 type EveryAbiFn func(item *coreTypes.Abi, data any) bool

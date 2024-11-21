@@ -33,7 +33,7 @@ export const SessionView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={session.lastUpdate} />
+      <DebugState u={session.updater} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

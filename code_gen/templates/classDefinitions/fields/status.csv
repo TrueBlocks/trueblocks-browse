@@ -1,5 +1,5 @@
-name       ,type   ,strDefault ,attributes ,upgrades ,docOrder ,description
-nFolders   ,uint64 ,           ,           ,         ,         ,jim
-nFiles     ,uint64 ,           ,           ,         ,         ,jim
-nBytes     ,uint64 ,           ,           ,         ,         ,jim
-lastUpdate ,int64  ,           ,           ,         ,         ,jim
+name     ,type         ,strDefault ,attributes ,upgrades ,docOrder ,description
+nFolders ,uint64       ,           ,           ,         ,         ,jim
+nFiles   ,uint64       ,           ,           ,         ,         ,jim
+nBytes   ,uint64       ,           ,           ,         ,         ,jim
+updater  ,walk.Updater ,           ,           ,         ,         ,jim

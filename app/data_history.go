@@ -155,20 +155,20 @@ func (a *App) Reload() {
 	switch a.session.LastRoute {
 	case "/names":
 		logger.InfoG("Reloading names...")
-		a.names.LastUpdate = 0
+		a.names.Updater.Reset()
 		if err := a.loadNames(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 	case "/monitors":
 		logger.InfoG("Reloading monitors...")
-		a.monitors.LastUpdate = 0
+		a.monitors.Updater.Reset()
 		if err := a.loadMonitors(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 	default:
 		logger.InfoG("Reloading default (history)...")
 		history, _ := a.historyCache.Load(a.GetSelected())
-		history.LastUpdate = 0
+		history.Updater.Reset()
 		a.historyCache.Store(a.GetSelected(), history)
 		a.goToAddress(history.Address)
 	}

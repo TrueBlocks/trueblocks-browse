@@ -23,7 +23,6 @@ export const WizardFormDef = (
       fields: [
         { label: "nItems", type: "int", accessor: "nItems" },
         { label: "chain", type: "text", accessor: "chain" },
-        { label: "lastUpdate", type: "date", accessor: "lastUpdate" },
         { label: "state", type: "text", accessor: "state" },
       ],
     },

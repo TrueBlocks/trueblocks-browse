@@ -9,37 +9,50 @@ import (
 	"strings"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 // EXISTING_CODE
 
 type MonitorContainer struct {
-	Chain      string              `json:"chain"`
-	FileSize   uint64              `json:"fileSize"`
-	LastUpdate int64               `json:"lastUpdate"`
-	NDeleted   uint64              `json:"nDeleted"`
-	NEmpty     uint64              `json:"nEmpty"`
-	NNamed     uint64              `json:"nNamed"`
-	NRecords   uint64              `json:"nRecords"`
-	NStaged    uint64              `json:"nStaged"`
-	Items      []coreTypes.Monitor `json:"items"`
-	NItems     uint64              `json:"nItems"`
+	Chain    string              `json:"chain"`
+	FileSize uint64              `json:"fileSize"`
+	Updater  walk.Updater        `json:"updater"`
+	NDeleted uint64              `json:"nDeleted"`
+	NEmpty   uint64              `json:"nEmpty"`
+	NNamed   uint64              `json:"nNamed"`
+	NRecords uint64              `json:"nRecords"`
+	NStaged  uint64              `json:"nStaged"`
+	Items    []coreTypes.Monitor `json:"items"`
+	NItems   uint64              `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorContainer {
 	ret := MonitorContainer{
-		Items:  itemsIn,
-		NItems: uint64(len(itemsIn)),
+		Items:   itemsIn,
+		NItems:  uint64(len(itemsIn)),
+		Updater: NewMonitorUpdater(chain),
+		Chain:   chain,
 	}
-	ret.Chain = chain
-	ret.LastUpdate, _ = ret.getMonitorReload()
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
+}
+
+func NewMonitorUpdater(chain string) walk.Updater {
+	// EXISTING_CODE
+	paths := []string{
+		filepath.Join(coreConfig.PathToCache(chain), "monitors"),
+		filepath.Join(coreConfig.MustGetPathToChainConfig(namesChain), string(names.DatabaseCustom)),
+		filepath.Join(coreConfig.MustGetPathToChainConfig(namesChain), string(names.DatabaseRegular)),
+	}
+	updater, _ := walk.NewUpdater("monitor", paths, walk.TypeFolders)
+	// EXISTING_CODE
+	return updater
 }
 
 func (s *MonitorContainer) String() string {
@@ -56,10 +69,9 @@ func (s *MonitorContainer) SetItems(items interface{}) {
 }
 
 func (s *MonitorContainer) NeedsUpdate() bool {
-	latest, reload := s.getMonitorReload()
-	if reload {
-		DebugInts("monitors", s.LastUpdate, latest)
-		s.LastUpdate = latest
+	if updater, reload := s.Updater.NeedsUpdate(); reload {
+		DebugInts("monitor", s.Updater, updater)
+		s.Updater = updater
 		return true
 	}
 	return false
@@ -67,15 +79,15 @@ func (s *MonitorContainer) NeedsUpdate() bool {
 
 func (s *MonitorContainer) ShallowCopy() Containerer {
 	ret := &MonitorContainer{
-		Chain:      s.Chain,
-		FileSize:   s.FileSize,
-		LastUpdate: s.LastUpdate,
-		NDeleted:   s.NDeleted,
-		NEmpty:     s.NEmpty,
-		NNamed:     s.NNamed,
-		NRecords:   s.NRecords,
-		NStaged:    s.NStaged,
-		NItems:     s.NItems,
+		Chain:    s.Chain,
+		FileSize: s.FileSize,
+		Updater:  s.Updater,
+		NDeleted: s.NDeleted,
+		NEmpty:   s.NEmpty,
+		NNamed:   s.NNamed,
+		NRecords: s.NRecords,
+		NStaged:  s.NStaged,
+		NItems:   s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -161,18 +173,6 @@ func (s *MonitorContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
-}
-
-func (s *MonitorContainer) getMonitorReload() (ret int64, reload bool) {
-	if ret, reload = checkNameReload(s.LastUpdate); reload {
-		return
-	}
-	// EXISTING_CODE
-	tm := file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "monitors"))
-	ret = tm.Unix()
-	reload = ret > s.LastUpdate
-	// EXISTING_CODE
-	return
 }
 
 type EveryMonitorFn func(item *coreTypes.Monitor, data any) bool
