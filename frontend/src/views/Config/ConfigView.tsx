@@ -33,7 +33,7 @@ export const ConfigView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState n={config.lastUpdate} />
+      <DebugState u={config.lastUpdate} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

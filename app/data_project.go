@@ -8,6 +8,7 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
@@ -69,9 +70,8 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 		aj := a.project.Items[j].Address
 		return ai.Hex() < aj.Hex()
 	})
-	a.emitInfoMsg("Loaded project", "")
 	// EXISTING_CODE
-	a.emitInfoMsg("Loaded project", "")
+	a.emitLoadingMsg(messages.Loaded, "project")
 
 	return nil
 }

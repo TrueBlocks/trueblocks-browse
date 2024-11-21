@@ -45,7 +45,6 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base
 	history, exists := a.historyCache.Load(address)
 	if exists && len(history.Items) > 0 {
 		// if !history.NeedsUpdate() {
-		logger.InfoBB("History does not need a refresh", "address", address.Hex())
 		return nil // we only update with a Reload
 		// }
 	}
@@ -57,7 +56,7 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base
 		return err
 	}
 	// EXISTING_CODE
-	a.emitInfoMsg("Loaded history", "")
+	a.emitLoadingMsg(messages.Loaded, "history")
 
 	return nil
 }

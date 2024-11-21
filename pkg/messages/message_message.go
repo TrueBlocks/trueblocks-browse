@@ -12,6 +12,7 @@ type MessageMsg struct {
 	Num2    int          `json:"num2"`
 	String1 string       `json:"string1"`
 	String2 string       `json:"string2"`
+	Bool    bool         `json:"bool"`
 }
 
 func (m *MessageMsg) Instance() MessageMsg {

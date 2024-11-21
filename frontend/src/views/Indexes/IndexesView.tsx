@@ -43,7 +43,7 @@ export const IndexesView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState n={indexes.lastUpdate} />
+      <DebugState u={indexes.lastUpdate} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

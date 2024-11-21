@@ -15,6 +15,8 @@ const (
 	Progress  Message = "Progress"
 	Completed Message = "Completed"
 	Canceled  Message = "Canceled"
+	Loading   Message = "Loading"
+	Loaded    Message = "Loaded"
 
 	Error Message = "Error"
 	Warn  Message = "Warn"
@@ -36,6 +38,8 @@ var AllMessages = []struct {
 	{Progress, "PROGRESS"},
 	{Completed, "COMPLETED"},
 	{Canceled, "CANCELED"},
+	{Loading, "LOADING"},
+	{Loaded, "LOADED"},
 
 	{Error, "ERROR"},
 	{Warn, "WARNING"},

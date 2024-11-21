@@ -1,10 +1,11 @@
 import { Text } from "@mantine/core";
 import { useRenderCounter } from "@hooks";
 import { useAppState, useViewState } from "@state";
+// import { types } from "../../../wailsjs/go/models";
 
-const debug = false;
+const debug = true;
 
-export const DebugState = ({ n }: { n: number }) => {
+export const DebugState = ({ u }: { u: any }) => {
   const { info } = useAppState();
   const { nItems } = useViewState();
   const renderCount = useRenderCounter();
@@ -17,7 +18,7 @@ export const DebugState = ({ n }: { n: number }) => {
     <div>
       <Text>{`info.Address: ${info.address}`}</Text>
       <Text>{`nItems: ${nItems}`}</Text>
-      <Text>{`lastUpdate: ${n}`}</Text>
+      <Text>{`updater: ${JSON.stringify(u, null, 2)}`}</Text>
       <Text>{`renderCount: ${renderCount}`}</Text>
     </div>
   );

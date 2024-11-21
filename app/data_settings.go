@@ -7,6 +7,7 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
@@ -56,7 +57,7 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// do not remove
 	// EXISTING_CODE
-	a.emitInfoMsg("Loaded settings", "")
+	a.emitLoadingMsg(messages.Loaded, "settings")
 
 	return nil
 }

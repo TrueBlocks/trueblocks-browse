@@ -101,7 +101,7 @@ export const DaemonsView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState n={0} />
+      <DebugState u={0} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

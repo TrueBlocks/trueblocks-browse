@@ -9,6 +9,7 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -69,7 +70,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 			return a.monitors.Items[i].NRecords < a.monitors.Items[j].NRecords
 		})
 		// EXISTING_CODE
-		a.emitInfoMsg("Loaded monitors", "")
+		a.emitLoadingMsg(messages.Loaded, "monitors")
 	}
 
 	return nil

@@ -20,6 +20,11 @@ export const ViewStatus = () => {
       setColor("green");
     };
 
+    const handleLoading = (msg: messages.MessageMsg) => {
+      setStatusMessage(`${msg.string1}: ${msg.string2}`);
+      setColor("green");
+    };
+
     const handleCompleted = (msg: messages.MessageMsg) => {
       notifyInfo(`Completed (${msg.address}): ${msg.num1}/${msg.num2}`);
       setStatusMessage("");
@@ -53,6 +58,8 @@ export const ViewStatus = () => {
     EventsOn(Message.PROGRESS, handleProgress);
     EventsOn(Message.COMPLETED, handleCompleted);
     EventsOn(Message.CANCELED, handleCanceled);
+    EventsOn(Message.LOADING, handleLoading);
+    EventsOn(Message.LOADED, handleLoading);
     EventsOn(Message.INFO, handleInfo);
     EventsOn(Message.WARNING, handleWarning);
     EventsOn(Message.ERROR, handleError);
@@ -62,6 +69,8 @@ export const ViewStatus = () => {
       EventsOff(Message.PROGRESS);
       EventsOff(Message.COMPLETED);
       EventsOff(Message.CANCELED);
+      EventsOff(Message.LOADING);
+      EventsOff(Message.LOADED);
       EventsOff(Message.INFO);
       EventsOff(Message.WARNING);
       EventsOff(Message.ERROR);
@@ -71,7 +80,9 @@ export const ViewStatus = () => {
   const blankSpace = "\u00A0";
   return (
     <div className={classes.viewStatus}>
-      <Text size="lg" c={color}>{statusMessage || blankSpace}</Text>
+      <Text size="lg" c={color}>
+        {statusMessage || blankSpace}
+      </Text>
     </div>
   );
 };

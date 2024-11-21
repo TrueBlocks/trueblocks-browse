@@ -6,6 +6,8 @@ package app
 import (
 	"sync"
 	"sync/atomic"
+
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 )
 
 // EXISTING_CODE
@@ -38,7 +40,7 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// do not remove
 	// EXISTING_CODE
-	a.emitInfoMsg("Loaded wizard", "")
+	a.emitLoadingMsg(messages.Loaded, "wizard")
 
 	return nil
 }

@@ -8,6 +8,7 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -60,7 +61,7 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 		// ... and put it back
 		a.session.Session = ss
 		// EXISTING_CODE
-		a.emitInfoMsg("Loaded session", "")
+		a.emitLoadingMsg(messages.Loaded, "session")
 	}
 
 	return nil

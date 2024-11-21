@@ -8,6 +8,7 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -59,7 +60,7 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 		if err := sdk.SortIndexes(a.indexes.Items, a.indexes.Sorts); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-		a.emitInfoMsg("Loaded indexes", "")
+		a.emitLoadingMsg(messages.Loaded, "indexes")
 	}
 
 	return nil

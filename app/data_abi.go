@@ -8,6 +8,7 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -63,7 +64,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		if err := sdk.SortAbis(a.abis.Items, a.abis.Sorts); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-		a.emitInfoMsg("Loaded abis", "")
+		a.emitLoadingMsg(messages.Loaded, "abis")
 	}
 
 	return nil

@@ -422,6 +422,8 @@ export namespace messages {
 	    PROGRESS = "Progress",
 	    COMPLETED = "Completed",
 	    CANCELED = "Canceled",
+	    LOADING = "Loading",
+	    LOADED = "Loaded",
 	    ERROR = "Error",
 	    WARNING = "Warn",
 	    INFO = "Info",
@@ -439,6 +441,7 @@ export namespace messages {
 	    num2: number;
 	    string1: string;
 	    string2: string;
+	    bool: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new MessageMsg(source);
@@ -453,6 +456,7 @@ export namespace messages {
 	        this.num2 = source["num2"];
 	        this.string1 = source["string1"];
 	        this.string2 = source["string2"];
+	        this.bool = source["bool"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

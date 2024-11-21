@@ -45,7 +45,7 @@ export const NamesView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState n={names.lastUpdate} />
+      <DebugState u={names.lastUpdate} />
       <View tabs={tabs} forms={forms} searchable />
     </ViewStateProvider>
   );

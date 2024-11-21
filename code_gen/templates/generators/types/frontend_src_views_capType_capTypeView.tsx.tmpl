@@ -93,7 +93,7 @@ export const {{$routeName}}View = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState n={ {{if not $isDaemon}}{{$routeLower}}.lastUpdate}{{else}}0}{{end}} />
+      <DebugState u={ {{if not $isDaemon}}{{$routeLower}}.lastUpdate}{{else}}0}{{end}} />
       <View tabs={tabs} forms={forms}{{if $isSearchable}} searchable{{end}} />
     </ViewStateProvider>
   );

@@ -8,9 +8,9 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -71,7 +71,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 			a.namesMap[name.Address] = name
 		}
 		// EXISTING_CODE
-		a.emitInfoMsg("Loaded names", "")
+		a.emitLoadingMsg(messages.Loaded, "names")
 	}
 
 	return nil

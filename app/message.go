@@ -39,14 +39,23 @@ func (a *App) emitInfoMsg(str1, str2 string) {
 	})
 }
 
-func (a *App) emitProgressMsg(msg messages.Message, address base.Address, n1, n2 int) {
-	messages.EmitMessage(a.ctx, msg, &messages.MessageMsg{
+func (a *App) emitLoadingMsg(typ messages.Message, str string) {
+	msg := messages.MessageMsg{
+		String1: "Loaded",
+		String2: str,
+		Bool:    true,
+	}
+	messages.EmitMessage(a.ctx, typ, &msg)
+}
+
+func (a *App) emitProgressMsg(typ messages.Message, address base.Address, n1, n2 int) {
+	messages.EmitMessage(a.ctx, typ, &messages.MessageMsg{
 		Address: address,
 		Num1:    n1,
 		Num2:    n2,
 	})
 }
 
-func (a *App) emitMsg(msg messages.Message, val *messages.MessageMsg) {
-	messages.EmitMessage(a.ctx, msg, val)
+func (a *App) emitMsg(typ messages.Message, val *messages.MessageMsg) {
+	messages.EmitMessage(a.ctx, typ, val)
 }

@@ -50,7 +50,7 @@ export const HistoryView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState n={history.lastUpdate} />
+      <DebugState u={history.lastUpdate} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

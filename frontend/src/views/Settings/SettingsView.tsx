@@ -52,7 +52,7 @@ export const SettingsView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState n={settings.lastUpdate} />
+      <DebugState u={settings.lastUpdate} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

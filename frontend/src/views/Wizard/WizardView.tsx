@@ -52,7 +52,7 @@ export const WizardView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState n={wizard.lastUpdate} />
+      <DebugState u={wizard.lastUpdate} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
