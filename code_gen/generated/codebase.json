@@ -269,7 +269,7 @@
             "ui_route": "1040-abis-5",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.Abi|editable",
+            "attributes": "itemType=coreTypes.Abi",
             "sorts": "isEmpty+Asc,isKnown+Asc,address+Asc",
             "members": [
                 {

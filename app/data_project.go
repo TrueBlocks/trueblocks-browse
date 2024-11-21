@@ -4,14 +4,12 @@ package app
 
 // EXISTING_CODE
 import (
-	"fmt"
 	"sort"
 	"sync"
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
 )
 
 // EXISTING_CODE
@@ -86,14 +84,4 @@ func (a *App) forceProject() (force bool) {
 }
 
 // EXISTING_CODE
-func (a *App) ModifyProject(modData *ModifyData) {
-	switch crud.OpFromString(modData.Operation) {
-	case crud.Delete:
-		a.cancelContext(modData.Address)
-		a.historyCache.Delete(modData.Address)
-		a.dirty = true
-		a.emitInfoMsg(a.getFullPath(), fmt.Sprint("deleted address", modData.Address.Hex()))
-	}
-}
-
 // EXISTING_CODE

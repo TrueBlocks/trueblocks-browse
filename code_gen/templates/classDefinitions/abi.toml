@@ -4,7 +4,7 @@
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "1040-containers"
 	ui_route = "1040-abis-5"
-	attributes = "itemType=coreTypes.Abi|editable"
+	attributes = "itemType=coreTypes.Abi"
 	sorts = "isEmpty+Asc,isKnown+Asc,address+Asc"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"

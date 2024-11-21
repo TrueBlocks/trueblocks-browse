@@ -1,7 +1,6 @@
 {{ $class := .Class }}
 {{ $routeName := .UiRouteName}}
 {{ $routeLower := toLower .UiRouteName -}}
-{{ $isEditable := .IsEditable}}
 {{ $itemType := .ItemType}}
 {{ $itemName := .ItemName}}
 {{ $members := .Members }}
@@ -84,35 +83,6 @@ func (a *App) load{{$routeName}}({{if $isHistory}}address base.Address, {{end}}w
 {{end}}
 	return nil
 }
-
-{{if $isEditable}}func (a *App) Modify{{$class}}(modData *ModifyData) error {
-	opts := sdk.{{$routeName}}Options{
-		Addrs:   []string{modData.Address.Hex()},
-		Globals: a.getGlobals(false),
-	}
-	opts.Globals.Decache = true
-
-	if _, _, err := opts.{{$routeName}}(); err != nil {
-		a.emitAddressErrorMsg(err, modData.Address)
-		return err
-	} else {
-		new{{$routeName}} := make([]{{$itemType}}, 0, len(a.{{$routeLower}}.Items))
-		for _, {{toLower .Class}} := range a.{{$routeLower}}.Items {
-			if {{toLower .Class}}.Address == modData.Address {
-				a.{{$routeLower}}.NItems--
-				a.{{$routeLower}}.NEvents -= {{toLower .Class}}.NEvents
-				a.{{$routeLower}}.NFunctions -= {{toLower .Class}}.NFunctions
-				continue
-			}
-			new{{$routeName}} = append(new{{$routeName}}, {{toLower .Class}})
-		}
-		a.{{$routeLower}}.LastUpdate = 0
-		a.{{$routeLower}}.Items = new{{$routeName}}
-		a.emitInfoMsg("Modify{{$class}} delete", modData.Address.Hex())
-		return nil
-	}
-}
-{{end}}
 
 func (a *App) force{{$class}}() (force bool) {
 	// EXISTING_CODE
