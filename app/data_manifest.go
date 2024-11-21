@@ -34,12 +34,10 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.ManifestsOptions{
-		Globals: a.getGlobals(),
+		Globals: a.getGlobals(true /* verbose */),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	opts.Verbose = true
-
 	if manifests, meta, err := opts.ManifestsList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

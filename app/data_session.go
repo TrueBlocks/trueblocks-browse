@@ -34,12 +34,10 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.SessionOptions{
-		Globals: a.getGlobals(),
+		Globals: a.getGlobals(true /* verbose */),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	opts.Verbose = true
-
 	if session, meta, err := opts.SessionList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

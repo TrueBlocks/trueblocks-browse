@@ -39,12 +39,10 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.MonitorsOptions{
-		Globals: a.getGlobals(),
+		Globals: a.getGlobals(true /* verbose */),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	opts.Verbose = true
-
 	if monitors, meta, err := opts.MonitorsList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -99,7 +97,7 @@ func (a *App) ModifyMonitor(modData *ModifyData) error {
 		Delete:   op == crud.Delete,
 		Undelete: op == crud.Undelete,
 		Remove:   op == crud.Remove,
-		Globals:  a.getGlobals(),
+		Globals:  a.getGlobals(false /* verbose */),
 	}
 
 	if _, _, err := opts.Monitors(); err != nil {

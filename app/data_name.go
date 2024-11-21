@@ -43,14 +43,12 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.NamesOptions{
-		Globals: a.getGlobals(),
+		Globals: a.getGlobals(true /* verbose */),
 	}
 	// EXISTING_CODE
 	names.ClearCustomNames()
 	opts.All = true
 	// EXISTING_CODE
-	opts.Verbose = true
-
 	if names, meta, err := opts.NamesList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -114,7 +112,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 
 	cd := crud.CrudFromName(newName)
 	opts := sdk.NamesOptions{
-		Globals: a.getGlobals(),
+		Globals: a.getGlobals(false /* verbose */),
 	}
 	opts.Globals.Chain = namesChain
 

@@ -45,13 +45,11 @@ func (a *App) load{{$routeName}}({{if $isHistory}}address base.Address, {{end}}w
 {{end}}
 {{if $needsSdk}}
 	opts := sdk.{{$routeName}}Options{
-		Globals: a.getGlobals(),
+		Globals: a.getGlobals(true),
 	}
 {{end}}	// EXISTING_CODE
 	// EXISTING_CODE
-{{if $needsSdk}}	opts.Verbose = true
-
-	if {{$routeLower}}, meta, err := opts.{{$routeName}}List(); err != nil {
+{{if $needsSdk}}	if {{$routeLower}}, meta, err := opts.{{$routeName}}List(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -90,7 +88,7 @@ func (a *App) load{{$routeName}}({{if $isHistory}}address base.Address, {{end}}w
 {{if $isEditable}}func (a *App) Modify{{$class}}(modData *ModifyData) error {
 	opts := sdk.{{$routeName}}Options{
 		Addrs:   []string{modData.Address.Hex()},
-		Globals: a.getGlobals(),
+		Globals: a.getGlobals(false),
 	}
 	opts.Globals.Decache = true
 

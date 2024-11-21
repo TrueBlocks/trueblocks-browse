@@ -115,13 +115,13 @@ func (a *App) Shutdown(ctx context.Context) {
 	a.saveSession()
 }
 
-func (a *App) getGlobals() sdk.Globals {
+func (a *App) getGlobals(verbose bool) sdk.Globals {
 	return sdk.Globals{
 		// Ether:   a.Ether,
 		// Cache:   a.Cache,
 		// Decache: a.Decache,
-		// Verbose: a.Verbose,
-		Chain: a.getChain(),
+		Verbose: verbose,
+		Chain:   a.getChain(),
 		// Output:  a.Output,
 		// Append:  a.Append,
 	}

@@ -34,12 +34,10 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.IndexesOptions{
-		Globals: a.getGlobals(),
+		Globals: a.getGlobals(true /* verbose */),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	opts.Verbose = true
-
 	if indexes, meta, err := opts.IndexesList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

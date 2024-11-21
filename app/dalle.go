@@ -1,10 +1,6 @@
 package app
 
 import (
-	"fmt"
-	"io"
-	"net/http"
-	"os"
 	"path/filepath"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
@@ -30,18 +26,18 @@ func (a *App) LoadDalleImage(address base.Address) (bool, error) {
 	// return false, err
 }
 
-func downloadImage(imageName, imagePath string) error {
-	url := fmt.Sprintf("https://your-remote-url.com/images/%s", imageName)
-	resp, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	out, err := os.Create(imagePath)
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-	_, err = io.Copy(out, resp.Body)
-	return err
-}
+// func downloadImage(imageName, imagePath string) error {
+// 	url := fmt.Sprintf("https://your-remote-url.com/images/%s", imageName)
+// 	resp, err := http.Get(url)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer resp.Body.Close()
+// 	out, err := os.Create(imagePath)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer out.Close()
+// 	_, err = io.Copy(out, resp.Body)
+// 	return err
+// }

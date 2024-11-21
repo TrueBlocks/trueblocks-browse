@@ -37,15 +37,13 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	opts := sdk.StatusOptions{
-		Globals: a.getGlobals(),
+		Globals: a.getGlobals(true /* verbose */),
 	}
 	// EXISTING_CODE
 	w := logger.GetLoggerWriter()
 	logger.SetLoggerWriter(io.Discard)
 	defer logger.SetLoggerWriter(w)
 	// EXISTING_CODE
-	opts.Verbose = true
-
 	if status, meta, err := opts.StatusList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

@@ -2110,6 +2110,8 @@ export namespace types {
 	    nBytes: number;
 	    nFiles: number;
 	    nFolders: number;
+	    items: CacheItem[];
+	    nItems: number;
 	    cachePath?: string;
 	    caches: CacheItem[];
 	    chain?: string;
@@ -2132,8 +2134,6 @@ export namespace types {
 	    version?: string;
 	    meta?: MetaData;
 	    diffs?: MetaData;
-	    items: CacheItem[];
-	    nItems: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new StatusContainer(source);
@@ -2145,6 +2145,8 @@ export namespace types {
 	        this.nBytes = source["nBytes"];
 	        this.nFiles = source["nFiles"];
 	        this.nFolders = source["nFolders"];
+	        this.items = this.convertValues(source["items"], CacheItem);
+	        this.nItems = source["nItems"];
 	        this.cachePath = source["cachePath"];
 	        this.caches = this.convertValues(source["caches"], CacheItem);
 	        this.chain = source["chain"];
@@ -2167,8 +2169,6 @@ export namespace types {
 	        this.version = source["version"];
 	        this.meta = this.convertValues(source["meta"], MetaData);
 	        this.diffs = this.convertValues(source["diffs"], MetaData);
-	        this.items = this.convertValues(source["items"], CacheItem);
-	        this.nItems = source["nItems"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
