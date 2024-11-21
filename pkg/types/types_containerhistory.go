@@ -154,6 +154,9 @@ func (s *HistoryContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 }
 
 func (s *HistoryContainer) getHistoryReload() (ret int64, reload bool) {
+	if ret, reload = checkNameReload(s.LastUpdate); reload {
+		return
+	}
 	// EXISTING_CODE
 	fn := coreMonitor.PathToMonitorFile(s.Chain, s.Address)
 	ret = file.FileSize(fn)

@@ -164,6 +164,9 @@ func (s *MonitorContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 }
 
 func (s *MonitorContainer) getMonitorReload() (ret int64, reload bool) {
+	if ret, reload = checkNameReload(s.LastUpdate); reload {
+		return
+	}
 	// EXISTING_CODE
 	tm := file.MustGetLatestFileTime(filepath.Join(coreConfig.PathToCache(s.Chain), "monitors"))
 	ret = tm.Unix()

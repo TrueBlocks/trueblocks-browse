@@ -218,7 +218,7 @@ func (s *{{$container}}) CollateAndFilter(theMap *FilterMap) interface{} {
 }
 
 func (s *{{$container}}) get{{$class}}Reload() (ret int64, reload bool) {
-	// EXISTING_CODE
+	{{$nameCheck}} // EXISTING_CODE
 	// EXISTING_CODE
 	return
 }

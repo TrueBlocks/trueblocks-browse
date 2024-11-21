@@ -15,6 +15,8 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
+var namesChain = "mainnet"
+
 // EXISTING_CODE
 
 type NameContainer struct {
@@ -195,11 +197,7 @@ func (s *NameContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 func (s *NameContainer) getNameReload() (ret int64, reload bool) {
 	// EXISTING_CODE
-	chain := "mainnet"
-	folder := coreConfig.MustGetPathToChainConfig(chain)
-	tm := file.MustGetLatestFileTime(folder)
-	ret = tm.Unix()
-	reload = ret > s.LastUpdate
+	ret, reload = checkNameReload(s.LastUpdate)
 	// EXISTING_CODE
 	return
 }
@@ -216,6 +214,13 @@ func (s *NameContainer) ForEveryItem(process EveryNameFn, data any) bool {
 }
 
 // EXISTING_CODE
+func checkNameReload(last int64) (ret int64, reload bool) {
+	tm := file.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(namesChain))
+	ret = tm.Unix()
+	reload = ret > last
+	return
+}
+
 func compare(nameI, nameJ coreTypes.Name) bool {
 	ti := nameI.Parts
 	if ti == coreTypes.Regular {

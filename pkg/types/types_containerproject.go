@@ -138,6 +138,9 @@ func (s *ProjectContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 }
 
 func (s *ProjectContainer) getProjectReload() (ret int64, reload bool) {
+	if ret, reload = checkNameReload(s.LastUpdate); reload {
+		return
+	}
 	// EXISTING_CODE
 	var totalSize int64 = 0
 	_ = s.ForEveryItem(func(item *HistoryContainer, data any) bool {
