@@ -10,7 +10,6 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // EXISTING_CODE
@@ -76,15 +75,4 @@ func (a *App) forceSession() (force bool) {
 }
 
 // EXISTING_CODE
-func (a *App) saveSession() {
-	if !isTesting {
-		a.session.Window.X, a.session.Window.Y = runtime.WindowGetPosition(a.ctx)
-		a.session.Window.Width, a.session.Window.Height = runtime.WindowGetSize(a.ctx)
-		a.session.Window.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
-	}
-	// we serialize the wizard state in a session string
-	a.session.WizardStr = string(a.wizard.State)
-	_ = a.session.Save()
-}
-
 // EXISTING_CODE
