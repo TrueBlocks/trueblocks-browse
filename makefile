@@ -21,3 +21,8 @@ run:
 generate:
 	@echo building goMaker...
 	@cd ~/Development/trueblocks-core/build ; make -j 12 goMaker ; cd - && goMaker
+
+generate-go:
+	@echo building goMaker...
+	@cd ~/Development/trueblocks-core/build ; make -j 12 goMaker ; cd - && TB_GENERATOR_FILTER=go.tmpl goMaker
+
