@@ -10,8 +10,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -76,15 +75,6 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	return nil
-}
-
-func (a *App) forceName() (force bool) {
-	// EXISTING_CODE
-	tm := file.MustGetLatestFileTime(coreConfig.MustGetPathToChainConfig(namesChain))
-	ret := tm.Unix()
-	force = ret > a.names.LastUpdate
-	// EXISTING_CODE
-	return
 }
 
 // EXISTING_CODE

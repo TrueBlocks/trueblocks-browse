@@ -34,6 +34,7 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base
 		return nil
 	}
 	defer historyLock.CompareAndSwap(1, 0)
+
 	// EXISTING_CODE
 	if address.IsZero() {
 		logger.InfoBR("Zero address", "address", address.Hex())
@@ -43,7 +44,7 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base
 	// EXISTING_CODE
 	history, exists := a.historyCache.Load(address)
 	if exists && len(history.Items) > 0 {
-		// if !history.NeedsUpdate(a.forceHistory()) {
+		// if !history.NeedsUpdate() {
 		logger.InfoBB("History does not need a refresh", "address", address.Hex())
 		return nil // we only update with a Reload
 		// }
@@ -59,13 +60,6 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base
 	a.emitInfoMsg("Loaded history", "")
 
 	return nil
-}
-
-func (a *App) forceHistory() (force bool) {
-	// EXISTING_CODE
-	force = a.forceName()
-	// EXISTING_CODE
-	return
 }
 
 // EXISTING_CODE

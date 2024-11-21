@@ -122,9 +122,9 @@ func (s *{{$container}}) SetItems(items interface{}) {
 	{{$setItems}}
 }
 
-func (s *{{$container}}) NeedsUpdate(force bool) bool {
+func (s *{{$container}}) NeedsUpdate() bool {
 	latest, reload := s.get{{$class}}Reload()
-	if force || reload {
+	if reload {
 		DebugInts("{{toLower $routeName}}", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true

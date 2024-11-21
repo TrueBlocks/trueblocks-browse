@@ -69,12 +69,5 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-func (a *App) forceAbi() (force bool) {
-	// EXISTING_CODE
-	force = a.forceName()
-	// EXISTING_CODE
-	return
-}
-
 // EXISTING_CODE
 // EXISTING_CODE

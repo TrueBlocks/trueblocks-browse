@@ -75,12 +75,5 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-func (a *App) forceMonitor() (force bool) {
-	// EXISTING_CODE
-	force = a.forceName()
-	// EXISTING_CODE
-	return
-}
-
 // EXISTING_CODE
 // EXISTING_CODE

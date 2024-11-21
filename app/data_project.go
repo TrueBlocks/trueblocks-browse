@@ -76,12 +76,5 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-func (a *App) forceProject() (force bool) {
-	// EXISTING_CODE
-	force = a.forceName()
-	// EXISTING_CODE
-	return
-}
-
 // EXISTING_CODE
 // EXISTING_CODE

@@ -43,11 +43,5 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-func (a *App) forceConfig() (force bool) {
-	// EXISTING_CODE
-	// EXISTING_CODE
-	return
-}
-
 // EXISTING_CODE
 // EXISTING_CODE

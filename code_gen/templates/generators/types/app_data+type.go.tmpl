@@ -1,4 +1,7 @@
+{{/*==============================================================*/}}
+
 {{ $class := .Class }}
+{{ $container := print $class "Container" }}
 {{ $routeName := .UiRouteName}}
 {{ $routeLower := toLower .UiRouteName -}}
 {{ $itemType := .ItemType}}
@@ -7,14 +10,28 @@
 {{ $needsSdk := .Needs "sdk" }}
 
 {{ $hasSorts := .HasSorts }}
-{{ $sortsInstance := .SortsInstance }}
 
 {{ $hasItems := and (gt (len $itemName) 0) true }}
 {{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
 
 {{ $isHistory := eq $class "History" }}
 {{ $isStatus := eq $class "Status" }}
+{{ $isAbi := eq $class "Abi" }}
+{{ $isName := eq $class "Name" }}
+{{ $isProject := eq $class "Project" }}
+{{ $isMonitor := eq $class "Monitor" }}
 
+{{ $param1 := "wg *sync.WaitGroup, errorChan chan error" }}
+{{ $param2 := "" }}
+{{ if $isHistory }}
+	{{ $param2 = ", address base.Address" }}
+{{ end }}
+
+{{ $loadFn := print "load" $routeName }}
+{{ $lockName := print (toLower $class) "Lock" }}
+{{ $array := $routeLower }}
+
+{{/*==============================================================*/}}
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 package app
@@ -22,39 +39,38 @@ package app
 // EXISTING_CODE
 // EXISTING_CODE
 
-var {{toLower .Class}}Lock atomic.Uint32
+var {{$lockName}} atomic.Uint32
 
-func (a *App) load{{$routeName}}({{if $isHistory}}address base.Address, {{end}}wg *sync.WaitGroup, errorChan chan error) error {
-	defer a.trackPerformance("load{{$routeName}}", false)()
+func (a *App) {{$loadFn}}({{$param1}}{{$param2}}) error {
+	defer a.trackPerformance("{{$loadFn}}", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
 		}
 	}()
 
-	if !{{toLower .Class}}Lock.CompareAndSwap(0, 1) {
+	if !{{$lockName}}.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer {{toLower .Class}}Lock.CompareAndSwap(1, 0)
-{{- if not $isHistory}}
+	defer {{$lockName}}.CompareAndSwap(1, 0)
 
-	if !a.{{$routeLower}}.NeedsUpdate(a.force{{$class}}()) {
+{{if not $isHistory}}	if !a.{{$array}}.NeedsUpdate() {
 		return nil
 	}
-{{end}}
-{{if $needsSdk}}
+
+{{end}}{{if $needsSdk}}
 	opts := sdk.{{$routeName}}Options{
-		Globals: a.getGlobals(true),
+		Globals: a.getGlobals(true /* verbose */),
 	}
 {{end}}	// EXISTING_CODE
 	// EXISTING_CODE
-{{if $needsSdk}}	if {{$routeLower}}, meta, err := opts.{{$routeName}}List(); err != nil {
+{{if $needsSdk}}	if {{$array}}, meta, err := opts.{{$routeName}}List(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if ({{$routeLower}} == nil) || (len({{$routeLower}}) == 0) {
-		err = fmt.Errorf("no {{$routeLower}} found")
+	} else if ({{$array}} == nil) || (len({{$array}}) == 0) {
+		err = fmt.Errorf("no {{$array}} found")
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -63,31 +79,25 @@ func (a *App) load{{$routeName}}({{if $isHistory}}address base.Address, {{end}}w
 {{end}}		// EXISTING_CODE
 		// EXISTING_CODE
 {{if $needsSdk}}		a.meta = *meta
-		a.{{$routeLower}} = types.New{{$class}}Container(opts.Chain
+		a.{{$array}} = types.New{{$container}}(opts.Chain
 {{- if $hasItems -}}
-, {{$routeLower}}{{if $isStatus}}[0].Caches{{end}}
+, {{$array}}{{if $isStatus}}[0].Caches{{end}}
 {{- end -}}
 {{- if $hasEmbed -}}
-, &{{$routeLower}}[0]
+, &{{$array}}[0]
 {{- end -}}
 )
 {{end}}		// EXISTING_CODE
 		// EXISTING_CODE
 {{if $hasSorts -}}
-		if err := sdk.Sort{{$routeName}}(a.{{$routeLower}}.Items, a.{{$routeLower}}.Sorts); err != nil {
+		if err := sdk.Sort{{$routeName}}(a.{{$array}}.Items, a.{{$array}}.Sorts); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 {{end -}}
-		a.emitInfoMsg("Loaded {{$routeLower}}", "")
+		a.emitInfoMsg("Loaded {{$array}}", "")
 {{if $needsSdk}}	}
 {{end}}
 	return nil
-}
-
-func (a *App) force{{$class}}() (force bool) {
-	// EXISTING_CODE
-	// EXISTING_CODE
-	return
 }
 
 // EXISTING_CODE
