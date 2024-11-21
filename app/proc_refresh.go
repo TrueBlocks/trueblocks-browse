@@ -42,7 +42,7 @@ func (a *App) Freshen() error {
 	// The rest of the data is independant of each other and may be loaded in parallel
 	wg.Add(11)
 	go a.loadProject(&wg, errorChan)
-	go a.loadHistory(a.GetSelected(), &wg, errorChan)
+	go a.loadHistory(&wg, errorChan, a.GetSelected())
 	go a.loadMonitors(&wg, errorChan)
 	go a.loadAbis(&wg, errorChan)
 	go a.loadIndexes(&wg, errorChan)

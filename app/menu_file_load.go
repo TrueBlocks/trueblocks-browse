@@ -48,7 +48,7 @@ func (a *App) readFile(fn string) (bool, error) {
 		a.saveSession()
 
 		address := a.GetSelected()
-		go a.loadHistory(address, nil, nil)
+		go a.loadHistory(nil, nil, address)
 
 		a.emitInfoMsg(a.getFullPath(), "file was opened")
 

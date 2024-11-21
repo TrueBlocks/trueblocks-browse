@@ -22,7 +22,7 @@ import (
 
 var historyLock atomic.Uint32
 
-func (a *App) loadHistory(address base.Address, wg *sync.WaitGroup, errorChan chan error) error {
+func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base.Address) error {
 	defer a.trackPerformance("loadHistory", false)()
 	defer func() {
 		if wg != nil {
@@ -208,7 +208,7 @@ func (a *App) goToAddress(address base.Address) {
 		history.Items = history.Items[:0]
 		a.historyCache.Store(address, history)
 	}
-	go a.loadHistory(address, nil, nil)
+	go a.loadHistory(nil, nil, address)
 	a.emitNavigateMsg(a.GetRoute())
 }
 
