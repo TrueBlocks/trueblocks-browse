@@ -61,9 +61,9 @@ func (s *AbiContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.Abi)
 }
 
-func (s *AbiContainer) NeedsUpdate(force bool) bool {
+func (s *AbiContainer) NeedsUpdate() bool {
 	latest, reload := s.getAbiReload()
-	if force || reload {
+	if reload {
 		DebugInts("abis", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true

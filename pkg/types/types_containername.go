@@ -65,9 +65,9 @@ func (s *NameContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.Name)
 }
 
-func (s *NameContainer) NeedsUpdate(force bool) bool {
+func (s *NameContainer) NeedsUpdate() bool {
 	latest, reload := s.getNameReload()
-	if force || reload {
+	if reload {
 		DebugInts("names", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true

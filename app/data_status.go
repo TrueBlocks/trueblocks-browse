@@ -32,7 +32,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer statusLock.CompareAndSwap(1, 0)
 
-	if !a.status.NeedsUpdate(a.forceStatus()) {
+	if !a.status.NeedsUpdate() {
 		return nil
 	}
 

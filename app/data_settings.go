@@ -29,7 +29,7 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer settingsLock.CompareAndSwap(1, 0)
 
-	if !a.settings.NeedsUpdate(a.forceSettings()) {
+	if !a.settings.NeedsUpdate() {
 		return nil
 	}
 

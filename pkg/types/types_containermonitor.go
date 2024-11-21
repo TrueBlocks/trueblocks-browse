@@ -56,9 +56,9 @@ func (s *MonitorContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.Monitor)
 }
 
-func (s *MonitorContainer) NeedsUpdate(force bool) bool {
+func (s *MonitorContainer) NeedsUpdate() bool {
 	latest, reload := s.getMonitorReload()
-	if force || reload {
+	if reload {
 		DebugInts("monitors", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true

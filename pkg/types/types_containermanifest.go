@@ -64,9 +64,9 @@ func (s *ManifestContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.ChunkRecord)
 }
 
-func (s *ManifestContainer) NeedsUpdate(force bool) bool {
+func (s *ManifestContainer) NeedsUpdate() bool {
 	latest, reload := s.getManifestReload()
-	if force || reload {
+	if reload {
 		DebugInts("manifests", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true

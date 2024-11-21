@@ -47,9 +47,9 @@ func (s *WizardContainer) SetItems(items interface{}) {
 	s.Items = items.([]WizError)
 }
 
-func (s *WizardContainer) NeedsUpdate(force bool) bool {
+func (s *WizardContainer) NeedsUpdate() bool {
 	latest, reload := s.getWizardReload()
-	if force || reload {
+	if reload {
 		DebugInts("wizard", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true

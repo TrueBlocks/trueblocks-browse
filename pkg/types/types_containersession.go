@@ -45,9 +45,9 @@ func (s *SessionContainer) SetItems(items interface{}) {
 	// s.Items = items.([].)
 }
 
-func (s *SessionContainer) NeedsUpdate(force bool) bool {
+func (s *SessionContainer) NeedsUpdate() bool {
 	latest, reload := s.getSessionReload()
-	if force || reload {
+	if reload {
 		DebugInts("session", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true

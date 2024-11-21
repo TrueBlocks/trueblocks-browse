@@ -56,9 +56,9 @@ func (s *IndexContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.ChunkStats)
 }
 
-func (s *IndexContainer) NeedsUpdate(force bool) bool {
+func (s *IndexContainer) NeedsUpdate() bool {
 	latest, reload := s.getIndexReload()
-	if force || reload {
+	if reload {
 		DebugInts("indexes", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true

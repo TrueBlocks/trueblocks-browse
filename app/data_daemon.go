@@ -25,7 +25,7 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer daemonLock.CompareAndSwap(1, 0)
 
-	if !a.daemons.NeedsUpdate(a.forceDaemon()) {
+	if !a.daemons.NeedsUpdate() {
 		return nil
 	}
 

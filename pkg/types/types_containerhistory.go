@@ -59,9 +59,9 @@ func (s *HistoryContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.Transaction)
 }
 
-func (s *HistoryContainer) NeedsUpdate(force bool) bool {
+func (s *HistoryContainer) NeedsUpdate() bool {
 	latest, reload := s.getHistoryReload()
-	if force || reload {
+	if reload {
 		DebugInts("history", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
@@ -157,9 +157,6 @@ func (s *HistoryContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 func (s *HistoryContainer) getHistoryReload() (ret int64, reload bool) {
 	// EXISTING_CODE
-	if s.Address == base.ZeroAddr {
-		return
-	}
 	fn := coreMonitor.PathToMonitorFile(s.Chain, s.Address)
 	ret = file.FileSize(fn)
 	reload = ret > s.LastUpdate

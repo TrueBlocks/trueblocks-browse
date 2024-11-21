@@ -31,7 +31,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer projectLock.CompareAndSwap(1, 0)
 
-	if !a.project.NeedsUpdate(a.forceProject()) {
+	if !a.project.NeedsUpdate() {
 		return nil
 	}
 
@@ -46,7 +46,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 		return items[i].Address.Hex() < items[j].Address.Hex()
 	})
 	a.project = types.NewProjectContainer(a.getChain(), items)
-	if !a.project.NeedsUpdate(a.forceProject()) {
+	if !a.project.NeedsUpdate() {
 		return nil
 	}
 

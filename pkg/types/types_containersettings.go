@@ -54,10 +54,10 @@ func (s *SettingsContainer) SetItems(items interface{}) {
 	// s.Items = items.([]string)
 }
 
-func (s *SettingsContainer) NeedsUpdate(force bool) bool {
-	return s.Session.NeedsUpdate(force) ||
-		s.Config.NeedsUpdate(force) ||
-		s.Status.NeedsUpdate(force)
+func (s *SettingsContainer) NeedsUpdate() bool {
+	return s.Session.NeedsUpdate() ||
+		s.Config.NeedsUpdate() ||
+		s.Status.NeedsUpdate()
 }
 
 func (s *SettingsContainer) ShallowCopy() Containerer {

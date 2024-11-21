@@ -29,7 +29,7 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer indexLock.CompareAndSwap(1, 0)
 
-	if !a.indexes.NeedsUpdate(a.forceIndex()) {
+	if !a.indexes.NeedsUpdate() {
 		return nil
 	}
 

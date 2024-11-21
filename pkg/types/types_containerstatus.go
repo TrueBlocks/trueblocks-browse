@@ -54,9 +54,9 @@ func (s *StatusContainer) SetItems(items interface{}) {
 	s.Items = items.([]coreTypes.CacheItem)
 }
 
-func (s *StatusContainer) NeedsUpdate(force bool) bool {
+func (s *StatusContainer) NeedsUpdate() bool {
 	latest, reload := s.getStatusReload()
-	if force || reload {
+	if reload {
 		DebugInts("status", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true

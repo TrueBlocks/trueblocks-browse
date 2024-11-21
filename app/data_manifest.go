@@ -29,7 +29,7 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer manifestLock.CompareAndSwap(1, 0)
 
-	if !a.manifests.NeedsUpdate(a.forceManifest()) {
+	if !a.manifests.NeedsUpdate() {
 		return nil
 	}
 

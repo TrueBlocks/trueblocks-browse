@@ -10,7 +10,7 @@ type Containerer interface {
 	String() string
 	ShallowCopy() Containerer
 	CollateAndFilter(theMap *FilterMap) interface{}
-	NeedsUpdate(force bool) bool
+	NeedsUpdate() bool
 	GetItems() interface{}
 	SetItems(items interface{})
 }

@@ -16,7 +16,7 @@ type DaemonContainer struct {
 
 	daemons.Daemon `json:",inline"`
 	// EXISTING_CODE
-	Chain string `-` // actually unused
+	Chain string `json:"-"` // actually unused
 	// EXISTING_CODE
 }
 
@@ -44,9 +44,9 @@ func (s *DaemonContainer) SetItems(items interface{}) {
 	// s.Items = items.([].)
 }
 
-func (s *DaemonContainer) NeedsUpdate(force bool) bool {
+func (s *DaemonContainer) NeedsUpdate() bool {
 	latest, reload := s.getDaemonReload()
-	if force || reload {
+	if reload {
 		DebugInts("daemons", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true

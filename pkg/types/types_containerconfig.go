@@ -50,9 +50,9 @@ func (s *ConfigContainer) SetItems(items interface{}) {
 	// s.Items = items.([].)
 }
 
-func (s *ConfigContainer) NeedsUpdate(force bool) bool {
+func (s *ConfigContainer) NeedsUpdate() bool {
 	latest, reload := s.getConfigReload()
-	if force || reload {
+	if reload {
 		DebugInts("config", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true

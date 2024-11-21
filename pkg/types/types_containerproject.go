@@ -54,9 +54,9 @@ func (s *ProjectContainer) SetItems(items interface{}) {
 	s.Items = items.([]HistoryContainer)
 }
 
-func (s *ProjectContainer) NeedsUpdate(force bool) bool {
+func (s *ProjectContainer) NeedsUpdate() bool {
 	latest, reload := s.getProjectReload()
-	if force || reload {
+	if reload {
 		DebugInts("project", s.LastUpdate, latest)
 		s.LastUpdate = latest
 		return true
