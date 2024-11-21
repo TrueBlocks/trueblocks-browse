@@ -17,16 +17,14 @@ import (
 // EXISTING_CODE
 
 type AbiContainer struct {
-	Chain         string `json:"chain"`
-	LargestFile   string `json:"largestFile"`
-	LastUpdate    int64  `json:"lastUpdate"`
-	MostEvents    string `json:"mostEvents"`
-	MostFunctions string `json:"mostFunctions"`
-
-	Items  []coreTypes.Abi `json:"items"`
-	NItems uint64          `json:"nItems"`
-	Sorts  sdk.SortSpec    `json:"sorts"`
-
+	Chain         string          `json:"chain"`
+	LargestFile   string          `json:"largestFile"`
+	LastUpdate    int64           `json:"lastUpdate"`
+	MostEvents    string          `json:"mostEvents"`
+	MostFunctions string          `json:"mostFunctions"`
+	Items         []coreTypes.Abi `json:"items"`
+	NItems        uint64          `json:"nItems"`
+	Sorts         sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	coreTypes.Abi
 	// EXISTING_CODE
@@ -78,8 +76,7 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 		LastUpdate:    s.LastUpdate,
 		MostEvents:    s.MostEvents,
 		MostFunctions: s.MostFunctions,
-
-		NItems: s.NItems,
+		NItems:        s.NItems,
 		// EXISTING_CODE
 		Abi: s.Abi,
 		// EXISTING_CODE

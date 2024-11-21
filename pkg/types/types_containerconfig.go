@@ -17,10 +17,9 @@ import (
 // EXISTING_CODE
 
 type ConfigContainer struct {
-	Chain      string `json:"chain"`
-	LastUpdate int64  `json:"lastUpdate"`
-	NChains    uint64 `json:"nChains"`
-
+	Chain              string `json:"chain"`
+	LastUpdate         int64  `json:"lastUpdate"`
+	NChains            uint64 `json:"nChains"`
 	configTypes.Config `json:",inline"`
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -65,8 +64,7 @@ func (s *ConfigContainer) ShallowCopy() Containerer {
 		Chain:      s.Chain,
 		LastUpdate: s.LastUpdate,
 		NChains:    s.NChains,
-
-		Config: s.Config.ShallowCopy(),
+		Config:     s.Config.ShallowCopy(),
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -110,8 +108,7 @@ func (s *ConfigContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 func (s *ConfigContainer) getConfigReload() (ret int64, reload bool) {
 	// EXISTING_CODE
-	configFn, _ := utils.GetConfigFn("", "trueBlocks.toml")
-	tm, _ := file.GetModTime(configFn)
+	tm, _ := file.GetModTime(utils.MustGetConfigFn("", "trueBlocks.toml"))
 	ret = tm.Unix()
 	reload = ret > s.LastUpdate
 	// EXISTING_CODE

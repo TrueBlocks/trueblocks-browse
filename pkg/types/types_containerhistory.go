@@ -16,18 +16,17 @@ import (
 // EXISTING_CODE
 
 type HistoryContainer struct {
-	Address    base.Address `json:"address"`
-	Balance    string       `json:"balance"`
-	Chain      string       `json:"chain"`
-	LastUpdate int64        `json:"lastUpdate"`
-	NErrors    uint64       `json:"nErrors"`
-	NLogs      uint64       `json:"nLogs"`
-	NTokens    uint64       `json:"nTokens"`
-	NTotal     uint64       `json:"nTotal"`
-	Name       string       `json:"name"`
-
-	Items  []coreTypes.Transaction `json:"items"`
-	NItems uint64                  `json:"nItems"`
+	Address    base.Address            `json:"address"`
+	Balance    string                  `json:"balance"`
+	Chain      string                  `json:"chain"`
+	LastUpdate int64                   `json:"lastUpdate"`
+	NErrors    uint64                  `json:"nErrors"`
+	NLogs      uint64                  `json:"nLogs"`
+	NTokens    uint64                  `json:"nTokens"`
+	NTotal     uint64                  `json:"nTotal"`
+	Name       string                  `json:"name"`
+	Items      []coreTypes.Transaction `json:"items"`
+	NItems     uint64                  `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -80,8 +79,7 @@ func (s *HistoryContainer) ShallowCopy() Containerer {
 		NTokens:    s.NTokens,
 		NTotal:     s.NTotal,
 		Name:       s.Name,
-
-		NItems: s.NItems,
+		NItems:     s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

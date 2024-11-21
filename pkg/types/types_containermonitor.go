@@ -16,17 +16,16 @@ import (
 // EXISTING_CODE
 
 type MonitorContainer struct {
-	Chain      string `json:"chain"`
-	FileSize   uint64 `json:"fileSize"`
-	LastUpdate int64  `json:"lastUpdate"`
-	NDeleted   uint64 `json:"nDeleted"`
-	NEmpty     uint64 `json:"nEmpty"`
-	NNamed     uint64 `json:"nNamed"`
-	NRecords   uint64 `json:"nRecords"`
-	NStaged    uint64 `json:"nStaged"`
-
-	Items  []coreTypes.Monitor `json:"items"`
-	NItems uint64              `json:"nItems"`
+	Chain      string              `json:"chain"`
+	FileSize   uint64              `json:"fileSize"`
+	LastUpdate int64               `json:"lastUpdate"`
+	NDeleted   uint64              `json:"nDeleted"`
+	NEmpty     uint64              `json:"nEmpty"`
+	NNamed     uint64              `json:"nNamed"`
+	NRecords   uint64              `json:"nRecords"`
+	NStaged    uint64              `json:"nStaged"`
+	Items      []coreTypes.Monitor `json:"items"`
+	NItems     uint64              `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -76,8 +75,7 @@ func (s *MonitorContainer) ShallowCopy() Containerer {
 		NNamed:     s.NNamed,
 		NRecords:   s.NRecords,
 		NStaged:    s.NStaged,
-
-		NItems: s.NItems,
+		NItems:     s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

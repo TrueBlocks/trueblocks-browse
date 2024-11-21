@@ -15,26 +15,25 @@ import (
 // EXISTING_CODE
 
 type ManifestContainer struct {
-	BloomsSize    uint64 `json:"bloomsSize"`
-	Chain         string `json:"chain"`
-	IndexSize     uint64 `json:"indexSize"`
-	LastUpdate    int64  `json:"lastUpdate"`
-	NBlooms       uint64 `json:"nBlooms"`
-	NIndexes      uint64 `json:"nIndexes"`
-	Specification string `json:"specification"`
-	Version       string `json:"version"`
-
-	Items  []coreTypes.ChunkRecord `json:"items"`
-	NItems uint64                  `json:"nItems"`
-	Sorts  sdk.SortSpec            `json:"sorts"`
-
+	BloomsSize    uint64                  `json:"bloomsSize"`
+	Chain         string                  `json:"chain"`
+	IndexSize     uint64                  `json:"indexSize"`
+	LastUpdate    int64                   `json:"lastUpdate"`
+	NBlooms       uint64                  `json:"nBlooms"`
+	NIndexes      uint64                  `json:"nIndexes"`
+	Specification string                  `json:"specification"`
+	Version       string                  `json:"version"`
+	Items         []coreTypes.ChunkRecord `json:"items"`
+	NItems        uint64                  `json:"nItems"`
+	Sorts         sdk.SortSpec            `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 func NewManifestContainer(chain string, itemsIn []coreTypes.Manifest) ManifestContainer {
 	ret := ManifestContainer{
-		Items: make([]coreTypes.ChunkRecord, 0, len(itemsIn)),
+		Items:  make([]coreTypes.ChunkRecord, 0, len(itemsIn)),
+		NItems: 0,
 		Sorts: sdk.SortSpec{
 			Fields: []string{"range"},
 			Order:  []sdk.SortOrder{sdk.Dec},
@@ -84,8 +83,7 @@ func (s *ManifestContainer) ShallowCopy() Containerer {
 		NIndexes:      s.NIndexes,
 		Specification: s.Specification,
 		Version:       s.Version,
-
-		NItems: s.NItems,
+		NItems:        s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

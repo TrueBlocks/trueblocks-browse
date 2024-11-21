@@ -18,20 +18,19 @@ import (
 // EXISTING_CODE
 
 type NameContainer struct {
-	Chain      string `json:"chain"`
-	LastUpdate int64  `json:"lastUpdate"`
-	NContracts uint64 `json:"nContracts"`
-	NCustom    uint64 `json:"nCustom"`
-	NDeleted   uint64 `json:"nDeleted"`
-	NErc20s    uint64 `json:"nErc20s"`
-	NErc721s   uint64 `json:"nErc721s"`
-	NPrefund   uint64 `json:"nPrefund"`
-	NRegular   uint64 `json:"nRegular"`
-	NSystem    uint64 `json:"nSystem"`
-	SizeOnDisc uint64 `json:"sizeOnDisc"`
-
-	Items  []coreTypes.Name `json:"items"`
-	NItems uint64           `json:"nItems"`
+	Chain      string           `json:"chain"`
+	LastUpdate int64            `json:"lastUpdate"`
+	NContracts uint64           `json:"nContracts"`
+	NCustom    uint64           `json:"nCustom"`
+	NDeleted   uint64           `json:"nDeleted"`
+	NErc20s    uint64           `json:"nErc20s"`
+	NErc721s   uint64           `json:"nErc721s"`
+	NPrefund   uint64           `json:"nPrefund"`
+	NRegular   uint64           `json:"nRegular"`
+	NSystem    uint64           `json:"nSystem"`
+	SizeOnDisc uint64           `json:"sizeOnDisc"`
+	Items      []coreTypes.Name `json:"items"`
+	NItems     uint64           `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -88,8 +87,7 @@ func (s *NameContainer) ShallowCopy() Containerer {
 		NRegular:   s.NRegular,
 		NSystem:    s.NSystem,
 		SizeOnDisc: s.SizeOnDisc,
-
-		NItems: s.NItems,
+		NItems:     s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

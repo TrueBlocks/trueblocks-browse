@@ -13,18 +13,17 @@ import (
 // EXISTING_CODE
 
 type ProjectContainer struct {
-	Chain       string `json:"chain"`
-	HistorySize uint64 `json:"historySize"`
-	LastUpdate  int64  `json:"lastUpdate"`
-	NAbis       uint64 `json:"nAbis"`
-	NCaches     uint64 `json:"nCaches"`
-	NIndexes    uint64 `json:"nIndexes"`
-	NManifests  uint64 `json:"nManifests"`
-	NMonitors   uint64 `json:"nMonitors"`
-	NNames      uint64 `json:"nNames"`
-
-	Items  []HistoryContainer `json:"items"`
-	NItems uint64             `json:"nItems"`
+	Chain       string             `json:"chain"`
+	HistorySize uint64             `json:"historySize"`
+	LastUpdate  int64              `json:"lastUpdate"`
+	NAbis       uint64             `json:"nAbis"`
+	NCaches     uint64             `json:"nCaches"`
+	NIndexes    uint64             `json:"nIndexes"`
+	NManifests  uint64             `json:"nManifests"`
+	NMonitors   uint64             `json:"nMonitors"`
+	NNames      uint64             `json:"nNames"`
+	Items       []HistoryContainer `json:"items"`
+	NItems      uint64             `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -75,8 +74,7 @@ func (s *ProjectContainer) ShallowCopy() Containerer {
 		NManifests:  s.NManifests,
 		NMonitors:   s.NMonitors,
 		NNames:      s.NNames,
-
-		NItems: s.NItems,
+		NItems:      s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

@@ -1,32 +1,64 @@
+{{/*==============================================================*/}}
+
 {{ $class := .Class }}
+{{ $container := print $class "Container" }}
 {{ $routeName := .UiRouteName}}
 {{ $routeLower := toLower .UiRouteName -}}
-{{ $embedType := .EmbedType }}
 {{ $embedName := .EmbedName }}
-{{ $itemType := .ItemType}}
+{{ $embedType := .EmbedType }}
 {{ $itemName := .ItemName}}
+{{ $itemType := .ItemType}}
 {{ $members := .Members }}
-{{ $container := print $class "Container" }}
+
+{{ $hasItems := and (gt (len $itemName) 0) true }}
+{{ $hasEmbed := and (gt (len $embedName) 0) true }}
+{{ $hasSorts := .HasSorts }}
 
 {{ $isHistory := eq $class "History" }}
 {{ $isManifest := eq $class "Manifest" }}
 {{ $isSettings := eq $class "Settings" }}
+{{ $isProject := eq $class "Project" }}
+{{ $isMonitor := eq $class "Monitor" }}
+{{ $isAbi := eq $class "Abi" }}
+{{ $isNameDependant := or (or $isProject $isHistory) (or $isMonitor $isAbi) }}
+
+{{/*==============================================================*/}}
 
 {{ $inputType := $itemType }}
-{{ $itemsInit1 := "\n  Items: itemsIn," }}
-{{ $itemsInit2 := "\n  NItems: uint64(len(itemsIn))," }}
+{{ $itemsInit1 := "  Items: itemsIn," }}
+{{ $itemsInit2 := "  NItems: uint64(len(itemsIn))," }}
 {{ if $isManifest }}
 	{{ $inputType = "coreTypes.Manifest" }}
-	{{ $itemsInit1 = print "\n  Items: make([]" $itemType ", 0, len(itemsIn))," }}
-	{{ $itemsInit2 = "" }}
+	{{ $itemsInit1 = print "  Items: make([]" $itemType ", 0, len(itemsIn))," }}
+	{{ $itemsInit2 = "NItems: 0," }}
 {{ else if $isSettings }}
 	{{ $inputType = "types.SettingsProp" }}
 {{ end }}
 
-{{ $hasSorts := .HasSorts }}
+{{ $items1 := "//-- remove line --" }}
+{{ $items2 := "//-- remove line --" }}
+{{ $items3 := "//-- remove line --" }}
+{{ if $hasItems }}
+	{{ $items1 = print "Items []" $itemType "`json:\"items\"`\n  NItems uint64 `json:\"nItems\"`" }}
+	{{ $items2 = print $itemsInit1 "\n" $itemsInit2 }}
+	{{ $items3 = "NItems: s.NItems," }}
+{{ end }}
 
-{{ $hasItems := and (gt (len $itemName) 0) true }}
-{{ $hasEmbed := and (gt (len $embedName) 0) true }}
+{{ $embed1 := "//-- remove line --" }}
+{{ $embed2 := "//-- remove line --" }}
+{{ $embed3 := "//-- remove line --" }}
+{{ if $hasEmbed }}
+	{{ $embed1 = print "  " $embedType "`json:\",inline\"`" }}
+	{{ $embed2 = print "  " (toProper $embedName) ": *" (toLower $embedName) "," }}
+	{{ $embed3 = print "  " (toProper $embedName) ": s." (toProper $embedName) ".ShallowCopy()," }}
+{{ end }}
+
+{{ $sorts1 := "//-- remove line --" }}
+{{ $sorts2 := "//-- remove line --" }}
+{{ if $hasSorts }}
+	{{ $sorts1 = print "  Sorts sdk.SortSpec `json:\"sorts\"`" }}
+	{{ $sorts2 = print "  Sorts: " .SortsInstance }}
+{{ end }}
 
 {{ $param1 := "" }}
 {{ if $hasItems }}
@@ -43,31 +75,6 @@
 	{{ $param3 = ", address base.Address" }}
 {{end}}
 
-{{ $embed1 := "" }}
-{{ $embed2 := "" }}
-{{ $embed3 := "" }}
-{{ if $hasEmbed }}
-	{{ $embed1 = print "\n  " $embedType "`json:\",inline\"`" }}
-	{{ $embed2 = print "\n  " (toProper $embedName) ": *" (toLower $embedName) "," }}
-	{{ $embed3 = print "\n  " (toProper $embedName) ": s." (toProper $embedName) ".ShallowCopy()," }}
-{{ end }}
-
-{{ $items1 := "" }}
-{{ $items2 := "" }}
-{{ $items3 := "" }}
-{{ if $hasItems }}
-	{{ $items1 = print "\n  Items []" $itemType "`json:\"items\"`\nNItems uint64 `json:\"nItems\"`" }}
-	{{ $items2 = print $itemsInit1 $itemsInit2 }}
-	{{ $items3 = print "\n  NItems: s.NItems," }}
-{{ end }}
-
-{{ $sorts1 := "" }}
-{{ $sorts2 := "" }}
-{{ if $hasSorts }}
-	{{ $sorts1 = print "\n  Sorts sdk.SortSpec `json:\"sorts\"`\n" }}
-	{{ $sorts2 = print "\n  Sorts: " .SortsInstance }}
-{{ end }}
-
 {{ $setItems := print "s.Items = items.([]" $itemType ")" }}
 {{ if not $hasItems }}
 	{{ $setItems = print "// " $setItems }}
@@ -77,6 +84,11 @@
 {{ if not $hasItems }}
 	{{ $getItems = print "nil" }}
 {{end}}
+
+{{ $nameCheck := "" }}
+{{ if $isNameDependant }}
+	{{ $nameCheck = "if ret, reload = checkNameReload(s.LastUpdate); reload {\nreturn\n}\n" }}
+{{ end }}
 
 {{/*==============================================================*/}}
 {{ $needsLoad := .Needs "load"}}
@@ -89,18 +101,19 @@ package types
 // EXISTING_CODE
 
 type {{$container}} struct {
-	{{range $members -}}
-		{{- if .IsSimpField -}}
-			{{.GoName}} {{.GoType}} {{.Tag}}
-		{{end -}}
-	{{end -}}
-	{{$items1}}{{$embed1}}{{$sorts1}}
+	{{range $members}}{{if .IsSimpField}}{{.GoName}} {{.GoType}} {{.Tag}}
+	{{end}}{{end}} {{$items1}}
+	{{$embed1}}
+	{{$sorts1}}
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 func New{{$container}}(chain string{{$param1}}{{$param2}}{{$param3}}) {{$container}} {
-	ret := {{$container}}{ {{$items2}}{{$embed2}}{{$sorts2}}
+	ret := {{$container}}{
+		{{$items2}}
+		{{$embed2}}
+		{{$sorts2}}
  	}
 	ret.Chain = chain
 	ret.LastUpdate, _ = ret.get{{$class}}Reload()
@@ -134,8 +147,10 @@ func (s *{{$container}}) NeedsUpdate() bool {
 
 func (s *{{$container}}) ShallowCopy() Containerer {
 	ret := &{{$container}}{
-{{range $members}}{{if .IsSimpField}}{{.GoName}}: s.{{.GoName}},
-{{end -}}{{- end -}}{{$embed3 -}}{{$items3}}
+	{{range $members}}{{if .IsSimpField}}{{.GoName}}: s.{{.GoName}},
+{{end}}{{end -}}
+		{{$items3}}
+		{{$embed3}}
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -159,8 +174,10 @@ func (s *{{$container}}) passesFilter({{if $hasItems}}item *{{$itemType}}, {{els
 }
 
 func (s *{{$container}}) Accumulate({{if $hasItems}}item *{{$itemType}}{{end}}) {
-	{{if $hasItems}}	s.NItems++
-	{{end}}	// EXISTING_CODE
+	{{if $hasItems -}}
+		s.NItems++
+	{{end -}}
+	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
