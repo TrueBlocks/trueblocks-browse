@@ -20,9 +20,9 @@ import (
 type AbiContainer struct {
 	Chain         string          `json:"chain"`
 	LargestFile   string          `json:"largestFile"`
-	Updater       walk.Updater    `json:"updater"`
 	MostEvents    string          `json:"mostEvents"`
 	MostFunctions string          `json:"mostFunctions"`
+	Updater       walk.Updater    `json:"updater"`
 	Items         []coreTypes.Abi `json:"items"`
 	NItems        uint64          `json:"nItems"`
 	Sorts         sdk.SortSpec    `json:"sorts"`
@@ -39,17 +39,12 @@ func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 			Fields: []string{"isEmpty", "isKnown", "address"},
 			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},
 		},
-		Updater: NewAbiUpdater(chain),
 		Chain:   chain,
+		Updater: NewAbiUpdater(chain),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
-}
-
-func (s *AbiContainer) String() string {
-	bytes, _ := json.Marshal(s)
-	return string(bytes)
 }
 
 func NewAbiUpdater(chain string) walk.Updater {
@@ -62,6 +57,11 @@ func NewAbiUpdater(chain string) walk.Updater {
 	updater, _ := walk.NewUpdater("abis", paths, walk.TypeFolders)
 	// EXISTING_CODE
 	return updater
+}
+
+func (s *AbiContainer) String() string {
+	bytes, _ := json.Marshal(s)
+	return string(bytes)
 }
 
 func (s *AbiContainer) GetItems() interface{} {
@@ -85,9 +85,9 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 	ret := &AbiContainer{
 		Chain:         s.Chain,
 		LargestFile:   s.LargestFile,
-		Updater:       s.Updater,
 		MostEvents:    s.MostEvents,
 		MostFunctions: s.MostFunctions,
+		Updater:       s.Updater,
 		NItems:        s.NItems,
 		// EXISTING_CODE
 		Abi: s.Abi,

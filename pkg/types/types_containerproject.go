@@ -18,13 +18,13 @@ import (
 type ProjectContainer struct {
 	Chain       string             `json:"chain"`
 	HistorySize uint64             `json:"historySize"`
-	Updater     walk.Updater       `json:"updater"`
 	NAbis       uint64             `json:"nAbis"`
 	NCaches     uint64             `json:"nCaches"`
 	NIndexes    uint64             `json:"nIndexes"`
 	NManifests  uint64             `json:"nManifests"`
 	NMonitors   uint64             `json:"nMonitors"`
 	NNames      uint64             `json:"nNames"`
+	Updater     walk.Updater       `json:"updater"`
 	Items       []HistoryContainer `json:"items"`
 	NItems      uint64             `json:"nItems"`
 	// EXISTING_CODE
@@ -35,8 +35,8 @@ func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContai
 	ret := ProjectContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Updater: NewProjectUpdater(chain, itemsIn),
 		Chain:   chain,
+		Updater: NewProjectUpdater(chain, itemsIn),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -84,13 +84,13 @@ func (s *ProjectContainer) ShallowCopy() Containerer {
 	ret := &ProjectContainer{
 		Chain:       s.Chain,
 		HistorySize: s.HistorySize,
-		Updater:     s.Updater,
 		NAbis:       s.NAbis,
 		NCaches:     s.NCaches,
 		NIndexes:    s.NIndexes,
 		NManifests:  s.NManifests,
 		NMonitors:   s.NMonitors,
 		NNames:      s.NNames,
+		Updater:     s.Updater,
 		NItems:      s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE

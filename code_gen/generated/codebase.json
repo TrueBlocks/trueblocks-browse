@@ -1,0 +1,694 @@
+{
+    "commands": [],
+    "structures": [
+        {
+            "class": "Project",
+            "doc_route": "0000-containers",
+            "ui_route": "0000-project-1",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "itemType=types.HistoryContainer|noSdk",
+            "members": [
+                {
+                    "name": "nMonitors",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nNames",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "nAbis",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "nIndexes",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "nManifests",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nCaches",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "historySize",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "updater",
+                    "type": "walk.Updater",
+                    "description": "jim",
+                    "num": 9
+                }
+            ]
+        },
+        {
+            "class": "History",
+            "doc_route": "1010-containers",
+            "ui_route": "1010-history-2",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.Transaction|noSdk",
+            "members": [
+                {
+                    "name": "address",
+                    "type": "address",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nTotal",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "balance",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "nLogs",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nTokens",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "nErrors",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "updater",
+                    "type": "walk.Updater",
+                    "description": "jim",
+                    "num": 9
+                }
+            ]
+        },
+        {
+            "class": "Monitor",
+            "doc_route": "1020-containers",
+            "ui_route": "1020-monitors-3",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.Monitor",
+            "members": [
+                {
+                    "name": "nNamed",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nStaged",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "nEmpty",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "nDeleted",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "fileSize",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nRecords",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "updater",
+                    "type": "walk.Updater",
+                    "description": "jim",
+                    "num": 8
+                }
+            ]
+        },
+        {
+            "class": "Name",
+            "doc_route": "1030-containers",
+            "ui_route": "1030-names-4",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.Name",
+            "members": [
+                {
+                    "name": "nContracts",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nCustom",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "nDeleted",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "nErc20s",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "nErc721s",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nPrefund",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "nRegular",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "nSystem",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "sizeOnDisc",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 9
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 10
+                },
+                {
+                    "name": "updater",
+                    "type": "walk.Updater",
+                    "description": "jim",
+                    "num": 11
+                }
+            ]
+        },
+        {
+            "class": "Abi",
+            "doc_route": "1040-containers",
+            "ui_route": "1040-abis-5",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.Abi",
+            "sorts": "isEmpty+Asc,isKnown+Asc,address+Asc",
+            "members": [
+                {
+                    "name": "largestFile",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "mostFunctions",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "mostEvents",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "updater",
+                    "type": "walk.Updater",
+                    "description": "jim",
+                    "num": 5
+                }
+            ]
+        },
+        {
+            "class": "Index",
+            "doc_route": "1050-containers",
+            "ui_route": "1050-indexes-6",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.ChunkStats",
+            "sorts": "range+Dec",
+            "members": [
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "updater",
+                    "type": "walk.Updater",
+                    "description": "jim",
+                    "num": 2
+                }
+            ]
+        },
+        {
+            "class": "Manifest",
+            "doc_route": "1060-containers",
+            "ui_route": "1060-manifests-7",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.ChunkRecord",
+            "sorts": "range+Dec",
+            "members": [
+                {
+                    "name": "nBlooms",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "bloomsSize",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "nIndexes",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "indexSize",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "specification",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "version",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "updater",
+                    "type": "walk.Updater",
+                    "description": "jim",
+                    "num": 8
+                }
+            ]
+        },
+        {
+            "class": "Status",
+            "doc_route": "1070-containers",
+            "ui_route": "1070-status-8",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.CacheItem|embedType=coreTypes.Status",
+            "members": [
+                {
+                    "name": "nFolders",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nFiles",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "nBytes",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "updater",
+                    "type": "walk.Updater",
+                    "description": "jim",
+                    "num": 4
+                }
+            ]
+        },
+        {
+            "class": "Settings",
+            "doc_route": "1080-containers",
+            "ui_route": "1080-settings-9",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "itemType=coreTypes.CacheItem|noLoad|noSdk|noPaging",
+            "members": [
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "updater",
+                    "type": "walk.Updater",
+                    "description": "jim",
+                    "num": 2
+                }
+            ]
+        },
+        {
+            "class": "Daemon",
+            "doc_route": "1090-containers",
+            "ui_route": "1090-daemons-0",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "embedType=daemons.Daemon|noSdk|noPaging",
+            "members": [
+                {
+                    "name": "updater",
+                    "type": "walk.Updater",
+                    "description": "jim",
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "class": "Session",
+            "doc_route": "1100-containers",
+            "ui_route": "1100-session-u",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "embedType=coreTypes.Session|noPaging",
+            "members": [
+                {
+                    "name": "updater",
+                    "type": "walk.Updater",
+                    "description": "jim",
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "class": "Config",
+            "doc_route": "1110-containers",
+            "ui_route": "1110-config-v",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "embedType=configTypes.Config|noSdk|noPaging",
+            "members": [
+                {
+                    "name": "nChains",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "updater",
+                    "type": "walk.Updater",
+                    "description": "jim",
+                    "num": 3
+                }
+            ]
+        },
+        {
+            "class": "Wizard",
+            "doc_route": "1120-containers",
+            "ui_route": "1120-wizard-w",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "itemType=types.WizError|noSdk",
+            "members": [
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "updater",
+                    "type": "walk.Updater",
+                    "description": "jim",
+                    "num": 2
+                }
+            ]
+        }
+    ],
+    "baseTypes": [
+        {
+            "class": "[]string",
+            "doc_group": "base",
+            "doc_descr": "an array of strings"
+        },
+        {
+            "class": "address",
+            "doc_group": "base",
+            "doc_descr": "an '0x'-prefixed 20-byte hex string",
+            "doc_notes": "lowercase"
+        },
+        {
+            "class": "addrRecord",
+            "doc_group": "base",
+            "doc_descr": "an address record in the Unchained Index chunk",
+            "doc_notes": "address-count-position"
+        },
+        {
+            "class": "any",
+            "doc_group": "base",
+            "doc_descr": "any cache item found in the binary cache"
+        },
+        {
+            "class": "appRecord",
+            "doc_group": "base",
+            "doc_descr": "an appearance record in the Unchained Index chunk",
+            "doc_notes": "blockNum-txIndex"
+        },
+        {
+            "class": "blknum",
+            "doc_group": "base",
+            "doc_descr": "an alias for a uint64"
+        },
+        {
+            "class": "blkrange",
+            "doc_group": "base",
+            "doc_descr": "a pair of nine-digit block numbers",
+            "doc_notes": "zero padded"
+        },
+        {
+            "class": "bool",
+            "doc_group": "base",
+            "doc_descr": "either `true`, `false`, `1`, or `0`"
+        },
+        {
+            "class": "bytes",
+            "doc_group": "base",
+            "doc_descr": "an arbitrarily long string of bytes"
+        },
+        {
+            "class": "bytes32",
+            "doc_group": "base",
+            "doc_descr": "a 32-byte long string of bytes"
+        },
+        {
+            "class": "datetime",
+            "doc_group": "base",
+            "doc_descr": "a JSON formatted date",
+            "doc_notes": "as a string"
+        },
+        {
+            "class": "ether",
+            "doc_group": "base",
+            "doc_descr": "a big number float",
+            "doc_notes": "as a string"
+        },
+        {
+            "class": "float64",
+            "doc_group": "base",
+            "doc_descr": "a double precision float",
+            "doc_notes": "64 bits"
+        },
+        {
+            "class": "gas",
+            "doc_group": "base",
+            "doc_descr": "a 64-bit unsigned integer"
+        },
+        {
+            "class": "hash",
+            "doc_group": "base",
+            "doc_descr": "an '0x'-prefixed 32-byte hex string",
+            "doc_notes": "lowercase"
+        },
+        {
+            "class": "int256",
+            "doc_group": "base",
+            "doc_descr": "a signed big number",
+            "doc_notes": "as a string"
+        },
+        {
+            "class": "int64",
+            "doc_group": "base",
+            "doc_descr": "a 64-bit signed integer"
+        },
+        {
+            "class": "ipfshash",
+            "doc_group": "base",
+            "doc_descr": "a multi-hash produced by IPFS",
+            "doc_notes": "mixed-case"
+        },
+        {
+            "class": "lognum",
+            "doc_group": "base",
+            "doc_descr": "an alias for a uint64"
+        },
+        {
+            "class": "string",
+            "doc_group": "base",
+            "doc_descr": "a normal character string"
+        },
+        {
+            "class": "timestamp",
+            "doc_group": "base",
+            "doc_descr": "a 64-bit unsigned integer",
+            "doc_notes": "Unix timestamp"
+        },
+        {
+            "class": "tokenType",
+            "doc_group": "base",
+            "doc_descr": "a string representing the token's type",
+            "doc_notes": "see chifra slurp docs"
+        },
+        {
+            "class": "topic",
+            "doc_group": "base",
+            "doc_descr": "an '0x'-prefixed 32-byte hex string",
+            "doc_notes": "lowercase"
+        },
+        {
+            "class": "txnum",
+            "doc_group": "base",
+            "doc_descr": "an alias for a uint64"
+        },
+        {
+            "class": "uint256",
+            "doc_group": "base",
+            "doc_descr": "a 256-bit unsigned integer"
+        },
+        {
+            "class": "uint32",
+            "doc_group": "base",
+            "doc_descr": "a 32-bit unsigned integer"
+        },
+        {
+            "class": "uint64",
+            "doc_group": "base",
+            "doc_descr": "a 64-bit unsigned integer"
+        },
+        {
+            "class": "uint8",
+            "doc_group": "base",
+            "doc_descr": "an alias for the boolean type"
+        },
+        {
+            "class": "value",
+            "doc_group": "base",
+            "doc_descr": "an alias for a 64-bit unsigned integer"
+        },
+        {
+            "class": "wei",
+            "doc_group": "base",
+            "doc_descr": "an unsigned big number",
+            "doc_notes": "as a string"
+        }
+    ]
+}

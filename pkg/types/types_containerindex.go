@@ -33,17 +33,12 @@ func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContai
 			Fields: []string{"range"},
 			Order:  []sdk.SortOrder{sdk.Dec},
 		},
-		Updater: NewIndexUpdater(chain),
 		Chain:   chain,
+		Updater: NewIndexUpdater(chain),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
-}
-
-func (s *IndexContainer) String() string {
-	bytes, _ := json.Marshal(s)
-	return string(bytes)
 }
 
 func NewIndexUpdater(chain string) walk.Updater {
@@ -56,6 +51,11 @@ func NewIndexUpdater(chain string) walk.Updater {
 	return updater
 }
 
+func (s *IndexContainer) String() string {
+	bytes, _ := json.Marshal(s)
+	return string(bytes)
+}
+
 func (s *IndexContainer) GetItems() interface{} {
 	return s.Items
 }
@@ -66,7 +66,7 @@ func (s *IndexContainer) SetItems(items interface{}) {
 
 func (s *IndexContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("index", s.Updater, updater)
+		DebugInts("indexes", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

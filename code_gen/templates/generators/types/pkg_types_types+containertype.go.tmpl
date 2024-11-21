@@ -19,14 +19,16 @@
 {{ $isSettings := eq $class "Settings" }}
 {{ $isProject := eq $class "Project" }}
 {{ $isMonitor := eq $class "Monitor" }}
+{{ $isStatus := eq $class "Status" }}
+{{ $isSession := eq $class "Session" }}
 {{ $isAbi := eq $class "Abi" }}
 {{ $isNameDependant := or (or $isProject $isHistory) (or $isMonitor $isAbi) }}
 
 {{/*==============================================================*/}}
 
 {{ $inputType := $itemType }}
-{{ $itemsInit1 := "  Items: itemsIn," }}
-{{ $itemsInit2 := "  NItems: uint64(len(itemsIn))," }}
+{{ $itemsInit1 := "  Items:   itemsIn," }}
+{{ $itemsInit2 := "  NItems:  uint64(len(itemsIn))," }}
 {{ if $isManifest }}
 	{{ $inputType = "coreTypes.Manifest" }}
 	{{ $itemsInit1 = print "  Items: make([]" $itemType ", 0, len(itemsIn))," }}
@@ -71,9 +73,27 @@
 {{ end }}
 
 {{ $param3 := "" }}
+{{ $param4 := "" }}
+{{ $param5 := "" }}
 {{ if $isHistory }}
 	{{ $param3 = ", address base.Address" }}
-{{end}}
+	{{ $param4 = ", address" }}
+	{{ $param5 = ", address base.Address" }}
+{{ else if $isProject }}
+	{{ $param4 = ", itemsIn" }}
+	{{ $param5 = ", itemsIn []HistoryContainer" }}
+{{ end }}
+
+{{ $remains := "//-- remove line --" }}
+{{ if or $hasItems $hasEmbed }}
+	{{ if or $isStatus $isSession }}
+		{{ $remains = print "  Updater: New" $class "Updater(chain)," }}
+	{{ else if $isHistory }}
+		{{ $remains = print "  Address: address, \n Chain:   chain, \n  Updater: New" $class "Updater(chain" $param4 ")," }}
+	{{ else }}
+		{{ $remains = print "  Chain:   chain, \n  Updater: New" $class "Updater(chain" $param4 ")," }}
+	{{ end }}
+{{ end }}
 
 {{ $setItems := print "s.Items = items.([]" $itemType ")" }}
 {{ if not $hasItems }}
@@ -109,23 +129,22 @@ func New{{$container}}(chain string{{$param1}}{{$param2}}{{$param3}}) {{$contain
 		{{$items2}}
 		{{$embed2}}
 		{{$sorts2}}
+		{{$remains}}
  	}
-	ret.Chain = chain
-	ret.LastUpdate, _ = ret.get{{$class}}Reload()
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
 }
 
-func (s *{{$container}}) String() string {
-	bytes, _ := json.Marshal(s)
-	return string(bytes)
-}
-
-func New{{$class}}Updater(chain string) walk.Updater {
+func New{{$class}}Updater(chain string{{$param5}}) walk.Updater {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return updater
+}
+
+func (s *{{$container}}) String() string {
+	bytes, _ := json.Marshal(s)
+	return string(bytes)
 }
 
 func (s *{{$container}}) GetItems() interface{} {
@@ -137,7 +156,7 @@ func (s *{{$container}}) SetItems(items interface{}) {
 }
 
 func (s *{{$container}}) NeedsUpdate() bool {
-	if updater, reload := s.Updater.NeedsReload(); reload {
+	if updater, reload := s.Updater.NeedsUpdate(); reload {
 		DebugInts("{{toLower $routeName}}", s.Updater, updater)
 		s.Updater = updater
 		return true

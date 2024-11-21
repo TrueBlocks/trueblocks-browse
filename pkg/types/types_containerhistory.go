@@ -19,7 +19,6 @@ import (
 // EXISTING_CODE
 
 type HistoryContainer struct {
-	Updater walk.Updater            `json:"updater"`
 	Address base.Address            `json:"address"`
 	Balance string                  `json:"balance"`
 	Chain   string                  `json:"chain"`
@@ -28,6 +27,7 @@ type HistoryContainer struct {
 	NTokens uint64                  `json:"nTokens"`
 	NTotal  uint64                  `json:"nTotal"`
 	Name    string                  `json:"name"`
+	Updater walk.Updater            `json:"updater"`
 	Items   []coreTypes.Transaction `json:"items"`
 	NItems  uint64                  `json:"nItems"`
 	// EXISTING_CODE
@@ -38,18 +38,13 @@ func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address 
 	ret := HistoryContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Chain:   chain,
 		Address: address,
+		Chain:   chain,
 		Updater: NewHistoryUpdater(chain, address),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
-}
-
-func (s *HistoryContainer) String() string {
-	bytes, _ := json.Marshal(s)
-	return string(bytes)
 }
 
 func NewHistoryUpdater(chain string, address base.Address) walk.Updater {
@@ -62,6 +57,11 @@ func NewHistoryUpdater(chain string, address base.Address) walk.Updater {
 	updater, _ := walk.NewUpdater("history", paths, walk.TypeFiles)
 	// EXISTING_CODE
 	return updater
+}
+
+func (s *HistoryContainer) String() string {
+	bytes, _ := json.Marshal(s)
+	return string(bytes)
 }
 
 func (s *HistoryContainer) GetItems() interface{} {
@@ -83,7 +83,6 @@ func (s *HistoryContainer) NeedsUpdate() bool {
 
 func (s *HistoryContainer) ShallowCopy() Containerer {
 	ret := &HistoryContainer{
-		Updater: s.Updater,
 		Address: s.Address,
 		Balance: s.Balance,
 		Chain:   s.Chain,
@@ -92,8 +91,8 @@ func (s *HistoryContainer) ShallowCopy() Containerer {
 		NTokens: s.NTokens,
 		NTotal:  s.NTotal,
 		Name:    s.Name,
+		Updater: s.Updater,
 		NItems:  s.NItems,
-		Items:   append([]coreTypes.Transaction{}, s.Items...),
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

@@ -22,7 +22,6 @@ var namesChain = "mainnet"
 
 type NameContainer struct {
 	Chain      string           `json:"chain"`
-	Updater    walk.Updater     `json:"updater"`
 	NContracts uint64           `json:"nContracts"`
 	NCustom    uint64           `json:"nCustom"`
 	NDeleted   uint64           `json:"nDeleted"`
@@ -32,6 +31,7 @@ type NameContainer struct {
 	NRegular   uint64           `json:"nRegular"`
 	NSystem    uint64           `json:"nSystem"`
 	SizeOnDisc uint64           `json:"sizeOnDisc"`
+	Updater    walk.Updater     `json:"updater"`
 	Items      []coreTypes.Name `json:"items"`
 	NItems     uint64           `json:"nItems"`
 	// EXISTING_CODE
@@ -45,7 +45,6 @@ func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 		Chain:   chain,
 		Updater: NewNameUpdater(chain),
 	}
-
 	// EXISTING_CODE
 	ret.Chain = "mainnet" // all names are on mainnet
 	sort.Slice(ret.Items, func(i, j int) bool {
@@ -81,7 +80,7 @@ func (s *NameContainer) SetItems(items interface{}) {
 
 func (s *NameContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("name", s.Updater, updater)
+		DebugInts("names", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}
@@ -91,7 +90,6 @@ func (s *NameContainer) NeedsUpdate() bool {
 func (s *NameContainer) ShallowCopy() Containerer {
 	ret := &NameContainer{
 		Chain:      s.Chain,
-		Updater:    s.Updater,
 		NContracts: s.NContracts,
 		NCustom:    s.NCustom,
 		NDeleted:   s.NDeleted,
@@ -101,6 +99,7 @@ func (s *NameContainer) ShallowCopy() Containerer {
 		NRegular:   s.NRegular,
 		NSystem:    s.NSystem,
 		SizeOnDisc: s.SizeOnDisc,
+		Updater:    s.Updater,
 		NItems:     s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE

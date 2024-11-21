@@ -14,10 +14,10 @@ import (
 // EXISTING_CODE
 
 type StatusContainer struct {
-	Updater          walk.Updater          `json:"updater"`
 	NBytes           uint64                `json:"nBytes"`
 	NFiles           uint64                `json:"nFiles"`
 	NFolders         uint64                `json:"nFolders"`
+	Updater          walk.Updater          `json:"updater"`
 	Items            []coreTypes.CacheItem `json:"items"`
 	NItems           uint64                `json:"nItems"`
 	coreTypes.Status `json:",inline"`
@@ -71,10 +71,10 @@ func (s *StatusContainer) NeedsUpdate() bool {
 
 func (s *StatusContainer) ShallowCopy() Containerer {
 	ret := &StatusContainer{
-		Updater:  s.Updater,
 		NBytes:   s.NBytes,
 		NFiles:   s.NFiles,
 		NFolders: s.NFolders,
+		Updater:  s.Updater,
 		NItems:   s.NItems,
 		Status:   s.Status.ShallowCopy(),
 		// EXISTING_CODE

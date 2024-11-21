@@ -27,8 +27,8 @@ func NewWizardContainer(chain string, itemsIn []WizError) WizardContainer {
 	ret := WizardContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Updater: NewWizardUpdater(chain),
 		Chain:   chain,
+		Updater: NewWizardUpdater(chain),
 	}
 	// EXISTING_CODE
 	ret.State = WizWelcome

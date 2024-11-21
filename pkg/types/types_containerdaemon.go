@@ -23,11 +23,10 @@ type DaemonContainer struct {
 
 func NewDaemonContainer(chain string, daemon *daemons.Daemon) DaemonContainer {
 	ret := DaemonContainer{
-		Chain:   chain,
 		Daemon:  *daemon,
+		Chain:   chain,
 		Updater: NewDaemonUpdater(chain),
 	}
-	ret.Chain = chain
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
@@ -56,7 +55,7 @@ func (s *DaemonContainer) SetItems(items interface{}) {
 
 func (s *DaemonContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("daemon", s.Updater, updater)
+		DebugInts("daemons", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

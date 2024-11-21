@@ -19,8 +19,8 @@ import (
 
 type ConfigContainer struct {
 	Chain              string       `json:"chain"`
-	Updater            walk.Updater `json:"updater"`
 	NChains            uint64       `json:"nChains"`
+	Updater            walk.Updater `json:"updater"`
 	configTypes.Config `json:",inline"`
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -28,18 +28,13 @@ type ConfigContainer struct {
 
 func NewConfigContainer(chain string, config *configTypes.Config) ConfigContainer {
 	ret := ConfigContainer{
+		Config:  *config,
 		Chain:   chain,
 		Updater: NewConfigUpdater(chain),
-		Config:  *config,
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
-}
-
-func (s *ConfigContainer) String() string {
-	bytes, _ := json.Marshal(s)
-	return string(bytes)
 }
 
 func NewConfigUpdater(chain string) walk.Updater {
@@ -48,6 +43,11 @@ func NewConfigUpdater(chain string) walk.Updater {
 	updater, _ := walk.NewUpdater("config", paths, walk.TypeFiles)
 	// EXISTING_CODE
 	return updater
+}
+
+func (s *ConfigContainer) String() string {
+	bytes, _ := json.Marshal(s)
+	return string(bytes)
 }
 
 func (s *ConfigContainer) GetItems() interface{} {
@@ -70,8 +70,8 @@ func (s *ConfigContainer) NeedsUpdate() bool {
 func (s *ConfigContainer) ShallowCopy() Containerer {
 	ret := &ConfigContainer{
 		Chain:   s.Chain,
-		Updater: s.Updater,
 		NChains: s.NChains,
+		Updater: s.Updater,
 		Config:  s.Config.ShallowCopy(),
 		// EXISTING_CODE
 		// EXISTING_CODE

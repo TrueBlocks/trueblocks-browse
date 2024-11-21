@@ -18,10 +18,10 @@ type ManifestContainer struct {
 	BloomsSize    uint64                  `json:"bloomsSize"`
 	Chain         string                  `json:"chain"`
 	IndexSize     uint64                  `json:"indexSize"`
-	Updater       walk.Updater            `json:"updater"`
 	NBlooms       uint64                  `json:"nBlooms"`
 	NIndexes      uint64                  `json:"nIndexes"`
 	Specification string                  `json:"specification"`
+	Updater       walk.Updater            `json:"updater"`
 	Version       string                  `json:"version"`
 	Items         []coreTypes.ChunkRecord `json:"items"`
 	NItems        uint64                  `json:"nItems"`
@@ -38,8 +38,8 @@ func NewManifestContainer(chain string, itemsIn []coreTypes.Manifest) ManifestCo
 			Fields: []string{"range"},
 			Order:  []sdk.SortOrder{sdk.Dec},
 		},
-		Updater: NewManifestUpdater(chain),
 		Chain:   chain,
+		Updater: NewManifestUpdater(chain),
 	}
 	// EXISTING_CODE
 	ret.Specification = itemsIn[0].Specification.String()
@@ -75,7 +75,7 @@ func (s *ManifestContainer) SetItems(items interface{}) {
 
 func (s *ManifestContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("manifest", s.Updater, updater)
+		DebugInts("manifests", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}
@@ -87,10 +87,10 @@ func (s *ManifestContainer) ShallowCopy() Containerer {
 		BloomsSize:    s.BloomsSize,
 		Chain:         s.Chain,
 		IndexSize:     s.IndexSize,
-		Updater:       s.Updater,
 		NBlooms:       s.NBlooms,
 		NIndexes:      s.NIndexes,
 		Specification: s.Specification,
+		Updater:       s.Updater,
 		Version:       s.Version,
 		NItems:        s.NItems,
 		// EXISTING_CODE

@@ -19,12 +19,12 @@ import (
 type MonitorContainer struct {
 	Chain    string              `json:"chain"`
 	FileSize uint64              `json:"fileSize"`
-	Updater  walk.Updater        `json:"updater"`
 	NDeleted uint64              `json:"nDeleted"`
 	NEmpty   uint64              `json:"nEmpty"`
 	NNamed   uint64              `json:"nNamed"`
 	NRecords uint64              `json:"nRecords"`
 	NStaged  uint64              `json:"nStaged"`
+	Updater  walk.Updater        `json:"updater"`
 	Items    []coreTypes.Monitor `json:"items"`
 	NItems   uint64              `json:"nItems"`
 	// EXISTING_CODE
@@ -35,8 +35,8 @@ func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorConta
 	ret := MonitorContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Updater: NewMonitorUpdater(chain),
 		Chain:   chain,
+		Updater: NewMonitorUpdater(chain),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -70,7 +70,7 @@ func (s *MonitorContainer) SetItems(items interface{}) {
 
 func (s *MonitorContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("monitor", s.Updater, updater)
+		DebugInts("monitors", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}
@@ -81,12 +81,12 @@ func (s *MonitorContainer) ShallowCopy() Containerer {
 	ret := &MonitorContainer{
 		Chain:    s.Chain,
 		FileSize: s.FileSize,
-		Updater:  s.Updater,
 		NDeleted: s.NDeleted,
 		NEmpty:   s.NEmpty,
 		NNamed:   s.NNamed,
 		NRecords: s.NRecords,
 		NStaged:  s.NStaged,
+		Updater:  s.Updater,
 		NItems:   s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE

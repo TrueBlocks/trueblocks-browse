@@ -22,7 +22,6 @@ type SessionContainer struct {
 
 func NewSessionContainer(chain string, session *coreTypes.Session) SessionContainer {
 	ret := SessionContainer{
-		// Chain:   chain,
 		Session: *session,
 		Updater: NewSessionUpdater(chain),
 	}
