@@ -6,30 +6,42 @@ package app
 // EXISTING_CODE
 
 {{range .Structures -}}
-{{ $isHistory := eq .Class "History" }}
-{{ $isProject := eq .Class "Project" }}
-{{ $isWizard := eq .Class "Wizard" }}
-{{ $routeName := .UiRouteName }}
-{{ $routeLower := toLower .UiRouteName }}
-func (a *App) {{$routeName}}View(cb *menu.CallbackData) {
-{{if $isHistory -}}
-	address := a.GetSelected()
-	a.Navigate("/{{$routeLower}}", address.Hex())
-{{- else if $isWizard -}}
-	if a.isConfigured() {
-		a.wizard.State = types.WizWelcome
-		a.emitMsg(messages.Refresh, &messages.MessageMsg{
-			State: string(a.wizard.State),
-			Num1:  2, // 2 is the wizard step if needed
-		})
-		a.Navigate("/wizard", "")
-	} else {
-		a.StepWizard(types.WizNext)
+	{{/*==============================================================*/}}
+	{{ $routeName := .UiRouteName }}
+	{{ $routeLower := toLower .UiRouteName }}
+
+	{{ $view := print $routeName "View" }}
+
+	{{ $isHistory := eq .Class "History" }}
+	{{ $isProject := eq .Class "Project" }}
+	{{ $isWizard := eq .Class "Wizard" }}
+
+	{{ $param1 := print "\"/" $routeLower "\"" }}
+	{{ if $isProject }}
+		{{ $param1 = "\"/\"" }}
+	{{ end }}
+
+	{{ $param2 := ", \"\"" }}
+	{{ if $isHistory }}
+		{{ $param2 = ", address.Hex()" }}
+	{{ end }}
+
+	{{/*==============================================================*/}}
+	func (a *App) {{$view}}(cb *menu.CallbackData) {
+		{{if $isHistory -}}
+			address := a.GetSelected()
+		{{else if $isWizard -}}
+			if a.isConfigured() {
+				a.wizard.State = types.WizWelcome
+				a.emitMsg(messages.Refresh, &messages.MessageMsg{
+					State: string(a.wizard.State),
+					Num1:  2, // 2 is the wizard step if needed
+				})
+			} else {
+				a.StepWizard(types.WizNext)
+			}
+		{{end -}}
+		a.Navigate({{$param1}}{{$param2}})
 	}
-	a.Navigate("/{{$routeLower}}", "")
-{{- else -}}
-	a.Navigate("/{{if not $isProject}}{{$routeLower}}{{end}}", "")
-{{end -}}
-}
 
 {{end}}

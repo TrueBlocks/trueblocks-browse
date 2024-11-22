@@ -3,13 +3,14 @@
 // EXISTING_CODE
 import { Box, SimpleGrid, Stack } from "@mantine/core";
 import { DaemonCard, DaemonLog, FieldGroup, FieldsetWrapper, PinButton } from "@components";
-import { daemons, messages } from "@gocode/models";
+import { daemons, messages, walk } from "@gocode/models";
 export interface Nope {
   scraper: daemons.Daemon;
   freshen: daemons.Daemon;
   ipfs: daemons.Daemon;
   logMessages: messages.MessageMsg[];
   toggleDaemon: (name: string) => void;
+  updater: walk.Updater;
 }
 // EXISTING_CODE
 

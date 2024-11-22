@@ -67,7 +67,6 @@ func (a *App) WizardView(cb *menu.CallbackData) {
 			State: string(a.wizard.State),
 			Num1:  2, // 2 is the wizard step if needed
 		})
-		a.Navigate("/wizard", "")
 	} else {
 		a.StepWizard(types.WizNext)
 	}
