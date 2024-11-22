@@ -5,8 +5,6 @@
 {{ $itemName := .ItemName}}
 {{ $routeLower := toLower .UiRouteName }}
 
-{{ $fetchFn := print "Fetch" $class }}
-
 {{ $hasItems := and (gt (len $itemName) 0) true }}
 {{ $isHistory := eq $class "History" -}}
 {{ $isSettings := eq $class "Settings" -}}
@@ -35,7 +33,7 @@ package app
 // EXISTING_CODE
 // EXISTING_CODE
 
-func (a *App) {{$fetchFn}}(first, pageSize int) *types.{{$container}} {
+func (a *App) Fetch{{$class}}(first, pageSize int) *types.{{$container}} {
 	// EXISTING_CODE
 	// EXISTING_CODE
 

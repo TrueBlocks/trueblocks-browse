@@ -10,8 +10,6 @@ package app
 	{{ $routeName := .UiRouteName }}
 	{{ $routeLower := toLower .UiRouteName }}
 
-	{{ $view := print $routeName "View" }}
-
 	{{ $isHistory := eq .Class "History" }}
 	{{ $isProject := eq .Class "Project" }}
 	{{ $isWizard := eq .Class "Wizard" }}
@@ -27,7 +25,7 @@ package app
 	{{ end }}
 
 	{{/*==============================================================*/}}
-	func (a *App) {{$view}}(cb *menu.CallbackData) {
+	func (a *App) {{$routeName}}View(cb *menu.CallbackData) {
 		{{if $isHistory -}}
 			address := a.GetSelected()
 		{{else if $isWizard -}}
