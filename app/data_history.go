@@ -9,6 +9,7 @@ import (
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/index"
@@ -34,6 +35,18 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base
 		return nil
 	}
 	defer historyLock.CompareAndSwap(1, 0)
+
+	// EXISTING_CODE
+	history, exists := a.historyCache.Load(address)
+	if !exists {
+		history = types.NewHistoryContainer()
+	}
+	// EXISTING_CODE
+
+	if !history.NeedsUpdate() {
+		return nil
+	}
+	logger.InfoBW("Updating needed for History...")
 
 	// EXISTING_CODE
 	// EXISTING_CODE

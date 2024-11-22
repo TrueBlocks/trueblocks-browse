@@ -8,6 +8,7 @@ import (
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 // EXISTING_CODE
@@ -27,9 +28,13 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer daemonLock.CompareAndSwap(1, 0)
 
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	if !a.daemons.NeedsUpdate() {
 		return nil
 	}
+	logger.InfoBW("Updating needed for Daemons...")
 
 	// EXISTING_CODE
 	_ = errorChan

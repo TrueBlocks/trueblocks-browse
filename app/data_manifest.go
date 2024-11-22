@@ -10,6 +10,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -30,9 +31,13 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer manifestLock.CompareAndSwap(1, 0)
 
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	if !a.manifests.NeedsUpdate() {
 		return nil
 	}
+	logger.InfoBW("Updating needed for Manifests...")
 
 	opts := sdk.ManifestsOptions{
 		Globals: a.getGlobals(true /* verbose */),

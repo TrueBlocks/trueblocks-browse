@@ -28,9 +28,17 @@
 	{{ $param2 = ", address base.Address" }}
 {{ end }}
 
-{{ $loadFn := print "load" $routeName }}
 {{ $lockName := print (toLower $class) "Lock" }}
+
 {{ $dataName := $routeLower }}
+{{ if $isHistory }}
+	{{ $dataName = $routeLower }}
+{{ end }}
+
+{{ $appData := print "a." $routeLower }}
+{{ if $isHistory }}
+	{{ $appData = $routeLower }}
+{{ end }}
 
 {{/*==============================================================*/}}
 // This file is auto-generated. Edit only code inside
@@ -42,8 +50,8 @@ package app
 
 var {{$lockName}} atomic.Uint32
 
-func (a *App) {{$loadFn}}({{$param1}}{{$param2}}) error {
-	defer a.trackPerformance("{{$loadFn}}", false)()
+func (a *App) load{{$routeName}}({{$param1}}{{$param2}}) error {
+	defer a.trackPerformance("load{{$routeName}}", false)()
 	defer func() {
 		if wg != nil {
 			wg.Done()
@@ -55,11 +63,15 @@ func (a *App) {{$loadFn}}({{$param1}}{{$param2}}) error {
 	}
 	defer {{$lockName}}.CompareAndSwap(1, 0)
 
-{{if not $isHistory}}	if !a.{{$dataName}}.NeedsUpdate() {
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	if !{{$appData}}.NeedsUpdate() {
 		return nil
 	}
+	logger.InfoBW("Updating needed for {{$routeName}}...")
 
-{{end}}{{if $needsSdk}}
+{{if $needsSdk}}
 	opts := sdk.{{$routeName}}Options{
 		Globals: a.getGlobals(true /* verbose */),
 	}
@@ -80,7 +92,7 @@ func (a *App) {{$loadFn}}({{$param1}}{{$param2}}) error {
 {{end}}		// EXISTING_CODE
 		// EXISTING_CODE
 {{if $needsSdk}}		a.meta = *meta
-		a.{{$dataName}} = types.New{{$container}}(opts.Chain
+		{{$appData}} = types.New{{$container}}(opts.Chain
 {{- if $hasItems -}}
 , {{$dataName}}{{if $isStatus}}[0].Caches{{end}}{{if $isManifest}}[0].Chunks{{end}}
 {{- end -}}
@@ -91,7 +103,7 @@ func (a *App) {{$loadFn}}({{$param1}}{{$param2}}) error {
 {{end}}		// EXISTING_CODE
 		// EXISTING_CODE
 {{if $hasSorts -}}
-		if err := sdk.Sort{{$routeName}}(a.{{$dataName}}.Items, a.{{$dataName}}.Sorts); err != nil {
+		if err := sdk.Sort{{$routeName}}({{$appData}}.Items, {{$appData}}.Sorts); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 {{end -}}

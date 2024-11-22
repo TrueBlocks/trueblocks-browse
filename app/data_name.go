@@ -11,6 +11,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -36,9 +37,13 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer nameLock.CompareAndSwap(1, 0)
 
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	if !a.names.NeedsUpdate() {
 		return nil
 	}
+	logger.InfoBW("Updating needed for Names...")
 
 	opts := sdk.NamesOptions{
 		Globals: a.getGlobals(true /* verbose */),

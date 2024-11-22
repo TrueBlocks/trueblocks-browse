@@ -8,6 +8,7 @@ import (
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 // EXISTING_CODE
@@ -27,9 +28,13 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer configLock.CompareAndSwap(1, 0)
 
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	if !a.config.NeedsUpdate() {
 		return nil
 	}
+	logger.InfoBW("Updating needed for Config...")
 
 	// EXISTING_CODE
 	_ = errorChan
