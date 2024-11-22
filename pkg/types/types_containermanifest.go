@@ -71,7 +71,6 @@ func (s *ManifestContainer) SetItems(items interface{}) {
 
 func (s *ManifestContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("manifests", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

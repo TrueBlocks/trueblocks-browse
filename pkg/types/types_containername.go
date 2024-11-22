@@ -80,7 +80,6 @@ func (s *NameContainer) SetItems(items interface{}) {
 
 func (s *NameContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("names", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

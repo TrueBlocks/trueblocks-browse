@@ -68,7 +68,6 @@ func (s *MonitorContainer) SetItems(items interface{}) {
 
 func (s *MonitorContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("monitors", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

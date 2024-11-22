@@ -55,7 +55,6 @@ func (s *DaemonContainer) SetItems(items interface{}) {
 
 func (s *DaemonContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("daemons", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

@@ -65,7 +65,6 @@ func (s *IndexContainer) SetItems(items interface{}) {
 
 func (s *IndexContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("indexes", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

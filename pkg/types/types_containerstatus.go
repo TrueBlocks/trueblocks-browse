@@ -62,7 +62,6 @@ func (s *StatusContainer) SetItems(items interface{}) {
 
 func (s *StatusContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("status", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

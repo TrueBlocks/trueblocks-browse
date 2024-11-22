@@ -74,7 +74,6 @@ func (s *HistoryContainer) SetItems(items interface{}) {
 
 func (s *HistoryContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("history", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

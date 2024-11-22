@@ -152,7 +152,6 @@ func (s *{{$container}}) SetItems(items interface{}) {
 
 func (s *{{$container}}) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("{{toLower $routeName}}", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

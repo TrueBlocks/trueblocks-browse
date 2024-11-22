@@ -59,7 +59,6 @@ func (s *WizardContainer) SetItems(items interface{}) {
 
 func (s *WizardContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("wizard", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

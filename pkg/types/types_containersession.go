@@ -55,7 +55,6 @@ func (s *SessionContainer) SetItems(items interface{}) {
 
 func (s *SessionContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("session", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

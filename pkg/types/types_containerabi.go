@@ -72,7 +72,6 @@ func (s *AbiContainer) SetItems(items interface{}) {
 
 func (s *AbiContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("abis", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

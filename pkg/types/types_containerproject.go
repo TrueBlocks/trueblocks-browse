@@ -73,7 +73,6 @@ func (s *ProjectContainer) SetItems(items interface{}) {
 
 func (s *ProjectContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("project", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}

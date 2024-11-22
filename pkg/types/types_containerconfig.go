@@ -60,7 +60,6 @@ func (s *ConfigContainer) SetItems(items interface{}) {
 
 func (s *ConfigContainer) NeedsUpdate() bool {
 	if updater, reload := s.Updater.NeedsUpdate(); reload {
-		DebugInts("config", s.Updater, updater)
 		s.Updater = updater
 		return true
 	}
