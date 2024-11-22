@@ -20,5 +20,6 @@ func (a *App) FetchManifest(first, pageSize int) *types.ManifestContainer {
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.manifests.ShallowCopy().(*types.ManifestContainer)
 	copy.Items = filtered[first:last]
+
 	return copy
 }

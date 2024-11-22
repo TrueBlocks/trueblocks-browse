@@ -141,6 +141,7 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) error 
 		}
 		return history.Items[i].BlockNumber > history.Items[j].BlockNumber
 	})
+	history.Balance = a.getBalance(address)
 	a.historyCache.Store(address, history)
 	a.emitMsg(messages.Refresh, &messages.MessageMsg{
 		Num1: 3, // 3 means refresh

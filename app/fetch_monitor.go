@@ -20,5 +20,6 @@ func (a *App) FetchMonitor(first, pageSize int) *types.MonitorContainer {
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.monitors.ShallowCopy().(*types.MonitorContainer)
 	copy.Items = filtered[first:last]
+
 	return copy
 }

@@ -22,5 +22,6 @@ func (a *App) FetchName(first, pageSize int) *types.NameContainer {
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.names.ShallowCopy().(*types.NameContainer)
 	copy.Items = filtered[first:last]
+
 	return copy
 }

@@ -15,6 +15,7 @@ func (a *App) newFile() {
 
 	address := base.HexToAddress("0x3836b0e02b4a613ba1d15834e6d77f409099d8f8")
 	history := types.NewHistoryContainer(a.getChain(), []coreTypes.Transaction{}, address)
+	history.Balance = a.getBalance(address)
 
 	a.historyCache = &types.HistoryMap{}
 	a.historyCache.Store(address, history)
@@ -37,6 +38,7 @@ func (a *App) readFile(fn string) (bool, error) {
 		histories := []types.HistoryContainer{}
 		for _, address := range pF.Addresses {
 			history := types.NewHistoryContainer(a.getChain(), []coreTypes.Transaction{}, address)
+			history.Balance = a.getBalance(address)
 			histories = append(histories, history)
 			a.historyCache.Store(address, history)
 		}

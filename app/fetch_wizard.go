@@ -19,5 +19,6 @@ func (a *App) FetchWizard(first, pageSize int) *types.WizardContainer {
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.wizard.ShallowCopy().(*types.WizardContainer)
 	copy.Items = filtered[first:last]
+
 	return copy
 }

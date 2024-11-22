@@ -3,7 +3,10 @@
 package app
 
 // EXISTING_CODE
-import "github.com/TrueBlocks/trueblocks-browse/pkg/types"
+import (
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+)
 
 // EXISTING_CODE
 
@@ -11,7 +14,11 @@ func (a *App) FetchConfig(first, pageSize int) *types.ConfigContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	_ = a.config.CollateAndFilter(a.filterMap)
+	filtered := a.config.CollateAndFilter(a.filterMap).([]types.Nothing)
+	first = base.Max(0, base.Min(first, len(filtered)-1))
+	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.config.ShallowCopy().(*types.ConfigContainer)
+	_ = filtered[first:last]
+
 	return copy
 }

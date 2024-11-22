@@ -19,5 +19,6 @@ func (a *App) FetchProject(first, pageSize int) *types.ProjectContainer {
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.project.ShallowCopy().(*types.ProjectContainer)
 	copy.Items = filtered[first:last]
+
 	return copy
 }

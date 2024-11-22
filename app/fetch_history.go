@@ -17,11 +17,11 @@ func (a *App) FetchHistory(first, pageSize int) *types.HistoryContainer {
 	history, _ := a.historyCache.Load(address)
 	// EXISTING_CODE
 
-	_ = history.CollateAndFilter(a.filterMap).([]coreTypes.Transaction)
-	first = base.Max(0, base.Min(first, len(history.Items)-1))
-	last := base.Min(len(history.Items), first+pageSize)
+	filtered := history.CollateAndFilter(a.filterMap).([]coreTypes.Transaction)
+	first = base.Max(0, base.Min(first, len(filtered)-1))
+	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := history.ShallowCopy().(*types.HistoryContainer)
-	copy.Balance = a.getBalance(address)
-	copy.Items = history.Items[first:last]
+	copy.Items = filtered[first:last]
+
 	return copy
 }

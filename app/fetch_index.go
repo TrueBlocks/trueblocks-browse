@@ -20,5 +20,6 @@ func (a *App) FetchIndex(first, pageSize int) *types.IndexContainer {
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.indexes.ShallowCopy().(*types.IndexContainer)
 	copy.Items = filtered[first:last]
+
 	return copy
 }

@@ -4,7 +4,7 @@
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "1100-containers"
 	ui_route = "1100-session-u"
-	attributes = "embedType=coreTypes.Session|noPaging"
+	attributes = "embedType=coreTypes.Session"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"

@@ -41,5 +41,6 @@ func (a *App) FetchAbi(first, pageSize int) *types.AbiContainer {
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.abis.ShallowCopy().(*types.AbiContainer)
 	copy.Items = filtered[first:last]
+
 	return copy
 }

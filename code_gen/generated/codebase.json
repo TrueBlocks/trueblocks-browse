@@ -426,7 +426,7 @@
             "ui_route": "1080-settings-9",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.CacheItem|noLoad|noSdk|noPaging",
+            "attributes": "itemType=coreTypes.CacheItem|noLoad|noSdk",
             "members": [
                 {
                     "name": "chain",
@@ -448,7 +448,7 @@
             "ui_route": "1090-daemons-0",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=daemons.Daemon|noSdk|noPaging",
+            "attributes": "embedType=daemons.Daemon|noSdk",
             "members": [
                 {
                     "name": "updater",
@@ -464,7 +464,7 @@
             "ui_route": "1100-session-u",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=coreTypes.Session|noPaging",
+            "attributes": "embedType=coreTypes.Session",
             "members": [
                 {
                     "name": "updater",
@@ -480,7 +480,7 @@
             "ui_route": "1110-config-v",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=configTypes.Config|noSdk|noPaging",
+            "attributes": "embedType=configTypes.Config|noSdk",
             "members": [
                 {
                     "name": "nChains",

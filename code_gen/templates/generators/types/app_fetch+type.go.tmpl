@@ -1,8 +1,32 @@
+{{/*==============================================================*/}}
+
+{{ $class := .Class }}
+{{ $container := print $class "Container" }}
 {{ $itemName := .ItemName}}
-{{ $hasItems := and (gt (len $itemName) 0) true }}
-{{ $isHistory := eq .Class "History" -}}
 {{ $routeLower := toLower .UiRouteName }}
-{{ $needsPaging := .Needs "paging" }}
+
+{{ $fetchFn := print "Fetch" $class }}
+
+{{ $hasItems := and (gt (len $itemName) 0) true }}
+{{ $isHistory := eq $class "History" -}}
+{{ $isSettings := eq $class "Settings" -}}
+
+{{ $cast := print ".([]types.Nothing)" }}
+{{ if $hasItems }}
+	{{ $cast = print ".([]" .ItemFullType ")" }}
+{{ end }}
+
+{{ $dest := "_" }}
+{{ if and $hasItems (not $isSettings ) }}
+	{{ $dest = "copy.Items" }}
+{{ end }}
+
+{{ $dataName := print "a." $routeLower }}
+{{ if $isHistory }}
+	{{ $dataName = $routeLower }}
+{{ end }}
+
+{{/*==============================================================*/}}
 
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
@@ -11,28 +35,15 @@ package app
 // EXISTING_CODE
 // EXISTING_CODE
 
-func (a *App) Fetch{{.Class}}(first, pageSize int) *types.{{.Class}}Container {
+func (a *App) {{$fetchFn}}(first, pageSize int) *types.{{$container}} {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-{{if $needsPaging -}}
-{{if $isHistory -}}
-	_ = {{$routeLower}}.CollateAndFilter(a.filterMap){{if $hasItems}}.([]{{.ItemFullType}}){{end}}
-	first = base.Max(0, base.Min(first, len(history.Items)-1))
-	last := base.Min(len(history.Items), first+pageSize)
-	copy, _ := {{$routeLower}}.ShallowCopy().(*types.HistoryContainer)
-	copy.Balance = a.getBalance(address)
-	copy.Items = history.Items[first:last]
-{{- else -}}
-	filtered := a.{{$routeLower}}.CollateAndFilter(a.filterMap){{if $hasItems}}.([]{{.ItemFullType}}){{end}}
+	filtered := {{$dataName}}.CollateAndFilter(a.filterMap){{$cast}}
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
-	copy, _ := a.{{$routeLower}}.ShallowCopy().(*types.{{.Class}}Container)
-	copy.Items = filtered[first:last]
-{{- end}}
-{{- else -}}
-	_ = a.{{$routeLower}}.CollateAndFilter(a.filterMap){{if $hasItems}}.([]{{.ItemFullType}}){{end}}
-	copy, _ := a.{{$routeLower}}.ShallowCopy().(*types.{{.Class}}Container)
-{{- end}}
+	copy, _ := {{$dataName}}.ShallowCopy().(*types.{{$container}})
+	{{ $dest }} = filtered[first:last]
+
 	return copy
 }
