@@ -134,7 +134,7 @@ func (a *App) spawnLoadRoutines() {
 	go func() { a.errorChan <- a.loadExampleTask("Task 3") }()
 }
 
-func (a *App) loadExampleTask(name string) error {
+func (a *App) lo adExampleTask(name string) error {
 	time.Sleep(1 * time.Second) // Simulate task
 	return fmt.Errorf("%s encountered an error", name)
 }

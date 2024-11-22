@@ -146,31 +146,6 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) error 
 	return nil
 }
 
-func (a *App) Reload() {
-	defer a.trackPerformance("Reload", false)()
-
-	switch a.session.LastRoute {
-	case "/names":
-		logger.InfoG("Reloading names...")
-		a.names.Updater.Reset()
-		if err := a.loadNames(nil, nil); err != nil {
-			a.emitErrorMsg(err, nil)
-		}
-	case "/monitors":
-		logger.InfoG("Reloading monitors...")
-		a.monitors.Updater.Reset()
-		if err := a.loadMonitors(nil, nil); err != nil {
-			a.emitErrorMsg(err, nil)
-		}
-	default:
-		logger.InfoG("Reloading default (history)...")
-		history, _ := a.historyCache.Load(a.GetSelected())
-		history.Updater.Reset()
-		a.historyCache.Store(a.GetSelected(), history)
-		a.goToAddress(history.Address)
-	}
-}
-
 func (a *App) getHistoryCnt(address base.Address) int64 {
 	fn := coreMonitor.PathToMonitorFile(a.getChain(), address)
 	return (file.FileSize(fn) / index.AppRecordWidth) - 1 // header

@@ -20,26 +20,24 @@ func (a *App) ExportAddress(address base.Address) {
 	}
 
 	fn := fmt.Sprintf("history_%s.csv", address)
-	lines := make([]string, 0, a.txCount(address)+2)
+	lines := make([]string, 0, a.getHistoryCnt(address)+2)
+	lines = append(lines, fmt.Sprintf("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+		"BlockNumber",
+		"BlockHash",
+		"TransactionIndex",
+		"Hash",
+		"From",
+		"To",
+		"Value.Uint64()",
+		"Gas",
+		"GasPrice",
+		"GasUsed",
+		"Timestamp",
+		"Nonce",
+		"Input",
+		"TransactionType"))
 
 	exportLine := func(item *coreTypes.Transaction, data any) bool {
-		if len(lines) == 0 {
-			lines = append(lines, fmt.Sprintf("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
-				"BlockNumber",
-				"BlockHash",
-				"TransactionIndex",
-				"Hash",
-				"From",
-				"To",
-				"Value.Uint64()",
-				"Gas",
-				"GasPrice",
-				"GasUsed",
-				"Timestamp",
-				"Nonce",
-				"Input",
-				"TransactionType"))
-		}
 		lines = append(lines, fmt.Sprintf("%d,%d,%s,%d,%s,%s,%d,%d,%d,%d,%s,%s,%d,%s,%s",
 			item.BlockNumber,
 			item.TransactionIndex,
