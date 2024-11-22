@@ -37,10 +37,6 @@ export const HistoryView = () => {
     history: <FormTable data={history} groups={HistoryFormDef(table, info.address)} />,
   };
 
-  // if (!(history?.items?.length > 0)) {
-  //   return <>Loading...</>;
-  // }
-
   return (
     <ViewStateProvider
       // do not remove - delint

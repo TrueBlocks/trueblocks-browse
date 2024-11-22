@@ -32,10 +32,6 @@ export const AbisView = () => {
     abis: <FormTable data={abis} groups={AbisFormDef(table)} />,
   };
 
-  // if (!(abis?.items?.length > 0)) {
-  //   return <>Loading...</>;
-  // }
-
   return (
     <ViewStateProvider
       // do not remove - delint

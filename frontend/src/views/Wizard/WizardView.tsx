@@ -39,10 +39,6 @@ export const WizardView = () => {
     wizard: <FormTable data={wizard} groups={WizardFormDef(table, wizard.nItems, stepWizard)} />,
   };
 
-  // if (!(wizard?.items?.length > 0)) {
-  //   return <>Loading...</>;
-  // }
-
   return (
     <ViewStateProvider
       // do not remove - delint

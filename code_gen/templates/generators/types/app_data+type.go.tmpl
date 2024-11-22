@@ -20,6 +20,7 @@
 {{ $isName := eq $class "Name" }}
 {{ $isProject := eq $class "Project" }}
 {{ $isMonitor := eq $class "Monitor" }}
+{{ $isManifest := eq $class "Manifest" }}
 
 {{ $param1 := "wg *sync.WaitGroup, errorChan chan error" }}
 {{ $param2 := "" }}
@@ -81,7 +82,7 @@ func (a *App) {{$loadFn}}({{$param1}}{{$param2}}) error {
 {{if $needsSdk}}		a.meta = *meta
 		a.{{$dataName}} = types.New{{$container}}(opts.Chain
 {{- if $hasItems -}}
-, {{$dataName}}{{if $isStatus}}[0].Caches{{end}}
+, {{$dataName}}{{if $isStatus}}[0].Caches{{end}}{{if $isManifest}}[0].Chunks{{end}}
 {{- end -}}
 {{- if $hasEmbed -}}
 , &{{$dataName}}[0]

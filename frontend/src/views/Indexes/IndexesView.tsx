@@ -30,10 +30,6 @@ export const IndexesView = () => {
     indexes: <FormTable data={indexes} groups={IndexesFormDef(table)} />,
   };
 
-  // if (!(indexes?.items?.length > 0)) {
-  //   return <>Loading...</>;
-  // }
-
   return (
     <ViewStateProvider
       // do not remove - delint

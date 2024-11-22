@@ -32,10 +32,6 @@ export const MonitorsView = () => {
     monitors: <FormTable data={monitors} groups={MonitorsFormDef(table)} />,
   };
 
-  // if (!(monitors?.items?.length > 0)) {
-  //   return <>Loading...</>;
-  // }
-
   return (
     <ViewStateProvider
       // do not remove - delint

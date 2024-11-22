@@ -41,10 +41,6 @@ export const ProjectView = () => {
     project: <FormTable data={project} groups={ProjectFormDef(table)} />,
   };
 
-  // if (!(project?.items?.length > 0)) {
-  //   return <>Loading...</>;
-  // }
-
   return (
     <ViewStateProvider
       // do not remove - delint

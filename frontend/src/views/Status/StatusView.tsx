@@ -30,10 +30,6 @@ export const StatusView = () => {
     status: <FormTable data={status} groups={StatusFormDef(table)} />,
   };
 
-  // if (!(status?.items?.length > 0)) {
-  //   return <>Loading...</>;
-  // }
-
   return (
     <ViewStateProvider
       // do not remove - delint

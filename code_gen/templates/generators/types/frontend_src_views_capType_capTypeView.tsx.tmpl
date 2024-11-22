@@ -1,3 +1,5 @@
+{{/*==============================================================*/}}
+
 {{ $class := .Class }}
 {{ $routeName := .UiRouteName }}
 {{ $routeLower := toLower .UiRouteName }}
@@ -38,62 +40,86 @@
   {{ $nItems = "status.nItems" }}
 {{ end }}
 
+{{ $param1 := "" }}
+{{ if $hasEnter}}
+  {{ $param1 = ", loadAddress" }}
+{{end}}
+
+{{ $param2 := "" }}
+{{ if $isHistory }}
+  {{ $param2 = ", info.address" }}
+{{ else if $isWizard }}
+  {{ $param2 = ", wizard.nItems, stepWizard" }}
+{{ end }}
+
+{{ $dataName := $routeLower }}
+{{ $route := $routeLower }}
+{{ if $isProject }}
+  {{ $route = "" }}
+{{ end }}
+
+{{ $handleEnter := `const handleEnter = enterNoop;` }}
+{{ if $isWizard }}
+  {{ $handleEnter = `const handleEnter = () => {
+  stepWizard(types.WizStep.NEXT);
+  };` }} 
+{{ else if $hasEnter }}
+  {{ $handleEnter = print `const handleEnter = (page: Page) => {
+  loadAddress(` $dataName `.items[page.getRecord()].address);
+  };` }}
+{{ end }}
+
+{{ $handleModify := "const handleModify = modifyNoop;" }}
+{{ if $hasModify }}
+  {{ $handleModify = print "const handleModify = Modify" $class ";" }}
+{{ end }}
+
+{{ $view := print $routeName "View" }}
+{{ $fetchFn := print "fetch" $routeName }}
+
+{{/*==============================================================*/}}
+
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 
 // EXISTING_CODE
 // EXISTING_CODE
 
-export const {{$routeName}}View = () => {
-{{if not $isDaemon}}  const { {{$routeLower}}, fetch{{$routeName}}{{if $hasEnter}}, loadAddress{{end}}} = useAppState();{{end}}
-  {{ $noops }}
-{{- if and $hasEnter $hasModify }} const handleEnter = (page: Page) => {
-    loadAddress({{$routeLower}}.items[page.getRecord()].address);
-  };
-  const handleModify = Modify{{$class}};
-{{- else }}
-  {{ if $hasEnter }}  const handleEnter = (page: Page) => {
-      loadAddress({{$routeLower}}.items[page.getRecord()].address);
-    };
-  {{- else if $isWizard }}  const handleEnter = () => {
-      stepWizard(types.WizStep.NEXT);
-    };
-  {{- else }}  const handleEnter = enterNoop;{{ end }}
-  {{ if $hasModify }}  const handleModify = Modify{{$class}};
-  {{ else }}  const handleModify = modifyNoop;{{ end }}
-{{ end }}
+export const {{$view}} = () => {
+{{if not $isDaemon}}  const { {{$dataName}}, {{$fetchFn}}{{$param1}}} = useAppState();{{end}}
+  {{$noops -}}
+  {{$handleEnter -}}
+  {{$handleModify}}
 
   // EXISTING_CODE
   // EXISTING_CODE
 
-{{if not $isSettings}}{{if $hasItems}}  const table = useReactTable({
-    data: {{$routeLower}}?.items || [],
+{{if and $hasItems (not $isSettings)}}  const table = useReactTable({
+    data: {{$dataName}}?.items || [],
     columns: {{$routeName}}TableDef,
     getCoreRowModel: getCoreRowModel(),
   });{{end}}
 
-  const route = "{{if $isProject}}{{else}}{{$routeLower}}{{end}}";
-  const tabs = ["{{$routeLower}}"];
+{{if not $isSettings}}  const route = "{{$route}}";
+  const tabs = ["{{$dataName}}"];
   const forms: ViewForm = {
-    {{$routeLower}}: <FormTable
-      data={ {{$routeLower}} }
-      groups={ {{$routeName}}FormDef(table{{if $isHistory}}, info.address{{else if $isWizard}}, wizard.nItems, stepWizard{{end}})} />,
+    {{$dataName}}: <FormTable data={ {{$dataName}} } groups={ {{$routeName}}FormDef(table{{$param2}})} />,
   };
-{{if and $hasItems (not $isSettings)}}
-  // if (!({{$routeLower}}?.items?.length > 0)) {
-  //   return <>Loading...</>;
-  // }{{end}}{{end}}
+{{/* {{if and $hasItems (not $isSettings)}}
+  if (!({{$dataName}} && {{$dataName}}.items)) {
+    return <>Loading...</>;
+  }{{end}} */}} {{end}}
 
   return (
     <ViewStateProvider
       // do not remove - delint
       route={route}
       nItems={ {{$nItems}}}
-      fetchFn={fetch{{$routeName}}}
+      fetchFn={ {{$fetchFn}}}
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={ {{$routeLower}}.updater} />
+      <DebugState u={ {{$dataName}}.updater} />
       <View tabs={tabs} forms={forms}{{if $isSearchable}} searchable{{end}} />
     </ViewStateProvider>
   );

@@ -6,7 +6,6 @@
 
 {{ $hasItems := and (gt (len $itemName) 0) true }}
 
-{{ $isHistory := eq $class "History" }}
 {{ $isSession := eq $class "Session" }}
 {{ $isConfig := eq $class "Config" }}
 {{ $isWizard := eq $class "Wizard" }}

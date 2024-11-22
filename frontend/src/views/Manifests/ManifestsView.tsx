@@ -30,10 +30,6 @@ export const ManifestsView = () => {
     manifests: <FormTable data={manifests} groups={ManifestsFormDef(table)} />,
   };
 
-  // if (!(manifests?.items?.length > 0)) {
-  //   return <>Loading...</>;
-  // }
-
   return (
     <ViewStateProvider
       // do not remove - delint

@@ -32,10 +32,6 @@ export const NamesView = () => {
     names: <FormTable data={names} groups={NamesFormDef(table)} />,
   };
 
-  // if (!(names?.items?.length > 0)) {
-  //   return <>Loading...</>;
-  // }
-
   return (
     <ViewStateProvider
       // do not remove - delint

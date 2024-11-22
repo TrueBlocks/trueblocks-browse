@@ -36,10 +36,6 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base
 	defer historyLock.CompareAndSwap(1, 0)
 
 	// EXISTING_CODE
-	if address.IsZero() {
-		logger.InfoBR("Zero address", "address", address.Hex())
-		return nil
-	}
 	// EXISTING_CODE
 	// EXISTING_CODE
 	history, exists := a.historyCache.Load(address)
