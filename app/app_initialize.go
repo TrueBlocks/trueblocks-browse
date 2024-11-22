@@ -60,6 +60,18 @@ func (a *App) initialize() bool {
 		a.config.Updater = types.NewConfigUpdater(chain)
 		a.wizard.Updater = types.NewWizardUpdater(chain)
 		a.daemons.Updater = types.NewDaemonUpdater(chain)
+		a.project.Updater.Reset()
+		a.monitors.Updater.Reset()
+		a.names.Updater.Reset()
+		a.abis.Updater.Reset()
+		a.indexes.Updater.Reset()
+		a.manifests.Updater.Reset()
+		a.status.Updater.Reset()
+		a.settings.Updater.Reset()
+		a.session.Updater.Reset()
+		a.config.Updater.Reset()
+		a.wizard.Updater.Reset()
+		a.daemons.Updater.Reset()
 		return true
 	}
 	_ = initUpdaters()

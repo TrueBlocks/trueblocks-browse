@@ -15,7 +15,6 @@
 {{ $hasSorts := .HasSorts }}
 
 {{ $isHistory := eq $class "History" }}
-{{ $isManifest := eq $class "Manifest" }}
 {{ $isSettings := eq $class "Settings" }}
 {{ $isProject := eq $class "Project" }}
 {{ $isMonitor := eq $class "Monitor" }}
@@ -29,11 +28,7 @@
 {{ $inputType := $itemType }}
 {{ $itemsInit1 := "  Items:   itemsIn," }}
 {{ $itemsInit2 := "  NItems:  uint64(len(itemsIn))," }}
-{{ if $isManifest }}
-	{{ $inputType = "coreTypes.Manifest" }}
-	{{ $itemsInit1 = print "  Items: make([]" $itemType ", 0, len(itemsIn))," }}
-	{{ $itemsInit2 = "NItems: 0," }}
-{{ else if $isSettings }}
+{{ if $isSettings }}
 	{{ $inputType = "types.SettingsProp" }}
 {{ end }}
 

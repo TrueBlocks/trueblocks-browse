@@ -3,7 +3,7 @@ import { useRenderCounter } from "@hooks";
 import { useAppState, useViewState } from "@state";
 // import { types } from "../../../wailsjs/go/models";
 
-const debug = true;
+const debug = false;
 
 export const DebugState = ({ u }: { u: any }) => {
   const { info } = useAppState();

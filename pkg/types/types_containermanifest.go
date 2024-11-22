@@ -30,10 +30,10 @@ type ManifestContainer struct {
 	// EXISTING_CODE
 }
 
-func NewManifestContainer(chain string, itemsIn []coreTypes.Manifest) ManifestContainer {
+func NewManifestContainer(chain string, itemsIn []coreTypes.ChunkRecord) ManifestContainer {
 	ret := ManifestContainer{
-		Items:  make([]coreTypes.ChunkRecord, 0, len(itemsIn)),
-		NItems: 0,
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"range"},
 			Order:  []sdk.SortOrder{sdk.Dec},
@@ -42,10 +42,6 @@ func NewManifestContainer(chain string, itemsIn []coreTypes.Manifest) ManifestCo
 		Updater: NewManifestUpdater(chain),
 	}
 	// EXISTING_CODE
-	ret.Specification = itemsIn[0].Specification.String()
-	ret.Version = itemsIn[0].Version
-	ret.Items = itemsIn[0].Chunks
-	ret.NItems = uint64(len(ret.Items))
 	// EXISTING_CODE
 	return ret
 }

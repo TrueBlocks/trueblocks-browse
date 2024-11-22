@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
@@ -47,8 +46,7 @@ func NewMonitorUpdater(chain string) walk.Updater {
 	// EXISTING_CODE
 	paths := []string{
 		filepath.Join(coreConfig.PathToCache(chain), "monitors"),
-		filepath.Join(coreConfig.MustGetPathToChainConfig(namesChain), string(names.DatabaseCustom)),
-		filepath.Join(coreConfig.MustGetPathToChainConfig(namesChain), string(names.DatabaseRegular)),
+		coreConfig.MustGetPathToChainConfig(namesChain),
 	}
 	updater, _ := walk.NewUpdater("monitor", paths, walk.TypeFolders)
 	// EXISTING_CODE

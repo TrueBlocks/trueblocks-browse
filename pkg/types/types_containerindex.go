@@ -6,7 +6,6 @@ package types
 import (
 	"encoding/json"
 
-	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -44,7 +43,7 @@ func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContai
 func NewIndexUpdater(chain string) walk.Updater {
 	// EXISTING_CODE
 	paths := []string{
-		coreConfig.PathToIndex(chain),
+		walk.GetRootPathFromCacheType(chain, walk.Index_Bloom),
 	}
 	updater, _ := walk.NewUpdater("index", paths, walk.TypeFolders)
 	// EXISTING_CODE

@@ -6,7 +6,6 @@ package types
 import (
 	"encoding/json"
 
-	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
@@ -44,10 +43,10 @@ func NewSettingsContainer(chain string, props *SettingsProps) SettingsContainer 
 func NewSettingsUpdater(chain string) walk.Updater {
 	// EXISTING_CODE
 	paths := []string{
-		coreConfig.PathToRootConfig(),
-		utils.MustGetConfigFn("browse", ""),
+		utils.MustGetConfigFn("", "trueBlocks.toml"),
+		utils.MustGetConfigFn("browse", "session.json"),
 	}
-	updater, _ := walk.NewUpdater("settings", paths, walk.TypeFolders)
+	updater, _ := walk.NewUpdater("settings", paths, walk.TypeFiles)
 	// EXISTING_CODE
 	return updater
 }
