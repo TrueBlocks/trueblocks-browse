@@ -44,10 +44,8 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	_ = errorChan
 	// EXISTING_CODE
 	// EXISTING_CODE
-	// do not remove
 	// EXISTING_CODE
 	// EXISTING_CODE
-	// do not remove
 	// EXISTING_CODE
 	a.emitLoadingMsg(messages.Loaded, "wizard")
 

@@ -59,10 +59,8 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 	a.settings.Session = a.session
 	// EXISTING_CODE
 	// EXISTING_CODE
-	// do not remove
 	// EXISTING_CODE
 	// EXISTING_CODE
-	// do not remove
 	// EXISTING_CODE
 	a.emitLoadingMsg(messages.Loaded, "settings")
 

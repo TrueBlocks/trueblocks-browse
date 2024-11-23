@@ -9,27 +9,6 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-// type OperationFunc func(types.Containerer) types.Containerer
-
-// func Pagination[C *types.Containerer, T any](count int, offset, pageSize int) OperationFunc {
-// 	return func(container types.Containerer) types.Containerer {
-// 		first := base.Max(0, base.Min(offset, count-1))
-// 		last := base.Min(count, first+pageSize)
-// 		copy := container.ShallowCopy().(C)
-// 		theSlice := container.GetItems().([]T)[first:last]
-// 		copy.SetItems(theSlice)
-// 		return copy
-// 	}
-// }
-
-// func Organize[T any](container types.Containerer, operations ...OperationFunc) *types.Containerer {
-// 	copy := (container).ShallowCopy()
-// 	for _, operation := range operations {
-// 		copy = operation(copy)
-// 	}
-// 	return &copy
-// }
-
 // EXISTING_CODE
 
 func (a *App) FetchAbi(first, pageSize int) *types.AbiContainer {

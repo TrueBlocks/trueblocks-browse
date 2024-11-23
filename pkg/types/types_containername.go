@@ -46,7 +46,7 @@ func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 		Updater: NewNameUpdater(chain),
 	}
 	// EXISTING_CODE
-	ret.Chain = "mainnet" // all names are on mainnet
+	ret.Chain = namesChain // all names are on mainnet
 	sort.Slice(ret.Items, func(i, j int) bool {
 		return compare(ret.Items[i], ret.Items[j])
 	})
@@ -177,7 +177,7 @@ func (s *NameContainer) Accumulate(item *coreTypes.Name) {
 
 func (s *NameContainer) Finalize() {
 	// EXISTING_CODE
-	chain := "mainnet"
+	chain := namesChain
 	customPath := filepath.Join(coreConfig.MustGetPathToChainConfig(chain), string(names.DatabaseCustom))
 	regularPath := filepath.Join(coreConfig.MustGetPathToChainConfig(chain), string(names.DatabaseRegular))
 	s.SizeOnDisc = uint64(file.FileSize(customPath)) + uint64(file.FileSize(regularPath))

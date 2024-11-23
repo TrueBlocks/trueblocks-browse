@@ -5,6 +5,7 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
@@ -45,8 +46,9 @@ func NewSettingsUpdater(chain string, resetIn ...bool) updater.Updater {
 
 	// EXISTING_CODE
 	items := []updater.UpdaterItem{
-		{Path: utils.MustGetConfigFn("", "trueBlocks.toml"), Type: updater.File},
-		{Path: utils.MustGetConfigFn("browse", "session.json"), Type: updater.File},
+		{Duration: 2 * time.Minute, Type: updater.Timer},                         // for status
+		{Path: utils.MustGetConfigFn("", "trueBlocks.toml"), Type: updater.File}, // for config
+		// {Path: utils.MustGetConfigFn("browse", "session.json"), Type: updater.File}, // ignore session changes
 	}
 	// EXISTING_CODE
 	updater, _ := updater.NewUpdater("settings", items)

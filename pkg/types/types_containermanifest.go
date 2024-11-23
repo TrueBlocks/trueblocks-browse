@@ -5,7 +5,6 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"path/filepath"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
@@ -55,7 +54,7 @@ func NewManifestUpdater(chain string, resetIn ...bool) updater.Updater {
 
 	// EXISTING_CODE
 	items := []updater.UpdaterItem{
-		{Path: filepath.Join(coreConfig.PathToManifestFile(chain), "manifest.json"), Type: updater.File},
+		{Path: coreConfig.PathToManifestFile(chain), Type: updater.File},
 	}
 	// EXISTING_CODE
 	updater, _ := updater.NewUpdater("manifests", items)

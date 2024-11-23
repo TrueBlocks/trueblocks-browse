@@ -14,8 +14,6 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
-var abisChain = "mainnet"
-
 // EXISTING_CODE
 
 var abiLock atomic.Uint32
@@ -50,7 +48,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	// EXISTING_CODE
 	opts.Cache = true
-	opts.Chain = abisChain
+	opts.Chain = namesChain
 	// EXISTING_CODE
 	if abis, meta, err := opts.AbisList(); err != nil {
 		if errorChan != nil {

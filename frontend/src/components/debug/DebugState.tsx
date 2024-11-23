@@ -3,7 +3,7 @@ import { updater } from "@gocode/models";
 import { useRenderCounter } from "@hooks";
 import { useAppState, useViewState } from "@state";
 
-const debug = true;
+const debug = false;
 
 export const DebugState = ({ u }: { u: updater.Updater }) => {
   const { info } = useAppState();

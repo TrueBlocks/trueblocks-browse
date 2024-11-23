@@ -14,15 +14,25 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
-type UpdateType int
+type UpdateType string
 
 const (
-	Timer UpdateType = iota
-	File
-	Folder
-	FileSize
-	FolderSize
+	Timer      UpdateType = "timer"
+	File       UpdateType = "file"
+	Folder     UpdateType = "folder"
+	FileSize   UpdateType = "fileSize"
+	FolderSize UpdateType = "folderSize"
 )
+
+func (u *UpdateType) String() string {
+	return map[UpdateType]string{
+		Timer:      "Timer",
+		File:       "File",
+		Folder:     "Folder",
+		FileSize:   "FileSize",
+		FolderSize: "FolderSize",
+	}[*u]
+}
 
 type Updater struct {
 	Name          string        `json:"name"`

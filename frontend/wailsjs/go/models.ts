@@ -2308,7 +2308,7 @@ export namespace updater {
 	export class UpdaterItem {
 	    path: string;
 	    duration: number;
-	    type: number;
+	    type: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new UpdaterItem(source);

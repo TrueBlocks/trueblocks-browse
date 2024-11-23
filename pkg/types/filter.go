@@ -15,4 +15,7 @@ func (f *Filter) HasCriteria() bool {
 	return f.Criteria != ""
 }
 
-type Nothing struct{}
+type Nothing struct {
+	Unused string `json:"unused"`
+}
+

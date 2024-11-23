@@ -153,7 +153,6 @@ func (s *ProjectContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Finalize()
 
 	// EXISTING_CODE
-	// do nothing - summaries are already calculated
 	// EXISTING_CODE
 
 	return filtered
