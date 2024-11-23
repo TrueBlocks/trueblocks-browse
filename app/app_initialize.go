@@ -45,37 +45,6 @@ func (a *App) initialize() bool {
 	}
 	_ = initConfig()
 
-	// initialize the Updaters
-	initUpdaters := func() bool {
-		chain := a.getChain()
-		a.project.Updater = types.NewProjectUpdater(chain, []types.HistoryContainer{})
-		a.project.Updater.Reset()
-		a.monitors.Updater = types.NewMonitorUpdater(chain)
-		a.monitors.Updater.Reset()
-		a.names.Updater = types.NewNameUpdater(chain)
-		a.names.Updater.Reset()
-		a.abis.Updater = types.NewAbiUpdater(chain)
-		a.abis.Updater.Reset()
-		a.indexes.Updater = types.NewIndexUpdater(chain)
-		a.indexes.Updater.Reset()
-		a.manifests.Updater = types.NewManifestUpdater(chain)
-		a.manifests.Updater.Reset()
-		a.status.Updater = types.NewStatusUpdater(chain)
-		a.status.Updater.Reset()
-		a.settings.Updater = types.NewSettingsUpdater(chain)
-		a.settings.Updater.Reset()
-		a.session.Updater = types.NewSessionUpdater(chain)
-		a.session.Updater.Reset()
-		a.config.Updater = types.NewConfigUpdater(chain)
-		a.config.Updater.Reset()
-		a.wizard.Updater = types.NewWizardUpdater(chain)
-		a.wizard.Updater.Reset()
-		a.daemons.Updater = types.NewDaemonUpdater(chain)
-		a.daemons.Updater.Reset()
-		return true
-	}
-	_ = initUpdaters()
-
 	// The rest depends on the rpc...
 	initRpc := func() bool {
 		os.Setenv("TB_NO_PROVIDER_CHECK", "true")
@@ -93,6 +62,25 @@ func (a *App) initialize() bool {
 	passed := initRpc()
 
 	if passed {
+		// initialize the Updaters
+		initUpdaters := func() bool {
+			chain := a.getChain()
+			a.project.Updater = types.NewProjectUpdater(chain, []types.HistoryContainer{}, true /* reset */)
+			a.monitors.Updater = types.NewMonitorUpdater(chain, true)
+			a.names.Updater = types.NewNameUpdater(chain, true)
+			a.abis.Updater = types.NewAbiUpdater(chain, true)
+			a.indexes.Updater = types.NewIndexUpdater(chain, true)
+			a.manifests.Updater = types.NewManifestUpdater(chain, true)
+			a.status.Updater = types.NewStatusUpdater(chain, true)
+			a.settings.Updater = types.NewSettingsUpdater(chain, true)
+			a.session.Updater = types.NewSessionUpdater(chain, true)
+			a.config.Updater = types.NewConfigUpdater(chain, true)
+			a.wizard.Updater = types.NewWizardUpdater(chain, true)
+			a.daemons.Updater = types.NewDaemonUpdater(chain, true)
+			return true
+		}
+		_ = initUpdaters()
+
 		// We always need names. We load it here and then again if it ever changes...
 		initNames := func() bool {
 			var err error

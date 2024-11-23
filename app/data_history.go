@@ -47,6 +47,10 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base
 	if !history.NeedsUpdate() {
 		return nil
 	}
+	updater := history.Updater
+	defer func() {
+		history.Updater = updater
+	}()
 	logger.InfoBY("Updating needed for history...")
 
 	// EXISTING_CODE

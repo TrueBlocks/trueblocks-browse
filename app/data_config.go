@@ -34,6 +34,10 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.config.NeedsUpdate() {
 		return nil
 	}
+	updater := a.config.Updater
+	defer func() {
+		a.config.Updater = updater
+	}()
 	logger.InfoBY("Updating needed for config...")
 
 	// EXISTING_CODE

@@ -37,6 +37,10 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.project.NeedsUpdate() {
 		return nil
 	}
+	updater := a.project.Updater
+	defer func() {
+		a.project.Updater = updater
+	}()
 	logger.InfoBY("Updating needed for project...")
 
 	// EXISTING_CODE

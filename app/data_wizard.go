@@ -34,6 +34,10 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.wizard.NeedsUpdate() {
 		return nil
 	}
+	updater := a.wizard.Updater
+	defer func() {
+		a.wizard.Updater = updater
+	}()
 	logger.InfoBY("Updating needed for wizard...")
 
 	// EXISTING_CODE

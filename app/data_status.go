@@ -39,6 +39,10 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.status.NeedsUpdate() {
 		return nil
 	}
+	updater := a.status.Updater
+	defer func() {
+		a.status.Updater = updater
+	}()
 	logger.InfoBY("Updating needed for status...")
 
 	opts := sdk.StatusOptions{

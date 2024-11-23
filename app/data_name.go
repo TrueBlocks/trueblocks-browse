@@ -43,6 +43,10 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.names.NeedsUpdate() {
 		return nil
 	}
+	updater := a.names.Updater
+	defer func() {
+		a.names.Updater = updater
+	}()
 	logger.InfoBY("Updating needed for names...")
 
 	opts := sdk.NamesOptions{

@@ -37,6 +37,10 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.indexes.NeedsUpdate() {
 		return nil
 	}
+	updater := a.indexes.Updater
+	defer func() {
+		a.indexes.Updater = updater
+	}()
 	logger.InfoBY("Updating needed for indexes...")
 
 	opts := sdk.IndexesOptions{

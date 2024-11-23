@@ -59,7 +59,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "walk.Updater",
+                    "type": "updater.Updater",
                     "description": "jim",
                     "num": 9
                 }
@@ -123,7 +123,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "walk.Updater",
+                    "type": "updater.Updater",
                     "description": "jim",
                     "num": 9
                 }
@@ -181,7 +181,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "walk.Updater",
+                    "type": "updater.Updater",
                     "description": "jim",
                     "num": 8
                 }
@@ -257,7 +257,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "walk.Updater",
+                    "type": "updater.Updater",
                     "description": "jim",
                     "num": 11
                 }
@@ -298,7 +298,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "walk.Updater",
+                    "type": "updater.Updater",
                     "description": "jim",
                     "num": 5
                 }
@@ -321,7 +321,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "walk.Updater",
+                    "type": "updater.Updater",
                     "description": "jim",
                     "num": 2
                 }
@@ -380,7 +380,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "walk.Updater",
+                    "type": "updater.Updater",
                     "description": "jim",
                     "num": 8
                 }
@@ -414,7 +414,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "walk.Updater",
+                    "type": "updater.Updater",
                     "description": "jim",
                     "num": 4
                 }
@@ -436,7 +436,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "walk.Updater",
+                    "type": "updater.Updater",
                     "description": "jim",
                     "num": 2
                 }
@@ -452,7 +452,7 @@
             "members": [
                 {
                     "name": "updater",
-                    "type": "walk.Updater",
+                    "type": "updater.Updater",
                     "description": "jim",
                     "num": 1
                 }
@@ -468,7 +468,7 @@
             "members": [
                 {
                     "name": "updater",
-                    "type": "walk.Updater",
+                    "type": "updater.Updater",
                     "description": "jim",
                     "num": 1
                 }
@@ -496,7 +496,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "walk.Updater",
+                    "type": "updater.Updater",
                     "description": "jim",
                     "num": 3
                 }
@@ -518,7 +518,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "walk.Updater",
+                    "type": "updater.Updater",
                     "description": "jim",
                     "num": 2
                 }

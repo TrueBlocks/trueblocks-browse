@@ -39,6 +39,10 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.abis.NeedsUpdate() {
 		return nil
 	}
+	updater := a.abis.Updater
+	defer func() {
+		a.abis.Updater = updater
+	}()
 	logger.InfoBY("Updating needed for abis...")
 
 	opts := sdk.AbisOptions{

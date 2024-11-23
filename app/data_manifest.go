@@ -37,6 +37,10 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.manifests.NeedsUpdate() {
 		return nil
 	}
+	updater := a.manifests.Updater
+	defer func() {
+		a.manifests.Updater = updater
+	}()
 	logger.InfoBY("Updating needed for manifests...")
 
 	opts := sdk.ManifestsOptions{

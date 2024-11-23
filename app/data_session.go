@@ -37,6 +37,10 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.session.NeedsUpdate() {
 		return nil
 	}
+	updater := a.session.Updater
+	defer func() {
+		a.session.Updater = updater
+	}()
 	logger.InfoBY("Updating needed for session...")
 
 	opts := sdk.SessionOptions{
