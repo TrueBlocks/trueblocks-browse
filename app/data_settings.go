@@ -53,12 +53,10 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}
 
-	props := types.SettingsProps{
-		Status:  &a.status,
-		Config:  &a.config,
-		Session: &a.session,
-	}
-	a.settings = types.NewSettingsContainer(a.getChain(), &props)
+	a.settings = types.NewSettingsContainer(a.getChain(), a.status.Items)
+	a.settings.Status = a.status
+	a.settings.Config = a.config
+	a.settings.Session = a.session
 	// EXISTING_CODE
 	// EXISTING_CODE
 	// do not remove

@@ -71,8 +71,10 @@ func (a *App) load{{$routeName}}({{$param1}}{{$param2}}) error {
 	}
 	updater := {{$appData}}.Updater
 	defer func() {
-		{{$appData}}.Updater = updater
-	}()
+{{ if $isHistory }}	history, _ = a.historyCache.Load(address)
+{{end}}		{{$appData}}.Updater = updater
+{{ if $isHistory }}	a.historyCache.Store(address, history)
+{{end}}	}()
 	logger.InfoBY("Updating needed for {{$routeLower}}...")
 
 {{if $needsSdk}}

@@ -36,8 +36,8 @@ func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address 
 	ret := HistoryContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Address: address,
 		Chain:   chain,
+		Address: address,
 		Updater: NewHistoryUpdater(chain, address),
 	}
 	// EXISTING_CODE

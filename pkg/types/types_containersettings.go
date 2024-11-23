@@ -7,32 +7,29 @@ import (
 	"encoding/json"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
-
-type SettingsProps struct {
-	Chain   string            `json:"chain"`
-	Status  *StatusContainer  `json:"status"`
-	Config  *ConfigContainer  `json:"config"`
-	Session *SessionContainer `json:"session"`
-}
 
 // EXISTING_CODE
 
 type SettingsContainer struct {
+	Chain   string                `json:"chain"`
+	Updater updater.Updater       `json:"updater"`
+	Items   []coreTypes.CacheItem `json:"items"`
+	NItems  uint64                `json:"nItems"`
+	// EXISTING_CODE
 	Status  StatusContainer  `json:"status"`
 	Config  ConfigContainer  `json:"config"`
 	Session SessionContainer `json:"session"`
-	Updater updater.Updater  `json:"updater"`
-	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewSettingsContainer(chain string, props *SettingsProps) SettingsContainer {
+func NewSettingsContainer(chain string, itemsIn []coreTypes.CacheItem) SettingsContainer {
 	ret := SettingsContainer{
-		Status:  *props.Status,
-		Config:  *props.Config,
-		Session: *props.Session,
+		Items:   itemsIn,
+		NItems:  uint64(len(itemsIn)),
+		Chain:   chain,
 		Updater: NewSettingsUpdater(chain),
 	}
 	// EXISTING_CODE
@@ -65,36 +62,42 @@ func (s *SettingsContainer) String() string {
 }
 
 func (s *SettingsContainer) GetItems() interface{} {
-	return nil
+	return s.Items
 }
 
 func (s *SettingsContainer) SetItems(items interface{}) {
-	// s.Items = items.([]string)
+	s.Items = items.([]coreTypes.CacheItem)
 }
 
 func (s *SettingsContainer) NeedsUpdate() bool {
-	return s.Config.NeedsUpdate() ||
-		s.Status.NeedsUpdate() // || s.Session.NeedsUpdate()
+	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
+		s.Updater = updater
+		return true
+	}
+	return false
 }
 
 func (s *SettingsContainer) ShallowCopy() Containerer {
 	ret := &SettingsContainer{
+		Chain:   s.Chain,
+		Updater: s.Updater,
+		NItems:  s.NItems,
+		// EXISTING_CODE
 		Status:  *s.Status.ShallowCopy().(*StatusContainer),
 		Config:  *s.Config.ShallowCopy().(*ConfigContainer),
 		Session: *s.Session.ShallowCopy().(*SessionContainer),
-		Updater: s.Updater,
-		// EXISTING_CODE
 		// EXISTING_CODE
 	}
 	return ret
 }
 
 func (s *SettingsContainer) Clear() {
+	s.NItems = 0
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func (s *SettingsContainer) passesFilter(filter *Filter) (ret bool) {
+func (s *SettingsContainer) passesFilter(item *coreTypes.CacheItem, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -104,7 +107,8 @@ func (s *SettingsContainer) passesFilter(filter *Filter) (ret bool) {
 	return
 }
 
-func (s *SettingsContainer) Accumulate() {
+func (s *SettingsContainer) Accumulate(item *coreTypes.CacheItem) {
+	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -115,7 +119,26 @@ func (s *SettingsContainer) Finalize() {
 }
 
 func (s *SettingsContainer) CollateAndFilter(theMap *FilterMap) interface{} {
-	filtered := []Nothing{}
+	s.Clear()
+
+	filter, _ := theMap.Load("settings") // may be empty
+	if !filter.HasCriteria() {
+		s.ForEveryItem(func(item *coreTypes.CacheItem, data any) bool {
+			s.Accumulate(item)
+			return true
+		}, nil)
+		s.Finalize()
+		return s.Items
+	}
+	filtered := []coreTypes.CacheItem{}
+	s.ForEveryItem(func(item *coreTypes.CacheItem, data any) bool {
+		if s.passesFilter(item, &filter) {
+			s.Accumulate(item)
+			filtered = append(filtered, *item)
+		}
+		return true
+	}, nil)
+	s.Finalize()
 
 	// EXISTING_CODE
 	s.Status.CollateAndFilter(theMap)
@@ -124,6 +147,15 @@ func (s *SettingsContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	// EXISTING_CODE
 
 	return filtered
+}
+
+func (s *SettingsContainer) ForEveryItem(process EveryCacheItemFn, data any) bool {
+	for i := 0; i < len(s.Items); i++ {
+		if !process(&s.Items[i], data) {
+			return false
+		}
+	}
+	return true
 }
 
 // EXISTING_CODE
