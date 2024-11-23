@@ -54,14 +54,21 @@ func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	return ret
 }
 
-func NewNameUpdater(chain string) updater.Updater {
-	// EXISTING_CODE
-	paths := []string{
-		filepath.Join(coreConfig.MustGetPathToChainConfig(chain), string(names.DatabaseCustom)),
-		filepath.Join(coreConfig.MustGetPathToChainConfig(chain), string(names.DatabaseRegular)),
+func NewNameUpdater(chain string, resetIn ...bool) updater.Updater {
+	reset := false
+	if len(resetIn) > 0 {
+		reset = resetIn[0]
 	}
-	updater, _ := updater.NewUpdater("name", paths, updater.File)
+
 	// EXISTING_CODE
+	items := []updater.UpdaterItem{
+		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
+	}
+	// EXISTING_CODE
+	updater, _ := updater.NewUpdater("names", items)
+	if reset {
+		updater.Reset()
+	}
 	return updater
 }
 

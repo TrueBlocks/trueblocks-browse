@@ -40,14 +40,22 @@ func NewSettingsContainer(chain string, props *SettingsProps) SettingsContainer 
 	return ret
 }
 
-func NewSettingsUpdater(chain string) updater.Updater {
-	// EXISTING_CODE
-	paths := []string{
-		utils.MustGetConfigFn("", "trueBlocks.toml"),
-		utils.MustGetConfigFn("browse", "session.json"),
+func NewSettingsUpdater(chain string, resetIn ...bool) updater.Updater {
+	reset := false
+	if len(resetIn) > 0 {
+		reset = resetIn[0]
 	}
-	updater, _ := updater.NewUpdater("settings", paths, updater.File)
+
 	// EXISTING_CODE
+	items := []updater.UpdaterItem{
+		{Path: utils.MustGetConfigFn("", "trueBlocks.toml"), Type: updater.File},
+		{Path: utils.MustGetConfigFn("browse", "session.json"), Type: updater.File},
+	}
+	// EXISTING_CODE
+	updater, _ := updater.NewUpdater("settings", items)
+	if reset {
+		updater.Reset()
+	}
 	return updater
 }
 

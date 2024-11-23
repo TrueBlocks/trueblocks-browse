@@ -37,11 +37,21 @@ func NewConfigContainer(chain string, config *configTypes.Config) ConfigContaine
 	return ret
 }
 
-func NewConfigUpdater(chain string) updater.Updater {
+func NewConfigUpdater(chain string, resetIn ...bool) updater.Updater {
+	reset := false
+	if len(resetIn) > 0 {
+		reset = resetIn[0]
+	}
+
 	// EXISTING_CODE
-	paths := []string{utils.MustGetConfigFn("", "trueBlocks.toml")}
-	updater, _ := updater.NewUpdater("config", paths, updater.File)
+	items := []updater.UpdaterItem{
+		{Path: utils.MustGetConfigFn("", "trueBlocks.toml"), Type: updater.File},
+	}
 	// EXISTING_CODE
+	updater, _ := updater.NewUpdater("config", items)
+	if reset {
+		updater.Reset()
+	}
 	return updater
 }
 

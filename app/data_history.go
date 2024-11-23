@@ -41,6 +41,7 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base
 	if !exists {
 		history = types.NewHistoryContainer(a.getChain(), []coreTypes.Transaction{}, address)
 		history.Updater.Reset()
+		a.historyCache.Store(address, history)
 	}
 	// EXISTING_CODE
 
@@ -49,7 +50,9 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base
 	}
 	updater := history.Updater
 	defer func() {
+		history, _ = a.historyCache.Load(address)
 		history.Updater = updater
+		a.historyCache.Store(address, history)
 	}()
 	logger.InfoBY("Updating needed for history...")
 

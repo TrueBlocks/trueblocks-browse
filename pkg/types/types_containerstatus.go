@@ -39,11 +39,21 @@ func NewStatusContainer(chain string, itemsIn []coreTypes.CacheItem, status *cor
 	return ret
 }
 
-func NewStatusUpdater(chain string) updater.Updater {
+func NewStatusUpdater(chain string, resetIn ...bool) updater.Updater {
+	reset := false
+	if len(resetIn) > 0 {
+		reset = resetIn[0]
+	}
+
 	// EXISTING_CODE
-	paths := []string{}
-	updater, _ := updater.NewUpdater("status", paths, updater.Timer, 2*time.Minute)
+	items := []updater.UpdaterItem{
+		{Duration: 2 * time.Minute, Type: updater.Timer},
+	}
 	// EXISTING_CODE
+	updater, _ := updater.NewUpdater("status", items)
+	if reset {
+		updater.Reset()
+	}
 	return updater
 }
 

@@ -42,14 +42,22 @@ func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorConta
 	return ret
 }
 
-func NewMonitorUpdater(chain string) updater.Updater {
-	// EXISTING_CODE
-	paths := []string{
-		filepath.Join(coreConfig.PathToCache(chain), "monitors"),
-		coreConfig.MustGetPathToChainConfig(namesChain),
+func NewMonitorUpdater(chain string, resetIn ...bool) updater.Updater {
+	reset := false
+	if len(resetIn) > 0 {
+		reset = resetIn[0]
 	}
-	updater, _ := updater.NewUpdater("monitor", paths, updater.Folder)
+
 	// EXISTING_CODE
+	items := []updater.UpdaterItem{
+		{Path: filepath.Join(coreConfig.PathToCache(chain), "monitors"), Type: updater.FolderSize},
+		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
+	}
+	// EXISTING_CODE
+	updater, _ := updater.NewUpdater("monitors", items)
+	if reset {
+		updater.Reset()
+	}
 	return updater
 }
 

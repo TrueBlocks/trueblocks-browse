@@ -41,13 +41,21 @@ func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContai
 	return ret
 }
 
-func NewIndexUpdater(chain string) updater.Updater {
-	// EXISTING_CODE
-	paths := []string{
-		walk.GetRootPathFromCacheType(chain, walk.Index_Bloom),
+func NewIndexUpdater(chain string, resetIn ...bool) updater.Updater {
+	reset := false
+	if len(resetIn) > 0 {
+		reset = resetIn[0]
 	}
-	updater, _ := updater.NewUpdater("index", paths, updater.Folder)
+
 	// EXISTING_CODE
+	items := []updater.UpdaterItem{
+		{Path: walk.GetRootPathFromCacheType(chain, walk.Index_Bloom), Type: updater.Folder},
+	}
+	// EXISTING_CODE
+	updater, _ := updater.NewUpdater("indexes", items)
+	if reset {
+		updater.Reset()
+	}
 	return updater
 }
 

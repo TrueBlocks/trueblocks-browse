@@ -30,13 +30,21 @@ func NewSessionContainer(chain string, session *coreTypes.Session) SessionContai
 	return ret
 }
 
-func NewSessionUpdater(chain string) updater.Updater {
-	// EXISTING_CODE
-	paths := []string{
-		utils.MustGetConfigFn("browse", "session.json"),
+func NewSessionUpdater(chain string, resetIn ...bool) updater.Updater {
+	reset := false
+	if len(resetIn) > 0 {
+		reset = resetIn[0]
 	}
-	updater, _ := updater.NewUpdater("session", paths, updater.File)
+
 	// EXISTING_CODE
+	items := []updater.UpdaterItem{
+		{Path: utils.MustGetConfigFn("browse", "session.json"), Type: updater.File},
+	}
+	// EXISTING_CODE
+	updater, _ := updater.NewUpdater("session", items)
+	if reset {
+		updater.Reset()
+	}
 	return updater
 }
 

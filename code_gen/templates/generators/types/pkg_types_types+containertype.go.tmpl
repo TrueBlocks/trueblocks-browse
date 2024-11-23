@@ -86,6 +86,13 @@
 	{{ $param5 = ", itemsIn" }}
 {{ end }}
 
+{{ $param6 := "" }}
+{{ if $isHistory }}
+	{{ $param6 = ", address base.Address"}}
+{{ else if $isProject }}
+	{{ $param6 = ", itemsIn []HistoryContainer"}}
+{{ end }}
+
 {{ $remains := "//-- remove line --" }}
 {{ if or $hasItems $hasEmbed }}
 	{{ if or $isStatus $isSession }}
@@ -138,9 +145,18 @@ func New{{$container}}(chain string{{$param1}}{{$param2}}{{$param3}}) {{$contain
 	return ret
 }
 
-func New{{$class}}Updater(chain string{{$param4}}) updater.Updater {
+func New{{$class}}Updater(chain string{{$param6}}, resetIn ...bool) updater.Updater {
+	reset := false
+	if len(resetIn) > 0 {
+		reset = resetIn[0]
+	}
+
 	// EXISTING_CODE
 	// EXISTING_CODE
+	updater, _ := updater.NewUpdater("{{$routeLower}}", items)
+	if reset {
+		updater.Reset()
+	}
 	return updater
 }
 

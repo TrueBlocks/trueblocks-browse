@@ -20,15 +20,21 @@ const (
 	Timer UpdateType = iota
 	File
 	Folder
-	Size
+	FileSize
+	FolderSize
 )
 
 type Updater struct {
-	Name       string        `json:"name"`
-	LastTs     int64         `json:"lastTs"`
-	Paths      []string      `json:"paths"`
-	UpdateType UpdateType    `json:"updateType"`
-	Duration   time.Duration `json:"duration"`
+	Name          string        `json:"name"`
+	LastTimeStamp int64         `json:"lastTimeStamp"`
+	LastTotalSize int64         `json:"lastTotalSize"`
+	Items         []UpdaterItem `json:"items"`
+}
+
+type UpdaterItem struct {
+	Path     string        `json:"path"`
+	Duration time.Duration `json:"duration"`
+	Type     UpdateType    `json:"type"`
 }
 
 func (u *Updater) String() string {
@@ -37,142 +43,191 @@ func (u *Updater) String() string {
 }
 
 // NewUpdater creates a new Updater instance. It logs a fatal error if invalid parameters are provided.
-func NewUpdater(name string, paths []string, updateType UpdateType, options ...any) (Updater, error) {
-	if len(paths) > 0 && updateType != Folder && updateType != File {
-		logger.Fatal("invalid path type: must be Folder or File when paths are provided")
-	}
-
-	var duration time.Duration
-	var durationCount int
-
-	for _, opt := range options {
-		if d, ok := opt.(time.Duration); ok {
-			duration = d
-			durationCount++
-		}
-	}
-
-	if len(paths) == 0 && durationCount == 0 {
-		logger.Fatal("must provide at least one path or a duration")
-	}
-
-	if durationCount > 1 {
-		logger.Fatal("cannot provide more than one duration")
+func NewUpdater(name string, items []UpdaterItem) (Updater, error) {
+	if len(items) == 0 {
+		logger.Fatal("must provide at least one UpdaterItem")
 	}
 
 	now := time.Now()
 	ret := Updater{
-		Name:       name,
-		Paths:      paths,
-		UpdateType: updateType,
-		Duration:   duration,
-		LastTs:     now.Unix(),
+		Name:          name,
+		Items:         items,
+		LastTimeStamp: now.Unix(),
+		LastTotalSize: 0,
 	}
 
+	ret.debugV("NewUpdater created with LastTimeStamp:", ret.LastTimeStamp, "LastTotalSize:", ret.LastTotalSize)
 	return ret, nil
 }
 
 // NeedsUpdate checks if the updater needs to be updated based on the paths or duration.
+//
+// Summary:
+// - If the Timer type has exceeded its duration, it will trigger an update.
+// - If the File or Folder types find any file whose modification time is later than LastTimeStamp, it will trigger an update.
+// - If the FileSize or FolderSize items notice an increase in the total file size of all FileSize or FolderSize items, it will trigger an update.
+//
+// Returns:
+// - Updater: A potentially updated Updater instance with updated LastTimeStamp and/or LastTotalSize.
+// - bool: A boolean indicating whether an update is needed (true) or not (false).
+// - error: An error object containing any errors encountered during the update check.
 func (u *Updater) NeedsUpdate() (Updater, bool, error) {
-	u.debug("Checking if update is needed for updater:", u.Name, u.LastTs)
-	if len(u.Paths) == 0 {
-		u.debug("No paths provided, checking based on duration")
-		return u.needsUpdateTime()
+	var needsUpdate bool
+	var errs []error
+	var mostRecentTime int64
+	var totalSize int64
+
+	u.debugV("NeedsUpdate called with LastTimeStamp:", u.LastTimeStamp, "LastTotalSize:", u.LastTotalSize)
+
+	for _, item := range u.Items {
+		switch item.Type {
+		case Timer:
+			updated, needed, err := u.needsUpdateTime(item.Duration)
+			if err != nil {
+				errs = append(errs, err)
+			}
+			if needed {
+				needsUpdate = true
+				if updated.LastTimeStamp > mostRecentTime {
+					mostRecentTime = updated.LastTimeStamp
+				}
+			}
+		case File:
+			updated, needed, err := u.needsUpdateFiles(item.Path)
+			if err != nil {
+				errs = append(errs, err)
+			}
+			if needed {
+				needsUpdate = true
+				if updated.LastTimeStamp > mostRecentTime {
+					mostRecentTime = updated.LastTimeStamp
+				}
+			}
+		case Folder:
+			updated, needed, err := u.needsUpdateFolder(item.Path)
+			if err != nil {
+				errs = append(errs, err)
+			}
+			if needed {
+				needsUpdate = true
+				if updated.LastTimeStamp > mostRecentTime {
+					mostRecentTime = updated.LastTimeStamp
+				}
+			}
+		case FileSize:
+			// Skip FileSize type items in this loop
+			continue
+		case FolderSize:
+			// Skip FolderSize type items in this loop
+			continue
+		default:
+			logger.Fatal("unknown path type" + fmt.Sprintf(" %d", item.Type))
+			return Updater{}, false, errors.New("unknown path type")
+		}
 	}
-	u.debug("Paths provided, checking based on paths")
-	return u.needsUpdatePaths()
+
+	// Handle FileSize and FolderSize type items in a separate loop
+	for _, item := range u.Items {
+		switch item.Type {
+		case FileSize:
+			fileSize := file.FileSize(item.Path)
+			totalSize += fileSize
+		case FolderSize:
+			if err := walk.ForEveryFileInFolder(item.Path, func(filePath string, _ any) (bool, error) {
+				fileSize := file.FileSize(filePath)
+				totalSize += fileSize
+				return true, nil
+			}, nil); err != nil {
+				errs = append(errs, fmt.Errorf("failed to process folder %s: %v", item.Path, err))
+			}
+		}
+	}
+	u.debugV("Total size calculated:", totalSize, "LastTotalSize:", u.LastTotalSize)
+
+	if totalSize != u.LastTotalSize {
+		u.debug(mark("File size condition met", u.LastTotalSize, totalSize))
+		needsUpdate = true
+	}
+
+	if needsUpdate {
+		newUpdater := *u
+		if mostRecentTime == 0 {
+			mostRecentTime = time.Now().Unix()
+		}
+		newUpdater.LastTimeStamp = mostRecentTime
+		newUpdater.LastTotalSize = totalSize
+		u.debugV("Updating LastTimeStamp to:", newUpdater.LastTimeStamp, "and LastTotalSize to:", newUpdater.LastTotalSize)
+		return newUpdater, true, combineErrors(errs)
+	}
+
+	return *u, false, combineErrors(errs)
 }
 
-func (u *Updater) needsUpdateTime() (Updater, bool, error) {
+// needsUpdateTime checks if the specified duration has passed since the last update.
+func (u *Updater) needsUpdateTime(duration time.Duration) (Updater, bool, error) {
 	now := time.Now().Unix()
-	u.debug("Current time:", now, "Last update timestamp:", u.LastTs, "Duration (seconds):", u.Duration.Seconds())
-	if now-int64(u.Duration.Seconds()) >= u.LastTs {
-		u.debug(mark("Duration condition met", u.LastTs, now))
+	u.debugV("Current time:", now, "Last update timestamp:", u.LastTimeStamp, "Duration (seconds):", duration.Seconds())
+	if now-int64(duration.Seconds()) >= u.LastTimeStamp {
+		u.debug(mark("Duration condition met", u.LastTimeStamp, now))
 		newUpdater := *u
-		newUpdater.LastTs = now
+		newUpdater.LastTimeStamp = now
 		return newUpdater, true, nil
 	}
-	u.debug("Duration condition not met, no update needed")
+	u.debugV("Duration condition not met, no update needed")
 	return *u, false, nil
 }
 
-func (u *Updater) needsUpdatePaths() (Updater, bool, error) {
-	switch u.UpdateType {
-	case File:
-		u.debug("Path type is files, checking files")
-		return u.needsUpdateFiles()
-	case Folder:
-		u.debug("Path type is folders, checking folders")
-		return u.needsUpdateFolder()
-	default:
-		logger.Fatal("unknown path type")
-		return Updater{}, false, errors.New("unknown path type")
+// needsUpdateFiles checks if the file's modification time is more recent than the last update.
+func (u *Updater) needsUpdateFiles(path string) (Updater, bool, error) {
+	u.debugV("Checking files for updates")
+	modTime, err := file.GetModTime(path)
+	if err != nil {
+		return *u, false, fmt.Errorf("failed to get modification time for file %s: %v", path, err)
 	}
-}
-
-func (u *Updater) needsUpdateFiles() (Updater, bool, error) {
-	u.debug("Checking files for updates")
-	var mostRecentTime int64
-	var errs []error
-
-	for _, path := range u.Paths {
-		modTime, err := file.GetModTime(path)
-		if err != nil {
-			errs = append(errs, fmt.Errorf("failed to get modification time for file %s: %v", path, err))
-			continue
-		}
-
-		u.debug("File:", relativize(path), "Modification time:", modTime.Unix())
-		if modTime.Unix() > u.LastTs && modTime.Unix() > mostRecentTime {
-			mostRecentTime = modTime.Unix()
-		}
-	}
-
-	if mostRecentTime > u.LastTs {
-		u.debug(mark("File modification condition met", u.LastTs, mostRecentTime))
+	u.debugV("File:", relativize(path), "Modification time:", modTime.Unix())
+	if modTime.Unix() > u.LastTimeStamp {
+		u.debug(mark("File time condition met", u.LastTimeStamp, modTime.Unix()))
 		newUpdater := *u
-		newUpdater.LastTs = mostRecentTime
-		return newUpdater, true, combineErrors(errs)
+		newUpdater.LastTimeStamp = modTime.Unix()
+		return newUpdater, true, nil
 	}
-
-	u.debug("File modification condition not met, no update needed")
-	return *u, false, combineErrors(errs)
+	u.debugV("File modification condition not met, no update needed")
+	return *u, false, nil
 }
 
-func (u *Updater) needsUpdateFolder() (Updater, bool, error) {
-	u.debug("Checking folders for updates")
+// needsUpdateFolder checks if any file within the folder has a modification time more recent than the last update.
+func (u *Updater) needsUpdateFolder(path string) (Updater, bool, error) {
+	u.debugV("Checking folders for updates")
 	var maxLastTs int64
 	var errs []error
 
-	for _, folder := range u.Paths {
-		if err := walk.ForEveryFileInFolder(folder, func(path string, _ any) (bool, error) {
-			modTime, err := file.GetModTime(path)
-			if err != nil {
-				errs = append(errs, fmt.Errorf("failed to get modification time for file %s: %v", path, err))
-				return true, nil
-			}
-			u.debug("File in folder:", relativize(path), "Modification time:", modTime.Unix())
-			if modTime.Unix() > maxLastTs {
-				maxLastTs = modTime.Unix()
-			}
+	if err := walk.ForEveryFileInFolder(path, func(filePath string, _ any) (bool, error) {
+		modTime, err := file.GetModTime(filePath)
+		if err != nil {
+			errs = append(errs, fmt.Errorf("failed to get modification time for file %s: %v", filePath, err))
 			return true, nil
-		}, nil); err != nil {
-			errs = append(errs, fmt.Errorf("failed to process folder %s: %v", folder, err))
-			continue // skip errors
 		}
+		u.debugV("File in folder:", relativize(filePath), "Modification time:", modTime.Unix())
+		if modTime.Unix() > maxLastTs {
+			maxLastTs = modTime.Unix()
+		}
+		return true, nil
+	}, nil); err != nil {
+		errs = append(errs, fmt.Errorf("failed to process folder %s: %v", path, err))
 	}
 
-	if maxLastTs > u.LastTs {
-		u.debug(mark("Folder modification condition met", u.LastTs, maxLastTs))
+	if maxLastTs > u.LastTimeStamp {
+		u.debug(mark("Folder modification condition met", u.LastTimeStamp, maxLastTs))
 		newUpdater := *u
-		newUpdater.LastTs = maxLastTs
+		newUpdater.LastTimeStamp = maxLastTs
 		return newUpdater, true, combineErrors(errs)
 	}
 
-	u.debug("Folder modification condition not met, no update needed")
+	u.debugV("Folder modification condition not met, no update needed")
 	return *u, false, combineErrors(errs)
 }
 
+// combineErrors combines multiple errors into a single error.
 func combineErrors(errs []error) error {
 	if len(errs) == 0 {
 		return nil
@@ -186,40 +241,33 @@ func combineErrors(errs []error) error {
 
 // SetChain updates the paths by replacing an old chain segment with a new one.
 func (u *Updater) SetChain(oldChain, newChain string) {
-	newPaths := []string{}
-	for _, path := range u.Paths {
+	newItems := []UpdaterItem{}
+	for _, item := range u.Items {
 		ps := string(os.PathSeparator)
 		oc := ps + oldChain
 		nc := ps + newChain
-		newPaths = append(newPaths, strings.ReplaceAll(path, oc, nc))
+		newPath := strings.ReplaceAll(item.Path, oc, nc)
+		newItems = append(newItems, UpdaterItem{Path: newPath, Duration: item.Duration, Type: item.Type})
 	}
-	u.Paths = newPaths
+	u.Items = newItems
 	u.Reset()
 }
 
-// UpdatePaths updates the paths of the Updater instance.
-func (u *Updater) UpdatePaths(newPaths []string) {
-	u.Paths = newPaths
-	u.Reset()
-}
-
-// UpdateDuration updates the duration of the Updater instance.
-func (u *Updater) UpdateDuration(newDuration time.Duration) {
-	u.Duration = newDuration
-	u.Reset()
-}
-
-// Reset sets the LastTs to zero which causes a reload on the next call to NeedsUpdate.
+// Reset sets the LastTimeStamp and LastTotalSize to 0 which causes a reload on the next call to NeedsUpdate.
 func (u *Updater) Reset() {
-	u.LastTs = 0
+	u.debugV("Reset called, setting LastTimeStamp and LastTotalSize to 0")
+	u.LastTimeStamp = 0
+	u.LastTotalSize = 0
 }
 
 var debugging bool
 var debugType = ""
+var debugVerbose = false
 
 func init() {
 	debugType = os.Getenv("TB_DEBUG_UPDATE")
 	debugging = len(debugType) > 0
+	debugVerbose = os.Getenv("TB_VERBOSE") == "true"
 }
 
 func mark(msg string, t1, t2 int64) string {
@@ -227,11 +275,18 @@ func mark(msg string, t1, t2 int64) string {
 }
 
 func (u *Updater) debug(args ...interface{}) {
-	if debugging && (debugType == "true" || debugType == u.Name) {
+	if debugging && (debugType == "true" || strings.Contains(debugType, u.Name)) {
 		head := colors.Green + fmt.Sprintf("%10.10s:", u.Name) + colors.BrightYellow
 		modifiedArgs := append([]interface{}{head}, args...)
 		modifiedArgs = append(modifiedArgs, colors.Off)
 		logger.Info(modifiedArgs...)
+	}
+}
+
+// debugV is a verbose debug function that calls u.debug.
+func (u *Updater) debugV(args ...interface{}) {
+	if debugVerbose {
+		u.debug(args...)
 	}
 }
 
@@ -250,17 +305,4 @@ func relativize(path string) string {
 	}
 
 	return path
-}
-
-type UpdaterProps struct {
-	Name  string
-	Chain string
-	Reset bool
-}
-
-func NewUpdaterProps(chain string, reset bool) UpdaterProps {
-	return UpdaterProps{
-		Chain: chain,
-		Reset: reset,
-	}
 }

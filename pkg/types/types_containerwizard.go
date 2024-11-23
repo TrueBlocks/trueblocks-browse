@@ -36,11 +36,21 @@ func NewWizardContainer(chain string, itemsIn []WizError) WizardContainer {
 	return ret
 }
 
-func NewWizardUpdater(chain string) updater.Updater {
+func NewWizardUpdater(chain string, resetIn ...bool) updater.Updater {
+	reset := false
+	if len(resetIn) > 0 {
+		reset = resetIn[0]
+	}
+
 	// EXISTING_CODE
-	paths := []string{}
-	updater, _ := updater.NewUpdater("wizard", paths, updater.Timer, 2*time.Minute)
+	items := []updater.UpdaterItem{
+		{Duration: 2 * time.Minute, Type: updater.Timer},
+	}
 	// EXISTING_CODE
+	updater, _ := updater.NewUpdater("wizard", items)
+	if reset {
+		updater.Reset()
+	}
 	return updater
 }
 

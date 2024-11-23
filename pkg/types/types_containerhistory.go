@@ -5,14 +5,12 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"path/filepath"
 	"unsafe"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -47,15 +45,22 @@ func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address 
 	return ret
 }
 
-func NewHistoryUpdater(chain string, address base.Address) updater.Updater {
-	// EXISTING_CODE
-	paths := []string{
-		coreMonitor.PathToMonitorFile(chain, address),
-		filepath.Join(coreConfig.MustGetPathToChainConfig(namesChain), string(names.DatabaseCustom)),
-		filepath.Join(coreConfig.MustGetPathToChainConfig(namesChain), string(names.DatabaseRegular)),
+func NewHistoryUpdater(chain string, address base.Address, resetIn ...bool) updater.Updater {
+	reset := false
+	if len(resetIn) > 0 {
+		reset = resetIn[0]
 	}
-	updater, _ := updater.NewUpdater("history", paths, updater.File)
+
 	// EXISTING_CODE
+	items := []updater.UpdaterItem{
+		{Path: coreMonitor.PathToMonitorFile(chain, address), Type: updater.FileSize},
+		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
+	}
+	// EXISTING_CODE
+	updater, _ := updater.NewUpdater("history", items)
+	if reset {
+		updater.Reset()
+	}
 	return updater
 }
 

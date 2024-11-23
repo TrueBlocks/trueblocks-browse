@@ -5,12 +5,10 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"path/filepath"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 )
 
 // EXISTING_CODE
@@ -43,18 +41,26 @@ func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContai
 	return ret
 }
 
-func NewProjectUpdater(chain string, itemsIn []HistoryContainer) updater.Updater {
+func NewProjectUpdater(chain string, itemsIn []HistoryContainer, resetIn ...bool) updater.Updater {
+	reset := false
+	if len(resetIn) > 0 {
+		reset = resetIn[0]
+	}
+
 	// EXISTING_CODE
-	paths := []string{
-		filepath.Join(coreConfig.MustGetPathToChainConfig("mainnet"), string(names.DatabaseCustom)),
-		filepath.Join(coreConfig.MustGetPathToChainConfig("mainnet"), string(names.DatabaseRegular)),
+	items := []updater.UpdaterItem{
+		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
 	}
 	for _, item := range itemsIn {
 		path := coreMonitor.PathToMonitorFile(chain, item.Address)
-		paths = append(paths, path)
+		item := updater.UpdaterItem{Path: path, Type: updater.FileSize}
+		items = append(items, item)
 	}
-	updater, _ := updater.NewUpdater("project", paths, updater.File)
 	// EXISTING_CODE
+	updater, _ := updater.NewUpdater("project", items)
+	if reset {
+		updater.Reset()
+	}
 	return updater
 }
 

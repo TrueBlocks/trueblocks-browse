@@ -46,14 +46,22 @@ func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 	return ret
 }
 
-func NewAbiUpdater(chain string) updater.Updater {
-	// EXISTING_CODE
-	paths := []string{
-		filepath.Join(coreConfig.PathToCache(chain), "abis"),
-		coreConfig.MustGetPathToChainConfig(namesChain),
+func NewAbiUpdater(chain string, resetIn ...bool) updater.Updater {
+	reset := false
+	if len(resetIn) > 0 {
+		reset = resetIn[0]
 	}
-	updater, _ := updater.NewUpdater("abis", paths, updater.Folder)
+
 	// EXISTING_CODE
+	items := []updater.UpdaterItem{
+		{Path: filepath.Join(coreConfig.PathToCache(chain), "abis"), Type: updater.Folder},
+		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
+	}
+	// EXISTING_CODE
+	updater, _ := updater.NewUpdater("abis", items)
+	if reset {
+		updater.Reset()
+	}
 	return updater
 }
 
