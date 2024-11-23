@@ -273,34 +273,41 @@
             "sorts": "isEmpty+Asc,isKnown+Asc,address+Asc",
             "members": [
                 {
-                    "name": "largestFile",
-                    "type": "string",
+                    "name": "abi",
+                    "type": "coreTypes.Abi",
+                    "attributes": "embed",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "mostFunctions",
+                    "name": "largestFile",
                     "type": "string",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "mostEvents",
+                    "name": "mostFunctions",
                     "type": "string",
                     "description": "jim",
                     "num": 3
                 },
                 {
-                    "name": "chain",
+                    "name": "mostEvents",
                     "type": "string",
                     "description": "jim",
                     "num": 4
                 },
                 {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
                     "name": "updater",
                     "type": "updater.Updater",
                     "description": "jim",
-                    "num": 5
+                    "num": 6
                 }
             ]
         },
@@ -314,16 +321,23 @@
             "sorts": "range+Dec",
             "members": [
                 {
+                    "name": "chunkStats",
+                    "type": "coreTypes.ChunkStats",
+                    "attributes": "embed",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
                     "name": "chain",
                     "type": "string",
                     "description": "jim",
-                    "num": 1
+                    "num": 2
                 },
                 {
                     "name": "updater",
                     "type": "updater.Updater",
                     "description": "jim",
-                    "num": 2
+                    "num": 3
                 }
             ]
         },
@@ -395,28 +409,35 @@
             "attributes": "itemType=coreTypes.CacheItem|embedType=coreTypes.Status",
             "members": [
                 {
-                    "name": "nFolders",
-                    "type": "uint64",
+                    "name": "status",
+                    "type": "coreTypes.Status",
+                    "attributes": "embed",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "nFiles",
+                    "name": "nFolders",
                     "type": "uint64",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "nBytes",
+                    "name": "nFiles",
                     "type": "uint64",
                     "description": "jim",
                     "num": 3
                 },
                 {
+                    "name": "nBytes",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
                     "name": "updater",
                     "type": "updater.Updater",
                     "description": "jim",
-                    "num": 4
+                    "num": 5
                 }
             ]
         },
@@ -451,40 +472,9 @@
             "attributes": "embedType=daemons.Daemon|noSdk",
             "members": [
                 {
-                    "name": "updater",
-                    "type": "updater.Updater",
-                    "description": "jim",
-                    "num": 1
-                }
-            ]
-        },
-        {
-            "class": "Session",
-            "doc_route": "1100-containers",
-            "ui_route": "1100-session-u",
-            "cache_by": "range",
-            "cache_type": "cacheable",
-            "attributes": "embedType=coreTypes.Session",
-            "members": [
-                {
-                    "name": "updater",
-                    "type": "updater.Updater",
-                    "description": "jim",
-                    "num": 1
-                }
-            ]
-        },
-        {
-            "class": "Config",
-            "doc_route": "1110-containers",
-            "ui_route": "1110-config-v",
-            "cache_by": "range",
-            "cache_type": "cacheable",
-            "attributes": "embedType=configTypes.Config|noSdk",
-            "members": [
-                {
-                    "name": "nChains",
-                    "type": "uint64",
+                    "name": "daemon",
+                    "type": "daemons.Daemon",
+                    "attributes": "embed",
                     "description": "jim",
                     "num": 1
                 },
@@ -499,6 +489,64 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 3
+                }
+            ]
+        },
+        {
+            "class": "Session",
+            "doc_route": "1100-containers",
+            "ui_route": "1100-session-u",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "embedType=coreTypes.Session",
+            "members": [
+                {
+                    "name": "session",
+                    "type": "coreTypes.Session",
+                    "attributes": "embed",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "updater",
+                    "type": "updater.Updater",
+                    "description": "jim",
+                    "num": 2
+                }
+            ]
+        },
+        {
+            "class": "Config",
+            "doc_route": "1110-containers",
+            "ui_route": "1110-config-v",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "attributes": "embedType=configTypes.Config|noSdk",
+            "members": [
+                {
+                    "name": "config",
+                    "type": "configTypes.Config",
+                    "attributes": "embed",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nChains",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "updater",
+                    "type": "updater.Updater",
+                    "description": "jim",
+                    "num": 4
                 }
             ]
         },

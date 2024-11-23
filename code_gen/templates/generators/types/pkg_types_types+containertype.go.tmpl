@@ -48,11 +48,6 @@
 	{{ $embed2 = print "  " (toProper $embedName) ": *" (toLower $embedName) "," }}
 {{ end }}
 
-{{ $embed3 := "//-- remove line --" }}
-{{ if $hasEmbed }}
-	{{ $embed3 = print "  " (toProper $embedName) ": s." (toProper $embedName) ".ShallowCopy()," }}
-{{ end }}
-
 {{ $sorts1 := "//-- remove line --" }}
 {{ if $hasSorts }}
 	{{ $sorts1 = print "  Sorts sdk.SortSpec `json:\"sorts\"`" }}
@@ -136,9 +131,14 @@ package types
 // EXISTING_CODE
 
 type {{$container}} struct {
-	{{range $members}}{{if .IsSimpField}}{{.GoName}} {{.GoType}} {{.Tag}}
-	{{end}}{{end}} {{$items1}}
-	{{$embed1}}
+	{{range $members}}
+	{{- if .IsEmbed }}
+		{{.GoType}} `json:",inline"`
+	{{- else if .IsSimpField}}
+		{{.GoName}} {{.GoType}} {{.Tag}}
+	{{- end -}}
+	{{- end}}
+	{{$items1}}
 	{{$sorts1}}
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -194,11 +194,14 @@ func (s *{{$container}}) NeedsUpdate() bool {
 }
 
 func (s *{{$container}}) ShallowCopy() Containerer {
-	ret := &{{$container}}{
-		{{range $members}}{{if .IsSimpField}}{{.GoName}}: s.{{.GoName}},
-{{end}}{{end -}}
+	ret := &{{$container}}{ {{range $members}}
+		{{- if .IsEmbed }}
+			{{.GoName}}: s.{{.GoName}}.ShallowCopy(),
+		{{- else if .IsSimpField}}
+			{{.GoName}}: s.{{.GoName}},
+		{{- end -}}
+		{{- end}}
 		{{$items3}}
-		{{$embed3}}
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -266,9 +269,6 @@ func (s *{{$container}}) CollateAndFilter(theMap *FilterMap) interface{} {
 }
 
 {{if $hasItems -}}
-{{ if not $isSettings }}type {{$forEveryFnType}} func(item *{{$itemType}}, data any) bool
-
-{{end -}}
 func (s *{{$container}}) ForEveryItem(process {{$forEveryFnType}}, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {

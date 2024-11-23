@@ -17,6 +17,7 @@ import (
 // EXISTING_CODE
 
 type AbiContainer struct {
+	coreTypes.Abi `json:",inline"`
 	Chain         string          `json:"chain"`
 	LargestFile   string          `json:"largestFile"`
 	MostEvents    string          `json:"mostEvents"`
@@ -26,7 +27,6 @@ type AbiContainer struct {
 	NItems        uint64          `json:"nItems"`
 	Sorts         sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
-	coreTypes.Abi
 	// EXISTING_CODE
 }
 
@@ -88,6 +88,7 @@ func (s *AbiContainer) NeedsUpdate() bool {
 
 func (s *AbiContainer) ShallowCopy() Containerer {
 	ret := &AbiContainer{
+		Abi:           s.Abi.ShallowCopy(),
 		Chain:         s.Chain,
 		LargestFile:   s.LargestFile,
 		MostEvents:    s.MostEvents,
@@ -95,7 +96,6 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 		Updater:       s.Updater,
 		NItems:        s.NItems,
 		// EXISTING_CODE
-		Abi: s.Abi,
 		// EXISTING_CODE
 	}
 	return ret
@@ -172,8 +172,6 @@ func (s *AbiContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 	return filtered
 }
-
-type EveryAbiFn func(item *coreTypes.Abi, data any) bool
 
 func (s *AbiContainer) ForEveryItem(process EveryAbiFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {

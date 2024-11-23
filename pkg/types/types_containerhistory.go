@@ -170,8 +170,6 @@ func (s *HistoryContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-type EveryTransactionFn func(item *coreTypes.Transaction, data any) bool
-
 func (s *HistoryContainer) ForEveryItem(process EveryTransactionFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {

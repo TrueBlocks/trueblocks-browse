@@ -15,13 +15,13 @@ import (
 // EXISTING_CODE
 
 type IndexContainer struct {
-	Chain   string                 `json:"chain"`
-	Updater updater.Updater        `json:"updater"`
-	Items   []coreTypes.ChunkStats `json:"items"`
-	NItems  uint64                 `json:"nItems"`
-	Sorts   sdk.SortSpec           `json:"sorts"`
+	Chain                string `json:"chain"`
+	coreTypes.ChunkStats `json:",inline"`
+	Updater              updater.Updater        `json:"updater"`
+	Items                []coreTypes.ChunkStats `json:"items"`
+	NItems               uint64                 `json:"nItems"`
+	Sorts                sdk.SortSpec           `json:"sorts"`
 	// EXISTING_CODE
-	coreTypes.ChunkStats
 	// EXISTING_CODE
 }
 
@@ -82,12 +82,12 @@ func (s *IndexContainer) NeedsUpdate() bool {
 
 func (s *IndexContainer) ShallowCopy() Containerer {
 	ret := &IndexContainer{
-		Chain:   s.Chain,
-		Updater: s.Updater,
-		NItems:  s.NItems,
+		Chain:      s.Chain,
+		ChunkStats: s.ChunkStats.ShallowCopy(),
+		Updater:    s.Updater,
+		NItems:     s.NItems,
 		// EXISTING_CODE
-		ChunkStats: s.ChunkStats,
-		Sorts:      s.Sorts,
+		Sorts: s.Sorts,
 		// EXISTING_CODE
 	}
 	return ret
@@ -168,8 +168,6 @@ func (s *IndexContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 	return filtered
 }
-
-type EveryChunkStatsFn func(item *coreTypes.ChunkStats, data any) bool
 
 func (s *IndexContainer) ForEveryItem(process EveryChunkStatsFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {

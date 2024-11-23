@@ -1,3 +1,4 @@
-name    ,type            ,strDefault ,attributes ,upgrades ,docOrder ,description
-chain   ,string          ,           ,           ,         ,         ,jim
-updater ,updater.Updater ,           ,           ,         ,         ,jim
+name       ,type                 ,strDefault ,attributes ,upgrades ,docOrder ,description
+chunkStats ,coreTypes.ChunkStats ,           ,embed      ,         ,         ,jim
+chain      ,string               ,           ,           ,         ,         ,jim
+updater    ,updater.Updater      ,           ,           ,         ,         ,jim

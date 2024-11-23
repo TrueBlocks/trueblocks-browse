@@ -18,10 +18,10 @@ import (
 // EXISTING_CODE
 
 type ConfigContainer struct {
-	Chain              string          `json:"chain"`
+	Chain              string `json:"chain"`
+	configTypes.Config `json:",inline"`
 	NChains            uint64          `json:"nChains"`
 	Updater            updater.Updater `json:"updater"`
-	configTypes.Config `json:",inline"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -79,9 +79,9 @@ func (s *ConfigContainer) NeedsUpdate() bool {
 func (s *ConfigContainer) ShallowCopy() Containerer {
 	ret := &ConfigContainer{
 		Chain:   s.Chain,
+		Config:  s.Config.ShallowCopy(),
 		NChains: s.NChains,
 		Updater: s.Updater,
-		Config:  s.Config.ShallowCopy(),
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -117,7 +117,6 @@ func (s *ConfigContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	filtered := []Nothing{}
 
 	// EXISTING_CODE
-	// nothing to collate
 	// EXISTING_CODE
 
 	return filtered

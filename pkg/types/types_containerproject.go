@@ -159,8 +159,6 @@ func (s *ProjectContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-type EveryHistoryContainerFn func(item *HistoryContainer, data any) bool
-
 func (s *ProjectContainer) ForEveryItem(process EveryHistoryContainerFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {

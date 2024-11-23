@@ -143,8 +143,6 @@ func (s *WizardContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-type EveryWizErrorFn func(item *WizError, data any) bool
-
 func (s *WizardContainer) ForEveryItem(process EveryWizErrorFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {

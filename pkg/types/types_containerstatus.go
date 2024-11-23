@@ -14,13 +14,13 @@ import (
 // EXISTING_CODE
 
 type StatusContainer struct {
-	NBytes           uint64                `json:"nBytes"`
-	NFiles           uint64                `json:"nFiles"`
-	NFolders         uint64                `json:"nFolders"`
+	NBytes           uint64 `json:"nBytes"`
+	NFiles           uint64 `json:"nFiles"`
+	NFolders         uint64 `json:"nFolders"`
+	coreTypes.Status `json:",inline"`
 	Updater          updater.Updater       `json:"updater"`
 	Items            []coreTypes.CacheItem `json:"items"`
 	NItems           uint64                `json:"nItems"`
-	coreTypes.Status `json:",inline"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -83,9 +83,9 @@ func (s *StatusContainer) ShallowCopy() Containerer {
 		NBytes:   s.NBytes,
 		NFiles:   s.NFiles,
 		NFolders: s.NFolders,
+		Status:   s.Status.ShallowCopy(),
 		Updater:  s.Updater,
 		NItems:   s.NItems,
-		Status:   s.Status.ShallowCopy(),
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -152,8 +152,6 @@ func (s *StatusContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 	return filtered
 }
-
-type EveryCacheItemFn func(item *coreTypes.CacheItem, data any) bool
 
 func (s *StatusContainer) ForEveryItem(process EveryCacheItemFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {

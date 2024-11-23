@@ -180,8 +180,6 @@ func (s *MonitorContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-type EveryMonitorFn func(item *coreTypes.Monitor, data any) bool
-
 func (s *MonitorContainer) ForEveryItem(process EveryMonitorFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {

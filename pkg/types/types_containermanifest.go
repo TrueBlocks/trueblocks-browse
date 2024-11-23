@@ -55,7 +55,7 @@ func NewManifestUpdater(chain string, resetIn ...bool) updater.Updater {
 
 	// EXISTING_CODE
 	items := []updater.UpdaterItem{
-		{Path: filepath.Join(coreConfig.PathToManifest(chain), "manifest.json"), Type: updater.File},
+		{Path: filepath.Join(coreConfig.PathToManifestFile(chain), "manifest.json"), Type: updater.File},
 	}
 	// EXISTING_CODE
 	updater, _ := updater.NewUpdater("manifests", items)
@@ -165,8 +165,6 @@ func (s *ManifestContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 	return filtered
 }
-
-type EveryChunkRecordFn func(item *coreTypes.ChunkRecord, data any) bool
 
 func (s *ManifestContainer) ForEveryItem(process EveryChunkRecordFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {

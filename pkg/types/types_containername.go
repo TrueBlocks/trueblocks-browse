@@ -212,8 +212,6 @@ func (s *NameContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-type EveryNameFn func(item *coreTypes.Name, data any) bool
-
 func (s *NameContainer) ForEveryItem(process EveryNameFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {

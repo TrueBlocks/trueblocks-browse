@@ -1,2 +1,4 @@
 name    ,type            ,strDefault ,attributes ,upgrades ,docOrder ,description
+daemon  ,daemons.Daemon  ,           ,embed      ,         ,         ,jim
+chain   ,string          ,           ,           ,         ,         ,jim
 updater ,updater.Updater ,           ,           ,         ,         ,jim

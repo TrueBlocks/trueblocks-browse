@@ -14,8 +14,8 @@ import (
 // EXISTING_CODE
 
 type SessionContainer struct {
-	Updater           updater.Updater `json:"updater"`
 	coreTypes.Session `json:",inline"`
+	Updater           updater.Updater `json:"updater"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -71,8 +71,8 @@ func (s *SessionContainer) NeedsUpdate() bool {
 
 func (s *SessionContainer) ShallowCopy() Containerer {
 	ret := &SessionContainer{
-		Updater: s.Updater,
 		Session: s.Session.ShallowCopy(),
+		Updater: s.Updater,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
