@@ -40,7 +40,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.monitors.NeedsUpdate() {
 		return nil
 	}
-	logger.InfoBW("Updating needed for Monitors...")
+	logger.InfoBY("Updating needed for monitors...")
 
 	opts := sdk.MonitorsOptions{
 		Globals: a.getGlobals(true /* verbose */),

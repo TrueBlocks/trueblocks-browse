@@ -37,7 +37,7 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.settings.NeedsUpdate() {
 		return nil
 	}
-	logger.InfoBW("Updating needed for Settings...")
+	logger.InfoBY("Updating needed for settings...")
 
 	// EXISTING_CODE
 	_ = errorChan // delint

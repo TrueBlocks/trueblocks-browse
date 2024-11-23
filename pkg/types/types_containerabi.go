@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -21,7 +21,7 @@ type AbiContainer struct {
 	LargestFile   string          `json:"largestFile"`
 	MostEvents    string          `json:"mostEvents"`
 	MostFunctions string          `json:"mostFunctions"`
-	Updater       walk.Updater    `json:"updater"`
+	Updater       updater.Updater `json:"updater"`
 	Items         []coreTypes.Abi `json:"items"`
 	NItems        uint64          `json:"nItems"`
 	Sorts         sdk.SortSpec    `json:"sorts"`
@@ -46,13 +46,13 @@ func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
 	return ret
 }
 
-func NewAbiUpdater(chain string) walk.Updater {
+func NewAbiUpdater(chain string) updater.Updater {
 	// EXISTING_CODE
 	paths := []string{
 		filepath.Join(coreConfig.PathToCache(chain), "abis"),
 		coreConfig.MustGetPathToChainConfig(namesChain),
 	}
-	updater, _ := walk.NewUpdater("abis", paths, walk.TypeFolders)
+	updater, _ := updater.NewUpdater("abis", paths, updater.Folder)
 	// EXISTING_CODE
 	return updater
 }
@@ -71,7 +71,7 @@ func (s *AbiContainer) SetItems(items interface{}) {
 }
 
 func (s *AbiContainer) NeedsUpdate() bool {
-	if updater, reload := s.Updater.NeedsUpdate(); reload {
+	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
 		s.Updater = updater
 		return true
 	}

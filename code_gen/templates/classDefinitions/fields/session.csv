@@ -1,2 +1,2 @@
-name    ,type         ,strDefault ,attributes ,upgrades ,docOrder ,description
-updater ,walk.Updater ,           ,           ,         ,         ,jim
+name    ,type            ,strDefault ,attributes ,upgrades ,docOrder ,description
+updater ,updater.Updater ,           ,           ,         ,         ,jim

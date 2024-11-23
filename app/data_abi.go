@@ -39,7 +39,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.abis.NeedsUpdate() {
 		return nil
 	}
-	logger.InfoBW("Updating needed for Abis...")
+	logger.InfoBY("Updating needed for abis...")
 
 	opts := sdk.AbisOptions{
 		Globals: a.getGlobals(true /* verbose */),

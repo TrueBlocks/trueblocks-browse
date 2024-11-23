@@ -37,7 +37,7 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.manifests.NeedsUpdate() {
 		return nil
 	}
-	logger.InfoBW("Updating needed for Manifests...")
+	logger.InfoBY("Updating needed for manifests...")
 
 	opts := sdk.ManifestsOptions{
 		Globals: a.getGlobals(true /* verbose */),

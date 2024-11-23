@@ -68,15 +68,22 @@
 {{ end }}
 
 {{ $param3 := "" }}
-{{ $param4 := "" }}
-{{ $param5 := "" }}
 {{ if $isHistory }}
 	{{ $param3 = ", address base.Address" }}
-	{{ $param4 = ", address" }}
-	{{ $param5 = ", address base.Address" }}
+{{ end }}
+
+{{ $param4 := "" }}
+{{ if $isHistory }}
+	{{ $param4 = ", address base.Address" }}
 {{ else if $isProject }}
-	{{ $param4 = ", itemsIn" }}
-	{{ $param5 = ", itemsIn []HistoryContainer" }}
+	{{ $param4 = ", itemsIn []HistoryContainer" }}
+{{ end }}
+
+{{ $param5 := "" }}
+{{ if $isHistory }}
+	{{ $param5 = ", address" }}
+{{ else if $isProject }}
+	{{ $param5 = ", itemsIn" }}
 {{ end }}
 
 {{ $remains := "//-- remove line --" }}
@@ -84,9 +91,9 @@
 	{{ if or $isStatus $isSession }}
 		{{ $remains = print "  Updater: New" $class "Updater(chain)," }}
 	{{ else if $isHistory }}
-		{{ $remains = print "  Address: address, \n Chain:   chain, \n  Updater: New" $class "Updater(chain" $param4 ")," }}
+		{{ $remains = print "  Address: address, \n Chain:   chain, \n  Updater: New" $class "Updater(chain" $param5 ")," }}
 	{{ else }}
-		{{ $remains = print "  Chain:   chain, \n  Updater: New" $class "Updater(chain" $param4 ")," }}
+		{{ $remains = print "  Chain:   chain, \n  Updater: New" $class "Updater(chain" $param5 ")," }}
 	{{ end }}
 {{ end }}
 
@@ -131,7 +138,7 @@ func New{{$container}}(chain string{{$param1}}{{$param2}}{{$param3}}) {{$contain
 	return ret
 }
 
-func New{{$class}}Updater(chain string{{$param5}}) walk.Updater {
+func New{{$class}}Updater(chain string{{$param4}}) updater.Updater {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return updater
@@ -151,7 +158,7 @@ func (s *{{$container}}) SetItems(items interface{}) {
 }
 
 func (s *{{$container}}) NeedsUpdate() bool {
-	if updater, reload := s.Updater.NeedsUpdate(); reload {
+	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
 		s.Updater = updater
 		return true
 	}

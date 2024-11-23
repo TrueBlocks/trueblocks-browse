@@ -39,31 +39,26 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base
 	// EXISTING_CODE
 	history, exists := a.historyCache.Load(address)
 	if !exists {
-		history = types.NewHistoryContainer()
+		history = types.NewHistoryContainer(a.getChain(), []coreTypes.Transaction{}, address)
+		history.Updater.Reset()
 	}
 	// EXISTING_CODE
 
 	if !history.NeedsUpdate() {
 		return nil
 	}
-	logger.InfoBW("Updating needed for History...")
+	logger.InfoBY("Updating needed for history...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	history, exists := a.historyCache.Load(address)
-	if exists && len(history.Items) > 0 {
-		// if !history.NeedsUpdate() {
-		return nil // we only update with a Reload
-		// }
-	}
-	// EXISTING_CODE
 	// EXISTING_CODE
 	if err := a.thing(address, 250, errorChan); err != nil {
 		logger.InfoBM("thing shit the bed")
 		a.emitAddressErrorMsg(err, address)
 		return err
 	}
+	// EXISTING_CODE
+	// EXISTING_CODE
+	// EXISTING_CODE
+	// EXISTING_CODE
 	// EXISTING_CODE
 	a.emitLoadingMsg(messages.Loaded, "history")
 

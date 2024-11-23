@@ -662,7 +662,7 @@ export namespace types {
 	    largestFile: string;
 	    mostEvents: string;
 	    mostFunctions: string;
-	    updater: walk.Updater;
+	    updater: updater.Updater;
 	    items: Abi[];
 	    nItems: number;
 	    sorts: sdk.SortSpec;
@@ -689,7 +689,7 @@ export namespace types {
 	        this.largestFile = source["largestFile"];
 	        this.mostEvents = source["mostEvents"];
 	        this.mostFunctions = source["mostFunctions"];
-	        this.updater = this.convertValues(source["updater"], walk.Updater);
+	        this.updater = this.convertValues(source["updater"], updater.Updater);
 	        this.items = this.convertValues(source["items"], Abi);
 	        this.nItems = source["nItems"];
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
@@ -888,7 +888,7 @@ export namespace types {
 	export class ConfigContainer {
 	    chain: string;
 	    nChains: number;
-	    updater: walk.Updater;
+	    updater: updater.Updater;
 	    version: configtypes.VersionGroup;
 	    settings: configtypes.SettingsGroup;
 	    keys: {[key: string]: configtypes.KeyGroup};
@@ -904,7 +904,7 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.chain = source["chain"];
 	        this.nChains = source["nChains"];
-	        this.updater = this.convertValues(source["updater"], walk.Updater);
+	        this.updater = this.convertValues(source["updater"], updater.Updater);
 	        this.version = this.convertValues(source["version"], configtypes.VersionGroup);
 	        this.settings = this.convertValues(source["settings"], configtypes.SettingsGroup);
 	        this.keys = this.convertValues(source["keys"], configtypes.KeyGroup, true);
@@ -932,7 +932,7 @@ export namespace types {
 		}
 	}
 	export class DaemonContainer {
-	    updater: walk.Updater;
+	    updater: updater.Updater;
 	    name: string;
 	    sleep: number;
 	    color: string;
@@ -947,7 +947,7 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.updater = this.convertValues(source["updater"], walk.Updater);
+	        this.updater = this.convertValues(source["updater"], updater.Updater);
 	        this.name = source["name"];
 	        this.sleep = source["sleep"];
 	        this.color = source["color"];
@@ -1468,7 +1468,7 @@ export namespace types {
 	    nTokens: number;
 	    nTotal: number;
 	    name: string;
-	    updater: walk.Updater;
+	    updater: updater.Updater;
 	    items: Transaction[];
 	    nItems: number;
 	
@@ -1486,7 +1486,7 @@ export namespace types {
 	        this.nTokens = source["nTokens"];
 	        this.nTotal = source["nTotal"];
 	        this.name = source["name"];
-	        this.updater = this.convertValues(source["updater"], walk.Updater);
+	        this.updater = this.convertValues(source["updater"], updater.Updater);
 	        this.items = this.convertValues(source["items"], Transaction);
 	        this.nItems = source["nItems"];
 	    }
@@ -1511,7 +1511,7 @@ export namespace types {
 	}
 	export class IndexContainer {
 	    chain: string;
-	    updater: walk.Updater;
+	    updater: updater.Updater;
 	    items: ChunkStats[];
 	    nItems: number;
 	    sorts: sdk.SortSpec;
@@ -1536,7 +1536,7 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.chain = source["chain"];
-	        this.updater = this.convertValues(source["updater"], walk.Updater);
+	        this.updater = this.convertValues(source["updater"], updater.Updater);
 	        this.items = this.convertValues(source["items"], ChunkStats);
 	        this.nItems = source["nItems"];
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
@@ -1599,7 +1599,7 @@ export namespace types {
 	    nBlooms: number;
 	    nIndexes: number;
 	    specification: string;
-	    updater: walk.Updater;
+	    updater: updater.Updater;
 	    version: string;
 	    items: ChunkRecord[];
 	    nItems: number;
@@ -1617,7 +1617,7 @@ export namespace types {
 	        this.nBlooms = source["nBlooms"];
 	        this.nIndexes = source["nIndexes"];
 	        this.specification = source["specification"];
-	        this.updater = this.convertValues(source["updater"], walk.Updater);
+	        this.updater = this.convertValues(source["updater"], updater.Updater);
 	        this.version = source["version"];
 	        this.items = this.convertValues(source["items"], ChunkRecord);
 	        this.nItems = source["nItems"];
@@ -1721,7 +1721,7 @@ export namespace types {
 	    nNamed: number;
 	    nRecords: number;
 	    nStaged: number;
-	    updater: walk.Updater;
+	    updater: updater.Updater;
 	    items: Monitor[];
 	    nItems: number;
 	
@@ -1738,7 +1738,7 @@ export namespace types {
 	        this.nNamed = source["nNamed"];
 	        this.nRecords = source["nRecords"];
 	        this.nStaged = source["nStaged"];
-	        this.updater = this.convertValues(source["updater"], walk.Updater);
+	        this.updater = this.convertValues(source["updater"], updater.Updater);
 	        this.items = this.convertValues(source["items"], Monitor);
 	        this.nItems = source["nItems"];
 	    }
@@ -1829,7 +1829,7 @@ export namespace types {
 	    nRegular: number;
 	    nSystem: number;
 	    sizeOnDisc: number;
-	    updater: walk.Updater;
+	    updater: updater.Updater;
 	    items: Name[];
 	    nItems: number;
 	
@@ -1849,7 +1849,7 @@ export namespace types {
 	        this.nRegular = source["nRegular"];
 	        this.nSystem = source["nSystem"];
 	        this.sizeOnDisc = source["sizeOnDisc"];
-	        this.updater = this.convertValues(source["updater"], walk.Updater);
+	        this.updater = this.convertValues(source["updater"], updater.Updater);
 	        this.items = this.convertValues(source["items"], Name);
 	        this.nItems = source["nItems"];
 	    }
@@ -1882,7 +1882,7 @@ export namespace types {
 	    nManifests: number;
 	    nMonitors: number;
 	    nNames: number;
-	    updater: walk.Updater;
+	    updater: updater.Updater;
 	    items: HistoryContainer[];
 	    nItems: number;
 	
@@ -1900,7 +1900,7 @@ export namespace types {
 	        this.nManifests = source["nManifests"];
 	        this.nMonitors = source["nMonitors"];
 	        this.nNames = source["nNames"];
-	        this.updater = this.convertValues(source["updater"], walk.Updater);
+	        this.updater = this.convertValues(source["updater"], updater.Updater);
 	        this.items = this.convertValues(source["items"], HistoryContainer);
 	        this.nItems = source["nItems"];
 	    }
@@ -2064,7 +2064,7 @@ export namespace types {
 		}
 	}
 	export class SessionContainer {
-	    updater: walk.Updater;
+	    updater: updater.Updater;
 	    lastChain: string;
 	    lastFile: string;
 	    lastFolder: string;
@@ -2080,7 +2080,7 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.updater = this.convertValues(source["updater"], walk.Updater);
+	        this.updater = this.convertValues(source["updater"], updater.Updater);
 	        this.lastChain = source["lastChain"];
 	        this.lastFile = source["lastFile"];
 	        this.lastFolder = source["lastFolder"];
@@ -2113,7 +2113,7 @@ export namespace types {
 	    nBytes: number;
 	    nFiles: number;
 	    nFolders: number;
-	    updater: walk.Updater;
+	    updater: updater.Updater;
 	    items: CacheItem[];
 	    nItems: number;
 	    cachePath?: string;
@@ -2148,7 +2148,7 @@ export namespace types {
 	        this.nBytes = source["nBytes"];
 	        this.nFiles = source["nFiles"];
 	        this.nFolders = source["nFolders"];
-	        this.updater = this.convertValues(source["updater"], walk.Updater);
+	        this.updater = this.convertValues(source["updater"], updater.Updater);
 	        this.items = this.convertValues(source["items"], CacheItem);
 	        this.nItems = source["nItems"];
 	        this.cachePath = source["cachePath"];
@@ -2197,7 +2197,7 @@ export namespace types {
 	    status: StatusContainer;
 	    config: ConfigContainer;
 	    session: SessionContainer;
-	    updater: walk.Updater;
+	    updater: updater.Updater;
 	
 	    static createFrom(source: any = {}) {
 	        return new SettingsContainer(source);
@@ -2208,7 +2208,7 @@ export namespace types {
 	        this.status = this.convertValues(source["status"], StatusContainer);
 	        this.config = this.convertValues(source["config"], ConfigContainer);
 	        this.session = this.convertValues(source["session"], SessionContainer);
-	        this.updater = this.convertValues(source["updater"], walk.Updater);
+	        this.updater = this.convertValues(source["updater"], updater.Updater);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2256,7 +2256,7 @@ export namespace types {
 	}
 	export class WizardContainer {
 	    chain: string;
-	    updater: walk.Updater;
+	    updater: updater.Updater;
 	    items: WizError[];
 	    nItems: number;
 	    state: WizState;
@@ -2268,7 +2268,7 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.chain = source["chain"];
-	        this.updater = this.convertValues(source["updater"], walk.Updater);
+	        this.updater = this.convertValues(source["updater"], updater.Updater);
 	        this.items = this.convertValues(source["items"], WizError);
 	        this.nItems = source["nItems"];
 	        this.state = source["state"];
@@ -2295,6 +2295,31 @@ export namespace types {
 
 }
 
+export namespace updater {
+	
+	export class Updater {
+	    name: string;
+	    lastTs: number;
+	    paths: string[];
+	    updateType: number;
+	    duration: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Updater(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.lastTs = source["lastTs"];
+	        this.paths = source["paths"];
+	        this.updateType = source["updateType"];
+	        this.duration = source["duration"];
+	    }
+	}
+
+}
+
 export namespace version {
 	
 	export class Version {
@@ -2313,31 +2338,6 @@ export namespace version {
 	        this.minor = source["minor"];
 	        this.build = source["build"];
 	        this.aspect = source["aspect"];
-	    }
-	}
-
-}
-
-export namespace walk {
-	
-	export class Updater {
-	    name: string;
-	    lastTs: number;
-	    paths: string[];
-	    pathType: number;
-	    duration: number;
-	
-	    static createFrom(source: any = {}) {
-	        return new Updater(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.name = source["name"];
-	        this.lastTs = source["lastTs"];
-	        this.paths = source["paths"];
-	        this.pathType = source["pathType"];
-	        this.duration = source["duration"];
 	    }
 	}
 

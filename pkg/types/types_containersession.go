@@ -6,15 +6,15 @@ package types
 import (
 	"encoding/json"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 // EXISTING_CODE
 
 type SessionContainer struct {
-	Updater           walk.Updater `json:"updater"`
+	Updater           updater.Updater `json:"updater"`
 	coreTypes.Session `json:",inline"`
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -30,12 +30,12 @@ func NewSessionContainer(chain string, session *coreTypes.Session) SessionContai
 	return ret
 }
 
-func NewSessionUpdater(chain string) walk.Updater {
+func NewSessionUpdater(chain string) updater.Updater {
 	// EXISTING_CODE
 	paths := []string{
 		utils.MustGetConfigFn("browse", "session.json"),
 	}
-	updater, _ := walk.NewUpdater("session", paths, walk.TypeFiles)
+	updater, _ := updater.NewUpdater("session", paths, updater.File)
 	// EXISTING_CODE
 	return updater
 }
@@ -54,7 +54,7 @@ func (s *SessionContainer) SetItems(items interface{}) {
 }
 
 func (s *SessionContainer) NeedsUpdate() bool {
-	if updater, reload := s.Updater.NeedsUpdate(); reload {
+	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
 		s.Updater = updater
 		return true
 	}

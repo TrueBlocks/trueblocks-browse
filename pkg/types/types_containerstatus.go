@@ -7,8 +7,8 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 // EXISTING_CODE
@@ -17,7 +17,7 @@ type StatusContainer struct {
 	NBytes           uint64                `json:"nBytes"`
 	NFiles           uint64                `json:"nFiles"`
 	NFolders         uint64                `json:"nFolders"`
-	Updater          walk.Updater          `json:"updater"`
+	Updater          updater.Updater       `json:"updater"`
 	Items            []coreTypes.CacheItem `json:"items"`
 	NItems           uint64                `json:"nItems"`
 	coreTypes.Status `json:",inline"`
@@ -39,10 +39,10 @@ func NewStatusContainer(chain string, itemsIn []coreTypes.CacheItem, status *cor
 	return ret
 }
 
-func NewStatusUpdater(chain string) walk.Updater {
+func NewStatusUpdater(chain string) updater.Updater {
 	// EXISTING_CODE
 	paths := []string{}
-	updater, _ := walk.NewUpdater("status", paths, walk.TypeUnknown, 2*time.Minute)
+	updater, _ := updater.NewUpdater("status", paths, updater.Timer, 2*time.Minute)
 	// EXISTING_CODE
 	return updater
 }
@@ -61,7 +61,7 @@ func (s *StatusContainer) SetItems(items interface{}) {
 }
 
 func (s *StatusContainer) NeedsUpdate() bool {
-	if updater, reload := s.Updater.NeedsUpdate(); reload {
+	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
 		s.Updater = updater
 		return true
 	}

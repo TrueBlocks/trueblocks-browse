@@ -69,7 +69,7 @@ func (a *App) load{{$routeName}}({{$param1}}{{$param2}}) error {
 	if !{{$appData}}.NeedsUpdate() {
 		return nil
 	}
-	logger.InfoBW("Updating needed for {{$routeName}}...")
+	logger.InfoBY("Updating needed for {{$routeLower}}...")
 
 {{if $needsSdk}}
 	opts := sdk.{{$routeName}}Options{

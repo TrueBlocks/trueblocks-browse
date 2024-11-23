@@ -8,12 +8,12 @@ import (
 	"path/filepath"
 	"unsafe"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 // EXISTING_CODE
@@ -27,7 +27,7 @@ type HistoryContainer struct {
 	NTokens uint64                  `json:"nTokens"`
 	NTotal  uint64                  `json:"nTotal"`
 	Name    string                  `json:"name"`
-	Updater walk.Updater            `json:"updater"`
+	Updater updater.Updater         `json:"updater"`
 	Items   []coreTypes.Transaction `json:"items"`
 	NItems  uint64                  `json:"nItems"`
 	// EXISTING_CODE
@@ -47,14 +47,14 @@ func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address 
 	return ret
 }
 
-func NewHistoryUpdater(chain string, address base.Address) walk.Updater {
+func NewHistoryUpdater(chain string, address base.Address) updater.Updater {
 	// EXISTING_CODE
 	paths := []string{
 		coreMonitor.PathToMonitorFile(chain, address),
 		filepath.Join(coreConfig.MustGetPathToChainConfig(namesChain), string(names.DatabaseCustom)),
 		filepath.Join(coreConfig.MustGetPathToChainConfig(namesChain), string(names.DatabaseRegular)),
 	}
-	updater, _ := walk.NewUpdater("history", paths, walk.TypeFiles)
+	updater, _ := updater.NewUpdater("history", paths, updater.File)
 	// EXISTING_CODE
 	return updater
 }
@@ -73,7 +73,7 @@ func (s *HistoryContainer) SetItems(items interface{}) {
 }
 
 func (s *HistoryContainer) NeedsUpdate() bool {
-	if updater, reload := s.Updater.NeedsUpdate(); reload {
+	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
 		s.Updater = updater
 		return true
 	}

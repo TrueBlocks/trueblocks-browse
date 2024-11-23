@@ -39,7 +39,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.status.NeedsUpdate() {
 		return nil
 	}
-	logger.InfoBW("Updating needed for Status...")
+	logger.InfoBY("Updating needed for status...")
 
 	opts := sdk.StatusOptions{
 		Globals: a.getGlobals(true /* verbose */),

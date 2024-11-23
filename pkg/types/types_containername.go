@@ -9,11 +9,11 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 var namesChain = "mainnet"
@@ -31,7 +31,7 @@ type NameContainer struct {
 	NRegular   uint64           `json:"nRegular"`
 	NSystem    uint64           `json:"nSystem"`
 	SizeOnDisc uint64           `json:"sizeOnDisc"`
-	Updater    walk.Updater     `json:"updater"`
+	Updater    updater.Updater  `json:"updater"`
 	Items      []coreTypes.Name `json:"items"`
 	NItems     uint64           `json:"nItems"`
 	// EXISTING_CODE
@@ -54,13 +54,13 @@ func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
 	return ret
 }
 
-func NewNameUpdater(chain string) walk.Updater {
+func NewNameUpdater(chain string) updater.Updater {
 	// EXISTING_CODE
 	paths := []string{
 		filepath.Join(coreConfig.MustGetPathToChainConfig(chain), string(names.DatabaseCustom)),
 		filepath.Join(coreConfig.MustGetPathToChainConfig(chain), string(names.DatabaseRegular)),
 	}
-	updater, _ := walk.NewUpdater("name", paths, walk.TypeFiles)
+	updater, _ := updater.NewUpdater("name", paths, updater.File)
 	// EXISTING_CODE
 	return updater
 }
@@ -79,7 +79,7 @@ func (s *NameContainer) SetItems(items interface{}) {
 }
 
 func (s *NameContainer) NeedsUpdate() bool {
-	if updater, reload := s.Updater.NeedsUpdate(); reload {
+	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
 		s.Updater = updater
 		return true
 	}

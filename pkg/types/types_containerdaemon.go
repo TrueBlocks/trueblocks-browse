@@ -8,13 +8,13 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 )
 
 // EXISTING_CODE
 
 type DaemonContainer struct {
-	Updater        walk.Updater `json:"updater"`
+	Updater        updater.Updater `json:"updater"`
 	daemons.Daemon `json:",inline"`
 	// EXISTING_CODE
 	Chain string `json:"-"` // actually unused
@@ -32,10 +32,10 @@ func NewDaemonContainer(chain string, daemon *daemons.Daemon) DaemonContainer {
 	return ret
 }
 
-func NewDaemonUpdater(chain string) walk.Updater {
+func NewDaemonUpdater(chain string) updater.Updater {
 	// EXISTING_CODE
 	paths := []string{}
-	updater, _ := walk.NewUpdater("daemon", paths, walk.TypeUnknown, 2*time.Minute)
+	updater, _ := updater.NewUpdater("daemon", paths, updater.Timer, 2*time.Minute)
 	// EXISTING_CODE
 	return updater
 }
@@ -54,7 +54,7 @@ func (s *DaemonContainer) SetItems(items interface{}) {
 }
 
 func (s *DaemonContainer) NeedsUpdate() bool {
-	if updater, reload := s.Updater.NeedsUpdate(); reload {
+	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
 		s.Updater = updater
 		return true
 	}

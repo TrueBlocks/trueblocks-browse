@@ -8,9 +8,9 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 // EXISTING_CODE
@@ -23,7 +23,7 @@ type MonitorContainer struct {
 	NNamed   uint64              `json:"nNamed"`
 	NRecords uint64              `json:"nRecords"`
 	NStaged  uint64              `json:"nStaged"`
-	Updater  walk.Updater        `json:"updater"`
+	Updater  updater.Updater     `json:"updater"`
 	Items    []coreTypes.Monitor `json:"items"`
 	NItems   uint64              `json:"nItems"`
 	// EXISTING_CODE
@@ -42,13 +42,13 @@ func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorConta
 	return ret
 }
 
-func NewMonitorUpdater(chain string) walk.Updater {
+func NewMonitorUpdater(chain string) updater.Updater {
 	// EXISTING_CODE
 	paths := []string{
 		filepath.Join(coreConfig.PathToCache(chain), "monitors"),
 		coreConfig.MustGetPathToChainConfig(namesChain),
 	}
-	updater, _ := walk.NewUpdater("monitor", paths, walk.TypeFolders)
+	updater, _ := updater.NewUpdater("monitor", paths, updater.Folder)
 	// EXISTING_CODE
 	return updater
 }
@@ -67,7 +67,7 @@ func (s *MonitorContainer) SetItems(items interface{}) {
 }
 
 func (s *MonitorContainer) NeedsUpdate() bool {
-	if updater, reload := s.Updater.NeedsUpdate(); reload {
+	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
 		s.Updater = updater
 		return true
 	}

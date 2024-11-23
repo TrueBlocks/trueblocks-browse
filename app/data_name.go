@@ -43,7 +43,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.names.NeedsUpdate() {
 		return nil
 	}
-	logger.InfoBW("Updating needed for Names...")
+	logger.InfoBY("Updating needed for names...")
 
 	opts := sdk.NamesOptions{
 		Globals: a.getGlobals(true /* verbose */),

@@ -7,10 +7,10 @@ import (
 	"encoding/json"
 	"path/filepath"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 // EXISTING_CODE
@@ -24,7 +24,7 @@ type ProjectContainer struct {
 	NManifests  uint64             `json:"nManifests"`
 	NMonitors   uint64             `json:"nMonitors"`
 	NNames      uint64             `json:"nNames"`
-	Updater     walk.Updater       `json:"updater"`
+	Updater     updater.Updater    `json:"updater"`
 	Items       []HistoryContainer `json:"items"`
 	NItems      uint64             `json:"nItems"`
 	// EXISTING_CODE
@@ -43,7 +43,7 @@ func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContai
 	return ret
 }
 
-func NewProjectUpdater(chain string, itemsIn []HistoryContainer) walk.Updater {
+func NewProjectUpdater(chain string, itemsIn []HistoryContainer) updater.Updater {
 	// EXISTING_CODE
 	paths := []string{
 		filepath.Join(coreConfig.MustGetPathToChainConfig("mainnet"), string(names.DatabaseCustom)),
@@ -53,7 +53,7 @@ func NewProjectUpdater(chain string, itemsIn []HistoryContainer) walk.Updater {
 		path := coreMonitor.PathToMonitorFile(chain, item.Address)
 		paths = append(paths, path)
 	}
-	updater, _ := walk.NewUpdater("project", paths, walk.TypeFiles)
+	updater, _ := updater.NewUpdater("project", paths, updater.File)
 	// EXISTING_CODE
 	return updater
 }
@@ -72,7 +72,7 @@ func (s *ProjectContainer) SetItems(items interface{}) {
 }
 
 func (s *ProjectContainer) NeedsUpdate() bool {
-	if updater, reload := s.Updater.NeedsUpdate(); reload {
+	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
 		s.Updater = updater
 		return true
 	}

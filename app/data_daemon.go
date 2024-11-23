@@ -34,7 +34,7 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.daemons.NeedsUpdate() {
 		return nil
 	}
-	logger.InfoBW("Updating needed for Daemons...")
+	logger.InfoBY("Updating needed for daemons...")
 
 	// EXISTING_CODE
 	_ = errorChan

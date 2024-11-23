@@ -6,9 +6,9 @@ package types
 import (
 	"encoding/json"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -21,7 +21,7 @@ type ManifestContainer struct {
 	NBlooms       uint64                  `json:"nBlooms"`
 	NIndexes      uint64                  `json:"nIndexes"`
 	Specification string                  `json:"specification"`
-	Updater       walk.Updater            `json:"updater"`
+	Updater       updater.Updater         `json:"updater"`
 	Version       string                  `json:"version"`
 	Items         []coreTypes.ChunkRecord `json:"items"`
 	NItems        uint64                  `json:"nItems"`
@@ -46,12 +46,12 @@ func NewManifestContainer(chain string, itemsIn []coreTypes.ChunkRecord) Manifes
 	return ret
 }
 
-func NewManifestUpdater(chain string) walk.Updater {
+func NewManifestUpdater(chain string) updater.Updater {
 	// EXISTING_CODE
 	paths := []string{
 		coreConfig.PathToManifest(chain),
 	}
-	updater, _ := walk.NewUpdater("manifest", paths, walk.TypeFolders)
+	updater, _ := updater.NewUpdater("manifest", paths, updater.Folder)
 	// EXISTING_CODE
 	return updater
 }
@@ -70,7 +70,7 @@ func (s *ManifestContainer) SetItems(items interface{}) {
 }
 
 func (s *ManifestContainer) NeedsUpdate() bool {
-	if updater, reload := s.Updater.NeedsUpdate(); reload {
+	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
 		s.Updater = updater
 		return true
 	}

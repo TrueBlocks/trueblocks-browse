@@ -37,7 +37,7 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	if !a.session.NeedsUpdate() {
 		return nil
 	}
-	logger.InfoBW("Updating needed for Session...")
+	logger.InfoBY("Updating needed for session...")
 
 	opts := sdk.SessionOptions{
 		Globals: a.getGlobals(true /* verbose */),

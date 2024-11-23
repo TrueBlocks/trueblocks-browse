@@ -6,8 +6,8 @@ package types
 import (
 	"encoding/json"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 )
 
 type SettingsProps struct {
@@ -23,7 +23,7 @@ type SettingsContainer struct {
 	Status  StatusContainer  `json:"status"`
 	Config  ConfigContainer  `json:"config"`
 	Session SessionContainer `json:"session"`
-	Updater walk.Updater     `json:"updater"`
+	Updater updater.Updater  `json:"updater"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -40,13 +40,13 @@ func NewSettingsContainer(chain string, props *SettingsProps) SettingsContainer 
 	return ret
 }
 
-func NewSettingsUpdater(chain string) walk.Updater {
+func NewSettingsUpdater(chain string) updater.Updater {
 	// EXISTING_CODE
 	paths := []string{
 		utils.MustGetConfigFn("", "trueBlocks.toml"),
 		utils.MustGetConfigFn("browse", "session.json"),
 	}
-	updater, _ := walk.NewUpdater("settings", paths, walk.TypeFiles)
+	updater, _ := updater.NewUpdater("settings", paths, updater.File)
 	// EXISTING_CODE
 	return updater
 }
@@ -65,9 +65,8 @@ func (s *SettingsContainer) SetItems(items interface{}) {
 }
 
 func (s *SettingsContainer) NeedsUpdate() bool {
-	return s.Session.NeedsUpdate() ||
-		s.Config.NeedsUpdate() ||
-		s.Status.NeedsUpdate()
+	return s.Config.NeedsUpdate() ||
+		s.Status.NeedsUpdate() // || s.Session.NeedsUpdate()
 }
 
 func (s *SettingsContainer) ShallowCopy() Containerer {

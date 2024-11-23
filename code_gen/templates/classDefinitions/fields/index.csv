@@ -1,3 +1,3 @@
-name    ,type         ,strDefault ,attributes ,upgrades ,docOrder ,description
-chain   ,string       ,           ,           ,         ,         ,jim
-updater ,walk.Updater ,           ,           ,         ,         ,jim
+name    ,type            ,strDefault ,attributes ,upgrades ,docOrder ,description
+chain   ,string          ,           ,           ,         ,         ,jim
+updater ,updater.Updater ,           ,           ,         ,         ,jim

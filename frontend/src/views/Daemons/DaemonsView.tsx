@@ -5,7 +5,7 @@
 import { useState } from "react";
 import { FormTable, ViewForm, View, DebugState } from "@components";
 import { ToggleDaemon } from "@gocode/app/App";
-import { daemons, messages, walk } from "@gocode/models";
+import { daemons, messages, updater } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { ViewStateProvider } from "@state";
 import { DaemonsFormDef, Nope } from "./DaemonsFormDef";
@@ -75,14 +75,14 @@ export const DaemonsView = () => {
     ToggleDaemon(name);
   };
 
-  const updater = walk.Updater.createFrom({});
+  const upd = updater.Updater.createFrom({});
   const daemons: Nope = {
     toggleDaemon,
     scraper,
     freshen,
     ipfs,
     logMessages,
-    updater,
+    updater: upd,
   };
   const table = daemons;
   const fetchDaemons = fetchNoop;

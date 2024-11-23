@@ -6,6 +6,7 @@ package types
 import (
 	"encoding/json"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -15,7 +16,7 @@ import (
 
 type IndexContainer struct {
 	Chain   string                 `json:"chain"`
-	Updater walk.Updater           `json:"updater"`
+	Updater updater.Updater        `json:"updater"`
 	Items   []coreTypes.ChunkStats `json:"items"`
 	NItems  uint64                 `json:"nItems"`
 	Sorts   sdk.SortSpec           `json:"sorts"`
@@ -40,12 +41,12 @@ func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContai
 	return ret
 }
 
-func NewIndexUpdater(chain string) walk.Updater {
+func NewIndexUpdater(chain string) updater.Updater {
 	// EXISTING_CODE
 	paths := []string{
 		walk.GetRootPathFromCacheType(chain, walk.Index_Bloom),
 	}
-	updater, _ := walk.NewUpdater("index", paths, walk.TypeFolders)
+	updater, _ := updater.NewUpdater("index", paths, updater.Folder)
 	// EXISTING_CODE
 	return updater
 }
@@ -64,7 +65,7 @@ func (s *IndexContainer) SetItems(items interface{}) {
 }
 
 func (s *IndexContainer) NeedsUpdate() bool {
-	if updater, reload := s.Updater.NeedsUpdate(); reload {
+	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
 		s.Updater = updater
 		return true
 	}
