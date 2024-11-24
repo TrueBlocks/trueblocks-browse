@@ -74,9 +74,9 @@ func (a *App) Freshen() error {
 		}
 	} else {
 		a.emitMsg(messages.Refresh, &messages.MessageMsg{
-			Name:    a.freshenController.Name,
+			Name:    a.daemons.FreshenController.Name,
 			String1: "Refresh...",
-			String2: a.freshenController.Color,
+			String2: a.daemons.FreshenController.Color,
 			Num1:    1, // 1 means daemon if we need it
 		})
 	}

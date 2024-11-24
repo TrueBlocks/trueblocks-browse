@@ -21,6 +21,7 @@
 {{ $isProject := eq $class "Project" }}
 {{ $isMonitor := eq $class "Monitor" }}
 {{ $isManifest := eq $class "Manifest" }}
+{{ $isSession := eq $class "Session" }}
 
 {{ $param1 := "wg *sync.WaitGroup, errorChan chan error" }}
 {{ $param2 := "" }}
@@ -35,9 +36,19 @@
 	{{ $dataName = $routeLower }}
 {{ end }}
 
+{{ $newOpt := $dataName }}
+{{ if $isSession }}
+	{{ $newOpt = "[]types.Nothing{}" }}
+{{ end}}
+
 {{ $appData := print "a." $routeLower }}
 {{ if $isHistory }}
 	{{ $appData = $routeLower }}
+{{ end }}
+
+{{ $optionsName := print "sdk." $routeName "Options" }}
+{{ if $isSession }}
+	{{ $optionsName = print $routeName "Options" }}
 {{ end }}
 
 {{/*==============================================================*/}}
@@ -78,7 +89,7 @@ func (a *App) load{{$routeName}}({{$param1}}{{$param2}}) error {
 	logger.InfoBY("Updating needed for {{$routeLower}}...")
 
 {{if $needsSdk}}
-	opts := sdk.{{$routeName}}Options{
+	opts := {{$optionsName}}{
 		Globals: a.getGlobals(true /* verbose */),
 	}
 {{end}}	// EXISTING_CODE
@@ -100,7 +111,7 @@ func (a *App) load{{$routeName}}({{$param1}}{{$param2}}) error {
 {{if $needsSdk}}		a.meta = *meta
 		{{$appData}} = types.New{{$container}}(opts.Chain
 {{- if $hasItems -}}
-, {{$dataName}}{{if $isStatus}}[0].Caches{{end}}{{if $isManifest}}[0].Chunks{{end}}
+, {{$newOpt}}{{if $isStatus}}[0].Caches{{end}}{{if $isManifest}}[0].Chunks{{end}}
 {{- end -}}
 {{- if $hasEmbed -}}
 , &{{$dataName}}[0]

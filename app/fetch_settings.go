@@ -19,7 +19,7 @@ func (a *App) FetchSettings(first, pageSize int) *types.SettingsContainer {
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.settings.ShallowCopy().(*types.SettingsContainer)
-	_ = filtered[first:last]
+	copy.Items = filtered[first:last]
 
 	return copy
 }

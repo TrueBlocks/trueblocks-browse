@@ -27,7 +27,7 @@ export const ConfigView = () => {
   const route = "config";
   const tabs = ["config"];
   const forms: ViewForm = {
-    config: <FormTable data={config} groups={ConfigFormDef(table, config)} />,
+    config: <FormTable data={config} groups={ConfigFormDef(table)} />,
   };
 
   return (

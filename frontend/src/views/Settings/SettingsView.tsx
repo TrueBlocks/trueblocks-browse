@@ -8,7 +8,7 @@ import { types } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { ViewStateProvider, useAppState } from "@state";
 import { ConfigFormDef, ConfigTableDef } from "../Config";
-import { SessionFormDef } from "../Session";
+import { SessionFormDef, SessionTableDef } from "../Session";
 import { StatusFormDef } from "../Status";
 import { SettingsTableDef } from ".";
 // EXISTING_CODE
@@ -36,17 +36,23 @@ export const SettingsView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const table3 = useReactTable({
+    data: session?.items || [],
+    columns: SessionTableDef,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
   const route = "settings";
   const tabs = ["config", "status", "session"];
   const forms: ViewForm = {
     status: <FormTable data={status} groups={StatusFormDef(table)} />,
-    config: <FormTable data={config} groups={ConfigFormDef(table2, config)} />,
-    session: <FormTable data={session} groups={SessionFormDef(session)} />,
+    config: <FormTable data={config} groups={ConfigFormDef(table2)} />,
+    session: <FormTable data={session} groups={SessionFormDef(table3)} />,
   };
 
-  if (!(status?.items?.length > 0)) {
-    return <>Loading...</>;
-  }
+  // if (!(status?.items?.length > 0)) {
+  //   return <>Loading...</>;
+  // }
   // EXISTING_CODE
 
   return (

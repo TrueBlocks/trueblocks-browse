@@ -16,15 +16,20 @@
   {{ $tableDef = "base" }}
 {{ end -}}
 
+{{ $colType := print "types." $itemName }}
+{{ if $isConfig }}
+  {{ $colType = print "configtypes." $itemName }}
+{{ end }}
+
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 // EXISTING_CODE
 // EXISTING_CODE
 
 {{if $hasItems -}}
-const columnHelper = createColumnHelper<types.{{$itemName}}>();
+const columnHelper = createColumnHelper<{{$colType}}>();
 
-export const {{$tableDef}}TableDef: CustomColumnDef<types.{{$itemName}}, any>[] = [
+export const {{$tableDef}}TableDef: CustomColumnDef<{{$colType}}, any>[] = [
 {{- else -}}
 export const Unused{{$routeName}} = () => {
 {{- end}}

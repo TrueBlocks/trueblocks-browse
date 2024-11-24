@@ -18,7 +18,7 @@ func (a *App) FetchSession(first, pageSize int) *types.SessionContainer {
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.session.ShallowCopy().(*types.SessionContainer)
-	_ = filtered[first:last]
+	copy.Items = filtered[first:last]
 
 	return copy
 }

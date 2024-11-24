@@ -2,10 +2,11 @@
 // of ExistingCode markers (if any).
 
 // EXISTING_CODE
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { View, ViewForm, FormTable, DebugState } from "@components";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { SessionFormDef } from "./SessionFormDef";
+import { SessionFormDef, SessionTableDef } from ".";
 // EXISTING_CODE
 
 export const SessionView = () => {
@@ -15,8 +16,13 @@ export const SessionView = () => {
   const handleModify = modifyNoop;
 
   // EXISTING_CODE
-  const table = session;
   // EXISTING_CODE
+
+  const table = useReactTable({
+    data: session?.items || [],
+    columns: SessionTableDef,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   const route = "session";
   const tabs = ["session"];
@@ -28,7 +34,7 @@ export const SessionView = () => {
     <ViewStateProvider
       // do not remove - delint
       route={route}
-      nItems={0}
+      nItems={session.nItems}
       fetchFn={fetchSession}
       onEnter={handleEnter}
       modifyFn={handleModify}

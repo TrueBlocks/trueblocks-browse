@@ -383,6 +383,129 @@ export namespace daemons {
 		    return a;
 		}
 	}
+	export class DaemonFreshen {
+	    name: string;
+	    sleep: number;
+	    color: string;
+	    // Go type: time
+	    started: any;
+	    ticks: number;
+	    state: DaemonState;
+	
+	    static createFrom(source: any = {}) {
+	        return new DaemonFreshen(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.sleep = source["sleep"];
+	        this.color = source["color"];
+	        this.started = this.convertValues(source["started"], null);
+	        this.ticks = source["ticks"];
+	        this.state = source["state"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class DaemonIpfs {
+	    name: string;
+	    sleep: number;
+	    color: string;
+	    // Go type: time
+	    started: any;
+	    ticks: number;
+	    state: DaemonState;
+	
+	    static createFrom(source: any = {}) {
+	        return new DaemonIpfs(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.sleep = source["sleep"];
+	        this.color = source["color"];
+	        this.started = this.convertValues(source["started"], null);
+	        this.ticks = source["ticks"];
+	        this.state = source["state"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class DaemonScraper {
+	    name: string;
+	    sleep: number;
+	    color: string;
+	    // Go type: time
+	    started: any;
+	    ticks: number;
+	    state: DaemonState;
+	
+	    static createFrom(source: any = {}) {
+	        return new DaemonScraper(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.sleep = source["sleep"];
+	        this.color = source["color"];
+	        this.started = this.convertValues(source["started"], null);
+	        this.ticks = source["ticks"];
+	        this.state = source["state"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 
 }
 
@@ -935,6 +1058,18 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class Nothing {
+	    unused: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Nothing(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.unused = source["unused"];
+	    }
+	}
 	export class DaemonContainer {
 	    chain: string;
 	    name: string;
@@ -945,6 +1080,11 @@ export namespace types {
 	    ticks: number;
 	    state: daemons.DaemonState;
 	    updater: updater.Updater;
+	    items: Nothing[];
+	    nItems: number;
+	    scraperController?: daemons.DaemonScraper;
+	    freshenController?: daemons.DaemonFreshen;
+	    ipfsController?: daemons.DaemonIpfs;
 	
 	    static createFrom(source: any = {}) {
 	        return new DaemonContainer(source);
@@ -960,6 +1100,11 @@ export namespace types {
 	        this.ticks = source["ticks"];
 	        this.state = source["state"];
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.items = this.convertValues(source["items"], Nothing);
+	        this.nItems = source["nItems"];
+	        this.scraperController = this.convertValues(source["scraperController"], daemons.DaemonScraper);
+	        this.freshenController = this.convertValues(source["freshenController"], daemons.DaemonFreshen);
+	        this.ipfsController = this.convertValues(source["ipfsController"], daemons.DaemonIpfs);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1887,6 +2032,7 @@ export namespace types {
 		}
 	}
 	
+	
 	export class ProjectContainer {
 	    chain: string;
 	    historySize: number;
@@ -2087,6 +2233,8 @@ export namespace types {
 	    wizardStr: string;
 	    toggles: Toggles;
 	    updater: updater.Updater;
+	    items: Nothing[];
+	    nItems: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new SessionContainer(source);
@@ -2103,6 +2251,8 @@ export namespace types {
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.items = this.convertValues(source["items"], Nothing);
+	        this.nItems = source["nItems"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

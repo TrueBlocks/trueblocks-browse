@@ -3,27 +3,30 @@
 
 // EXISTING_CODE
 import { useState } from "react";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { FormTable, ViewForm, View, DebugState } from "@components";
 import { ToggleDaemon } from "@gocode/app/App";
-import { daemons, messages, updater } from "@gocode/models";
+import { daemons as daemonType, messages, updater } from "@gocode/models";
 import { useNoops } from "@hooks";
-import { ViewStateProvider } from "@state";
+import { useAppState, ViewStateProvider } from "@state";
 import { DaemonsFormDef, Nope } from "./DaemonsFormDef";
+import { DaemonsTableDef } from "./DaemonsTableDef";
 
-const empty = {} as daemons.Daemon;
+const empty = {} as daemonType.Daemon;
 
 // EXISTING_CODE
 
 export const DaemonsView = () => {
-  const { fetchNoop, enterNoop, modifyNoop } = useNoops();
+  const { daemons, fetchDaemons } = useAppState();
+  const { enterNoop, modifyNoop } = useNoops();
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
   // EXISTING_CODE
   // TODO BOGUS: The daemon state should be in the AppState
-  const [scraper] = useState<daemons.Daemon>(empty);
-  const [freshen] = useState<daemons.Daemon>(empty);
-  const [ipfs] = useState<daemons.Daemon>(empty);
+  const [scraper] = useState<daemonType.Daemon>(empty);
+  const [freshen] = useState<daemonType.Daemon>(empty);
+  const [ipfs] = useState<daemonType.Daemon>(empty);
   const [logMessages] = useState<messages.MessageMsg[]>([]);
   // const [scraper, setScraper] = useState<daemons.Daemon>(empty);
   // const [freshen, setFreshen] = useState<daemons.Daemon>(empty);
@@ -75,18 +78,22 @@ export const DaemonsView = () => {
     ToggleDaemon(name);
   };
 
-  const upd = updater.Updater.createFrom({});
-  const daemons: Nope = {
-    toggleDaemon,
-    scraper,
-    freshen,
-    ipfs,
-    logMessages,
-    updater: upd,
-  };
-  const table = daemons;
-  const fetchDaemons = fetchNoop;
+  // const upd = updater.Updater.createFrom({});
+  // const daemons: Nope = {
+  //   toggleDaemon,
+  //   scraper,
+  //   freshen,
+  //   ipfs,
+  //   logMessages,
+  //   updater: upd,
+  // };
   // EXISTING_CODE
+
+  const table = useReactTable({
+    data: daemons?.items || [],
+    columns: DaemonsTableDef,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   const route = "daemons";
   const tabs = ["daemons"];
@@ -98,7 +105,7 @@ export const DaemonsView = () => {
     <ViewStateProvider
       // do not remove - delint
       route={route}
-      nItems={0}
+      nItems={daemons.nItems}
       fetchFn={fetchDaemons}
       onEnter={handleEnter}
       modifyFn={handleModify}

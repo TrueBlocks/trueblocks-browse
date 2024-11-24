@@ -1,9 +1,11 @@
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 // EXISTING_CODE
-import { Box, SimpleGrid, Stack } from "@mantine/core";
-import { DaemonCard, DaemonLog, FieldGroup, FieldsetWrapper, PinButton } from "@components";
-import { daemons, messages, updater } from "@gocode/models";
+import { Box, SimpleGrid, Stack, Text } from "@mantine/core";
+import { Table } from "@tanstack/react-table";
+// import { DaemonCard, DaemonLog, FieldGroup, FieldsetWrapper, PinButton } from "@components";
+import { FieldGroup, FieldsetWrapper, PinButton } from "@components";
+import { daemons, messages, types, updater } from "@gocode/models";
 export interface Nope {
   scraper: daemons.Daemon;
   freshen: daemons.Daemon;
@@ -14,7 +16,7 @@ export interface Nope {
 }
 // EXISTING_CODE
 
-export const DaemonsFormDef = (data: Nope): FieldGroup<Nope>[] => {
+export const DaemonsFormDef = (table: Table<types.Nothing>): FieldGroup<types.DaemonContainer>[] => {
   return [
     // EXISTING_CODE
     {
@@ -22,14 +24,16 @@ export const DaemonsFormDef = (data: Nope): FieldGroup<Nope>[] => {
       collapsable: false,
       components: [
         <SimpleGrid key={"cards"} cols={2}>
-          <DaemonCard daemon={data.scraper} toggle={data.toggleDaemon} />
+          <Text>Daemons</Text>
+          {/* <DaemonCard daemon={data.scraper} toggle={data.toggleDaemon} />
           <DaemonCard daemon={data.freshen} toggle={data.toggleDaemon} />
-          <DaemonCard daemon={data.ipfs} toggle={data.toggleDaemon} />
+          <DaemonCard daemon={data.ipfs} toggle={data.toggleDaemon} /> */}
         </SimpleGrid>,
         <Stack key={"logs"}>
           <Box />
           <FieldsetWrapper legend="Logs">
-            <DaemonLog logMessages={data.logMessages} />
+            <Text>Logs</Text>
+            {/* <DaemonLog logMessages={data.logMessages} /> */}
           </FieldsetWrapper>
         </Stack>,
       ],

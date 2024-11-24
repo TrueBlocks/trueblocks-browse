@@ -469,7 +469,7 @@
             "ui_route": "1090-daemons-0",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=daemons.Daemon|noSdk",
+            "attributes": "itemType=types.Nothing|embedType=daemons.Daemon|noSdk",
             "members": [
                 {
                     "name": "daemon",
@@ -498,11 +498,11 @@
             "ui_route": "1100-session-u",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=coreTypes.Session",
+            "attributes": "itemType=types.Nothing|embedType=types.Session",
             "members": [
                 {
                     "name": "session",
-                    "type": "coreTypes.Session",
+                    "type": "types.Session",
                     "attributes": "embed",
                     "description": "jim",
                     "num": 1

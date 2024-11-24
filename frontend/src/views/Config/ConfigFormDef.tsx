@@ -5,23 +5,21 @@ import { Stack, Group } from "@mantine/core";
 import { Table } from "@tanstack/react-table";
 import { DataTable, EditButton, FieldGroup } from "@components";
 import { configtypes, types } from "@gocode/models";
+import { useAppState } from "../../state";
 // EXISTING_CODE
 
-export const ConfigFormDef = (
-  table: Table<configtypes.ChainGroup>,
-  config: configtypes.Config
-): FieldGroup<types.ConfigContainer>[] => {
+export const ConfigFormDef = (table: Table<configtypes.ChainGroup>): FieldGroup<types.ConfigContainer>[] => {
   return [
     // EXISTING_CODE
     {
       label: "Version",
       colSpan: 6,
-      components: [<VG key={"version"} version={config.version} />],
+      components: [<VG key={"version"} />],
     },
     {
       label: "Settings",
       colSpan: 6,
-      components: [<SG key={"settings"} settings={config.settings} />],
+      components: [<SG key={"settings"} />],
     },
     {
       label: "Buttons",
@@ -37,40 +35,37 @@ export const ConfigFormDef = (
 };
 
 // EXISTING_CODE
-type ConfigProps = {
-  version?: configtypes.VersionGroup;
-  settings?: configtypes.SettingsGroup;
-};
-
-const VG = ({ version }: ConfigProps) => {
+const VG = () => {
+  const { config } = useAppState();
   return (
     <Stack>
       <Group>
         <div>current:</div>
-        <div>{version?.current}</div>
+        <div>{config.version?.current}</div>
       </Group>
     </Stack>
   );
 };
 
-const SG = ({ settings }: ConfigProps) => {
+const SG = () => {
+  const { config } = useAppState();
   return (
     <Stack>
       <Group>
         <div>cachePath:</div>
-        <div>{settings?.cachePath}</div>
+        <div>{config.settings?.cachePath}</div>
       </Group>
       <Group>
         <div>indexPath:</div>
-        <div>{settings?.indexPath}</div>
+        <div>{config.settings?.indexPath}</div>
       </Group>
       <Group>
         <div>defaultChain:</div>
-        <div>{settings?.defaultChain}</div>
+        <div>{config.settings?.defaultChain}</div>
       </Group>
       <Group>
         <div>defaultGateway:</div>
-        <div>{settings?.defaultGateway}</div>
+        <div>{config.settings?.defaultGateway}</div>
       </Group>
     </Stack>
   );

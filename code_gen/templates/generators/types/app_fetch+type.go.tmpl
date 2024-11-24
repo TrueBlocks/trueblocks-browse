@@ -7,7 +7,6 @@
 
 {{ $hasItems := and (gt (len $itemName) 0) true }}
 {{ $isHistory := eq $class "History" -}}
-{{ $isSettings := eq $class "Settings" -}}
 
 {{ $cast := print ".([]types.Nothing)" }}
 {{ if $hasItems }}
@@ -15,7 +14,7 @@
 {{ end }}
 
 {{ $dest := "_" }}
-{{ if and $hasItems (not $isSettings ) }}
+{{ if and $hasItems }}
 	{{ $dest = "copy.Items" }}
 {{ end }}
 

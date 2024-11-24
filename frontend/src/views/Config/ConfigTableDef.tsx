@@ -1,11 +1,10 @@
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 // EXISTING_CODE
-// EXISTING_CODE
-
 import { createColumnHelper } from "@tanstack/react-table";
 import { configtypes } from "@gocode/models";
 import { CustomColumnDef, Formatter } from "../../components";
+// EXISTING_CODE
 
 const columnHelper = createColumnHelper<configtypes.ChainGroup>();
 

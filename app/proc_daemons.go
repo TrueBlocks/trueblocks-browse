@@ -24,11 +24,11 @@ func (a *App) GetState(name string) string {
 func (a *App) getDaemon(name string) daemons.Daemoner {
 	switch name {
 	case "freshen":
-		return a.freshenController
+		return a.daemons.FreshenController
 	case "scraper":
-		return a.scraperController
+		return a.daemons.ScraperController
 	case "ipfs":
-		return a.ipfsController
+		return a.daemons.IpfsController
 	default:
 		// logger.Fatal("getDaemon", "should not happen", name)
 		return &daemons.Daemon{}

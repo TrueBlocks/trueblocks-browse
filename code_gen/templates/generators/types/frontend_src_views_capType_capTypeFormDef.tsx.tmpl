@@ -12,15 +12,18 @@
 {{ $isWizard := eq $class "Wizard" }}
 {{ $isProject := eq $class "Project" }}
 {{ $isDaemon := eq $class "Daemon" }}
-{{ $isSessConf := or $isSession $isConfig }}
 
 {{ $formDef := print $routeName "FormDef" }}
 
 {{ $param1 := "" }}
 {{ if $hasItems }}
-  {{ $param1 = print "table: Table<types." $itemName ">" }}
+  {{ if $isConfig }}
+    {{ $param1 = print "table: Table<configtypes." $itemName ">" }}
+  {{ else }}
+    {{ $param1 = print "table: Table<types." $itemName ">" }}
+  {{ end }}
 {{ else }}
-  {{ if $isSessConf }}
+  {{ if $isSession }}
     {{ $param1 = print $routeLower ": types." $class "Container" }}
   {{ else if $isDaemon }}
     {{ $param1 = printf "data: Nope" }}
@@ -44,11 +47,6 @@
   {{ $fieldGroup = print "Nope"}}
 {{ end }}
 
-{{ $returns := "" }}
-{{ if (or (or $hasItems $isSessConf) $isDaemon) }}
-  {{ $returns = print ": FieldGroup<" $fieldGroup ">[]" }}
-{{ end }}
-
 {{ $leadMatter := "" }}
 {{ if $isProject }}
   {{ $leadMatter = print "const { info } = useAppState();" }}
@@ -61,7 +59,7 @@
 // EXISTING_CODE
 // EXISTING_CODE
 
-export const {{$formDef}} = ({{$param1}}{{$param2}}){{$returns}} => {
+export const {{$formDef}} = ({{$param1}}{{$param2}}): FieldGroup<{{$fieldGroup}}>[] => {
   {{$leadMatter}}
   return [
     // EXISTING_CODE

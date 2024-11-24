@@ -4,7 +4,6 @@ import (
 	"context"
 	"sync"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -41,11 +40,6 @@ type App struct {
 	namesMap     map[base.Address]coreTypes.Name
 	historyCache *types.HistoryMap
 	renderCtxs   map[base.Address][]*output.RenderCtx
-
-	// Controllers
-	scraperController *daemons.DaemonScraper
-	freshenController *daemons.DaemonFreshen
-	ipfsController    *daemons.DaemonIpfs
 
 	timer Timer
 }

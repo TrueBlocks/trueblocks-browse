@@ -133,7 +133,7 @@ package types
 type {{$container}} struct {
 	{{range $members}}
 	{{- if .IsEmbed }}
-		{{.GoType}} `json:",inline"`
+		{{replace .GoType "types." ""}} `json:",inline"`
 	{{- else if .IsSimpField}}
 		{{.GoName}} {{.GoType}} {{.Tag}}
 	{{- end -}}

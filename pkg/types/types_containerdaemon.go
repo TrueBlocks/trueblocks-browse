@@ -17,12 +17,19 @@ type DaemonContainer struct {
 	Chain          string `json:"chain"`
 	daemons.Daemon `json:",inline"`
 	Updater        updater.Updater `json:"updater"`
+	Items          []Nothing       `json:"items"`
+	NItems         uint64          `json:"nItems"`
 	// EXISTING_CODE
+	ScraperController *daemons.DaemonScraper `json:"scraperController"`
+	FreshenController *daemons.DaemonFreshen `json:"freshenController"`
+	IpfsController    *daemons.DaemonIpfs    `json:"ipfsController"`
 	// EXISTING_CODE
 }
 
-func NewDaemonContainer(chain string, daemon *daemons.Daemon) DaemonContainer {
+func NewDaemonContainer(chain string, itemsIn []Nothing, daemon *daemons.Daemon) DaemonContainer {
 	ret := DaemonContainer{
+		Items:   itemsIn,
+		NItems:  uint64(len(itemsIn)),
 		Daemon:  *daemon,
 		Chain:   chain,
 		Updater: NewDaemonUpdater(chain),
@@ -56,11 +63,11 @@ func (s *DaemonContainer) String() string {
 }
 
 func (s *DaemonContainer) GetItems() interface{} {
-	return nil
+	return s.Items
 }
 
 func (s *DaemonContainer) SetItems(items interface{}) {
-	// s.Items = items.([].)
+	s.Items = items.([]Nothing)
 }
 
 func (s *DaemonContainer) NeedsUpdate() bool {
@@ -76,6 +83,7 @@ func (s *DaemonContainer) ShallowCopy() Containerer {
 		Chain:   s.Chain,
 		Daemon:  s.Daemon.ShallowCopy(),
 		Updater: s.Updater,
+		NItems:  s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -83,11 +91,12 @@ func (s *DaemonContainer) ShallowCopy() Containerer {
 }
 
 func (s *DaemonContainer) Clear() {
+	s.NItems = 0
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func (s *DaemonContainer) passesFilter(filter *Filter) (ret bool) {
+func (s *DaemonContainer) passesFilter(item *Nothing, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -97,7 +106,8 @@ func (s *DaemonContainer) passesFilter(filter *Filter) (ret bool) {
 	return
 }
 
-func (s *DaemonContainer) Accumulate() {
+func (s *DaemonContainer) Accumulate(item *Nothing) {
+	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -108,12 +118,40 @@ func (s *DaemonContainer) Finalize() {
 }
 
 func (s *DaemonContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+	s.Clear()
+
+	filter, _ := theMap.Load("daemons") // may be empty
+	if !filter.HasCriteria() {
+		s.ForEveryItem(func(item *Nothing, data any) bool {
+			s.Accumulate(item)
+			return true
+		}, nil)
+		s.Finalize()
+		return s.Items
+	}
 	filtered := []Nothing{}
+	s.ForEveryItem(func(item *Nothing, data any) bool {
+		if s.passesFilter(item, &filter) {
+			s.Accumulate(item)
+			filtered = append(filtered, *item)
+		}
+		return true
+	}, nil)
+	s.Finalize()
 
 	// EXISTING_CODE
 	// EXISTING_CODE
 
 	return filtered
+}
+
+func (s *DaemonContainer) ForEveryItem(process EveryNothingFn, data any) bool {
+	for i := 0; i < len(s.Items); i++ {
+		if !process(&s.Items[i], data) {
+			return false
+		}
+	}
+	return true
 }
 
 // EXISTING_CODE

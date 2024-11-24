@@ -18,7 +18,7 @@ func (a *App) FetchDaemon(first, pageSize int) *types.DaemonContainer {
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.daemons.ShallowCopy().(*types.DaemonContainer)
-	_ = filtered[first:last]
+	copy.Items = filtered[first:last]
 
 	return copy
 }

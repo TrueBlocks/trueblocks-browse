@@ -19,36 +19,36 @@ func (a *App) startDaemons() {
 				freshenRate = time.Duration(rate)
 			}
 		}
-		if a.freshenController = daemons.NewFreshen(a, "freshen", freshenRate, a.IsShowing("freshen")); a.freshenController == nil {
+		if a.daemons.FreshenController = daemons.NewFreshen(a, "freshen", freshenRate, a.IsShowing("freshen")); a.daemons.FreshenController == nil {
 			err := fmt.Errorf("%d: %s", ErrDaemonLoad, "freshen")
 			a.addWizErr(WizReasonNoFreshenDaemon, types.WizRpc, err)
 			return false
 		} else {
-			go a.freshenController.Run()
+			go a.daemons.FreshenController.Run()
 			return true
 		}
 	}
 	_ = initFreshener()
 
 	initScraper := func() bool {
-		if a.scraperController = daemons.NewScraper(a, "scraper", 7000, a.IsShowing("scraper")); a.scraperController == nil {
+		if a.daemons.ScraperController = daemons.NewScraper(a, "scraper", 7000, a.IsShowing("scraper")); a.daemons.ScraperController == nil {
 			err := fmt.Errorf("%d: %s", ErrDaemonLoad, "scraper")
 			a.addWizErr(WizReasonNoScraperDaemon, types.WizRpc, err)
 			return false
 		} else {
-			go a.scraperController.Run()
+			go a.daemons.ScraperController.Run()
 			return true
 		}
 	}
 	_ = initScraper()
 
 	initIpfs := func() bool {
-		if a.ipfsController = daemons.NewIpfs(a, "ipfs", 10000, a.IsShowing("ipfs")); a.ipfsController == nil {
+		if a.daemons.IpfsController = daemons.NewIpfs(a, "ipfs", 10000, a.IsShowing("ipfs")); a.daemons.IpfsController == nil {
 			err := fmt.Errorf("%d: %s", ErrDaemonLoad, "ipfs")
 			a.addWizErr(WizReasonNoIpfsDaemon, types.WizRpc, err)
 			return false
 		} else {
-			go a.ipfsController.Run()
+			go a.daemons.IpfsController.Run()
 			return true
 		}
 	}
