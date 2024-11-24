@@ -186,7 +186,7 @@ func (s WizState) String() string {
 }
 
 // AllStates - all possible WizStates for the frontend codegen
-var AllStates = []struct {
+var AllWizStates = []struct {
 	Value  WizState `json:"value"`
 	TSName string   `json:"tsName"`
 }{

@@ -7,26 +7,25 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 )
 
 // EXISTING_CODE
 
 type DaemonContainer struct {
-	Chain          string `json:"chain"`
-	daemons.Daemon `json:",inline"`
-	Updater        updater.Updater `json:"updater"`
-	Items          []Nothing       `json:"items"`
-	NItems         uint64          `json:"nItems"`
+	Chain   string `json:"chain"`
+	Daemon  `json:",inline"`
+	Updater updater.Updater `json:"updater"`
+	Items   []Nothing       `json:"items"`
+	NItems  uint64          `json:"nItems"`
 	// EXISTING_CODE
-	ScraperController *daemons.DaemonScraper `json:"scraperController"`
-	FreshenController *daemons.DaemonFreshen `json:"freshenController"`
-	IpfsController    *daemons.DaemonIpfs    `json:"ipfsController"`
+	ScraperController *DaemonScraper `json:"scraperController"`
+	FreshenController *DaemonFreshen `json:"freshenController"`
+	IpfsController    *DaemonIpfs    `json:"ipfsController"`
 	// EXISTING_CODE
 }
 
-func NewDaemonContainer(chain string, itemsIn []Nothing, daemon *daemons.Daemon) DaemonContainer {
+func NewDaemonContainer(chain string, itemsIn []Nothing, daemon *Daemon) DaemonContainer {
 	ret := DaemonContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),

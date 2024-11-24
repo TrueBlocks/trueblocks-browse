@@ -1,9 +1,5 @@
 package types
 
-import (
-	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
-)
-
 type Containerer interface {
 	String() string
 	ShallowCopy() Containerer
@@ -26,4 +22,4 @@ type EveryNothingFn func(item *Nothing, data any) bool
 type EveryTransactionFn func(item *Transaction, data any) bool
 type EveryWizErrorFn func(item *WizError, data any) bool
 type EveryChainFn func(item *Chain, data any) bool
-type EveryDaemonFn func(item *daemons.Daemon, data any) bool
+type EveryDaemonFn func(item *Daemon, data any) bool

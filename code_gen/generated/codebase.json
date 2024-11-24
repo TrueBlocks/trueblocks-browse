@@ -411,11 +411,11 @@
             "ui_route": "1070-status-8",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.CacheItem|embedType=coreTypes.Status",
+            "attributes": "itemType=types.CacheItem|embedType=types.Status",
             "members": [
                 {
                     "name": "status",
-                    "type": "coreTypes.Status",
+                    "type": "types.Status",
                     "attributes": "embed",
                     "description": "jim",
                     "num": 1
@@ -474,11 +474,11 @@
             "ui_route": "1090-daemons-0",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.Nothing|embedType=daemons.Daemon|noSdk",
+            "attributes": "itemType=types.Nothing|embedType=types.Daemon|noSdk",
             "members": [
                 {
                     "name": "daemon",
-                    "type": "daemons.Daemon",
+                    "type": "types.Daemon",
                     "attributes": "embed",
                     "description": "jim",
                     "num": 1

@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/TrueBlocks/trueblocks-browse/app"
-	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/editors"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
@@ -36,12 +35,12 @@ func main() {
 			&messages.MessageMsg{},
 			&configTypes.Config{},
 			&editors.Name{},
-			&daemons.Daemon{},
+			&types.Daemon{},
 		},
 		EnumBind: []interface{}{
-			daemons.AllStates,
+			types.AllDaemonStates,
 			messages.AllMessages,
-			types.AllStates,
+			types.AllWizStates,
 			types.AllSteps,
 		},
 		StartHidden: true,

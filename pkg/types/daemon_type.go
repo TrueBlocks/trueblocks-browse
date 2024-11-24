@@ -1,4 +1,4 @@
-package daemons
+package types
 
 type Type string
 
