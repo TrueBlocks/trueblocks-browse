@@ -27,7 +27,7 @@
 
 {{ $embed2 := "//-- remove line --" }}
 {{ if $hasEmbed }}
-	{{ $embed2 = print "  " (toProper $embedName) ": *" (toLower $embedName) "," }}
+	{{ $embed2 = print "  " $embedType ": *" (toLower $embedName) "," }}
 {{ end }}
 
 {{ $sorts1 := "//-- remove line --" }}

@@ -1,7 +1,6 @@
 {{/*==============================================================*/}}
 
 {{ $class := .Class }}
-{{ $container := print $class "Container" }}
 {{ $routeName := .UiRouteName}}
 {{ $routeLower := toLower .UiRouteName -}}
 {{ $itemType := .ItemType}}
@@ -17,14 +16,12 @@
 {{ $isHistory := eq $class "History" }}
 {{ $isSession := eq $class "Session" }}
 
-{{ $dataName := $routeLower }}
 {{ $appData := print "a." $routeLower }}
 {{ if $isHistory }}
-	{{ $dataName = $routeLower }}
 	{{ $appData = $routeLower }}
 {{ end }}
 
-{{ $newOpt := $dataName }}
+{{ $newOpt := $routeLower }}
 {{ $optionsName := print "sdk." $routeName "Options" }}
 {{ if $isSession }}
 	{{ $newOpt = "[]types.Nothing{}" }}
@@ -80,13 +77,13 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 	// EXISTING_CODE
 	// EXISTING_CODE
 {{if $needsSdk -}}
-	if {{$dataName}}, meta, err := opts.{{$routeName}}List(); err != nil {
+	if {{$routeLower}}, meta, err := opts.{{$routeName}}List(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if ({{$dataName}} == nil) || (len({{$dataName}}) == 0) {
-		err = fmt.Errorf("no {{$dataName}} found")
+	} else if ({{$routeLower}} == nil) || (len({{$routeLower}}) == 0) {
+		err = fmt.Errorf("no {{$routeLower}} found")
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -97,9 +94,9 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 		// EXISTING_CODE
 {{if $needsSdk -}}
 		a.meta = *meta
-		{{$appData}} = types.New{{$container}}(opts.Chain, {{$newOpt}}{{if $isStatus}}[0].Caches{{end}}{{if $isManifest}}[0].Chunks{{end}}
+		{{$appData}} = types.New{{$class}}Container(opts.Chain, {{$newOpt}}{{if $isStatus}}[0].Caches{{end}}{{if $isManifest}}[0].Chunks{{end}}
 	{{- if $hasEmbed -}}
-		, &{{$dataName}}[0]
+		, &{{$routeLower}}[0]
 	{{- end -}}
 )
 {{end -}}
@@ -110,7 +107,7 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 			a.emitErrorMsg(err, nil)
 		}
 {{end -}}
-		a.emitLoadingMsg(messages.Loaded, "{{$dataName}}")
+		a.emitLoadingMsg(messages.Loaded, "{{$routeLower}}")
 {{if $needsSdk -}}
 	}
 {{end}}

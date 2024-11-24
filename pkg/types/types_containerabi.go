@@ -29,10 +29,11 @@ type AbiContainer struct {
 	// EXISTING_CODE
 }
 
-func NewAbiContainer(chain string, itemsIn []Abi) AbiContainer {
+func NewAbiContainer(chain string, itemsIn []Abi, abi *Abi) AbiContainer {
 	ret := AbiContainer{
 		Items:  itemsIn,
 		NItems: uint64(len(itemsIn)),
+		Abi:    *abi,
 		Sorts: sdk.SortSpec{
 			Fields: []string{"isEmpty", "isKnown", "address"},
 			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},

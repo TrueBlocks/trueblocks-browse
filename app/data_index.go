@@ -63,7 +63,7 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.indexes = types.NewIndexContainer(opts.Chain, indexes)
+		a.indexes = types.NewIndexContainer(opts.Chain, indexes, &indexes[0])
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := sdk.SortIndexes(a.indexes.Items, a.indexes.Sorts); err != nil {

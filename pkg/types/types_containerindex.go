@@ -24,10 +24,11 @@ type IndexContainer struct {
 	// EXISTING_CODE
 }
 
-func NewIndexContainer(chain string, itemsIn []ChunkStats) IndexContainer {
+func NewIndexContainer(chain string, itemsIn []ChunkStats, chunkstats *ChunkStats) IndexContainer {
 	ret := IndexContainer{
-		Items:  itemsIn,
-		NItems: uint64(len(itemsIn)),
+		Items:      itemsIn,
+		NItems:     uint64(len(itemsIn)),
+		ChunkStats: *chunkstats,
 		Sorts: sdk.SortSpec{
 			Fields: []string{"range"},
 			Order:  []sdk.SortOrder{sdk.Dec},
