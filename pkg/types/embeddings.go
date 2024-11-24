@@ -12,3 +12,4 @@ type ChunkRecord = coreTypes.ChunkRecord
 type ChunkStats = coreTypes.ChunkStats
 type CacheItem = coreTypes.CacheItem
 type Chain = coreTypes.Chain
+type Status = coreTypes.Status

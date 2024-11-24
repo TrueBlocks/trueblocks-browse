@@ -8,24 +8,23 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 // EXISTING_CODE
 
 type StatusContainer struct {
-	NBytes           uint64 `json:"nBytes"`
-	NFiles           uint64 `json:"nFiles"`
-	NFolders         uint64 `json:"nFolders"`
-	coreTypes.Status `json:",inline"`
-	Updater          updater.Updater `json:"updater"`
-	Items            []CacheItem     `json:"items"`
-	NItems           uint64          `json:"nItems"`
+	NBytes   uint64 `json:"nBytes"`
+	NFiles   uint64 `json:"nFiles"`
+	NFolders uint64 `json:"nFolders"`
+	Status   `json:",inline"`
+	Updater  updater.Updater `json:"updater"`
+	Items    []CacheItem     `json:"items"`
+	NItems   uint64          `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewStatusContainer(chain string, itemsIn []CacheItem, status *coreTypes.Status) StatusContainer {
+func NewStatusContainer(chain string, itemsIn []CacheItem, status *Status) StatusContainer {
 	ret := StatusContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
