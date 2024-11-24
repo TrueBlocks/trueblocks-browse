@@ -3,9 +3,8 @@
 {{ $class := .Class }}
 {{ $routeName := .UiRouteName }}
 {{ $routeLower := toLower .UiRouteName }}
-
 {{ $itemName := .ItemName }}
-{{ $hasItems := and (gt (len $itemName) 0) true }}
+{{ $hasSearch := .HasSearch }}
 
 {{ $isAbi := eq $class "Abi" }}
 {{ $isName := eq $class "Name" }}
@@ -16,28 +15,18 @@
 {{ $isWizard := eq $class "Wizard" }}
 {{ $isDaemon := eq $class "Daemon" }}
 
-{{ $isSearchable := or (or $isAbi $isName) (or $isProject $isMonitor) }}
 {{ $hasEnter := or (or $isAbi $isName) (or $isProject $isMonitor) }}
 {{ $hasModify := or (or $isAbi $isName) (or $isProject $isMonitor) }}
 
 {{ $noops := print "const { enterNoop, modifyNoop } = useNoops();" }}
-{{ if or (or $hasEnter $hasModify) (or $isWizard $isDaemon) }}
+{{ if or (or $hasEnter $hasModify) $isWizard }}
   {{ if and $hasEnter $hasModify}}
     {{ $noops = "" }}
   {{ else if or $hasEnter $isWizard }}
     {{ $noops = print "const { modifyNoop } = useNoops();" }}
-  {{ else if $isDaemon }}
-    {{ $noops = print "const { fetchNoop, enterNoop, modifyNoop } = useNoops();" }}
   {{ else }}
     {{ $noops = print "const { enterNoop } = useNoops();" }}
   {{ end }}
-{{ end }}
-
-{{ $nItems := print $routeLower ".nItems" }}
-{{ if not $hasItems }}
-  {{ $nItems = "0" }}
-{{ else if $isSettings }}
-  {{ $nItems = "status.nItems" }}
 {{ end }}
 
 {{ $param1 := "" }}
@@ -86,7 +75,7 @@
 // EXISTING_CODE
 
 export const {{$view}} = () => {
-{{if not $isDaemon}}  const { {{$dataName}}, {{$fetchFn}}{{$param1}}} = useAppState();{{end}}
+  const { {{$dataName}}, {{$fetchFn}}{{$param1}}} = useAppState();
   {{$noops -}}
   {{$handleEnter -}}
   {{$handleModify}}
@@ -94,7 +83,7 @@ export const {{$view}} = () => {
   // EXISTING_CODE
   // EXISTING_CODE
 
-{{if and $hasItems (not $isSettings)}}  const table = useReactTable({
+{{if (not $isSettings)}}  const table = useReactTable({
     data: {{$dataName}}?.items || [],
     columns: {{$routeName}}TableDef,
     getCoreRowModel: getCoreRowModel(),
@@ -105,22 +94,19 @@ export const {{$view}} = () => {
   const forms: ViewForm = {
     {{$dataName}}: <FormTable data={ {{$dataName}} } groups={ {{$routeName}}FormDef(table{{$param2}})} />,
   };
-{{/* {{if and $hasItems (not $isSettings)}}
-  if (!({{$dataName}} && {{$dataName}}.items)) {
-    return <>Loading...</>;
-  }{{end}} */}} {{end}}
+{{end}}
 
   return (
     <ViewStateProvider
       // do not remove - delint
       route={route}
-      nItems={ {{$nItems}}}
+      nItems={ {{$routeLower}}.nItems}
       fetchFn={ {{$fetchFn}}}
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
       <DebugState u={ {{$dataName}}.updater} />
-      <View tabs={tabs} forms={forms}{{if $isSearchable}} searchable{{end}} />
+      <View tabs={tabs} forms={forms}{{if $hasSearch}} searchable{{end}} />
     </ViewStateProvider>
   );
 };

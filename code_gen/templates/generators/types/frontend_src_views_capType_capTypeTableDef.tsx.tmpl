@@ -4,8 +4,6 @@
 {{ $itemName := .ItemName }}
 {{ $embedType := .EmbedType }}
 
-{{ $hasItems := and (gt (len $itemName) 0) true }}
-
 {{ $isSession := eq $class "Session" }}
 {{ $isConfig := eq $class "Config" }}
 {{ $isProject := eq $class "Project" }}
@@ -26,21 +24,12 @@
 // EXISTING_CODE
 // EXISTING_CODE
 
-{{if $hasItems -}}
 const columnHelper = createColumnHelper<{{$colType}}>();
 
 export const {{$tableDef}}TableDef: CustomColumnDef<{{$colType}}, any>[] = [
-{{- else -}}
-export const Unused{{$routeName}} = () => {
-{{- end}}
 	// EXISTING_CODE
 	// EXISTING_CODE
-{{if $hasItems -}}
 ];
-{{- else -}}
-  return <div>Unused{{$routeName}}</div>;
-};
-{{- end}}
 
 // EXISTING_CODE
 // EXISTING_CODE

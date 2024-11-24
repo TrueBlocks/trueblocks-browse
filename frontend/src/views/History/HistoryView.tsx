@@ -47,7 +47,7 @@ export const HistoryView = () => {
       modifyFn={handleModify}
     >
       <DebugState u={history.updater} />
-      <View tabs={tabs} forms={forms} />
+      <View tabs={tabs} forms={forms} searchable />
     </ViewStateProvider>
   );
 };

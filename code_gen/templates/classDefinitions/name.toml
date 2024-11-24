@@ -5,6 +5,7 @@
 	doc_route = "1030-containers"
 	ui_route = "1030-names-4"
 	attributes = "itemType=coreTypes.Name"
+	search = "true"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"

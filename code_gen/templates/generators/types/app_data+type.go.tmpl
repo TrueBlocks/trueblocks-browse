@@ -10,8 +10,6 @@
 {{ $needsSdk := .Needs "sdk" }}
 
 {{ $hasSorts := .HasSorts }}
-
-{{ $hasItems := and (gt (len $itemName) 0) true }}
 {{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
 
 {{ $isHistory := eq $class "History" }}
@@ -109,13 +107,10 @@ func (a *App) load{{$routeName}}({{$param1}}{{$param2}}) error {
 {{end}}		// EXISTING_CODE
 		// EXISTING_CODE
 {{if $needsSdk}}		a.meta = *meta
-		{{$appData}} = types.New{{$container}}(opts.Chain
-{{- if $hasItems -}}
-, {{$newOpt}}{{if $isStatus}}[0].Caches{{end}}{{if $isManifest}}[0].Chunks{{end}}
-{{- end -}}
-{{- if $hasEmbed -}}
-, &{{$dataName}}[0]
-{{- end -}}
+		{{$appData}} = types.New{{$container}}(opts.Chain, {{$newOpt}}{{if $isStatus}}[0].Caches{{end}}{{if $isManifest}}[0].Chunks{{end}}
+	{{- if $hasEmbed -}}
+		, &{{$dataName}}[0]
+	{{- end -}}
 )
 {{end}}		// EXISTING_CODE
 		// EXISTING_CODE

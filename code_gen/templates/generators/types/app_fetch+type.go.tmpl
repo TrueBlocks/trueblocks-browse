@@ -5,23 +5,9 @@
 {{ $itemName := .ItemName}}
 {{ $routeLower := toLower .UiRouteName }}
 
-{{ $hasItems := and (gt (len $itemName) 0) true }}
-{{ $isHistory := eq $class "History" -}}
-
-{{ $cast := print ".([]types.Nothing)" }}
-{{ if $hasItems }}
-	{{ $cast = print ".([]" .ItemFullType ")" }}
-{{ end }}
-
-{{ $dest := "_" }}
-{{ if and $hasItems }}
-	{{ $dest = "copy.Items" }}
-{{ end }}
-
-{{ $dataName := print "a." $routeLower }}
-{{ if $isHistory }}
-	{{ $dataName = $routeLower }}
-{{ end }}
+{{ $isHistory := eq $class "History" }}
+{{ $fullType := .ItemFullType }}
+{{ $dataName := (print (cond (not $isHistory) "a." "") $routeLower) }}
 
 {{/*==============================================================*/}}
 // This file is auto-generated. Edit only code inside
@@ -35,11 +21,11 @@ func (a *App) Fetch{{$class}}(first, pageSize int) *types.{{$container}} {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	filtered := {{$dataName}}.CollateAndFilter(a.filterMap){{$cast}}
+	filtered := {{$dataName}}.CollateAndFilter(a.filterMap).([]{{$fullType}})
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := {{$dataName}}.ShallowCopy().(*types.{{$container}})
-	{{ $dest }} = filtered[first:last]
+	copy.Items = filtered[first:last]
 
 	return copy
 }

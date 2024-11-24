@@ -59,7 +59,7 @@ export const SettingsView = () => {
     <ViewStateProvider
       // do not remove - delint
       route={route}
-      nItems={status.nItems}
+      nItems={settings.nItems}
       fetchFn={fetchSettings}
       onEnter={handleEnter}
       modifyFn={handleModify}

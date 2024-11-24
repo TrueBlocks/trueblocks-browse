@@ -4,8 +4,6 @@
 {{ $itemName := .ItemName }}
 {{ $embedType := .EmbedType }}
 
-{{ $hasItems := and (gt (len $itemName) 0) true }}
-
 {{ $isHistory := eq $class "History" }}
 {{ $isSession := eq $class "Session" }}
 {{ $isConfig := eq $class "Config" }}
@@ -16,18 +14,10 @@
 {{ $formDef := print $routeName "FormDef" }}
 
 {{ $param1 := "" }}
-{{ if $hasItems }}
-  {{ if $isConfig }}
-    {{ $param1 = print "table: Table<configtypes." $itemName ">" }}
-  {{ else }}
-    {{ $param1 = print "table: Table<types." $itemName ">" }}
-  {{ end }}
+{{ if $isConfig }}
+  {{ $param1 = print "table: Table<configtypes." $itemName ">" }}
 {{ else }}
-  {{ if $isSession }}
-    {{ $param1 = print $routeLower ": types." $class "Container" }}
-  {{ else if $isDaemon }}
-    {{ $param1 = printf "data: Nope" }}
-  {{ end }}
+  {{ $param1 = print "table: Table<types." $itemName ">" }}
 {{ end }}
 
 {{ $param2 := "" }}
@@ -38,13 +28,6 @@
   {{ $param2 = `,
     nItems: number,
     stepWizard: (step: types.WizStep) => void` }}
-{{ end }}
-
-{{ $fieldGroup := print "types." $class }}
-{{ if (or $hasItems $isConfig) }}
-  {{ $fieldGroup = print "types." $class "Container"}}
-{{ else if $isDaemon }}
-  {{ $fieldGroup = print "Nope"}}
 {{ end }}
 
 {{ $leadMatter := "" }}
@@ -59,7 +42,7 @@
 // EXISTING_CODE
 // EXISTING_CODE
 
-export const {{$formDef}} = ({{$param1}}{{$param2}}): FieldGroup<{{$fieldGroup}}>[] => {
+export const {{$formDef}} = ({{$param1}}{{$param2}}): FieldGroup<types.{{$class}}Container>[] => {
   {{$leadMatter}}
   return [
     // EXISTING_CODE

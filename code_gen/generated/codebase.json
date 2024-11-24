@@ -8,6 +8,7 @@
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=types.HistoryContainer|noSdk",
+            "search": "true",
             "members": [
                 {
                     "name": "nMonitors",
@@ -72,6 +73,7 @@
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=coreTypes.Transaction|noSdk",
+            "search": "true",
             "members": [
                 {
                     "name": "address",
@@ -136,6 +138,7 @@
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=coreTypes.Monitor",
+            "search": "true",
             "members": [
                 {
                     "name": "nNamed",
@@ -194,6 +197,7 @@
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "itemType=coreTypes.Name",
+            "search": "true",
             "members": [
                 {
                     "name": "nContracts",
@@ -271,6 +275,7 @@
             "cache_type": "cacheable",
             "attributes": "itemType=coreTypes.Abi",
             "sorts": "isEmpty+Asc,isKnown+Asc,address+Asc",
+            "search": "true",
             "members": [
                 {
                     "name": "abi",
@@ -447,7 +452,7 @@
             "ui_route": "1080-settings-9",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.CacheItem|noLoad|noSdk",
+            "attributes": "itemType=coreTypes.CacheItem|noSdk",
             "members": [
                 {
                     "name": "chain",

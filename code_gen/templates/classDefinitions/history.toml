@@ -5,6 +5,7 @@
 	doc_route = "1010-containers"
 	ui_route = "1010-history-2"
 	attributes = "itemType=coreTypes.Transaction|noSdk"
+	search = "true"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"
