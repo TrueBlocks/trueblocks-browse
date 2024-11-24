@@ -13,6 +13,7 @@ import (
 // EXISTING_CODE
 
 type SessionContainer struct {
+	Chain   string    `json:"chain"`
 	Items   []Nothing `json:"items"`
 	NItems  uint64    `json:"nItems"`
 	Session `json:",inline"`
@@ -26,6 +27,7 @@ func NewSessionContainer(chain string, itemsIn []Nothing, session *Session) Sess
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
 		Session: *session,
+		Chain:   chain,
 		Updater: NewSessionUpdater(chain),
 	}
 	// EXISTING_CODE
@@ -74,6 +76,7 @@ func (s *SessionContainer) NeedsUpdate() bool {
 
 func (s *SessionContainer) ShallowCopy() Containerer {
 	ret := &SessionContainer{
+		Chain:   s.Chain,
 		NItems:  s.NItems,
 		Session: s.Session.ShallowCopy(),
 		Updater: s.Updater,

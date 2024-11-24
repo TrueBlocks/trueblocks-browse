@@ -636,23 +636,29 @@
                     "num": 1
                 },
                 {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
                     "name": "updater",
                     "type": "updater.Updater",
                     "description": "jim",
-                    "num": 2
+                    "num": 3
                 },
                 {
                     "name": "items",
                     "type": "types.Nothing",
                     "description": "jim",
-                    "num": 3,
+                    "num": 4,
                     "isArray": true
                 },
                 {
                     "name": "nItems",
                     "type": "uint64",
                     "description": "jim",
-                    "num": 4
+                    "num": 5
                 }
             ]
         },

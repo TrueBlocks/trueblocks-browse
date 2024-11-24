@@ -1,5 +1,4 @@
 {{/*==============================================================*/}}
-
 {{ $class := .Class }}
 {{ $routeLower := toLower .UiRouteName -}}
 {{ $itemName := .ItemName}}
@@ -13,9 +12,7 @@
 
 {{ $isHistory := eq $class "History" }}
 {{ $isProject := eq $class "Project" }}
-{{ $isSession := eq $class "Session" }}
 {{ $isStatus := eq $class "Status" }}
-{{ $items2 := print "  Items:   itemsIn,\n  NItems:  uint64(len(itemsIn))," }}
 
 {{ $embed1 := "//-- remove line --" }}
 {{ if $hasEmbed }}
@@ -37,7 +34,6 @@
 	{{ $sorts2 = print "  Sorts: " .SortsInstance }}
 {{ end }}
 
-{{ $param1 := print ", itemsIn []" $itemType }}
 {{ $param2 := "" }}
 {{ if $hasEmbed }}
 	{{ $param2 = print ", " (toLower $embedName) " *" $embedType }}
@@ -65,7 +61,7 @@
 	{{ $init2 = print `	Chain:   chain,
 						Address: address,` }}
 {{ else }}
-	{{ if not (or $isSession $isStatus) }}
+	{{ if not $isStatus }}
 		{{ $init2 = print `	Chain:   chain,` }}
 	{{ end }}
 {{ end }}
@@ -80,10 +76,11 @@ package types
 
 type {{$class}}Container struct {
 	{{range $members}}
+	{{- $goType := replace .GoType "types." "" -}}
 	{{- if .IsEmbed }}
-		{{replace .GoType "types." ""}} `json:",inline"`
+		{{$goType}} `json:",inline"`
 	{{- else if .IsSimpField}}
-		{{.GoName}} {{replace .GoType "types." ""}} {{.Tag}}
+		{{.GoName}} {{$goType}} {{.Tag}}
 	{{- end -}}
 	{{- end}}
 	{{$sorts1}}
@@ -91,9 +88,10 @@ type {{$class}}Container struct {
 	// EXISTING_CODE
 }
 
-func New{{$class}}Container(chain string{{$param1}}{{$param2}}{{$param3}}) {{$class}}Container {
+func New{{$class}}Container(chain string, itemsIn []{{$itemType}}{{$param2}}{{$param3}}) {{$class}}Container {
 	ret := {{$class}}Container{
-		{{$items2}}
+		Items: itemsIn,
+		NItems: uint64(len(itemsIn)),
 		{{$embed2}}
 		{{$sorts2}}
 		{{$init2}}

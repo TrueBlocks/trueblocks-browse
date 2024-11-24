@@ -450,14 +450,6 @@ export namespace sdk {
 
 export namespace types {
 	
-	export enum WizState {
-	    WELCOME = "welcome",
-	    CONFIG = "config",
-	    RPC = "rpc",
-	    BLOOMS = "blooms",
-	    INDEX = "index",
-	    FINISHED = "finished",
-	}
 	export enum WizStep {
 	    FIRST = "First",
 	    PREVIOUS = "Previous",
@@ -468,6 +460,14 @@ export namespace types {
 	    STOPPED = "Stopped",
 	    RUNNING = "Running",
 	    PAUSED = "Paused",
+	}
+	export enum WizState {
+	    WELCOME = "welcome",
+	    CONFIG = "config",
+	    RPC = "rpc",
+	    BLOOMS = "blooms",
+	    INDEX = "index",
+	    FINISHED = "finished",
 	}
 	export class Parameter {
 	    components?: Parameter[];
@@ -2221,6 +2221,7 @@ export namespace types {
 		}
 	}
 	export class SessionContainer {
+	    chain: string;
 	    items: Nothing[];
 	    nItems: number;
 	    lastChain: string;
@@ -2239,6 +2240,7 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.chain = source["chain"];
 	        this.items = this.convertValues(source["items"], Nothing);
 	        this.nItems = source["nItems"];
 	        this.lastChain = source["lastChain"];
