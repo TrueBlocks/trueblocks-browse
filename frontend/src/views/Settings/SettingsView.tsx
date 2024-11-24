@@ -7,7 +7,7 @@ import { DebugState, FormTable, View, ViewForm } from "@components";
 import { types } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { ViewStateProvider, useAppState } from "@state";
-import { ConfigFormDef } from "../Config";
+import { ConfigFormDef, ConfigTableDef } from "../Config";
 import { SessionFormDef } from "../Session";
 import { StatusFormDef } from "../Status";
 import { SettingsTableDef } from ".";
@@ -30,11 +30,17 @@ export const SettingsView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const table2 = useReactTable({
+    data: config?.items || [],
+    columns: ConfigTableDef,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
   const route = "settings";
   const tabs = ["config", "status", "session"];
   const forms: ViewForm = {
     status: <FormTable data={status} groups={StatusFormDef(table)} />,
-    config: <FormTable data={config} groups={ConfigFormDef(config)} />,
+    config: <FormTable data={config} groups={ConfigFormDef(table2, config)} />,
     session: <FormTable data={session} groups={SessionFormDef(session)} />,
   };
 

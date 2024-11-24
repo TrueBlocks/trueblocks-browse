@@ -2,26 +2,36 @@
 // of ExistingCode markers (if any).
 // EXISTING_CODE
 import { Stack, Group } from "@mantine/core";
-import { EditButton, FieldGroup } from "@components";
+import { Table } from "@tanstack/react-table";
+import { DataTable, EditButton, FieldGroup } from "@components";
 import { configtypes, types } from "@gocode/models";
 // EXISTING_CODE
 
-export const ConfigFormDef = (config: types.ConfigContainer): FieldGroup<types.ConfigContainer>[] => {
+export const ConfigFormDef = (
+  table: Table<configtypes.ChainGroup>,
+  config: configtypes.Config
+): FieldGroup<types.ConfigContainer>[] => {
   return [
     // EXISTING_CODE
     {
       label: "Version",
-      components: [<VG key={"version"} version={config.version} />, <SG key={"settings"} settings={config.settings} />],
+      colSpan: 6,
+      components: [<VG key={"version"} version={config.version} />],
+    },
+    {
+      label: "Settings",
+      colSpan: 6,
+      components: [<SG key={"settings"} settings={config.settings} />],
     },
     {
       label: "Buttons",
       buttons: [<EditButton key="edit" value="https://trueblocks.io" />],
     },
-    // {
-    //   label: "Version Group",
-    //   colSpan: 12, // Full width since it's the only field
-    //   components: [<div key={"1"}>Hello world</div>],
-    // },
+    {
+      label: "Configured Chains",
+      collapsable: false,
+      components: [<DataTable<configtypes.ChainGroup> key={"dataTable"} table={table} loading={false} />],
+    },
     // EXISTING_CODE
   ];
 };

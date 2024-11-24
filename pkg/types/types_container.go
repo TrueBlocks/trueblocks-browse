@@ -1,6 +1,9 @@
 package types
 
-import coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+import (
+	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+)
 
 type Containerer interface {
 	String() string
@@ -23,3 +26,4 @@ type EveryNameFn func(item *coreTypes.Name, data any) bool
 type EveryNothingFn func(item *Nothing, data any) bool
 type EveryTransactionFn func(item *coreTypes.Transaction, data any) bool
 type EveryWizErrorFn func(item *WizError, data any) bool
+type EveryChainGroupFn func(item *configTypes.ChainGroup, data any) bool

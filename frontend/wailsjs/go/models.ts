@@ -134,7 +134,7 @@ export namespace configtypes {
 	    ipfsGateway: string;
 	    keyEndpoint: string;
 	    localExplorer: string;
-	    removeExplorer: string;
+	    remoteExplorer: string;
 	    rpcProvider: string;
 	    symbol: string;
 	    scrape: ScrapeSettings;
@@ -150,7 +150,7 @@ export namespace configtypes {
 	        this.ipfsGateway = source["ipfsGateway"];
 	        this.keyEndpoint = source["keyEndpoint"];
 	        this.localExplorer = source["localExplorer"];
-	        this.removeExplorer = source["removeExplorer"];
+	        this.remoteExplorer = source["remoteExplorer"];
 	        this.rpcProvider = source["rpcProvider"];
 	        this.symbol = source["symbol"];
 	        this.scrape = this.convertValues(source["scrape"], ScrapeSettings);
@@ -895,6 +895,8 @@ export namespace types {
 	    chains: {[key: string]: configtypes.ChainGroup};
 	    nChains: number;
 	    updater: updater.Updater;
+	    items: configtypes.ChainGroup[];
+	    nItems: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new ConfigContainer(source);
@@ -911,6 +913,8 @@ export namespace types {
 	        this.chains = this.convertValues(source["chains"], configtypes.ChainGroup, true);
 	        this.nChains = source["nChains"];
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.items = this.convertValues(source["items"], configtypes.ChainGroup);
+	        this.nItems = source["nItems"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1015,6 +1019,10 @@ export namespace types {
 	    manifests: boolean;
 	    status: boolean;
 	    settings: boolean;
+	    daemons: boolean;
+	    session: boolean;
+	    config: boolean;
+	    wizard: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new Headers(source);
@@ -1031,6 +1039,10 @@ export namespace types {
 	        this.manifests = source["manifests"];
 	        this.status = source["status"];
 	        this.settings = source["settings"];
+	        this.daemons = source["daemons"];
+	        this.session = source["session"];
+	        this.config = source["config"];
+	        this.wizard = source["wizard"];
 	    }
 	}
 	export class Statement {

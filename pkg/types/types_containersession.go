@@ -7,20 +7,19 @@ import (
 	"encoding/json"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
 // EXISTING_CODE
 
 type SessionContainer struct {
-	coreTypes.Session `json:",inline"`
-	Updater           updater.Updater `json:"updater"`
+	Session `json:",inline"`
+	Updater updater.Updater `json:"updater"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewSessionContainer(chain string, session *coreTypes.Session) SessionContainer {
+func NewSessionContainer(chain string, session *Session) SessionContainer {
 	ret := SessionContainer{
 		Session: *session,
 		Updater: NewSessionUpdater(chain),

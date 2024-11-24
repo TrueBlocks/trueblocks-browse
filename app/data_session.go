@@ -11,6 +11,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -43,7 +44,7 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating needed for session...")
 
-	opts := sdk.SessionOptions{
+	opts := SessionOptions{
 		Globals: a.getGlobals(true /* verbose */),
 	}
 	// EXISTING_CODE
@@ -77,4 +78,17 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 }
 
 // EXISTING_CODE
+
+type SessionOptions struct {
+	Globals sdk.Globals
+	Chain   string
+}
+
+func (opts *SessionOptions) SessionList() ([]types.Session, *coreTypes.MetaData, error) {
+	meta, err := sdk.GetMetaData(namesChain)
+	return []types.Session{
+		{LastChain: ""},
+	}, meta, err
+}
+
 // EXISTING_CODE

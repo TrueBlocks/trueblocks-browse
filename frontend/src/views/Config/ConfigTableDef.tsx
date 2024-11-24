@@ -3,11 +3,61 @@
 // EXISTING_CODE
 // EXISTING_CODE
 
-export const UnusedConfig = () => {
+import { createColumnHelper } from "@tanstack/react-table";
+import { configtypes } from "@gocode/models";
+import { CustomColumnDef, Formatter } from "../../components";
+
+const columnHelper = createColumnHelper<configtypes.ChainGroup>();
+
+export const ConfigTableDef: CustomColumnDef<configtypes.ChainGroup, any>[] = [
   // EXISTING_CODE
+  columnHelper.accessor("chain", {
+    header: () => "Chain",
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
+    meta: { className: "medium cell" },
+  }),
+  columnHelper.accessor("chainId", {
+    header: () => "ChainId",
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
+    meta: { className: "medium cell" },
+  }),
+  columnHelper.accessor("symbol", {
+    header: () => "Symbol",
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
+    meta: { className: "medium cell" },
+  }),
+  columnHelper.accessor("rpcProvider", {
+    header: () => "RpcProvider",
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
+    meta: { className: "medium cell" },
+  }),
+  columnHelper.accessor("localExplorer", {
+    header: () => "LocalExplorer",
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
+    meta: { className: "medium cell" },
+  }),
+  columnHelper.accessor("remoteExplorer", {
+    header: () => "RemoteExplorer",
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
+    meta: { className: "medium cell" },
+  }),
+  columnHelper.accessor("ipfsGateway", {
+    header: () => "IpfsGateway",
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
+    meta: { className: "medium cell" },
+  }),
+  columnHelper.accessor("keyEndpoint", {
+    header: () => "KeyEndpoint",
+    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
+    meta: { className: "medium cell" },
+  }),
+  // columnHelper.accessor("scrape", {
+  //   header: () => "Scrape",
+  //   cell: (info) => <Formatter type="text" value={info.renderValue()} />,
+  //   meta: { className: "medium cell" },
+  // }),
   // EXISTING_CODE
-  return <div>UnusedConfig</div>;
-};
+];
 
 // EXISTING_CODE
 // EXISTING_CODE

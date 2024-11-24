@@ -20,14 +20,18 @@ import (
 type ConfigContainer struct {
 	Chain              string `json:"chain"`
 	configTypes.Config `json:",inline"`
-	NChains            uint64          `json:"nChains"`
-	Updater            updater.Updater `json:"updater"`
+	NChains            uint64                   `json:"nChains"`
+	Updater            updater.Updater          `json:"updater"`
+	Items              []configTypes.ChainGroup `json:"items"`
+	NItems             uint64                   `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewConfigContainer(chain string, config *configTypes.Config) ConfigContainer {
+func NewConfigContainer(chain string, itemsIn []configTypes.ChainGroup, config *configTypes.Config) ConfigContainer {
 	ret := ConfigContainer{
+		Items:   itemsIn,
+		NItems:  uint64(len(itemsIn)),
 		Config:  *config,
 		Chain:   chain,
 		Updater: NewConfigUpdater(chain),
@@ -61,11 +65,11 @@ func (s *ConfigContainer) String() string {
 }
 
 func (s *ConfigContainer) GetItems() interface{} {
-	return nil
+	return s.Items
 }
 
 func (s *ConfigContainer) SetItems(items interface{}) {
-	// s.Items = items.([].)
+	s.Items = items.([]configTypes.ChainGroup)
 }
 
 func (s *ConfigContainer) NeedsUpdate() bool {
@@ -82,6 +86,7 @@ func (s *ConfigContainer) ShallowCopy() Containerer {
 		Config:  s.Config.ShallowCopy(),
 		NChains: s.NChains,
 		Updater: s.Updater,
+		NItems:  s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -89,11 +94,12 @@ func (s *ConfigContainer) ShallowCopy() Containerer {
 }
 
 func (s *ConfigContainer) Clear() {
+	s.NItems = 0
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func (s *ConfigContainer) passesFilter(filter *Filter) (ret bool) {
+func (s *ConfigContainer) passesFilter(item *configTypes.ChainGroup, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -103,7 +109,8 @@ func (s *ConfigContainer) passesFilter(filter *Filter) (ret bool) {
 	return
 }
 
-func (s *ConfigContainer) Accumulate() {
+func (s *ConfigContainer) Accumulate(item *configTypes.ChainGroup) {
+	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -114,12 +121,40 @@ func (s *ConfigContainer) Finalize() {
 }
 
 func (s *ConfigContainer) CollateAndFilter(theMap *FilterMap) interface{} {
-	filtered := []Nothing{}
+	s.Clear()
+
+	filter, _ := theMap.Load("config") // may be empty
+	if !filter.HasCriteria() {
+		s.ForEveryItem(func(item *configTypes.ChainGroup, data any) bool {
+			s.Accumulate(item)
+			return true
+		}, nil)
+		s.Finalize()
+		return s.Items
+	}
+	filtered := []configTypes.ChainGroup{}
+	s.ForEveryItem(func(item *configTypes.ChainGroup, data any) bool {
+		if s.passesFilter(item, &filter) {
+			s.Accumulate(item)
+			filtered = append(filtered, *item)
+		}
+		return true
+	}, nil)
+	s.Finalize()
 
 	// EXISTING_CODE
 	// EXISTING_CODE
 
 	return filtered
+}
+
+func (s *ConfigContainer) ForEveryItem(process EveryChainGroupFn, data any) bool {
+	for i := 0; i < len(s.Items); i++ {
+		if !process(&s.Items[i], data) {
+			return false
+		}
+	}
+	return true
 }
 
 // EXISTING_CODE
@@ -139,6 +174,10 @@ func (s *ConfigContainer) Load() error {
 		return fmt.Errorf("%w: %v", ErrCantReadToml, err)
 	}
 
+	for _, chain := range s.Config.Chains {
+		s.Items = append(s.Items, chain)
+	}
+
 	return nil
 }
 
@@ -149,6 +188,10 @@ func (s *ConfigContainer) IsValidChain(chain string) (string, error) {
 		}
 	}
 	return "mainnet", fmt.Errorf("%w: %s", ErrChainNotConfigured, chain)
+}
+
+func CGI() configTypes.ChainGroup {
+	return configTypes.ChainGroup{}
 }
 
 // EXISTING_CODE

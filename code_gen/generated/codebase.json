@@ -521,7 +521,7 @@
             "ui_route": "1110-config-v",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "embedType=configTypes.Config|noSdk",
+            "attributes": "itemType=configTypes.ChainGroup|embedType=configTypes.Config|noSdk",
             "members": [
                 {
                     "name": "config",
