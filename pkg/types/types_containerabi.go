@@ -16,20 +16,20 @@ import (
 // EXISTING_CODE
 
 type AbiContainer struct {
-	coreTypes.Abi `json:",inline"`
+	Abi           `json:",inline"`
 	Chain         string          `json:"chain"`
 	LargestFile   string          `json:"largestFile"`
 	MostEvents    string          `json:"mostEvents"`
 	MostFunctions string          `json:"mostFunctions"`
 	Updater       updater.Updater `json:"updater"`
-	Items         []coreTypes.Abi `json:"items"`
+	Items         []Abi           `json:"items"`
 	NItems        uint64          `json:"nItems"`
 	Sorts         sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewAbiContainer(chain string, itemsIn []coreTypes.Abi) AbiContainer {
+func NewAbiContainer(chain string, itemsIn []Abi) AbiContainer {
 	ret := AbiContainer{
 		Items:  itemsIn,
 		NItems: uint64(len(itemsIn)),
@@ -74,7 +74,7 @@ func (s *AbiContainer) GetItems() interface{} {
 }
 
 func (s *AbiContainer) SetItems(items interface{}) {
-	s.Items = items.([]coreTypes.Abi)
+	s.Items = items.([]Abi)
 }
 
 func (s *AbiContainer) NeedsUpdate() bool {
@@ -106,7 +106,7 @@ func (s *AbiContainer) Clear() {
 	// EXISTING_CODE
 }
 
-func (s *AbiContainer) passesFilter(item *coreTypes.Abi, filter *Filter) (ret bool) {
+func (s *AbiContainer) passesFilter(item *Abi, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -116,7 +116,7 @@ func (s *AbiContainer) passesFilter(item *coreTypes.Abi, filter *Filter) (ret bo
 	return
 }
 
-func (s *AbiContainer) Accumulate(item *coreTypes.Abi) {
+func (s *AbiContainer) Accumulate(item *Abi) {
 	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -132,15 +132,15 @@ func (s *AbiContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 	filter, _ := theMap.Load("abis") // may be empty
 	if !filter.HasCriteria() {
-		s.ForEveryItem(func(item *coreTypes.Abi, data any) bool {
+		s.ForEveryItem(func(item *Abi, data any) bool {
 			s.Accumulate(item)
 			return true
 		}, nil)
 		s.Finalize()
 		return s.Items
 	}
-	filtered := []coreTypes.Abi{}
-	s.ForEveryItem(func(item *coreTypes.Abi, data any) bool {
+	filtered := []Abi{}
+	s.ForEveryItem(func(item *Abi, data any) bool {
 		if s.passesFilter(item, &filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)

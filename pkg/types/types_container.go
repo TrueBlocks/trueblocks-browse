@@ -17,7 +17,7 @@ type Containerer interface {
 
 type Containerers []Containerer
 
-type EveryAbiFn func(item *coreTypes.Abi, data any) bool
+type EveryAbiFn func(item *Abi, data any) bool
 type EveryCacheItemFn func(item *coreTypes.CacheItem, data any) bool
 type EveryChunkRecordFn func(item *coreTypes.ChunkRecord, data any) bool
 type EveryChunkStatsFn func(item *coreTypes.ChunkStats, data any) bool

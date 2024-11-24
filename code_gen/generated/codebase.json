@@ -273,13 +273,13 @@
             "ui_route": "1040-abis-5",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.Abi",
+            "attributes": "itemType=types.Abi",
             "sorts": "isEmpty+Asc,isKnown+Asc,address+Asc",
             "search": "true",
             "members": [
                 {
                     "name": "abi",
-                    "type": "coreTypes.Abi",
+                    "type": "types.Abi",
                     "attributes": "embed",
                     "description": "jim",
                     "num": 1
