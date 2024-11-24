@@ -37,6 +37,7 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error) error {
 	defer historyLock.CompareAndSwap(1, 0)
 
 	// EXISTING_CODE
+	address := a.GetSelected()
 	history, exists := a.historyCache.Load(address)
 	if !exists {
 		history = types.NewHistoryContainer(a.getChain(), []coreTypes.Transaction{}, address)
@@ -188,7 +189,7 @@ func (a *App) goToAddress(address base.Address) {
 		history.Items = history.Items[:0]
 		a.historyCache.Store(address, history)
 	}
-	go a.loadHistory(nil, nil, address)
+	go a.loadHistory(nil, nil)
 	a.emitNavigateMsg(a.GetRoute())
 }
 

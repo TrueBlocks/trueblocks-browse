@@ -10,7 +10,6 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 

@@ -7,10 +7,10 @@ import (
 )
 
 func (a *App) ModifyMonitor(modData *ModifyData) error {
-	if !monitorLock.CompareAndSwap(0, 1) {
+	if !monitorsLock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer monitorLock.CompareAndSwap(1, 0)
+	defer monitorsLock.CompareAndSwap(1, 0)
 
 	op := crud.OpFromString(modData.Operation)
 	opts := sdk.MonitorsOptions{
