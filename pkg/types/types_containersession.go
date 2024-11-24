@@ -107,7 +107,6 @@ func (s *SessionContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	filtered := []Nothing{}
 
 	// EXISTING_CODE
-	// nothing to do here
 	// EXISTING_CODE
 
 	return filtered

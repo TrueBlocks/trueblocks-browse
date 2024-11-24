@@ -2,7 +2,6 @@ package app
 
 import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 func (a *App) ToggleDaemon(name string) error {
@@ -31,9 +30,7 @@ func (a *App) getDaemon(name string) daemons.Daemoner {
 	case "ipfs":
 		return a.ipfsController
 	default:
-		if len(name) > 0 {
-			logger.Fatal("getDaemon", "should not happen", name)
-		}
-		return nil
+		// logger.Fatal("getDaemon", "should not happen", name)
+		return &daemons.Daemon{}
 	}
 }
