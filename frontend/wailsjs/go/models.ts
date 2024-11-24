@@ -1015,10 +1015,10 @@ export namespace types {
 	    keys: {[key: string]: configtypes.KeyGroup};
 	    pinning: configtypes.PinningGroup;
 	    unchained: configtypes.UnchainedGroup;
-	    chains: {[key: string]: types.Chain};
+	    chains: {[key: string]: configtypes.ChainGroup};
 	    nChains: number;
 	    updater: updater.Updater;
-	    items: types.Chain[];
+	    items: Chain[];
 	    nItems: number;
 	
 	    static createFrom(source: any = {}) {
@@ -1033,10 +1033,10 @@ export namespace types {
 	        this.keys = this.convertValues(source["keys"], configtypes.KeyGroup, true);
 	        this.pinning = this.convertValues(source["pinning"], configtypes.PinningGroup);
 	        this.unchained = this.convertValues(source["unchained"], configtypes.UnchainedGroup);
-	        this.chains = this.convertValues(source["chains"], types.Chain, true);
+	        this.chains = this.convertValues(source["chains"], configtypes.ChainGroup, true);
 	        this.nChains = source["nChains"];
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
-	        this.items = this.convertValues(source["items"], types.Chain);
+	        this.items = this.convertValues(source["items"], Chain);
 	        this.nItems = source["nItems"];
 	    }
 	
@@ -2543,3 +2543,4 @@ export namespace version {
 	}
 
 }
+

@@ -13,13 +13,6 @@
 
 {{ $formDef := print $routeName "FormDef" }}
 
-{{ $param1 := "" }}
-{{ if $isConfig }}
-  {{ $param1 = print "table: Table<configtypes." $itemName ">" }}
-{{ else }}
-  {{ $param1 = print "table: Table<types." $itemName ">" }}
-{{ end }}
-
 {{ $param2 := "" }}
 {{ if $isHistory }}
   {{ $param2 = `,
@@ -42,7 +35,7 @@
 // EXISTING_CODE
 // EXISTING_CODE
 
-export const {{$formDef}} = ({{$param1}}{{$param2}}): FieldGroup<types.{{$class}}Container>[] => {
+export const {{$formDef}} = (table: Table<types.{{$itemName}}>{{$param2}}): FieldGroup<types.{{$class}}Container>[] => {
   {{$leadMatter}}
   return [
     // EXISTING_CODE

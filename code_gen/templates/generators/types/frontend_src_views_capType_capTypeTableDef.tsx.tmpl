@@ -14,19 +14,14 @@
   {{ $tableDef = "base" }}
 {{ end -}}
 
-{{ $colType := print "types." $itemName }}
-{{ if $isConfig }}
-  {{ $colType = print "configtypes." $itemName }}
-{{ end }}
-
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 // EXISTING_CODE
 // EXISTING_CODE
 
-const columnHelper = createColumnHelper<{{$colType}}>();
+const columnHelper = createColumnHelper<types.{{$itemName}}>();
 
-export const {{$tableDef}}TableDef: CustomColumnDef<{{$colType}}, any>[] = [
+export const {{$tableDef}}TableDef: CustomColumnDef<types.{{$itemName}}, any>[] = [
 	// EXISTING_CODE
 	// EXISTING_CODE
 ];

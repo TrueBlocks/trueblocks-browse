@@ -45,11 +45,6 @@ export const ConfigTableDef: CustomColumnDef<types.Chain, any>[] = [
     cell: (info) => <Formatter type="text" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
-  columnHelper.accessor("keyEndpoint", {
-    header: () => "KeyEndpoint",
-    cell: (info) => <Formatter type="text" value={info.renderValue()} />,
-    meta: { className: "medium cell" },
-  }),
   // columnHelper.accessor("scrape", {
   //   header: () => "Scrape",
   //   cell: (info) => <Formatter type="text" value={info.renderValue()} />,
