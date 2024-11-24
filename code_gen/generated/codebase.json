@@ -411,7 +411,7 @@
             "ui_route": "1070-status-8",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.CacheItem|embedType=coreTypes.Status",
+            "attributes": "itemType=types.CacheItem|embedType=coreTypes.Status",
             "members": [
                 {
                     "name": "status",
@@ -452,7 +452,7 @@
             "ui_route": "1080-settings-9",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.CacheItem|noSdk",
+            "attributes": "itemType=types.CacheItem|noSdk",
             "members": [
                 {
                     "name": "chain",

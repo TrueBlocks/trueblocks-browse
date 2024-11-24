@@ -8,17 +8,16 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
 // EXISTING_CODE
 
 type SettingsContainer struct {
-	Chain   string                `json:"chain"`
-	Updater updater.Updater       `json:"updater"`
-	Items   []coreTypes.CacheItem `json:"items"`
-	NItems  uint64                `json:"nItems"`
+	Chain   string          `json:"chain"`
+	Updater updater.Updater `json:"updater"`
+	Items   []CacheItem     `json:"items"`
+	NItems  uint64          `json:"nItems"`
 	// EXISTING_CODE
 	Status  StatusContainer  `json:"status"`
 	Config  ConfigContainer  `json:"config"`
@@ -26,7 +25,7 @@ type SettingsContainer struct {
 	// EXISTING_CODE
 }
 
-func NewSettingsContainer(chain string, itemsIn []coreTypes.CacheItem) SettingsContainer {
+func NewSettingsContainer(chain string, itemsIn []CacheItem) SettingsContainer {
 	ret := SettingsContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
@@ -68,7 +67,7 @@ func (s *SettingsContainer) GetItems() interface{} {
 }
 
 func (s *SettingsContainer) SetItems(items interface{}) {
-	s.Items = items.([]coreTypes.CacheItem)
+	s.Items = items.([]CacheItem)
 }
 
 func (s *SettingsContainer) NeedsUpdate() bool {
@@ -99,7 +98,7 @@ func (s *SettingsContainer) Clear() {
 	// EXISTING_CODE
 }
 
-func (s *SettingsContainer) passesFilter(item *coreTypes.CacheItem, filter *Filter) (ret bool) {
+func (s *SettingsContainer) passesFilter(item *CacheItem, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -109,7 +108,7 @@ func (s *SettingsContainer) passesFilter(item *coreTypes.CacheItem, filter *Filt
 	return
 }
 
-func (s *SettingsContainer) Accumulate(item *coreTypes.CacheItem) {
+func (s *SettingsContainer) Accumulate(item *CacheItem) {
 	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -125,15 +124,15 @@ func (s *SettingsContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 	filter, _ := theMap.Load("settings") // may be empty
 	if !filter.HasCriteria() {
-		s.ForEveryItem(func(item *coreTypes.CacheItem, data any) bool {
+		s.ForEveryItem(func(item *CacheItem, data any) bool {
 			s.Accumulate(item)
 			return true
 		}, nil)
 		s.Finalize()
 		return s.Items
 	}
-	filtered := []coreTypes.CacheItem{}
-	s.ForEveryItem(func(item *coreTypes.CacheItem, data any) bool {
+	filtered := []CacheItem{}
+	s.ForEveryItem(func(item *CacheItem, data any) bool {
 		if s.passesFilter(item, &filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
