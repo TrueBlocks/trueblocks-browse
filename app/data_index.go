@@ -16,7 +16,7 @@ import (
 
 // EXISTING_CODE
 
-var indexLock atomic.Uint32
+var indexesLock atomic.Uint32
 
 func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadIndexes", false)()
@@ -26,10 +26,10 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}()
 
-	if !indexLock.CompareAndSwap(0, 1) {
+	if !indexesLock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer indexLock.CompareAndSwap(1, 0)
+	defer indexesLock.CompareAndSwap(1, 0)
 
 	// EXISTING_CODE
 	// EXISTING_CODE

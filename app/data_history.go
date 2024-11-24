@@ -23,7 +23,7 @@ import (
 
 var historyLock atomic.Uint32
 
-func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base.Address) error {
+func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadHistory", false)()
 	defer func() {
 		if wg != nil {

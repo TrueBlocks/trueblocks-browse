@@ -16,7 +16,7 @@ import (
 
 // EXISTING_CODE
 
-var abiLock atomic.Uint32
+var abisLock atomic.Uint32
 
 func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadAbis", false)()
@@ -26,10 +26,10 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}()
 
-	if !abiLock.CompareAndSwap(0, 1) {
+	if !abisLock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer abiLock.CompareAndSwap(1, 0)
+	defer abisLock.CompareAndSwap(1, 0)
 
 	// EXISTING_CODE
 	// EXISTING_CODE
