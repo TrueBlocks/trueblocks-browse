@@ -526,11 +526,11 @@
             "ui_route": "1110-config-v",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.Chain|embedType=configTypes.Config|noSdk",
+            "attributes": "itemType=types.Chain|embedType=types.Config|noSdk",
             "members": [
                 {
                     "name": "config",
-                    "type": "configTypes.Config",
+                    "type": "types.Config",
                     "attributes": "embed",
                     "description": "jim",
                     "num": 1

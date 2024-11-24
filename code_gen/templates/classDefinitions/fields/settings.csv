@@ -1,6 +1,6 @@
-name    ,type            ,strDefault ,attributes ,upgrades ,docOrder ,description
-# status     ,types.Status       ,           ,           ,         ,         ,jim
-# config     ,configTypes.Config ,           ,           ,         ,         ,jim
-# session    ,types.Session      ,           ,           ,         ,         ,jim
-chain   ,string          ,           ,           ,         ,         ,jim
-updater ,updater.Updater ,           ,           ,         ,         ,jim
+name    ,type               ,strDefault ,attributes ,upgrades ,docOrder ,description
+# status     ,types.Status  ,           ,           ,         ,         ,jim
+# config     ,types.Config  ,           ,           ,         ,         ,jim
+# session    ,types.Session ,           ,           ,         ,         ,jim
+chain   ,string             ,           ,           ,         ,         ,jim
+updater ,updater.Updater    ,           ,           ,         ,         ,jim

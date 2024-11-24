@@ -1,5 +1,5 @@
-name    ,type               ,strDefault ,attributes ,upgrades ,docOrder ,description
-config  ,configTypes.Config ,           ,embed      ,         ,         ,jim
-nChains ,uint64             ,           ,           ,         ,         ,jim
-chain   ,string             ,           ,           ,         ,         ,jim
-updater ,updater.Updater    ,           ,           ,         ,         ,jim
+name    ,type            ,strDefault ,attributes ,upgrades ,docOrder ,description
+config  ,types.Config    ,           ,embed      ,         ,         ,jim
+nChains ,uint64          ,           ,           ,         ,         ,jim
+chain   ,string          ,           ,           ,         ,         ,jim
+updater ,updater.Updater ,           ,           ,         ,         ,jim

@@ -7,7 +7,6 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -15,7 +14,7 @@ func (a *App) IsShowing(which string) bool {
 	return a.session.Toggles.IsOn(which)
 }
 
-func (a *App) GetConfig() *configTypes.Config {
+func (a *App) GetConfig() *types.Config {
 	return &a.config.Config
 }
 
