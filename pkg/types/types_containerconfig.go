@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
@@ -20,15 +21,15 @@ import (
 type ConfigContainer struct {
 	Chain              string `json:"chain"`
 	configTypes.Config `json:",inline"`
-	NChains            uint64                   `json:"nChains"`
-	Updater            updater.Updater          `json:"updater"`
-	Items              []configTypes.ChainGroup `json:"items"`
-	NItems             uint64                   `json:"nItems"`
+	NChains            uint64          `json:"nChains"`
+	Updater            updater.Updater `json:"updater"`
+	Items              []Chain         `json:"items"`
+	NItems             uint64          `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewConfigContainer(chain string, itemsIn []configTypes.ChainGroup, config *configTypes.Config) ConfigContainer {
+func NewConfigContainer(chain string, itemsIn []Chain, config *configTypes.Config) ConfigContainer {
 	ret := ConfigContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
@@ -69,7 +70,7 @@ func (s *ConfigContainer) GetItems() interface{} {
 }
 
 func (s *ConfigContainer) SetItems(items interface{}) {
-	s.Items = items.([]configTypes.ChainGroup)
+	s.Items = items.([]Chain)
 }
 
 func (s *ConfigContainer) NeedsUpdate() bool {
@@ -99,7 +100,7 @@ func (s *ConfigContainer) Clear() {
 	// EXISTING_CODE
 }
 
-func (s *ConfigContainer) passesFilter(item *configTypes.ChainGroup, filter *Filter) (ret bool) {
+func (s *ConfigContainer) passesFilter(item *Chain, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -109,7 +110,7 @@ func (s *ConfigContainer) passesFilter(item *configTypes.ChainGroup, filter *Fil
 	return
 }
 
-func (s *ConfigContainer) Accumulate(item *configTypes.ChainGroup) {
+func (s *ConfigContainer) Accumulate(item *Chain) {
 	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -125,15 +126,15 @@ func (s *ConfigContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 	filter, _ := theMap.Load("config") // may be empty
 	if !filter.HasCriteria() {
-		s.ForEveryItem(func(item *configTypes.ChainGroup, data any) bool {
+		s.ForEveryItem(func(item *Chain, data any) bool {
 			s.Accumulate(item)
 			return true
 		}, nil)
 		s.Finalize()
 		return s.Items
 	}
-	filtered := []configTypes.ChainGroup{}
-	s.ForEveryItem(func(item *configTypes.ChainGroup, data any) bool {
+	filtered := []Chain{}
+	s.ForEveryItem(func(item *Chain, data any) bool {
 		if s.passesFilter(item, &filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
@@ -148,7 +149,7 @@ func (s *ConfigContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	return filtered
 }
 
-func (s *ConfigContainer) ForEveryItem(process EveryChainGroupFn, data any) bool {
+func (s *ConfigContainer) ForEveryItem(process EveryChainFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false
@@ -175,7 +176,18 @@ func (s *ConfigContainer) Load() error {
 	}
 
 	for _, chain := range s.Config.Chains {
-		s.Items = append(s.Items, chain)
+		chOut := func(chIn configTypes.ChainGroup) Chain {
+			return Chain{
+				Chain:          chIn.Chain,
+				ChainId:        base.MustParseUint64(chIn.ChainId),
+				IpfsGateway:    chIn.IpfsGateway,
+				LocalExplorer:  chIn.LocalExplorer,
+				RemoteExplorer: chIn.RemoteExplorer,
+				RpcProvider:    chIn.RpcProvider,
+				Symbol:         chIn.Symbol,
+			}
+		}(chain)
+		s.Items = append(s.Items, chOut)
 	}
 
 	return nil
@@ -188,10 +200,6 @@ func (s *ConfigContainer) IsValidChain(chain string) (string, error) {
 		}
 	}
 	return "mainnet", fmt.Errorf("%w: %s", ErrChainNotConfigured, chain)
-}
-
-func CGI() configTypes.ChainGroup {
-	return configTypes.ChainGroup{}
 }
 
 // EXISTING_CODE

@@ -2,13 +2,13 @@
 // of ExistingCode markers (if any).
 // EXISTING_CODE
 import { createColumnHelper } from "@tanstack/react-table";
-import { configtypes } from "@gocode/models";
+import { types } from "@gocode/models";
 import { CustomColumnDef, Formatter } from "../../components";
 // EXISTING_CODE
 
-const columnHelper = createColumnHelper<configtypes.ChainGroup>();
+const columnHelper = createColumnHelper<types.Chain>();
 
-export const ConfigTableDef: CustomColumnDef<configtypes.ChainGroup, any>[] = [
+export const ConfigTableDef: CustomColumnDef<types.Chain, any>[] = [
   // EXISTING_CODE
   columnHelper.accessor("chain", {
     header: () => "Chain",

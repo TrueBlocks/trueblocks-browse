@@ -2,7 +2,6 @@ package types
 
 import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
-	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 )
 
 type Containerer interface {
@@ -26,5 +25,5 @@ type EveryNameFn func(item *Name, data any) bool
 type EveryNothingFn func(item *Nothing, data any) bool
 type EveryTransactionFn func(item *Transaction, data any) bool
 type EveryWizErrorFn func(item *WizError, data any) bool
-type EveryChainGroupFn func(item *configTypes.ChainGroup, data any) bool
+type EveryChainFn func(item *Chain, data any) bool
 type EveryDaemonFn func(item *daemons.Daemon, data any) bool
