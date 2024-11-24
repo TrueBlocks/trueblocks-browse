@@ -4,7 +4,7 @@
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "1040-containers"
 	ui_route = "1040-abis-5"
-	attributes = "itemType=types.Abi"
+	attributes = ""
 	sorts = "isEmpty+Asc,isKnown+Asc,address+Asc"
 	search = "true"
 	# produced_by = "blocks"

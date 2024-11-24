@@ -7,7 +7,7 @@
             "ui_route": "0000-project-1",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.HistoryContainer|noSdk",
+            "attributes": "noSdk",
             "search": "true",
             "members": [
                 {
@@ -85,7 +85,7 @@
             "ui_route": "1010-history-2",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.Transaction|noSdk",
+            "attributes": "noSdk",
             "search": "true",
             "members": [
                 {
@@ -163,7 +163,6 @@
             "ui_route": "1020-monitors-3",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.Monitor",
             "search": "true",
             "members": [
                 {
@@ -235,7 +234,6 @@
             "ui_route": "1030-names-4",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.Name",
             "search": "true",
             "members": [
                 {
@@ -325,7 +323,6 @@
             "ui_route": "1040-abis-5",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.Abi",
             "sorts": "isEmpty+Asc,isKnown+Asc,address+Asc",
             "search": "true",
             "members": [
@@ -387,7 +384,6 @@
             "ui_route": "1050-indexes-6",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.ChunkStats",
             "sorts": "range+Dec",
             "members": [
                 {
@@ -430,7 +426,6 @@
             "ui_route": "1060-manifests-7",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.ChunkRecord",
             "sorts": "range+Dec",
             "members": [
                 {
@@ -502,7 +497,6 @@
             "ui_route": "1070-status-8",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.CacheItem",
             "members": [
                 {
                     "name": "status",
@@ -556,7 +550,7 @@
             "ui_route": "1080-settings-9",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.CacheItem|noSdk",
+            "attributes": "noSdk",
             "members": [
                 {
                     "name": "chain",
@@ -591,7 +585,7 @@
             "ui_route": "1090-daemons-0",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.Nothing|noSdk",
+            "attributes": "noSdk",
             "members": [
                 {
                     "name": "daemon",
@@ -633,7 +627,6 @@
             "ui_route": "1100-session-u",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.Nothing",
             "members": [
                 {
                     "name": "session",
@@ -669,7 +662,7 @@
             "ui_route": "1110-config-v",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.Chain|noSdk",
+            "attributes": "noSdk",
             "members": [
                 {
                     "name": "config",
@@ -717,7 +710,7 @@
             "ui_route": "1120-wizard-w",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.WizError|noSdk",
+            "attributes": "noSdk",
             "members": [
                 {
                     "name": "chain",

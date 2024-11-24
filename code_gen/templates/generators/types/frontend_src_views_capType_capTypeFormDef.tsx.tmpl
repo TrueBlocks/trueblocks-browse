@@ -1,7 +1,7 @@
 {{ $class := .Class }}
 {{ $routeName := .UiRouteName }}
 {{ $routeLower := toLower .UiRouteName }}
-{{ $itemName := .ItemName }}
+{{ $fullType := .ItemFullType }}
 {{ $embedType := .EmbedType }}
 
 {{ $isHistory := eq $class "History" }}
@@ -35,7 +35,7 @@
 // EXISTING_CODE
 // EXISTING_CODE
 
-export const {{$formDef}} = (table: Table<types.{{$itemName}}>{{$param2}}): FieldGroup<types.{{$class}}Container>[] => {
+export const {{$formDef}} = (table: Table<{{$fullType}}>{{$param2}}): FieldGroup<types.{{$class}}Container>[] => {
   {{$leadMatter}}
   return [
     // EXISTING_CODE
