@@ -196,7 +196,7 @@
             "ui_route": "1030-names-4",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.Name",
+            "attributes": "itemType=types.Name",
             "search": "true",
             "members": [
                 {

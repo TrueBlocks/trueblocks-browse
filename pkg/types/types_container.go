@@ -23,7 +23,7 @@ type EveryChunkRecordFn func(item *coreTypes.ChunkRecord, data any) bool
 type EveryChunkStatsFn func(item *coreTypes.ChunkStats, data any) bool
 type EveryHistoryContainerFn func(item *HistoryContainer, data any) bool
 type EveryMonitorFn func(item *Monitor, data any) bool
-type EveryNameFn func(item *coreTypes.Name, data any) bool
+type EveryNameFn func(item *Name, data any) bool
 type EveryNothingFn func(item *Nothing, data any) bool
 type EveryTransactionFn func(item *Transaction, data any) bool
 type EveryWizErrorFn func(item *WizError, data any) bool

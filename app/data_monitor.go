@@ -71,7 +71,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.monitors = types.NewMonitorContainer(opts.Chain, monitors)
 		// EXISTING_CODE
-		// TODO: Use core's sorting mechanism (see SortChunkStats for example)
+		// TODO: Use core's sorting mechanism (see SortChunk Stats for example)
 		sort.Slice(a.monitors.Items, func(i, j int) bool {
 			if a.monitors.Items[i].NRecords == a.monitors.Items[j].NRecords {
 				return a.monitors.Items[i].Address.Hex() < a.monitors.Items[j].Address.Hex()

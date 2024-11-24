@@ -3,8 +3,8 @@ package editors
 import (
 	"encoding/json"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 type Name struct {
@@ -17,7 +17,7 @@ type Name struct {
 	Deleted  bool   `json:"deleted,omitempty"`
 }
 
-func CoreToName(nameIn coreTypes.Name) Name {
+func CoreToName(nameIn types.Name) Name {
 	return Name{
 		Address:  nameIn.Address.Hex(),
 		Name:     nameIn.Name,
@@ -29,8 +29,8 @@ func CoreToName(nameIn coreTypes.Name) Name {
 	}
 }
 
-func NameToCore(nameIn Name) coreTypes.Name {
-	return coreTypes.Name{
+func NameToCore(nameIn Name) types.Name {
+	return types.Name{
 		Address:  base.HexToAddress(nameIn.Address),
 		Name:     nameIn.Name,
 		Tags:     nameIn.Tags,

@@ -13,7 +13,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -75,7 +74,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.names = types.NewNameContainer(opts.Chain, names)
 		// EXISTING_CODE
-		a.namesMap = make(map[base.Address]coreTypes.Name, len(names))
+		a.namesMap = make(map[base.Address]types.Name, len(names))
 		for _, name := range names {
 			a.namesMap[name.Address] = name
 		}

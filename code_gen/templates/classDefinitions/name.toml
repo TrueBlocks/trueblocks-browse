@@ -4,7 +4,7 @@
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "1030-containers"
 	ui_route = "1030-names-4"
-	attributes = "itemType=coreTypes.Name"
+	attributes = "itemType=types.Name"
 	search = "true"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"

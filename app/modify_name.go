@@ -1,8 +1,8 @@
 package app
 
 import (
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -13,7 +13,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 	defer namesLock.CompareAndSwap(1, 0)
 
 	op := modData.Operation
-	newName := coreTypes.Name{
+	newName := types.Name{
 		Address:  modData.Address,
 		Name:     modData.Value,
 		IsCustom: true,
@@ -38,7 +38,7 @@ func (a *App) ModifyName(modData *ModifyData) error {
 		return err
 	}
 
-	newArray := []coreTypes.Name{}
+	newArray := []types.Name{}
 	for _, name := range a.names.Items {
 		if name.Address == modData.Address {
 			switch crud.OpFromString(op) {

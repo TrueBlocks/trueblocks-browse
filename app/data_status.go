@@ -70,7 +70,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.status = types.NewStatusContainer(opts.Chain, status[0].Caches, &status[0])
 		// EXISTING_CODE
-		// TODO: Use the core's sorting mechanism (see SortChunkStats for example)
+		// TODO: Use the core's sorting mechanism (see SortChunk Stats for example)
 		sort.Slice(a.status.Caches, func(i, j int) bool {
 			return a.status.Caches[i].SizeInBytes > a.status.Caches[j].SizeInBytes
 		})
