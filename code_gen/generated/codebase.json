@@ -63,6 +63,19 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.HistoryContainer",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
                 }
             ]
         },
@@ -128,6 +141,19 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.Transaction",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
                 }
             ]
         },
@@ -187,6 +213,19 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 8
+                },
+                {
+                    "name": "items",
+                    "type": "types.Monitor",
+                    "description": "jim",
+                    "num": 9,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 10
                 }
             ]
         },
@@ -264,6 +303,19 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 11
+                },
+                {
+                    "name": "items",
+                    "type": "types.Name",
+                    "description": "jim",
+                    "num": 12,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 13
                 }
             ]
         },
@@ -313,6 +365,19 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 6
+                },
+                {
+                    "name": "items",
+                    "type": "types.Abi",
+                    "description": "jim",
+                    "num": 7,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 8
                 }
             ]
         },
@@ -343,6 +408,19 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 3
+                },
+                {
+                    "name": "items",
+                    "type": "types.ChunkStats",
+                    "description": "jim",
+                    "num": 4,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
                 }
             ]
         },
@@ -402,6 +480,19 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 8
+                },
+                {
+                    "name": "items",
+                    "type": "types.ChunkRecord",
+                    "description": "jim",
+                    "num": 9,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 10
                 }
             ]
         },
@@ -443,6 +534,19 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 5
+                },
+                {
+                    "name": "items",
+                    "type": "types.CacheItem",
+                    "description": "jim",
+                    "num": 6,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
                 }
             ]
         },
@@ -465,6 +569,19 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 2
+                },
+                {
+                    "name": "items",
+                    "type": "types.CacheItem",
+                    "description": "jim",
+                    "num": 3,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
                 }
             ]
         },
@@ -494,6 +611,19 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 3
+                },
+                {
+                    "name": "items",
+                    "type": "types.Nothing",
+                    "description": "jim",
+                    "num": 4,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
                 }
             ]
         },
@@ -517,6 +647,19 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 2
+                },
+                {
+                    "name": "items",
+                    "type": "types.Nothing",
+                    "description": "jim",
+                    "num": 3,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
                 }
             ]
         },
@@ -552,6 +695,19 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 4
+                },
+                {
+                    "name": "items",
+                    "type": "types.Chain",
+                    "description": "jim",
+                    "num": 5,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
                 }
             ]
         },
@@ -574,6 +730,19 @@
                     "type": "updater.Updater",
                     "description": "jim",
                     "num": 2
+                },
+                {
+                    "name": "items",
+                    "type": "types.WizError",
+                    "description": "jim",
+                    "num": 3,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
                 }
             ]
         }

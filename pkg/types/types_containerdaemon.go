@@ -15,9 +15,9 @@ import (
 type DaemonContainer struct {
 	Chain   string `json:"chain"`
 	Daemon  `json:",inline"`
-	Updater updater.Updater `json:"updater"`
 	Items   []Nothing       `json:"items"`
 	NItems  uint64          `json:"nItems"`
+	Updater updater.Updater `json:"updater"`
 	// EXISTING_CODE
 	ScraperController *DaemonScraper `json:"scraperController"`
 	FreshenController *DaemonFreshen `json:"freshenController"`
@@ -81,8 +81,8 @@ func (s *DaemonContainer) ShallowCopy() Containerer {
 	ret := &DaemonContainer{
 		Chain:   s.Chain,
 		Daemon:  s.Daemon.ShallowCopy(),
-		Updater: s.Updater,
 		NItems:  s.NItems,
+		Updater: s.Updater,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

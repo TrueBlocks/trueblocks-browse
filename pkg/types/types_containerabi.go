@@ -18,12 +18,12 @@ import (
 type AbiContainer struct {
 	Abi           `json:",inline"`
 	Chain         string          `json:"chain"`
+	Items         []Abi           `json:"items"`
 	LargestFile   string          `json:"largestFile"`
 	MostEvents    string          `json:"mostEvents"`
 	MostFunctions string          `json:"mostFunctions"`
-	Updater       updater.Updater `json:"updater"`
-	Items         []Abi           `json:"items"`
 	NItems        uint64          `json:"nItems"`
+	Updater       updater.Updater `json:"updater"`
 	Sorts         sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -93,8 +93,8 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 		LargestFile:   s.LargestFile,
 		MostEvents:    s.MostEvents,
 		MostFunctions: s.MostFunctions,
-		Updater:       s.Updater,
 		NItems:        s.NItems,
+		Updater:       s.Updater,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

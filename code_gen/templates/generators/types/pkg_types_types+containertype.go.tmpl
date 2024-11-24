@@ -15,10 +15,7 @@
 {{ $isProject := eq $class "Project" }}
 {{ $isSession := eq $class "Session" }}
 {{ $isStatus := eq $class "Status" }}
-
-{{ $items1 := print "Items []" $itemType "`json:\"items\"`\n  NItems uint64 `json:\"nItems\"`" }}
 {{ $items2 := print "  Items:   itemsIn,\n  NItems:  uint64(len(itemsIn))," }}
-{{ $items3 := "NItems: s.NItems," }}
 
 {{ $embed1 := "//-- remove line --" }}
 {{ if $hasEmbed }}
@@ -86,10 +83,9 @@ type {{$class}}Container struct {
 	{{- if .IsEmbed }}
 		{{replace .GoType "types." ""}} `json:",inline"`
 	{{- else if .IsSimpField}}
-		{{.GoName}} {{.GoType}} {{.Tag}}
+		{{.GoName}} {{replace .GoType "types." ""}} {{.Tag}}
 	{{- end -}}
 	{{- end}}
-	{{$items1}}
 	{{$sorts1}}
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -148,11 +144,10 @@ func (s *{{$class}}Container) ShallowCopy() Containerer {
 	ret := &{{$class}}Container{ {{range $members}}
 		{{- if .IsEmbed }}
 			{{.GoName}}: s.{{.GoName}}.ShallowCopy(),
-		{{- else if .IsSimpField}}
+		{{- else if and .IsSimpField (not (eq .Name "items") ) }}
 			{{.GoName}}: s.{{.GoName}},
 		{{- end -}}
 		{{- end}}
-		{{$items3}}
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

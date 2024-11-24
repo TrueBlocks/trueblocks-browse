@@ -21,10 +21,10 @@ import (
 type ConfigContainer struct {
 	Chain   string `json:"chain"`
 	Config  `json:",inline"`
-	NChains uint64          `json:"nChains"`
-	Updater updater.Updater `json:"updater"`
 	Items   []Chain         `json:"items"`
+	NChains uint64          `json:"nChains"`
 	NItems  uint64          `json:"nItems"`
+	Updater updater.Updater `json:"updater"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -86,8 +86,8 @@ func (s *ConfigContainer) ShallowCopy() Containerer {
 		Chain:   s.Chain,
 		Config:  s.Config.ShallowCopy(),
 		NChains: s.NChains,
-		Updater: s.Updater,
 		NItems:  s.NItems,
+		Updater: s.Updater,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

@@ -13,13 +13,13 @@ import (
 // EXISTING_CODE
 
 type StatusContainer struct {
-	NBytes   uint64 `json:"nBytes"`
-	NFiles   uint64 `json:"nFiles"`
-	NFolders uint64 `json:"nFolders"`
+	Items    []CacheItem `json:"items"`
+	NBytes   uint64      `json:"nBytes"`
+	NFiles   uint64      `json:"nFiles"`
+	NFolders uint64      `json:"nFolders"`
+	NItems   uint64      `json:"nItems"`
 	Status   `json:",inline"`
 	Updater  updater.Updater `json:"updater"`
-	Items    []CacheItem     `json:"items"`
-	NItems   uint64          `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -82,9 +82,9 @@ func (s *StatusContainer) ShallowCopy() Containerer {
 		NBytes:   s.NBytes,
 		NFiles:   s.NFiles,
 		NFolders: s.NFolders,
+		NItems:   s.NItems,
 		Status:   s.Status.ShallowCopy(),
 		Updater:  s.Updater,
-		NItems:   s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

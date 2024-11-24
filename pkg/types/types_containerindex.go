@@ -16,9 +16,9 @@ import (
 type IndexContainer struct {
 	Chain      string `json:"chain"`
 	ChunkStats `json:",inline"`
-	Updater    updater.Updater `json:"updater"`
 	Items      []ChunkStats    `json:"items"`
 	NItems     uint64          `json:"nItems"`
+	Updater    updater.Updater `json:"updater"`
 	Sorts      sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -84,8 +84,8 @@ func (s *IndexContainer) ShallowCopy() Containerer {
 	ret := &IndexContainer{
 		Chain:      s.Chain,
 		ChunkStats: s.ChunkStats.ShallowCopy(),
-		Updater:    s.Updater,
 		NItems:     s.NItems,
+		Updater:    s.Updater,
 		// EXISTING_CODE
 		Sorts: s.Sorts,
 		// EXISTING_CODE

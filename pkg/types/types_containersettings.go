@@ -15,9 +15,9 @@ import (
 
 type SettingsContainer struct {
 	Chain   string          `json:"chain"`
-	Updater updater.Updater `json:"updater"`
 	Items   []CacheItem     `json:"items"`
 	NItems  uint64          `json:"nItems"`
+	Updater updater.Updater `json:"updater"`
 	// EXISTING_CODE
 	Status  StatusContainer  `json:"status"`
 	Config  ConfigContainer  `json:"config"`
@@ -81,8 +81,8 @@ func (s *SettingsContainer) NeedsUpdate() bool {
 func (s *SettingsContainer) ShallowCopy() Containerer {
 	ret := &SettingsContainer{
 		Chain:   s.Chain,
-		Updater: s.Updater,
 		NItems:  s.NItems,
+		Updater: s.Updater,
 		// EXISTING_CODE
 		Status:  *s.Status.ShallowCopy().(*StatusContainer),
 		Config:  *s.Config.ShallowCopy().(*ConfigContainer),

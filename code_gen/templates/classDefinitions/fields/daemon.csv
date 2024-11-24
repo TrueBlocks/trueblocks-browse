@@ -2,3 +2,5 @@ name    ,type            ,strDefault ,attributes ,upgrades ,docOrder ,descriptio
 daemon  ,types.Daemon    ,           ,embed      ,         ,         ,jim
 chain   ,string          ,           ,           ,         ,         ,jim
 updater ,updater.Updater ,           ,           ,         ,         ,jim
+items   ,[]types.Nothing ,           ,           ,         ,         ,jim
+nItems  ,uint64          ,           ,           ,         ,         ,jim

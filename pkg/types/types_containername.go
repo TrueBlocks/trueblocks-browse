@@ -22,18 +22,18 @@ var namesChain = "mainnet"
 
 type NameContainer struct {
 	Chain      string          `json:"chain"`
+	Items      []Name          `json:"items"`
 	NContracts uint64          `json:"nContracts"`
 	NCustom    uint64          `json:"nCustom"`
 	NDeleted   uint64          `json:"nDeleted"`
 	NErc20s    uint64          `json:"nErc20s"`
 	NErc721s   uint64          `json:"nErc721s"`
+	NItems     uint64          `json:"nItems"`
 	NPrefund   uint64          `json:"nPrefund"`
 	NRegular   uint64          `json:"nRegular"`
 	NSystem    uint64          `json:"nSystem"`
 	SizeOnDisc uint64          `json:"sizeOnDisc"`
 	Updater    updater.Updater `json:"updater"`
-	Items      []Name          `json:"items"`
-	NItems     uint64          `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -101,12 +101,12 @@ func (s *NameContainer) ShallowCopy() Containerer {
 		NDeleted:   s.NDeleted,
 		NErc20s:    s.NErc20s,
 		NErc721s:   s.NErc721s,
+		NItems:     s.NItems,
 		NPrefund:   s.NPrefund,
 		NRegular:   s.NRegular,
 		NSystem:    s.NSystem,
 		SizeOnDisc: s.SizeOnDisc,
 		Updater:    s.Updater,
-		NItems:     s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

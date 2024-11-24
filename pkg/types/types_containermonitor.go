@@ -17,14 +17,14 @@ import (
 type MonitorContainer struct {
 	Chain    string          `json:"chain"`
 	FileSize uint64          `json:"fileSize"`
+	Items    []Monitor       `json:"items"`
 	NDeleted uint64          `json:"nDeleted"`
 	NEmpty   uint64          `json:"nEmpty"`
+	NItems   uint64          `json:"nItems"`
 	NNamed   uint64          `json:"nNamed"`
 	NRecords uint64          `json:"nRecords"`
 	NStaged  uint64          `json:"nStaged"`
 	Updater  updater.Updater `json:"updater"`
-	Items    []Monitor       `json:"items"`
-	NItems   uint64          `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -87,11 +87,11 @@ func (s *MonitorContainer) ShallowCopy() Containerer {
 		FileSize: s.FileSize,
 		NDeleted: s.NDeleted,
 		NEmpty:   s.NEmpty,
+		NItems:   s.NItems,
 		NNamed:   s.NNamed,
 		NRecords: s.NRecords,
 		NStaged:  s.NStaged,
 		Updater:  s.Updater,
-		NItems:   s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

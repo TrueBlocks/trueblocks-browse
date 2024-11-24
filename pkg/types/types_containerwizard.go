@@ -15,9 +15,9 @@ import (
 
 type WizardContainer struct {
 	Chain   string          `json:"chain"`
-	Updater updater.Updater `json:"updater"`
 	Items   []WizError      `json:"items"`
 	NItems  uint64          `json:"nItems"`
+	Updater updater.Updater `json:"updater"`
 	// EXISTING_CODE
 	State WizState `json:"state"`
 	// EXISTING_CODE
@@ -78,8 +78,8 @@ func (s *WizardContainer) NeedsUpdate() bool {
 func (s *WizardContainer) ShallowCopy() Containerer {
 	ret := &WizardContainer{
 		Chain:   s.Chain,
-		Updater: s.Updater,
 		NItems:  s.NItems,
+		Updater: s.Updater,
 		// EXISTING_CODE
 		State: s.State,
 		// EXISTING_CODE

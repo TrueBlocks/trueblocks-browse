@@ -1,3 +1,5 @@
 name    ,type            ,strDefault ,attributes ,upgrades ,docOrder ,description
 session ,types.Session   ,           ,embed      ,         ,         ,jim
 updater ,updater.Updater ,           ,           ,         ,         ,jim
+items   ,[]types.Nothing ,           ,           ,         ,         ,jim
+nItems  ,uint64          ,           ,           ,         ,         ,jim

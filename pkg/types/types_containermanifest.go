@@ -17,13 +17,13 @@ type ManifestContainer struct {
 	BloomsSize    uint64          `json:"bloomsSize"`
 	Chain         string          `json:"chain"`
 	IndexSize     uint64          `json:"indexSize"`
+	Items         []ChunkRecord   `json:"items"`
 	NBlooms       uint64          `json:"nBlooms"`
 	NIndexes      uint64          `json:"nIndexes"`
+	NItems        uint64          `json:"nItems"`
 	Specification string          `json:"specification"`
 	Updater       updater.Updater `json:"updater"`
 	Version       string          `json:"version"`
-	Items         []ChunkRecord   `json:"items"`
-	NItems        uint64          `json:"nItems"`
 	Sorts         sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -91,10 +91,10 @@ func (s *ManifestContainer) ShallowCopy() Containerer {
 		IndexSize:     s.IndexSize,
 		NBlooms:       s.NBlooms,
 		NIndexes:      s.NIndexes,
+		NItems:        s.NItems,
 		Specification: s.Specification,
 		Updater:       s.Updater,
 		Version:       s.Version,
-		NItems:        s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

@@ -10,3 +10,5 @@ nSystem    ,uint64          ,           ,           ,         ,         ,jim
 sizeOnDisc ,uint64          ,           ,           ,         ,         ,jim
 chain      ,string          ,           ,           ,         ,         ,jim
 updater    ,updater.Updater ,           ,           ,         ,         ,jim
+items      ,[]types.Name    ,           ,           ,         ,         ,jim
+nItems     ,uint64          ,           ,           ,         ,         ,jim

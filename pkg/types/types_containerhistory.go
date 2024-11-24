@@ -19,14 +19,14 @@ type HistoryContainer struct {
 	Address base.Address    `json:"address"`
 	Balance string          `json:"balance"`
 	Chain   string          `json:"chain"`
+	Items   []Transaction   `json:"items"`
 	NErrors uint64          `json:"nErrors"`
+	NItems  uint64          `json:"nItems"`
 	NLogs   uint64          `json:"nLogs"`
 	NTokens uint64          `json:"nTokens"`
 	NTotal  uint64          `json:"nTotal"`
 	Name    string          `json:"name"`
 	Updater updater.Updater `json:"updater"`
-	Items   []Transaction   `json:"items"`
-	NItems  uint64          `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -90,12 +90,12 @@ func (s *HistoryContainer) ShallowCopy() Containerer {
 		Balance: s.Balance,
 		Chain:   s.Chain,
 		NErrors: s.NErrors,
+		NItems:  s.NItems,
 		NLogs:   s.NLogs,
 		NTokens: s.NTokens,
 		NTotal:  s.NTotal,
 		Name:    s.Name,
 		Updater: s.Updater,
-		NItems:  s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

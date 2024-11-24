@@ -3,3 +3,5 @@ config  ,types.Config    ,           ,embed      ,         ,         ,jim
 nChains ,uint64          ,           ,           ,         ,         ,jim
 chain   ,string          ,           ,           ,         ,         ,jim
 updater ,updater.Updater ,           ,           ,         ,         ,jim
+items   ,[]types.Chain   ,           ,           ,         ,         ,jim
+nItems  ,uint64          ,           ,           ,         ,         ,jim

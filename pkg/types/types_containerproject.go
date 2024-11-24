@@ -16,15 +16,15 @@ import (
 type ProjectContainer struct {
 	Chain       string             `json:"chain"`
 	HistorySize uint64             `json:"historySize"`
+	Items       []HistoryContainer `json:"items"`
 	NAbis       uint64             `json:"nAbis"`
 	NCaches     uint64             `json:"nCaches"`
 	NIndexes    uint64             `json:"nIndexes"`
+	NItems      uint64             `json:"nItems"`
 	NManifests  uint64             `json:"nManifests"`
 	NMonitors   uint64             `json:"nMonitors"`
 	NNames      uint64             `json:"nNames"`
 	Updater     updater.Updater    `json:"updater"`
-	Items       []HistoryContainer `json:"items"`
-	NItems      uint64             `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -92,11 +92,11 @@ func (s *ProjectContainer) ShallowCopy() Containerer {
 		NAbis:       s.NAbis,
 		NCaches:     s.NCaches,
 		NIndexes:    s.NIndexes,
+		NItems:      s.NItems,
 		NManifests:  s.NManifests,
 		NMonitors:   s.NMonitors,
 		NNames:      s.NNames,
 		Updater:     s.Updater,
-		NItems:      s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
