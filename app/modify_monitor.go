@@ -1,8 +1,8 @@
 package app
 
 import (
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -26,7 +26,7 @@ func (a *App) ModifyMonitor(modData *ModifyData) error {
 		return err
 	}
 
-	newArray := []coreTypes.Monitor{}
+	newArray := []types.Monitor{}
 	for _, mon := range a.monitors.Items {
 		if mon.Address == modData.Address {
 			switch op {

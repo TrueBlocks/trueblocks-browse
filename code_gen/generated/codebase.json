@@ -137,7 +137,7 @@
             "ui_route": "1020-monitors-3",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.Monitor",
+            "attributes": "itemType=types.Monitor",
             "search": "true",
             "members": [
                 {
