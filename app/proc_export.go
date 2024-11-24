@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
@@ -37,7 +37,7 @@ func (a *App) ExportAddress(address base.Address) {
 		"Input",
 		"TransactionType"))
 
-	exportLine := func(item *coreTypes.Transaction, data any) bool {
+	exportLine := func(item *types.Transaction, data any) bool {
 		lines = append(lines, fmt.Sprintf("%d,%d,%s,%d,%s,%s,%d,%d,%d,%d,%s,%s,%d,%s,%s",
 			item.BlockNumber,
 			item.TransactionIndex,

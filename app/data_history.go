@@ -15,7 +15,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/index"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -40,7 +39,7 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error) error {
 	address := a.GetSelected()
 	history, exists := a.historyCache.Load(address)
 	if !exists {
-		history = types.NewHistoryContainer(a.getChain(), []coreTypes.Transaction{}, address)
+		history = types.NewHistoryContainer(a.getChain(), []types.Transaction{}, address)
 		history.Updater.Reset()
 		a.historyCache.Store(address, history)
 	}
@@ -107,7 +106,7 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) error 
 		for {
 			select {
 			case model := <-opts.RenderCtx.ModelChan:
-				tx, ok := model.(*coreTypes.Transaction)
+				tx, ok := model.(*types.Transaction)
 				if !ok {
 					continue
 				}

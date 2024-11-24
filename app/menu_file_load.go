@@ -6,7 +6,6 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 func (a *App) newFile() {
@@ -14,7 +13,7 @@ func (a *App) newFile() {
 	a.saveSession()
 
 	address := base.HexToAddress("0x3836b0e02b4a613ba1d15834e6d77f409099d8f8")
-	history := types.NewHistoryContainer(a.getChain(), []coreTypes.Transaction{}, address)
+	history := types.NewHistoryContainer(a.getChain(), []types.Transaction{}, address)
 	history.Updater.Reset()
 	history.Balance = a.getBalance(address)
 
@@ -38,7 +37,7 @@ func (a *App) readFile(fn string) (bool, error) {
 		a.historyCache = &types.HistoryMap{}
 		histories := []types.HistoryContainer{}
 		for _, address := range pF.Addresses {
-			history := types.NewHistoryContainer(a.getChain(), []coreTypes.Transaction{}, address)
+			history := types.NewHistoryContainer(a.getChain(), []types.Transaction{}, address)
 			history.Updater.Reset()
 			history.Balance = a.getBalance(address)
 			histories = append(histories, history)

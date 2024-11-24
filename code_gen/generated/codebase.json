@@ -72,7 +72,7 @@
             "ui_route": "1010-history-2",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.Transaction|noSdk",
+            "attributes": "itemType=types.Transaction|noSdk",
             "search": "true",
             "members": [
                 {
