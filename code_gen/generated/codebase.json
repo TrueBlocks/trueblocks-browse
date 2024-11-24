@@ -322,12 +322,12 @@
             "ui_route": "1050-indexes-6",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.ChunkStats",
+            "attributes": "itemType=types.ChunkStats",
             "sorts": "range+Dec",
             "members": [
                 {
                     "name": "chunkStats",
-                    "type": "coreTypes.ChunkStats",
+                    "type": "types.ChunkStats",
                     "attributes": "embed",
                     "description": "jim",
                     "num": 1
