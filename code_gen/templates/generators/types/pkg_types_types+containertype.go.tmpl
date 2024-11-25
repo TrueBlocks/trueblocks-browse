@@ -7,8 +7,8 @@
 {{ $embedType := .EmbedType }}
 {{ $members := .Members }}
 
-{{ $hasEmbed := and (gt (len $embedName) 0) true }}
 {{ $hasSorts := .HasSorts }}
+{{ $hasEmbed := and (gt (len $embedName) 0) true }}
 
 {{ $isHistory := eq $class "History" }}
 {{ $isProject := eq $class "Project" }}

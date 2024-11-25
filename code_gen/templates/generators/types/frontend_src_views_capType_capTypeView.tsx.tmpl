@@ -2,25 +2,21 @@
 {{ $class := .Class }}
 {{ $routeName := .UiRouteName }}
 {{ $routeLower := toLower .UiRouteName }}
-{{ $hasSearch := .HasSearch }}
 
-{{ $isAbi := eq $class "Abi" }}
-{{ $isName := eq $class "Name" }}
-{{ $isMonitor := eq $class "Monitor" }}
 {{ $isProject := eq $class "Project" }}
 {{ $isSettings := eq $class "Settings" }}
 {{ $isHistory := eq $class "History" }}
 {{ $isWizard := eq $class "Wizard" }}
-{{ $isDaemon := eq $class "Daemon" }}
 
-{{ $hasEnter := or (or $isAbi $isName) (or $isProject $isMonitor) }}
-{{ $hasModify := or (or $isAbi $isName) (or $isProject $isMonitor) }}
+{{ $wantsSearch := .Wants "search" }}
+{{ $wantsEnter := .Wants "enter" }}
+{{ $wantsModify := .Wants "modify" }}
 
 {{ $noops := print "const { enterNoop, modifyNoop } = useNoops();" }}
-{{ if or (or $hasEnter $hasModify) $isWizard }}
-  {{ if and $hasEnter $hasModify}}
+{{ if or $wantsEnter $wantsModify }}
+  {{ if and $wantsEnter $wantsModify}}
     {{ $noops = "" }}
-  {{ else if or $hasEnter $isWizard }}
+  {{ else if $wantsEnter }}
     {{ $noops = print "const { modifyNoop } = useNoops();" }}
   {{ else }}
     {{ $noops = print "const { enterNoop } = useNoops();" }}
@@ -28,7 +24,7 @@
 {{ end }}
 
 {{ $param1 := "" }}
-{{ if $hasEnter}}
+{{ if and $wantsEnter (not $isWizard) }}
   {{ $param1 = ", loadAddress" }}
 {{end}}
 
@@ -39,7 +35,6 @@
   {{ $param2 = ", wizard.nItems, stepWizard" }}
 {{ end }}
 
-{{ $dataName := $routeLower }}
 {{ $route := $routeLower }}
 {{ if $isProject }}
   {{ $route = "" }}
@@ -50,18 +45,17 @@
   {{ $handleEnter = `const handleEnter = () => {
   stepWizard(types.WizStep.NEXT);
   };` }} 
-{{ else if $hasEnter }}
+{{ else if $wantsEnter }}
   {{ $handleEnter = print `const handleEnter = (page: Page) => {
-  loadAddress(` $dataName `.items[page.getRecord()].address);
+  loadAddress(` $routeLower `.items[page.getRecord()].address);
   };` }}
 {{ end }}
 
 {{ $handleModify := "const handleModify = modifyNoop;" }}
-{{ if $hasModify }}
+{{ if $wantsModify }}
   {{ $handleModify = print "const handleModify = Modify" $class ";" }}
 {{ end }}
 
-{{ $view := print $routeName "View" }}
 {{ $fetchFn := print "fetch" $routeName }}
 
 {{/*==============================================================*/}}
@@ -72,8 +66,8 @@
 // EXISTING_CODE
 // EXISTING_CODE
 
-export const {{$view}} = () => {
-  const { {{$dataName}}, {{$fetchFn}}{{$param1}}} = useAppState();
+export const {{$routeName}}View = () => {
+  const { {{$routeLower}}, {{$fetchFn}}{{$param1}}} = useAppState();
   {{$noops -}}
   {{$handleEnter -}}
   {{$handleModify}}
@@ -82,15 +76,15 @@ export const {{$view}} = () => {
   // EXISTING_CODE
 
 {{if (not $isSettings)}}  const table = useReactTable({
-    data: {{$dataName}}?.items || [],
+    data: {{$routeLower}}?.items || [],
     columns: {{$routeName}}TableDef,
     getCoreRowModel: getCoreRowModel(),
   });{{end}}
 
 {{if not $isSettings}}  const route = "{{$route}}";
-  const tabs = ["{{$dataName}}"];
+  const tabs = ["{{$routeLower}}"];
   const forms: ViewForm = {
-    {{$dataName}}: <FormTable data={ {{$dataName}} } groups={ {{$routeName}}FormDef(table{{$param2}})} />,
+    {{$routeLower}}: <FormTable data={ {{$routeLower}} } groups={ {{$routeName}}FormDef(table{{$param2}})} />,
   };
 {{end}}
 
@@ -103,8 +97,8 @@ export const {{$view}} = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={ {{$dataName}}.updater} />
-      <View tabs={tabs} forms={forms}{{if $hasSearch}} searchable{{end}} />
+      <DebugState u={ {{$routeLower}}.updater} />
+      <View tabs={tabs} forms={forms}{{if $wantsSearch}} searchable{{end}} />
     </ViewStateProvider>
   );
 };

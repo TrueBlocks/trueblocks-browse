@@ -7,12 +7,13 @@ package app
 
 {{range .Structures -}}
 	{{/*==============================================================*/}}
+	{{ $class := .Class }}
 	{{ $routeName := .UiRouteName }}
 	{{ $routeLower := toLower .UiRouteName }}
 
-	{{ $isHistory := eq .Class "History" }}
-	{{ $isProject := eq .Class "Project" }}
-	{{ $isWizard := eq .Class "Wizard" }}
+	{{ $isHistory := eq $class "History" }}
+	{{ $isProject := eq $class "Project" }}
+	{{ $isWizard := eq $class "Wizard" }}
 
 	{{ $param1 := print "\"/" $routeLower "\"" }}
 	{{ if $isProject }}

@@ -7,8 +7,7 @@
             "ui_route": "0000-project-1",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "noSdk",
-            "search": "true",
+            "attributes": "wantsSearch|wantsEnter|wantsModify|noSdk",
             "members": [
                 {
                     "name": "nMonitors",
@@ -85,8 +84,7 @@
             "ui_route": "1010-history-2",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "noSdk",
-            "search": "true",
+            "attributes": "wantsSearch|noSdk",
             "members": [
                 {
                     "name": "address",
@@ -163,7 +161,7 @@
             "ui_route": "1020-monitors-3",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "search": "true",
+            "attributes": "wantsSearch|wantsEnter|wantsModify",
             "members": [
                 {
                     "name": "nNamed",
@@ -234,7 +232,7 @@
             "ui_route": "1030-names-4",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "search": "true",
+            "attributes": "wantsSearch|wantsEnter|wantsModify",
             "members": [
                 {
                     "name": "nContracts",
@@ -323,8 +321,8 @@
             "ui_route": "1040-abis-5",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "attributes": "wantsSearch|wantsEnter|wantsModify",
             "sorts": "isEmpty+Asc,isKnown+Asc,address+Asc",
-            "search": "true",
             "members": [
                 {
                     "name": "abi",
@@ -716,7 +714,7 @@
             "ui_route": "1120-wizard-w",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "noSdk",
+            "attributes": "noSdk|wantsEnter",
             "members": [
                 {
                     "name": "chain",
