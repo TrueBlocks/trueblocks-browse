@@ -10,7 +10,6 @@ import { useAppState } from "@state";
 
 export const WizardFormDef = (
   table: Table<types.WizError>,
-  nItems: number,
   stepWizard: (step: types.WizStep) => void
 ): FieldGroup<types.WizardContainer>[] => {
   // EXISTING_CODE
@@ -34,7 +33,7 @@ export const WizardFormDef = (
         <WizHomeButton key="home" state={wizard.state} onClick={stepWizard} />,
         <WizPrevButton key="prev" state={wizard.state} onClick={stepWizard} />,
         <WizNextButton key="next" state={wizard.state} onClick={stepWizard} />,
-        <WizFiniButton key="fini" state={wizard.state} disabled={nItems > 0} onClick={stepWizard} />,
+        <WizFiniButton key="fini" state={wizard.state} disabled={wizard.nItems > 0} onClick={stepWizard} />,
       ],
     },
     {

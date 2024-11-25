@@ -2,10 +2,9 @@
 // of ExistingCode markers (if any).
 
 // EXISTING_CODE
-import { useMemo } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, ViewForm, DebugState, UnderConstruction } from "@components";
-import { useNoops, useUtils } from "@hooks";
+import { View, FormTable, ViewForm, DebugState } from "@components";
+import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { HistoryTableDef, HistoryFormDef } from ".";
 // EXISTING_CODE
@@ -17,12 +16,6 @@ export const HistoryView = () => {
   const handleModify = modifyNoop;
 
   // EXISTING_CODE
-  const { info } = useAppState();
-  const { ShortenAddr } = useUtils();
-  const addrStr = useMemo(
-    () => (info?.address ? ShortenAddr(info.address.toString()) : ""),
-    [ShortenAddr, info?.address]
-  );
   // EXISTING_CODE
 
   const table = useReactTable({
@@ -34,7 +27,7 @@ export const HistoryView = () => {
   const route = "history";
   const tabs = ["history"];
   const forms: ViewForm = {
-    history: <FormTable data={history} groups={HistoryFormDef(table, info.address)} />,
+    history: <FormTable data={history} groups={HistoryFormDef(table)} />,
   };
 
   return (

@@ -36,7 +36,7 @@ export const WizardView = () => {
   const route = "wizard";
   const tabs = ["wizard"];
   const forms: ViewForm = {
-    wizard: <FormTable data={wizard} groups={WizardFormDef(table, wizard.nItems, stepWizard)} />,
+    wizard: <FormTable data={wizard} groups={WizardFormDef(table, stepWizard)} />,
   };
 
   return (

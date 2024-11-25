@@ -4,19 +4,13 @@
 {{ $fullType := .ItemFullType }}
 {{ $embedType := .EmbedType }}
 
-{{ $isHistory := eq $class "History" }}
 {{ $isWizard := eq $class "Wizard" }}
-{{ $isProject := eq $class "Project" }}
 
 {{ $formDef := print $routeName "FormDef" }}
 
 {{ $param2 := "" }}
-{{ if $isHistory }}
+{{ if $isWizard }}
   {{ $param2 = `,
-    address: base.Address,` }}
-{{ else if $isWizard }}
-  {{ $param2 = `,
-    nItems: number,
     stepWizard: (step: types.WizStep) => void` }}
 {{ end }}
 
