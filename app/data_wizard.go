@@ -4,11 +4,15 @@ package app
 
 // EXISTING_CODE
 import (
+	"fmt"
 	"sync"
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -40,17 +44,45 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating needed for wizard...")
 
+	opts := WizardOptions{
+		Globals: a.getGlobals(true /* verbose */),
+	}
 	// EXISTING_CODE
 	_ = errorChan
 	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	a.emitLoadingMsg(messages.Loaded, "wizard")
+	if wizard, meta, err := opts.WizardList(); err != nil {
+		if errorChan != nil {
+			errorChan <- err
+		}
+		return err
+	} else if (wizard == nil) || (len(wizard) == 0) {
+		err = fmt.Errorf("no wizard found")
+		if errorChan != nil {
+			errorChan <- err
+		}
+		return err
+	} else {
+		// EXISTING_CODE
+		// EXISTING_CODE
+		a.meta = *meta
+		a.wizard = types.NewWizardContainer(opts.Chain, wizard)
+		// EXISTING_CODE
+		// EXISTING_CODE
+		a.emitLoadingMsg(messages.Loaded, "wizard")
+	}
 
 	return nil
 }
 
 // EXISTING_CODE
+type WizardOptions struct {
+	Globals sdk.Globals
+	Chain   string
+}
+
+func (opts *WizardOptions) WizardList() ([]types.WizError, *coreTypes.MetaData, error) {
+	meta, err := sdk.GetMetaData(namesChain)
+	return []types.WizError{}, meta, err
+}
+
 // EXISTING_CODE

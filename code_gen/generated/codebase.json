@@ -702,7 +702,7 @@
             "ui_route": "1120-wizard-w",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "noSdk|wantsEnter",
+            "attributes": "wantsEnter",
             "members": [
                 {
                     "name": "chain",

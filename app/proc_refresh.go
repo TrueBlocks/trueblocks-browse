@@ -40,7 +40,7 @@ func (a *App) Freshen() error {
 	_ = a.loadNames(nil, errorChan)
 
 	// The rest of the data is independant of each other and may be loaded in parallel
-	wg.Add(11)
+	wg.Add(12)
 	go a.loadProject(&wg, errorChan)
 	go a.loadHistory(&wg, errorChan)
 	go a.loadMonitors(&wg, errorChan)
@@ -51,7 +51,7 @@ func (a *App) Freshen() error {
 	go a.loadSession(&wg, errorChan)
 	go a.loadConfig(&wg, errorChan)
 	go a.loadDaemons(&wg, errorChan)
-	// go a.loadWizard(&wg, errorChan)
+	go a.loadWizard(&wg, errorChan)
 	go a.loadSettings(&wg, errorChan)
 
 	go func() {
