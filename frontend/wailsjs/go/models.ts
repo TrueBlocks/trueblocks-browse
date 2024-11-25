@@ -450,6 +450,14 @@ export namespace sdk {
 
 export namespace types {
 	
+	export enum WizState {
+	    WELCOME = "welcome",
+	    CONFIG = "config",
+	    RPC = "rpc",
+	    BLOOMS = "blooms",
+	    INDEX = "index",
+	    FINISHED = "finished",
+	}
 	export enum WizStep {
 	    FIRST = "First",
 	    PREVIOUS = "Previous",
@@ -460,14 +468,6 @@ export namespace types {
 	    STOPPED = "Stopped",
 	    RUNNING = "Running",
 	    PAUSED = "Paused",
-	}
-	export enum WizState {
-	    WELCOME = "welcome",
-	    CONFIG = "config",
-	    RPC = "rpc",
-	    BLOOMS = "blooms",
-	    INDEX = "index",
-	    FINISHED = "finished",
 	}
 	export class Parameter {
 	    components?: Parameter[];
