@@ -19,6 +19,11 @@ func (a *App) Reload() {
 		if err := a.loadMonitors(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
+	case "/config":
+		a.config.Updater.Reset()
+		if err := a.loadConfig(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 	default:
 		address := a.GetSelected()
 		history, _ := a.historyCache.Load(address)
