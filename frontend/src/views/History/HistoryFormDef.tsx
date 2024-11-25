@@ -10,6 +10,8 @@ export const HistoryFormDef = (
   table: Table<types.Transaction>,
   address: base.Address
 ): FieldGroup<types.HistoryContainer>[] => {
+  // EXISTING_CODE
+  // EXISTING_CODE
   return [
     // EXISTING_CODE
     {

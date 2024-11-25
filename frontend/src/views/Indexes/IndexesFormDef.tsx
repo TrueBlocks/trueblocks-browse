@@ -7,6 +7,8 @@ import { types } from "@gocode/models";
 // EXISTING_CODE
 
 export const IndexesFormDef = (table: Table<types.ChunkStats>): FieldGroup<types.IndexContainer>[] => {
+  // EXISTING_CODE
+  // EXISTING_CODE
   return [
     // EXISTING_CODE
     {

@@ -8,7 +8,9 @@ import { useAppState } from "@state";
 // EXISTING_CODE
 
 export const ProjectFormDef = (table: Table<types.HistoryContainer>): FieldGroup<types.ProjectContainer>[] => {
+  // EXISTING_CODE
   const { info } = useAppState();
+  // EXISTING_CODE
   return [
     // EXISTING_CODE
     {

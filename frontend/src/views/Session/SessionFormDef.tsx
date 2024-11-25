@@ -8,6 +8,8 @@ import { useAppState } from "@state";
 // EXISTING_CODE
 
 export const SessionFormDef = (table: Table<types.Nothing>): FieldGroup<types.SessionContainer>[] => {
+  // EXISTING_CODE
+  // EXISTING_CODE
   return [
     // EXISTING_CODE
     {

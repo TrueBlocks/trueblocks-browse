@@ -7,6 +7,8 @@ import { types } from "@gocode/models";
 // EXISTING_CODE
 
 export const StatusFormDef = (table: Table<types.CacheItem>): FieldGroup<types.StatusContainer>[] => {
+  // EXISTING_CODE
+  // EXISTING_CODE
   return [
     // EXISTING_CODE
     {
