@@ -29,19 +29,22 @@ type AbiContainer struct {
 	// EXISTING_CODE
 }
 
-func NewAbiContainer(chain string, itemsIn []Abi, abi *Abi) AbiContainer {
+func NewAbiContainer(chain string, abis []Abi) AbiContainer {
+	// EXISTING_CODE
+	itemsIn := abis
+	// EXISTING_CODE
 	ret := AbiContainer{
 		Items:  itemsIn,
 		NItems: uint64(len(itemsIn)),
-		Abi:    *abi,
+		Abi:    abis[0].ShallowCopy(),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"isEmpty", "isKnown", "address"},
 			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},
 		},
-		Chain:   chain,
 		Updater: NewAbiUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }

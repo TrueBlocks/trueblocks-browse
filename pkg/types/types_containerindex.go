@@ -24,19 +24,22 @@ type IndexContainer struct {
 	// EXISTING_CODE
 }
 
-func NewIndexContainer(chain string, itemsIn []ChunkStats, chunkstats *ChunkStats) IndexContainer {
+func NewIndexContainer(chain string, chunkstats []ChunkStats) IndexContainer {
+	// EXISTING_CODE
+	itemsIn := chunkstats
+	// EXISTING_CODE
 	ret := IndexContainer{
 		Items:      itemsIn,
 		NItems:     uint64(len(itemsIn)),
-		ChunkStats: *chunkstats,
+		ChunkStats: chunkstats[0].ShallowCopy(),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"range"},
 			Order:  []sdk.SortOrder{sdk.Dec},
 		},
-		Chain:   chain,
 		Updater: NewIndexUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }

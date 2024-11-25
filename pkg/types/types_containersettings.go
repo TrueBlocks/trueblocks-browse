@@ -26,13 +26,15 @@ type SettingsContainer struct {
 }
 
 func NewSettingsContainer(chain string, itemsIn []CacheItem) SettingsContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	ret := SettingsContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Chain:   chain,
 		Updater: NewSettingsUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }

@@ -427,65 +427,54 @@
             "sorts": "range+Dec",
             "members": [
                 {
-                    "name": "nBlooms",
-                    "type": "uint64",
+                    "name": "manifest",
+                    "type": "types.Manifest",
+                    "attributes": "embed",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "bloomsSize",
+                    "name": "nBlooms",
                     "type": "uint64",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "nIndexes",
+                    "name": "bloomsSize",
                     "type": "uint64",
                     "description": "jim",
                     "num": 3
                 },
                 {
-                    "name": "indexSize",
+                    "name": "nIndexes",
                     "type": "uint64",
                     "description": "jim",
                     "num": 4
                 },
                 {
-                    "name": "specification",
-                    "type": "string",
+                    "name": "indexSize",
+                    "type": "uint64",
                     "description": "jim",
                     "num": 5
-                },
-                {
-                    "name": "version",
-                    "type": "string",
-                    "description": "jim",
-                    "num": 6
-                },
-                {
-                    "name": "chain",
-                    "type": "string",
-                    "description": "jim",
-                    "num": 7
                 },
                 {
                     "name": "updater",
                     "type": "updater.Updater",
                     "description": "jim",
-                    "num": 8
+                    "num": 6
                 },
                 {
                     "name": "items",
                     "type": "types.ChunkRecord",
                     "description": "jim",
-                    "num": 9,
+                    "num": 7,
                     "isArray": true
                 },
                 {
                     "name": "nItems",
                     "type": "uint64",
                     "description": "jim",
-                    "num": 10
+                    "num": 8
                 }
             ]
         },

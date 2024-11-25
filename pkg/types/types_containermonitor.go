@@ -30,13 +30,15 @@ type MonitorContainer struct {
 }
 
 func NewMonitorContainer(chain string, itemsIn []Monitor) MonitorContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	ret := MonitorContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Chain:   chain,
 		Updater: NewMonitorUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }

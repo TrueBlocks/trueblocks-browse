@@ -14,33 +14,37 @@ import (
 // EXISTING_CODE
 
 type ManifestContainer struct {
-	BloomsSize    uint64          `json:"bloomsSize"`
-	Chain         string          `json:"chain"`
-	IndexSize     uint64          `json:"indexSize"`
-	Items         []ChunkRecord   `json:"items"`
-	NBlooms       uint64          `json:"nBlooms"`
-	NIndexes      uint64          `json:"nIndexes"`
-	NItems        uint64          `json:"nItems"`
-	Specification string          `json:"specification"`
-	Updater       updater.Updater `json:"updater"`
-	Version       string          `json:"version"`
-	Sorts         sdk.SortSpec    `json:"sorts"`
+	BloomsSize uint64        `json:"bloomsSize"`
+	IndexSize  uint64        `json:"indexSize"`
+	Items      []ChunkRecord `json:"items"`
+	Manifest   `json:",inline"`
+	NBlooms    uint64          `json:"nBlooms"`
+	NIndexes   uint64          `json:"nIndexes"`
+	NItems     uint64          `json:"nItems"`
+	Updater    updater.Updater `json:"updater"`
+	Sorts      sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewManifestContainer(chain string, itemsIn []ChunkRecord) ManifestContainer {
+func NewManifestContainer(chain string, manifests []Manifest) ManifestContainer {
+	// EXISTING_CODE
+	itemsIn := manifests[0].Chunks
+	// EXISTING_CODE
 	ret := ManifestContainer{
-		Items:  itemsIn,
-		NItems: uint64(len(itemsIn)),
+		Items:    itemsIn,
+		NItems:   uint64(len(itemsIn)),
+		Manifest: manifests[0].ShallowCopy(),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"range"},
 			Order:  []sdk.SortOrder{sdk.Dec},
 		},
-		Chain:   chain,
 		Updater: NewManifestUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
+	ret.Specification = manifests[0].Specification
+	ret.Version = manifests[0].Version
 	// EXISTING_CODE
 	return ret
 }
@@ -86,15 +90,13 @@ func (s *ManifestContainer) NeedsUpdate() bool {
 
 func (s *ManifestContainer) ShallowCopy() Containerer {
 	ret := &ManifestContainer{
-		BloomsSize:    s.BloomsSize,
-		Chain:         s.Chain,
-		IndexSize:     s.IndexSize,
-		NBlooms:       s.NBlooms,
-		NIndexes:      s.NIndexes,
-		NItems:        s.NItems,
-		Specification: s.Specification,
-		Updater:       s.Updater,
-		Version:       s.Version,
+		BloomsSize: s.BloomsSize,
+		IndexSize:  s.IndexSize,
+		Manifest:   s.Manifest.ShallowCopy(),
+		NBlooms:    s.NBlooms,
+		NIndexes:   s.NIndexes,
+		NItems:     s.NItems,
+		Updater:    s.Updater,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

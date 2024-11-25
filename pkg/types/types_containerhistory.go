@@ -32,14 +32,16 @@ type HistoryContainer struct {
 }
 
 func NewHistoryContainer(chain string, itemsIn []Transaction, address base.Address) HistoryContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	ret := HistoryContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Chain:   chain,
-		Address: address,
 		Updater: NewHistoryUpdater(chain, address),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
+	ret.Address = address
 	// EXISTING_CODE
 	return ret
 }

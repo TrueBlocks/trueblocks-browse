@@ -65,7 +65,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.abis = types.NewAbiContainer(opts.Chain, abis, &abis[0])
+		a.abis = types.NewAbiContainer(opts.Chain, abis)
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := sdk.SortAbis(a.abis.Items, a.abis.Sorts); err != nil {

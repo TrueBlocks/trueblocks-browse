@@ -1751,15 +1751,16 @@ export namespace types {
 	
 	export class ManifestContainer {
 	    bloomsSize: number;
-	    chain: string;
 	    indexSize: number;
 	    items: ChunkRecord[];
+	    chain: string;
+	    chunks: ChunkRecord[];
+	    specification: string;
+	    version: string;
 	    nBlooms: number;
 	    nIndexes: number;
 	    nItems: number;
-	    specification: string;
 	    updater: updater.Updater;
-	    version: string;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -1769,15 +1770,16 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.bloomsSize = source["bloomsSize"];
-	        this.chain = source["chain"];
 	        this.indexSize = source["indexSize"];
 	        this.items = this.convertValues(source["items"], ChunkRecord);
+	        this.chain = source["chain"];
+	        this.chunks = this.convertValues(source["chunks"], ChunkRecord);
+	        this.specification = source["specification"];
+	        this.version = source["version"];
 	        this.nBlooms = source["nBlooms"];
 	        this.nIndexes = source["nIndexes"];
 	        this.nItems = source["nItems"];
-	        this.specification = source["specification"];
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
-	        this.version = source["version"];
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	

@@ -22,15 +22,18 @@ type SessionContainer struct {
 	// EXISTING_CODE
 }
 
-func NewSessionContainer(chain string, itemsIn []Nothing, session *Session) SessionContainer {
+func NewSessionContainer(chain string, sessions []Session) SessionContainer {
+	// EXISTING_CODE
+	itemsIn := []Nothing{}
+	// EXISTING_CODE
 	ret := SessionContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Session: *session,
-		Chain:   chain,
+		Session: sessions[0].ShallowCopy(),
 		Updater: NewSessionUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }

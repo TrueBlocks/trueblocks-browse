@@ -24,13 +24,15 @@ type WizardContainer struct {
 }
 
 func NewWizardContainer(chain string, itemsIn []WizError) WizardContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	ret := WizardContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Chain:   chain,
 		Updater: NewWizardUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	ret.State = WizWelcome
 	// EXISTING_CODE
 	return ret

@@ -30,13 +30,15 @@ type ProjectContainer struct {
 }
 
 func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	ret := ProjectContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Chain:   chain,
 		Updater: NewProjectUpdater(chain, itemsIn),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }

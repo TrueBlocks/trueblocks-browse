@@ -24,16 +24,17 @@ type StatusContainer struct {
 	// EXISTING_CODE
 }
 
-func NewStatusContainer(chain string, itemsIn []CacheItem, status *Status) StatusContainer {
+func NewStatusContainer(chain string, status []Status) StatusContainer {
+	// EXISTING_CODE
+	itemsIn := status[0].Caches
+	// EXISTING_CODE
 	ret := StatusContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Status:  *status,
+		Status:  status[0].ShallowCopy(),
 		Updater: NewStatusUpdater(chain),
 	}
 	// EXISTING_CODE
-	ret.Items = status.Caches
-	ret.NItems = uint64(len(ret.Items))
 	// EXISTING_CODE
 	return ret
 }

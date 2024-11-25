@@ -25,15 +25,18 @@ type DaemonContainer struct {
 	// EXISTING_CODE
 }
 
-func NewDaemonContainer(chain string, itemsIn []Nothing, daemon *Daemon) DaemonContainer {
+func NewDaemonContainer(chain string, daemons []Daemon) DaemonContainer {
+	// EXISTING_CODE
+	itemsIn := []Nothing{}
+	// EXISTING_CODE
 	ret := DaemonContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Daemon:  *daemon,
-		Chain:   chain,
+		Daemon:  daemons[0].ShallowCopy(),
 		Updater: NewDaemonUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }

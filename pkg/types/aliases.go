@@ -15,3 +15,4 @@ type CacheItem = coreTypes.CacheItem
 type Chain = coreTypes.Chain
 type Status = coreTypes.Status
 type Config = configTypes.Config
+type Manifest = coreTypes.Manifest

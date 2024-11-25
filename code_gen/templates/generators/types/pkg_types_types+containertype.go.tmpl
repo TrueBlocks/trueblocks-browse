@@ -21,7 +21,7 @@
 
 {{ $embed2 := "//-- remove line --" }}
 {{ if $hasEmbed }}
-	{{ $embed2 = print "  " $embedType ": *" (toLower $embedName) "," }}
+	{{ $embed2 = print "  " $embedType ": " (toPlural (toLower $embedName)) "[0].ShallowCopy()," }}
 {{ end }}
 
 {{ $sorts1 := "//-- remove line --" }}
@@ -34,36 +34,26 @@
 	{{ $sorts2 = print "  Sorts: " .SortsInstance }}
 {{ end }}
 
-{{ $param2 := "" }}
+{{ $param1 := print "itemsIn []" $itemType }}
 {{ if $hasEmbed }}
-	{{ $param2 = print ", " (toLower $embedName) " *" $embedType }}
+	{{ $param1 = print (toPlural (toLower $embedName)) " []" $embedType }}
 {{ end }}
 
-{{ $param5 := "" }}
-{{ if $isProject }}
-	{{ $param5 = ", itemsIn []HistoryContainer" }}
+{{ $param2 := "" }}
+{{ if $isHistory }}
+	{{ $param2 = ", address base.Address" }}
 {{ end }}
 
 {{ $param3 := "" }}
 {{ if $isHistory }}
-	{{ $param3 = ", address base.Address" }}
+	{{ $param3 = ", address" }}
+{{ else if $isProject }}
+	{{ $param3 = ", itemsIn" }}
 {{ end }}
 
 {{ $param4 := "" }}
-{{ if $isHistory }}
-	{{ $param4 = ", address" }}
-{{ else if $isProject }}
-	{{ $param4 = ", itemsIn" }}
-{{ end }}
-
-{{ $init2 := "//-- remove line --" }}
-{{ if $isHistory }}
-	{{ $init2 = print `	Chain:   chain,
-						Address: address,` }}
-{{ else }}
-	{{ if not $isStatus }}
-		{{ $init2 = print `	Chain:   chain,` }}
-	{{ end }}
+{{ if $isProject }}
+	{{ $param4 = ", itemsIn []HistoryContainer" }}
 {{ end }}
 
 {{/*==============================================================*/}}
@@ -88,21 +78,22 @@ type {{$class}}Container struct {
 	// EXISTING_CODE
 }
 
-func New{{$class}}Container(chain string, itemsIn []{{$itemType}}{{$param2}}{{$param3}}) {{$class}}Container {
+func New{{$class}}Container(chain string, {{$param1}}{{$param2}}) {{$class}}Container {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	ret := {{$class}}Container{
 		Items: itemsIn,
 		NItems: uint64(len(itemsIn)),
 		{{$embed2}}
 		{{$sorts2}}
-		{{$init2}}
-		Updater: New{{$class}}Updater(chain{{$param4}}),
+		Updater: New{{$class}}Updater(chain{{$param3}}),
  	}
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
 }
 
-func New{{$class}}Updater(chain string{{$param3}}{{$param5}}, resetIn ...bool) updater.Updater {
+func New{{$class}}Updater(chain string{{$param2}}{{$param4}}, resetIn ...bool) updater.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]

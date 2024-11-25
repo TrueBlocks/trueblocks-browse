@@ -29,15 +29,32 @@ type ConfigContainer struct {
 	// EXISTING_CODE
 }
 
-func NewConfigContainer(chain string, itemsIn []Chain, config *Config) ConfigContainer {
+func NewConfigContainer(chain string, configs []Config) ConfigContainer {
+	// EXISTING_CODE
+	itemsIn := []Chain{}
+	for _, chain := range configs[0].Chains {
+		chOut := func(chIn configTypes.ChainGroup) Chain {
+			return Chain{
+				Chain:          chIn.Chain,
+				ChainId:        base.MustParseUint64(chIn.ChainId),
+				IpfsGateway:    chIn.IpfsGateway,
+				LocalExplorer:  chIn.LocalExplorer,
+				RemoteExplorer: chIn.RemoteExplorer,
+				RpcProvider:    chIn.RpcProvider,
+				Symbol:         chIn.Symbol,
+			}
+		}(chain)
+		itemsIn = append(itemsIn, chOut)
+	}
+	// EXISTING_CODE
 	ret := ConfigContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Config:  *config,
-		Chain:   chain,
+		Config:  configs[0].ShallowCopy(),
 		Updater: NewConfigUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }

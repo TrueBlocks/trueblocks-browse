@@ -39,10 +39,11 @@ type NameContainer struct {
 }
 
 func NewNameContainer(chain string, itemsIn []Name) NameContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	ret := NameContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Chain:   chain,
 		Updater: NewNameUpdater(chain),
 	}
 	// EXISTING_CODE

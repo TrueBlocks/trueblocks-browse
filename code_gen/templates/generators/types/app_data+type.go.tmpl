@@ -9,7 +9,6 @@
 {{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
 
 {{ $isStatus := eq $class "Status" }}
-{{ $isManifest := eq $class "Manifest" }}
 {{ $isHistory := eq $class "History" }}
 {{ $isSession := eq $class "Session" }}
 
@@ -18,10 +17,8 @@
 	{{ $appData = $routeLower }}
 {{ end }}
 
-{{ $newOpt := $routeLower }}
 {{ $optionsName := print "sdk." $routeName "Options" }}
 {{ if $isSession }}
-	{{ $newOpt = "[]types.Nothing{}" }}
 	{{ $optionsName = print $routeName "Options" }}
 {{ end }}
 
@@ -91,11 +88,7 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 		// EXISTING_CODE
 {{if $needsSdk -}}
 		a.meta = *meta
-		{{$appData}} = types.New{{$class}}Container(opts.Chain, {{$newOpt}}{{if $isStatus}}[0].Caches{{end}}{{if $isManifest}}[0].Chunks{{end}}
-	{{- if $hasEmbed -}}
-		, &{{$routeLower}}[0]
-	{{- end -}}
-)
+		{{$appData}} = types.New{{$class}}Container(opts.Chain, {{$routeLower}})
 {{end -}}
 		// EXISTING_CODE
 		// EXISTING_CODE
