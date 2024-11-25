@@ -5,13 +5,10 @@ import { Button } from "@mantine/core";
 import { Table } from "@tanstack/react-table";
 import { DataTable, FieldGroup } from "@components";
 import { types } from "@gocode/models";
-import { useAppState } from "@state";
+import { useAppState, useViewState } from "@state";
 // EXISTING_CODE
 
-export const WizardFormDef = (
-  table: Table<types.WizError>,
-  stepWizard: (step: types.WizStep) => void
-): FieldGroup<types.WizardContainer>[] => {
+export const WizardFormDef = (table: Table<types.WizError>): FieldGroup<types.WizardContainer>[] => {
   // EXISTING_CODE
   const { wizard } = useAppState();
   // EXISTING_CODE
@@ -30,10 +27,10 @@ export const WizardFormDef = (
     {
       label: "Buttons",
       buttons: [
-        <WizHomeButton key="home" state={wizard.state} onClick={stepWizard} />,
-        <WizPrevButton key="prev" state={wizard.state} onClick={stepWizard} />,
-        <WizNextButton key="next" state={wizard.state} onClick={stepWizard} />,
-        <WizFiniButton key="fini" state={wizard.state} disabled={wizard.nItems > 0} onClick={stepWizard} />,
+        <WizHomeButton key="home" state={wizard.state} />,
+        <WizPrevButton key="prev" state={wizard.state} />,
+        <WizNextButton key="next" state={wizard.state} />,
+        <WizFiniButton key="fini" state={wizard.state} disabled={wizard.nItems > 0} />,
       ],
     },
     {
@@ -49,39 +46,42 @@ export const WizardFormDef = (
 type StepProps = {
   state: types.WizState;
   disabled?: boolean;
-  onClick: (step: types.WizStep) => void;
 };
 
-export const WizHomeButton = ({ state, onClick, disabled = false }: StepProps) => {
+export const WizHomeButton = ({ state, disabled = false }: StepProps) => {
+  const { clickFn } = useViewState();
   disabled = state === types.WizState.WELCOME || disabled;
   return (
-    <Button disabled={disabled} size={"xs"} onClick={() => onClick(types.WizStep.FIRST)}>
+    <Button disabled={disabled} size={"xs"} onClick={() => clickFn && clickFn(types.WizStep.FIRST)}>
       First
     </Button>
   );
 };
 
-export const WizPrevButton = ({ state, onClick, disabled = false }: StepProps) => {
+export const WizPrevButton = ({ state, disabled = false }: StepProps) => {
+  const { clickFn } = useViewState();
   disabled = state === types.WizState.WELCOME || disabled;
   return (
-    <Button disabled={disabled} size={"xs"} onClick={() => onClick(types.WizStep.PREVIOUS)}>
+    <Button disabled={disabled} size={"xs"} onClick={() => clickFn && clickFn(types.WizStep.PREVIOUS)}>
       Back
     </Button>
   );
 };
 
-export const WizNextButton = ({ state, onClick, disabled = false }: StepProps) => {
+export const WizNextButton = ({ state, disabled = false }: StepProps) => {
+  const { clickFn } = useViewState();
   disabled = state === types.WizState.INDEX || disabled;
   return (
-    <Button disabled={disabled} size={"xs"} onClick={() => onClick(types.WizStep.NEXT)}>
+    <Button disabled={disabled} size={"xs"} onClick={() => clickFn && clickFn(types.WizStep.NEXT)}>
       Next
     </Button>
   );
 };
 
-export const WizFiniButton = ({ onClick, disabled = false }: StepProps) => {
+export const WizFiniButton = ({ disabled = false }: StepProps) => {
+  const { clickFn } = useViewState();
   return (
-    <Button disabled={disabled} size={"xs"} onClick={() => onClick(types.WizStep.FINISH)}>
+    <Button disabled={disabled} size={"xs"} onClick={() => clickFn && clickFn(types.WizStep.FINISH)}>
       Finish
     </Button>
   );

@@ -20,8 +20,8 @@ export const WizardView = () => {
   const handleModify = modifyNoop;
 
   // EXISTING_CODE
-  const stepWizard = (step: types.WizStep) => {
-    StepWizard(step).then(() => {
+  const stepWizard = (step: string) => {
+    StepWizard(step as types.WizStep).then(() => {
       fetchWizard(0, 100);
     });
   };
@@ -36,7 +36,7 @@ export const WizardView = () => {
   const route = "wizard";
   const tabs = ["wizard"];
   const forms: ViewForm = {
-    wizard: <FormTable data={wizard} groups={WizardFormDef(table, stepWizard)} />,
+    wizard: <FormTable data={wizard} groups={WizardFormDef(table)} />,
   };
 
   return (
@@ -47,6 +47,7 @@ export const WizardView = () => {
       fetchFn={fetchWizard}
       onEnter={handleEnter}
       modifyFn={handleModify}
+      clickFn={stepWizard}
     >
       <DebugState u={wizard.updater} />
       <View tabs={tabs} forms={forms} />

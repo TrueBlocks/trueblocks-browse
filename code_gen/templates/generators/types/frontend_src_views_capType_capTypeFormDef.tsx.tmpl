@@ -1,25 +1,19 @@
+{{/*==============================================================*/}}
 {{ $class := .Class }}
 {{ $routeName := .UiRouteName }}
 {{ $routeLower := toLower .UiRouteName }}
 {{ $fullType := .ItemFullType }}
 {{ $embedType := .EmbedType }}
-
-{{ $isWizard := eq $class "Wizard" }}
-
 {{ $formDef := print $routeName "FormDef" }}
 
-{{ $param2 := "" }}
-{{ if $isWizard }}
-  {{ $param2 = `,
-    stepWizard: (step: types.WizStep) => void` }}
-{{ end }}
+{{/*==============================================================*/}}
 
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 // EXISTING_CODE
 // EXISTING_CODE
 
-export const {{$formDef}} = (table: Table<{{$fullType}}>{{$param2}}): FieldGroup<types.{{$class}}Container>[] => {
+export const {{$formDef}} = (table: Table<{{$fullType}}>): FieldGroup<types.{{$class}}Container>[] => {
   // EXISTING_CODE
   // EXISTING_CODE
   return [

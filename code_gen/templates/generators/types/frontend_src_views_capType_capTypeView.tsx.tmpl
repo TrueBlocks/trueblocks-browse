@@ -27,25 +27,25 @@
   {{ $param1 = ", loadAddress" }}
 {{end}}
 
-{{ $param2 := "" }}
-{{ if $isWizard }}
-  {{ $param2 = ", stepWizard" }}
-{{ end }}
-
 {{ $route := $routeLower }}
 {{ if $isProject }}
   {{ $route = "" }}
 {{ end }}
 
 {{ $handleEnter := `const handleEnter = enterNoop;` }}
+{{ if $wantsEnter }}
+  {{ $handleEnter = print `const handleEnter = (page: Page) => {
+  loadAddress(` $routeLower `.items[page.getRecord()].address);
+  };` }}
+{{ end }}
+
+{{ $clickFn := "" }}
 {{ if $isWizard }}
   {{ $handleEnter = `const handleEnter = () => {
   stepWizard(types.WizStep.NEXT);
   };` }} 
-{{ else if $wantsEnter }}
-  {{ $handleEnter = print `const handleEnter = (page: Page) => {
-  loadAddress(` $routeLower `.items[page.getRecord()].address);
-  };` }}
+  {{ $clickFn = `
+  clickFn={stepWizard}` }}
 {{ end }}
 
 {{ $handleModify := "const handleModify = modifyNoop;" }}
@@ -81,7 +81,7 @@ export const {{$routeName}}View = () => {
 {{if not $isSettings}}  const route = "{{$route}}";
   const tabs = ["{{$routeLower}}"];
   const forms: ViewForm = {
-    {{$routeLower}}: <FormTable data={ {{$routeLower}} } groups={ {{$routeName}}FormDef(table{{$param2}})} />,
+    {{$routeLower}}: <FormTable data={ {{$routeLower}} } groups={ {{$routeName}}FormDef(table)} />,
   };
 {{end}}
 
@@ -92,7 +92,7 @@ export const {{$routeName}}View = () => {
       nItems={ {{$routeLower}}.nItems}
       fetchFn={ {{$fetchFn}}}
       onEnter={handleEnter}
-      modifyFn={handleModify}
+      modifyFn={handleModify}{{$clickFn}}
     >
       <DebugState u={ {{$routeLower}}.updater} />
       <View tabs={tabs} forms={forms}{{if $wantsSearch}} searchable{{end}} />
