@@ -4,7 +4,6 @@ import {menu} from '../models';
 import {base} from '../models';
 import {types} from '../models';
 import {app} from '../models';
-import {configtypes} from '../models';
 import {context} from '../models';
 import {editors} from '../models';
 
@@ -62,7 +61,7 @@ export function GetChainInfo(arg1:string):Promise<types.Chain>;
 
 export function GetChains():Promise<Array<string>>;
 
-export function GetConfig():Promise<configtypes.Config>;
+export function GetConfig():Promise<types.Config>;
 
 export function GetContext():Promise<context.Context>;
 

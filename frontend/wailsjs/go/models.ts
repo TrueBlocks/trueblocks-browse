@@ -174,36 +174,6 @@ export namespace configtypes {
 		    return a;
 		}
 	}
-	export class UnchainedGroup {
-	    preferredPublisher: string;
-	    smartContract: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new UnchainedGroup(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.preferredPublisher = source["preferredPublisher"];
-	        this.smartContract = source["smartContract"];
-	    }
-	}
-	export class PinningGroup {
-	    gatewayUrl: string;
-	    localPinUrl: string;
-	    remotePinUrl: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new PinningGroup(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.gatewayUrl = source["gatewayUrl"];
-	        this.localPinUrl = source["localPinUrl"];
-	        this.remotePinUrl = source["remotePinUrl"];
-	    }
-	}
 	export class KeyGroup {
 	    license: string;
 	    apiKey: string;
@@ -236,6 +206,23 @@ export namespace configtypes {
 	        this.author = source["author"];
 	    }
 	}
+	export class PinningGroup {
+	    gatewayUrl: string;
+	    localPinUrl: string;
+	    remotePinUrl: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new PinningGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.gatewayUrl = source["gatewayUrl"];
+	        this.localPinUrl = source["localPinUrl"];
+	        this.remotePinUrl = source["remotePinUrl"];
+	    }
+	}
+	
 	export class SettingsGroup {
 	    cachePath: string;
 	    indexPath: string;
@@ -274,6 +261,20 @@ export namespace configtypes {
 		    return a;
 		}
 	}
+	export class UnchainedGroup {
+	    preferredPublisher: string;
+	    smartContract: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new UnchainedGroup(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.preferredPublisher = source["preferredPublisher"];
+	        this.smartContract = source["smartContract"];
+	    }
+	}
 	export class VersionGroup {
 	    current: string;
 	
@@ -286,52 +287,6 @@ export namespace configtypes {
 	        this.current = source["current"];
 	    }
 	}
-	export class Config {
-	    version: VersionGroup;
-	    settings: SettingsGroup;
-	    keys: {[key: string]: KeyGroup};
-	    pinning: PinningGroup;
-	    unchained: UnchainedGroup;
-	    chains: {[key: string]: ChainGroup};
-	
-	    static createFrom(source: any = {}) {
-	        return new Config(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.version = this.convertValues(source["version"], VersionGroup);
-	        this.settings = this.convertValues(source["settings"], SettingsGroup);
-	        this.keys = this.convertValues(source["keys"], KeyGroup, true);
-	        this.pinning = this.convertValues(source["pinning"], PinningGroup);
-	        this.unchained = this.convertValues(source["unchained"], UnchainedGroup);
-	        this.chains = this.convertValues(source["chains"], ChainGroup, true);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	
-	
-	
-	
-	
-	
 
 }
 
@@ -450,6 +405,11 @@ export namespace sdk {
 
 export namespace types {
 	
+	export enum DaemonState {
+	    STOPPED = "Stopped",
+	    RUNNING = "Running",
+	    PAUSED = "Paused",
+	}
 	export enum WizState {
 	    WELCOME = "welcome",
 	    CONFIG = "config",
@@ -463,11 +423,6 @@ export namespace types {
 	    PREVIOUS = "Previous",
 	    NEXT = "Next",
 	    FINISH = "Finish",
-	}
-	export enum DaemonState {
-	    STOPPED = "Stopped",
-	    RUNNING = "Running",
-	    PAUSED = "Paused",
 	}
 	export class Parameter {
 	    components?: Parameter[];
@@ -819,6 +774,46 @@ export namespace types {
 	        this.rangeDates = this.convertValues(source["rangeDates"], RangeDates);
 	        this.ratio = source["ratio"];
 	        this.recWid = source["recWid"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class Config {
+	    version: configtypes.VersionGroup;
+	    settings: configtypes.SettingsGroup;
+	    keys: {[key: string]: configtypes.KeyGroup};
+	    pinning: configtypes.PinningGroup;
+	    unchained: configtypes.UnchainedGroup;
+	    chains: {[key: string]: configtypes.ChainGroup};
+	
+	    static createFrom(source: any = {}) {
+	        return new Config(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = this.convertValues(source["version"], configtypes.VersionGroup);
+	        this.settings = this.convertValues(source["settings"], configtypes.SettingsGroup);
+	        this.keys = this.convertValues(source["keys"], configtypes.KeyGroup, true);
+	        this.pinning = this.convertValues(source["pinning"], configtypes.PinningGroup);
+	        this.unchained = this.convertValues(source["unchained"], configtypes.UnchainedGroup);
+	        this.chains = this.convertValues(source["chains"], configtypes.ChainGroup, true);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1827,6 +1822,7 @@ export namespace types {
 	        this.chain = source["chain"];
 	    }
 	}
+	
 	export class Monitor {
 	    address: base.Address;
 	    deleted: boolean;
@@ -2519,29 +2515,6 @@ export namespace updater {
 		    }
 		    return a;
 		}
-	}
-
-}
-
-export namespace version {
-	
-	export class Version {
-	    major: number;
-	    minor: number;
-	    build: number;
-	    aspect: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Version(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.major = source["major"];
-	        this.minor = source["minor"];
-	        this.build = source["build"];
-	        this.aspect = source["aspect"];
-	    }
 	}
 
 }

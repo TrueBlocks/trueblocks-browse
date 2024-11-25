@@ -1,7 +1,6 @@
 package types
 
 import (
-	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
@@ -14,5 +13,5 @@ type ChunkStats = coreTypes.ChunkStats
 type CacheItem = coreTypes.CacheItem
 type Chain = coreTypes.Chain
 type Status = coreTypes.Status
-type Config = configTypes.Config
+type Config = coreTypes.Config
 type Manifest = coreTypes.Manifest
