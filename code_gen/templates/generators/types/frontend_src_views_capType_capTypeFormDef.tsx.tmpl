@@ -20,20 +20,14 @@
     stepWizard: (step: types.WizStep) => void` }}
 {{ end }}
 
-{{ $leadMatter := "" }}
-{{ if $isProject }}
-  {{ $leadMatter = print "const { info } = useAppState();" }}
-{{ else if $isWizard }}
-  {{ $leadMatter = print "const { wizard } = useAppState();" }}
-{{ end }}
-
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 // EXISTING_CODE
 // EXISTING_CODE
 
 export const {{$formDef}} = (table: Table<{{$fullType}}>{{$param2}}): FieldGroup<types.{{$class}}Container>[] => {
-  {{$leadMatter}}
+  // EXISTING_CODE
+  // EXISTING_CODE
   return [
     // EXISTING_CODE
     // EXISTING_CODE

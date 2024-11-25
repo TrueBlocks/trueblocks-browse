@@ -87,7 +87,7 @@ type SessionOptions struct {
 func (opts *SessionOptions) SessionList() ([]types.Session, *coreTypes.MetaData, error) {
 	meta, err := sdk.GetMetaData(namesChain)
 	return []types.Session{
-		{LastChain: ""},
+		{LastChain: opts.Chain},
 	}, meta, err
 }
 

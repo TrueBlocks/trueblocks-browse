@@ -8,7 +8,6 @@
 {{ $hasSorts := .HasSorts }}
 {{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
 
-{{ $isStatus := eq $class "Status" }}
 {{ $isHistory := eq $class "History" }}
 {{ $isSession := eq $class "Session" }}
 
