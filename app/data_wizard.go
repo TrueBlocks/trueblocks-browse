@@ -55,7 +55,6 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else if (wizard == nil) || (len(wizard) == 0) {
-		// we want it to not have errors...
 		a.meta = *meta
 		return nil
 	} else {

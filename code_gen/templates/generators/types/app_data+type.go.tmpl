@@ -10,6 +10,7 @@
 
 {{ $isHistory := eq $class "History" }}
 {{ $isSession := eq $class "Session" }}
+{{ $isWizard := eq $class "Wizard" }}
 
 {{ $appData := print "a." $routeLower }}
 {{ if $isHistory }}
@@ -17,8 +18,18 @@
 {{ end }}
 
 {{ $optionsName := print "sdk." $routeName "Options" }}
-{{ if $isSession }}
+{{ if or $isSession $isWizard }}
 	{{ $optionsName = print $routeName "Options" }}
+{{ end }}
+
+{{ $noRecords := print ` err = fmt.Errorf("no ` $routeLower ` found")
+	if errorChan != nil {
+		errorChan <- err
+	}
+	return err` }}
+{{ if $isWizard }}
+	{{ $noRecords = `		a.meta = *meta
+		return nil` }}
 {{ end }}
 
 {{/*==============================================================*/}}
@@ -76,11 +87,7 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 		}
 		return err
 	} else if ({{$routeLower}} == nil) || (len({{$routeLower}}) == 0) {
-		err = fmt.Errorf("no {{$routeLower}} found")
-		if errorChan != nil {
-			errorChan <- err
-		}
-		return err
+		{{$noRecords}}
 	} else {
 {{end -}}
 		// EXISTING_CODE
