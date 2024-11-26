@@ -50,6 +50,26 @@
 `}}
 {{ end }}
 
+{{ $param2 := ""}}
+{{ if $isHistory }}
+	{{ $param2 = "address" }}
+{{ end }}
+
+{{ $paramA := ""}}
+{{ if $isHistory }}
+	{{ $paramA = ", address" }}
+{{ end }}
+
+{{ $param3 := "" }}
+{{ if $isHistory }}
+	{{ $param3 = ", errorChan" }}
+{{ end }}
+
+{{ $param4 := "" }}
+{{ if $isHistory }}
+	{{ $param4 = "address base.Address, errorChan chan error" }}
+{{ end }}
+
 {{/*==============================================================*/}}
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
@@ -95,7 +115,7 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 
 	// EXISTING_CODE
 	// EXISTING_CODE
-	if items, meta, err := a.pull{{toPlural $class}}(); err != nil {
+	if items, meta, err := a.pull{{toPlural $class}}({{$param2}}{{$param3}}); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -106,7 +126,7 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		{{$appData}} = types.New{{$class}}Container(a.getChain(), items)
+		{{$appData}} = types.New{{$class}}Container(a.getChain(), items{{$paramA}})
 		// EXISTING_CODE
 		// EXISTING_CODE
 		{{ $sorts }} a.emitLoadingMsg(messages.Loaded, "{{$routeLower}}")
@@ -115,7 +135,7 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 	return nil
 }
 
-func (a *App) pull{{toPlural $class}}() ({{$param1}}, meta *types.Meta, err error) {
+func (a *App) pull{{toPlural $class}}({{$param4}}) ({{$param1}}, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
