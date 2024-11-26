@@ -12,7 +12,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -52,7 +51,6 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		Globals: a.getGlobals(true /* verbose */),
 	}
 	// EXISTING_CODE
-	names.ClearCustomNames()
 	opts.All = true
 	// EXISTING_CODE
 	if items, meta, err := opts.NamesList(); err != nil {

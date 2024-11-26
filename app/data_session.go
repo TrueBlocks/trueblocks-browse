@@ -62,14 +62,10 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 		return err
 	} else {
 		// EXISTING_CODE
-		// Oddly, the session is always up to date, so we save it...
-		ss := a.session.Session
 		// EXISTING_CODE
 		a.meta = *meta
 		a.session = types.NewSessionContainer(opts.Chain, items)
 		// EXISTING_CODE
-		// ... and put it back
-		a.session.Session = ss
 		// EXISTING_CODE
 		a.emitLoadingMsg(messages.Loaded, "session")
 	}
@@ -78,7 +74,6 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 }
 
 // EXISTING_CODE
-
 type SessionOptions struct {
 	Globals sdk.Globals
 	Chain   string
@@ -86,9 +81,7 @@ type SessionOptions struct {
 
 func (opts *SessionOptions) SessionList() ([]types.Session, *coreTypes.MetaData, error) {
 	meta, err := sdk.GetMetaData(namesChain)
-	return []types.Session{
-		{LastChain: opts.Chain},
-	}, meta, err
+	return []types.Session{}, meta, err
 }
 
 // EXISTING_CODE

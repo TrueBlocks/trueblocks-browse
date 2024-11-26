@@ -139,7 +139,6 @@ func (s *WizardContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Finalize()
 
 	// EXISTING_CODE
-	// nothing to do here
 	// EXISTING_CODE
 
 	return filtered
