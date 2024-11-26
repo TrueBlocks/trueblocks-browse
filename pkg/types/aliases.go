@@ -4,6 +4,7 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
+type Meta = coreTypes.MetaData
 type Abi = coreTypes.Abi
 type Transaction = coreTypes.Transaction
 type Name = coreTypes.Name

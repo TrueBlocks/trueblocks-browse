@@ -3,16 +3,16 @@ package app
 import (
 	"path/filepath"
 
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 type AppInfo struct {
-	Chain    string             `json:"chain"`
-	Filename string             `json:"filename"`
-	Dirty    bool               `json:"dirty"`
-	Meta     coreTypes.MetaData `json:"meta"`
-	Address  base.Address       `json:"address"`
+	Chain    string       `json:"chain"`
+	Filename string       `json:"filename"`
+	Dirty    bool         `json:"dirty"`
+	Meta     types.Meta   `json:"meta"`
+	Address  base.Address `json:"address"`
 }
 
 func (a *App) getFolder() string {

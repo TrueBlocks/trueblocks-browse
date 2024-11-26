@@ -10,7 +10,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -77,7 +76,7 @@ type DaemonsOptions struct {
 	Chain   string
 }
 
-func (opts *DaemonsOptions) DaemonsList() ([]types.Daemon, *coreTypes.MetaData, error) {
+func (opts *DaemonsOptions) DaemonsList() ([]types.Daemon, *types.Meta, error) {
 	meta, err := sdk.GetMetaData(namesChain)
 	// TODO: We've been called to check status, do wizard checks here
 	return []types.Daemon{}, meta, err

@@ -12,7 +12,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -98,7 +97,7 @@ type ProjectOptions struct {
 	Chain   string
 }
 
-func (opts *ProjectOptions) ProjectList() ([]types.HistoryContainer, *coreTypes.MetaData, error) {
+func (opts *ProjectOptions) ProjectList() ([]types.HistoryContainer, *types.Meta, error) {
 	meta, err := sdk.GetMetaData(namesChain)
 	return []types.HistoryContainer{}, meta, err
 }

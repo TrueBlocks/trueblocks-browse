@@ -11,7 +11,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -79,7 +78,7 @@ type SessionOptions struct {
 	Chain   string
 }
 
-func (opts *SessionOptions) SessionList() ([]types.Session, *coreTypes.MetaData, error) {
+func (opts *SessionOptions) SessionList() ([]types.Session, *types.Meta, error) {
 	meta, err := sdk.GetMetaData(namesChain)
 	return []types.Session{}, meta, err
 }
