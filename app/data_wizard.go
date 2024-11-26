@@ -47,7 +47,7 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 		Globals: a.getGlobals(true /* verbose */),
 	}
 	// EXISTING_CODE
-	_ = errorChan
+	opts.Chain = a.getChain()
 	// EXISTING_CODE
 	if wizard, meta, err := opts.WizardList(); err != nil {
 		if errorChan != nil {
@@ -55,6 +55,7 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else if (wizard == nil) || (len(wizard) == 0) {
+		// expected outcome
 		a.meta = *meta
 		return nil
 	} else {

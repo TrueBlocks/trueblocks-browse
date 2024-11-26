@@ -11,6 +11,10 @@
 {{ $isHistory := eq $class "History" }}
 {{ $isSession := eq $class "Session" }}
 {{ $isWizard := eq $class "Wizard" }}
+{{ $isDaemon := eq $class "Daemon" }}
+
+{{ $expectsZero := (or (or $isWizard $isDaemon) false)}}
+{{ $noSdk := (or (or $isWizard $isDaemon) $isSession) }}
 
 {{ $appData := print "a." $routeLower }}
 {{ if $isHistory }}
@@ -18,7 +22,7 @@
 {{ end }}
 
 {{ $optionsName := print "sdk." $routeName "Options" }}
-{{ if or $isSession $isWizard }}
+{{ if $noSdk }}
 	{{ $optionsName = print $routeName "Options" }}
 {{ end }}
 
@@ -27,9 +31,10 @@
 		errorChan <- err
 	}
 	return err` }}
-{{ if $isWizard }}
-	{{ $noRecords = `		a.meta = *meta
-		return nil` }}
+{{ if $expectsZero }}
+	{{ $noRecords = `  // expected outcome
+	a.meta = *meta
+	return nil` }}
 {{ end }}
 
 {{/*==============================================================*/}}

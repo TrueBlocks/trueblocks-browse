@@ -8,7 +8,10 @@ import (
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -40,17 +43,44 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating needed for daemons...")
 
+	opts := DaemonsOptions{
+		Globals: a.getGlobals(true /* verbose */),
+	}
 	// EXISTING_CODE
-	_ = errorChan
+	opts.Chain = a.getChain()
 	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	a.emitLoadingMsg(messages.Loaded, "daemons")
+	if daemons, meta, err := opts.DaemonsList(); err != nil {
+		if errorChan != nil {
+			errorChan <- err
+		}
+		return err
+	} else if (daemons == nil) || (len(daemons) == 0) {
+		// expected outcome
+		a.meta = *meta
+		return nil
+	} else {
+		// EXISTING_CODE
+		// EXISTING_CODE
+		a.meta = *meta
+		a.daemons = types.NewDaemonContainer(opts.Chain, daemons)
+		// EXISTING_CODE
+		// EXISTING_CODE
+		a.emitLoadingMsg(messages.Loaded, "daemons")
+	}
 
 	return nil
 }
 
 // EXISTING_CODE
+type DaemonsOptions struct {
+	Globals sdk.Globals
+	Chain   string
+}
+
+func (opts *DaemonsOptions) DaemonsList() ([]types.Daemon, *coreTypes.MetaData, error) {
+	meta, err := sdk.GetMetaData(namesChain)
+	// TODO: We've been called to check status, do wizard checks here
+	return []types.Daemon{}, meta, err
+}
+
 // EXISTING_CODE
