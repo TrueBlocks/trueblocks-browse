@@ -32,7 +32,8 @@ func (a *App) initialize() bool {
 	// we will be recalling this repeatedly until we have a valid configuration
 	// so we always start fresh...
 	initConfig := func() bool { // window can open, but we need an RPC provider...which means we need a config file.
-		if err := a.config.Load(); err != nil {
+		a.config.Updater = types.NewConfigUpdater("unused", true)
+		if err := a.loadConfig(nil, nil); err != nil {
 			a.addWizErr(WizReasonNoConfig, types.WizConfig, err)
 			return false
 		} else if a.session.LastChain, err = a.config.IsValidChain(a.getChain()); err != nil {

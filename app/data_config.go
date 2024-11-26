@@ -48,7 +48,6 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 		Globals: a.getGlobals(true /* verbose */),
 	}
 	// EXISTING_CODE
-	_ = errorChan
 	// EXISTING_CODE
 	if config, meta, err := opts.ConfigList(); err != nil {
 		if errorChan != nil {

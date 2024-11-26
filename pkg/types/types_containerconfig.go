@@ -6,13 +6,10 @@ package types
 import (
 	"encoding/json"
 	"fmt"
-	"path/filepath"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
@@ -176,39 +173,6 @@ func (s *ConfigContainer) ForEveryItem(process EveryChainFn, data any) bool {
 }
 
 // EXISTING_CODE
-
-func (s *ConfigContainer) Load() error {
-	path := coreConfig.PathToRootConfig()
-	if !file.FolderExists(path) {
-		return ErrNoConfigFolder
-	}
-
-	fn := filepath.Join(path, "trueBlocks.toml")
-	if !file.FileExists(fn) {
-		return ErrNoConfigFile
-	}
-
-	if err := coreConfig.ReadToml(fn, &s.Config); err != nil {
-		return fmt.Errorf("%w: %v", ErrCantReadToml, err)
-	}
-
-	for _, chain := range s.Config.Chains {
-		chOut := func(chIn configTypes.ChainGroup) Chain {
-			return Chain{
-				Chain:          chIn.Chain,
-				ChainId:        base.MustParseUint64(chIn.ChainId),
-				IpfsGateway:    chIn.IpfsGateway,
-				LocalExplorer:  chIn.LocalExplorer,
-				RemoteExplorer: chIn.RemoteExplorer,
-				RpcProvider:    chIn.RpcProvider,
-				Symbol:         chIn.Symbol,
-			}
-		}(chain)
-		s.Items = append(s.Items, chOut)
-	}
-
-	return nil
-}
 
 func (s *ConfigContainer) IsValidChain(chain string) (string, error) {
 	for _, ch := range s.Chains {
