@@ -38,6 +38,7 @@ type App struct {
 	balanceCache *sync.Map
 	filterMap    *types.FilterMap
 	namesMap     map[base.Address]types.Name
+	// HIST-APP
 	historyCache *types.HistoryMap
 	renderCtxs   map[base.Address][]*output.RenderCtx
 
@@ -50,6 +51,7 @@ func NewApp() *App {
 		balanceCache: &sync.Map{},
 		filterMap:    &types.FilterMap{},
 		namesMap:     make(map[base.Address]types.Name),
+		// HIST-APP
 		historyCache: &types.HistoryMap{},
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}

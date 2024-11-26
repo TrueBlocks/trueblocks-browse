@@ -19,6 +19,16 @@ func (a *App) Reload() {
 		if err := a.loadMonitors(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
+	case "/indexes":
+		a.indexes.Updater.Reset()
+		if err := a.loadIndexes(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+	case "/manifests":
+		a.manifests.Updater.Reset()
+		if err := a.loadManifests(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 	case "/config":
 		a.config.Updater.Reset()
 		if err := a.loadConfig(nil, nil); err != nil {
@@ -26,8 +36,10 @@ func (a *App) Reload() {
 		}
 	default:
 		address := a.GetSelected()
+		// HIST-HIST
 		history, _ := a.historyCache.Load(address)
 		history.Updater.Reset()
+		// HIST-HIST
 		a.historyCache.Store(address, history)
 		a.goToAddress(history.Address)
 	}

@@ -69,8 +69,10 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 	updater := {{$appData}}.Updater
 	defer func() {
 {{ if $isHistory -}}
+	// HIST-HIST
 	history, _ = a.historyCache.Load(address)
 	{{$appData}}.Updater = updater
+	// HIST-HIST
 	a.historyCache.Store(address, history)
 {{else -}}
 	{{$appData}}.Updater = updater

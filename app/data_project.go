@@ -45,15 +45,16 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 
 	// EXISTING_CODE
 	_ = errorChan
-	items := []types.HistoryContainer{}
+	project := []types.HistoryContainer{}
+	// HIST-PROJ
 	a.historyCache.Range(func(_ base.Address, h types.HistoryContainer) bool {
-		items = append(items, h)
+		project = append(project, h)
 		return true
 	})
-	sort.Slice(items, func(i, j int) bool {
-		return items[i].Address.Hex() < items[j].Address.Hex()
+	sort.Slice(project, func(i, j int) bool {
+		return project[i].Address.Hex() < project[j].Address.Hex()
 	})
-	a.project = types.NewProjectContainer(a.getChain(), items)
+	a.project = types.NewProjectContainer(a.getChain(), project)
 	if !a.project.NeedsUpdate() {
 		return nil
 	}
