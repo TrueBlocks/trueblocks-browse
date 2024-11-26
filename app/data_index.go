@@ -48,12 +48,12 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	if indexes, meta, err := opts.IndexesList(); err != nil {
+	if items, meta, err := opts.IndexesList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (indexes == nil) || (len(indexes) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no indexes found")
 		if errorChan != nil {
 			errorChan <- err
@@ -63,7 +63,7 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.indexes = types.NewIndexContainer(opts.Chain, indexes)
+		a.indexes = types.NewIndexContainer(opts.Chain, items)
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := sdk.SortIndexes(a.indexes.Items, a.indexes.Sorts); err != nil {

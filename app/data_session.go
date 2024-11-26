@@ -49,12 +49,12 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	if session, meta, err := opts.SessionList(); err != nil {
+	if items, meta, err := opts.SessionList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (session == nil) || (len(session) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no session found")
 		if errorChan != nil {
 			errorChan <- err
@@ -66,7 +66,7 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 		ss := a.session.Session
 		// EXISTING_CODE
 		a.meta = *meta
-		a.session = types.NewSessionContainer(opts.Chain, session)
+		a.session = types.NewSessionContainer(opts.Chain, items)
 		// EXISTING_CODE
 		// ... and put it back
 		a.session.Session = ss

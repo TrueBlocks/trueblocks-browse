@@ -49,12 +49,12 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	opts.Chain = a.getChain()
 	// EXISTING_CODE
-	if daemons, meta, err := opts.DaemonsList(); err != nil {
+	if items, meta, err := opts.DaemonsList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (daemons == nil) || (len(daemons) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		// expected outcome
 		a.meta = *meta
 		return nil
@@ -62,7 +62,7 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.daemons = types.NewDaemonContainer(opts.Chain, daemons)
+		a.daemons = types.NewDaemonContainer(opts.Chain, items)
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.emitLoadingMsg(messages.Loaded, "daemons")

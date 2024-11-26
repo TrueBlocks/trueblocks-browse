@@ -51,12 +51,12 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	if monitors, meta, err := opts.MonitorsList(); err != nil {
+	if items, meta, err := opts.MonitorsList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (monitors == nil) || (len(monitors) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no monitors found")
 		if errorChan != nil {
 			errorChan <- err
@@ -69,7 +69,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		// EXISTING_CODE
 		a.meta = *meta
-		a.monitors = types.NewMonitorContainer(opts.Chain, monitors)
+		a.monitors = types.NewMonitorContainer(opts.Chain, items)
 		// EXISTING_CODE
 		// TODO: Use core's sorting mechanism (see SortChunk Stats for example)
 		sort.Slice(a.monitors.Items, func(i, j int) bool {

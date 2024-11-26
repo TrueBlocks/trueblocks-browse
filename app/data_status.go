@@ -53,12 +53,12 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	logger.SetLoggerWriter(io.Discard)
 	defer logger.SetLoggerWriter(w)
 	// EXISTING_CODE
-	if status, meta, err := opts.StatusList(); err != nil {
+	if items, meta, err := opts.StatusList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (status == nil) || (len(status) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no status found")
 		if errorChan != nil {
 			errorChan <- err
@@ -68,7 +68,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.status = types.NewStatusContainer(opts.Chain, status)
+		a.status = types.NewStatusContainer(opts.Chain, items)
 		// EXISTING_CODE
 		// TODO: Use the core's sorting mechanism (see SortChunk Stats for example)
 		sort.Slice(a.status.Caches, func(i, j int) bool {

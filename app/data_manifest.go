@@ -48,12 +48,12 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	if manifests, meta, err := opts.ManifestsList(); err != nil {
+	if items, meta, err := opts.ManifestsList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (manifests == nil) || (len(manifests) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no manifests found")
 		if errorChan != nil {
 			errorChan <- err
@@ -63,7 +63,7 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.manifests = types.NewManifestContainer(opts.Chain, manifests)
+		a.manifests = types.NewManifestContainer(opts.Chain, items)
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := sdk.SortManifests(a.manifests.Items, a.manifests.Sorts); err != nil {

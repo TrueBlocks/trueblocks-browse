@@ -50,12 +50,12 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	opts.Cache = true
 	opts.Chain = namesChain
 	// EXISTING_CODE
-	if abis, meta, err := opts.AbisList(); err != nil {
+	if items, meta, err := opts.AbisList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (abis == nil) || (len(abis) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no abis found")
 		if errorChan != nil {
 			errorChan <- err
@@ -65,7 +65,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.abis = types.NewAbiContainer(opts.Chain, abis)
+		a.abis = types.NewAbiContainer(opts.Chain, items)
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := sdk.SortAbis(a.abis.Items, a.abis.Sorts); err != nil {

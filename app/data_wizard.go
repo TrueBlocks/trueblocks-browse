@@ -49,12 +49,12 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	opts.Chain = a.getChain()
 	// EXISTING_CODE
-	if wizard, meta, err := opts.WizardList(); err != nil {
+	if items, meta, err := opts.WizardList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (wizard == nil) || (len(wizard) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		// expected outcome
 		a.meta = *meta
 		return nil
@@ -62,7 +62,7 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.wizard = types.NewWizardContainer(opts.Chain, wizard)
+		a.wizard = types.NewWizardContainer(opts.Chain, items)
 		// EXISTING_CODE
 		a.Navigate("/wizard", "")
 		// EXISTING_CODE

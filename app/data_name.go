@@ -55,12 +55,12 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	names.ClearCustomNames()
 	opts.All = true
 	// EXISTING_CODE
-	if names, meta, err := opts.NamesList(); err != nil {
+	if items, meta, err := opts.NamesList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (names == nil) || (len(names) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no names found")
 		if errorChan != nil {
 			errorChan <- err
@@ -72,7 +72,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		defer namesMutex.Unlock()
 		// EXISTING_CODE
 		a.meta = *meta
-		a.names = types.NewNameContainer(opts.Chain, names)
+		a.names = types.NewNameContainer(opts.Chain, items)
 		// EXISTING_CODE
 		a.namesMap = make(map[base.Address]types.Name, len(names))
 		for _, name := range names {

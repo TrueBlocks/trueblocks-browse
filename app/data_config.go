@@ -49,12 +49,12 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	if config, meta, err := opts.ConfigList(); err != nil {
+	if items, meta, err := opts.ConfigList(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (config == nil) || (len(config) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no config found")
 		if errorChan != nil {
 			errorChan <- err
@@ -64,7 +64,7 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.config = types.NewConfigContainer(opts.Chain, config)
+		a.config = types.NewConfigContainer(opts.Chain, items)
 		// EXISTING_CODE
 		sort.Slice(a.config.Items, func(i, j int) bool {
 			return a.config.Items[i].ChainId < a.config.Items[j].ChainId
