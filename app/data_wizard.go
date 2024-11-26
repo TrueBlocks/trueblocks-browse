@@ -4,7 +4,6 @@ package app
 
 // EXISTING_CODE
 import (
-	"fmt"
 	"sync"
 	"sync/atomic"
 
@@ -56,17 +55,16 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else if (wizard == nil) || (len(wizard) == 0) {
-		err = fmt.Errorf("no wizard found")
-		if errorChan != nil {
-			errorChan <- err
-		}
-		return err
+		// we want it to not have errors...
+		a.meta = *meta
+		return nil
 	} else {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
 		a.wizard = types.NewWizardContainer(opts.Chain, wizard)
 		// EXISTING_CODE
+		a.Navigate("/wizard", "")
 		// EXISTING_CODE
 		a.emitLoadingMsg(messages.Loaded, "wizard")
 	}
@@ -82,6 +80,7 @@ type WizardOptions struct {
 
 func (opts *WizardOptions) WizardList() ([]types.WizError, *coreTypes.MetaData, error) {
 	meta, err := sdk.GetMetaData(namesChain)
+	// TODO: We've been called to check status, do wizard checks here
 	return []types.WizError{}, meta, err
 }
 
