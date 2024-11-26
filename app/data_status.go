@@ -45,15 +45,12 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating needed for status...")
 
-	opts := sdk.StatusOptions{
-		Globals: a.getGlobals(true /* verbose */),
-	}
 	// EXISTING_CODE
 	w := logger.GetLoggerWriter()
 	logger.SetLoggerWriter(io.Discard)
 	defer logger.SetLoggerWriter(w)
 	// EXISTING_CODE
-	if items, meta, err := opts.StatusList(); err != nil {
+	if items, meta, err := a.pullStatus(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -68,7 +65,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.status = types.NewStatusContainer(opts.Chain, items)
+		a.status = types.NewStatusContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// TODO: Use the core's sorting mechanism (see SortChunk Stats for example)
 		sort.Slice(a.status.Caches, func(i, j int) bool {
@@ -80,6 +77,15 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	return nil
+}
+
+func (a *App) pullStatus() (items []types.Status, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	opts := sdk.StatusOptions{
+		Globals: a.getGlobals(true /* verbose */),
+	}
+	return opts.StatusList()
+	// EXISTING_CODE
 }
 
 // EXISTING_CODE

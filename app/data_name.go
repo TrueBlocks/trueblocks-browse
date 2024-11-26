@@ -47,13 +47,9 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating needed for names...")
 
-	opts := sdk.NamesOptions{
-		Globals: a.getGlobals(true /* verbose */),
-	}
 	// EXISTING_CODE
-	opts.All = true
 	// EXISTING_CODE
-	if items, meta, err := opts.NamesList(); err != nil {
+	if items, meta, err := a.pullNames(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -70,7 +66,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		defer namesMutex.Unlock()
 		// EXISTING_CODE
 		a.meta = *meta
-		a.names = types.NewNameContainer(opts.Chain, items)
+		a.names = types.NewNameContainer(a.getChain(), items)
 		// EXISTING_CODE
 		a.namesMap = make(map[base.Address]types.Name, len(items))
 		for _, name := range items {
@@ -81,6 +77,16 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	return nil
+}
+
+func (a *App) pullNames() (items []types.Name, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	opts := sdk.NamesOptions{
+		Globals: a.getGlobals(true /* verbose */),
+	}
+	opts.All = true
+	return opts.NamesList()
+	// EXISTING_CODE
 }
 
 // EXISTING_CODE

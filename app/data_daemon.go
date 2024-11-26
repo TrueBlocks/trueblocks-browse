@@ -42,13 +42,9 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating needed for daemons...")
 
-	opts := DaemonsOptions{
-		Globals: a.getGlobals(true /* verbose */),
-	}
 	// EXISTING_CODE
-	opts.Chain = a.getChain()
 	// EXISTING_CODE
-	if items, meta, err := opts.DaemonsList(); err != nil {
+	if items, meta, err := a.pullDaemons(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -61,7 +57,7 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.daemons = types.NewDaemonContainer(opts.Chain, items)
+		a.daemons = types.NewDaemonContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.emitLoadingMsg(messages.Loaded, "daemons")
@@ -70,16 +66,13 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-// EXISTING_CODE
-type DaemonsOptions struct {
-	Globals sdk.Globals
-	Chain   string
-}
-
-func (opts *DaemonsOptions) DaemonsList() ([]types.Daemon, *types.Meta, error) {
-	meta, err := sdk.GetMetaData(namesChain)
-	// TODO: We've been called to check status, do wizard checks here
+func (a *App) pullDaemons() (items []types.Daemon, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	meta, err = sdk.GetMetaData(namesChain)
+	// TODO: We've been called to update the status of the daemons. Do so here.
 	return []types.Daemon{}, meta, err
+	// EXISTING_CODE
 }
 
+// EXISTING_CODE
 // EXISTING_CODE

@@ -44,12 +44,9 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating needed for project...")
 
-	opts := ProjectOptions{
-		Globals: a.getGlobals(true /* verbose */),
-	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	if items, meta, err := opts.ProjectList(); err != nil {
+	if items, meta, err := a.pullProjects(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -68,7 +65,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 		})
 		// EXISTING_CODE
 		a.meta = *meta
-		a.project = types.NewProjectContainer(opts.Chain, items)
+		a.project = types.NewProjectContainer(a.getChain(), items)
 		// EXISTING_CODE
 		a.project.NItems = uint64(len(a.project.Items))
 		a.project.NMonitors = uint64(len(a.monitors.Items))
@@ -91,15 +88,12 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-// EXISTING_CODE
-type ProjectOptions struct {
-	Globals sdk.Globals
-	Chain   string
-}
-
-func (opts *ProjectOptions) ProjectList() ([]types.HistoryContainer, *types.Meta, error) {
-	meta, err := sdk.GetMetaData(namesChain)
+func (a *App) pullProjects() (items []types.HistoryContainer, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	meta, err = sdk.GetMetaData(namesChain)
 	return []types.HistoryContainer{}, meta, err
+	// EXISTING_CODE
 }
 
+// EXISTING_CODE
 // EXISTING_CODE

@@ -46,12 +46,9 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating needed for monitors...")
 
-	opts := sdk.MonitorsOptions{
-		Globals: a.getGlobals(true /* verbose */),
-	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	if items, meta, err := opts.MonitorsList(); err != nil {
+	if items, meta, err := a.pullMonitors(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -69,7 +66,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		// EXISTING_CODE
 		a.meta = *meta
-		a.monitors = types.NewMonitorContainer(opts.Chain, items)
+		a.monitors = types.NewMonitorContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// TODO: Use core's sorting mechanism (see SortChunk Stats for example)
 		sort.Slice(a.monitors.Items, func(i, j int) bool {
@@ -83,6 +80,15 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	return nil
+}
+
+func (a *App) pullMonitors() (items []types.Monitor, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	opts := sdk.MonitorsOptions{
+		Globals: a.getGlobals(true /* verbose */),
+	}
+	return opts.MonitorsList()
+	// EXISTING_CODE
 }
 
 // EXISTING_CODE

@@ -44,12 +44,9 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating needed for config...")
 
-	opts := sdk.ConfigOptions{
-		Globals: a.getGlobals(true /* verbose */),
-	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	if items, meta, err := opts.ConfigList(); err != nil {
+	if items, meta, err := a.pullConfigs(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -64,7 +61,7 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.config = types.NewConfigContainer(opts.Chain, items)
+		a.config = types.NewConfigContainer(a.getChain(), items)
 		// EXISTING_CODE
 		sort.Slice(a.config.Items, func(i, j int) bool {
 			return a.config.Items[i].ChainId < a.config.Items[j].ChainId
@@ -74,6 +71,15 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	return nil
+}
+
+func (a *App) pullConfigs() (items []types.Config, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	opts := sdk.ConfigOptions{
+		Globals: a.getGlobals(true /* verbose */),
+	}
+	return opts.ConfigList()
+	// EXISTING_CODE
 }
 
 // EXISTING_CODE

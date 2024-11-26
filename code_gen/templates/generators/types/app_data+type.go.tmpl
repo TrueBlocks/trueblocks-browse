@@ -2,6 +2,8 @@
 {{ $class := .Class }}
 {{ $routeName := .UiRouteName}}
 {{ $routeLower := toLower .UiRouteName -}}
+{{ $itemType := .ItemType }}
+{{ $embedType := .EmbedType }}
 {{ $members := .Members }}
 {{ $needsSdk := .Needs "sdk" }}
 
@@ -14,17 +16,12 @@
 {{ $isDaemon := eq $class "Daemon" }}
 {{ $isProject := eq $class "Project" }}
 
-{{ $expectsZero := (or (or $isWizard $isDaemon) $isProject)}}
+{{ $expectsZero := (or (or $isWizard $isDaemon) (or $isSession $isProject) )}}
 {{ $noSdk := (or (or $isWizard $isDaemon) (or $isSession $isProject)) }}
 
 {{ $appData := print "a." $routeLower }}
 {{ if $isHistory }}
 	{{ $appData = $routeLower }}
-{{ end }}
-
-{{ $optionsName := print "sdk." $routeName "Options" }}
-{{ if $noSdk }}
-	{{ $optionsName = print $routeName "Options" }}
 {{ end }}
 
 {{ $noRecords := print ` err = fmt.Errorf("no ` $routeLower ` found")
@@ -36,6 +33,11 @@
 	{{ $noRecords = `  // expected outcome
 	a.meta = *meta
 	return nil` }}
+{{ end }}
+
+{{ $param1 := print "items []types." $itemType }}
+{{ if $hasEmbed }}
+	{{ $param1 = print "items []types." $embedType }}
 {{ end }}
 
 {{/*==============================================================*/}}
@@ -81,15 +83,10 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 	}()
 	logger.InfoBY("Updating needed for {{$routeLower}}...")
 
-{{if $needsSdk}}
-	opts := {{$optionsName}}{
-		Globals: a.getGlobals(true /* verbose */),
-	}
-{{end -}}
 	// EXISTING_CODE
 	// EXISTING_CODE
 {{if $needsSdk -}}
-	if items, meta, err := opts.{{$routeName}}List(); err != nil {
+	if items, meta, err := a.pull{{toPlural $class}}(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -102,7 +99,7 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 		// EXISTING_CODE
 {{if $needsSdk -}}
 		a.meta = *meta
-		{{$appData}} = types.New{{$class}}Container(opts.Chain, items)
+		{{$appData}} = types.New{{$class}}Container(a.getChain(), items)
 {{end -}}
 		// EXISTING_CODE
 		// EXISTING_CODE
@@ -116,6 +113,11 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 	}
 {{end}}
 	return nil
+}
+
+func (a *App) pull{{toPlural $class}}() ({{$param1}}, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	// EXISTING_CODE
 }
 
 // EXISTING_CODE

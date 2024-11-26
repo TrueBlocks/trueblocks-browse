@@ -67,5 +67,11 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
+func (a *App) pullSettings() (items []types.CacheItem, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	return
+	// EXISTING_CODE
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

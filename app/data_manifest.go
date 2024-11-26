@@ -43,12 +43,9 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating needed for manifests...")
 
-	opts := sdk.ManifestsOptions{
-		Globals: a.getGlobals(true /* verbose */),
-	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	if items, meta, err := opts.ManifestsList(); err != nil {
+	if items, meta, err := a.pullManifests(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -63,7 +60,7 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.manifests = types.NewManifestContainer(opts.Chain, items)
+		a.manifests = types.NewManifestContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := sdk.SortManifests(a.manifests.Items, a.manifests.Sorts); err != nil {
@@ -73,6 +70,15 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 
 	return nil
+}
+
+func (a *App) pullManifests() (items []types.Manifest, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	opts := sdk.ManifestsOptions{
+		Globals: a.getGlobals(true /* verbose */),
+	}
+	return opts.ManifestsList()
+	// EXISTING_CODE
 }
 
 // EXISTING_CODE

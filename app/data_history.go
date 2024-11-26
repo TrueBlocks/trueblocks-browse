@@ -76,6 +76,12 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
+func (a *App) pullHistoryies() (items []types.Transaction, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	return
+	// EXISTING_CODE
+}
+
 // EXISTING_CODE
 func (a *App) thing(address base.Address, freq int, errorChan chan error) error {
 	defer a.trackPerformance("thing", false)()

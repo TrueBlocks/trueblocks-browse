@@ -42,13 +42,9 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating needed for wizard...")
 
-	opts := WizardOptions{
-		Globals: a.getGlobals(true /* verbose */),
-	}
 	// EXISTING_CODE
-	opts.Chain = a.getChain()
 	// EXISTING_CODE
-	if items, meta, err := opts.WizardList(); err != nil {
+	if items, meta, err := a.pullWizards(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -61,7 +57,7 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.wizard = types.NewWizardContainer(opts.Chain, items)
+		a.wizard = types.NewWizardContainer(a.getChain(), items)
 		// EXISTING_CODE
 		a.Navigate("/wizard", "")
 		// EXISTING_CODE
@@ -71,16 +67,13 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-// EXISTING_CODE
-type WizardOptions struct {
-	Globals sdk.Globals
-	Chain   string
-}
-
-func (opts *WizardOptions) WizardList() ([]types.WizError, *types.Meta, error) {
-	meta, err := sdk.GetMetaData(namesChain)
+func (a *App) pullWizards() (items []types.WizError, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	meta, err = sdk.GetMetaData(namesChain)
 	// TODO: We've been called to check status, do wizard checks here
 	return []types.WizError{}, meta, err
+	// EXISTING_CODE
 }
 
+// EXISTING_CODE
 // EXISTING_CODE

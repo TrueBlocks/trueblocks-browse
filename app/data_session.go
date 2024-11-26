@@ -4,7 +4,6 @@ package app
 
 // EXISTING_CODE
 import (
-	"fmt"
 	"sync"
 	"sync/atomic"
 
@@ -43,27 +42,22 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating needed for session...")
 
-	opts := SessionOptions{
-		Globals: a.getGlobals(true /* verbose */),
-	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	if items, meta, err := opts.SessionList(); err != nil {
+	if items, meta, err := a.pullSessions(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
 	} else if (items == nil) || (len(items) == 0) {
-		err = fmt.Errorf("no session found")
-		if errorChan != nil {
-			errorChan <- err
-		}
-		return err
+		// expected outcome
+		a.meta = *meta
+		return nil
 	} else {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.session = types.NewSessionContainer(opts.Chain, items)
+		a.session = types.NewSessionContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.emitLoadingMsg(messages.Loaded, "session")
@@ -72,15 +66,12 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	return nil
 }
 
-// EXISTING_CODE
-type SessionOptions struct {
-	Globals sdk.Globals
-	Chain   string
-}
-
-func (opts *SessionOptions) SessionList() ([]types.Session, *types.Meta, error) {
-	meta, err := sdk.GetMetaData(namesChain)
+func (a *App) pullSessions() (items []types.Session, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	meta, err = sdk.GetMetaData(namesChain)
 	return []types.Session{}, meta, err
+	// EXISTING_CODE
 }
 
+// EXISTING_CODE
 // EXISTING_CODE
