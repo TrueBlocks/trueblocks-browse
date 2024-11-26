@@ -12,9 +12,10 @@
 {{ $isSession := eq $class "Session" }}
 {{ $isWizard := eq $class "Wizard" }}
 {{ $isDaemon := eq $class "Daemon" }}
+{{ $isProject := eq $class "Project" }}
 
-{{ $expectsZero := (or (or $isWizard $isDaemon) false)}}
-{{ $noSdk := (or (or $isWizard $isDaemon) $isSession) }}
+{{ $expectsZero := (or (or $isWizard $isDaemon) $isProject)}}
+{{ $noSdk := (or (or $isWizard $isDaemon) (or $isSession $isProject)) }}
 
 {{ $appData := print "a." $routeLower }}
 {{ if $isHistory }}
@@ -88,12 +89,12 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 	// EXISTING_CODE
 	// EXISTING_CODE
 {{if $needsSdk -}}
-	if {{$routeLower}}, meta, err := opts.{{$routeName}}List(); err != nil {
+	if items, meta, err := opts.{{$routeName}}List(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if ({{$routeLower}} == nil) || (len({{$routeLower}}) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		{{$noRecords}}
 	} else {
 {{end -}}
@@ -101,7 +102,7 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 		// EXISTING_CODE
 {{if $needsSdk -}}
 		a.meta = *meta
-		{{$appData}} = types.New{{$class}}Container(opts.Chain, {{$routeLower}})
+		{{$appData}} = types.New{{$class}}Container(opts.Chain, items)
 {{end -}}
 		// EXISTING_CODE
 		// EXISTING_CODE

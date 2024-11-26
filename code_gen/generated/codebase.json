@@ -7,7 +7,7 @@
             "ui_route": "0000-project-1",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "wantsSearch|wantsEnter|wantsModify|noSdk",
+            "attributes": "wantsSearch|wantsEnter|wantsModify",
             "members": [
                 {
                     "name": "nMonitors",
