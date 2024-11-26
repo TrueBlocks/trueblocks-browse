@@ -40,7 +40,7 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		a.daemons.Updater = updater
 	}()
-	logger.InfoBY("Updating needed for daemons...")
+	logger.InfoBY("Updating daemons...")
 
 	// EXISTING_CODE
 	// EXISTING_CODE

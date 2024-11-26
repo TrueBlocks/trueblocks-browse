@@ -41,7 +41,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		a.abis.Updater = updater
 	}()
-	logger.InfoBY("Updating needed for abis...")
+	logger.InfoBY("Updating abis...")
 
 	// EXISTING_CODE
 	// EXISTING_CODE

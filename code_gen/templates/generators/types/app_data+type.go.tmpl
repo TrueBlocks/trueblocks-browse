@@ -15,9 +15,9 @@
 {{ $isWizard := eq $class "Wizard" }}
 {{ $isDaemon := eq $class "Daemon" }}
 {{ $isProject := eq $class "Project" }}
+{{ $isSettings := eq $class "Settings" }}
 
-{{ $expectsZero := (or (or $isWizard $isDaemon) (or $isSession $isProject) )}}
-{{ $noSdk := (or (or $isWizard $isDaemon) (or $isSession $isProject)) }}
+{{ $expectsZero := (or $isSettings (or (or $isWizard $isDaemon) (or $isSession $isProject)) )}}
 
 {{ $appData := print "a." $routeLower }}
 {{ if $isHistory }}
@@ -81,7 +81,7 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 	{{$appData}}.Updater = updater
 {{end -}}
 	}()
-	logger.InfoBY("Updating needed for {{$routeLower}}...")
+	logger.InfoBY("Updating {{$routeLower}}...")
 
 	// EXISTING_CODE
 	// EXISTING_CODE

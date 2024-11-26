@@ -9,9 +9,8 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -41,35 +40,51 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		a.settings.Updater = updater
 	}()
-	logger.InfoBY("Updating needed for settings...")
+	logger.InfoBY("Updating settings...")
 
 	// EXISTING_CODE
-	_ = errorChan // delint
-	if path, err := utils.GetConfigFn("", "trueBlocks.toml"); err != nil {
-		a.emitErrorMsg(err, nil)
-	} else {
-		if err := coreConfig.ReadToml(path, &a.config.Config); err != nil {
-			a.emitErrorMsg(err, nil)
+	// EXISTING_CODE
+	if items, meta, err := a.pullSettings(); err != nil {
+		if errorChan != nil {
+			errorChan <- err
 		}
+		return err
+	} else if (items == nil) || (len(items) == 0) {
+		// expected outcome
+		a.meta = *meta
+		return nil
+	} else {
+		// EXISTING_CODE
+		// EXISTING_CODE
+		a.meta = *meta
+		a.settings = types.NewSettingsContainer(a.getChain(), items)
+		// EXISTING_CODE
+		// EXISTING_CODE
+		a.emitLoadingMsg(messages.Loaded, "settings")
 	}
-
-	a.settings = types.NewSettingsContainer(a.getChain(), a.status.Items)
-	a.settings.Status = a.status
-	a.settings.Config = a.config
-	a.settings.Session = a.session
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	a.emitLoadingMsg(messages.Loaded, "settings")
 
 	return nil
 }
 
 func (a *App) pullSettings() (items []types.CacheItem, meta *types.Meta, err error) {
 	// EXISTING_CODE
-	return
+	if meta, err = sdk.GetMetaData(a.getChain()); err != nil {
+		return nil, nil, err
+	} else {
+		if err = a.loadSession(nil, nil); err != nil {
+			return nil, nil, err
+		}
+		if err = a.loadStatus(nil, nil); err != nil {
+			return nil, nil, err
+		}
+		if err = a.loadConfig(nil, nil); err != nil {
+			return nil, nil, err
+		}
+		a.settings.Status = a.status
+		a.settings.Config = a.config
+		a.settings.Session = a.session
+		return a.status.Items, meta, nil
+	}
 	// EXISTING_CODE
 }
 

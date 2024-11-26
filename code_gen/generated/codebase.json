@@ -537,7 +537,6 @@
             "ui_route": "1080-settings-9",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "noSdk",
             "members": [
                 {
                     "name": "chain",

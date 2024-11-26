@@ -43,7 +43,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		a.status.Updater = updater
 	}()
-	logger.InfoBY("Updating needed for status...")
+	logger.InfoBY("Updating status...")
 
 	// EXISTING_CODE
 	w := logger.GetLoggerWriter()

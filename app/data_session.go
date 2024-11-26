@@ -40,7 +40,7 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		a.session.Updater = updater
 	}()
-	logger.InfoBY("Updating needed for session...")
+	logger.InfoBY("Updating session...")
 
 	// EXISTING_CODE
 	// EXISTING_CODE

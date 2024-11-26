@@ -45,7 +45,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		a.names.Updater = updater
 	}()
-	logger.InfoBY("Updating needed for names...")
+	logger.InfoBY("Updating names...")
 
 	// EXISTING_CODE
 	// EXISTING_CODE

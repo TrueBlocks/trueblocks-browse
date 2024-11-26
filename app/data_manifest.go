@@ -41,7 +41,7 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		a.manifests.Updater = updater
 	}()
-	logger.InfoBY("Updating needed for manifests...")
+	logger.InfoBY("Updating manifests...")
 
 	// EXISTING_CODE
 	// EXISTING_CODE

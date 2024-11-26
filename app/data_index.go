@@ -41,7 +41,7 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		a.indexes.Updater = updater
 	}()
-	logger.InfoBY("Updating needed for indexes...")
+	logger.InfoBY("Updating indexes...")
 
 	// EXISTING_CODE
 	// EXISTING_CODE

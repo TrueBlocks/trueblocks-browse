@@ -58,7 +58,7 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error) error {
 		// HIST-HIST
 		a.historyCache.Store(address, history)
 	}()
-	logger.InfoBY("Updating needed for history...")
+	logger.InfoBY("Updating history...")
 
 	// EXISTING_CODE
 	if err := a.thing(address, 250, errorChan); err != nil {
