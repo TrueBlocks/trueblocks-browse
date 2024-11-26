@@ -1,0 +1,30 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+package app
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+func (a *App) Reload() {
+	defer a.trackPerformance("Reload", false)()
+
+	route := a.session.LastRoute
+	logger.InfoG("Reloading", route, "...")
+
+	switch route {
+{{range .Structures -}}
+	{{ $class := .Class }}
+	{{ $routeName := .UiRouteName }}
+	{{ $routeLower := toLower .UiRouteName }}
+	{{ $isHistory := eq $class "History" }}
+{{ if not $isHistory }}{{ print `	case "/` $routeLower `":
+		a.` $routeLower `.Updater.Reset()
+		if err := a.load` $routeName `(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+` }}
+{{ end }}{{ end }}
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+}
