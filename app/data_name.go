@@ -74,8 +74,8 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.names = types.NewNameContainer(opts.Chain, items)
 		// EXISTING_CODE
-		a.namesMap = make(map[base.Address]types.Name, len(names))
-		for _, name := range names {
+		a.namesMap = make(map[base.Address]types.Name, len(items))
+		for _, name := range items {
 			a.namesMap[name.Address] = name
 		}
 		// EXISTING_CODE

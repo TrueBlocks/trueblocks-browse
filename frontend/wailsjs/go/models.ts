@@ -405,11 +405,6 @@ export namespace sdk {
 
 export namespace types {
 	
-	export enum DaemonState {
-	    STOPPED = "Stopped",
-	    RUNNING = "Running",
-	    PAUSED = "Paused",
-	}
 	export enum WizState {
 	    WELCOME = "welcome",
 	    CONFIG = "config",
@@ -423,6 +418,11 @@ export namespace types {
 	    PREVIOUS = "Previous",
 	    NEXT = "Next",
 	    FINISH = "Finish",
+	}
+	export enum DaemonState {
+	    STOPPED = "Stopped",
+	    RUNNING = "Running",
+	    PAUSED = "Paused",
 	}
 	export class Parameter {
 	    components?: Parameter[];
