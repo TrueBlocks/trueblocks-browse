@@ -84,7 +84,7 @@
             "ui_route": "1010-history-2",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "wantsSearch|noSdk",
+            "attributes": "wantsSearch",
             "members": [
                 {
                     "name": "address",

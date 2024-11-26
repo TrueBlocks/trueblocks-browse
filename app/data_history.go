@@ -61,29 +61,37 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error) error {
 	logger.InfoBY("Updating history...")
 
 	// EXISTING_CODE
-	if err := a.thing(address, 250, errorChan); err != nil {
-		logger.InfoBM("thing shit the bed")
-		a.emitAddressErrorMsg(err, address)
+	// EXISTING_CODE
+	if items, meta, err := a.pullHistoryies(address, errorChan); err != nil {
+		if errorChan != nil {
+			errorChan <- err
+		}
 		return err
+	} else if (items == nil) || (len(items) == 0) {
+		// this outcome is okay
+		a.meta = *meta
+		return nil
+	} else {
+		// EXISTING_CODE
+		// EXISTING_CODE
+		a.meta = *meta
+		history = types.NewHistoryContainer(a.getChain(), items, address)
+		// EXISTING_CODE
+		// EXISTING_CODE
+		a.emitLoadingMsg(messages.Loaded, "history")
 	}
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	a.emitLoadingMsg(messages.Loaded, "history")
 
 	return nil
 }
 
-func (a *App) pullHistoryies() (items []types.Transaction, meta *types.Meta, err error) {
+func (a *App) pullHistoryies(address base.Address, errorChan chan error) (items []types.Transaction, meta *types.Meta, err error) {
 	// EXISTING_CODE
-	return
+	return a.thing(address, 250, errorChan)
 	// EXISTING_CODE
 }
 
 // EXISTING_CODE
-func (a *App) thing(address base.Address, freq int, errorChan chan error) error {
+func (a *App) thing(address base.Address, freq int, errorChan chan error) (items []types.Transaction, meta *types.Meta, err error) {
 	defer a.trackPerformance("thing", false)()
 
 	txCnt := a.txCount(address)
@@ -149,11 +157,11 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) error 
 		}
 	}()
 
-	_, meta, err := opts.Export() // blocks until forever loop above finishes
+	_, meta, err = opts.Export() // blocks until forever loop above finishes
 	if err != nil {
 		logger.InfoBM("thing: error in Export")
 		a.emitProgressMsg(messages.Canceled, address, txCnt, txCnt)
-		return err
+		return history.Items, meta, err
 	}
 
 	txCnt = a.txCount(address)
@@ -170,8 +178,7 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) error 
 	a.emitMsg(messages.Refresh, &messages.MessageMsg{
 		Num1: 3, // 3 means refresh
 	})
-
-	return nil
+	return history.Items, meta, nil
 }
 
 func (a *App) getHistoryCnt(address base.Address) int64 {

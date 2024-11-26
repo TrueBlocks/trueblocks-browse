@@ -5,7 +5,6 @@
 {{ $itemType := .ItemType }}
 {{ $embedType := .EmbedType }}
 {{ $members := .Members }}
-{{ $needsSdk := .Needs "sdk" }}
 
 {{ $hasSorts := .HasSorts }}
 {{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
@@ -17,7 +16,10 @@
 {{ $isProject := eq $class "Project" }}
 {{ $isSettings := eq $class "Settings" }}
 
-{{ $expectsZero := (or $isSettings (or (or $isWizard $isDaemon) (or $isSession $isProject)) )}}
+{{ $one := (or $isHistory $isSettings) }}
+{{ $two := (or $isWizard $isDaemon) }}
+{{ $three := (or $isSession $isProject) }}
+{{ $expectsZero := (or $one (or $two $three) )}}
 
 {{ $appData := print "a." $routeLower }}
 {{ if $isHistory }}
@@ -30,7 +32,7 @@
 	}
 	return err` }}
 {{ if $expectsZero }}
-	{{ $noRecords = `  // expected outcome
+	{{ $noRecords = `  // this outcome is okay
 	a.meta = *meta
 	return nil` }}
 {{ end }}
@@ -38,6 +40,14 @@
 {{ $param1 := print "items []types." $itemType }}
 {{ if $hasEmbed }}
 	{{ $param1 = print "items []types." $embedType }}
+{{ end }}
+
+{{ $sorts := "" }}
+{{ if $hasSorts }}
+	{{ $sorts = print `	if err := sdk.Sort` $routeName `(` $appData `.Items, ` $appData `.Sorts); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+`}}
 {{ end }}
 
 {{/*==============================================================*/}}
@@ -85,7 +95,6 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 
 	// EXISTING_CODE
 	// EXISTING_CODE
-{{if $needsSdk -}}
 	if items, meta, err := a.pull{{toPlural $class}}(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -94,24 +103,15 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 	} else if (items == nil) || (len(items) == 0) {
 		{{$noRecords}}
 	} else {
-{{end -}}
 		// EXISTING_CODE
 		// EXISTING_CODE
-{{if $needsSdk -}}
 		a.meta = *meta
 		{{$appData}} = types.New{{$class}}Container(a.getChain(), items)
-{{end -}}
 		// EXISTING_CODE
 		// EXISTING_CODE
-{{if $hasSorts -}}
-		if err := sdk.Sort{{$routeName}}({{$appData}}.Items, {{$appData}}.Sorts); err != nil {
-			a.emitErrorMsg(err, nil)
-		}
-{{end -}}
-		a.emitLoadingMsg(messages.Loaded, "{{$routeLower}}")
-{{if $needsSdk -}}
+		{{ $sorts }} a.emitLoadingMsg(messages.Loaded, "{{$routeLower}}")
 	}
-{{end}}
+
 	return nil
 }
 

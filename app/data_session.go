@@ -50,7 +50,7 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 		return err
 	} else if (items == nil) || (len(items) == 0) {
-		// expected outcome
+		// this outcome is okay
 		a.meta = *meta
 		return nil
 	} else {
