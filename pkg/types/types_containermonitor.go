@@ -10,6 +10,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -25,6 +26,7 @@ type MonitorContainer struct {
 	NRecords uint64          `json:"nRecords"`
 	NStaged  uint64          `json:"nStaged"`
 	Updater  updater.Updater `json:"updater"`
+	Sorts    sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -33,8 +35,12 @@ func NewMonitorContainer(chain string, itemsIn []Monitor) MonitorContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	ret := MonitorContainer{
-		Items:   itemsIn,
-		NItems:  uint64(len(itemsIn)),
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Sorts: sdk.SortSpec{
+			Fields: []string{},
+			Order:  []sdk.SortOrder{},
+		},
 		Updater: NewMonitorUpdater(chain),
 	}
 	// EXISTING_CODE

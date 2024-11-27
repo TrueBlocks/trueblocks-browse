@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -20,6 +21,7 @@ type StatusContainer struct {
 	NItems   uint64      `json:"nItems"`
 	Status   `json:",inline"`
 	Updater  updater.Updater `json:"updater"`
+	Sorts    sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -29,9 +31,13 @@ func NewStatusContainer(chain string, status []Status) StatusContainer {
 	itemsIn := status[0].Caches
 	// EXISTING_CODE
 	ret := StatusContainer{
-		Items:   itemsIn,
-		NItems:  uint64(len(itemsIn)),
-		Status:  status[0].ShallowCopy(),
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Status: status[0].ShallowCopy(),
+		Sorts: sdk.SortSpec{
+			Fields: []string{"sizeInBytes"},
+			Order:  []sdk.SortOrder{sdk.Dec},
+		},
 		Updater: NewStatusUpdater(chain),
 	}
 	// EXISTING_CODE

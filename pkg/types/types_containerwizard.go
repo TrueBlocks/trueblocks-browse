@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -18,6 +19,7 @@ type WizardContainer struct {
 	Items   []WizError      `json:"items"`
 	NItems  uint64          `json:"nItems"`
 	Updater updater.Updater `json:"updater"`
+	Sorts   sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	State WizState `json:"state"`
 	// EXISTING_CODE
@@ -27,8 +29,12 @@ func NewWizardContainer(chain string, itemsIn []WizError) WizardContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	ret := WizardContainer{
-		Items:   itemsIn,
-		NItems:  uint64(len(itemsIn)),
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Sorts: sdk.SortSpec{
+			Fields: []string{},
+			Order:  []sdk.SortOrder{},
+		},
 		Updater: NewWizardUpdater(chain),
 	}
 	// EXISTING_CODE

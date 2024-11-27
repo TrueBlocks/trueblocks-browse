@@ -405,6 +405,12 @@ export namespace sdk {
 
 export namespace types {
 	
+	export enum WizStep {
+	    FIRST = "First",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
+	}
 	export enum DaemonState {
 	    STOPPED = "Stopped",
 	    RUNNING = "Running",
@@ -417,12 +423,6 @@ export namespace types {
 	    BLOOMS = "blooms",
 	    INDEX = "index",
 	    FINISHED = "finished",
-	}
-	export enum WizStep {
-	    FIRST = "First",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
 	}
 	export class Parameter {
 	    components?: Parameter[];
@@ -846,6 +846,7 @@ export namespace types {
 	    nChains: number;
 	    nItems: number;
 	    updater: updater.Updater;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new ConfigContainer(source);
@@ -864,6 +865,7 @@ export namespace types {
 	        this.nChains = source["nChains"];
 	        this.nItems = source["nItems"];
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1072,6 +1074,7 @@ export namespace types {
 	    items: Nothing[];
 	    nItems: number;
 	    updater: updater.Updater;
+	    sorts: sdk.SortSpec;
 	    scraperController?: DaemonScraper;
 	    freshenController?: DaemonFreshen;
 	    ipfsController?: DaemonIpfs;
@@ -1092,6 +1095,7 @@ export namespace types {
 	        this.items = this.convertValues(source["items"], Nothing);
 	        this.nItems = source["nItems"];
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.scraperController = this.convertValues(source["scraperController"], DaemonScraper);
 	        this.freshenController = this.convertValues(source["freshenController"], DaemonFreshen);
 	        this.ipfsController = this.convertValues(source["ipfsController"], DaemonIpfs);
@@ -1623,6 +1627,7 @@ export namespace types {
 	    nTotal: number;
 	    name: string;
 	    updater: updater.Updater;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new HistoryContainer(source);
@@ -1641,6 +1646,7 @@ export namespace types {
 	        this.nTotal = source["nTotal"];
 	        this.name = source["name"];
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1878,6 +1884,7 @@ export namespace types {
 	    nRecords: number;
 	    nStaged: number;
 	    updater: updater.Updater;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new MonitorContainer(source);
@@ -1895,6 +1902,7 @@ export namespace types {
 	        this.nRecords = source["nRecords"];
 	        this.nStaged = source["nStaged"];
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1986,6 +1994,7 @@ export namespace types {
 	    nSystem: number;
 	    sizeOnDisc: number;
 	    updater: updater.Updater;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new NameContainer(source);
@@ -2006,6 +2015,7 @@ export namespace types {
 	        this.nSystem = source["nSystem"];
 	        this.sizeOnDisc = source["sizeOnDisc"];
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2040,6 +2050,7 @@ export namespace types {
 	    nMonitors: number;
 	    nNames: number;
 	    updater: updater.Updater;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new ProjectContainer(source);
@@ -2058,6 +2069,7 @@ export namespace types {
 	        this.nMonitors = source["nMonitors"];
 	        this.nNames = source["nNames"];
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2231,6 +2243,7 @@ export namespace types {
 	    wizardStr: string;
 	    toggles: Toggles;
 	    updater: updater.Updater;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new SessionContainer(source);
@@ -2250,6 +2263,7 @@ export namespace types {
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2299,6 +2313,7 @@ export namespace types {
 	    meta?: MetaData;
 	    diffs?: MetaData;
 	    updater: updater.Updater;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new StatusContainer(source);
@@ -2334,6 +2349,7 @@ export namespace types {
 	        this.meta = this.convertValues(source["meta"], MetaData);
 	        this.diffs = this.convertValues(source["diffs"], MetaData);
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2359,6 +2375,7 @@ export namespace types {
 	    items: CacheItem[];
 	    nItems: number;
 	    updater: updater.Updater;
+	    sorts: sdk.SortSpec;
 	    status: StatusContainer;
 	    config: ConfigContainer;
 	    session: SessionContainer;
@@ -2373,6 +2390,7 @@ export namespace types {
 	        this.items = this.convertValues(source["items"], CacheItem);
 	        this.nItems = source["nItems"];
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.status = this.convertValues(source["status"], StatusContainer);
 	        this.config = this.convertValues(source["config"], ConfigContainer);
 	        this.session = this.convertValues(source["session"], SessionContainer);
@@ -2426,6 +2444,7 @@ export namespace types {
 	    items: WizError[];
 	    nItems: number;
 	    updater: updater.Updater;
+	    sorts: sdk.SortSpec;
 	    state: WizState;
 	
 	    static createFrom(source: any = {}) {
@@ -2438,6 +2457,7 @@ export namespace types {
 	        this.items = this.convertValues(source["items"], WizError);
 	        this.nItems = source["nItems"];
 	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.state = source["state"];
 	    }
 	

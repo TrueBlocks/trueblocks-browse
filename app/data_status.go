@@ -67,6 +67,9 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 			return a.status.Caches[i].SizeInBytes > a.status.Caches[j].SizeInBytes
 		})
 		// EXISTING_CODE
+		if err := sdk.SortStatus(a.status.Items, a.status.Sorts); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		a.emitLoadingMsg(messages.Loaded, "status")
 	}
 

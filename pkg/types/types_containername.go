@@ -14,6 +14,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 var namesChain = "mainnet"
@@ -34,6 +35,7 @@ type NameContainer struct {
 	NSystem    uint64          `json:"nSystem"`
 	SizeOnDisc uint64          `json:"sizeOnDisc"`
 	Updater    updater.Updater `json:"updater"`
+	Sorts      sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -42,8 +44,12 @@ func NewNameContainer(chain string, itemsIn []Name) NameContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	ret := NameContainer{
-		Items:   itemsIn,
-		NItems:  uint64(len(itemsIn)),
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Sorts: sdk.SortSpec{
+			Fields: []string{},
+			Order:  []sdk.SortOrder{},
+		},
 		Updater: NewNameUpdater(chain),
 	}
 	// EXISTING_CODE

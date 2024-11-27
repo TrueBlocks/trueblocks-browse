@@ -5,6 +5,7 @@
 	doc_route = "1070-containers"
 	ui_route = "1070-status-8"
 	attributes = ""
+	sorts = "sizeInBytes+Dec"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"

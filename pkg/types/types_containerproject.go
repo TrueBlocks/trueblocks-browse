@@ -9,6 +9,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -25,6 +26,7 @@ type ProjectContainer struct {
 	NMonitors   uint64             `json:"nMonitors"`
 	NNames      uint64             `json:"nNames"`
 	Updater     updater.Updater    `json:"updater"`
+	Sorts       sdk.SortSpec       `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -33,8 +35,12 @@ func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContai
 	// EXISTING_CODE
 	// EXISTING_CODE
 	ret := ProjectContainer{
-		Items:   itemsIn,
-		NItems:  uint64(len(itemsIn)),
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Sorts: sdk.SortSpec{
+			Fields: []string{},
+			Order:  []sdk.SortOrder{},
+		},
 		Updater: NewProjectUpdater(chain, itemsIn),
 	}
 	// EXISTING_CODE

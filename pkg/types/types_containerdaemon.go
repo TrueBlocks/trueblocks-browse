@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -18,6 +19,7 @@ type DaemonContainer struct {
 	Items   []Nothing       `json:"items"`
 	NItems  uint64          `json:"nItems"`
 	Updater updater.Updater `json:"updater"`
+	Sorts   sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	ScraperController *DaemonScraper `json:"scraperController"`
 	FreshenController *DaemonFreshen `json:"freshenController"`
@@ -30,9 +32,13 @@ func NewDaemonContainer(chain string, daemons []Daemon) DaemonContainer {
 	itemsIn := []Nothing{}
 	// EXISTING_CODE
 	ret := DaemonContainer{
-		Items:   itemsIn,
-		NItems:  uint64(len(itemsIn)),
-		Daemon:  daemons[0].ShallowCopy(),
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Daemon: daemons[0].ShallowCopy(),
+		Sorts: sdk.SortSpec{
+			Fields: []string{},
+			Order:  []sdk.SortOrder{},
+		},
 		Updater: NewDaemonUpdater(chain),
 	}
 	// EXISTING_CODE

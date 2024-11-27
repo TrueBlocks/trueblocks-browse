@@ -8,6 +8,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -18,6 +19,7 @@ type SessionContainer struct {
 	NItems  uint64    `json:"nItems"`
 	Session `json:",inline"`
 	Updater updater.Updater `json:"updater"`
+	Sorts   sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -30,6 +32,10 @@ func NewSessionContainer(chain string, sessions []Session) SessionContainer {
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
 		Session: sessions[0].ShallowCopy(),
+		Sorts: sdk.SortSpec{
+			Fields: []string{},
+			Order:  []sdk.SortOrder{},
+		},
 		Updater: NewSessionUpdater(chain),
 	}
 	// EXISTING_CODE

@@ -484,6 +484,7 @@
             "ui_route": "1070-status-8",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "sorts": "sizeInBytes+Dec",
             "members": [
                 {
                     "name": "status",

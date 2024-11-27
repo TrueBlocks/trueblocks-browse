@@ -9,6 +9,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -18,6 +19,7 @@ type SettingsContainer struct {
 	Items   []CacheItem     `json:"items"`
 	NItems  uint64          `json:"nItems"`
 	Updater updater.Updater `json:"updater"`
+	Sorts   sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	Status  StatusContainer  `json:"status"`
 	Config  ConfigContainer  `json:"config"`
@@ -29,8 +31,12 @@ func NewSettingsContainer(chain string, itemsIn []CacheItem) SettingsContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 	ret := SettingsContainer{
-		Items:   itemsIn,
-		NItems:  uint64(len(itemsIn)),
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Sorts: sdk.SortSpec{
+			Fields: []string{},
+			Order:  []sdk.SortOrder{},
+		},
 		Updater: NewSettingsUpdater(chain),
 	}
 	// EXISTING_CODE

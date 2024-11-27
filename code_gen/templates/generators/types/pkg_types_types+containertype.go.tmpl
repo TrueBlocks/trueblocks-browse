@@ -6,8 +6,6 @@
 {{ $embedName := .EmbedName }}
 {{ $embedType := .EmbedType }}
 {{ $members := .Members }}
-
-{{ $hasSorts := .HasSorts }}
 {{ $hasEmbed := and (gt (len $embedName) 0) true }}
 
 {{ $isHistory := eq $class "History" }}
@@ -21,16 +19,6 @@
 {{ $embed2 := "//-- remove line --" }}
 {{ if $hasEmbed }}
 	{{ $embed2 = print "  " $embedType ": " (toPlural (toLower $embedName)) "[0].ShallowCopy()," }}
-{{ end }}
-
-{{ $sorts1 := "//-- remove line --" }}
-{{ if $hasSorts }}
-	{{ $sorts1 = print "  Sorts sdk.SortSpec `json:\"sorts\"`" }}
-{{ end }}
-
-{{ $sorts2 := "//-- remove line --" }}
-{{ if $hasSorts }}
-	{{ $sorts2 = print "  Sorts: " .SortsInstance "," }}
 {{ end }}
 
 {{ $param1 := print "itemsIn []" $itemType }}
@@ -72,7 +60,7 @@ type {{$class}}Container struct {
 		{{.GoName}} {{$goType}} {{.Tag}}
 	{{- end -}}
 	{{- end}}
-	{{$sorts1}}
+	Sorts sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -84,7 +72,7 @@ func New{{$class}}Container(chain string, {{$param1}}{{$param2}}) {{$class}}Cont
 		Items: itemsIn,
 		NItems: uint64(len(itemsIn)),
 		{{$embed2}}
-		{{$sorts2}}
+		Sorts: {{.SortsInstance}},
 		Updater: New{{$class}}Updater(chain{{$param3}}),
  	}
 	// EXISTING_CODE
