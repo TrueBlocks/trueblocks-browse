@@ -42,8 +42,6 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating session...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	if items, meta, err := a.pullSessions(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

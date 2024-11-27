@@ -30,7 +30,7 @@
 
 {{ $sorts2 := "//-- remove line --" }}
 {{ if $hasSorts }}
-	{{ $sorts2 = print "  Sorts: " .SortsInstance }}
+	{{ $sorts2 = print "  Sorts: " .SortsInstance "," }}
 {{ end }}
 
 {{ $param1 := print "itemsIn []" $itemType }}

@@ -47,8 +47,6 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating names...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	if items, meta, err := a.pullNames(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
@@ -64,14 +62,14 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		namesMutex.Lock()
 		defer namesMutex.Unlock()
-		// EXISTING_CODE
-		a.meta = *meta
-		a.names = types.NewNameContainer(a.getChain(), items)
-		// EXISTING_CODE
 		a.namesMap = make(map[base.Address]types.Name, len(items))
 		for _, name := range items {
 			a.namesMap[name.Address] = name
 		}
+		// EXISTING_CODE
+		a.meta = *meta
+		a.names = types.NewNameContainer(a.getChain(), items)
+		// EXISTING_CODE
 		// EXISTING_CODE
 		a.emitLoadingMsg(messages.Loaded, "names")
 	}

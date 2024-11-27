@@ -44,8 +44,6 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating project...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	if items, meta, err := a.pullProjects(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

@@ -45,8 +45,6 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating status...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	if items, meta, err := a.pullStatus(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

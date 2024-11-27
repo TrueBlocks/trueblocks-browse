@@ -42,8 +42,6 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating settings...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	if items, meta, err := a.pullSettings(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

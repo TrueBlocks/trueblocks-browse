@@ -43,8 +43,6 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating abis...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	if items, meta, err := a.pullAbis(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

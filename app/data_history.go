@@ -60,8 +60,6 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating history...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	if items, meta, err := a.pullHistoryies(address, errorChan); err != nil {
 		if errorChan != nil {
 			errorChan <- err

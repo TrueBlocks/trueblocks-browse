@@ -42,8 +42,6 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating wizard...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	if items, meta, err := a.pullWizards(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

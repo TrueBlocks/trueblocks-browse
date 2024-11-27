@@ -43,8 +43,6 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating indexes...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	if items, meta, err := a.pullIndexes(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

@@ -46,8 +46,6 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating monitors...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	if items, meta, err := a.pullMonitors(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

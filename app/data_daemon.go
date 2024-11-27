@@ -42,8 +42,6 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating daemons...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	if items, meta, err := a.pullDaemons(); err != nil {
 		if errorChan != nil {
 			errorChan <- err

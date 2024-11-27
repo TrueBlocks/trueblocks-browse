@@ -113,8 +113,6 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 	}()
 	logger.InfoBY("Updating {{$routeLower}}...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	if items, meta, err := a.pull{{toPlural $class}}({{$param1}}{{$param2}}); err != nil {
 		if errorChan != nil {
 			errorChan <- err

@@ -43,8 +43,6 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating manifests...")
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	if items, meta, err := a.pullManifests(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
