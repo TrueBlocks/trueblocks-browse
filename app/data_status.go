@@ -46,9 +46,6 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	logger.InfoBY("Updating status...")
 
 	// EXISTING_CODE
-	w := logger.GetLoggerWriter()
-	logger.SetLoggerWriter(io.Discard)
-	defer logger.SetLoggerWriter(w)
 	// EXISTING_CODE
 	if items, meta, err := a.pullStatus(); err != nil {
 		if errorChan != nil {
@@ -71,7 +68,6 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		sort.Slice(a.status.Caches, func(i, j int) bool {
 			return a.status.Caches[i].SizeInBytes > a.status.Caches[j].SizeInBytes
 		})
-		logger.SetLoggerWriter(w)
 		// EXISTING_CODE
 		a.emitLoadingMsg(messages.Loaded, "status")
 	}
@@ -81,6 +77,9 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 
 func (a *App) pullStatus() (items []types.Status, meta *types.Meta, err error) {
 	// EXISTING_CODE
+	w := logger.GetLoggerWriter()
+	logger.SetLoggerWriter(io.Discard)
+	defer logger.SetLoggerWriter(w)
 	opts := sdk.StatusOptions{
 		Globals: a.getGlobals(true /* verbose */),
 	}
