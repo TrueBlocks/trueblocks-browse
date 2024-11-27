@@ -38,8 +38,8 @@ func NewMonitorContainer(chain string, itemsIn []Monitor) MonitorContainer {
 		Items:  itemsIn,
 		NItems: uint64(len(itemsIn)),
 		Sorts: sdk.SortSpec{
-			Fields: []string{},
-			Order:  []sdk.SortOrder{},
+			Fields: []string{"nRecords", "address"},
+			Order:  []sdk.SortOrder{sdk.Dec, sdk.Asc},
 		},
 		Updater: NewMonitorUpdater(chain),
 	}

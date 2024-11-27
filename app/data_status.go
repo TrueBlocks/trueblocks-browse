@@ -6,7 +6,6 @@ package app
 import (
 	"fmt"
 	"io"
-	"sort"
 	"sync"
 	"sync/atomic"
 
@@ -62,7 +61,6 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.status = types.NewStatusContainer(a.getChain(), items)
 		// EXISTING_CODE
-		// TODO: Use the core's sorting mechanism (see SortChunk Stats for example)
 		// EXISTING_CODE
 		if err := sdk.SortStatus(a.status.Items, a.status.Sorts); err != nil {
 			a.emitErrorMsg(err, nil)

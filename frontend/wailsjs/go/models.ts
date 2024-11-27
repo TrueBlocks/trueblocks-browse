@@ -405,12 +405,6 @@ export namespace sdk {
 
 export namespace types {
 	
-	export enum WizStep {
-	    FIRST = "First",
-	    PREVIOUS = "Previous",
-	    NEXT = "Next",
-	    FINISH = "Finish",
-	}
 	export enum DaemonState {
 	    STOPPED = "Stopped",
 	    RUNNING = "Running",
@@ -423,6 +417,12 @@ export namespace types {
 	    BLOOMS = "blooms",
 	    INDEX = "index",
 	    FINISHED = "finished",
+	}
+	export enum WizStep {
+	    FIRST = "First",
+	    PREVIOUS = "Previous",
+	    NEXT = "Next",
+	    FINISH = "Finish",
 	}
 	export class Parameter {
 	    components?: Parameter[];

@@ -162,6 +162,7 @@
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "wantsSearch|wantsEnter|wantsModify",
+            "sorts": "nRecords+Dec,address+Asc",
             "members": [
                 {
                     "name": "nNamed",
