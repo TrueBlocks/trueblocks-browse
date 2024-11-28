@@ -40,7 +40,7 @@ func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContai
 		NItems: uint64(len(itemsIn)),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"address"},
-			Order:  []sdk.SortOrder{"Asc},
+			Order:  []sdk.SortOrder{sdk.Asc},
 		},
 		Updater: NewProjectUpdater(chain, itemsIn),
 	}

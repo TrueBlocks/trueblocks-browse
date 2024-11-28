@@ -8,6 +8,7 @@
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "wantsSearch|wantsEnter|wantsModify",
+            "sorts": "address+Asc",
             "members": [
                 {
                     "name": "nMonitors",
