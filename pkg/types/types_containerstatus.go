@@ -111,6 +111,7 @@ func (s *StatusContainer) passesFilter(item *CacheItem, filter *Filter) (ret boo
 	if filter.HasCriteria() {
 		ret = false
 		// EXISTING_CODE
+		_ = item
 		// EXISTING_CODE
 	}
 	return

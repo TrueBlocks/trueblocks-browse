@@ -3,7 +3,6 @@ package app
 import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 func (a *App) isConfigured() bool {
@@ -49,7 +48,7 @@ func (a *App) StepWizard(step types.WizStep) types.WizState {
 			a.Navigate("/", "")
 		}
 		a.emitMsg(messages.Refresh, &messages.MessageMsg{
-			State: string(a.wizard.State),
+			State: a.wizard.State.String(),
 			Num1:  2, // 2 is the wizard step if needed
 		})
 	}()
@@ -79,8 +78,6 @@ func (a *App) StepWizard(step types.WizStep) types.WizState {
 	}
 
 	a.saveSession()
-	logger.InfoBB("Wizard state:", a.wizard.State)
-
 	return a.wizard.State
 }
 
