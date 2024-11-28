@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -17,14 +16,14 @@ import (
 
 type AbiContainer struct {
 	Abi           `json:",inline"`
-	Chain         string          `json:"chain"`
-	Items         []Abi           `json:"items"`
-	LargestFile   string          `json:"largestFile"`
-	MostEvents    string          `json:"mostEvents"`
-	MostFunctions string          `json:"mostFunctions"`
-	NItems        uint64          `json:"nItems"`
-	Updater       updater.Updater `json:"updater"`
-	Sorts         sdk.SortSpec    `json:"sorts"`
+	Chain         string       `json:"chain"`
+	Items         []Abi        `json:"items"`
+	LargestFile   string       `json:"largestFile"`
+	MostEvents    string       `json:"mostEvents"`
+	MostFunctions string       `json:"mostFunctions"`
+	NItems        uint64       `json:"nItems"`
+	Updater       sdk.Updater  `json:"updater"`
+	Sorts         sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -49,23 +48,23 @@ func NewAbiContainer(chain string, abis []Abi) AbiContainer {
 	return ret
 }
 
-func NewAbiUpdater(chain string, resetIn ...bool) updater.Updater {
+func NewAbiUpdater(chain string, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Path: filepath.Join(coreConfig.PathToCache(chain), "abis"), Type: updater.Folder},
-		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
+	items := []sdk.UpdaterItem{
+		{Path: filepath.Join(coreConfig.PathToCache(chain), "abis"), Type: sdk.Folder},
+		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: sdk.Folder},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("abis", items)
+	u, _ := sdk.NewUpdater("abis", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *AbiContainer) String() string {

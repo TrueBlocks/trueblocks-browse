@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -16,10 +15,10 @@ import (
 type DaemonContainer struct {
 	Chain   string `json:"chain"`
 	Daemon  `json:",inline"`
-	Items   []Nothing       `json:"items"`
-	NItems  uint64          `json:"nItems"`
-	Updater updater.Updater `json:"updater"`
-	Sorts   sdk.SortSpec    `json:"sorts"`
+	Items   []Nothing    `json:"items"`
+	NItems  uint64       `json:"nItems"`
+	Updater sdk.Updater  `json:"updater"`
+	Sorts   sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	ScraperController *DaemonScraper `json:"scraperController"`
 	FreshenController *DaemonFreshen `json:"freshenController"`
@@ -47,22 +46,22 @@ func NewDaemonContainer(chain string, daemons []Daemon) DaemonContainer {
 	return ret
 }
 
-func NewDaemonUpdater(chain string, resetIn ...bool) updater.Updater {
+func NewDaemonUpdater(chain string, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Duration: 2 * time.Minute, Type: updater.Timer},
+	items := []sdk.UpdaterItem{
+		{Duration: 2 * time.Minute, Type: sdk.Timer},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("daemons", items)
+	u, _ := sdk.NewUpdater("daemons", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *DaemonContainer) String() string {

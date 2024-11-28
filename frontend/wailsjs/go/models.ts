@@ -400,6 +400,58 @@ export namespace sdk {
 	        this.orders = source["orders"];
 	    }
 	}
+	export class UpdaterItem {
+	    path: string;
+	    duration: number;
+	    type: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new UpdaterItem(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.path = source["path"];
+	        this.duration = source["duration"];
+	        this.type = source["type"];
+	    }
+	}
+	export class Updater {
+	    name: string;
+	    lastTimeStamp: number;
+	    lastTotalSize: number;
+	    items: UpdaterItem[];
+	
+	    static createFrom(source: any = {}) {
+	        return new Updater(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.lastTimeStamp = source["lastTimeStamp"];
+	        this.lastTotalSize = source["lastTotalSize"];
+	        this.items = this.convertValues(source["items"], UpdaterItem);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 
 }
 
@@ -585,7 +637,7 @@ export namespace types {
 	    mostEvents: string;
 	    mostFunctions: string;
 	    nItems: number;
-	    updater: updater.Updater;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -612,7 +664,7 @@ export namespace types {
 	        this.mostEvents = source["mostEvents"];
 	        this.mostFunctions = source["mostFunctions"];
 	        this.nItems = source["nItems"];
-	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
@@ -845,7 +897,7 @@ export namespace types {
 	    items: Chain[];
 	    nChains: number;
 	    nItems: number;
-	    updater: updater.Updater;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -864,7 +916,7 @@ export namespace types {
 	        this.items = this.convertValues(source["items"], Chain);
 	        this.nChains = source["nChains"];
 	        this.nItems = source["nItems"];
-	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
@@ -1073,7 +1125,7 @@ export namespace types {
 	    state: DaemonState;
 	    items: Nothing[];
 	    nItems: number;
-	    updater: updater.Updater;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	    scraperController?: DaemonScraper;
 	    freshenController?: DaemonFreshen;
@@ -1094,7 +1146,7 @@ export namespace types {
 	        this.state = source["state"];
 	        this.items = this.convertValues(source["items"], Nothing);
 	        this.nItems = source["nItems"];
-	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.scraperController = this.convertValues(source["scraperController"], DaemonScraper);
 	        this.freshenController = this.convertValues(source["freshenController"], DaemonFreshen);
@@ -1626,7 +1678,7 @@ export namespace types {
 	    nTokens: number;
 	    nTotal: number;
 	    name: string;
-	    updater: updater.Updater;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -1645,7 +1697,7 @@ export namespace types {
 	        this.nTokens = source["nTokens"];
 	        this.nTotal = source["nTotal"];
 	        this.name = source["name"];
-	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
@@ -1684,7 +1736,7 @@ export namespace types {
 	    recWid: number;
 	    items: ChunkStats[];
 	    nItems: number;
-	    updater: updater.Updater;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -1709,7 +1761,7 @@ export namespace types {
 	        this.recWid = source["recWid"];
 	        this.items = this.convertValues(source["items"], ChunkStats);
 	        this.nItems = source["nItems"];
-	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
@@ -1761,7 +1813,7 @@ export namespace types {
 	    nBlooms: number;
 	    nIndexes: number;
 	    nItems: number;
-	    updater: updater.Updater;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -1780,7 +1832,7 @@ export namespace types {
 	        this.nBlooms = source["nBlooms"];
 	        this.nIndexes = source["nIndexes"];
 	        this.nItems = source["nItems"];
-	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
@@ -1883,7 +1935,7 @@ export namespace types {
 	    nNamed: number;
 	    nRecords: number;
 	    nStaged: number;
-	    updater: updater.Updater;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -1901,7 +1953,7 @@ export namespace types {
 	        this.nNamed = source["nNamed"];
 	        this.nRecords = source["nRecords"];
 	        this.nStaged = source["nStaged"];
-	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
@@ -1993,7 +2045,7 @@ export namespace types {
 	    nRegular: number;
 	    nSystem: number;
 	    sizeOnDisc: number;
-	    updater: updater.Updater;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -2014,7 +2066,7 @@ export namespace types {
 	        this.nRegular = source["nRegular"];
 	        this.nSystem = source["nSystem"];
 	        this.sizeOnDisc = source["sizeOnDisc"];
-	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
@@ -2049,7 +2101,7 @@ export namespace types {
 	    nManifests: number;
 	    nMonitors: number;
 	    nNames: number;
-	    updater: updater.Updater;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -2068,7 +2120,7 @@ export namespace types {
 	        this.nManifests = source["nManifests"];
 	        this.nMonitors = source["nMonitors"];
 	        this.nNames = source["nNames"];
-	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
@@ -2242,7 +2294,7 @@ export namespace types {
 	    window: Window;
 	    wizardStr: string;
 	    toggles: Toggles;
-	    updater: updater.Updater;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -2262,7 +2314,7 @@ export namespace types {
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
-	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
@@ -2312,7 +2364,7 @@ export namespace types {
 	    version?: string;
 	    meta?: MetaData;
 	    diffs?: MetaData;
-	    updater: updater.Updater;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -2348,7 +2400,7 @@ export namespace types {
 	        this.version = source["version"];
 	        this.meta = this.convertValues(source["meta"], MetaData);
 	        this.diffs = this.convertValues(source["diffs"], MetaData);
-	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
@@ -2374,7 +2426,7 @@ export namespace types {
 	    chain: string;
 	    items: CacheItem[];
 	    nItems: number;
-	    updater: updater.Updater;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	    status: StatusContainer;
 	    config: ConfigContainer;
@@ -2389,7 +2441,7 @@ export namespace types {
 	        this.chain = source["chain"];
 	        this.items = this.convertValues(source["items"], CacheItem);
 	        this.nItems = source["nItems"];
-	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.status = this.convertValues(source["status"], StatusContainer);
 	        this.config = this.convertValues(source["config"], ConfigContainer);
@@ -2443,7 +2495,7 @@ export namespace types {
 	    chain: string;
 	    items: WizError[];
 	    nItems: number;
-	    updater: updater.Updater;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	    state: WizState;
 	
@@ -2456,66 +2508,9 @@ export namespace types {
 	        this.chain = source["chain"];
 	        this.items = this.convertValues(source["items"], WizError);
 	        this.nItems = source["nItems"];
-	        this.updater = this.convertValues(source["updater"], updater.Updater);
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.state = source["state"];
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-
-}
-
-export namespace updater {
-	
-	export class UpdaterItem {
-	    path: string;
-	    duration: number;
-	    type: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new UpdaterItem(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.path = source["path"];
-	        this.duration = source["duration"];
-	        this.type = source["type"];
-	    }
-	}
-	export class Updater {
-	    name: string;
-	    lastTimeStamp: number;
-	    lastTotalSize: number;
-	    items: UpdaterItem[];
-	
-	    static createFrom(source: any = {}) {
-	        return new Updater(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.name = source["name"];
-	        this.lastTimeStamp = source["lastTimeStamp"];
-	        this.lastTotalSize = source["lastTotalSize"];
-	        this.items = this.convertValues(source["items"], UpdaterItem);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
