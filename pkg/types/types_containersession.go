@@ -6,7 +6,6 @@ package types
 import (
 	"encoding/json"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -18,8 +17,8 @@ type SessionContainer struct {
 	Items   []Nothing `json:"items"`
 	NItems  uint64    `json:"nItems"`
 	Session `json:",inline"`
-	Updater updater.Updater `json:"updater"`
-	Sorts   sdk.SortSpec    `json:"sorts"`
+	Updater sdk.Updater  `json:"updater"`
+	Sorts   sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -44,22 +43,22 @@ func NewSessionContainer(chain string, sessions []Session) SessionContainer {
 	return ret
 }
 
-func NewSessionUpdater(chain string, resetIn ...bool) updater.Updater {
+func NewSessionUpdater(chain string, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Path: utils.MustGetConfigFn("browse", "session.json"), Type: updater.File},
+	items := []sdk.UpdaterItem{
+		{Path: utils.MustGetConfigFn("browse", "session.json"), Type: sdk.File},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("session", items)
+	u, _ := sdk.NewUpdater("session", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *SessionContainer) String() string {

@@ -1,6 +1,6 @@
 name    ,type            ,strDefault ,attributes ,upgrades ,docOrder ,description
 daemon  ,types.Daemon    ,           ,embed      ,         ,         ,jim
 chain   ,string          ,           ,           ,         ,         ,jim
-updater ,updater.Updater ,           ,           ,         ,         ,jim
+updater ,sdk.Updater     ,           ,           ,         ,         ,jim
 items   ,[]types.Nothing ,           ,           ,         ,         ,jim
 nItems  ,uint64          ,           ,           ,         ,         ,jim

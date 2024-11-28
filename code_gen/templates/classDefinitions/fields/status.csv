@@ -3,6 +3,6 @@ status   ,types.Status      ,           ,embed      ,         ,         ,jim
 nFolders ,uint64            ,           ,           ,         ,         ,jim
 nFiles   ,uint64            ,           ,           ,         ,         ,jim
 nBytes   ,uint64            ,           ,           ,         ,         ,jim
-updater  ,updater.Updater   ,           ,           ,         ,         ,jim
+updater  ,sdk.Updater       ,           ,           ,         ,         ,jim
 items    ,[]types.CacheItem ,           ,           ,         ,         ,jim
 nItems   ,uint64            ,           ,           ,         ,         ,jim

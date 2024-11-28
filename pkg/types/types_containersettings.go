@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -15,11 +14,11 @@ import (
 // EXISTING_CODE
 
 type SettingsContainer struct {
-	Chain   string          `json:"chain"`
-	Items   []CacheItem     `json:"items"`
-	NItems  uint64          `json:"nItems"`
-	Updater updater.Updater `json:"updater"`
-	Sorts   sdk.SortSpec    `json:"sorts"`
+	Chain   string       `json:"chain"`
+	Items   []CacheItem  `json:"items"`
+	NItems  uint64       `json:"nItems"`
+	Updater sdk.Updater  `json:"updater"`
+	Sorts   sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	Status  StatusContainer  `json:"status"`
 	Config  ConfigContainer  `json:"config"`
@@ -45,24 +44,24 @@ func NewSettingsContainer(chain string, itemsIn []CacheItem) SettingsContainer {
 	return ret
 }
 
-func NewSettingsUpdater(chain string, resetIn ...bool) updater.Updater {
+func NewSettingsUpdater(chain string, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Duration: 2 * time.Minute, Type: updater.Timer},                         // for status
-		{Path: utils.MustGetConfigFn("", "trueBlocks.toml"), Type: updater.File}, // for config
-		// {Path: utils.MustGetConfigFn("browse", "session.json"), Type: updater.File}, // ignore session changes
+	items := []sdk.UpdaterItem{
+		{Duration: 2 * time.Minute, Type: sdk.Timer},                         // for status
+		{Path: utils.MustGetConfigFn("", "trueBlocks.toml"), Type: sdk.File}, // for config
+		// {Path: utils.MustGetConfigFn("browse", "session.json"), Type: sdk.File}, // ignore session changes
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("settings", items)
+	u, _ := sdk.NewUpdater("settings", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *SettingsContainer) String() string {

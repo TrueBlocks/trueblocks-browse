@@ -7,6 +7,6 @@ nLogs   ,uint64              ,           ,           ,         ,         ,jim
 nTokens ,uint64              ,           ,           ,         ,         ,jim
 nErrors ,uint64              ,           ,           ,         ,         ,jim
 chain   ,string              ,           ,           ,         ,         ,jim
-updater ,updater.Updater     ,           ,           ,         ,         ,jim
+updater ,sdk.Updater         ,           ,           ,         ,         ,jim
 items   ,[]types.Transaction ,           ,           ,         ,         ,jim
 nItems  ,uint64              ,           ,           ,         ,         ,jim
