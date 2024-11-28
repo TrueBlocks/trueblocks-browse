@@ -58,6 +58,9 @@ func (a *App) loadSettings(wg *sync.WaitGroup, errorChan chan error) error {
 		a.settings = types.NewSettingsContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
+		if err := a.settings.Sort(); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		a.emitLoadingMsg(messages.Loaded, "settings")
 	}
 

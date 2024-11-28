@@ -29,7 +29,10 @@ func (a *App) ModifyName(modData *ModifyData) error {
 
 	cd := crud.CrudFromName(newName)
 	opts := sdk.NamesOptions{
-		Globals: a.getGlobals(false /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: false,
+		},
 	}
 	opts.Globals.Chain = namesChain
 

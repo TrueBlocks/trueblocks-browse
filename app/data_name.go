@@ -71,6 +71,9 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		a.names = types.NewNameContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
+		if err := a.names.Sort(); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		a.emitLoadingMsg(messages.Loaded, "names")
 	}
 
@@ -80,10 +83,13 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 func (a *App) pullNames() (items []types.Name, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	opts := sdk.NamesOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   namesChain,
+			Verbose: true,
+		},
+		All: true,
 	}
-	opts.All = true
-	return opts.NamesList()
+	return opts.Names()
 	// EXISTING_CODE
 }
 

@@ -175,5 +175,9 @@ func (s *ManifestContainer) ForEveryItem(process EveryChunkRecordFn, data any) b
 	return true
 }
 
+func (s *ManifestContainer) Sort() error {
+	return sdk.SortChunkRecords(s.Items, s.Sorts)
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

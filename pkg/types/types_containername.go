@@ -54,9 +54,6 @@ func NewNameContainer(chain string, itemsIn []Name) NameContainer {
 	}
 	// EXISTING_CODE
 	ret.Chain = namesChain // all names are on mainnet
-	sort.Slice(ret.Items, func(i, j int) bool {
-		return compare(ret.Items[i], ret.Items[j])
-	})
 	// EXISTING_CODE
 	return ret
 }
@@ -226,6 +223,14 @@ func (s *NameContainer) ForEveryItem(process EveryNameFn, data any) bool {
 		}
 	}
 	return true
+}
+
+func (s *NameContainer) Sort() error {
+	sort.Slice(s.Items, func(i, j int) bool {
+		return compare(s.Items[i], s.Items[j])
+	})
+	// return sdk.SortNames(s.Items, s.Sorts)
+	return nil
 }
 
 // EXISTING_CODE

@@ -167,5 +167,9 @@ func (s *SettingsContainer) ForEveryItem(process EveryCacheItemFn, data any) boo
 	return true
 }
 
+func (s *SettingsContainer) Sort() error {
+	return nil
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

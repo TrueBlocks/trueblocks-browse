@@ -5,6 +5,7 @@
 	doc_route = "1110-containers"
 	ui_route = "1110-config-v"
 	attributes = ""
+	sorts = "chainId+Asc"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"

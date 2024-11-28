@@ -66,7 +66,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		a.monitors = types.NewMonitorContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
-		if err := sdk.SortMonitors(a.monitors.Items, a.monitors.Sorts); err != nil {
+		if err := a.monitors.Sort(); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 		a.emitLoadingMsg(messages.Loaded, "monitors")
@@ -78,7 +78,10 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 func (a *App) pullMonitors() (items []types.Monitor, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	opts := sdk.MonitorsOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
 	return opts.MonitorsList()
 	// EXISTING_CODE

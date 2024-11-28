@@ -196,5 +196,9 @@ func (s *MonitorContainer) ForEveryItem(process EveryMonitorFn, data any) bool {
 	return true
 }
 
+func (s *MonitorContainer) Sort() error {
+	return sdk.SortMonitors(s.Items, s.Sorts)
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

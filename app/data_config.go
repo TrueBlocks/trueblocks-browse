@@ -5,7 +5,6 @@ package app
 // EXISTING_CODE
 import (
 	"fmt"
-	"sort"
 	"sync"
 	"sync/atomic"
 
@@ -61,10 +60,10 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.config = types.NewConfigContainer(a.getChain(), items)
 		// EXISTING_CODE
-		sort.Slice(a.config.Items, func(i, j int) bool {
-			return a.config.Items[i].ChainId < a.config.Items[j].ChainId
-		})
 		// EXISTING_CODE
+		if err := a.config.Sort(); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		a.emitLoadingMsg(messages.Loaded, "config")
 	}
 
@@ -74,9 +73,12 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 func (a *App) pullConfigs() (items []types.Config, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	opts := sdk.ConfigOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
-	return opts.ConfigList()
+	return opts.ConfigDump()
 	// EXISTING_CODE
 }
 

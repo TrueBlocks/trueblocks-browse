@@ -61,7 +61,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		a.abis = types.NewAbiContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
-		if err := sdk.SortAbis(a.abis.Items, a.abis.Sorts); err != nil {
+		if err := a.abis.Sort(); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 		a.emitLoadingMsg(messages.Loaded, "abis")
@@ -73,10 +73,12 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 func (a *App) pullAbis() (items []types.Abi, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	opts := sdk.AbisOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   namesChain,
+			Verbose: true,
+			Cache:   true,
+		},
 	}
-	opts.Cache = true
-	opts.Chain = namesChain
 	return opts.AbisList()
 	// EXISTING_CODE
 }

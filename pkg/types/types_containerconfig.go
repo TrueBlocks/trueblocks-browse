@@ -51,8 +51,8 @@ func NewConfigContainer(chain string, configs []Config) ConfigContainer {
 		NItems: uint64(len(itemsIn)),
 		Config: configs[0].ShallowCopy(),
 		Sorts: sdk.SortSpec{
-			Fields: []string{},
-			Order:  []sdk.SortOrder{},
+			Fields: []string{"chainId"},
+			Order:  []sdk.SortOrder{sdk.Asc},
 		},
 		Updater: NewConfigUpdater(chain),
 	}
@@ -176,6 +176,10 @@ func (s *ConfigContainer) ForEveryItem(process EveryChainFn, data any) bool {
 		}
 	}
 	return true
+}
+
+func (s *ConfigContainer) Sort() error {
+	return sdk.SortChains(s.Items, s.Sorts)
 }
 
 // EXISTING_CODE

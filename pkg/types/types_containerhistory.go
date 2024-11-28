@@ -186,6 +186,11 @@ func (s *HistoryContainer) ForEveryItem(process EveryTransactionFn, data any) bo
 	return true
 }
 
+func (s *HistoryContainer) Sort() error {
+	// TODO: Is there anything to sort for history?
+	return nil
+}
+
 // EXISTING_CODE
 func (s *HistoryContainer) SizeOf() int {
 	size := unsafe.Sizeof(s.Address) + unsafe.Sizeof(s.Name) + unsafe.Sizeof(s.Balance) + unsafe.Sizeof(s.NLogs) + unsafe.Sizeof(s.NTokens) + unsafe.Sizeof(s.NErrors) + unsafe.Sizeof(s.NItems) + unsafe.Sizeof(s.NTotal)

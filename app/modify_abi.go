@@ -7,8 +7,11 @@ import (
 
 func (a *App) ModifyAbi(modData *ModifyData) error {
 	opts := sdk.AbisOptions{
-		Addrs:   []string{modData.Address.Hex()},
-		Globals: a.getGlobals(false /* verbose */),
+		Addrs: []string{modData.Address.Hex()},
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: false,
+		},
 	}
 	opts.Globals.Decache = true
 

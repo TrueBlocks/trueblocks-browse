@@ -62,7 +62,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		a.status = types.NewStatusContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
-		if err := sdk.SortStatus(a.status.Items, a.status.Sorts); err != nil {
+		if err := a.status.Sort(); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 		a.emitLoadingMsg(messages.Loaded, "status")
@@ -77,9 +77,12 @@ func (a *App) pullStatus() (items []types.Status, meta *types.Meta, err error) {
 	logger.SetLoggerWriter(io.Discard)
 	defer logger.SetLoggerWriter(w)
 	opts := sdk.StatusOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
-	return opts.StatusList()
+	return opts.StatusAll()
 	// EXISTING_CODE
 }
 

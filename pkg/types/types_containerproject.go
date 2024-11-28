@@ -5,6 +5,7 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
+	"sort"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
@@ -173,6 +174,14 @@ func (s *ProjectContainer) ForEveryItem(process EveryHistoryContainerFn, data an
 		}
 	}
 	return true
+}
+
+func (s *ProjectContainer) Sort() error {
+	sort.Slice(s.Items, func(i, j int) bool {
+		return s.Items[i].Address.Hex() < s.Items[j].Address.Hex()
+	})
+	// return sdk.SortHistoryContainers(s.Items, s.Sorts)
+	return nil
 }
 
 // EXISTING_CODE

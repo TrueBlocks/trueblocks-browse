@@ -61,7 +61,7 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 		a.indexes = types.NewIndexContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
-		if err := sdk.SortIndexes(a.indexes.Items, a.indexes.Sorts); err != nil {
+		if err := a.indexes.Sort(); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 		a.emitLoadingMsg(messages.Loaded, "indexes")
@@ -72,10 +72,13 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 
 func (a *App) pullIndexes() (items []types.ChunkStats, meta *types.Meta, err error) {
 	// EXISTING_CODE
-	opts := sdk.IndexesOptions{
-		Globals: a.getGlobals(true /* verbose */),
+	opts := sdk.ChunksOptions{
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
-	return opts.IndexesList()
+	return opts.ChunksStats()
 	// EXISTING_CODE
 }
 

@@ -9,7 +9,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -108,18 +107,6 @@ func (a *App) DomReady(ctx context.Context) {
 // Shutdown is called by Wails when the app is closed
 func (a *App) Shutdown(ctx context.Context) {
 	a.saveSession()
-}
-
-func (a *App) getGlobals(verbose bool) sdk.Globals {
-	return sdk.Globals{
-		// Ether:   a.Ether,
-		// Cache:   a.Cache,
-		// Decache: a.Decache,
-		Verbose: verbose,
-		Chain:   a.getChain(),
-		// Output:  a.Output,
-		// Append:  a.Append,
-	}
 }
 
 /*

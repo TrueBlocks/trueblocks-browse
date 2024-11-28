@@ -127,6 +127,9 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 		{{$appData}} = types.New{{$class}}Container(a.getChain(), items{{$param3}})
 		// EXISTING_CODE
 		// EXISTING_CODE
+		if err := {{$appData}}.Sort(); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		{{ $sorts }} a.emitLoadingMsg(messages.Loaded, "{{$routeLower}}")
 	}
 

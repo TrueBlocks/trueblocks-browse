@@ -61,7 +61,7 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 		a.manifests = types.NewManifestContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
-		if err := sdk.SortManifests(a.manifests.Items, a.manifests.Sorts); err != nil {
+		if err := a.manifests.Sort(); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 		a.emitLoadingMsg(messages.Loaded, "manifests")
@@ -72,10 +72,13 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 
 func (a *App) pullManifests() (items []types.Manifest, meta *types.Meta, err error) {
 	// EXISTING_CODE
-	opts := sdk.ManifestsOptions{
-		Globals: a.getGlobals(true /* verbose */),
+	opts := sdk.ChunksOptions{
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
-	return opts.ManifestsList()
+	return opts.ChunksManifest()
 	// EXISTING_CODE
 }
 

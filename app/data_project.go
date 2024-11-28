@@ -4,7 +4,6 @@ package app
 
 // EXISTING_CODE
 import (
-	"sort"
 	"sync"
 	"sync/atomic"
 
@@ -76,10 +75,15 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 			a.project.HistorySize += uint64(item.SizeOf())
 			return true
 		}, nil)
-		sort.Slice(a.project.Items, func(i, j int) bool {
-			return a.project.Items[i].Address.Hex() < a.project.Items[j].Address.Hex()
-		})
+		// TODO: Shouldn't the following do this?
+		// TODO: if errorChan != nil {
+		// TODO: 	errorChan <- err
+		// TODO: }
+		// TODO: return err
 		// EXISTING_CODE
+		if err := a.project.Sort(); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		a.emitLoadingMsg(messages.Loaded, "project")
 	}
 

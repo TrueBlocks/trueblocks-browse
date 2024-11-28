@@ -159,6 +159,11 @@ func (s *WizardContainer) ForEveryItem(process EveryWizErrorFn, data any) bool {
 	return true
 }
 
+func (s *WizardContainer) Sort() error {
+	// TODO: Sorting?
+	return nil
+}
+
 // EXISTING_CODE
 type WizError struct {
 	Index  int      `json:"index"`
