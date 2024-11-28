@@ -168,8 +168,11 @@ func (s *StatusContainer) ForEveryItem(process EveryCacheItemFn, data any) bool 
 	return true
 }
 
-func (s *StatusContainer) Sort() error {
-	return sdk.SortCacheItems(s.Items, s.Sorts)
+func (s *StatusContainer) Sort() (err error) {
+	// EXISTING_CODE
+	err = sdk.SortCacheItems(s.Items, s.Sorts)
+	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

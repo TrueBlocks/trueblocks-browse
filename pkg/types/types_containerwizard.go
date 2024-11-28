@@ -159,9 +159,11 @@ func (s *WizardContainer) ForEveryItem(process EveryWizErrorFn, data any) bool {
 	return true
 }
 
-func (s *WizardContainer) Sort() error {
+func (s *WizardContainer) Sort() (err error) {
+	// EXISTING_CODE
 	// TODO: Sorting?
-	return nil
+	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

@@ -159,8 +159,11 @@ func (s *SessionContainer) ForEveryItem(process EveryNothingFn, data any) bool {
 	return true
 }
 
-func (s *SessionContainer) Sort() error {
-	return nil
+func (s *SessionContainer) Sort() (err error) {
+	// EXISTING_CODE
+	// TODO: Sorting?
+	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

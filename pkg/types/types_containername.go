@@ -225,12 +225,15 @@ func (s *NameContainer) ForEveryItem(process EveryNameFn, data any) bool {
 	return true
 }
 
-func (s *NameContainer) Sort() error {
+func (s *NameContainer) Sort() (err error) {
+	// EXISTING_CODE
 	sort.Slice(s.Items, func(i, j int) bool {
 		return compare(s.Items[i], s.Items[j])
 	})
+	// TODO: Sorting?
 	// return sdk.SortNames(s.Items, s.Sorts)
-	return nil
+	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

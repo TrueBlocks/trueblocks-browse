@@ -181,8 +181,11 @@ func (s *IndexContainer) ForEveryItem(process EveryChunkStatsFn, data any) bool 
 	return true
 }
 
-func (s *IndexContainer) Sort() error {
-	return sdk.SortChunkStats(s.Items, s.Sorts)
+func (s *IndexContainer) Sort() (err error) {
+	// EXISTING_CODE
+	err = sdk.SortChunkStats(s.Items, s.Sorts)
+	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

@@ -186,9 +186,11 @@ func (s *HistoryContainer) ForEveryItem(process EveryTransactionFn, data any) bo
 	return true
 }
 
-func (s *HistoryContainer) Sort() error {
+func (s *HistoryContainer) Sort() (err error) {
+	// EXISTING_CODE
 	// TODO: Is there anything to sort for history?
-	return nil
+	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

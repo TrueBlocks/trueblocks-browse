@@ -178,8 +178,11 @@ func (s *ConfigContainer) ForEveryItem(process EveryChainFn, data any) bool {
 	return true
 }
 
-func (s *ConfigContainer) Sort() error {
-	return sdk.SortChains(s.Items, s.Sorts)
+func (s *ConfigContainer) Sort() (err error) {
+	// EXISTING_CODE
+	err = sdk.SortChains(s.Items, s.Sorts)
+	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE
