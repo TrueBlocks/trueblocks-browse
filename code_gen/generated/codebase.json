@@ -60,7 +60,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 9
                 },
@@ -137,7 +137,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 9
                 },
@@ -209,7 +209,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 8
                 },
@@ -298,7 +298,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 11
                 },
@@ -359,7 +359,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 6
                 },
@@ -401,7 +401,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 3
                 },
@@ -461,7 +461,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 6
                 },
@@ -515,7 +515,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 5
                 },
@@ -549,7 +549,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 2
                 },
@@ -590,7 +590,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 3
                 },
@@ -631,7 +631,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 3
                 },
@@ -679,7 +679,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 4
                 },
@@ -714,7 +714,7 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 2
                 },

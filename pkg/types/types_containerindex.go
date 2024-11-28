@@ -6,7 +6,6 @@ package types
 import (
 	"encoding/json"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -16,10 +15,10 @@ import (
 type IndexContainer struct {
 	Chain      string `json:"chain"`
 	ChunkStats `json:",inline"`
-	Items      []ChunkStats    `json:"items"`
-	NItems     uint64          `json:"nItems"`
-	Updater    updater.Updater `json:"updater"`
-	Sorts      sdk.SortSpec    `json:"sorts"`
+	Items      []ChunkStats `json:"items"`
+	NItems     uint64       `json:"nItems"`
+	Updater    sdk.Updater  `json:"updater"`
+	Sorts      sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -44,22 +43,22 @@ func NewIndexContainer(chain string, chunkstats []ChunkStats) IndexContainer {
 	return ret
 }
 
-func NewIndexUpdater(chain string, resetIn ...bool) updater.Updater {
+func NewIndexUpdater(chain string, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Path: walk.GetRootPathFromCacheType(chain, walk.Index_Bloom), Type: updater.Folder},
+	items := []sdk.UpdaterItem{
+		{Path: walk.GetRootPathFromCacheType(chain, walk.Index_Bloom), Type: sdk.Folder},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("indexes", items)
+	u, _ := sdk.NewUpdater("indexes", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *IndexContainer) String() string {

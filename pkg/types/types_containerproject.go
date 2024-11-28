@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"sort"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -26,7 +25,7 @@ type ProjectContainer struct {
 	NManifests  uint64             `json:"nManifests"`
 	NMonitors   uint64             `json:"nMonitors"`
 	NNames      uint64             `json:"nNames"`
-	Updater     updater.Updater    `json:"updater"`
+	Updater     sdk.Updater        `json:"updater"`
 	Sorts       sdk.SortSpec       `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -50,27 +49,27 @@ func NewProjectContainer(chain string, itemsIn []HistoryContainer) ProjectContai
 	return ret
 }
 
-func NewProjectUpdater(chain string, itemsIn []HistoryContainer, resetIn ...bool) updater.Updater {
+func NewProjectUpdater(chain string, itemsIn []HistoryContainer, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
+	items := []sdk.UpdaterItem{
+		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: sdk.Folder},
 	}
 	for _, item := range itemsIn {
 		path := coreMonitor.PathToMonitorFile(chain, item.Address)
-		item := updater.UpdaterItem{Path: path, Type: updater.FileSize}
+		item := sdk.UpdaterItem{Path: path, Type: sdk.FileSize}
 		items = append(items, item)
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("project", items)
+	u, _ := sdk.NewUpdater("project", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *ProjectContainer) String() string {

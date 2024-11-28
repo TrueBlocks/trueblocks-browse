@@ -1,11 +1,11 @@
 import { Text } from "@mantine/core";
-import { updater } from "@gocode/models";
+import { sdk } from "@gocode/models";
 import { useRenderCounter } from "@hooks";
 import { useAppState, useViewState } from "@state";
 
-const debug = false;
+const debug = true;
 
-export const DebugState = ({ u }: { u: updater.Updater }) => {
+export const DebugState = ({ u }: { u: sdk.Updater }) => {
   const { info } = useAppState();
   const { nItems } = useViewState();
   const renderCount = useRenderCounter();
