@@ -8,6 +8,7 @@
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "wantsSearch|wantsEnter|wantsModify",
+            "sorts": "address+Asc",
             "members": [
                 {
                     "name": "nMonitors",
@@ -162,6 +163,7 @@
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "wantsSearch|wantsEnter|wantsModify",
+            "sorts": "nRecords+Dec,address+Asc",
             "members": [
                 {
                     "name": "nNamed",
@@ -654,6 +656,7 @@
             "ui_route": "1110-config-v",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "sorts": "chainId+Asc",
             "members": [
                 {
                     "name": "config",

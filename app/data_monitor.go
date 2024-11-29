@@ -74,6 +74,9 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 			return a.monitors.Items[i].NRecords < a.monitors.Items[j].NRecords
 		})
 		// EXISTING_CODE
+		if err := sdk.SortMonitors(a.monitors.Items, a.monitors.Sorts); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		a.emitLoadingMsg(messages.Loaded, "monitors")
 	}
 

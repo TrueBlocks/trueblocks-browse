@@ -65,6 +65,9 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 			return a.config.Items[i].ChainId < a.config.Items[j].ChainId
 		})
 		// EXISTING_CODE
+		if err := sdk.SortChains(a.config.Items, a.config.Sorts); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		a.emitLoadingMsg(messages.Loaded, "config")
 	}
 

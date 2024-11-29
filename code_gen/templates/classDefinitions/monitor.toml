@@ -5,6 +5,7 @@
 	doc_route = "1020-containers"
 	ui_route = "1020-monitors-3"
 	attributes = "wantsSearch|wantsEnter|wantsModify"
+	sorts = "nRecords+Dec,address+Asc"
 	# produced_by = "blocks"
 	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"

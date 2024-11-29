@@ -51,8 +51,8 @@ func NewConfigContainer(chain string, configs []Config) ConfigContainer {
 		NItems: uint64(len(itemsIn)),
 		Config: configs[0].ShallowCopy(),
 		Sorts: sdk.SortSpec{
-			Fields: []string{},
-			Order:  []sdk.SortOrder{},
+			Fields: []string{"chainId"},
+			Order:  []sdk.SortOrder{sdk.Asc},
 		},
 		Updater: NewConfigUpdater(chain),
 	}
