@@ -15,9 +15,14 @@ func (a *App) Reload() {
 {{range .Structures -}}
 	{{ $class := .Class }}
 	{{ $routeName := .UiRouteName }}
-	{{ $routeLower := toLower .UiRouteName }}
+	{{ $routeLower := print (toLower .UiRouteName) }}
 	{{ $isHistory := eq $class "History" }}
-{{ if not $isHistory }}{{ print `	case "/` $routeLower `":
+	{{ $isProject := eq $class "Project" }}
+	{{ $theRoute := print (toLower .UiRouteName) }}
+	{{ if $isProject }}
+		{{ $theRoute = "" }}
+	{{ end }}
+{{ if not $isHistory }}{{ print `	case "/` $theRoute `":
 		a.` $routeLower `.Updater.Reset()
 		if err := a.load` $routeName `(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
@@ -27,4 +32,11 @@ func (a *App) Reload() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
+
+	a.emitMsg(messages.Refresh, &messages.MessageMsg{
+		Name:    a.daemons.FreshenController.Name,
+		String1: "Refresh...",
+		String2: a.daemons.FreshenController.Color,
+		Num1:    1, // 1 means daemon if we need it
+	})
 }

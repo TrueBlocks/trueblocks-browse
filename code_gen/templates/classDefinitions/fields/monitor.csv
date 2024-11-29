@@ -6,6 +6,6 @@ nDeleted ,uint64          ,           ,           ,         ,         ,jim
 fileSize ,uint64          ,           ,           ,         ,         ,jim
 nRecords ,uint64          ,           ,           ,         ,         ,jim
 chain    ,string          ,           ,           ,         ,         ,jim
-updater  ,updater.Updater ,           ,           ,         ,         ,jim
+updater  ,sdk.Updater     ,           ,           ,         ,         ,jim
 items    ,[]types.Monitor ,           ,           ,         ,         ,jim
 nItems   ,uint64          ,           ,           ,         ,         ,jim

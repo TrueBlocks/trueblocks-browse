@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"unsafe"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
@@ -17,18 +16,18 @@ import (
 // EXISTING_CODE
 
 type HistoryContainer struct {
-	Address base.Address    `json:"address"`
-	Balance string          `json:"balance"`
-	Chain   string          `json:"chain"`
-	Items   []Transaction   `json:"items"`
-	NErrors uint64          `json:"nErrors"`
-	NItems  uint64          `json:"nItems"`
-	NLogs   uint64          `json:"nLogs"`
-	NTokens uint64          `json:"nTokens"`
-	NTotal  uint64          `json:"nTotal"`
-	Name    string          `json:"name"`
-	Updater updater.Updater `json:"updater"`
-	Sorts   sdk.SortSpec    `json:"sorts"`
+	Address base.Address  `json:"address"`
+	Balance string        `json:"balance"`
+	Chain   string        `json:"chain"`
+	Items   []Transaction `json:"items"`
+	NErrors uint64        `json:"nErrors"`
+	NItems  uint64        `json:"nItems"`
+	NLogs   uint64        `json:"nLogs"`
+	NTokens uint64        `json:"nTokens"`
+	NTotal  uint64        `json:"nTotal"`
+	Name    string        `json:"name"`
+	Updater sdk.Updater   `json:"updater"`
+	Sorts   sdk.SortSpec  `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -52,19 +51,19 @@ func NewHistoryContainer(chain string, itemsIn []Transaction, address base.Addre
 	return ret
 }
 
-func NewHistoryUpdater(chain string, address base.Address, resetIn ...bool) updater.Updater {
+func NewHistoryUpdater(chain string, address base.Address, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Path: coreMonitor.PathToMonitorFile(chain, address), Type: updater.FileSize},
-		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
+	items := []sdk.UpdaterItem{
+		{Path: coreMonitor.PathToMonitorFile(chain, address), Type: sdk.FileSize},
+		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: sdk.Folder},
 	}
 	// EXISTING_CODE
-	u, _ := updater.NewUpdater("history", items)
+	u, _ := sdk.NewUpdater("history", items)
 	if reset {
 		u.Reset()
 	}

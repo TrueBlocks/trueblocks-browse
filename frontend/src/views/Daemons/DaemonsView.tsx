@@ -78,7 +78,7 @@ export const DaemonsView = () => {
   //   ToggleDaemon(name);
   // };
 
-  // const upd = updater.Updater.createFrom({});
+  // const upd = sdk.Updater.createFrom({});
   // const daemons: Nope = {
   //   toggleDaemon,
   //   scraper,

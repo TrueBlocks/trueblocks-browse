@@ -7,18 +7,17 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
 
 type WizardContainer struct {
-	Chain   string          `json:"chain"`
-	Items   []WizError      `json:"items"`
-	NItems  uint64          `json:"nItems"`
-	Updater updater.Updater `json:"updater"`
-	Sorts   sdk.SortSpec    `json:"sorts"`
+	Chain   string       `json:"chain"`
+	Items   []WizError   `json:"items"`
+	NItems  uint64       `json:"nItems"`
+	Updater sdk.Updater  `json:"updater"`
+	Sorts   sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	State WizState `json:"state"`
 	// EXISTING_CODE
@@ -43,18 +42,18 @@ func NewWizardContainer(chain string, itemsIn []WizError) WizardContainer {
 	return ret
 }
 
-func NewWizardUpdater(chain string, resetIn ...bool) updater.Updater {
+func NewWizardUpdater(chain string, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Duration: 2 * time.Minute, Type: updater.Timer},
+	items := []sdk.UpdaterItem{
+		{Duration: 2 * time.Minute, Type: sdk.Timer},
 	}
 	// EXISTING_CODE
-	u, _ := updater.NewUpdater("wizard", items)
+	u, _ := sdk.NewUpdater("wizard", items)
 	if reset {
 		u.Reset()
 	}
