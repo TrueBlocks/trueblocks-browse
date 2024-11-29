@@ -57,8 +57,10 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.wizard = types.NewWizardContainer(a.getChain(), items)
 		// EXISTING_CODE
-		a.Navigate("/wizard", "")
 		// EXISTING_CODE
+		if err := a.wizard.Sort(); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		a.emitLoadingMsg(messages.Loaded, "wizard")
 	}
 

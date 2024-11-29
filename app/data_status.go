@@ -61,9 +61,8 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.status = types.NewStatusContainer(a.getChain(), items)
 		// EXISTING_CODE
-		// TODO: Use the core's sorting mechanism (see SortChunk Stats for example)
 		// EXISTING_CODE
-		if err := sdk.SortCacheItems(a.status.Items, a.status.Sorts); err != nil {
+		if err := a.status.Sort(); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 		a.emitLoadingMsg(messages.Loaded, "status")

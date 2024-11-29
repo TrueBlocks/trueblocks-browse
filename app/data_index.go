@@ -61,7 +61,7 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 		a.indexes = types.NewIndexContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
-		if err := sdk.SortChunkStats(a.indexes.Items, a.indexes.Sorts); err != nil {
+		if err := a.indexes.Sort(); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 		a.emitLoadingMsg(messages.Loaded, "indexes")

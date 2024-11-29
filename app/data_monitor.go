@@ -5,7 +5,6 @@ package app
 // EXISTING_CODE
 import (
 	"fmt"
-	"sort"
 	"sync"
 	"sync/atomic"
 
@@ -66,15 +65,8 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		a.meta = *meta
 		a.monitors = types.NewMonitorContainer(a.getChain(), items)
 		// EXISTING_CODE
-		// TODO: Use core's sorting mechanism (see SortChunk Stats for example)
-		sort.Slice(a.monitors.Items, func(i, j int) bool {
-			if a.monitors.Items[i].NRecords == a.monitors.Items[j].NRecords {
-				return a.monitors.Items[i].Address.Hex() < a.monitors.Items[j].Address.Hex()
-			}
-			return a.monitors.Items[i].NRecords < a.monitors.Items[j].NRecords
-		})
 		// EXISTING_CODE
-		if err := sdk.SortMonitors(a.monitors.Items, a.monitors.Sorts); err != nil {
+		if err := a.monitors.Sort(); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 		a.emitLoadingMsg(messages.Loaded, "monitors")

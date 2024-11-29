@@ -5,7 +5,6 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"errors"
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
@@ -158,6 +157,13 @@ func (s *WizardContainer) ForEveryItem(process EveryWizErrorFn, data any) bool {
 		}
 	}
 	return true
+}
+
+func (s *WizardContainer) Sort() (err error) {
+	// EXISTING_CODE
+	// TODO: Sorting?
+	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

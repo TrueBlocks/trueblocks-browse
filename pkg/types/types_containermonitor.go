@@ -39,7 +39,7 @@ func NewMonitorContainer(chain string, itemsIn []Monitor) MonitorContainer {
 		NItems: uint64(len(itemsIn)),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"nRecords", "address"},
-			Order:  []sdk.SortOrder{sdk.Dec, sdk.Asc},
+			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc},
 		},
 		Updater: NewMonitorUpdater(chain),
 	}
@@ -194,6 +194,13 @@ func (s *MonitorContainer) ForEveryItem(process EveryMonitorFn, data any) bool {
 		}
 	}
 	return true
+}
+
+func (s *MonitorContainer) Sort() (err error) {
+	// EXISTING_CODE
+	err = sdk.SortMonitors(s.Items, s.Sorts)
+	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

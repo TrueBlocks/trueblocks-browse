@@ -185,6 +185,13 @@ func (s *AbiContainer) ForEveryItem(process EveryAbiFn, data any) bool {
 	return true
 }
 
+func (s *AbiContainer) Sort() (err error) {
+	// EXISTING_CODE
+	err = sdk.SortAbis(s.Items, s.Sorts)
+	// EXISTING_CODE
+	return
+}
+
 // EXISTING_CODE
 type comparison struct {
 	Name  string `json:"name"`

@@ -76,6 +76,9 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error) error {
 		history = types.NewHistoryContainer(a.getChain(), items, address)
 		// EXISTING_CODE
 		// EXISTING_CODE
+		if err := history.Sort(); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		a.emitLoadingMsg(messages.Loaded, "history")
 	}
 
