@@ -83,7 +83,7 @@ func (a *App) pullNames() (items []types.Name, meta *types.Meta, err error) {
 		Globals: a.getGlobals(true /* verbose */),
 	}
 	opts.All = true
-	return opts.NamesList()
+	return opts.Names()
 	// EXISTING_CODE
 }
 

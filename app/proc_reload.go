@@ -3,7 +3,10 @@
 package app
 
 // EXISTING_CODE
-import "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+import (
+	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+)
 
 // EXISTING_CODE
 
@@ -98,4 +101,11 @@ func (a *App) Reload() {
 		a.goToAddress(history.Address)
 		// EXISTING_CODE
 	}
+
+	a.emitMsg(messages.Refresh, &messages.MessageMsg{
+		Name:    a.daemons.FreshenController.Name,
+		String1: "Refresh...",
+		String2: a.daemons.FreshenController.Color,
+		Num1:    1, // 1 means daemon if we need it
+	})
 }

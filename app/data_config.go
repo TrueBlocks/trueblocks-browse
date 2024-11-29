@@ -76,7 +76,7 @@ func (a *App) pullConfigs() (items []types.Config, meta *types.Meta, err error) 
 	opts := sdk.ConfigOptions{
 		Globals: a.getGlobals(true /* verbose */),
 	}
-	return opts.ConfigList()
+	return opts.ConfigDump()
 	// EXISTING_CODE
 }
 
