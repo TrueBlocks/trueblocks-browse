@@ -7,7 +7,6 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 func (a *App) IsShowing(which string) bool {
@@ -73,11 +72,11 @@ func (a *App) GetChains() []string {
 	return ret
 }
 
-func (a *App) GetChainInfo(chain string) coreTypes.Chain {
+func (a *App) GetChainInfo(chain string) types.Chain {
 	for _, ch := range a.status.Chains {
 		if ch.Chain == chain {
 			return ch
 		}
 	}
-	return coreTypes.Chain{}
+	return types.Chain{}
 }

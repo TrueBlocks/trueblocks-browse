@@ -73,7 +73,10 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 func (a *App) pullAbis() (items []types.Abi, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	opts := sdk.AbisOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
 	opts.Cache = true
 	opts.Chain = namesChain

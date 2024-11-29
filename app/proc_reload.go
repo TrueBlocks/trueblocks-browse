@@ -18,7 +18,7 @@ func (a *App) Reload() {
 
 	switch route {
 
-	case "/project":
+	case "/":
 		a.project.Updater.Reset()
 		if err := a.loadProject(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)

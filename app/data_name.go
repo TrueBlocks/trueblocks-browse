@@ -80,7 +80,10 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 func (a *App) pullNames() (items []types.Name, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	opts := sdk.NamesOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
 	opts.All = true
 	return opts.Names()

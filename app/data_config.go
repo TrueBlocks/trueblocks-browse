@@ -74,7 +74,10 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 func (a *App) pullConfigs() (items []types.Config, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	opts := sdk.ConfigOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
 	return opts.ConfigDump()
 	// EXISTING_CODE

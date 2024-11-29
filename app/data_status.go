@@ -78,7 +78,10 @@ func (a *App) pullStatus() (items []types.Status, meta *types.Meta, err error) {
 	logger.SetLoggerWriter(io.Discard)
 	defer logger.SetLoggerWriter(w)
 	opts := sdk.StatusOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
 	return opts.StatusAll()
 	// EXISTING_CODE

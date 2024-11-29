@@ -19,8 +19,10 @@ func (a *App) ensToAddress(addr string) (base.Address, bool) {
 	}
 
 	opts := sdk.NamesOptions{
-		Terms:   []string{addr},
-		Globals: a.getGlobals(false /* verbose */),
+		Terms: []string{addr},
+		Globals: sdk.Globals{
+			Chain: a.getChain(),
+		},
 	}
 	if names, meta, err := opts.Names(); err != nil {
 		a.emitErrorMsg(err, nil)

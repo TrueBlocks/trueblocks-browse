@@ -83,7 +83,10 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 func (a *App) pullMonitors() (items []types.Monitor, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	opts := sdk.MonitorsOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
 	return opts.MonitorsList()
 	// EXISTING_CODE

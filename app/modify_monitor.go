@@ -18,7 +18,9 @@ func (a *App) ModifyMonitor(modData *ModifyData) error {
 		Delete:   op == crud.Delete,
 		Undelete: op == crud.Undelete,
 		Remove:   op == crud.Remove,
-		Globals:  a.getGlobals(false /* verbose */),
+		Globals: sdk.Globals{
+			Chain: a.getChain(),
+		},
 	}
 
 	if _, _, err := opts.Monitors(); err != nil {
