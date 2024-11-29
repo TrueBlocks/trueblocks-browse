@@ -14,9 +14,13 @@ export function DalleImage({ value, height = 125 }: DalleImageProps) {
   const [localUrl, setLocalUrl] = useState<string | null>(null);
 
   useEffect(() => {
+    // TODO: This call currently always returns false
     LoadDalleImage(value as base.Address).then((found) => {
       if (found) {
-        setLocalUrl(`/path/to/local/images/${value}`);
+        // TODO: The following code works, but it puts the file
+        // TODO: in the current working folder. It should use
+        // TODO: the system's cache
+        setLocalUrl(`file:///Users/jrush/Development/trueblocks-browse/${value as unknown as string}.png`);
       } else {
         // Otherwise, set it to the remote URL
         GetExploreUrl(value as string, false, true).then((remoteUrl) => {
