@@ -6,7 +6,6 @@
 {{ $embedType := .EmbedType }}
 {{ $members := .Members }}
 
-{{ $hasSorts := .HasSorts }}
 {{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
 
 {{ $isHistory := eq $class "History" }}
@@ -24,14 +23,6 @@
 {{ $appData := print "a." $routeLower }}
 {{ if $isHistory }}
 	{{ $appData = $routeLower }}
-{{ end }}
-
-{{ $sorts := "" }}
-{{ if $hasSorts }}
-	{{ $sorts = print `	if err := sdk.Sort` $routeName `(` $appData `.Items, ` $appData `.Sorts); err != nil {
-			a.emitErrorMsg(err, nil)
-		}
-`}}
 {{ end }}
 
 {{ $param1 := ""}}
@@ -127,7 +118,10 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 		{{$appData}} = types.New{{$class}}Container(a.getChain(), items{{$param3}})
 		// EXISTING_CODE
 		// EXISTING_CODE
-		{{ $sorts }} a.emitLoadingMsg(messages.Loaded, "{{$routeLower}}")
+		if err := {{$appData}}.Sort(); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.emitLoadingMsg(messages.Loaded, "{{$routeLower}}")
 	}
 
 	return nil

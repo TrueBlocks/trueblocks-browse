@@ -81,11 +81,11 @@ func (a *App) pullNames() (items []types.Name, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	opts := sdk.NamesOptions{
 		Globals: sdk.Globals{
-			Chain:   a.getChain(),
+			Chain:   namesChain,
 			Verbose: true,
 		},
+		All: true,
 	}
-	opts.All = true
 	return opts.Names()
 	// EXISTING_CODE
 }

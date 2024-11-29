@@ -74,12 +74,11 @@ func (a *App) pullAbis() (items []types.Abi, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	opts := sdk.AbisOptions{
 		Globals: sdk.Globals{
-			Chain:   a.getChain(),
+			Chain:   namesChain,
 			Verbose: true,
+			Cache:   true,
 		},
 	}
-	opts.Cache = true
-	opts.Chain = namesChain
 	return opts.AbisList()
 	// EXISTING_CODE
 }
