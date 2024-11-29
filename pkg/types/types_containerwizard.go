@@ -54,11 +54,11 @@ func NewWizardUpdater(chain string, resetIn ...bool) updater.Updater {
 		{Duration: 2 * time.Minute, Type: updater.Timer},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("wizard", items)
+	u, _ := updater.NewUpdater("wizard", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *WizardContainer) String() string {

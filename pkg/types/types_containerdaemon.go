@@ -58,11 +58,11 @@ func NewDaemonUpdater(chain string, resetIn ...bool) updater.Updater {
 		{Duration: 2 * time.Minute, Type: updater.Timer},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("daemons", items)
+	u, _ := updater.NewUpdater("daemons", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *DaemonContainer) String() string {

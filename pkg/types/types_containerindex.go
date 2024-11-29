@@ -55,11 +55,11 @@ func NewIndexUpdater(chain string, resetIn ...bool) updater.Updater {
 		{Path: walk.GetRootPathFromCacheType(chain, walk.Index_Bloom), Type: updater.Folder},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("indexes", items)
+	u, _ := updater.NewUpdater("indexes", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *IndexContainer) String() string {

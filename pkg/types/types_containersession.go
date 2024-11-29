@@ -55,11 +55,11 @@ func NewSessionUpdater(chain string, resetIn ...bool) updater.Updater {
 		{Path: utils.MustGetConfigFn("browse", "session.json"), Type: updater.File},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("session", items)
+	u, _ := updater.NewUpdater("session", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *SessionContainer) String() string {

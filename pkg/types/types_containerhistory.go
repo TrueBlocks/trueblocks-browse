@@ -64,11 +64,11 @@ func NewHistoryUpdater(chain string, address base.Address, resetIn ...bool) upda
 		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("history", items)
+	u, _ := updater.NewUpdater("history", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *HistoryContainer) String() string {

@@ -39,7 +39,7 @@ func NewMonitorContainer(chain string, itemsIn []Monitor) MonitorContainer {
 		NItems: uint64(len(itemsIn)),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"nRecords", "address"},
-			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc},
+			Order:  []sdk.SortOrder{sdk.Dec, sdk.Asc},
 		},
 		Updater: NewMonitorUpdater(chain),
 	}
@@ -61,11 +61,11 @@ func NewMonitorUpdater(chain string, resetIn ...bool) updater.Updater {
 		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("monitors", items)
+	u, _ := updater.NewUpdater("monitors", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *MonitorContainer) String() string {

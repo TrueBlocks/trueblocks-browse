@@ -66,11 +66,11 @@ func NewProjectUpdater(chain string, itemsIn []HistoryContainer, resetIn ...bool
 		items = append(items, item)
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("project", items)
+	u, _ := updater.NewUpdater("project", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *ProjectContainer) String() string {

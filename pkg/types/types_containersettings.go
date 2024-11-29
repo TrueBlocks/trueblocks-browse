@@ -58,11 +58,11 @@ func NewSettingsUpdater(chain string, resetIn ...bool) updater.Updater {
 		// {Path: utils.MustGetConfigFn("browse", "session.json"), Type: updater.File}, // ignore session changes
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("settings", items)
+	u, _ := updater.NewUpdater("settings", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *SettingsContainer) String() string {

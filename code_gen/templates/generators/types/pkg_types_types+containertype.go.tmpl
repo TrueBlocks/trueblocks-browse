@@ -88,11 +88,11 @@ func New{{$class}}Updater(chain string{{$param2}}{{$param4}}, resetIn ...bool) u
 
 	// EXISTING_CODE
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("{{$routeLower}}", items)
+	u, _ := updater.NewUpdater("{{$routeLower}}", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *{{$class}}Container) String() string {

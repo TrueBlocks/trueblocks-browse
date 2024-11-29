@@ -61,11 +61,11 @@ func NewAbiUpdater(chain string, resetIn ...bool) updater.Updater {
 		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("abis", items)
+	u, _ := updater.NewUpdater("abis", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *AbiContainer) String() string {

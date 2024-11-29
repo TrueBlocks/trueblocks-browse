@@ -60,11 +60,11 @@ func NewManifestUpdater(chain string, resetIn ...bool) updater.Updater {
 		{Path: coreConfig.PathToManifestFile(chain), Type: updater.File},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("manifests", items)
+	u, _ := updater.NewUpdater("manifests", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *ManifestContainer) String() string {

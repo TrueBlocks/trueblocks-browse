@@ -73,11 +73,11 @@ func NewConfigUpdater(chain string, resetIn ...bool) updater.Updater {
 		{Path: utils.MustGetConfigFn("", "trueBlocks.toml"), Type: updater.File},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("config", items)
+	u, _ := updater.NewUpdater("config", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *ConfigContainer) String() string {
