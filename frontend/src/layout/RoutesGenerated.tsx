@@ -7,8 +7,7 @@ import {
   MonitorsIcon,
   NamesIcon,
   AbisIcon,
-  IndexesIcon,
-  ManifestsIcon,
+  UnchainedIcon,
   SettingsIcon,
   DaemonsIcon,
   WizardIcon,
@@ -18,8 +17,7 @@ import {
   MonitorsView,
   NamesView,
   AbisView,
-  IndexesView,
-  ManifestsView,
+  UnchainedView,
   SettingsView,
   DaemonsView,
   WizardView,
@@ -31,6 +29,7 @@ export type Route =
   | "monitors"
   | "names"
   | "abis"
+  | "unchained"
   | "settings"
   | "daemons"
   | "wizard";
@@ -88,18 +87,11 @@ export const routeItems: RouteItem[] = [
     component: AbisView,
   },
   {
-    order: 1050,
-    route: expandRoute("indexes"),
-    label: "Indexes",
-    icon: IndexesIcon,
-    component: IndexesView,
-  },
-  {
-    order: 1060,
-    route: expandRoute("manifests"),
-    label: "Manifests",
-    icon: ManifestsIcon,
-    component: ManifestsView,
+    order: 1065,
+    route: expandRoute("unchained"),
+    label: "Unchained",
+    icon: UnchainedIcon,
+    component: UnchainedView,
   },
   {
     order: 1080,

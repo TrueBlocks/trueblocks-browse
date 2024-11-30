@@ -381,7 +381,8 @@
         {
             "class": "Index",
             "doc_route": "1050-containers",
-            "ui_route": "1050-indexes-6",
+            "ui_route": "1050-indexes",
+            "parent": "unchained",
             "cache_by": "range",
             "cache_type": "cacheable",
             "sorts": "range+Dec",
@@ -423,7 +424,8 @@
         {
             "class": "Manifest",
             "doc_route": "1060-containers",
-            "ui_route": "1060-manifests-7",
+            "ui_route": "1060-manifests",
+            "parent": "unchained",
             "cache_by": "range",
             "cache_type": "cacheable",
             "sorts": "range+Dec",
@@ -477,6 +479,41 @@
                     "type": "uint64",
                     "description": "jim",
                     "num": 8
+                }
+            ]
+        },
+        {
+            "class": "Unchained",
+            "doc_route": "1065-containers",
+            "ui_route": "1065-unchained-6",
+            "children": "indexes,manifests",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "items",
+                    "type": "types.CacheItem",
+                    "description": "jim",
+                    "num": 3,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
                 }
             ]
         },
@@ -538,7 +575,7 @@
         {
             "class": "Settings",
             "doc_route": "1080-containers",
-            "ui_route": "1080-settings-8",
+            "ui_route": "1080-settings-7",
             "children": "status,config,session",
             "cache_by": "range",
             "cache_type": "cacheable",
@@ -573,7 +610,7 @@
         {
             "class": "Daemon",
             "doc_route": "1090-containers",
-            "ui_route": "1090-daemons-9",
+            "ui_route": "1090-daemons-8",
             "cache_by": "range",
             "cache_type": "cacheable",
             "members": [

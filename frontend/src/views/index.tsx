@@ -5,13 +5,9 @@ export * from "./History";
 export * from "./Monitors";
 export * from "./Names";
 export * from "./Abis";
-export * from "./Indexes";
-export * from "./Manifests";
-export * from "./Status";
+export * from "./Unchained";
 export * from "./Settings";
 export * from "./Daemons";
-export * from "./Session";
-export * from "./Config";
 export * from "./Wizard";
 
 export * from "./Icons";

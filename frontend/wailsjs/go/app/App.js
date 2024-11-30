@@ -158,10 +158,6 @@ export function HistoryView(arg1) {
   return window['go']['app']['App']['HistoryView'](arg1);
 }
 
-export function IndexesView(arg1) {
-  return window['go']['app']['App']['IndexesView'](arg1);
-}
-
 export function IsShowing(arg1) {
   return window['go']['app']['App']['IsShowing'](arg1);
 }
@@ -180,10 +176,6 @@ export function LoadName(arg1) {
 
 export function Logger(arg1) {
   return window['go']['app']['App']['Logger'](arg1);
-}
-
-export function ManifestsView(arg1) {
-  return window['go']['app']['App']['ManifestsView'](arg1);
 }
 
 export function ModifyAbi(arg1) {
@@ -288,6 +280,10 @@ export function ToggleNextTab(arg1) {
 
 export function TogglePrevTab(arg1) {
   return window['go']['app']['App']['TogglePrevTab'](arg1);
+}
+
+export function UnchainedView(arg1) {
+  return window['go']['app']['App']['UnchainedView'](arg1);
 }
 
 export function WizardView(arg1) {

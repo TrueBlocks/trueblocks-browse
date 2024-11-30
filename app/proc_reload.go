@@ -37,12 +37,11 @@ func (a *App) Reload() {
 		if err := a.loadAbis(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/indexes":
+	case "/unchained":
 		a.indexes.Updater.Reset()
 		if err := a.loadIndexes(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/manifests":
 		a.manifests.Updater.Reset()
 		if err := a.loadManifests(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)

@@ -52,10 +52,9 @@ func (a *App) GetMenus() *menu.Menu {
 		"monitors":  {inc(), viewMenu, "Monitors", keys.CmdOrCtrl("3"), a.MonitorsView},
 		"names":     {inc(), viewMenu, "Names", keys.CmdOrCtrl("4"), a.NamesView},
 		"abis":      {inc(), viewMenu, "Abis", keys.CmdOrCtrl("5"), a.AbisView},
-		"indexes":   {inc(), viewMenu, "Indexes", keys.CmdOrCtrl("6"), a.IndexesView},
-		"manifests": {inc(), viewMenu, "Manifests", keys.CmdOrCtrl("7"), a.ManifestsView},
-		"settings":  {inc(), viewMenu, "Settings", keys.CmdOrCtrl("8"), a.SettingsView},
-		"daemons":   {inc(), viewMenu, "Daemons", keys.CmdOrCtrl("9"), a.DaemonsView},
+		"unchained": {inc(), viewMenu, "Unchained", keys.CmdOrCtrl("6"), a.UnchainedView},
+		"settings":  {inc(), viewMenu, "Settings", keys.CmdOrCtrl("7"), a.SettingsView},
+		"daemons":   {inc(), viewMenu, "Daemons", keys.CmdOrCtrl("8"), a.DaemonsView},
 		"wizard":    {inc(), viewMenu, "Wizard", keys.CmdOrCtrl("w"), a.WizardView},
 
 		// EXISTING_CODE

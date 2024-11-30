@@ -46,7 +46,7 @@ export const ViewStateProvider = ({
 }: ViewContextType) => {
   const [headerShows, setHeaderShows] = useState<boolean | null>(null);
   const [filter, setFilter] = useState<string>("");
-  const lines = route === "status" ? 6 : route === "names" ? 9 : 10;
+  const lines = route === "names" ? 9 : 10;
   const pager = useKeyboardPaging(nItems, lines, onEnter);
 
   const handleCollapse = (newState: string | null) => {

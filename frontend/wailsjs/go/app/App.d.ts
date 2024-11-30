@@ -85,8 +85,6 @@ export function GetWindow():Promise<types.Window>;
 
 export function HistoryView(arg1:menu.CallbackData):Promise<void>;
 
-export function IndexesView(arg1:menu.CallbackData):Promise<void>;
-
 export function IsShowing(arg1:string):Promise<boolean>;
 
 export function LoadAddress(arg1:string):Promise<void>;
@@ -96,8 +94,6 @@ export function LoadDalleImage(arg1:base.Address):Promise<boolean>;
 export function LoadName(arg1:string):Promise<editors.Name>;
 
 export function Logger(arg1:Array<string>):Promise<void>;
-
-export function ManifestsView(arg1:menu.CallbackData):Promise<void>;
 
 export function ModifyAbi(arg1:app.ModifyData):Promise<void>;
 
@@ -150,5 +146,7 @@ export function ToggleMenu(arg1:menu.CallbackData):Promise<void>;
 export function ToggleNextTab(arg1:menu.CallbackData):Promise<void>;
 
 export function TogglePrevTab(arg1:menu.CallbackData):Promise<void>;
+
+export function UnchainedView(arg1:menu.CallbackData):Promise<void>;
 
 export function WizardView(arg1:menu.CallbackData):Promise<void>;

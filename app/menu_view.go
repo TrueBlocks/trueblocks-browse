@@ -32,12 +32,8 @@ func (a *App) AbisView(cb *menu.CallbackData) {
 	a.Navigate("/abis", "")
 }
 
-func (a *App) IndexesView(cb *menu.CallbackData) {
-	a.Navigate("/indexes", "")
-}
-
-func (a *App) ManifestsView(cb *menu.CallbackData) {
-	a.Navigate("/manifests", "")
+func (a *App) UnchainedView(cb *menu.CallbackData) {
+	a.Navigate("/unchained", "")
 }
 
 func (a *App) SettingsView(cb *menu.CallbackData) {
