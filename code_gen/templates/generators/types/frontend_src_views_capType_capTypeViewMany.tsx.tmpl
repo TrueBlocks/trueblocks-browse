@@ -58,7 +58,7 @@
   // EXISTING_CODE
   // EXISTING_CODE
 
-  const fetchSettings = useCallback(
+  const fetch{{$routeName}} = useCallback(
   (currentItem: number, itemsPerPage: number) => {
     {{ apply $childTabs "fetch{{firstUpper .}}(currentItem, itemsPerPage);" "\n" }}
   }, [{{ apply $childTabs "fetch{{firstUpper .}}" "," }}]

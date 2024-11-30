@@ -7,7 +7,7 @@ import {
   {{range .Structures}}{{if (eq .Parent "")}}{{.UiRouteName}}View,
   {{end}}{{end}}} from "@views";
 
-export type Route ={{range .Structures}}
+export type Route ={{range .Structures}}{{if eq .Parent ""}}
 {{ $class := .Class }}
 {{ $isProject := eq $class "Project" }}
 {{ $route := toLower .UiRouteName }}
@@ -15,7 +15,7 @@ export type Route ={{range .Structures}}
   {{ $route = "" }}
 {{end}}
   | "{{$route}}"
-{{end -}};
+{{end}}{{end -}};
 
 export type RouteItem = {
   order: number;

@@ -23,16 +23,7 @@ import {
   WizardView,
 } from "@views";
 
-export type Route =
-  | ""
-  | "history"
-  | "monitors"
-  | "names"
-  | "abis"
-  | "unchained"
-  | "settings"
-  | "daemons"
-  | "wizard";
+export type Route = "" | "history" | "monitors" | "names" | "abis" | "unchained" | "settings" | "daemons" | "wizard";
 
 export type RouteItem = {
   order: number;

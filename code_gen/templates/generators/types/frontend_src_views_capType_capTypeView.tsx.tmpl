@@ -1,6 +1,7 @@
 {{ $isSettings := eq .Class "Settings" }}
+{{ $hasChildren := (ne .Children "") }}
 {{ $hasParent := (ne .Parent "") }}
-{{if and (not $hasParent) (not $isSettings) }}
+{{if and (not $hasParent) (not $hasChildren) }}
 
   {{/*==============================================================*/}}
   {{ $class := .Class }}

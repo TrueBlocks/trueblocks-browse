@@ -15,9 +15,10 @@ func (a *App) Reload() {
 		{{- range .Structures }}
 			{{- if ne .Class "History" }}
 				{{- $hasChildren := ne .Children "" }}
+				{{- $hasParent := ne .Parent "" }}
 				{{- $route := toLower .UiRouteName }}
 				{{- if eq .Class "Project" }}
-					{{ $route = "" }}
+					{{- $route = "" }}
 				{{- end }}
 				{{- if $hasChildren }}
 					case "/{{$route}}":
@@ -27,7 +28,7 @@ func (a *App) Reload() {
 								a.emitErrorMsg(err, nil)
 							}
 						{{- end }}
-				{{- else }}
+				{{- else if not $hasParent }}
 					case "/{{$route}}":
 						a.{{toLower .UiRouteName}}.Updater.Reset()
 						if err := a.load{{.UiRouteName}}(nil, nil); err != nil {
