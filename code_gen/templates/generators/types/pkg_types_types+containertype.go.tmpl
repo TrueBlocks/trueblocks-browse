@@ -10,6 +10,7 @@
 
 {{ $isHistory := eq $class "History" }}
 {{ $isProject := eq $class "Project" }}
+{{ $noChildren := (eq .Children "") }}
 
 {{ $embed1 := "//-- remove line --" }}
 {{ if $hasEmbed }}
@@ -44,7 +45,7 @@
 {{ end }}
 
 {{/*==============================================================*/}}
-// This file is auto-generated. Edit only code inside
+{{if $noChildren}}// This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 package types
 
@@ -201,4 +202,4 @@ func (s *{{$class}}Container) Sort() (err error) {
 }
 
 // EXISTING_CODE
-// EXISTING_CODE
+// EXISTING_CODE{{end}}

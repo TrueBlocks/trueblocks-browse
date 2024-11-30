@@ -11,8 +11,6 @@ export function AbisView(arg1:menu.CallbackData):Promise<void>;
 
 export function CancelAllContexts():Promise<void>;
 
-export function ConfigView(arg1:menu.CallbackData):Promise<void>;
-
 export function DaemonsView(arg1:menu.CallbackData):Promise<void>;
 
 export function ExportAddress(arg1:base.Address):Promise<void>;
@@ -38,8 +36,6 @@ export function FetchName(arg1:number,arg2:number):Promise<types.NameContainer>;
 export function FetchProject(arg1:number,arg2:number):Promise<types.ProjectContainer>;
 
 export function FetchSession(arg1:number,arg2:number):Promise<types.SessionContainer>;
-
-export function FetchSettings(arg1:number,arg2:number):Promise<types.SettingsContainer>;
 
 export function FetchStatus(arg1:number,arg2:number):Promise<types.StatusContainer>;
 
@@ -121,8 +117,6 @@ export function ProjectView(arg1:menu.CallbackData):Promise<void>;
 
 export function Reload():Promise<void>;
 
-export function SessionView(arg1:menu.CallbackData):Promise<void>;
-
 export function SetChain(arg1:string):Promise<void>;
 
 export function SetEnv(arg1:string,arg2:string):Promise<void>;
@@ -134,8 +128,6 @@ export function SetRoute(arg1:string,arg2:string):Promise<void>;
 export function SetShowing(arg1:string,arg2:boolean):Promise<void>;
 
 export function SettingsView(arg1:menu.CallbackData):Promise<void>;
-
-export function StatusView(arg1:menu.CallbackData):Promise<void>;
 
 export function StepWizard(arg1:types.WizStep):Promise<types.WizState>;
 

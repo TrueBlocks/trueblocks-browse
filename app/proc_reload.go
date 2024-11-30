@@ -54,8 +54,16 @@ func (a *App) Reload() {
 			a.emitErrorMsg(err, nil)
 		}
 	case "/settings":
-		a.settings.Updater.Reset()
-		if err := a.loadSettings(nil, nil); err != nil {
+		a.status.Updater.Reset()
+		if err := a.loadStatus(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.config.Updater.Reset()
+		if err := a.loadConfig(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.session.Updater.Reset()
+		if err := a.loadSession(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 	case "/daemons":

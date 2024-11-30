@@ -9,11 +9,8 @@ import {
   AbisIcon,
   IndexesIcon,
   ManifestsIcon,
-  StatusIcon,
   SettingsIcon,
   DaemonsIcon,
-  SessionIcon,
-  ConfigIcon,
   WizardIcon,
   // Views
   ProjectView,
@@ -23,11 +20,8 @@ import {
   AbisView,
   IndexesView,
   ManifestsView,
-  StatusView,
   SettingsView,
   DaemonsView,
-  SessionView,
-  ConfigView,
   WizardView,
 } from "@views";
 
@@ -113,13 +107,6 @@ export const routeItems: RouteItem[] = [
     component: ManifestsView,
   },
   {
-    order: 1070,
-    route: expandRoute("status"),
-    label: "Status",
-    icon: StatusIcon,
-    component: StatusView,
-  },
-  {
     order: 1080,
     route: expandRoute("settings"),
     label: "Settings",
@@ -132,20 +119,6 @@ export const routeItems: RouteItem[] = [
     label: "Daemons",
     icon: DaemonsIcon,
     component: DaemonsView,
-  },
-  {
-    order: 1100,
-    route: expandRoute("session"),
-    label: "Session",
-    icon: SessionIcon,
-    component: SessionView,
-  },
-  {
-    order: 1110,
-    route: expandRoute("config"),
-    label: "Config",
-    icon: ConfigIcon,
-    component: ConfigView,
   },
   {
     order: 1120,

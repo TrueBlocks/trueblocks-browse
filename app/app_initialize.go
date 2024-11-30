@@ -73,7 +73,6 @@ func (a *App) initialize() bool {
 			a.indexes.Updater = types.NewIndexUpdater(chain, true)
 			a.manifests.Updater = types.NewManifestUpdater(chain, true)
 			a.status.Updater = types.NewStatusUpdater(chain, true)
-			a.settings.Updater = types.NewSettingsUpdater(chain, true)
 			a.session.Updater = types.NewSessionUpdater(chain, true)
 			a.config.Updater = types.NewConfigUpdater(chain, true)
 			a.daemons.Updater = types.NewDaemonUpdater(chain, true)

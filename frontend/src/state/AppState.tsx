@@ -10,7 +10,6 @@ import {
   FetchIndex,
   FetchManifest,
   FetchStatus,
-  FetchSettings,
   FetchDaemon,
   FetchSession,
   FetchConfig,
@@ -38,8 +37,6 @@ interface AppStateProps {
   fetchManifests: (currentItem: number, itemsPerPage: number) => void;
   status: types.StatusContainer;
   fetchStatus: (currentItem: number, itemsPerPage: number) => void;
-  settings: types.SettingsContainer;
-  fetchSettings: (currentItem: number, itemsPerPage: number) => void;
   daemons: types.DaemonContainer;
   fetchDaemons: (currentItem: number, itemsPerPage: number) => void;
   session: types.SessionContainer;
@@ -63,7 +60,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [indexes, setIndexes] = useState<types.IndexContainer>({} as types.IndexContainer);
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
-  const [settings, setSettings] = useState<types.SettingsContainer>({} as types.SettingsContainer);
   const [daemons, setDaemons] = useState<types.DaemonContainer>({} as types.DaemonContainer);
   const [session, setSession] = useState<types.SessionContainer>({} as types.SessionContainer);
   const [config, setConfig] = useState<types.ConfigContainer>({} as types.ConfigContainer);
@@ -138,15 +134,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     FetchStatus(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
       if (item) {
         setStatus(item);
-      }
-    });
-  }, []);
-
-  const fetchSettings = useCallback((currentItem: number, itemsPerPage: number) => {
-    // Note that this only fetches a single page after sorting and filtering (if any)
-    FetchSettings(currentItem, itemsPerPage).then((item: types.SettingsContainer) => {
-      if (item) {
-        setSettings(item);
       }
     });
   }, []);
@@ -234,8 +221,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     fetchManifests,
     status,
     fetchStatus,
-    settings,
-    fetchSettings,
     daemons,
     fetchDaemons,
     session,

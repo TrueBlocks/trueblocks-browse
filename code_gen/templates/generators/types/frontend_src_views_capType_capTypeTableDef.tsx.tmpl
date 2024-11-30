@@ -1,27 +1,32 @@
-{{ $class := .Class }}
-{{ $routeName := .UiRouteName }}
-{{ $routeLower := toLower .UiRouteName }}
-{{ $fullType := .ItemFullType }}
-{{ $embedType := .EmbedType }}
+{{ $noChildren := (eq .Children "") }}
+{{ if $noChildren }}
+	{{/*==============================================================*/}}
+	{{ $class := .Class }}
+	{{ $routeName := .UiRouteName }}
+	{{ $routeLower := toLower .UiRouteName }}
+	{{ $fullType := .ItemFullType }}
+	{{ $embedType := .EmbedType }}
 
-{{ $isProject := eq $class "Project" }}
+	{{ $isProject := eq $class "Project" }}
 
-{{ $tableDef := $routeName }}
-{{ if $isProject }}
-  {{ $tableDef = "base" }}
-{{ end -}}
+	{{ $tableDef := $routeName }}
+	{{ if $isProject }}
+		{{ $tableDef = "base" }}
+	{{ end -}}
 
-// This file is auto-generated. Edit only code inside
-// of ExistingCode markers (if any).
-// EXISTING_CODE
-// EXISTING_CODE
-
-const columnHelper = createColumnHelper<{{$fullType}}>();
-
-export const {{$tableDef}}TableDef: CustomColumnDef<{{$fullType}}, any>[] = [
+	{{/*==============================================================*/}}
+	// This file is auto-generated. Edit only code inside
+	// of ExistingCode markers (if any).
 	// EXISTING_CODE
 	// EXISTING_CODE
-];
 
-// EXISTING_CODE
-// EXISTING_CODE
+	const columnHelper = createColumnHelper<{{$fullType}}>();
+
+	export const {{$tableDef}}TableDef: CustomColumnDef<{{$fullType}}, any>[] = [
+		// EXISTING_CODE
+		// EXISTING_CODE
+	];
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+{{- end }}

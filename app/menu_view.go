@@ -40,24 +40,12 @@ func (a *App) ManifestsView(cb *menu.CallbackData) {
 	a.Navigate("/manifests", "")
 }
 
-func (a *App) StatusView(cb *menu.CallbackData) {
-	a.Navigate("/status", "")
-}
-
 func (a *App) SettingsView(cb *menu.CallbackData) {
 	a.Navigate("/settings", "")
 }
 
 func (a *App) DaemonsView(cb *menu.CallbackData) {
 	a.Navigate("/daemons", "")
-}
-
-func (a *App) SessionView(cb *menu.CallbackData) {
-	a.Navigate("/session", "")
-}
-
-func (a *App) ConfigView(cb *menu.CallbackData) {
-	a.Navigate("/config", "")
 }
 
 func (a *App) WizardView(cb *menu.CallbackData) {

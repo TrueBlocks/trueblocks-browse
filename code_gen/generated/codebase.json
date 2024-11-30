@@ -483,7 +483,8 @@
         {
             "class": "Status",
             "doc_route": "1070-containers",
-            "ui_route": "1070-status-8",
+            "ui_route": "1070-status",
+            "parent": "settings",
             "cache_by": "range",
             "cache_type": "cacheable",
             "sorts": "sizeInBytes+Dec",
@@ -537,7 +538,8 @@
         {
             "class": "Settings",
             "doc_route": "1080-containers",
-            "ui_route": "1080-settings-9",
+            "ui_route": "1080-settings-8",
+            "children": "status,config,session",
             "cache_by": "range",
             "cache_type": "cacheable",
             "members": [
@@ -571,7 +573,7 @@
         {
             "class": "Daemon",
             "doc_route": "1090-containers",
-            "ui_route": "1090-daemons-0",
+            "ui_route": "1090-daemons-9",
             "cache_by": "range",
             "cache_type": "cacheable",
             "members": [
@@ -612,7 +614,8 @@
         {
             "class": "Session",
             "doc_route": "1100-containers",
-            "ui_route": "1100-session-u",
+            "ui_route": "1100-session",
+            "parent": "settings",
             "cache_by": "range",
             "cache_type": "cacheable",
             "members": [
@@ -653,7 +656,8 @@
         {
             "class": "Config",
             "doc_route": "1110-containers",
-            "ui_route": "1110-config-v",
+            "ui_route": "1110-config",
+            "parent": "settings",
             "cache_by": "range",
             "cache_type": "cacheable",
             "sorts": "chainId+Asc",

@@ -49,7 +49,7 @@ export const WizardView = () => {
       modifyFn={handleModify}
       clickFn={stepWizard}
     >
-      <DebugState u={wizard.updater} />
+      <DebugState u={[wizard.updater]} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

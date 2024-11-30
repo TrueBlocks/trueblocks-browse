@@ -2,69 +2,74 @@
 // of ExistingCode markers (if any).
 
 // EXISTING_CODE
+import { useCallback } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { DebugState, FormTable, View, ViewForm } from "@components";
-import { types } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { ViewStateProvider, useAppState } from "@state";
 import { ConfigFormDef, ConfigTableDef } from "../Config";
 import { SessionFormDef, SessionTableDef } from "../Session";
-import { StatusFormDef } from "../Status";
-import { SettingsTableDef } from ".";
+import { StatusFormDef, StatusTableDef } from "../Status";
 // EXISTING_CODE
 
 export const SettingsView = () => {
-  const { settings, fetchSettings } = useAppState();
+  const { status, fetchStatus, config, fetchConfig, session, fetchSession } = useAppState();
   const { enterNoop, modifyNoop } = useNoops();
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
   // EXISTING_CODE
-  const status = settings.status ?? types.StatusContainer.createFrom({});
-  const config = settings.config ?? types.ConfigContainer.createFrom({});
-  const session = settings.session ?? types.SessionContainer.createFrom({});
+  // EXISTING_CODE
 
-  const table = useReactTable({
+  const fetchSettings = useCallback(
+    (currentItem: number, itemsPerPage: number) => {
+      fetchStatus(currentItem, itemsPerPage);
+      fetchConfig(currentItem, itemsPerPage);
+      fetchSession(currentItem, itemsPerPage);
+    },
+    [fetchStatus, fetchConfig, fetchSession]
+  );
+
+  const statusTable = useReactTable({
     data: status?.items || [],
-    columns: SettingsTableDef,
+    columns: StatusTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const table2 = useReactTable({
+  const configTable = useReactTable({
     data: config?.items || [],
     columns: ConfigTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const table3 = useReactTable({
+  const sessionTable = useReactTable({
     data: session?.items || [],
     columns: SessionTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
 
   const route = "settings";
-  const tabs = ["config", "status", "session"];
+  const tabs = ["status", "config", "session"];
   const forms: ViewForm = {
-    status: <FormTable data={status} groups={StatusFormDef(table)} />,
-    config: <FormTable data={config} groups={ConfigFormDef(table2)} />,
-    session: <FormTable data={session} groups={SessionFormDef(table3)} />,
+    status: <FormTable data={status} groups={StatusFormDef(statusTable)} />,
+    config: <FormTable data={config} groups={ConfigFormDef(configTable)} />,
+    session: <FormTable data={session} groups={SessionFormDef(sessionTable)} />,
   };
 
   // if (!(status?.items?.length > 0)) {
   //   return <>Loading...</>;
   // }
-  // EXISTING_CODE
 
   return (
     <ViewStateProvider
       // do not remove - delint
       route={route}
-      nItems={settings.nItems}
+      nItems={status.nItems}
       fetchFn={fetchSettings}
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={settings.updater} />
+      <DebugState u={[status.updater, config.updater, session.updater]} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

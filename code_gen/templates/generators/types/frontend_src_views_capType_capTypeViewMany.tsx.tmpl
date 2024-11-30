@@ -1,0 +1,96 @@
+{{ $hasChildren := (ne .Children "") }}
+{{ if $hasChildren }}
+
+  {{/*==============================================================*/}}
+  {{ $class := .Class }}
+  {{ $routeName := .UiRouteName }}
+  {{ $routeLower := toLower .UiRouteName }}
+  {{ $wantsSearch := .Wants "search" }}
+  {{ $wantsEnter := .Wants "enter" }}
+  {{ $wantsModify := .Wants "modify" }}
+
+  {{ $noops := print "const { enterNoop, modifyNoop } = useNoops();" }}
+  {{ if or $wantsEnter $wantsModify }}
+    {{ if and $wantsEnter $wantsModify}}
+      {{ $noops = "" }}
+    {{ else if $wantsEnter }}
+      {{ $noops = print "const { modifyNoop } = useNoops();" }}
+    {{ else }}
+      {{ $noops = print "const { enterNoop } = useNoops();" }}
+    {{ end }}
+  {{ end }}
+
+  {{ $param1 := "" }}
+  {{ if $wantsEnter }}
+    {{ $param1 = ", loadAddress" }}
+  {{end}}
+
+  {{ $handleEnter := `const handleEnter = enterNoop;` }}
+  {{ if $wantsEnter }}
+    {{ $handleEnter = print `const handleEnter = (page: Page) => {
+    loadAddress(` $routeLower `.items[page.getRecord()].address);
+    };` }}
+  {{ end }}
+
+  {{ $handleModify := "const handleModify = modifyNoop;" }}
+  {{ if $wantsModify }}
+    {{ $handleModify = print "const handleModify = Modify" $class ";" }}
+  {{ end }}
+
+  {{ $childTabs := .ChildTabs }}
+
+  {{/*==============================================================*/}}
+  // This file is auto-generated. Edit only code inside
+  // of ExistingCode markers (if any).
+
+  // EXISTING_CODE
+  // EXISTING_CODE
+
+  export const {{$routeName}}View = () => {
+  const {
+    {{ apply $childTabs "{{toLower .}}, fetch{{firstUpper .}}" "," }}
+    {{$param1}}
+    } = useAppState();
+  {{$noops -}}
+  {{$handleEnter -}}
+  {{$handleModify}}
+
+  // EXISTING_CODE
+  // EXISTING_CODE
+
+  const fetchSettings = useCallback(
+  (currentItem: number, itemsPerPage: number) => {
+    {{ apply $childTabs "fetch{{firstUpper .}}(currentItem, itemsPerPage);" "\n" }}
+  }, [{{ apply $childTabs "fetch{{firstUpper .}}" "," }}]
+  );
+
+  {{ apply $childTabs "const {{.}}Table = useReactTable({\ndata: {{.}}?.items || [],\ncolumns: {{firstUpper .}}TableDef,\ngetCoreRowModel: getCoreRowModel(),\n});\n" "\n" }}
+
+  const route = "{{$routeLower}}";
+  const tabs = [{{ apply $childTabs "\"{{.}}\"" "," }}];
+  const forms: ViewForm = {
+  {{ apply $childTabs "{{.}}: <FormTable data={ {{.}} } groups={ {{firstUpper .}}FormDef({{.}}Table)} />" "," }}
+  };
+
+  // if (!(status?.items?.length > 0)) {
+  //   return <>Loading...</>;
+  // }
+
+  return (
+  <ViewStateProvider
+  // do not remove - delint
+  route={route}
+  nItems={ {{index $childTabs 0}}.nItems}
+  fetchFn={ fetch{{$routeName}}}
+  onEnter={handleEnter}
+  modifyFn={handleModify}
+  >
+  <DebugState u={ [{{apply $childTabs "{{.}}.updater" ","}}]} />
+  <View tabs={tabs} forms={forms}{{if $wantsSearch}} searchable{{end}} />
+  </ViewStateProvider>
+  );
+  };
+
+  // EXISTING_CODE
+  // EXISTING_CODE
+{{- end }}

@@ -1,104 +1,108 @@
-{{/*==============================================================*/}}
-{{ $class := .Class }}
-{{ $routeName := .UiRouteName }}
-{{ $routeLower := toLower .UiRouteName }}
+{{ $isSettings := eq .Class "Settings" }}
+{{ $hasParent := (ne .Parent "") }}
+{{if and (not $hasParent) (not $isSettings) }}
 
-{{ $isProject := eq $class "Project" }}
-{{ $isSettings := eq $class "Settings" }}
-{{ $isWizard := eq $class "Wizard" }}
+  {{/*==============================================================*/}}
+  {{ $class := .Class }}
+  {{ $routeName := .UiRouteName }}
+  {{ $routeLower := toLower .UiRouteName }}
 
-{{ $wantsSearch := .Wants "search" }}
-{{ $wantsEnter := .Wants "enter" }}
-{{ $wantsModify := .Wants "modify" }}
+  {{ $isProject := eq $class "Project" }}
+  {{ $isSettings := eq $class "Settings" }}
+  {{ $isWizard := eq $class "Wizard" }}
 
-{{ $noops := print "const { enterNoop, modifyNoop } = useNoops();" }}
-{{ if or $wantsEnter $wantsModify }}
-  {{ if and $wantsEnter $wantsModify}}
-    {{ $noops = "" }}
-  {{ else if $wantsEnter }}
-    {{ $noops = print "const { modifyNoop } = useNoops();" }}
-  {{ else }}
-    {{ $noops = print "const { enterNoop } = useNoops();" }}
+  {{ $wantsSearch := .Wants "search" }}
+  {{ $wantsEnter := .Wants "enter" }}
+  {{ $wantsModify := .Wants "modify" }}
+
+  {{ $noops := print "const { enterNoop, modifyNoop } = useNoops();" }}
+  {{ if or $wantsEnter $wantsModify }}
+    {{ if and $wantsEnter $wantsModify}}
+      {{ $noops = "" }}
+    {{ else if $wantsEnter }}
+      {{ $noops = print "const { modifyNoop } = useNoops();" }}
+    {{ else }}
+      {{ $noops = print "const { enterNoop } = useNoops();" }}
+    {{ end }}
   {{ end }}
-{{ end }}
 
-{{ $param1 := "" }}
-{{ if and $wantsEnter (not $isWizard) }}
-  {{ $param1 = ", loadAddress" }}
-{{end}}
+  {{ $param1 := "" }}
+  {{ if and $wantsEnter (not $isWizard) }}
+    {{ $param1 = ", loadAddress" }}
+  {{end}}
 
-{{ $route := $routeLower }}
-{{ if $isProject }}
-  {{ $route = "" }}
-{{ end }}
+  {{ $route := $routeLower }}
+  {{ if $isProject }}
+    {{ $route = "" }}
+  {{ end }}
 
-{{ $handleEnter := `const handleEnter = enterNoop;` }}
-{{ if $wantsEnter }}
-  {{ $handleEnter = print `const handleEnter = (page: Page) => {
-  loadAddress(` $routeLower `.items[page.getRecord()].address);
-  };` }}
-{{ end }}
+  {{ $handleEnter := `const handleEnter = enterNoop;` }}
+  {{ if $wantsEnter }}
+    {{ $handleEnter = print `const handleEnter = (page: Page) => {
+    loadAddress(` $routeLower `.items[page.getRecord()].address);
+    };` }}
+  {{ end }}
 
-{{ $clickFn := "" }}
-{{ if $isWizard }}
-  {{ $handleEnter = `const handleEnter = () => {
-  stepWizard(types.WizStep.NEXT);
-  };` }} 
-  {{ $clickFn = `
-  clickFn={stepWizard}` }}
-{{ end }}
+  {{ $clickFn := "" }}
+  {{ if $isWizard }}
+    {{ $handleEnter = `const handleEnter = () => {
+    stepWizard(types.WizStep.NEXT);
+    };` }} 
+    {{ $clickFn = `
+    clickFn={stepWizard}` }}
+  {{ end }}
 
-{{ $handleModify := "const handleModify = modifyNoop;" }}
-{{ if $wantsModify }}
-  {{ $handleModify = print "const handleModify = Modify" $class ";" }}
-{{ end }}
+  {{ $handleModify := "const handleModify = modifyNoop;" }}
+  {{ if $wantsModify }}
+    {{ $handleModify = print "const handleModify = Modify" $class ";" }}
+  {{ end }}
 
-{{ $fetchFn := print "fetch" $routeName }}
+  {{ $fetchFn := print "fetch" $routeName }}
 
-{{/*==============================================================*/}}
-
-// This file is auto-generated. Edit only code inside
-// of ExistingCode markers (if any).
-
-// EXISTING_CODE
-// EXISTING_CODE
-
-export const {{$routeName}}View = () => {
-  const { {{$routeLower}}, {{$fetchFn}}{{$param1}}} = useAppState();
-  {{$noops -}}
-  {{$handleEnter -}}
-  {{$handleModify}}
+  {{/*==============================================================*/}}
+  // This file is auto-generated. Edit only code inside
+  // of ExistingCode markers (if any).
 
   // EXISTING_CODE
   // EXISTING_CODE
 
-{{if (not $isSettings)}}  const table = useReactTable({
-    data: {{$routeLower}}?.items || [],
-    columns: {{$routeName}}TableDef,
-    getCoreRowModel: getCoreRowModel(),
-  });{{end}}
+  export const {{$routeName}}View = () => {
+    const { {{$routeLower}}, {{$fetchFn}}{{$param1}} } = useAppState();
+    {{$noops -}}
+    {{$handleEnter -}}
+    {{$handleModify}}
 
-{{if not $isSettings}}  const route = "{{$route}}";
-  const tabs = ["{{$routeLower}}"];
-  const forms: ViewForm = {
-    {{$routeLower}}: <FormTable data={ {{$routeLower}} } groups={ {{$routeName}}FormDef(table)} />,
+    // EXISTING_CODE
+    // EXISTING_CODE
+
+  {{if (not $isSettings)}}  const table = useReactTable({
+      data: {{$routeLower}}?.items || [],
+      columns: {{$routeName}}TableDef,
+      getCoreRowModel: getCoreRowModel(),
+    });{{end}}
+
+  {{if not $isSettings}}  const route = "{{$route}}";
+    const tabs = ["{{$routeLower}}"];
+    const forms: ViewForm = {
+      {{$routeLower}}: <FormTable data={ {{$routeLower}} } groups={ {{$routeName}}FormDef(table)} />,
+    };
+  {{end}}
+
+    return (
+      <ViewStateProvider
+        // do not remove - delint
+        route={route}
+        nItems={ {{$routeLower}}.nItems}
+        fetchFn={ {{$fetchFn}}}
+        onEnter={handleEnter}
+        modifyFn={handleModify}{{$clickFn}}
+      >
+        <DebugState u={ [{{$routeLower}}.updater]} />
+        <View tabs={tabs} forms={forms}{{if $wantsSearch}} searchable{{end}} />
+      </ViewStateProvider>
+    );
   };
-{{end}}
 
-  return (
-    <ViewStateProvider
-      // do not remove - delint
-      route={route}
-      nItems={ {{$routeLower}}.nItems}
-      fetchFn={ {{$fetchFn}}}
-      onEnter={handleEnter}
-      modifyFn={handleModify}{{$clickFn}}
-    >
-      <DebugState u={ {{$routeLower}}.updater} />
-      <View tabs={tabs} forms={forms}{{if $wantsSearch}} searchable{{end}} />
-    </ViewStateProvider>
-  );
-};
-
-// EXISTING_CODE
-// EXISTING_CODE
+  // EXISTING_CODE
+  // EXISTING_CODE
+{{- end }}

@@ -1,26 +1,26 @@
-{{/*==============================================================*/}}
-{{ $class := .Class }}
-{{ $routeName := .UiRouteName }}
-{{ $routeLower := toLower .UiRouteName }}
-{{ $fullType := .ItemFullType }}
-{{ $embedType := .EmbedType }}
-{{ $formDef := print $routeName "FormDef" }}
+{{ $noChildren := (eq .Children "") }}
+{{ if $noChildren }}
+  {{/*==============================================================*/}}
+  {{ $class := .Class }}
+  {{ $routeName := .UiRouteName }}
+  {{ $fullType := .ItemFullType }}
+  {{ $formDef := print $routeName "FormDef" }}
 
-{{/*==============================================================*/}}
-
-// This file is auto-generated. Edit only code inside
-// of ExistingCode markers (if any).
-// EXISTING_CODE
-// EXISTING_CODE
-
-export const {{$formDef}} = (table: Table<{{$fullType}}>): FieldGroup<types.{{$class}}Container>[] => {
+  {{/*==============================================================*/}}
+  // This file is auto-generated. Edit only code inside
+  // of ExistingCode markers (if any).
   // EXISTING_CODE
   // EXISTING_CODE
-  return [
-    // EXISTING_CODE
-    // EXISTING_CODE
-  ];
-};
 
-// EXISTING_CODE
-// EXISTING_CODE
+  export const {{$formDef}} = (table: Table<{{$fullType}}>): FieldGroup<types.{{$class}}Container>[] => {
+    // EXISTING_CODE
+    // EXISTING_CODE
+    return [
+      // EXISTING_CODE
+      // EXISTING_CODE
+    ];
+  };
+
+  // EXISTING_CODE
+  // EXISTING_CODE
+{{- end }}

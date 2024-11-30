@@ -4,11 +4,12 @@
 {{ $routeLower := toLower .UiRouteName }}
 
 {{ $isHistory := eq $class "History" }}
+{{ $noChildren := (eq .Children "") }}
 {{ $fullType := .ItemFullType }}
 {{ $dataName := (print (cond (not $isHistory) "a." "") $routeLower) }}
 
 {{/*==============================================================*/}}
-// This file is auto-generated. Edit only code inside
+{{if $noChildren}}// This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 package app
 
@@ -26,4 +27,4 @@ func (a *App) Fetch{{$class}}(first, pageSize int) *types.{{$container}} {
 	copy.Items = filtered[first:last]
 
 	return copy
-}
+}{{end}}

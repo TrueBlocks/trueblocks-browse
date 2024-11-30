@@ -10,10 +10,6 @@ export function CancelAllContexts() {
   return window['go']['app']['App']['CancelAllContexts']();
 }
 
-export function ConfigView(arg1) {
-  return window['go']['app']['App']['ConfigView'](arg1);
-}
-
 export function DaemonsView(arg1) {
   return window['go']['app']['App']['DaemonsView'](arg1);
 }
@@ -64,10 +60,6 @@ export function FetchProject(arg1, arg2) {
 
 export function FetchSession(arg1, arg2) {
   return window['go']['app']['App']['FetchSession'](arg1, arg2);
-}
-
-export function FetchSettings(arg1, arg2) {
-  return window['go']['app']['App']['FetchSettings'](arg1, arg2);
 }
 
 export function FetchStatus(arg1, arg2) {
@@ -230,10 +222,6 @@ export function Reload() {
   return window['go']['app']['App']['Reload']();
 }
 
-export function SessionView(arg1) {
-  return window['go']['app']['App']['SessionView'](arg1);
-}
-
 export function SetChain(arg1) {
   return window['go']['app']['App']['SetChain'](arg1);
 }
@@ -256,10 +244,6 @@ export function SetShowing(arg1, arg2) {
 
 export function SettingsView(arg1) {
   return window['go']['app']['App']['SettingsView'](arg1);
-}
-
-export function StatusView(arg1) {
-  return window['go']['app']['App']['StatusView'](arg1);
 }
 
 export function StepWizard(arg1) {

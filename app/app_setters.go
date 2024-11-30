@@ -39,7 +39,6 @@ func (a *App) SetChain(newChain string) {
 	a.indexes.Updater.SetChain(oldChain, newChain)
 	a.manifests.Updater.SetChain(oldChain, newChain)
 	a.status.Updater.SetChain(oldChain, newChain)
-	a.settings.Updater.SetChain(oldChain, newChain)
 	a.session.Updater.SetChain(oldChain, newChain)
 	a.config.Updater.SetChain(oldChain, newChain)
 	a.wizard.Updater.SetChain(oldChain, newChain)

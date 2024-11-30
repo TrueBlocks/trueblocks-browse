@@ -25,7 +25,6 @@ type App struct {
 	indexes   types.IndexContainer
 	manifests types.ManifestContainer
 	status    types.StatusContainer
-	settings  types.SettingsContainer
 	session   types.SessionContainer
 	config    types.ConfigContainer
 	wizard    types.WizardContainer
