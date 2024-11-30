@@ -12,9 +12,30 @@ func (a *App) Reload() {
 	logger.InfoG("Reloading", route, "...")
 
 	switch route {
-{{range .Structures -}}
-	{{.ReloadCode}}
-	{{end}}
+		{{- range .Structures }}
+			{{- if ne .Class "History" }}
+				{{- $hasChildren := ne .Children "" }}
+				{{- $route := toLower .UiRouteName }}
+				{{- if eq .Class "Project" }}
+					{{ $route = "" }}
+				{{- end }}
+				{{- if $hasChildren }}
+					case "/{{$route}}":
+						{{- range .ChildTabs }}
+							a.{{toLower .}}.Updater.Reset()
+							if err := a.load{{firstUpper .}}(nil, nil); err != nil {
+								a.emitErrorMsg(err, nil)
+							}
+						{{- end }}
+				{{- else }}
+					case "/{{$route}}":
+						a.{{toLower .UiRouteName}}.Updater.Reset()
+						if err := a.load{{.UiRouteName}}(nil, nil); err != nil {
+							a.emitErrorMsg(err, nil)
+						}
+					{{- end }}
+			{{- end }}
+		{{- end }}
 	// EXISTING_CODE
 	// EXISTING_CODE
 }

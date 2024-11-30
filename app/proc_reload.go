@@ -22,7 +22,6 @@ func (a *App) Reload() {
 		if err := a.loadProject(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-
 	case "/monitors":
 		a.monitors.Updater.Reset()
 		if err := a.loadMonitors(nil, nil); err != nil {
@@ -48,11 +47,6 @@ func (a *App) Reload() {
 		if err := a.loadManifests(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/status":
-		a.status.Updater.Reset()
-		if err := a.loadStatus(nil, nil); err != nil {
-			a.emitErrorMsg(err, nil)
-		}
 	case "/settings":
 		a.status.Updater.Reset()
 		if err := a.loadStatus(nil, nil); err != nil {
@@ -71,22 +65,11 @@ func (a *App) Reload() {
 		if err := a.loadDaemons(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/session":
-		a.session.Updater.Reset()
-		if err := a.loadSession(nil, nil); err != nil {
-			a.emitErrorMsg(err, nil)
-		}
-	case "/config":
-		a.config.Updater.Reset()
-		if err := a.loadConfig(nil, nil); err != nil {
-			a.emitErrorMsg(err, nil)
-		}
 	case "/wizard":
 		a.wizard.Updater.Reset()
 		if err := a.loadWizard(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-
 		// EXISTING_CODE
 	default:
 		address := a.GetSelected()

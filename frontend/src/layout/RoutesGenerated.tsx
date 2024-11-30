@@ -31,13 +31,8 @@ export type Route =
   | "monitors"
   | "names"
   | "abis"
-  | "indexes"
-  | "manifests"
-  | "status"
   | "settings"
   | "daemons"
-  | "session"
-  | "config"
   | "wizard";
 
 export type RouteItem = {
