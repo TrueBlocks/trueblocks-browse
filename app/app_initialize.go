@@ -76,8 +76,8 @@ func (a *App) initialize() bool {
 			a.settings.Updater = types.NewSettingsUpdater(chain, true)
 			a.session.Updater = types.NewSessionUpdater(chain, true)
 			a.config.Updater = types.NewConfigUpdater(chain, true)
-			a.wizard.Updater = types.NewWizardUpdater(chain, true)
 			a.daemons.Updater = types.NewDaemonUpdater(chain, true)
+			a.wizard.Updater = types.NewWizardUpdater(chain, true)
 			return true
 		}
 		_ = initUpdaters()

@@ -2,17 +2,13 @@
 // of ExistingCode markers (if any).
 
 // EXISTING_CODE
-import { useState } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { FormTable, ViewForm, View, DebugState } from "@components";
 // import { ToggleDaemon } from "@gocode/app/App";
-import { messages, types } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { DaemonsFormDef } from "./DaemonsFormDef";
 import { DaemonsTableDef } from "./DaemonsTableDef";
-
-// const empty = {} as types.Daemon;
 
 // EXISTING_CODE
 
