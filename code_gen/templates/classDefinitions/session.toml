@@ -5,7 +5,5 @@
 	doc_route = "1100-containers"
 	ui_route = "1100-session-u"
 	attributes = ""
-	# produced_by = "blocks"
-	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"
 	cache_by = "range"

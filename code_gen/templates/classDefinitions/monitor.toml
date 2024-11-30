@@ -6,7 +6,5 @@
 	ui_route = "1020-monitors-3"
 	attributes = "wantsSearch|wantsEnter|wantsModify"
 	sorts = "nRecords+Asc,address+Asc"
-	# produced_by = "blocks"
-	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"
 	cache_by = "range"

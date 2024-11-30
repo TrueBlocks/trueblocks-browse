@@ -6,7 +6,5 @@
 	ui_route = "1040-abis-5"
 	attributes = "wantsSearch|wantsEnter|wantsModify"
 	sorts = "isEmpty+Asc,isKnown+Asc,address+Asc"
-	# produced_by = "blocks"
-	# contains = "transaction, withdrawal"
 	cache_type = "cacheable"
 	cache_by = "range"

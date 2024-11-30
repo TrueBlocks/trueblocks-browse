@@ -5,7 +5,5 @@
     doc_route = "1120-containers"
     ui_route = "1120-wizard-w"
     attributes = "wantsEnter"
-    # produced_by = "blocks"
-    # contains = "transaction, withdrawal"
     cache_type = "cacheable"
     cache_by = "range"

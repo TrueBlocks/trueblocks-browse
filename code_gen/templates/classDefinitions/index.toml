@@ -6,7 +6,5 @@
     ui_route = "1050-indexes-6"
     attributes = ""
     sorts = "range+Dec"
-    # produced_by = "blocks"
-    # contains = "transaction, withdrawal"
     cache_type = "cacheable"
     cache_by = "range"
