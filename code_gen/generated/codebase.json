@@ -7,7 +7,7 @@
             "ui_route": "0000-project-1",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "wantsSearch|wantsEnter|wantsModify",
+            "attributes": "wantsSearch|wantsEnter|wantsModify|wantsZero",
             "sorts": "address+Asc",
             "members": [
                 {
@@ -85,7 +85,7 @@
             "ui_route": "1010-history-2",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "wantsSearch",
+            "attributes": "wantsSearch|wantsZero",
             "members": [
                 {
                     "name": "address",
@@ -613,6 +613,7 @@
             "ui_route": "1090-daemons-8",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "attributes": "wantsZero",
             "members": [
                 {
                     "name": "daemon",
@@ -655,6 +656,7 @@
             "parent": "settings",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "attributes": "wantsZero",
             "members": [
                 {
                     "name": "session",
@@ -745,7 +747,7 @@
             "ui_route": "1120-wizard-w",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "wantsEnter",
+            "attributes": "wantsEnter|wantsZero",
             "members": [
                 {
                     "name": "chain",

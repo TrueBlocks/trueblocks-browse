@@ -9,17 +9,9 @@
 {{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
 
 {{ $isHistory := eq $class "History" }}
-{{ $isSession := eq $class "Session" }}
-{{ $isWizard := eq $class "Wizard" }}
-{{ $isDaemon := eq $class "Daemon" }}
-{{ $isProject := eq $class "Project" }}
-{{ $isSettings := eq $class "Settings" }}
 {{ $noChildren := (eq .Children "") }}
 
-{{ $one := (or $isHistory $isSettings) }}
-{{ $two := (or $isWizard $isDaemon) }}
-{{ $three := (or $isSession $isProject) }}
-{{ $expectsZero := (or $one (or $two $three) )}}
+{{ $wantsZero := .Wants "zero" }}
 
 {{ $appData := print "a." $routeLower }}
 {{ if $isHistory }}
@@ -56,7 +48,7 @@
 		errorChan <- err
 	}
 	return err` }}
-{{ if $expectsZero }}
+{{ if $wantsZero }}
 	{{ $noRecords = `  // this outcome is okay
 	a.meta = *meta
 	return nil` }}

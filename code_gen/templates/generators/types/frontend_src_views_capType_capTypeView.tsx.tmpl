@@ -1,4 +1,3 @@
-{{ $isSettings := eq .Class "Settings" }}
 {{ $hasChildren := (ne .Children "") }}
 {{ $hasParent := (ne .Parent "") }}
 {{if and (not $hasParent) (not $hasChildren) }}
@@ -9,7 +8,6 @@
   {{ $routeLower := toLower .UiRouteName }}
 
   {{ $isProject := eq $class "Project" }}
-  {{ $isSettings := eq $class "Settings" }}
   {{ $isWizard := eq $class "Wizard" }}
 
   {{ $wantsSearch := .Wants "search" }}
@@ -76,18 +74,17 @@
     // EXISTING_CODE
     // EXISTING_CODE
 
-  {{if (not $isSettings)}}  const table = useReactTable({
+  const table = useReactTable({
       data: {{$routeLower}}?.items || [],
       columns: {{$routeName}}TableDef,
       getCoreRowModel: getCoreRowModel(),
-    });{{end}}
+    });
 
-  {{if not $isSettings}}  const route = "{{$route}}";
+  const route = "{{$route}}";
     const tabs = ["{{$routeLower}}"];
     const forms: ViewForm = {
       {{$routeLower}}: <FormTable data={ {{$routeLower}} } groups={ {{$routeName}}FormDef(table)} />,
     };
-  {{end}}
 
     return (
       <ViewStateProvider

@@ -4,7 +4,7 @@
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "1100-containers"
 	ui_route = "1100-session"
-	attributes = ""
+	attributes = "wantsZero"
 	parent = "settings"
 	cache_type = "cacheable"
 	cache_by = "range"
