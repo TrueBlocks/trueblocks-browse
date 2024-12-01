@@ -4,6 +4,7 @@
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "1080-containers"
 	ui_route = "1080-settings-7"
+	ui_icon = "Settings"
 	attributes = ""
 	children = "status,config,session"
 	cache_type = "cacheable"

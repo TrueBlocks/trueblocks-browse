@@ -4,6 +4,7 @@
     # doc_descr = "block data as returned from the RPC (with slight enhancements)"
     doc_route = "1065-containers"
     ui_route = "1065-unchained-6"
+    ui_icon = "Archive"
     attributes = ""
     children = "indexes,manifests"
     cache_type = "cacheable"

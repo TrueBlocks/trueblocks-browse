@@ -4,6 +4,7 @@
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "0000-containers"
 	ui_route = "0000-project-1"
+	ui_icon = "Home"
 	attributes = "wantsSearch|wantsEnter|wantsModify|wantsZero"
 	sorts = "address+Asc"
 	cache_type = "cacheable"

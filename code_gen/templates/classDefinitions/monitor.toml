@@ -4,6 +4,7 @@
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "1020-containers"
 	ui_route = "1020-monitors-3"
+	ui_icon = "DeviceDesktop"
 	attributes = "wantsSearch|wantsEnter|wantsModify"
 	sorts = "nRecords+Asc,address+Asc"
 	cache_type = "cacheable"
