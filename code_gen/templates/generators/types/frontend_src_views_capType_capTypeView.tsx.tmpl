@@ -71,6 +71,10 @@
     {{$handleEnter -}}
     {{$handleModify}}
 
+    // eslint-disable-next-line prefer-const
+    let customTabs: string[] = [];
+    // eslint-disable-next-line prefer-const
+    let customForms: Record<string, JSX.Element> = {};
     // EXISTING_CODE
     // EXISTING_CODE
 
@@ -81,9 +85,10 @@
     });
 
   const route = "{{$route}}";
-    const tabs = ["{{$routeLower}}"];
+    const tabs = ["{{$routeLower}}", ...(customTabs || [])];
     const forms: ViewForm = {
       {{$routeLower}}: <FormTable data={ {{$routeLower}} } groups={ {{$routeName}}FormDef(table)} />,
+      ...customForms,
     };
 
     return (

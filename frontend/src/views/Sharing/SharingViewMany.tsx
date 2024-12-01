@@ -17,7 +17,13 @@ export const SharingView = () => {
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
+  // eslint-disable-next-line prefer-const
+  let customTabs: string[] = [];
+  // eslint-disable-next-line prefer-const
+  let customForms: Record<string, JSX.Element> = {};
   // EXISTING_CODE
+  customTabs = ["pin", "upload"];
+  customForms["pin"] = <div>This is a custom tab</div>;
   // EXISTING_CODE
 
   const fetchSharing = useCallback(
@@ -41,10 +47,11 @@ export const SharingView = () => {
   });
 
   const route = "sharing";
-  const tabs = ["names", "abis"];
+  const tabs = ["names", "abis", ...(customTabs || [])];
   const forms: ViewForm = {
     names: <FormTable data={names} groups={NamesFormDef(namesTable)} />,
     abis: <FormTable data={abis} groups={AbisFormDef(abisTable)} />,
+    ...customForms,
   };
 
   // if (!(status?.items?.length > 0)) {

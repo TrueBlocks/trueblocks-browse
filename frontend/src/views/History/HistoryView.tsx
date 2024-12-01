@@ -15,7 +15,19 @@ export const HistoryView = () => {
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
+  // eslint-disable-next-line prefer-const
+  let customTabs: string[] = [];
+  // eslint-disable-next-line prefer-const
+  let customForms: Record<string, JSX.Element> = {};
   // EXISTING_CODE
+  customTabs = ["balances", "charts", "logs", "statements", "neighbors", "traces", "receipts"];
+  customForms["balances"] = <div>This is a custom tab</div>;
+  customForms["charts"] = <div>This is a custom tab</div>;
+  customForms["logs"] = <div>This is a custom tab</div>;
+  customForms["statements"] = <div>This is a custom tab</div>;
+  customForms["neighbors"] = <div>This is a custom tab</div>;
+  customForms["traces"] = <div>This is a custom tab</div>;
+  customForms["receipts"] = <div>This is a custom tab</div>;
   // EXISTING_CODE
 
   const table = useReactTable({
@@ -25,9 +37,10 @@ export const HistoryView = () => {
   });
 
   const route = "history";
-  const tabs = ["history"];
+  const tabs = ["history", ...(customTabs || [])];
   const forms: ViewForm = {
     history: <FormTable data={history} groups={HistoryFormDef(table)} />,
+    ...customForms,
   };
 
   return (

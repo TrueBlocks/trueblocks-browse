@@ -55,6 +55,10 @@
   {{$handleEnter -}}
   {{$handleModify}}
 
+  // eslint-disable-next-line prefer-const
+  let customTabs: string[] = [];
+  // eslint-disable-next-line prefer-const
+  let customForms: Record<string, JSX.Element> = {};
   // EXISTING_CODE
   // EXISTING_CODE
 
@@ -67,9 +71,10 @@
   {{ apply $childTabs "const {{.}}Table = useReactTable({\ndata: {{.}}?.items || [],\ncolumns: {{firstUpper .}}TableDef,\ngetCoreRowModel: getCoreRowModel(),\n});\n" "\n" }}
 
   const route = "{{$routeLower}}";
-  const tabs = [{{ apply $childTabs "\"{{.}}\"" "," }}];
+  const tabs = [{{ apply $childTabs "\"{{.}}\"" "," }}, ...(customTabs || [])];
   const forms: ViewForm = {
-  {{ apply $childTabs "{{.}}: <FormTable data={ {{.}} } groups={ {{firstUpper .}}FormDef({{.}}Table)} />" "," }}
+    {{ apply $childTabs "{{.}}: <FormTable data={ {{.}} } groups={ {{firstUpper .}}FormDef({{.}}Table)} />" "," }},
+    ...customForms,
   };
 
   // if (!(status?.items?.length > 0)) {

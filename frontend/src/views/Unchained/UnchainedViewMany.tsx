@@ -18,6 +18,10 @@ export const UnchainedView = () => {
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
+  // eslint-disable-next-line prefer-const
+  let customTabs: string[] = [];
+  // eslint-disable-next-line prefer-const
+  let customForms: Record<string, JSX.Element> = {};
   // EXISTING_CODE
   // EXISTING_CODE
 
@@ -42,10 +46,11 @@ export const UnchainedView = () => {
   });
 
   const route = "unchained";
-  const tabs = ["indexes", "manifests"];
+  const tabs = ["indexes", "manifests", ...(customTabs || [])];
   const forms: ViewForm = {
     indexes: <FormTable data={indexes} groups={IndexesFormDef(indexesTable)} />,
     manifests: <FormTable data={manifests} groups={ManifestsFormDef(manifestsTable)} />,
+    ...customForms,
   };
 
   // if (!(status?.items?.length > 0)) {

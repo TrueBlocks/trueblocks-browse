@@ -17,6 +17,10 @@ export const MonitorsView = () => {
   };
   const handleModify = ModifyMonitor;
 
+  // eslint-disable-next-line prefer-const
+  let customTabs: string[] = [];
+  // eslint-disable-next-line prefer-const
+  let customForms: Record<string, JSX.Element> = {};
   // EXISTING_CODE
   // EXISTING_CODE
 
@@ -27,9 +31,10 @@ export const MonitorsView = () => {
   });
 
   const route = "monitors";
-  const tabs = ["monitors"];
+  const tabs = ["monitors", ...(customTabs || [])];
   const forms: ViewForm = {
     monitors: <FormTable data={monitors} groups={MonitorsFormDef(table)} />,
+    ...customForms,
   };
 
   return (

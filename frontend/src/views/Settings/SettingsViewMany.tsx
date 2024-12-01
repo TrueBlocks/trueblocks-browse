@@ -18,6 +18,10 @@ export const SettingsView = () => {
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
+  // eslint-disable-next-line prefer-const
+  let customTabs: string[] = [];
+  // eslint-disable-next-line prefer-const
+  let customForms: Record<string, JSX.Element> = {};
   // EXISTING_CODE
   // EXISTING_CODE
 
@@ -49,11 +53,12 @@ export const SettingsView = () => {
   });
 
   const route = "settings";
-  const tabs = ["status", "config", "session"];
+  const tabs = ["status", "config", "session", ...(customTabs || [])];
   const forms: ViewForm = {
     status: <FormTable data={status} groups={StatusFormDef(statusTable)} />,
     config: <FormTable data={config} groups={ConfigFormDef(configTable)} />,
     session: <FormTable data={session} groups={SessionFormDef(sessionTable)} />,
+    ...customForms,
   };
 
   // if (!(status?.items?.length > 0)) {

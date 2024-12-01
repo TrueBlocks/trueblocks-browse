@@ -18,6 +18,10 @@ export const DaemonsView = () => {
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
+  // eslint-disable-next-line prefer-const
+  let customTabs: string[] = [];
+  // eslint-disable-next-line prefer-const
+  let customForms: Record<string, JSX.Element> = {};
   // EXISTING_CODE
   // TODO BOGUS: The daemon state should be in the AppState
   // const [scraper] = useState<types.Daemon>(empty);
@@ -92,9 +96,10 @@ export const DaemonsView = () => {
   });
 
   const route = "daemons";
-  const tabs = ["daemons"];
+  const tabs = ["daemons", ...(customTabs || [])];
   const forms: ViewForm = {
     daemons: <FormTable data={daemons} groups={DaemonsFormDef(table)} />,
+    ...customForms,
   };
 
   return (

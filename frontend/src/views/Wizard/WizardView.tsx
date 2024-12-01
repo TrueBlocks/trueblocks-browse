@@ -19,6 +19,10 @@ export const WizardView = () => {
   };
   const handleModify = modifyNoop;
 
+  // eslint-disable-next-line prefer-const
+  let customTabs: string[] = [];
+  // eslint-disable-next-line prefer-const
+  let customForms: Record<string, JSX.Element> = {};
   // EXISTING_CODE
   const stepWizard = (step: string) => {
     StepWizard(step as types.WizStep).then(() => {
@@ -34,9 +38,10 @@ export const WizardView = () => {
   });
 
   const route = "wizard";
-  const tabs = ["wizard"];
+  const tabs = ["wizard", ...(customTabs || [])];
   const forms: ViewForm = {
     wizard: <FormTable data={wizard} groups={WizardFormDef(table)} />,
+    ...customForms,
   };
 
   return (
