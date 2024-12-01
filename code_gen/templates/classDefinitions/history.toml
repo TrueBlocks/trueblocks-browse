@@ -5,6 +5,6 @@
 	doc_route = "1010-containers"
 	ui_route = "1010-history-2"
 	ui_icon = "BuildingMonument"
-	attributes = "wantsSearch|wantsZero"
+	attributes = "wantsSearch|wantsZero|wantsMulti"
 	cache_type = "cacheable"
 	cache_by = "range"

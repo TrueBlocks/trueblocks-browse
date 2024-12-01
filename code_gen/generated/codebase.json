@@ -87,7 +87,7 @@
             "ui_icon": "BuildingMonument",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "wantsSearch|wantsZero",
+            "attributes": "wantsSearch|wantsZero|wantsMulti",
             "members": [
                 {
                     "name": "address",

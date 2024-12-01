@@ -4,6 +4,8 @@ package app
 
 // EXISTING_CODE
 import (
+	"strings"
+
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/wailsapp/wails/v2/pkg/menu"
@@ -17,7 +19,11 @@ func (a *App) ProjectView(cb *menu.CallbackData) {
 
 func (a *App) HistoryView(cb *menu.CallbackData) {
 	address := a.GetSelected()
-	a.Navigate("/history", address.Hex())
+	if strings.Contains(a.GetRoute(), "/history") {
+		a.TogglePrevTab(cb)
+	} else {
+		a.Navigate("/history", address.Hex())
+	}
 }
 
 func (a *App) MonitorsView(cb *menu.CallbackData) {
@@ -25,15 +31,27 @@ func (a *App) MonitorsView(cb *menu.CallbackData) {
 }
 
 func (a *App) SharingView(cb *menu.CallbackData) {
-	a.Navigate("/sharing", "")
+	if strings.Contains(a.GetRoute(), "/sharing") {
+		a.TogglePrevTab(cb)
+	} else {
+		a.Navigate("/sharing", "")
+	}
 }
 
 func (a *App) UnchainedView(cb *menu.CallbackData) {
-	a.Navigate("/unchained", "")
+	if strings.Contains(a.GetRoute(), "/unchained") {
+		a.TogglePrevTab(cb)
+	} else {
+		a.Navigate("/unchained", "")
+	}
 }
 
 func (a *App) SettingsView(cb *menu.CallbackData) {
-	a.Navigate("/settings", "")
+	if strings.Contains(a.GetRoute(), "/settings") {
+		a.TogglePrevTab(cb)
+	} else {
+		a.Navigate("/settings", "")
+	}
 }
 
 func (a *App) DaemonsView(cb *menu.CallbackData) {

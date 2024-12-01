@@ -15,6 +15,12 @@ package app
 	{{ $isProject := eq $class "Project" }}
 	{{ $isWizard := eq $class "Wizard" }}
 	{{ $noParent := (eq .Parent "") }}
+	{{ $hasChildren := (ne .Children "") }}
+
+	{{ $wantsMulti := .Wants "multi" }}
+	{{ if $hasChildren }}
+		{{ $wantsMulti = true }}
+	{{ end }}
 
 	{{ $param1 := print "\"/" $routeLower "\"" }}
 	{{ if $isProject }}
@@ -27,21 +33,30 @@ package app
 	{{ end }}
 
 	{{/*==============================================================*/}}
-	{{if $noParent}}func (a *App) {{$routeName}}View(cb *menu.CallbackData) {
-		{{if $isHistory -}}
-			address := a.GetSelected()
-		{{else if $isWizard -}}
-			if a.isConfigured() {
-				a.wizard.State = types.WizWelcome
-				a.emitMsg(messages.Refresh, &messages.MessageMsg{
-					State: string(a.wizard.State),
-					Num1:  2, // 2 is the wizard step if needed
-				})
-			} else {
-				a.StepWizard(types.WizNext)
-			}
-		{{end -}}
-		a.Navigate({{$param1}}{{$param2}})
-	}
-
-{{end}}{{end}}
+	{{- if $noParent }}
+		func (a *App) {{$routeName}}View(cb *menu.CallbackData) {
+			{{- if $isHistory }}
+				address := a.GetSelected()
+			{{- else if $isWizard }}
+				if a.isConfigured() {
+					a.wizard.State = types.WizWelcome
+					a.emitMsg(messages.Refresh, &messages.MessageMsg{
+						State: string(a.wizard.State),
+						Num1:  2, // 2 is the wizard step if needed
+					})
+				} else {
+					a.StepWizard(types.WizNext)
+				}
+			{{- end }}
+			{{- if $wantsMulti }}
+				if strings.Contains(a.GetRoute(), "/{{ $routeLower }}") {
+					a.TogglePrevTab(cb)
+				} else {
+					a.Navigate({{$param1}}{{$param2}})
+				}
+			{{- else }}
+				a.Navigate({{$param1}}{{$param2}})
+			{{- end }}
+		}
+	{{- end }}
+{{- end }}
