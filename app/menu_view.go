@@ -24,12 +24,8 @@ func (a *App) MonitorsView(cb *menu.CallbackData) {
 	a.Navigate("/monitors", "")
 }
 
-func (a *App) NamesView(cb *menu.CallbackData) {
-	a.Navigate("/names", "")
-}
-
-func (a *App) AbisView(cb *menu.CallbackData) {
-	a.Navigate("/abis", "")
+func (a *App) SharingView(cb *menu.CallbackData) {
+	a.Navigate("/sharing", "")
 }
 
 func (a *App) UnchainedView(cb *menu.CallbackData) {

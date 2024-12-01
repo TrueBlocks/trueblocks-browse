@@ -50,11 +50,10 @@ func (a *App) GetMenus() *menu.Menu {
 		"project":   {inc(), viewMenu, "Project", keys.CmdOrCtrl("1"), a.ProjectView},
 		"history":   {inc(), viewMenu, "History", keys.CmdOrCtrl("2"), a.HistoryView},
 		"monitors":  {inc(), viewMenu, "Monitors", keys.CmdOrCtrl("3"), a.MonitorsView},
-		"names":     {inc(), viewMenu, "Names", keys.CmdOrCtrl("4"), a.NamesView},
-		"abis":      {inc(), viewMenu, "Abis", keys.CmdOrCtrl("5"), a.AbisView},
-		"unchained": {inc(), viewMenu, "Unchained", keys.CmdOrCtrl("6"), a.UnchainedView},
-		"settings":  {inc(), viewMenu, "Settings", keys.CmdOrCtrl("7"), a.SettingsView},
-		"daemons":   {inc(), viewMenu, "Daemons", keys.CmdOrCtrl("8"), a.DaemonsView},
+		"sharing":   {inc(), viewMenu, "Sharing", keys.CmdOrCtrl("4"), a.SharingView},
+		"unchained": {inc(), viewMenu, "Unchained", keys.CmdOrCtrl("5"), a.UnchainedView},
+		"settings":  {inc(), viewMenu, "Settings", keys.CmdOrCtrl("6"), a.SettingsView},
+		"daemons":   {inc(), viewMenu, "Daemons", keys.CmdOrCtrl("7"), a.DaemonsView},
 		"wizard":    {inc(), viewMenu, "Wizard", keys.CmdOrCtrl("w"), a.WizardView},
 
 		// EXISTING_CODE

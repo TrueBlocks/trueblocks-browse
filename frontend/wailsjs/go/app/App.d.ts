@@ -7,8 +7,6 @@ import {app} from '../models';
 import {context} from '../models';
 import {editors} from '../models';
 
-export function AbisView(arg1:menu.CallbackData):Promise<void>;
-
 export function CancelAllContexts():Promise<void>;
 
 export function DaemonsView(arg1:menu.CallbackData):Promise<void>;
@@ -105,8 +103,6 @@ export function ModifyProject(arg1:app.ModifyData):Promise<void>;
 
 export function MonitorsView(arg1:menu.CallbackData):Promise<void>;
 
-export function NamesView(arg1:menu.CallbackData):Promise<void>;
-
 export function Navigate(arg1:string,arg2:string):Promise<void>;
 
 export function ProjectView(arg1:menu.CallbackData):Promise<void>;
@@ -124,6 +120,8 @@ export function SetRoute(arg1:string,arg2:string):Promise<void>;
 export function SetShowing(arg1:string,arg2:boolean):Promise<void>;
 
 export function SettingsView(arg1:menu.CallbackData):Promise<void>;
+
+export function SharingView(arg1:menu.CallbackData):Promise<void>;
 
 export function StepWizard(arg1:types.WizStep):Promise<types.WizState>;
 

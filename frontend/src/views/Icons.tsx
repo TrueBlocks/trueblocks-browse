@@ -6,7 +6,6 @@ import {
   IconDeviceDesktop,
   IconTag,
   IconArchive,
-  IconChartArrows,
   IconSettings,
   IconServer,
   IconBiohazard,
@@ -15,9 +14,8 @@ import {
 export const ProjectIcon = <IconHome />;
 export const HistoryIcon = <IconBuildingMonument />;
 export const MonitorsIcon = <IconDeviceDesktop />;
-export const NamesIcon = <IconTag />;
+export const SharingIcon = <IconTag />;
 export const UnchainedIcon = <IconArchive />;
-export const AbisIcon = <IconChartArrows />;
 export const SettingsIcon = <IconSettings />;
 export const DaemonsIcon = <IconServer />;
 export const WizardIcon = <IconBiohazard />;

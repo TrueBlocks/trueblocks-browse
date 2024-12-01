@@ -5,8 +5,7 @@ import {
   ProjectIcon,
   HistoryIcon,
   MonitorsIcon,
-  NamesIcon,
-  AbisIcon,
+  SharingIcon,
   UnchainedIcon,
   SettingsIcon,
   DaemonsIcon,
@@ -15,15 +14,14 @@ import {
   ProjectView,
   HistoryView,
   MonitorsView,
-  NamesView,
-  AbisView,
+  SharingView,
   UnchainedView,
   SettingsView,
   DaemonsView,
   WizardView,
 } from "@views";
 
-export type Route = "" | "history" | "monitors" | "names" | "abis" | "unchained" | "settings" | "daemons" | "wizard";
+export type Route = "" | "history" | "monitors" | "sharing" | "unchained" | "settings" | "daemons" | "wizard";
 
 export type RouteItem = {
   order: number;
@@ -64,18 +62,11 @@ export const routeItems: RouteItem[] = [
     component: MonitorsView,
   },
   {
-    order: 1030,
-    route: expandRoute("names"),
-    label: "Names",
-    icon: NamesIcon,
-    component: NamesView,
-  },
-  {
-    order: 1040,
-    route: expandRoute("abis"),
-    label: "Abis",
-    icon: AbisIcon,
-    component: AbisView,
+    order: 1045,
+    route: expandRoute("sharing"),
+    label: "Sharing",
+    icon: SharingIcon,
+    component: SharingView,
   },
   {
     order: 1065,

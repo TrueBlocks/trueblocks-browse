@@ -46,7 +46,10 @@ export const ViewStateProvider = ({
 }: ViewContextType) => {
   const [headerShows, setHeaderShows] = useState<boolean | null>(null);
   const [filter, setFilter] = useState<string>("");
-  const lines = route === "names" ? 9 : 10;
+  // TODO: This used to be different for session and names, but those are
+  // TODO: now tabs. This points to the fact that we need per-tab state.
+  // TODO: There are other places -- active tab, header open/close, etc.
+  const lines = 10;
   const pager = useKeyboardPaging(nItems, lines, onEnter);
 
   const handleCollapse = (newState: string | null) => {

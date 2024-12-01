@@ -3,7 +3,7 @@
 	# doc_group = "20-Routes"
 	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "1080-containers"
-	ui_route = "1080-settings-7"
+	ui_route = "1080-settings-6"
 	ui_icon = "Settings"
 	attributes = ""
 	children = "status,config,session"

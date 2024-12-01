@@ -27,12 +27,11 @@ func (a *App) Reload() {
 		if err := a.loadMonitors(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/names":
+	case "/sharing":
 		a.names.Updater.Reset()
 		if err := a.loadNames(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/abis":
 		a.abis.Updater.Reset()
 		if err := a.loadAbis(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
