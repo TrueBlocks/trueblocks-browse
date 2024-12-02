@@ -10,27 +10,26 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 // EXISTING_CODE
 
 type MonitorContainer struct {
-	Chain    string              `json:"chain"`
-	FileSize uint64              `json:"fileSize"`
-	NDeleted uint64              `json:"nDeleted"`
-	NEmpty   uint64              `json:"nEmpty"`
-	NNamed   uint64              `json:"nNamed"`
-	NRecords uint64              `json:"nRecords"`
-	NStaged  uint64              `json:"nStaged"`
-	Updater  updater.Updater     `json:"updater"`
-	Items    []coreTypes.Monitor `json:"items"`
-	NItems   uint64              `json:"nItems"`
+	Chain    string          `json:"chain"`
+	FileSize uint64          `json:"fileSize"`
+	NDeleted uint64          `json:"nDeleted"`
+	NEmpty   uint64          `json:"nEmpty"`
+	NNamed   uint64          `json:"nNamed"`
+	NRecords uint64          `json:"nRecords"`
+	NStaged  uint64          `json:"nStaged"`
+	Updater  updater.Updater `json:"updater"`
+	Items    []Monitor       `json:"items"`
+	NItems   uint64          `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewMonitorContainer(chain string, itemsIn []coreTypes.Monitor) MonitorContainer {
+func NewMonitorContainer(chain string, itemsIn []Monitor) MonitorContainer {
 	ret := MonitorContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
@@ -71,7 +70,7 @@ func (s *MonitorContainer) GetItems() interface{} {
 }
 
 func (s *MonitorContainer) SetItems(items interface{}) {
-	s.Items = items.([]coreTypes.Monitor)
+	s.Items = items.([]Monitor)
 }
 
 func (s *MonitorContainer) NeedsUpdate() bool {
@@ -111,7 +110,7 @@ func (s *MonitorContainer) Clear() {
 	// EXISTING_CODE
 }
 
-func (s *MonitorContainer) passesFilter(item *coreTypes.Monitor, filter *Filter) (ret bool) {
+func (s *MonitorContainer) passesFilter(item *Monitor, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -127,7 +126,7 @@ func (s *MonitorContainer) passesFilter(item *coreTypes.Monitor, filter *Filter)
 	return
 }
 
-func (s *MonitorContainer) Accumulate(item *coreTypes.Monitor) {
+func (s *MonitorContainer) Accumulate(item *Monitor) {
 	s.NItems++
 	// EXISTING_CODE
 	if item.Deleted {
@@ -157,15 +156,15 @@ func (s *MonitorContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 	filter, _ := theMap.Load("monitors") // may be empty
 	if !filter.HasCriteria() {
-		s.ForEveryItem(func(item *coreTypes.Monitor, data any) bool {
+		s.ForEveryItem(func(item *Monitor, data any) bool {
 			s.Accumulate(item)
 			return true
 		}, nil)
 		s.Finalize()
 		return s.Items
 	}
-	filtered := []coreTypes.Monitor{}
-	s.ForEveryItem(func(item *coreTypes.Monitor, data any) bool {
+	filtered := []Monitor{}
+	s.ForEveryItem(func(item *Monitor, data any) bool {
 		if s.passesFilter(item, &filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
