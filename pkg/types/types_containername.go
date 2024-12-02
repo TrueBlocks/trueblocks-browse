@@ -21,24 +21,24 @@ var namesChain = "mainnet"
 // EXISTING_CODE
 
 type NameContainer struct {
-	Chain      string           `json:"chain"`
-	NContracts uint64           `json:"nContracts"`
-	NCustom    uint64           `json:"nCustom"`
-	NDeleted   uint64           `json:"nDeleted"`
-	NErc20s    uint64           `json:"nErc20s"`
-	NErc721s   uint64           `json:"nErc721s"`
-	NPrefund   uint64           `json:"nPrefund"`
-	NRegular   uint64           `json:"nRegular"`
-	NSystem    uint64           `json:"nSystem"`
-	SizeOnDisc uint64           `json:"sizeOnDisc"`
-	Updater    updater.Updater  `json:"updater"`
-	Items      []coreTypes.Name `json:"items"`
-	NItems     uint64           `json:"nItems"`
+	Chain      string          `json:"chain"`
+	NContracts uint64          `json:"nContracts"`
+	NCustom    uint64          `json:"nCustom"`
+	NDeleted   uint64          `json:"nDeleted"`
+	NErc20s    uint64          `json:"nErc20s"`
+	NErc721s   uint64          `json:"nErc721s"`
+	NPrefund   uint64          `json:"nPrefund"`
+	NRegular   uint64          `json:"nRegular"`
+	NSystem    uint64          `json:"nSystem"`
+	SizeOnDisc uint64          `json:"sizeOnDisc"`
+	Updater    updater.Updater `json:"updater"`
+	Items      []Name          `json:"items"`
+	NItems     uint64          `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewNameContainer(chain string, itemsIn []coreTypes.Name) NameContainer {
+func NewNameContainer(chain string, itemsIn []Name) NameContainer {
 	ret := NameContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
@@ -82,7 +82,7 @@ func (s *NameContainer) GetItems() interface{} {
 }
 
 func (s *NameContainer) SetItems(items interface{}) {
-	s.Items = items.([]coreTypes.Name)
+	s.Items = items.([]Name)
 }
 
 func (s *NameContainer) NeedsUpdate() bool {
@@ -127,7 +127,7 @@ func (s *NameContainer) Clear() {
 	// EXISTING_CODE
 }
 
-func (s *NameContainer) passesFilter(item *coreTypes.Name, filter *Filter) (ret bool) {
+func (s *NameContainer) passesFilter(item *Name, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -145,7 +145,7 @@ func (s *NameContainer) passesFilter(item *coreTypes.Name, filter *Filter) (ret 
 	return
 }
 
-func (s *NameContainer) Accumulate(item *coreTypes.Name) {
+func (s *NameContainer) Accumulate(item *Name) {
 	s.NItems++
 	// EXISTING_CODE
 	if item.Parts&coreTypes.Regular > 0 {
@@ -189,15 +189,15 @@ func (s *NameContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 	filter, _ := theMap.Load("names") // may be empty
 	if !filter.HasCriteria() {
-		s.ForEveryItem(func(item *coreTypes.Name, data any) bool {
+		s.ForEveryItem(func(item *Name, data any) bool {
 			s.Accumulate(item)
 			return true
 		}, nil)
 		s.Finalize()
 		return s.Items
 	}
-	filtered := []coreTypes.Name{}
-	s.ForEveryItem(func(item *coreTypes.Name, data any) bool {
+	filtered := []Name{}
+	s.ForEveryItem(func(item *Name, data any) bool {
 		if s.passesFilter(item, &filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
@@ -222,7 +222,7 @@ func (s *NameContainer) ForEveryItem(process EveryNameFn, data any) bool {
 }
 
 // EXISTING_CODE
-func compare(nameI, nameJ coreTypes.Name) bool {
+func compare(nameI, nameJ Name) bool {
 	ti := nameI.Parts
 	if ti == coreTypes.Regular {
 		ti = 7

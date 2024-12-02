@@ -9,7 +9,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -37,7 +36,7 @@ type App struct {
 	ensCache     *sync.Map
 	balanceCache *sync.Map
 	filterMap    *types.FilterMap
-	namesMap     map[base.Address]coreTypes.Name
+	namesMap     map[base.Address]types.Name
 	historyCache *types.HistoryMap
 	renderCtxs   map[base.Address][]*output.RenderCtx
 
@@ -49,7 +48,7 @@ func NewApp() *App {
 		ensCache:     &sync.Map{},
 		balanceCache: &sync.Map{},
 		filterMap:    &types.FilterMap{},
-		namesMap:     make(map[base.Address]coreTypes.Name),
+		namesMap:     make(map[base.Address]types.Name),
 		historyCache: &types.HistoryMap{},
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}
