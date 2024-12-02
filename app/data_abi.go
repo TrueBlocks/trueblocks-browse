@@ -44,7 +44,10 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	logger.InfoBY("Updating needed for abis...")
 
 	opts := sdk.AbisOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
 	// EXISTING_CODE
 	opts.Cache = true

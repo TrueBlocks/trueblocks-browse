@@ -46,7 +46,10 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	logger.InfoBY("Updating needed for status...")
 
 	opts := sdk.StatusOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
 	// EXISTING_CODE
 	w := logger.GetLoggerWriter()

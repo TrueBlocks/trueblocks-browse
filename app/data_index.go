@@ -44,7 +44,10 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	logger.InfoBY("Updating needed for indexes...")
 
 	opts := sdk.ChunksOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE

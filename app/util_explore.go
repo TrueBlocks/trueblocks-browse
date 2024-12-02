@@ -16,11 +16,13 @@ func (a *App) GetExploreUrl(term string, google, dalle bool) string {
 	}
 
 	opts := sdk.ExploreOptions{
-		Terms:   []string{term},
-		Google:  google,
-		Dalle:   dalle,
-		NoOpen:  true,
-		Globals: a.getGlobals(false /* verbose */),
+		Terms:  []string{term},
+		Google: google,
+		Dalle:  dalle,
+		NoOpen: true,
+		Globals: sdk.Globals{
+			Chain: a.getChain(),
+		},
 	}
 
 	// TODO: Expose this to the user and/or put it in trueBlocks.toml

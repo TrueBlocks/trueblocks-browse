@@ -7,10 +7,10 @@ import (
 )
 
 func (a *App) ModifyName(modData *ModifyData) error {
-	if !nameLock.CompareAndSwap(0, 1) {
+	if !namesLock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer nameLock.CompareAndSwap(1, 0)
+	defer namesLock.CompareAndSwap(1, 0)
 
 	op := modData.Operation
 	newName := types.Name{
@@ -29,7 +29,9 @@ func (a *App) ModifyName(modData *ModifyData) error {
 
 	cd := crud.CrudFromName(newName)
 	opts := sdk.NamesOptions{
-		Globals: a.getGlobals(false /* verbose */),
+		Globals: sdk.Globals{
+			Chain: a.getChain(),
+		},
 	}
 	opts.Globals.Chain = namesChain
 

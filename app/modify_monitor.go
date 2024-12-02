@@ -7,10 +7,10 @@ import (
 )
 
 func (a *App) ModifyMonitor(modData *ModifyData) error {
-	if !monitorLock.CompareAndSwap(0, 1) {
+	if !monitorsLock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer monitorLock.CompareAndSwap(1, 0)
+	defer monitorsLock.CompareAndSwap(1, 0)
 
 	op := crud.OpFromString(modData.Operation)
 	opts := sdk.MonitorsOptions{
@@ -18,7 +18,9 @@ func (a *App) ModifyMonitor(modData *ModifyData) error {
 		Delete:   op == crud.Delete,
 		Undelete: op == crud.Undelete,
 		Remove:   op == crud.Remove,
-		Globals:  a.getGlobals(false /* verbose */),
+		Globals: sdk.Globals{
+			Chain: a.getChain(),
+		},
 	}
 
 	if _, _, err := opts.Monitors(); err != nil {

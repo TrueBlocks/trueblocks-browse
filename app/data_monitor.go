@@ -19,7 +19,7 @@ var monitorMutex sync.Mutex
 
 // EXISTING_CODE
 
-var monitorLock atomic.Uint32
+var monitorsLock atomic.Uint32
 
 func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadMonitors", false)()
@@ -29,10 +29,10 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}()
 
-	if !monitorLock.CompareAndSwap(0, 1) {
+	if !monitorsLock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer monitorLock.CompareAndSwap(1, 0)
+	defer monitorsLock.CompareAndSwap(1, 0)
 
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -47,7 +47,10 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	logger.InfoBY("Updating needed for monitors...")
 
 	opts := sdk.MonitorsOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE

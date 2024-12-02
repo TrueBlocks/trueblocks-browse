@@ -21,7 +21,7 @@ var namesChain = "mainnet"
 
 // EXISTING_CODE
 
-var nameLock atomic.Uint32
+var namesLock atomic.Uint32
 
 func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadNames", false)()
@@ -31,10 +31,10 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}()
 
-	if !nameLock.CompareAndSwap(0, 1) {
+	if !namesLock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer nameLock.CompareAndSwap(1, 0)
+	defer namesLock.CompareAndSwap(1, 0)
 
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -49,7 +49,10 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	logger.InfoBY("Updating needed for names...")
 
 	opts := sdk.NamesOptions{
-		Globals: a.getGlobals(true /* verbose */),
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
 	}
 	// EXISTING_CODE
 	names.ClearCustomNames()
