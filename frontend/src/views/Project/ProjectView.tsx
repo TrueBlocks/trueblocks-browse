@@ -50,7 +50,7 @@ export const ProjectView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={project.updater} />
+      <DebugState u={[project.updater]} />
       <View tabs={tabs} forms={forms} searchable />
     </ViewStateProvider>
   );

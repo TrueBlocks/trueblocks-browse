@@ -64,7 +64,7 @@ export const SettingsView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={settings.updater} />
+      <DebugState u={[settings.updater]} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

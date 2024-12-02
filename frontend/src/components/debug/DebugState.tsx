@@ -5,7 +5,7 @@ import { useAppState, useViewState } from "@state";
 
 const debug = false;
 
-export const DebugState = ({ u }: { u: sdk.Updater }) => {
+export const DebugState = ({ u }: { u: sdk.Updater[] }) => {
   const { info } = useAppState();
   const { nItems } = useViewState();
   const renderCount = useRenderCounter();

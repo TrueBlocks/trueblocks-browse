@@ -119,7 +119,7 @@ export const {{$view}} = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={ {{$dataName}}.updater} />
+      <DebugState u={[{{$dataName}}.updater]} />
       <View tabs={tabs} forms={forms}{{if $isSearchable}} searchable{{end}} />
     </ViewStateProvider>
   );

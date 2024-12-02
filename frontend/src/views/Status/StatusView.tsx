@@ -39,7 +39,7 @@ export const StatusView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={status.updater} />
+      <DebugState u={[status.updater]} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );

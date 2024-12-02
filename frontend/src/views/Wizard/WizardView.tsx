@@ -48,7 +48,7 @@ export const WizardView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={wizard.updater} />
+      <DebugState u={[wizard.updater]} />
       <View tabs={tabs} forms={forms} />
     </ViewStateProvider>
   );
