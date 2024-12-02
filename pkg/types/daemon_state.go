@@ -1,4 +1,4 @@
-package daemons
+package types
 
 type DaemonState string
 
@@ -17,8 +17,8 @@ func (s DaemonState) String() string {
 	return m[s]
 }
 
-// AllStates - all possible states for the frontend codegen
-var AllStates = []struct {
+// AllDaemonStates - all possible states for the frontend codegen
+var AllDaemonStates = []struct {
 	Value  DaemonState `json:"value"`
 	TSName string      `json:"tsName"`
 }{

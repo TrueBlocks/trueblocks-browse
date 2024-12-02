@@ -1,7 +1,6 @@
 package types
 
 import (
-	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
@@ -28,4 +27,4 @@ type EveryNothingFn func(item *Nothing, data any) bool
 type EveryTransactionFn func(item *coreTypes.Transaction, data any) bool
 type EveryWizErrorFn func(item *WizError, data any) bool
 type EveryChainGroupFn func(item *configTypes.ChainGroup, data any) bool
-type EveryDaemonFn func(item *daemons.Daemon, data any) bool
+type EveryDaemonFn func(item *Daemon, data any) bool

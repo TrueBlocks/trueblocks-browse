@@ -6,13 +6,13 @@ import { useState } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { FormTable, ViewForm, View, DebugState } from "@components";
 import { ToggleDaemon } from "@gocode/app/App";
-import { daemons as daemonType, messages, updater } from "@gocode/models";
+import { types, messages, updater } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { DaemonsFormDef, Nope } from "./DaemonsFormDef";
 import { DaemonsTableDef } from "./DaemonsTableDef";
 
-const empty = {} as daemonType.Daemon;
+const empty = {} as types.Daemon;
 
 // EXISTING_CODE
 
@@ -24,9 +24,9 @@ export const DaemonsView = () => {
 
   // EXISTING_CODE
   // TODO BOGUS: The daemon state should be in the AppState
-  const [scraper] = useState<daemonType.Daemon>(empty);
-  const [freshen] = useState<daemonType.Daemon>(empty);
-  const [ipfs] = useState<daemonType.Daemon>(empty);
+  const [scraper] = useState<types.Daemon>(empty);
+  const [freshen] = useState<types.Daemon>(empty);
+  const [ipfs] = useState<types.Daemon>(empty);
   const [logMessages] = useState<messages.MessageMsg[]>([]);
   // const [scraper, setScraper] = useState<daemons.Daemon>(empty);
   // const [freshen, setFreshen] = useState<daemons.Daemon>(empty);

@@ -1,8 +1,6 @@
 package app
 
-import (
-	"github.com/TrueBlocks/trueblocks-browse/pkg/daemons"
-)
+import "github.com/TrueBlocks/trueblocks-browse/pkg/types"
 
 func (a *App) ToggleDaemon(name string) error {
 	d := a.getDaemon(name)
@@ -21,7 +19,7 @@ func (a *App) GetState(name string) string {
 	return a.getDaemon(name).GetState().String()
 }
 
-func (a *App) getDaemon(name string) daemons.Daemoner {
+func (a *App) getDaemon(name string) types.Daemoner {
 	switch name {
 	case "freshen":
 		return a.daemons.FreshenController
@@ -31,6 +29,6 @@ func (a *App) getDaemon(name string) daemons.Daemoner {
 		return a.daemons.IpfsController
 	default:
 		// logger.Fatal("getDaemon", "should not happen", name)
-		return &daemons.Daemon{}
+		return &types.Daemon{}
 	}
 }
