@@ -36,10 +36,12 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base
 	defer historyLock.CompareAndSwap(1, 0)
 
 	// EXISTING_CODE
+	// HIST-HIST
 	history, exists := a.historyCache.Load(address)
 	if !exists {
 		history = types.NewHistoryContainer(a.getChain(), []types.Transaction{}, address)
 		history.Updater.Reset()
+		// HIST-HIST
 		a.historyCache.Store(address, history)
 	}
 	// EXISTING_CODE
@@ -49,8 +51,10 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error, address base
 	}
 	updater := history.Updater
 	defer func() {
+		// HIST-HIST
 		history, _ = a.historyCache.Load(address)
 		history.Updater = updater
+		// HIST-HIST
 		a.historyCache.Store(address, history)
 	}()
 	logger.InfoBY("Updating needed for history...")
@@ -97,6 +101,7 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) error 
 	expectedCnt := a.getHistoryCnt(address)
 
 	// we always have a currently opened history which contains the entire history so far...
+	// HIST-HIST
 	history, _ := a.historyCache.Load(address)
 	history.NTotal = uint64(expectedCnt)
 	history.Address = address
@@ -120,6 +125,7 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) error 
 						return history.Items[i].BlockNumber > history.Items[j].BlockNumber
 					})
 					// put it back into the history cache so other processes can use it...
+					// HIST-HIST
 					a.historyCache.Store(address, history)
 				}
 				// ...let the front end know and keep going...(note we use the same history)
@@ -152,6 +158,7 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) error 
 		return history.Items[i].BlockNumber > history.Items[j].BlockNumber
 	})
 	history.Balance = a.getBalance(address)
+	// HIST-HIST
 	a.historyCache.Store(address, history)
 	a.emitMsg(messages.Refresh, &messages.MessageMsg{
 		Num1: 3, // 3 means refresh
@@ -166,6 +173,7 @@ func (a *App) getHistoryCnt(address base.Address) int64 {
 }
 
 func (a *App) txCount(address base.Address) int {
+	// HIST-HIST
 	if history, exists := a.historyCache.Load(address); exists {
 		return len(history.Items)
 	} else {
@@ -182,9 +190,11 @@ func (a *App) goToAddress(address base.Address) {
 
 	a.cancelContext(address)
 	a.SetRoute("/history", address.Hex())
+	// HIST-HIST
 	history, exists := a.historyCache.Load(address)
 	if exists {
 		history.Items = history.Items[:0]
+		// HIST-HIST
 		a.historyCache.Store(address, history)
 	}
 	go a.loadHistory(nil, nil, address)

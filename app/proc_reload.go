@@ -21,8 +21,10 @@ func (a *App) Reload() {
 		}
 	default:
 		address := a.GetSelected()
+		// HIST-HIST
 		history, _ := a.historyCache.Load(address)
 		history.Updater.Reset()
+		// HIST-HIST
 		a.historyCache.Store(address, history)
 		a.goToAddress(history.Address)
 	}

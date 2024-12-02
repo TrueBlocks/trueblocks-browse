@@ -46,6 +46,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	_ = errorChan
 	items := []types.HistoryContainer{}
+	// HIST-PROJ
 	a.historyCache.Range(func(_ base.Address, h types.HistoryContainer) bool {
 		items = append(items, h)
 		return true

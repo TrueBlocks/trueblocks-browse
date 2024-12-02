@@ -28,7 +28,6 @@ func (a *App) getDaemon(name string) types.Daemoner {
 	case "ipfs":
 		return a.daemons.IpfsController
 	default:
-		// logger.Fatal("getDaemon", "should not happen", name)
 		return &types.Daemon{}
 	}
 }

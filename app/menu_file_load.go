@@ -17,7 +17,9 @@ func (a *App) newFile() {
 	history.Updater.Reset()
 	history.Balance = a.getBalance(address)
 
+	// HIST-PROJ
 	a.historyCache = &types.HistoryMap{}
+	// HIST-PROJ
 	a.historyCache.Store(address, history)
 	a.project = types.NewProjectContainer(a.getChain(), []types.HistoryContainer{history})
 
@@ -34,6 +36,7 @@ func (a *App) readFile(fn string) (bool, error) {
 		return false, fmt.Errorf("project file contains no records: %s", fn)
 
 	} else {
+		// HIST-PROJ
 		a.historyCache = &types.HistoryMap{}
 		histories := []types.HistoryContainer{}
 		for _, address := range pF.Addresses {
@@ -41,6 +44,7 @@ func (a *App) readFile(fn string) (bool, error) {
 			history.Updater.Reset()
 			history.Balance = a.getBalance(address)
 			histories = append(histories, history)
+			// HIST-PROJ
 			a.historyCache.Store(address, history)
 		}
 		a.project = types.NewProjectContainer(a.getChain(), histories)
