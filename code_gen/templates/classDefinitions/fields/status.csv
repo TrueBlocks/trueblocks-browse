@@ -1,5 +1,5 @@
 name     ,type             ,strDefault ,attributes ,upgrades ,docOrder ,description
-status   ,coreTypes.Status ,           ,embed      ,         ,         ,jim
+status   ,types.Status ,           ,embed      ,         ,         ,jim
 nFolders ,uint64           ,           ,           ,         ,         ,jim
 nFiles   ,uint64           ,           ,           ,         ,         ,jim
 nBytes   ,uint64           ,           ,           ,         ,         ,jim
