@@ -5,3 +5,5 @@ mostFunctions ,string      ,           ,           ,         ,         ,jim
 mostEvents    ,string      ,           ,           ,         ,         ,jim
 chain         ,string      ,           ,           ,         ,         ,jim
 updater       ,sdk.Updater ,           ,           ,         ,         ,jim
+items         ,[]types.Abi ,           ,           ,         ,         ,jim
+nItems        ,uint64      ,           ,           ,         ,         ,jim

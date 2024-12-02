@@ -1,4 +1,6 @@
-name       ,type             ,strDefault ,attributes ,upgrades ,docOrder ,description
-chunkStats ,types.ChunkStats ,           ,embed      ,         ,         ,jim
-chain      ,string           ,           ,           ,         ,         ,jim
-updater    ,sdk.Updater      ,           ,           ,         ,         ,jim
+name       ,type               ,strDefault ,attributes ,upgrades ,docOrder ,description
+chunkStats ,types.ChunkStats   ,           ,embed      ,         ,         ,jim
+chain      ,string             ,           ,           ,         ,         ,jim
+updater    ,sdk.Updater        ,           ,           ,         ,         ,jim
+items      ,[]types.ChunkStats ,           ,           ,         ,         ,jim
+nItems     ,uint64             ,           ,           ,         ,         ,jim

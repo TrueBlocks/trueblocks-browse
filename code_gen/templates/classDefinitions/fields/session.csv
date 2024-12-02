@@ -1,3 +1,6 @@
-name    ,type          ,strDefault ,attributes ,upgrades ,docOrder ,description
-session ,types.Session ,           ,embed      ,         ,         ,jim
-updater ,sdk.Updater   ,           ,           ,         ,         ,jim
+name    ,type            ,strDefault ,attributes ,upgrades ,docOrder ,description
+session ,types.Session   ,           ,embed      ,         ,         ,jim
+chain   ,string          ,           ,           ,         ,         ,jim
+updater ,sdk.Updater     ,           ,           ,         ,         ,jim
+items   ,[]types.Nothing ,           ,           ,         ,         ,jim
+nItems  ,uint64          ,           ,           ,         ,         ,jim
