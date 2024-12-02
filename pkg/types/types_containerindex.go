@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -15,17 +14,17 @@ import (
 // EXISTING_CODE
 
 type IndexContainer struct {
-	Chain                string `json:"chain"`
-	coreTypes.ChunkStats `json:",inline"`
-	Updater              updater.Updater        `json:"updater"`
-	Items                []coreTypes.ChunkStats `json:"items"`
-	NItems               uint64                 `json:"nItems"`
-	Sorts                sdk.SortSpec           `json:"sorts"`
+	Chain      string `json:"chain"`
+	ChunkStats `json:",inline"`
+	Updater    updater.Updater `json:"updater"`
+	Items      []ChunkStats    `json:"items"`
+	NItems     uint64          `json:"nItems"`
+	Sorts      sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewIndexContainer(chain string, itemsIn []coreTypes.ChunkStats) IndexContainer {
+func NewIndexContainer(chain string, itemsIn []ChunkStats) IndexContainer {
 	ret := IndexContainer{
 		Items:  itemsIn,
 		NItems: uint64(len(itemsIn)),
@@ -69,7 +68,7 @@ func (s *IndexContainer) GetItems() interface{} {
 }
 
 func (s *IndexContainer) SetItems(items interface{}) {
-	s.Items = items.([]coreTypes.ChunkStats)
+	s.Items = items.([]ChunkStats)
 }
 
 func (s *IndexContainer) NeedsUpdate() bool {
@@ -105,7 +104,7 @@ func (s *IndexContainer) Clear() {
 	// EXISTING_CODE
 }
 
-func (s *IndexContainer) passesFilter(item *coreTypes.ChunkStats, filter *Filter) (ret bool) {
+func (s *IndexContainer) passesFilter(item *ChunkStats, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -115,7 +114,7 @@ func (s *IndexContainer) passesFilter(item *coreTypes.ChunkStats, filter *Filter
 	return
 }
 
-func (s *IndexContainer) Accumulate(item *coreTypes.ChunkStats) {
+func (s *IndexContainer) Accumulate(item *ChunkStats) {
 	s.NItems++
 	// EXISTING_CODE
 	s.BloomSz += item.BloomSz
@@ -146,15 +145,15 @@ func (s *IndexContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 	filter, _ := theMap.Load("indexes") // may be empty
 	if !filter.HasCriteria() {
-		s.ForEveryItem(func(item *coreTypes.ChunkStats, data any) bool {
+		s.ForEveryItem(func(item *ChunkStats, data any) bool {
 			s.Accumulate(item)
 			return true
 		}, nil)
 		s.Finalize()
 		return s.Items
 	}
-	filtered := []coreTypes.ChunkStats{}
-	s.ForEveryItem(func(item *coreTypes.ChunkStats, data any) bool {
+	filtered := []ChunkStats{}
+	s.ForEveryItem(func(item *ChunkStats, data any) bool {
 		if s.passesFilter(item, &filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
