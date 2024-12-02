@@ -8,29 +8,28 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
 
 type ManifestContainer struct {
-	BloomsSize    uint64                  `json:"bloomsSize"`
-	Chain         string                  `json:"chain"`
-	IndexSize     uint64                  `json:"indexSize"`
-	NBlooms       uint64                  `json:"nBlooms"`
-	NIndexes      uint64                  `json:"nIndexes"`
-	Specification string                  `json:"specification"`
-	Updater       updater.Updater         `json:"updater"`
-	Version       string                  `json:"version"`
-	Items         []coreTypes.ChunkRecord `json:"items"`
-	NItems        uint64                  `json:"nItems"`
-	Sorts         sdk.SortSpec            `json:"sorts"`
+	BloomsSize    uint64          `json:"bloomsSize"`
+	Chain         string          `json:"chain"`
+	IndexSize     uint64          `json:"indexSize"`
+	NBlooms       uint64          `json:"nBlooms"`
+	NIndexes      uint64          `json:"nIndexes"`
+	Specification string          `json:"specification"`
+	Updater       updater.Updater `json:"updater"`
+	Version       string          `json:"version"`
+	Items         []ChunkRecord   `json:"items"`
+	NItems        uint64          `json:"nItems"`
+	Sorts         sdk.SortSpec    `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewManifestContainer(chain string, itemsIn []coreTypes.ChunkRecord) ManifestContainer {
+func NewManifestContainer(chain string, itemsIn []ChunkRecord) ManifestContainer {
 	ret := ManifestContainer{
 		Items:  itemsIn,
 		NItems: uint64(len(itemsIn)),
@@ -74,7 +73,7 @@ func (s *ManifestContainer) GetItems() interface{} {
 }
 
 func (s *ManifestContainer) SetItems(items interface{}) {
-	s.Items = items.([]coreTypes.ChunkRecord)
+	s.Items = items.([]ChunkRecord)
 }
 
 func (s *ManifestContainer) NeedsUpdate() bool {
@@ -112,7 +111,7 @@ func (s *ManifestContainer) Clear() {
 	// EXISTING_CODE
 }
 
-func (s *ManifestContainer) passesFilter(item *coreTypes.ChunkRecord, filter *Filter) (ret bool) {
+func (s *ManifestContainer) passesFilter(item *ChunkRecord, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -122,7 +121,7 @@ func (s *ManifestContainer) passesFilter(item *coreTypes.ChunkRecord, filter *Fi
 	return
 }
 
-func (s *ManifestContainer) Accumulate(item *coreTypes.ChunkRecord) {
+func (s *ManifestContainer) Accumulate(item *ChunkRecord) {
 	s.NItems++
 	// EXISTING_CODE
 	s.BloomsSize += uint64(item.BloomSize)
@@ -142,15 +141,15 @@ func (s *ManifestContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 	filter, _ := theMap.Load("manifests") // may be empty
 	if !filter.HasCriteria() {
-		s.ForEveryItem(func(item *coreTypes.ChunkRecord, data any) bool {
+		s.ForEveryItem(func(item *ChunkRecord, data any) bool {
 			s.Accumulate(item)
 			return true
 		}, nil)
 		s.Finalize()
 		return s.Items
 	}
-	filtered := []coreTypes.ChunkRecord{}
-	s.ForEveryItem(func(item *coreTypes.ChunkRecord, data any) bool {
+	filtered := []ChunkRecord{}
+	s.ForEveryItem(func(item *ChunkRecord, data any) bool {
 		if s.passesFilter(item, &filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)

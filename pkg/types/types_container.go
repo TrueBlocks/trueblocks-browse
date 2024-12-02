@@ -2,7 +2,6 @@ package types
 
 import (
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 type Containerer interface {
@@ -17,9 +16,9 @@ type Containerer interface {
 type Containerers []Containerer
 
 type EveryAbiFn func(item *Abi, data any) bool
-type EveryCacheItemFn func(item *coreTypes.CacheItem, data any) bool
-type EveryChunkRecordFn func(item *coreTypes.ChunkRecord, data any) bool
-type EveryChunkStatsFn func(item *coreTypes.ChunkStats, data any) bool
+type EveryCacheItemFn func(item *CacheItem, data any) bool
+type EveryChunkRecordFn func(item *ChunkRecord, data any) bool
+type EveryChunkStatsFn func(item *ChunkStats, data any) bool
 type EveryHistoryContainerFn func(item *HistoryContainer, data any) bool
 type EveryMonitorFn func(item *Monitor, data any) bool
 type EveryNameFn func(item *Name, data any) bool
