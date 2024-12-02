@@ -16,7 +16,7 @@ import (
 
 type App struct {
 	ctx   context.Context
-	meta  coreTypes.MetaData
+	meta  types.Meta
 	dirty bool
 
 	// Containers
