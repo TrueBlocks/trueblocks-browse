@@ -8,24 +8,23 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 // EXISTING_CODE
 
 type StatusContainer struct {
-	NBytes           uint64 `json:"nBytes"`
-	NFiles           uint64 `json:"nFiles"`
-	NFolders         uint64 `json:"nFolders"`
-	coreTypes.Status `json:",inline"`
-	Updater          updater.Updater       `json:"updater"`
-	Items            []coreTypes.CacheItem `json:"items"`
-	NItems           uint64                `json:"nItems"`
+	NBytes   uint64 `json:"nBytes"`
+	NFiles   uint64 `json:"nFiles"`
+	NFolders uint64 `json:"nFolders"`
+	Status   `json:",inline"`
+	Updater  updater.Updater `json:"updater"`
+	Items    []CacheItem     `json:"items"`
+	NItems   uint64          `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewStatusContainer(chain string, itemsIn []coreTypes.CacheItem, status *coreTypes.Status) StatusContainer {
+func NewStatusContainer(chain string, itemsIn []CacheItem, status *Status) StatusContainer {
 	ret := StatusContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
@@ -67,7 +66,7 @@ func (s *StatusContainer) GetItems() interface{} {
 }
 
 func (s *StatusContainer) SetItems(items interface{}) {
-	s.Items = items.([]coreTypes.CacheItem)
+	s.Items = items.([]CacheItem)
 }
 
 func (s *StatusContainer) NeedsUpdate() bool {
@@ -101,7 +100,7 @@ func (s *StatusContainer) Clear() {
 	// EXISTING_CODE
 }
 
-func (s *StatusContainer) passesFilter(item *coreTypes.CacheItem, filter *Filter) (ret bool) {
+func (s *StatusContainer) passesFilter(item *CacheItem, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -111,7 +110,7 @@ func (s *StatusContainer) passesFilter(item *coreTypes.CacheItem, filter *Filter
 	return
 }
 
-func (s *StatusContainer) Accumulate(item *coreTypes.CacheItem) {
+func (s *StatusContainer) Accumulate(item *CacheItem) {
 	s.NItems++
 	// EXISTING_CODE
 	s.NFolders += item.NFolders
@@ -130,15 +129,15 @@ func (s *StatusContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 	filter, _ := theMap.Load("status") // may be empty
 	if !filter.HasCriteria() {
-		s.ForEveryItem(func(item *coreTypes.CacheItem, data any) bool {
+		s.ForEveryItem(func(item *CacheItem, data any) bool {
 			s.Accumulate(item)
 			return true
 		}, nil)
 		s.Finalize()
 		return s.Items
 	}
-	filtered := []coreTypes.CacheItem{}
-	s.ForEveryItem(func(item *coreTypes.CacheItem, data any) bool {
+	filtered := []CacheItem{}
+	s.ForEveryItem(func(item *CacheItem, data any) bool {
 		if s.passesFilter(item, &filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
