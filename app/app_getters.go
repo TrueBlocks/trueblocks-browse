@@ -11,10 +11,6 @@ import (
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
-func (a *App) IsShowing(which string) bool {
-	return a.session.Toggles.IsOn(which)
-}
-
 func (a *App) GetConfig() *configTypes.Config {
 	return &a.config.Config
 }
