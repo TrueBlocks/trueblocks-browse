@@ -1,9 +1,5 @@
 package types
 
-import (
-	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
-)
-
 type Containerer interface {
 	String() string
 	ShallowCopy() Containerer
@@ -25,5 +21,5 @@ type EveryNameFn func(item *Name, data any) bool
 type EveryNothingFn func(item *Nothing, data any) bool
 type EveryTransactionFn func(item *Transaction, data any) bool
 type EveryWizErrorFn func(item *WizError, data any) bool
-type EveryChainGroupFn func(item *configTypes.ChainGroup, data any) bool
+type EveryChainFn func(item *Chain, data any) bool
 type EveryDaemonFn func(item *Daemon, data any) bool
