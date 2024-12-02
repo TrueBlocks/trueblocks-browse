@@ -56,7 +56,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	names.ClearCustomNames()
 	opts.All = true
 	// EXISTING_CODE
-	if names, meta, err := opts.NamesList(); err != nil {
+	if names, meta, err := opts.Names(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}

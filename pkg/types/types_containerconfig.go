@@ -83,7 +83,7 @@ func (s *ConfigContainer) NeedsUpdate() bool {
 func (s *ConfigContainer) ShallowCopy() Containerer {
 	ret := &ConfigContainer{
 		Chain:   s.Chain,
-		Config:  s.Config.ShallowCopy(),
+		Config:  s.Config, // .ShallowCopy(),
 		NChains: s.NChains,
 		Updater: s.Updater,
 		NItems:  s.NItems,

@@ -53,7 +53,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	logger.SetLoggerWriter(io.Discard)
 	defer logger.SetLoggerWriter(w)
 	// EXISTING_CODE
-	if status, meta, err := opts.StatusList(); err != nil {
+	if status, meta, err := opts.StatusAll(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}

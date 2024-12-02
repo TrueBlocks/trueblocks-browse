@@ -43,12 +43,12 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating needed for manifests...")
 
-	opts := sdk.ManifestsOptions{
+	opts := sdk.ChunksOptions{
 		Globals: a.getGlobals(true /* verbose */),
 	}
 	// EXISTING_CODE
 	// EXISTING_CODE
-	if manifests, meta, err := opts.ManifestsList(); err != nil {
+	if manifests, meta, err := opts.ChunksManifest(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
@@ -68,7 +68,7 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 		a.manifests.Specification = manifests[0].Specification.String()
 		a.manifests.Version = manifests[0].Version
 		// EXISTING_CODE
-		if err := sdk.SortManifests(a.manifests.Items, a.manifests.Sorts); err != nil {
+		if err := sdk.SortChunkRecords(a.manifests.Items, a.manifests.Sorts); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 		a.emitLoadingMsg(messages.Loaded, "manifests")
