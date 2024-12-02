@@ -18,17 +18,17 @@ import (
 // EXISTING_CODE
 
 type ConfigContainer struct {
-	Chain              string `json:"chain"`
-	configTypes.Config `json:",inline"`
-	NChains            uint64                   `json:"nChains"`
-	Updater            updater.Updater          `json:"updater"`
-	Items              []configTypes.ChainGroup `json:"items"`
-	NItems             uint64                   `json:"nItems"`
+	Chain   string `json:"chain"`
+	Config  `json:",inline"`
+	NChains uint64                   `json:"nChains"`
+	Updater updater.Updater          `json:"updater"`
+	Items   []configTypes.ChainGroup `json:"items"`
+	NItems  uint64                   `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewConfigContainer(chain string, itemsIn []configTypes.ChainGroup, config *configTypes.Config) ConfigContainer {
+func NewConfigContainer(chain string, itemsIn []configTypes.ChainGroup, config *Config) ConfigContainer {
 	ret := ConfigContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),

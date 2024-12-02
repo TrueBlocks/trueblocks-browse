@@ -62,7 +62,7 @@ export function GetChainInfo(arg1:string):Promise<types.Chain>;
 
 export function GetChains():Promise<Array<string>>;
 
-export function GetConfig():Promise<configtypes.Config>;
+export function GetConfig():Promise<types.Config>;
 
 export function GetContext():Promise<context.Context>;
 
