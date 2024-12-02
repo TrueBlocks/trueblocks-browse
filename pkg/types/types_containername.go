@@ -9,11 +9,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 var namesChain = "mainnet"
@@ -21,19 +21,19 @@ var namesChain = "mainnet"
 // EXISTING_CODE
 
 type NameContainer struct {
-	Chain      string          `json:"chain"`
-	NContracts uint64          `json:"nContracts"`
-	NCustom    uint64          `json:"nCustom"`
-	NDeleted   uint64          `json:"nDeleted"`
-	NErc20s    uint64          `json:"nErc20s"`
-	NErc721s   uint64          `json:"nErc721s"`
-	NPrefund   uint64          `json:"nPrefund"`
-	NRegular   uint64          `json:"nRegular"`
-	NSystem    uint64          `json:"nSystem"`
-	SizeOnDisc uint64          `json:"sizeOnDisc"`
-	Updater    updater.Updater `json:"updater"`
-	Items      []Name          `json:"items"`
-	NItems     uint64          `json:"nItems"`
+	Chain      string      `json:"chain"`
+	NContracts uint64      `json:"nContracts"`
+	NCustom    uint64      `json:"nCustom"`
+	NDeleted   uint64      `json:"nDeleted"`
+	NErc20s    uint64      `json:"nErc20s"`
+	NErc721s   uint64      `json:"nErc721s"`
+	NPrefund   uint64      `json:"nPrefund"`
+	NRegular   uint64      `json:"nRegular"`
+	NSystem    uint64      `json:"nSystem"`
+	SizeOnDisc uint64      `json:"sizeOnDisc"`
+	Updater    sdk.Updater `json:"updater"`
+	Items      []Name      `json:"items"`
+	NItems     uint64      `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -54,22 +54,22 @@ func NewNameContainer(chain string, itemsIn []Name) NameContainer {
 	return ret
 }
 
-func NewNameUpdater(chain string, resetIn ...bool) updater.Updater {
+func NewNameUpdater(chain string, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
+	items := []sdk.UpdaterItem{
+		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: sdk.Folder},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("names", items)
+	u, _ := sdk.NewUpdater("names", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *NameContainer) String() string {

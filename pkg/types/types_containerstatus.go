@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -17,9 +17,9 @@ type StatusContainer struct {
 	NFiles   uint64 `json:"nFiles"`
 	NFolders uint64 `json:"nFolders"`
 	Status   `json:",inline"`
-	Updater  updater.Updater `json:"updater"`
-	Items    []CacheItem     `json:"items"`
-	NItems   uint64          `json:"nItems"`
+	Updater  sdk.Updater `json:"updater"`
+	Items    []CacheItem `json:"items"`
+	NItems   uint64      `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -38,22 +38,22 @@ func NewStatusContainer(chain string, itemsIn []CacheItem, status *Status) Statu
 	return ret
 }
 
-func NewStatusUpdater(chain string, resetIn ...bool) updater.Updater {
+func NewStatusUpdater(chain string, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Duration: 2 * time.Minute, Type: updater.Timer},
+	items := []sdk.UpdaterItem{
+		{Duration: 2 * time.Minute, Type: sdk.Timer},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("status", items)
+	u, _ := sdk.NewUpdater("status", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *StatusContainer) String() string {

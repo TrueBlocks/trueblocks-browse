@@ -1,6 +1,6 @@
-name     ,type             ,strDefault ,attributes ,upgrades ,docOrder ,description
+name     ,type         ,strDefault ,attributes ,upgrades ,docOrder ,description
 status   ,types.Status ,           ,embed      ,         ,         ,jim
-nFolders ,uint64           ,           ,           ,         ,         ,jim
-nFiles   ,uint64           ,           ,           ,         ,         ,jim
-nBytes   ,uint64           ,           ,           ,         ,         ,jim
-updater  ,updater.Updater  ,           ,           ,         ,         ,jim
+nFolders ,uint64       ,           ,           ,         ,         ,jim
+nFiles   ,uint64       ,           ,           ,         ,         ,jim
+nBytes   ,uint64       ,           ,           ,         ,         ,jim
+updater  ,sdk.Updater  ,           ,           ,         ,         ,jim

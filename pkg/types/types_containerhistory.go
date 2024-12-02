@@ -7,26 +7,26 @@ import (
 	"encoding/json"
 	"unsafe"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
 
 type HistoryContainer struct {
-	Address base.Address    `json:"address"`
-	Balance string          `json:"balance"`
-	Chain   string          `json:"chain"`
-	NErrors uint64          `json:"nErrors"`
-	NLogs   uint64          `json:"nLogs"`
-	NTokens uint64          `json:"nTokens"`
-	NTotal  uint64          `json:"nTotal"`
-	Name    string          `json:"name"`
-	Updater updater.Updater `json:"updater"`
-	Items   []Transaction   `json:"items"`
-	NItems  uint64          `json:"nItems"`
+	Address base.Address  `json:"address"`
+	Balance string        `json:"balance"`
+	Chain   string        `json:"chain"`
+	NErrors uint64        `json:"nErrors"`
+	NLogs   uint64        `json:"nLogs"`
+	NTokens uint64        `json:"nTokens"`
+	NTotal  uint64        `json:"nTotal"`
+	Name    string        `json:"name"`
+	Updater sdk.Updater   `json:"updater"`
+	Items   []Transaction `json:"items"`
+	NItems  uint64        `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -44,23 +44,23 @@ func NewHistoryContainer(chain string, itemsIn []Transaction, address base.Addre
 	return ret
 }
 
-func NewHistoryUpdater(chain string, address base.Address, resetIn ...bool) updater.Updater {
+func NewHistoryUpdater(chain string, address base.Address, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Path: coreMonitor.PathToMonitorFile(chain, address), Type: updater.FileSize},
-		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
+	items := []sdk.UpdaterItem{
+		{Path: coreMonitor.PathToMonitorFile(chain, address), Type: sdk.FileSize},
+		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: sdk.Folder},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("history", items)
+	u, _ := sdk.NewUpdater("history", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *HistoryContainer) String() string {

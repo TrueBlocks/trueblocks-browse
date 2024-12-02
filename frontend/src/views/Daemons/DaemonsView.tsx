@@ -6,7 +6,7 @@ import { useState } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { FormTable, ViewForm, View, DebugState } from "@components";
 import { ToggleDaemon } from "@gocode/app/App";
-import { types, messages, updater } from "@gocode/models";
+import { types, messages } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { DaemonsFormDef, Nope } from "./DaemonsFormDef";
@@ -78,7 +78,7 @@ export const DaemonsView = () => {
     ToggleDaemon(name);
   };
 
-  // const upd = updater.Updater.createFrom({});
+  // const upd = sdk.Updater.createFrom({});
   // const daemons: Nope = {
   //   toggleDaemon,
   //   scraper,

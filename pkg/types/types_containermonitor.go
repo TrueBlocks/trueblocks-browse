@@ -8,23 +8,23 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
 
 type MonitorContainer struct {
-	Chain    string          `json:"chain"`
-	FileSize uint64          `json:"fileSize"`
-	NDeleted uint64          `json:"nDeleted"`
-	NEmpty   uint64          `json:"nEmpty"`
-	NNamed   uint64          `json:"nNamed"`
-	NRecords uint64          `json:"nRecords"`
-	NStaged  uint64          `json:"nStaged"`
-	Updater  updater.Updater `json:"updater"`
-	Items    []Monitor       `json:"items"`
-	NItems   uint64          `json:"nItems"`
+	Chain    string      `json:"chain"`
+	FileSize uint64      `json:"fileSize"`
+	NDeleted uint64      `json:"nDeleted"`
+	NEmpty   uint64      `json:"nEmpty"`
+	NNamed   uint64      `json:"nNamed"`
+	NRecords uint64      `json:"nRecords"`
+	NStaged  uint64      `json:"nStaged"`
+	Updater  sdk.Updater `json:"updater"`
+	Items    []Monitor   `json:"items"`
+	NItems   uint64      `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -41,23 +41,23 @@ func NewMonitorContainer(chain string, itemsIn []Monitor) MonitorContainer {
 	return ret
 }
 
-func NewMonitorUpdater(chain string, resetIn ...bool) updater.Updater {
+func NewMonitorUpdater(chain string, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Path: filepath.Join(coreConfig.PathToCache(chain), "monitors"), Type: updater.FolderSize},
-		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: updater.Folder},
+	items := []sdk.UpdaterItem{
+		{Path: filepath.Join(coreConfig.PathToCache(chain), "monitors"), Type: sdk.FolderSize},
+		{Path: coreConfig.MustGetPathToChainConfig(namesChain), Type: sdk.Folder},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("monitors", items)
+	u, _ := sdk.NewUpdater("monitors", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *MonitorContainer) String() string {

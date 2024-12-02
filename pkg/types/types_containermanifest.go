@@ -6,7 +6,6 @@ package types
 import (
 	"encoding/json"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -14,17 +13,17 @@ import (
 // EXISTING_CODE
 
 type ManifestContainer struct {
-	BloomsSize    uint64          `json:"bloomsSize"`
-	Chain         string          `json:"chain"`
-	IndexSize     uint64          `json:"indexSize"`
-	NBlooms       uint64          `json:"nBlooms"`
-	NIndexes      uint64          `json:"nIndexes"`
-	Specification string          `json:"specification"`
-	Updater       updater.Updater `json:"updater"`
-	Version       string          `json:"version"`
-	Items         []ChunkRecord   `json:"items"`
-	NItems        uint64          `json:"nItems"`
-	Sorts         sdk.SortSpec    `json:"sorts"`
+	BloomsSize    uint64        `json:"bloomsSize"`
+	Chain         string        `json:"chain"`
+	IndexSize     uint64        `json:"indexSize"`
+	NBlooms       uint64        `json:"nBlooms"`
+	NIndexes      uint64        `json:"nIndexes"`
+	Specification string        `json:"specification"`
+	Updater       sdk.Updater   `json:"updater"`
+	Version       string        `json:"version"`
+	Items         []ChunkRecord `json:"items"`
+	NItems        uint64        `json:"nItems"`
+	Sorts         sdk.SortSpec  `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -45,22 +44,22 @@ func NewManifestContainer(chain string, itemsIn []ChunkRecord) ManifestContainer
 	return ret
 }
 
-func NewManifestUpdater(chain string, resetIn ...bool) updater.Updater {
+func NewManifestUpdater(chain string, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Path: coreConfig.PathToManifestFile(chain), Type: updater.File},
+	items := []sdk.UpdaterItem{
+		{Path: coreConfig.PathToManifestFile(chain), Type: sdk.File},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("manifests", items)
+	u, _ := sdk.NewUpdater("manifests", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *ManifestContainer) String() string {

@@ -5,14 +5,14 @@ import { Box, SimpleGrid, Stack, Text } from "@mantine/core";
 import { Table } from "@tanstack/react-table";
 // import { DaemonCard, DaemonLog, FieldGroup, FieldsetWrapper, PinButton } from "@components";
 import { FieldGroup, FieldsetWrapper, PinButton } from "@components";
-import { messages, types, updater } from "@gocode/models";
+import { messages, types, sdk } from "@gocode/models";
 export interface Nope {
   scraper: types.Daemon;
   freshen: types.Daemon;
   ipfs: types.Daemon;
   logMessages: messages.MessageMsg[];
   toggleDaemon: (name: string) => void;
-  updater: updater.Updater;
+  updater: sdk.Updater;
 }
 // EXISTING_CODE
 

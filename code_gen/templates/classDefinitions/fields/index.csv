@@ -1,4 +1,4 @@
-name       ,type                 ,strDefault ,attributes ,upgrades ,docOrder ,description
+name       ,type             ,strDefault ,attributes ,upgrades ,docOrder ,description
 chunkStats ,types.ChunkStats ,           ,embed      ,         ,         ,jim
-chain      ,string               ,           ,           ,         ,         ,jim
-updater    ,updater.Updater      ,           ,           ,         ,         ,jim
+chain      ,string           ,           ,           ,         ,         ,jim
+updater    ,sdk.Updater      ,           ,           ,         ,         ,jim

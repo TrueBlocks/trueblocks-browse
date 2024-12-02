@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/TrueBlocks/trueblocks-browse/pkg/updater"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -21,7 +21,7 @@ type ConfigContainer struct {
 	Chain   string `json:"chain"`
 	Config  `json:",inline"`
 	NChains uint64                   `json:"nChains"`
-	Updater updater.Updater          `json:"updater"`
+	Updater sdk.Updater              `json:"updater"`
 	Items   []configTypes.ChainGroup `json:"items"`
 	NItems  uint64                   `json:"nItems"`
 	// EXISTING_CODE
@@ -41,22 +41,22 @@ func NewConfigContainer(chain string, itemsIn []configTypes.ChainGroup, config *
 	return ret
 }
 
-func NewConfigUpdater(chain string, resetIn ...bool) updater.Updater {
+func NewConfigUpdater(chain string, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
 	}
 
 	// EXISTING_CODE
-	items := []updater.UpdaterItem{
-		{Path: utils.MustGetConfigFn("", "trueBlocks.toml"), Type: updater.File},
+	items := []sdk.UpdaterItem{
+		{Path: utils.MustGetConfigFn("", "trueBlocks.toml"), Type: sdk.File},
 	}
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("config", items)
+	u, _ := sdk.NewUpdater("config", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *ConfigContainer) String() string {

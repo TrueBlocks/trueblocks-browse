@@ -157,7 +157,7 @@ func New{{$container}}(chain string{{$param1}}{{$param2}}{{$param3}}) {{$contain
 	return ret
 }
 
-func New{{$class}}Updater(chain string{{$param3}}{{$param5}}, resetIn ...bool) updater.Updater {
+func New{{$class}}Updater(chain string{{$param3}}{{$param5}}, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
@@ -165,11 +165,11 @@ func New{{$class}}Updater(chain string{{$param3}}{{$param5}}, resetIn ...bool) u
 
 	// EXISTING_CODE
 	// EXISTING_CODE
-	updater, _ := updater.NewUpdater("{{$routeLower}}", items)
+	u, _ := sdk.NewUpdater("{{$routeLower}}", items)
 	if reset {
-		updater.Reset()
+		u.Reset()
 	}
-	return updater
+	return u
 }
 
 func (s *{{$container}}) String() string {
