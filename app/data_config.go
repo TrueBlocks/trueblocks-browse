@@ -4,11 +4,14 @@ package app
 
 // EXISTING_CODE
 import (
+	"fmt"
 	"sync"
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
@@ -38,18 +41,45 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		a.config.Updater = updater
 	}()
-	logger.InfoBY("Updating needed for config...")
+	logger.InfoBY("Updating config...")
 
-	// EXISTING_CODE
-	_ = errorChan
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	// EXISTING_CODE
-	a.emitLoadingMsg(messages.Loaded, "config")
+	if items, meta, err := a.pullConfigs(); err != nil {
+		if errorChan != nil {
+			errorChan <- err
+		}
+		return err
+	} else if (items == nil) || (len(items) == 0) {
+		err = fmt.Errorf("no config found")
+		if errorChan != nil {
+			errorChan <- err
+		}
+		return err
+	} else {
+		// EXISTING_CODE
+		// EXISTING_CODE
+		a.meta = *meta
+		a.config = types.NewConfigContainer(a.getChain(), items)
+		// EXISTING_CODE
+		// EXISTING_CODE
+		if err := a.config.Sort(); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.emitLoadingMsg(messages.Loaded, "config")
+	}
 
 	return nil
+}
+
+func (a *App) pullConfigs() (items []types.Config, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	opts := sdk.ConfigOptions{
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
+	}
+	return opts.ConfigDump()
+	// EXISTING_CODE
 }
 
 // EXISTING_CODE

@@ -33,7 +33,7 @@ export const App = () => {
 
   useEffect(() => {
     toggles.forEach(({ layout, setter }) => {
-      IsShowing(layout).then((show) => {
+      IsShowing(layout, "").then((show) => {
         setter(show);
       });
     });
@@ -45,7 +45,7 @@ export const App = () => {
       if (toggle) {
         toggle.setter((prev) => {
           const show = !prev;
-          SetShowing(msg.string1, !prev);
+          SetShowing(msg.string1, "", !prev);
           return show;
         });
       }

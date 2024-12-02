@@ -91,7 +91,7 @@ export function HistoryView(arg1:menu.CallbackData):Promise<void>;
 
 export function IndexesView(arg1:menu.CallbackData):Promise<void>;
 
-export function IsShowing(arg1:string):Promise<boolean>;
+export function IsShowing(arg1:string,arg2:string):Promise<boolean>;
 
 export function LoadAddress(arg1:string):Promise<void>;
 
@@ -131,7 +131,7 @@ export function SetFilter(arg1:string,arg2:string):Promise<void>;
 
 export function SetRoute(arg1:string,arg2:string):Promise<void>;
 
-export function SetShowing(arg1:string,arg2:boolean):Promise<void>;
+export function SetShowing(arg1:string,arg2:string,arg3:boolean):Promise<void>;
 
 export function SettingsView(arg1:menu.CallbackData):Promise<void>;
 

@@ -170,8 +170,8 @@ export function IndexesView(arg1) {
   return window['go']['app']['App']['IndexesView'](arg1);
 }
 
-export function IsShowing(arg1) {
-  return window['go']['app']['App']['IsShowing'](arg1);
+export function IsShowing(arg1, arg2) {
+  return window['go']['app']['App']['IsShowing'](arg1, arg2);
 }
 
 export function LoadAddress(arg1) {
@@ -250,8 +250,8 @@ export function SetRoute(arg1, arg2) {
   return window['go']['app']['App']['SetRoute'](arg1, arg2);
 }
 
-export function SetShowing(arg1, arg2) {
-  return window['go']['app']['App']['SetShowing'](arg1, arg2);
+export function SetShowing(arg1, arg2, arg3) {
+  return window['go']['app']['App']['SetShowing'](arg1, arg2, arg3);
 }
 
 export function SettingsView(arg1) {

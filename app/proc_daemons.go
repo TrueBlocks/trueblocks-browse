@@ -7,7 +7,7 @@ func (a *App) ToggleDaemon(name string) error {
 	if err := d.Toggle(); err != nil {
 		return err
 	}
-	a.SetShowing(name, d.IsRunning())
+	a.SetShowing(name, "", d.IsRunning())
 	return nil
 }
 

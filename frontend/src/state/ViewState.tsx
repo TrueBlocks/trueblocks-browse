@@ -40,7 +40,7 @@ export const ViewStateProvider = ({ route, nItems, fetchFn, modifyFn, onEnter, c
 
   const handleCollapse = (newState: string | null) => {
     const isShowing = newState === "header";
-    SetShowing(route, isShowing).then(() => {
+    SetShowing(route, "", isShowing).then(() => {
       setHeaderShows(isShowing);
     });
   };
@@ -53,7 +53,7 @@ export const ViewStateProvider = ({ route, nItems, fetchFn, modifyFn, onEnter, c
   };
 
   useEffect(() => {
-    IsShowing(route).then((onOff) => {
+    IsShowing(route, "").then((onOff) => {
       setHeaderShows(onOff);
     });
 
@@ -66,8 +66,8 @@ export const ViewStateProvider = ({ route, nItems, fetchFn, modifyFn, onEnter, c
     const handleAccordion = (msg: messages.MessageMsg) => {
       const cmp = route === "" ? "project" : route;
       if (msg.string2 === "" && cmp === msg.string1) {
-        IsShowing(cmp).then((onOff) => {
-          SetShowing(cmp, !onOff).then(() => {
+        IsShowing(cmp, "").then((onOff) => {
+          SetShowing(cmp, "", !onOff).then(() => {
             setHeaderShows(!onOff);
           });
         });
