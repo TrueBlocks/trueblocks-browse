@@ -7,6 +7,8 @@ import { types } from "@gocode/models";
 // EXISTING_CODE
 
 export const ManifestsFormDef = (table: Table<types.ChunkRecord>): FieldGroup<types.ManifestContainer>[] => {
+  // EXISTING_CODE
+  // EXISTING_CODE
   return [
     // EXISTING_CODE
     {

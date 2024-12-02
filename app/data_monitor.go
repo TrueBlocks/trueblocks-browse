@@ -44,7 +44,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		a.monitors.Updater = updater
 	}()
-	logger.InfoBY("Updating needed for monitors...")
+	logger.InfoBY("Updating monitors...")
 
 	opts := sdk.MonitorsOptions{
 		Globals: sdk.Globals{

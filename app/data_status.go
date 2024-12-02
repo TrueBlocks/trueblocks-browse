@@ -6,7 +6,6 @@ package app
 import (
 	"fmt"
 	"io"
-	"sort"
 	"sync"
 	"sync/atomic"
 
@@ -43,25 +42,14 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		a.status.Updater = updater
 	}()
-	logger.InfoBY("Updating needed for status...")
+	logger.InfoBY("Updating status...")
 
-	opts := sdk.StatusOptions{
-		Globals: sdk.Globals{
-			Chain:   a.getChain(),
-			Verbose: true,
-		},
-	}
-	// EXISTING_CODE
-	w := logger.GetLoggerWriter()
-	logger.SetLoggerWriter(io.Discard)
-	defer logger.SetLoggerWriter(w)
-	// EXISTING_CODE
-	if status, meta, err := opts.StatusAll(); err != nil {
+	if items, meta, err := a.pullStatus(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (status == nil) || (len(status) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no status found")
 		if errorChan != nil {
 			errorChan <- err
@@ -71,18 +59,31 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.status = types.NewStatusContainer(opts.Chain, status)
+		a.status = types.NewStatusContainer(a.getChain(), items)
 		// EXISTING_CODE
-		// TODO: Use the core's sorting mechanism (see SortChunkStats for example)
-		sort.Slice(a.status.Caches, func(i, j int) bool {
-			return a.status.Caches[i].SizeInBytes > a.status.Caches[j].SizeInBytes
-		})
-		logger.SetLoggerWriter(w)
 		// EXISTING_CODE
+		if err := a.status.Sort(); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		a.emitLoadingMsg(messages.Loaded, "status")
 	}
 
 	return nil
+}
+
+func (a *App) pullStatus() (items []types.Status, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	w := logger.GetLoggerWriter()
+	logger.SetLoggerWriter(io.Discard)
+	defer logger.SetLoggerWriter(w)
+	opts := sdk.StatusOptions{
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
+	}
+	return opts.StatusAll()
+	// EXISTING_CODE
 }
 
 // EXISTING_CODE

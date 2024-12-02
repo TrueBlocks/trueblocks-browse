@@ -13,7 +13,9 @@ export const WizardFormDef = (
   nItems: number,
   stepWizard: (step: types.WizStep) => void
 ): FieldGroup<types.WizardContainer>[] => {
+  // EXISTING_CODE
   const { wizard } = useAppState();
+  // EXISTING_CODE
   return [
     // EXISTING_CODE
     {

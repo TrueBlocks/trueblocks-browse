@@ -13,7 +13,7 @@ import (
 
 // EXISTING_CODE
 
-var daemonLock atomic.Uint32
+var daemonsLock atomic.Uint32
 
 func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadDaemons", false)()
@@ -23,10 +23,10 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}()
 
-	if !daemonLock.CompareAndSwap(0, 1) {
+	if !daemonsLock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer daemonLock.CompareAndSwap(1, 0)
+	defer daemonsLock.CompareAndSwap(1, 0)
 
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -38,7 +38,7 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		a.daemons.Updater = updater
 	}()
-	logger.InfoBY("Updating needed for daemons...")
+	logger.InfoBY("Updating daemons...")
 
 	// EXISTING_CODE
 	_ = errorChan

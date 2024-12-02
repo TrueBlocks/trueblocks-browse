@@ -16,7 +16,7 @@ import (
 
 // EXISTING_CODE
 
-var manifestLock atomic.Uint32
+var manifestsLock atomic.Uint32
 
 func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("loadManifests", false)()
@@ -26,10 +26,10 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 		}
 	}()
 
-	if !manifestLock.CompareAndSwap(0, 1) {
+	if !manifestsLock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer manifestLock.CompareAndSwap(1, 0)
+	defer manifestsLock.CompareAndSwap(1, 0)
 
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -41,7 +41,7 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	defer func() {
 		a.manifests.Updater = updater
 	}()
-	logger.InfoBY("Updating needed for manifests...")
+	logger.InfoBY("Updating manifests...")
 
 	opts := sdk.ChunksOptions{
 		Globals: sdk.Globals{

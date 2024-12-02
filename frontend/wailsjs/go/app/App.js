@@ -158,6 +158,10 @@ export function GetState(arg1) {
   return window['go']['app']['App']['GetState'](arg1);
 }
 
+export function GetTab(arg1) {
+  return window['go']['app']['App']['GetTab'](arg1);
+}
+
 export function GetWindow() {
   return window['go']['app']['App']['GetWindow']();
 }

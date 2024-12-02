@@ -85,6 +85,8 @@ export function GetSession():Promise<types.Session>;
 
 export function GetState(arg1:string):Promise<string>;
 
+export function GetTab(arg1:string):Promise<string>;
+
 export function GetWindow():Promise<types.Window>;
 
 export function HistoryView(arg1:menu.CallbackData):Promise<void>;
