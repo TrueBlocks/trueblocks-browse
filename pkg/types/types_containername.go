@@ -221,6 +221,12 @@ func (s *NameContainer) ForEveryItem(process EveryNameFn, data any) bool {
 	return true
 }
 
+func (s *NameContainer) Sort() (err error) {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return
+}
+
 // EXISTING_CODE
 func compare(nameI, nameJ Name) bool {
 	ti := nameI.Parts

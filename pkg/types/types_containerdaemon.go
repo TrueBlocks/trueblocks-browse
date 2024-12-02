@@ -153,5 +153,12 @@ func (s *DaemonContainer) ForEveryItem(process EveryNothingFn, data any) bool {
 	return true
 }
 
+func (s *DaemonContainer) Sort() (err error) {
+	// EXISTING_CODE
+	// TODO: Is there anything to sort for daemons?
+	// EXISTING_CODE
+	return
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

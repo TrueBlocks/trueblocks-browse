@@ -172,5 +172,11 @@ func (s *ManifestContainer) ForEveryItem(process EveryChunkRecordFn, data any) b
 	return true
 }
 
+func (s *ManifestContainer) Sort() (err error) {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

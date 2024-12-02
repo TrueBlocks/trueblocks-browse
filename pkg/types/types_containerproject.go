@@ -167,5 +167,11 @@ func (s *ProjectContainer) ForEveryItem(process EveryHistoryContainerFn, data an
 	return true
 }
 
+func (s *ProjectContainer) Sort() (err error) {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return
+}
+
 // EXISTING_CODE
 // EXISTING_CODE
