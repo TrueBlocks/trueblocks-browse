@@ -9,7 +9,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/wailsapp/wails/v2"
 	wLogger "github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -34,7 +33,7 @@ func main() {
 		Bind: []interface{}{
 			a,
 			&messages.MessageMsg{},
-			&coreTypes.Transaction{},
+			&types.Transaction{},
 			&configTypes.Config{},
 			&editors.Name{},
 			&types.Daemon{},

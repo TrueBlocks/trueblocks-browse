@@ -11,28 +11,27 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 )
 
 // EXISTING_CODE
 
 type HistoryContainer struct {
-	Address base.Address            `json:"address"`
-	Balance string                  `json:"balance"`
-	Chain   string                  `json:"chain"`
-	NErrors uint64                  `json:"nErrors"`
-	NLogs   uint64                  `json:"nLogs"`
-	NTokens uint64                  `json:"nTokens"`
-	NTotal  uint64                  `json:"nTotal"`
-	Name    string                  `json:"name"`
-	Updater updater.Updater         `json:"updater"`
-	Items   []coreTypes.Transaction `json:"items"`
-	NItems  uint64                  `json:"nItems"`
+	Address base.Address    `json:"address"`
+	Balance string          `json:"balance"`
+	Chain   string          `json:"chain"`
+	NErrors uint64          `json:"nErrors"`
+	NLogs   uint64          `json:"nLogs"`
+	NTokens uint64          `json:"nTokens"`
+	NTotal  uint64          `json:"nTotal"`
+	Name    string          `json:"name"`
+	Updater updater.Updater `json:"updater"`
+	Items   []Transaction   `json:"items"`
+	NItems  uint64          `json:"nItems"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewHistoryContainer(chain string, itemsIn []coreTypes.Transaction, address base.Address) HistoryContainer {
+func NewHistoryContainer(chain string, itemsIn []Transaction, address base.Address) HistoryContainer {
 	ret := HistoryContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
@@ -74,7 +73,7 @@ func (s *HistoryContainer) GetItems() interface{} {
 }
 
 func (s *HistoryContainer) SetItems(items interface{}) {
-	s.Items = items.([]coreTypes.Transaction)
+	s.Items = items.([]Transaction)
 }
 
 func (s *HistoryContainer) NeedsUpdate() bool {
@@ -112,7 +111,7 @@ func (s *HistoryContainer) Clear() {
 	// EXISTING_CODE
 }
 
-func (s *HistoryContainer) passesFilter(item *coreTypes.Transaction, filter *Filter) (ret bool) {
+func (s *HistoryContainer) passesFilter(item *Transaction, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -122,7 +121,7 @@ func (s *HistoryContainer) passesFilter(item *coreTypes.Transaction, filter *Fil
 	return
 }
 
-func (s *HistoryContainer) Accumulate(item *coreTypes.Transaction) {
+func (s *HistoryContainer) Accumulate(item *Transaction) {
 	s.NItems++
 	// EXISTING_CODE
 	if item.Receipt != nil {
@@ -147,15 +146,15 @@ func (s *HistoryContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 
 	filter, _ := theMap.Load("history") // may be empty
 	if !filter.HasCriteria() {
-		s.ForEveryItem(func(item *coreTypes.Transaction, data any) bool {
+		s.ForEveryItem(func(item *Transaction, data any) bool {
 			s.Accumulate(item)
 			return true
 		}, nil)
 		s.Finalize()
 		return s.Items
 	}
-	filtered := []coreTypes.Transaction{}
-	s.ForEveryItem(func(item *coreTypes.Transaction, data any) bool {
+	filtered := []Transaction{}
+	s.ForEveryItem(func(item *Transaction, data any) bool {
 		if s.passesFilter(item, &filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
