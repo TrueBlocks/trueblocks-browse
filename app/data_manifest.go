@@ -66,10 +66,8 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.manifests = types.NewManifestContainer(opts.Chain, manifests[0].Chunks)
+		a.manifests = types.NewManifestContainer(opts.Chain, manifests)
 		// EXISTING_CODE
-		a.manifests.Specification = manifests[0].Specification.String()
-		a.manifests.Version = manifests[0].Version
 		// EXISTING_CODE
 		if err := sdk.SortChunkRecords(a.manifests.Items, a.manifests.Sorts); err != nil {
 			a.emitErrorMsg(err, nil)

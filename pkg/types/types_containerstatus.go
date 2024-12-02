@@ -13,27 +13,34 @@ import (
 // EXISTING_CODE
 
 type StatusContainer struct {
-	NBytes   uint64 `json:"nBytes"`
-	NFiles   uint64 `json:"nFiles"`
-	NFolders uint64 `json:"nFolders"`
-	Status   `json:",inline"`
-	Updater  sdk.Updater `json:"updater"`
 	Items    []CacheItem `json:"items"`
+	NBytes   uint64      `json:"nBytes"`
+	NFiles   uint64      `json:"nFiles"`
+	NFolders uint64      `json:"nFolders"`
 	NItems   uint64      `json:"nItems"`
+	Status   `json:",inline"`
+	Updater  sdk.Updater  `json:"updater"`
+	Sorts    sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewStatusContainer(chain string, itemsIn []CacheItem, status *Status) StatusContainer {
+func NewStatusContainer(chain string, status []Status) StatusContainer {
+	// EXISTING_CODE
+	itemsIn := status[0].Caches
+	// EXISTING_CODE
 	ret := StatusContainer{
-		Items:   itemsIn,
-		NItems:  uint64(len(itemsIn)),
-		Status:  *status,
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Status: status[0].ShallowCopy(),
+		Sorts: sdk.SortSpec{
+			Fields: []string{"sizeInBytes"},
+			Order:  []sdk.SortOrder{sdk.Dec},
+		},
 		Updater: NewStatusUpdater(chain),
 	}
 	// EXISTING_CODE
-	ret.Items = status.Caches
-	ret.NItems = uint64(len(ret.Items))
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }
@@ -82,9 +89,9 @@ func (s *StatusContainer) ShallowCopy() Containerer {
 		NBytes:   s.NBytes,
 		NFiles:   s.NFiles,
 		NFolders: s.NFolders,
+		NItems:   s.NItems,
 		Status:   s.Status.ShallowCopy(),
 		Updater:  s.Updater,
-		NItems:   s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -105,6 +112,7 @@ func (s *StatusContainer) passesFilter(item *CacheItem, filter *Filter) (ret boo
 	if filter.HasCriteria() {
 		ret = false
 		// EXISTING_CODE
+		_ = item
 		// EXISTING_CODE
 	}
 	return
@@ -163,6 +171,7 @@ func (s *StatusContainer) ForEveryItem(process EveryCacheItemFn, data any) bool 
 
 func (s *StatusContainer) Sort() (err error) {
 	// EXISTING_CODE
+	err = sdk.SortCacheItems(s.Items, s.Sorts)
 	// EXISTING_CODE
 	return
 }

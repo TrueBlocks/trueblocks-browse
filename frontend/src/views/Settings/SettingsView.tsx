@@ -31,7 +31,7 @@ export const SettingsView = () => {
   });
 
   const table2 = useReactTable({
-    data: config?.items || [],
+    data: [], // config?.items || [],
     columns: ConfigTableDef,
     getCoreRowModel: getCoreRowModel(),
   });

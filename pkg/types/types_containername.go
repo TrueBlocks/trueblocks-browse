@@ -21,35 +21,38 @@ var namesChain = "mainnet"
 // EXISTING_CODE
 
 type NameContainer struct {
-	Chain      string      `json:"chain"`
-	NContracts uint64      `json:"nContracts"`
-	NCustom    uint64      `json:"nCustom"`
-	NDeleted   uint64      `json:"nDeleted"`
-	NErc20s    uint64      `json:"nErc20s"`
-	NErc721s   uint64      `json:"nErc721s"`
-	NPrefund   uint64      `json:"nPrefund"`
-	NRegular   uint64      `json:"nRegular"`
-	NSystem    uint64      `json:"nSystem"`
-	SizeOnDisc uint64      `json:"sizeOnDisc"`
-	Updater    sdk.Updater `json:"updater"`
-	Items      []Name      `json:"items"`
-	NItems     uint64      `json:"nItems"`
+	Chain      string       `json:"chain"`
+	Items      []Name       `json:"items"`
+	NContracts uint64       `json:"nContracts"`
+	NCustom    uint64       `json:"nCustom"`
+	NDeleted   uint64       `json:"nDeleted"`
+	NErc20s    uint64       `json:"nErc20s"`
+	NErc721s   uint64       `json:"nErc721s"`
+	NItems     uint64       `json:"nItems"`
+	NPrefund   uint64       `json:"nPrefund"`
+	NRegular   uint64       `json:"nRegular"`
+	NSystem    uint64       `json:"nSystem"`
+	SizeOnDisc uint64       `json:"sizeOnDisc"`
+	Updater    sdk.Updater  `json:"updater"`
+	Sorts      sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 func NewNameContainer(chain string, itemsIn []Name) NameContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	ret := NameContainer{
-		Items:   itemsIn,
-		NItems:  uint64(len(itemsIn)),
-		Chain:   chain,
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Sorts: sdk.SortSpec{
+			Fields: []string{},
+			Order:  []sdk.SortOrder{},
+		},
 		Updater: NewNameUpdater(chain),
 	}
 	// EXISTING_CODE
 	ret.Chain = namesChain // all names are on mainnet
-	sort.Slice(ret.Items, func(i, j int) bool {
-		return compare(ret.Items[i], ret.Items[j])
-	})
 	// EXISTING_CODE
 	return ret
 }
@@ -101,12 +104,12 @@ func (s *NameContainer) ShallowCopy() Containerer {
 		NDeleted:   s.NDeleted,
 		NErc20s:    s.NErc20s,
 		NErc721s:   s.NErc721s,
+		NItems:     s.NItems,
 		NPrefund:   s.NPrefund,
 		NRegular:   s.NRegular,
 		NSystem:    s.NSystem,
 		SizeOnDisc: s.SizeOnDisc,
 		Updater:    s.Updater,
-		NItems:     s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -223,6 +226,11 @@ func (s *NameContainer) ForEveryItem(process EveryNameFn, data any) bool {
 
 func (s *NameContainer) Sort() (err error) {
 	// EXISTING_CODE
+	sort.Slice(s.Items, func(i, j int) bool {
+		return compare(s.Items[i], s.Items[j])
+	})
+	// TODO: Sorting?
+	// return sdk.SortNames(s.Items, s.Sorts)
 	// EXISTING_CODE
 	return
 }

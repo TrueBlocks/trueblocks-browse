@@ -6,10 +6,9 @@ package types
 import (
 	"encoding/json"
 	"fmt"
-	"path/filepath"
 
-	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -19,23 +18,45 @@ import (
 type ConfigContainer struct {
 	Chain   string `json:"chain"`
 	Config  `json:",inline"`
-	NChains uint64      `json:"nChains"`
-	Updater sdk.Updater `json:"updater"`
-	Items   []Chain     `json:"items"`
-	NItems  uint64      `json:"nItems"`
+	Items   []Chain      `json:"items"`
+	NChains uint64       `json:"nChains"`
+	NItems  uint64       `json:"nItems"`
+	Updater sdk.Updater  `json:"updater"`
+	Sorts   sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewConfigContainer(chain string, itemsIn []Chain, config *Config) ConfigContainer {
+func NewConfigContainer(chain string, configs []Config) ConfigContainer {
+	// EXISTING_CODE
+	itemsIn := []Chain{}
+	for _, chain := range configs[0].Chains {
+		chOut := func(chIn configTypes.ChainGroup) Chain {
+			return Chain{
+				Chain:          chIn.Chain,
+				ChainId:        base.MustParseUint64(chIn.ChainId),
+				IpfsGateway:    chIn.IpfsGateway,
+				LocalExplorer:  chIn.LocalExplorer,
+				RemoteExplorer: chIn.RemoteExplorer,
+				RpcProvider:    chIn.RpcProvider,
+				Symbol:         chIn.Symbol,
+			}
+		}(chain)
+		itemsIn = append(itemsIn, chOut)
+	}
+	// EXISTING_CODE
 	ret := ConfigContainer{
-		Items:   itemsIn,
-		NItems:  uint64(len(itemsIn)),
-		Config:  *config,
-		Chain:   chain,
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Config: configs[0].ShallowCopy(),
+		Sorts: sdk.SortSpec{
+			Fields: []string{"chainId"},
+			Order:  []sdk.SortOrder{sdk.Asc},
+		},
 		Updater: NewConfigUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }
@@ -82,10 +103,10 @@ func (s *ConfigContainer) NeedsUpdate() bool {
 func (s *ConfigContainer) ShallowCopy() Containerer {
 	ret := &ConfigContainer{
 		Chain:   s.Chain,
-		Config:  s.Config, // .ShallowCopy(),
+		Config:  s.Config.ShallowCopy(),
 		NChains: s.NChains,
-		Updater: s.Updater,
 		NItems:  s.NItems,
+		Updater: s.Updater,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -156,35 +177,14 @@ func (s *ConfigContainer) ForEveryItem(process EveryChainFn, data any) bool {
 	return true
 }
 
-// EXISTING_CODE
-
-func (s *ConfigContainer) Load() error {
-	path := coreConfig.PathToRootConfig()
-	if !file.FolderExists(path) {
-		return ErrNoConfigFolder
-	}
-
-	fn := filepath.Join(path, "trueBlocks.toml")
-	if !file.FileExists(fn) {
-		return ErrNoConfigFile
-	}
-
-	if err := coreConfig.ReadToml(fn, &s.Config); err != nil {
-		return fmt.Errorf("%w: %v", ErrCantReadToml, err)
-	}
-
-	for _, chain := range s.Config.Chains {
-		s.Items = append(s.Items, chain)
-	}
-
-	return nil
-}
-
 func (s *ConfigContainer) Sort() (err error) {
 	// EXISTING_CODE
+	err = sdk.SortChains(s.Items, s.Sorts)
 	// EXISTING_CODE
 	return
 }
+
+// EXISTING_CODE
 
 func (s *ConfigContainer) IsValidChain(chain string) (string, error) {
 	for _, ch := range s.Chains {

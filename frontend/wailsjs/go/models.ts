@@ -632,12 +632,12 @@ export namespace types {
 	    name: string;
 	    path: string;
 	    chain: string;
+	    items: Abi[];
 	    largestFile: string;
 	    mostEvents: string;
 	    mostFunctions: string;
-	    updater: sdk.Updater;
-	    items: Abi[];
 	    nItems: number;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -659,12 +659,12 @@ export namespace types {
 	        this.name = source["name"];
 	        this.path = source["path"];
 	        this.chain = source["chain"];
+	        this.items = this.convertValues(source["items"], Abi);
 	        this.largestFile = source["largestFile"];
 	        this.mostEvents = source["mostEvents"];
 	        this.mostFunctions = source["mostFunctions"];
-	        this.updater = this.convertValues(source["updater"], sdk.Updater);
-	        this.items = this.convertValues(source["items"], Abi);
 	        this.nItems = source["nItems"];
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
@@ -894,10 +894,11 @@ export namespace types {
 	    pinning: configtypes.PinningGroup;
 	    unchained: configtypes.UnchainedGroup;
 	    chains: {[key: string]: configtypes.ChainGroup};
+	    items: Chain[];
 	    nChains: number;
-	    updater: sdk.Updater;
-	    items: configtypes.ChainGroup[];
 	    nItems: number;
+	    updater: sdk.Updater;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new ConfigContainer(source);
@@ -912,10 +913,11 @@ export namespace types {
 	        this.pinning = this.convertValues(source["pinning"], configtypes.PinningGroup);
 	        this.unchained = this.convertValues(source["unchained"], configtypes.UnchainedGroup);
 	        this.chains = this.convertValues(source["chains"], configtypes.ChainGroup, true);
+	        this.items = this.convertValues(source["items"], Chain);
 	        this.nChains = source["nChains"];
-	        this.updater = this.convertValues(source["updater"], sdk.Updater);
-	        this.items = this.convertValues(source["items"], configtypes.ChainGroup);
 	        this.nItems = source["nItems"];
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1121,9 +1123,10 @@ export namespace types {
 	    started: any;
 	    ticks: number;
 	    state: DaemonState;
-	    updater: sdk.Updater;
 	    items: Nothing[];
 	    nItems: number;
+	    updater: sdk.Updater;
+	    sorts: sdk.SortSpec;
 	    scraperController?: DaemonScraper;
 	    freshenController?: DaemonFreshen;
 	    ipfsController?: DaemonIpfs;
@@ -1141,9 +1144,10 @@ export namespace types {
 	        this.started = this.convertValues(source["started"], null);
 	        this.ticks = source["ticks"];
 	        this.state = source["state"];
-	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.items = this.convertValues(source["items"], Nothing);
 	        this.nItems = source["nItems"];
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.scraperController = this.convertValues(source["scraperController"], DaemonScraper);
 	        this.freshenController = this.convertValues(source["freshenController"], DaemonFreshen);
 	        this.ipfsController = this.convertValues(source["ipfsController"], DaemonIpfs);
@@ -1667,14 +1671,15 @@ export namespace types {
 	    address: base.Address;
 	    balance: string;
 	    chain: string;
+	    items: Transaction[];
 	    nErrors: number;
+	    nItems: number;
 	    nLogs: number;
 	    nTokens: number;
 	    nTotal: number;
 	    name: string;
 	    updater: sdk.Updater;
-	    items: Transaction[];
-	    nItems: number;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new HistoryContainer(source);
@@ -1685,14 +1690,15 @@ export namespace types {
 	        this.address = this.convertValues(source["address"], base.Address);
 	        this.balance = source["balance"];
 	        this.chain = source["chain"];
+	        this.items = this.convertValues(source["items"], Transaction);
 	        this.nErrors = source["nErrors"];
+	        this.nItems = source["nItems"];
 	        this.nLogs = source["nLogs"];
 	        this.nTokens = source["nTokens"];
 	        this.nTotal = source["nTotal"];
 	        this.name = source["name"];
 	        this.updater = this.convertValues(source["updater"], sdk.Updater);
-	        this.items = this.convertValues(source["items"], Transaction);
-	        this.nItems = source["nItems"];
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1728,9 +1734,9 @@ export namespace types {
 	    rangeDates?: RangeDates;
 	    ratio: number;
 	    recWid: number;
-	    updater: sdk.Updater;
 	    items: ChunkStats[];
 	    nItems: number;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -1753,9 +1759,9 @@ export namespace types {
 	        this.rangeDates = this.convertValues(source["rangeDates"], RangeDates);
 	        this.ratio = source["ratio"];
 	        this.recWid = source["recWid"];
-	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.items = this.convertValues(source["items"], ChunkStats);
 	        this.nItems = source["nItems"];
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
@@ -1798,15 +1804,16 @@ export namespace types {
 	
 	export class ManifestContainer {
 	    bloomsSize: number;
-	    chain: string;
 	    indexSize: number;
+	    items: ChunkRecord[];
+	    chain: string;
+	    chunks: ChunkRecord[];
+	    specification: string;
+	    version: string;
 	    nBlooms: number;
 	    nIndexes: number;
-	    specification: string;
-	    updater: sdk.Updater;
-	    version: string;
-	    items: ChunkRecord[];
 	    nItems: number;
+	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
@@ -1816,15 +1823,16 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.bloomsSize = source["bloomsSize"];
-	        this.chain = source["chain"];
 	        this.indexSize = source["indexSize"];
+	        this.items = this.convertValues(source["items"], ChunkRecord);
+	        this.chain = source["chain"];
+	        this.chunks = this.convertValues(source["chunks"], ChunkRecord);
+	        this.specification = source["specification"];
+	        this.version = source["version"];
 	        this.nBlooms = source["nBlooms"];
 	        this.nIndexes = source["nIndexes"];
-	        this.specification = source["specification"];
-	        this.updater = this.convertValues(source["updater"], sdk.Updater);
-	        this.version = source["version"];
-	        this.items = this.convertValues(source["items"], ChunkRecord);
 	        this.nItems = source["nItems"];
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
@@ -1920,14 +1928,15 @@ export namespace types {
 	export class MonitorContainer {
 	    chain: string;
 	    fileSize: number;
+	    items: Monitor[];
 	    nDeleted: number;
 	    nEmpty: number;
+	    nItems: number;
 	    nNamed: number;
 	    nRecords: number;
 	    nStaged: number;
 	    updater: sdk.Updater;
-	    items: Monitor[];
-	    nItems: number;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new MonitorContainer(source);
@@ -1937,14 +1946,15 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.chain = source["chain"];
 	        this.fileSize = source["fileSize"];
+	        this.items = this.convertValues(source["items"], Monitor);
 	        this.nDeleted = source["nDeleted"];
 	        this.nEmpty = source["nEmpty"];
+	        this.nItems = source["nItems"];
 	        this.nNamed = source["nNamed"];
 	        this.nRecords = source["nRecords"];
 	        this.nStaged = source["nStaged"];
 	        this.updater = this.convertValues(source["updater"], sdk.Updater);
-	        this.items = this.convertValues(source["items"], Monitor);
-	        this.nItems = source["nItems"];
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2024,18 +2034,19 @@ export namespace types {
 	}
 	export class NameContainer {
 	    chain: string;
+	    items: Name[];
 	    nContracts: number;
 	    nCustom: number;
 	    nDeleted: number;
 	    nErc20s: number;
 	    nErc721s: number;
+	    nItems: number;
 	    nPrefund: number;
 	    nRegular: number;
 	    nSystem: number;
 	    sizeOnDisc: number;
 	    updater: sdk.Updater;
-	    items: Name[];
-	    nItems: number;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new NameContainer(source);
@@ -2044,18 +2055,19 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.chain = source["chain"];
+	        this.items = this.convertValues(source["items"], Name);
 	        this.nContracts = source["nContracts"];
 	        this.nCustom = source["nCustom"];
 	        this.nDeleted = source["nDeleted"];
 	        this.nErc20s = source["nErc20s"];
 	        this.nErc721s = source["nErc721s"];
+	        this.nItems = source["nItems"];
 	        this.nPrefund = source["nPrefund"];
 	        this.nRegular = source["nRegular"];
 	        this.nSystem = source["nSystem"];
 	        this.sizeOnDisc = source["sizeOnDisc"];
 	        this.updater = this.convertValues(source["updater"], sdk.Updater);
-	        this.items = this.convertValues(source["items"], Name);
-	        this.nItems = source["nItems"];
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2081,15 +2093,16 @@ export namespace types {
 	export class ProjectContainer {
 	    chain: string;
 	    historySize: number;
+	    items: HistoryContainer[];
 	    nAbis: number;
 	    nCaches: number;
 	    nIndexes: number;
+	    nItems: number;
 	    nManifests: number;
 	    nMonitors: number;
 	    nNames: number;
 	    updater: sdk.Updater;
-	    items: HistoryContainer[];
-	    nItems: number;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new ProjectContainer(source);
@@ -2099,15 +2112,16 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.chain = source["chain"];
 	        this.historySize = source["historySize"];
+	        this.items = this.convertValues(source["items"], HistoryContainer);
 	        this.nAbis = source["nAbis"];
 	        this.nCaches = source["nCaches"];
 	        this.nIndexes = source["nIndexes"];
+	        this.nItems = source["nItems"];
 	        this.nManifests = source["nManifests"];
 	        this.nMonitors = source["nMonitors"];
 	        this.nNames = source["nNames"];
 	        this.updater = this.convertValues(source["updater"], sdk.Updater);
-	        this.items = this.convertValues(source["items"], HistoryContainer);
-	        this.nItems = source["nItems"];
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2269,6 +2283,9 @@ export namespace types {
 		}
 	}
 	export class SessionContainer {
+	    chain: string;
+	    items: Nothing[];
+	    nItems: number;
 	    lastChain: string;
 	    lastFile: string;
 	    lastFolder: string;
@@ -2278,8 +2295,7 @@ export namespace types {
 	    wizardStr: string;
 	    toggles: Toggles;
 	    updater: sdk.Updater;
-	    items: Nothing[];
-	    nItems: number;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new SessionContainer(source);
@@ -2287,6 +2303,9 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.chain = source["chain"];
+	        this.items = this.convertValues(source["items"], Nothing);
+	        this.nItems = source["nItems"];
 	        this.lastChain = source["lastChain"];
 	        this.lastFile = source["lastFile"];
 	        this.lastFolder = source["lastFolder"];
@@ -2296,8 +2315,7 @@ export namespace types {
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	        this.updater = this.convertValues(source["updater"], sdk.Updater);
-	        this.items = this.convertValues(source["items"], Nothing);
-	        this.nItems = source["nItems"];
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2319,9 +2337,11 @@ export namespace types {
 		}
 	}
 	export class StatusContainer {
+	    items: CacheItem[];
 	    nBytes: number;
 	    nFiles: number;
 	    nFolders: number;
+	    nItems: number;
 	    cachePath?: string;
 	    caches: CacheItem[];
 	    chain?: string;
@@ -2345,8 +2365,7 @@ export namespace types {
 	    meta?: MetaData;
 	    diffs?: MetaData;
 	    updater: sdk.Updater;
-	    items: CacheItem[];
-	    nItems: number;
+	    sorts: sdk.SortSpec;
 	
 	    static createFrom(source: any = {}) {
 	        return new StatusContainer(source);
@@ -2354,9 +2373,11 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.items = this.convertValues(source["items"], CacheItem);
 	        this.nBytes = source["nBytes"];
 	        this.nFiles = source["nFiles"];
 	        this.nFolders = source["nFolders"];
+	        this.nItems = source["nItems"];
 	        this.cachePath = source["cachePath"];
 	        this.caches = this.convertValues(source["caches"], CacheItem);
 	        this.chain = source["chain"];
@@ -2380,8 +2401,7 @@ export namespace types {
 	        this.meta = this.convertValues(source["meta"], MetaData);
 	        this.diffs = this.convertValues(source["diffs"], MetaData);
 	        this.updater = this.convertValues(source["updater"], sdk.Updater);
-	        this.items = this.convertValues(source["items"], CacheItem);
-	        this.nItems = source["nItems"];
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2471,9 +2491,10 @@ export namespace types {
 	}
 	export class WizardContainer {
 	    chain: string;
-	    updater: sdk.Updater;
 	    items: WizError[];
 	    nItems: number;
+	    updater: sdk.Updater;
+	    sorts: sdk.SortSpec;
 	    state: WizState;
 	
 	    static createFrom(source: any = {}) {
@@ -2483,9 +2504,10 @@ export namespace types {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.chain = source["chain"];
-	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.items = this.convertValues(source["items"], WizError);
 	        this.nItems = source["nItems"];
+	        this.updater = this.convertValues(source["updater"], sdk.Updater);
+	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	        this.state = source["state"];
 	    }
 	

@@ -19,7 +19,7 @@ export const ConfigView = () => {
   // EXISTING_CODE
 
   const table = useReactTable({
-    data: config?.items || [],
+    data: [], // config?.items || [],
     columns: ConfigTableDef,
     getCoreRowModel: getCoreRowModel(),
   });

@@ -5,7 +5,6 @@ package types
 // EXISTING_CODE
 import (
 	"encoding/json"
-	"errors"
 	"time"
 
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -14,23 +13,30 @@ import (
 // EXISTING_CODE
 
 type WizardContainer struct {
-	Chain   string      `json:"chain"`
-	Updater sdk.Updater `json:"updater"`
-	Items   []WizError  `json:"items"`
-	NItems  uint64      `json:"nItems"`
+	Chain   string       `json:"chain"`
+	Items   []WizError   `json:"items"`
+	NItems  uint64       `json:"nItems"`
+	Updater sdk.Updater  `json:"updater"`
+	Sorts   sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	State WizState `json:"state"`
 	// EXISTING_CODE
 }
 
 func NewWizardContainer(chain string, itemsIn []WizError) WizardContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	ret := WizardContainer{
-		Items:   itemsIn,
-		NItems:  uint64(len(itemsIn)),
-		Chain:   chain,
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Sorts: sdk.SortSpec{
+			Fields: []string{},
+			Order:  []sdk.SortOrder{},
+		},
 		Updater: NewWizardUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	ret.State = WizWelcome
 	// EXISTING_CODE
 	return ret
@@ -78,8 +84,8 @@ func (s *WizardContainer) NeedsUpdate() bool {
 func (s *WizardContainer) ShallowCopy() Containerer {
 	ret := &WizardContainer{
 		Chain:   s.Chain,
-		Updater: s.Updater,
 		NItems:  s.NItems,
+		Updater: s.Updater,
 		// EXISTING_CODE
 		State: s.State,
 		// EXISTING_CODE
@@ -98,6 +104,7 @@ func (s *WizardContainer) passesFilter(item *WizError, filter *Filter) (ret bool
 	if filter.HasCriteria() {
 		ret = false
 		// EXISTING_CODE
+		_ = item
 		// EXISTING_CODE
 	}
 	return
@@ -137,7 +144,6 @@ func (s *WizardContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Finalize()
 
 	// EXISTING_CODE
-	// nothing to do here
 	// EXISTING_CODE
 
 	return filtered

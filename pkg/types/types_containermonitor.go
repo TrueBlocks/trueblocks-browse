@@ -15,28 +15,35 @@ import (
 // EXISTING_CODE
 
 type MonitorContainer struct {
-	Chain    string      `json:"chain"`
-	FileSize uint64      `json:"fileSize"`
-	NDeleted uint64      `json:"nDeleted"`
-	NEmpty   uint64      `json:"nEmpty"`
-	NNamed   uint64      `json:"nNamed"`
-	NRecords uint64      `json:"nRecords"`
-	NStaged  uint64      `json:"nStaged"`
-	Updater  sdk.Updater `json:"updater"`
-	Items    []Monitor   `json:"items"`
-	NItems   uint64      `json:"nItems"`
+	Chain    string       `json:"chain"`
+	FileSize uint64       `json:"fileSize"`
+	Items    []Monitor    `json:"items"`
+	NDeleted uint64       `json:"nDeleted"`
+	NEmpty   uint64       `json:"nEmpty"`
+	NItems   uint64       `json:"nItems"`
+	NNamed   uint64       `json:"nNamed"`
+	NRecords uint64       `json:"nRecords"`
+	NStaged  uint64       `json:"nStaged"`
+	Updater  sdk.Updater  `json:"updater"`
+	Sorts    sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
 func NewMonitorContainer(chain string, itemsIn []Monitor) MonitorContainer {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	ret := MonitorContainer{
-		Items:   itemsIn,
-		NItems:  uint64(len(itemsIn)),
-		Chain:   chain,
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
+		Sorts: sdk.SortSpec{
+			Fields: []string{"nRecords", "address"},
+			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc},
+		},
 		Updater: NewMonitorUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }
@@ -87,11 +94,11 @@ func (s *MonitorContainer) ShallowCopy() Containerer {
 		FileSize: s.FileSize,
 		NDeleted: s.NDeleted,
 		NEmpty:   s.NEmpty,
+		NItems:   s.NItems,
 		NNamed:   s.NNamed,
 		NRecords: s.NRecords,
 		NStaged:  s.NStaged,
 		Updater:  s.Updater,
-		NItems:   s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -190,6 +197,7 @@ func (s *MonitorContainer) ForEveryItem(process EveryMonitorFn, data any) bool {
 
 func (s *MonitorContainer) Sort() (err error) {
 	// EXISTING_CODE
+	err = sdk.SortMonitors(s.Items, s.Sorts)
 	// EXISTING_CODE
 	return
 }

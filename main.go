@@ -32,7 +32,6 @@ func main() {
 		Bind: []interface{}{
 			a,
 			&messages.MessageMsg{},
-			&types.Transaction{},
 			&types.Config{},
 			&editors.Name{},
 			&types.Daemon{},

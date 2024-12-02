@@ -15,26 +15,30 @@ import (
 type IndexContainer struct {
 	Chain      string `json:"chain"`
 	ChunkStats `json:",inline"`
-	Updater    sdk.Updater  `json:"updater"`
 	Items      []ChunkStats `json:"items"`
 	NItems     uint64       `json:"nItems"`
+	Updater    sdk.Updater  `json:"updater"`
 	Sorts      sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewIndexContainer(chain string, itemsIn []ChunkStats) IndexContainer {
+func NewIndexContainer(chain string, chunkstats []ChunkStats) IndexContainer {
+	// EXISTING_CODE
+	itemsIn := chunkstats
+	// EXISTING_CODE
 	ret := IndexContainer{
-		Items:  itemsIn,
-		NItems: uint64(len(itemsIn)),
+		Items:      itemsIn,
+		NItems:     uint64(len(itemsIn)),
+		ChunkStats: chunkstats[0].ShallowCopy(),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"range"},
 			Order:  []sdk.SortOrder{sdk.Dec},
 		},
-		Chain:   chain,
 		Updater: NewIndexUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }
@@ -82,8 +86,8 @@ func (s *IndexContainer) ShallowCopy() Containerer {
 	ret := &IndexContainer{
 		Chain:      s.Chain,
 		ChunkStats: s.ChunkStats.ShallowCopy(),
-		Updater:    s.Updater,
 		NItems:     s.NItems,
+		Updater:    s.Updater,
 		// EXISTING_CODE
 		Sorts: s.Sorts,
 		// EXISTING_CODE
@@ -178,6 +182,7 @@ func (s *IndexContainer) ForEveryItem(process EveryChunkStatsFn, data any) bool 
 
 func (s *IndexContainer) Sort() (err error) {
 	// EXISTING_CODE
+	err = sdk.SortChunkStats(s.Items, s.Sorts)
 	// EXISTING_CODE
 	return
 }

@@ -13,22 +13,32 @@ import (
 // EXISTING_CODE
 
 type SessionContainer struct {
+	Chain   string    `json:"chain"`
+	Items   []Nothing `json:"items"`
+	NItems  uint64    `json:"nItems"`
 	Session `json:",inline"`
-	Updater sdk.Updater `json:"updater"`
-	Items   []Nothing   `json:"items"`
-	NItems  uint64      `json:"nItems"`
+	Updater sdk.Updater  `json:"updater"`
+	Sorts   sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewSessionContainer(chain string, itemsIn []Nothing, session *Session) SessionContainer {
+func NewSessionContainer(chain string, sessions []Session) SessionContainer {
+	// EXISTING_CODE
+	itemsIn := []Nothing{}
+	// EXISTING_CODE
 	ret := SessionContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Session: *session,
+		Session: sessions[0].ShallowCopy(),
+		Sorts: sdk.SortSpec{
+			Fields: []string{},
+			Order:  []sdk.SortOrder{},
+		},
 		Updater: NewSessionUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }
@@ -74,9 +84,10 @@ func (s *SessionContainer) NeedsUpdate() bool {
 
 func (s *SessionContainer) ShallowCopy() Containerer {
 	ret := &SessionContainer{
+		Chain:   s.Chain,
+		NItems:  s.NItems,
 		Session: s.Session.ShallowCopy(),
 		Updater: s.Updater,
-		NItems:  s.NItems,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}

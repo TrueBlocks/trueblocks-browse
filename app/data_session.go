@@ -68,7 +68,7 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 		ss := a.session.Session
 		// EXISTING_CODE
 		a.meta = *meta
-		a.session = types.NewSessionContainer(opts.Chain, []types.Nothing{}, &session[0])
+		a.session = types.NewSessionContainer(opts.Chain, session)
 		// EXISTING_CODE
 		// ... and put it back
 		a.session.Session = ss

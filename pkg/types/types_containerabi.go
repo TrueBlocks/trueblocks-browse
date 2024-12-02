@@ -17,29 +17,33 @@ import (
 type AbiContainer struct {
 	Abi           `json:",inline"`
 	Chain         string       `json:"chain"`
+	Items         []Abi        `json:"items"`
 	LargestFile   string       `json:"largestFile"`
 	MostEvents    string       `json:"mostEvents"`
 	MostFunctions string       `json:"mostFunctions"`
-	Updater       sdk.Updater  `json:"updater"`
-	Items         []Abi        `json:"items"`
 	NItems        uint64       `json:"nItems"`
+	Updater       sdk.Updater  `json:"updater"`
 	Sorts         sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewAbiContainer(chain string, itemsIn []Abi) AbiContainer {
+func NewAbiContainer(chain string, abis []Abi) AbiContainer {
+	// EXISTING_CODE
+	itemsIn := abis
+	// EXISTING_CODE
 	ret := AbiContainer{
 		Items:  itemsIn,
 		NItems: uint64(len(itemsIn)),
+		Abi:    abis[0].ShallowCopy(),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"isEmpty", "isKnown", "address"},
 			Order:  []sdk.SortOrder{sdk.Asc, sdk.Asc, sdk.Asc},
 		},
-		Chain:   chain,
 		Updater: NewAbiUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }
@@ -91,8 +95,8 @@ func (s *AbiContainer) ShallowCopy() Containerer {
 		LargestFile:   s.LargestFile,
 		MostEvents:    s.MostEvents,
 		MostFunctions: s.MostFunctions,
-		Updater:       s.Updater,
 		NItems:        s.NItems,
+		Updater:       s.Updater,
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
@@ -182,6 +186,7 @@ func (s *AbiContainer) ForEveryItem(process EveryAbiFn, data any) bool {
 
 func (s *AbiContainer) Sort() (err error) {
 	// EXISTING_CODE
+	err = sdk.SortAbis(s.Items, s.Sorts)
 	// EXISTING_CODE
 	return
 }
