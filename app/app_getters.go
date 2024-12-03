@@ -9,6 +9,13 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
+func (a *App) GetTab(route string) string {
+	if a.session.LastTab != nil {
+		return a.session.LastTab[route]
+	}
+	return ""
+}
+
 func (a *App) GetConfig() *types.Config {
 	return &a.config.Config
 }

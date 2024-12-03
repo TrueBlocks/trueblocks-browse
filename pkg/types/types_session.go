@@ -19,6 +19,7 @@ type Session struct {
 	LastFolder string            `json:"lastFolder"`
 	LastRoute  string            `json:"lastRoute"`
 	LastSub    map[string]string `json:"lastSub"`
+	LastTab    map[string]string `json:"lastTab"`
 	Window     Window            `json:"window"`
 	WizardStr  string            `json:"wizardStr"`
 	Toggles    Toggles           `json:"toggles"`
@@ -66,6 +67,7 @@ var defaultSession = Session{
 	LastFile:  "Untitled.tbx",
 	LastRoute: "/wizard",
 	LastSub:   map[string]string{"/history": "0xf503017d7baf7fbc0fff7492b751025c6a78179b"},
+	LastTab:   map[string]string{},
 	Window: Window{
 		X:      0,
 		Y:      0,
@@ -136,10 +138,13 @@ func (s *Session) Load() error {
 	return nil
 }
 
-func (s *Session) SetRoute(route, subRoute string) {
+func (s *Session) SetRoute(route, subRoute, tab string) {
 	s.LastRoute = route
 	if len(subRoute) > 0 {
 		s.LastSub[route] = subRoute
+	}
+	if len(tab) > 0 {
+		s.LastTab[route] = tab
 	}
 	_ = s.Save()
 }

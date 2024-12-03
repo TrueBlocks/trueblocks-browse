@@ -20,7 +20,7 @@ func (a *App) ProjectView(cb *menu.CallbackData) {
 func (a *App) HistoryView(cb *menu.CallbackData) {
 	address := a.GetSelected()
 	if strings.Contains(a.GetRoute(), "/history") {
-		a.TogglePrevTab(cb)
+		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("/history", address.Hex())
 	}
@@ -32,7 +32,7 @@ func (a *App) MonitorsView(cb *menu.CallbackData) {
 
 func (a *App) SharingView(cb *menu.CallbackData) {
 	if strings.Contains(a.GetRoute(), "/sharing") {
-		a.TogglePrevTab(cb)
+		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("/sharing", "")
 	}
@@ -40,7 +40,7 @@ func (a *App) SharingView(cb *menu.CallbackData) {
 
 func (a *App) UnchainedView(cb *menu.CallbackData) {
 	if strings.Contains(a.GetRoute(), "/unchained") {
-		a.TogglePrevTab(cb)
+		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("/unchained", "")
 	}
@@ -48,7 +48,7 @@ func (a *App) UnchainedView(cb *menu.CallbackData) {
 
 func (a *App) SettingsView(cb *menu.CallbackData) {
 	if strings.Contains(a.GetRoute(), "/settings") {
-		a.TogglePrevTab(cb)
+		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("/settings", "")
 	}

@@ -54,12 +54,6 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 		return nil
 	} else {
 		// EXISTING_CODE
-		items := []types.HistoryContainer{}
-		// HIST-PROJ
-		a.historyCache.Range(func(_ base.Address, h types.HistoryContainer) bool {
-			items = append(items, h)
-			return true
-		})
 		// EXISTING_CODE
 		a.meta = *meta
 		a.project = types.NewProjectContainer(a.getChain(), items)
@@ -75,7 +69,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 			a.project.HistorySize += uint64(item.SizeOf())
 			return true
 		}, nil)
-		// TODO: Shouldn't the following do this?
+		// TODO: Shouldn't the following sorting do this?
 		// TODO: if errorChan != nil {
 		// TODO: 	errorChan <- err
 		// TODO: }
@@ -93,8 +87,14 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 func (a *App) pullProjects() (items []types.HistoryContainer, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	meta, err = sdk.GetMetaData(namesChain)
-	return []types.HistoryContainer{}, meta, err
+	items = []types.HistoryContainer{}
+	// HIST-PROJ
+	a.historyCache.Range(func(_ base.Address, h types.HistoryContainer) bool {
+		items = append(items, h)
+		return true
+	})
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

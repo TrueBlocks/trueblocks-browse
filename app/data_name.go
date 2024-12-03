@@ -71,9 +71,6 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		a.names = types.NewNameContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
-		if err := a.names.Sort(); err != nil {
-			a.emitErrorMsg(err, nil)
-		}
 		a.emitLoadingMsg(messages.Loaded, "names")
 	}
 

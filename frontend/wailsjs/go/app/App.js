@@ -86,6 +86,10 @@ export function Freshen() {
   return window['go']['app']['App']['Freshen']();
 }
 
+export function GetActiveTab(arg1) {
+  return window['go']['app']['App']['GetActiveTab'](arg1);
+}
+
 export function GetAppTitle() {
   return window['go']['app']['App']['GetAppTitle']();
 }
@@ -154,8 +158,8 @@ export function HistoryView(arg1) {
   return window['go']['app']['App']['HistoryView'](arg1);
 }
 
-export function IsShowing(arg1) {
-  return window['go']['app']['App']['IsShowing'](arg1);
+export function IsShowing(arg1, arg2) {
+  return window['go']['app']['App']['IsShowing'](arg1, arg2);
 }
 
 export function LoadAddress(arg1) {
@@ -222,8 +226,8 @@ export function SetRoute(arg1, arg2) {
   return window['go']['app']['App']['SetRoute'](arg1, arg2);
 }
 
-export function SetShowing(arg1, arg2) {
-  return window['go']['app']['App']['SetShowing'](arg1, arg2);
+export function SetShowing(arg1, arg2, arg3) {
+  return window['go']['app']['App']['SetShowing'](arg1, arg2, arg3);
 }
 
 export function SettingsView(arg1) {
@@ -244,6 +248,10 @@ export function SystemAbout(arg1) {
 
 export function SystemQuit(arg1) {
   return window['go']['app']['App']['SystemQuit'](arg1);
+}
+
+export function TabSwitched(arg1, arg2) {
+  return window['go']['app']['App']['TabSwitched'](arg1, arg2);
 }
 
 export function ToggleAccordion(arg1) {

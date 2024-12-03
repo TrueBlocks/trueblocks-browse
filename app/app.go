@@ -53,6 +53,7 @@ func NewApp() *App {
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}
 	a.session.LastSub = make(map[string]string)
+	a.session.LastTab = make(map[string]string)
 	a.timer = NewTimer()
 
 	return a

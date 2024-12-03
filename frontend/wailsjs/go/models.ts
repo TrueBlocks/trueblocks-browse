@@ -457,6 +457,11 @@ export namespace sdk {
 
 export namespace types {
 	
+	export enum DaemonState {
+	    STOPPED = "Stopped",
+	    RUNNING = "Running",
+	    PAUSED = "Paused",
+	}
 	export enum WizState {
 	    WELCOME = "welcome",
 	    CONFIG = "config",
@@ -2244,6 +2249,7 @@ export namespace types {
 	    lastFolder: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
+	    lastTab: {[key: string]: string};
 	    window: Window;
 	    wizardStr: string;
 	    toggles: Toggles;
@@ -2259,6 +2265,7 @@ export namespace types {
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
+	        this.lastTab = source["lastTab"];
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
@@ -2291,6 +2298,7 @@ export namespace types {
 	    lastFolder: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
+	    lastTab: {[key: string]: string};
 	    window: Window;
 	    wizardStr: string;
 	    toggles: Toggles;
@@ -2311,6 +2319,7 @@ export namespace types {
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
+	        this.lastTab = source["lastTab"];
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);

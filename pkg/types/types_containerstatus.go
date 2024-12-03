@@ -40,6 +40,7 @@ func NewStatusContainer(chain string, status []Status) StatusContainer {
 		Updater: NewStatusUpdater(chain),
 	}
 	// EXISTING_CODE
+	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }

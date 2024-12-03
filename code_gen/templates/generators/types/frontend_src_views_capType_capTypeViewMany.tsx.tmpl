@@ -83,12 +83,13 @@
 
   return (
   <ViewStateProvider
-  // do not remove - delint
-  route={route}
-  nItems={ {{index $childTabs 0}}.nItems}
-  fetchFn={ fetch{{$routeName}}}
-  onEnter={handleEnter}
-  modifyFn={handleModify}
+    // do not remove - delint
+    route={route}
+    nItems={ {{index $childTabs 0}}.nItems}
+    fetchFn={ fetch{{$routeName}}}
+    onEnter={handleEnter}
+    modifyFn={handleModify}
+    tabs={tabs}
   >
   <DebugState u={ [{{apply $childTabs "{{.}}.updater" ","}}]} />
   <View tabs={tabs} forms={forms}{{if $wantsSearch}} searchable{{end}} />

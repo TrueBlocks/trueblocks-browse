@@ -204,7 +204,7 @@ func (a *App) goToAddress(address base.Address) {
 	}
 
 	a.cancelContext(address)
-	a.SetRoute("/history", address.Hex())
+	a.SetRoute("/history", address.Hex(), a.GetTab("/history"))
 	// HIST-HIST
 	history, exists := a.historyCache.Load(address)
 	if exists {

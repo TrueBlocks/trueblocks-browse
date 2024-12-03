@@ -99,6 +99,7 @@
         fetchFn={ {{$fetchFn}}}
         onEnter={handleEnter}
         modifyFn={handleModify}{{$clickFn}}
+        tabs={tabs}
       >
         <DebugState u={ [{{$routeLower}}.updater]} />
         <View tabs={tabs} forms={forms}{{if $wantsSearch}} searchable{{end}} />

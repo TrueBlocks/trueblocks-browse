@@ -9,7 +9,10 @@ package app
 	{{/*==============================================================*/}}
 	{{ $class := .Class }}
 	{{ $routeName := .UiRouteName }}
-	{{ $routeLower := toLower .UiRouteName }}
+	{{- $route := toLower .UiRouteName }}
+	{{- if eq .Class "Project" }}
+		{{- $route = "" }}
+	{{- end }}
 
 	{{ $isHistory := eq $class "History" }}
 	{{ $isProject := eq $class "Project" }}
@@ -22,11 +25,7 @@ package app
 		{{ $wantsMulti = true }}
 	{{ end }}
 
-	{{ $param1 := print "\"/" $routeLower "\"" }}
-	{{ if $isProject }}
-		{{ $param1 = "\"/\"" }}
-	{{ end }}
-
+	{{ $param1 := print "\"/" $route "\"" }}
 	{{ $param2 := ", \"\"" }}
 	{{ if $isHistory }}
 		{{ $param2 = ", address.Hex()" }}
@@ -48,9 +47,10 @@ package app
 					a.StepWizard(types.WizNext)
 				}
 			{{- end }}
+
 			{{- if $wantsMulti }}
-				if strings.Contains(a.GetRoute(), "/{{ $routeLower }}") {
-					a.TogglePrevTab(cb)
+				if strings.Contains(a.GetRoute(), "/{{ $route }}") {
+					a.ToggleNextTab(cb)
 				} else {
 					a.Navigate({{$param1}}{{$param2}})
 				}

@@ -8,8 +8,8 @@ func (a *App) SetEnv(key, value string) {
 	os.Setenv(key, value)
 }
 
-func (a *App) SetRoute(route, subRoute string) {
-	a.session.SetRoute(route, subRoute)
+func (a *App) SetRoute(route, subRoute, tab string) {
+	a.session.SetRoute(route, subRoute, tab)
 	a.saveSession()
 }
 

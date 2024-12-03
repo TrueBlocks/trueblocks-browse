@@ -49,6 +49,8 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
 export function Freshen():Promise<void>;
 
+export function GetActiveTab(arg1:string):Promise<string>;
+
 export function GetAppTitle():Promise<string>;
 
 export function GetChainInfo(arg1:string):Promise<types.Chain>;
@@ -79,11 +81,13 @@ export function GetSession():Promise<types.Session>;
 
 export function GetState(arg1:string):Promise<string>;
 
+export function GetTab(arg1:string):Promise<string>;
+
 export function GetWindow():Promise<types.Window>;
 
 export function HistoryView(arg1:menu.CallbackData):Promise<void>;
 
-export function IsShowing(arg1:string):Promise<boolean>;
+export function IsShowing(arg1:string,arg2:string):Promise<boolean>;
 
 export function LoadAddress(arg1:string):Promise<void>;
 
@@ -117,7 +121,7 @@ export function SetFilter(arg1:string,arg2:string):Promise<void>;
 
 export function SetRoute(arg1:string,arg2:string):Promise<void>;
 
-export function SetShowing(arg1:string,arg2:boolean):Promise<void>;
+export function SetShowing(arg1:string,arg2:string,arg3:boolean):Promise<void>;
 
 export function SettingsView(arg1:menu.CallbackData):Promise<void>;
 
@@ -128,6 +132,8 @@ export function StepWizard(arg1:types.WizStep):Promise<types.WizState>;
 export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
+
+export function TabSwitched(arg1:string,arg2:string):Promise<void>;
 
 export function ToggleAccordion(arg1:menu.CallbackData):Promise<void>;
 
