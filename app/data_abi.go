@@ -43,22 +43,12 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating abis...")
 
-	opts := sdk.AbisOptions{
-		Globals: sdk.Globals{
-			Chain:   a.getChain(),
-			Verbose: true,
-		},
-	}
-	// EXISTING_CODE
-	opts.Cache = true
-	opts.Chain = namesChain
-	// EXISTING_CODE
-	if abis, meta, err := opts.AbisList(); err != nil {
+	if items, meta, err := a.pullAbis(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (abis == nil) || (len(abis) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no abis found")
 		if errorChan != nil {
 			errorChan <- err
@@ -68,16 +58,29 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.abis = types.NewAbiContainer(opts.Chain, abis)
+		a.abis = types.NewAbiContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
-		if err := sdk.SortAbis(a.abis.Items, a.abis.Sorts); err != nil {
+		if err := a.abis.Sort(); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 		a.emitLoadingMsg(messages.Loaded, "abis")
 	}
 
 	return nil
+}
+
+func (a *App) pullAbis() (items []types.Abi, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	opts := sdk.AbisOptions{
+		Globals: sdk.Globals{
+			Chain:   namesChain,
+			Verbose: true,
+			Cache:   true,
+		},
+	}
+	return opts.AbisList()
+	// EXISTING_CODE
 }
 
 // EXISTING_CODE

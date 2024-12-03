@@ -2244,6 +2244,7 @@ export namespace types {
 	    lastFolder: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
+	    lastTab: {[key: string]: string};
 	    window: Window;
 	    wizardStr: string;
 	    toggles: Toggles;
@@ -2259,6 +2260,7 @@ export namespace types {
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
+	        this.lastTab = source["lastTab"];
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
@@ -2291,6 +2293,7 @@ export namespace types {
 	    lastFolder: string;
 	    lastRoute: string;
 	    lastSub: {[key: string]: string};
+	    lastTab: {[key: string]: string};
 	    window: Window;
 	    wizardStr: string;
 	    toggles: Toggles;
@@ -2311,6 +2314,7 @@ export namespace types {
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = source["lastSub"];
+	        this.lastTab = source["lastTab"];
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
@@ -2422,49 +2426,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class SettingsContainer {
-	    chain: string;
-	    updater: sdk.Updater;
-	    items: CacheItem[];
-	    nItems: number;
-	    status: StatusContainer;
-	    config: ConfigContainer;
-	    session: SessionContainer;
-	
-	    static createFrom(source: any = {}) {
-	        return new SettingsContainer(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.chain = source["chain"];
-	        this.updater = this.convertValues(source["updater"], sdk.Updater);
-	        this.items = this.convertValues(source["items"], CacheItem);
-	        this.nItems = source["nItems"];
-	        this.status = this.convertValues(source["status"], StatusContainer);
-	        this.config = this.convertValues(source["config"], ConfigContainer);
-	        this.session = this.convertValues(source["session"], SessionContainer);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-	
 	
 	
 	

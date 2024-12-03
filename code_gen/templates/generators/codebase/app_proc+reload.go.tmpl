@@ -1,0 +1,50 @@
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+package app
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+func (a *App) Reload() {
+	defer a.trackPerformance("Reload", false)()
+
+	route := a.session.LastRoute
+	logger.InfoG("Reloading", route, "...")
+
+	switch route {
+		{{- range .Structures }}
+			{{- if ne .Class "History" }}
+				{{- $hasChildren := ne .Children "" }}
+				{{- $hasParent := ne .Parent "" }}
+				{{- $route := toLower .UiRouteName }}
+				{{- if eq .Class "Project" }}
+					{{- $route = "" }}
+				{{- end }}
+				{{- if $hasChildren }}
+					case "/{{$route}}":
+						{{- range .ChildTabs }}
+							a.{{toLower .}}.Updater.Reset()
+							if err := a.load{{firstUpper .}}(nil, nil); err != nil {
+								a.emitErrorMsg(err, nil)
+							}
+						{{- end }}
+				{{- else if not $hasParent }}
+					case "/{{$route}}":
+						a.{{toLower .UiRouteName}}.Updater.Reset()
+						if err := a.load{{.UiRouteName}}(nil, nil); err != nil {
+							a.emitErrorMsg(err, nil)
+						}
+					{{- end }}
+			{{- end }}
+		{{- end }}
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+	a.emitMsg(messages.Refresh, &messages.MessageMsg{
+		Name:    a.daemons.FreshenController.Name,
+		String1: "Refresh...",
+		String2: a.daemons.FreshenController.Color,
+		Num1:    1, // 1 means daemon if we need it
+	})
+}

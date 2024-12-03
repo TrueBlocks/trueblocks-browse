@@ -7,11 +7,7 @@ import {app} from '../models';
 import {context} from '../models';
 import {editors} from '../models';
 
-export function AbisView(arg1:menu.CallbackData):Promise<void>;
-
 export function CancelAllContexts():Promise<void>;
-
-export function ConfigView(arg1:menu.CallbackData):Promise<void>;
 
 export function DaemonsView(arg1:menu.CallbackData):Promise<void>;
 
@@ -39,8 +35,6 @@ export function FetchProject(arg1:number,arg2:number):Promise<types.ProjectConta
 
 export function FetchSession(arg1:number,arg2:number):Promise<types.SessionContainer>;
 
-export function FetchSettings(arg1:number,arg2:number):Promise<types.SettingsContainer>;
-
 export function FetchStatus(arg1:number,arg2:number):Promise<types.StatusContainer>;
 
 export function FetchWizard(arg1:number,arg2:number):Promise<types.WizardContainer>;
@@ -54,6 +48,8 @@ export function FileSave(arg1:menu.CallbackData):Promise<void>;
 export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
 export function Freshen():Promise<void>;
+
+export function GetActiveTab(arg1:string):Promise<string>;
 
 export function GetAppTitle():Promise<string>;
 
@@ -91,8 +87,6 @@ export function GetWindow():Promise<types.Window>;
 
 export function HistoryView(arg1:menu.CallbackData):Promise<void>;
 
-export function IndexesView(arg1:menu.CallbackData):Promise<void>;
-
 export function IsShowing(arg1:string,arg2:string):Promise<boolean>;
 
 export function LoadAddress(arg1:string):Promise<void>;
@@ -102,8 +96,6 @@ export function LoadDalleImage(arg1:base.Address):Promise<boolean>;
 export function LoadName(arg1:string):Promise<editors.Name>;
 
 export function Logger(arg1:Array<string>):Promise<void>;
-
-export function ManifestsView(arg1:menu.CallbackData):Promise<void>;
 
 export function ModifyAbi(arg1:app.ModifyData):Promise<void>;
 
@@ -115,15 +107,11 @@ export function ModifyProject(arg1:app.ModifyData):Promise<void>;
 
 export function MonitorsView(arg1:menu.CallbackData):Promise<void>;
 
-export function NamesView(arg1:menu.CallbackData):Promise<void>;
-
 export function Navigate(arg1:string,arg2:string):Promise<void>;
 
 export function ProjectView(arg1:menu.CallbackData):Promise<void>;
 
 export function Reload():Promise<void>;
-
-export function SessionView(arg1:menu.CallbackData):Promise<void>;
 
 export function SetChain(arg1:string):Promise<void>;
 
@@ -131,19 +119,21 @@ export function SetEnv(arg1:string,arg2:string):Promise<void>;
 
 export function SetFilter(arg1:string,arg2:string):Promise<void>;
 
-export function SetRoute(arg1:string,arg2:string):Promise<void>;
+export function SetRoute(arg1:string,arg2:string,arg3:string):Promise<void>;
 
 export function SetShowing(arg1:string,arg2:string,arg3:boolean):Promise<void>;
 
 export function SettingsView(arg1:menu.CallbackData):Promise<void>;
 
-export function StatusView(arg1:menu.CallbackData):Promise<void>;
+export function SharingView(arg1:menu.CallbackData):Promise<void>;
 
 export function StepWizard(arg1:types.WizStep):Promise<types.WizState>;
 
 export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
+
+export function TabSwitched(arg1:string,arg2:string):Promise<void>;
 
 export function ToggleAccordion(arg1:menu.CallbackData):Promise<void>;
 
@@ -160,5 +150,7 @@ export function ToggleMenu(arg1:menu.CallbackData):Promise<void>;
 export function ToggleNextTab(arg1:menu.CallbackData):Promise<void>;
 
 export function TogglePrevTab(arg1:menu.CallbackData):Promise<void>;
+
+export function UnchainedView(arg1:menu.CallbackData):Promise<void>;
 
 export function WizardView(arg1:menu.CallbackData):Promise<void>;

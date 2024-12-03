@@ -1,8 +1,8 @@
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode } from "react";
 import { Group, Stack, Tabs } from "@mantine/core";
 import { SearchBar, ViewTitle } from "@components";
-import { messages } from "@gocode/models";
-import { EventsOn, EventsOff } from "@runtime";
+import { TabSwitched } from "@gocode/app/App";
+import { useViewState } from "@state";
 import classes from "./View.module.css";
 
 export type ViewForm = Record<string, ReactNode>;
@@ -14,61 +14,24 @@ export type ViewProps = {
 };
 
 export const View = ({ tabs, forms, searchable = false }: ViewProps) => {
-  const [activeTab, setActiveTab] = useState<string>(tabs[0]);
-
-  useEffect(() => {
-    const handleSwitchTab = (msg: messages.MessageMsg) => {
-      const { string1 } = msg;
-      switch (string1) {
-        case "next":
-          setActiveTab((prevTab) => {
-            const currentIndex = tabs.indexOf(prevTab);
-            return currentIndex > 0 ? tabs[currentIndex - 1] : tabs[tabs.length - 1];
-          });
-          break;
-        case "prev":
-          setActiveTab((prevTab) => {
-            const currentIndex = tabs.indexOf(prevTab);
-            return currentIndex < tabs.length - 1 ? tabs[currentIndex + 1] : tabs[0];
-          });
-          break;
-        default:
-          break;
-      }
-    };
-
-    const { Message } = messages;
-    EventsOn(Message.SWITCHTAB, handleSwitchTab);
-    return () => {
-      EventsOff(Message.SWITCHTAB);
-    };
-  }, [tabs]);
-
-  if (!tabs || tabs.length < 1) {
-    return <>Loading...</>;
-  }
-
-  // const keys = Object.keys(forms);
-  // const types = Object.values(forms);
-  // const tt = types.map((t) => typeof t);
+  const { route, activeTab, setActiveTab } = useViewState();
 
   return (
     <Stack className={classes.viewContainer}>
       <Group style={{ justifyContent: "space-between", alignItems: "center" }}>
         <ViewTitle />
-        {searchable ? (
+        {searchable && (
           <div style={{ width: "30%" }}>
             <SearchBar />
           </div>
-        ) : (
-          <></>
         )}
       </Group>
       <Tabs
         value={activeTab}
-        onChange={(t) => {
-          if (t !== null) {
-            setActiveTab(t);
+        onChange={(newTab) => {
+          if (newTab !== null) {
+            setActiveTab(newTab);
+            TabSwitched(route, newTab);
           }
         }}
       >

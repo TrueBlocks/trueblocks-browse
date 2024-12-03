@@ -4,11 +4,11 @@
 import { Stack, Group } from "@mantine/core";
 import { Table } from "@tanstack/react-table";
 import { DataTable, EditButton, FieldGroup } from "@components";
-import { configtypes, types } from "@gocode/models";
+import { types } from "@gocode/models";
 import { useAppState } from "../../state";
 // EXISTING_CODE
 
-export const ConfigFormDef = (table: Table<configtypes.ChainGroup>): FieldGroup<types.ConfigContainer>[] => {
+export const ConfigFormDef = (table: Table<types.Chain>): FieldGroup<types.ConfigContainer>[] => {
   // EXISTING_CODE
   // EXISTING_CODE
   return [
@@ -30,7 +30,7 @@ export const ConfigFormDef = (table: Table<configtypes.ChainGroup>): FieldGroup<
     {
       label: "Configured Chains",
       collapsable: false,
-      components: [<DataTable<configtypes.ChainGroup> key={"dataTable"} table={table} loading={false} />],
+      components: [<DataTable<types.Chain> key={"dataTable"} table={table} loading={false} />],
     },
     // EXISTING_CODE
   ];

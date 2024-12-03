@@ -3,14 +3,13 @@
 // EXISTING_CODE
 import { Table } from "@tanstack/react-table";
 import { ExploreButton, ExportButton, DataTable, FieldGroup, GoogleButton } from "@components";
-import { types, base } from "@gocode/models";
+import { types } from "@gocode/models";
+import { useAppState } from "../../state";
 // EXISTING_CODE
 
-export const HistoryFormDef = (
-  table: Table<types.Transaction>,
-  address: base.Address
-): FieldGroup<types.HistoryContainer>[] => {
+export const HistoryFormDef = (table: Table<types.Transaction>): FieldGroup<types.HistoryContainer>[] => {
   // EXISTING_CODE
+  const { info } = useAppState();
   // EXISTING_CODE
   return [
     // EXISTING_CODE
@@ -41,9 +40,9 @@ export const HistoryFormDef = (
     {
       label: "Buttons",
       buttons: [
-        <ExploreButton key={"explore"} value={address} />,
-        <GoogleButton key={"google"} value={address} />,
-        <ExportButton key={"export"} value={address} />,
+        <ExploreButton key={"explore"} value={info.address} />,
+        <GoogleButton key={"google"} value={info.address} />,
+        <ExportButton key={"export"} value={info.address} />,
       ],
     },
     {

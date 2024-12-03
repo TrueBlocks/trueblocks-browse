@@ -5,9 +5,11 @@
             "class": "Project",
             "doc_route": "0000-containers",
             "ui_route": "0000-project-1",
+            "ui_icon": "Home",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.HistoryContainer|noSdk",
+            "attributes": "wantsSearch|wantsEnter|wantsModify|wantsZero",
+            "sorts": "address+Asc",
             "members": [
                 {
                     "name": "nMonitors",
@@ -59,9 +61,22 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.HistoryContainer",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
                 }
             ]
         },
@@ -69,9 +84,10 @@
             "class": "History",
             "doc_route": "1010-containers",
             "ui_route": "1010-history-2",
+            "ui_icon": "BuildingMonument",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.Transaction|noSdk",
+            "attributes": "wantsSearch|wantsZero|wantsMulti",
             "members": [
                 {
                     "name": "address",
@@ -123,9 +139,22 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.Transaction",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
                 }
             ]
         },
@@ -133,9 +162,11 @@
             "class": "Monitor",
             "doc_route": "1020-containers",
             "ui_route": "1020-monitors-3",
+            "ui_icon": "DeviceDesktop",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.Monitor",
+            "attributes": "wantsSearch|wantsEnter|wantsModify",
+            "sorts": "nRecords+Asc,address+Asc",
             "members": [
                 {
                     "name": "nNamed",
@@ -181,19 +212,33 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 8
+                },
+                {
+                    "name": "items",
+                    "type": "types.Monitor",
+                    "description": "jim",
+                    "num": 9,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 10
                 }
             ]
         },
         {
             "class": "Name",
             "doc_route": "1030-containers",
-            "ui_route": "1030-names-4",
+            "ui_route": "1030-names",
+            "parent": "sharing",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.Name",
+            "attributes": "wantsSearch|wantsEnter|wantsModify",
             "members": [
                 {
                     "name": "nContracts",
@@ -257,24 +302,38 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 11
+                },
+                {
+                    "name": "items",
+                    "type": "types.Name",
+                    "description": "jim",
+                    "num": 12,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 13
                 }
             ]
         },
         {
             "class": "Abi",
             "doc_route": "1040-containers",
-            "ui_route": "1040-abis-5",
+            "ui_route": "1040-abis",
+            "parent": "sharing",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.Abi",
+            "attributes": "wantsSearch|wantsEnter|wantsModify",
             "sorts": "isEmpty+Asc,isKnown+Asc,address+Asc",
             "members": [
                 {
                     "name": "abi",
-                    "type": "coreTypes.Abi",
+                    "type": "types.Abi",
                     "attributes": "embed",
                     "description": "jim",
                     "num": 1
@@ -305,24 +364,73 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 6
+                },
+                {
+                    "name": "items",
+                    "type": "types.Abi",
+                    "description": "jim",
+                    "num": 7,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 8
+                }
+            ]
+        },
+        {
+            "class": "Sharing",
+            "doc_route": "1045-containers",
+            "ui_route": "1045-sharing-4",
+            "ui_icon": "Tag",
+            "children": "names,abis",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "items",
+                    "type": "types.CacheItem",
+                    "description": "jim",
+                    "num": 3,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
                 }
             ]
         },
         {
             "class": "Index",
             "doc_route": "1050-containers",
-            "ui_route": "1050-indexes-6",
+            "ui_route": "1050-indexes",
+            "parent": "unchained",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.ChunkStats",
             "sorts": "range+Dec",
             "members": [
                 {
                     "name": "chunkStats",
-                    "type": "coreTypes.ChunkStats",
+                    "type": "types.ChunkStats",
                     "attributes": "embed",
                     "description": "jim",
                     "num": 1
@@ -335,82 +443,134 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 3
+                },
+                {
+                    "name": "items",
+                    "type": "types.ChunkStats",
+                    "description": "jim",
+                    "num": 4,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
                 }
             ]
         },
         {
             "class": "Manifest",
             "doc_route": "1060-containers",
-            "ui_route": "1060-manifests-7",
+            "ui_route": "1060-manifests",
+            "parent": "unchained",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.ChunkRecord",
             "sorts": "range+Dec",
             "members": [
                 {
-                    "name": "nBlooms",
-                    "type": "uint64",
+                    "name": "manifest",
+                    "type": "types.Manifest",
+                    "attributes": "embed",
                     "description": "jim",
                     "num": 1
                 },
                 {
-                    "name": "bloomsSize",
+                    "name": "nBlooms",
                     "type": "uint64",
                     "description": "jim",
                     "num": 2
                 },
                 {
-                    "name": "nIndexes",
+                    "name": "bloomsSize",
                     "type": "uint64",
                     "description": "jim",
                     "num": 3
                 },
                 {
-                    "name": "indexSize",
+                    "name": "nIndexes",
                     "type": "uint64",
                     "description": "jim",
                     "num": 4
                 },
                 {
-                    "name": "specification",
-                    "type": "string",
+                    "name": "indexSize",
+                    "type": "uint64",
                     "description": "jim",
                     "num": 5
                 },
                 {
-                    "name": "version",
-                    "type": "string",
+                    "name": "updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 6
                 },
                 {
-                    "name": "chain",
-                    "type": "string",
+                    "name": "items",
+                    "type": "types.ChunkRecord",
                     "description": "jim",
-                    "num": 7
+                    "num": 7,
+                    "isArray": true
                 },
                 {
-                    "name": "updater",
-                    "type": "updater.Updater",
+                    "name": "nItems",
+                    "type": "uint64",
                     "description": "jim",
                     "num": 8
                 }
             ]
         },
         {
-            "class": "Status",
-            "doc_route": "1070-containers",
-            "ui_route": "1070-status-8",
+            "class": "Unchained",
+            "doc_route": "1065-containers",
+            "ui_route": "1065-unchained-5",
+            "ui_icon": "Archive",
+            "children": "indexes,manifests",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.CacheItem|embedType=coreTypes.Status",
+            "members": [
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "items",
+                    "type": "types.CacheItem",
+                    "description": "jim",
+                    "num": 3,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
+                }
+            ]
+        },
+        {
+            "class": "Status",
+            "doc_route": "1070-containers",
+            "ui_route": "1070-status",
+            "parent": "settings",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "sorts": "sizeInBytes+Dec",
             "members": [
                 {
                     "name": "status",
-                    "type": "coreTypes.Status",
+                    "type": "types.Status",
                     "attributes": "embed",
                     "description": "jim",
                     "num": 1
@@ -435,19 +595,33 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 5
+                },
+                {
+                    "name": "items",
+                    "type": "types.CacheItem",
+                    "description": "jim",
+                    "num": 6,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
                 }
             ]
         },
         {
             "class": "Settings",
             "doc_route": "1080-containers",
-            "ui_route": "1080-settings-9",
+            "ui_route": "1080-settings-6",
+            "ui_icon": "Settings",
+            "children": "status,config,session",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=coreTypes.CacheItem|noLoad|noSdk",
             "members": [
                 {
                     "name": "chain",
@@ -457,23 +631,37 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 2
+                },
+                {
+                    "name": "items",
+                    "type": "types.CacheItem",
+                    "description": "jim",
+                    "num": 3,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
                 }
             ]
         },
         {
             "class": "Daemon",
             "doc_route": "1090-containers",
-            "ui_route": "1090-daemons-0",
+            "ui_route": "1090-daemons-7",
+            "ui_icon": "Server",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.Nothing|embedType=daemons.Daemon|noSdk",
+            "attributes": "wantsZero",
             "members": [
                 {
                     "name": "daemon",
-                    "type": "daemons.Daemon",
+                    "type": "types.Daemon",
                     "attributes": "embed",
                     "description": "jim",
                     "num": 1
@@ -486,19 +674,33 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 3
+                },
+                {
+                    "name": "items",
+                    "type": "types.Nothing",
+                    "description": "jim",
+                    "num": 4,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
                 }
             ]
         },
         {
             "class": "Session",
             "doc_route": "1100-containers",
-            "ui_route": "1100-session-u",
+            "ui_route": "1100-session",
+            "parent": "settings",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.Nothing|embedType=types.Session",
+            "attributes": "wantsZero",
             "members": [
                 {
                     "name": "session",
@@ -508,24 +710,44 @@
                     "num": 1
                 },
                 {
-                    "name": "updater",
-                    "type": "updater.Updater",
+                    "name": "chain",
+                    "type": "string",
                     "description": "jim",
                     "num": 2
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "items",
+                    "type": "types.Nothing",
+                    "description": "jim",
+                    "num": 4,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
                 }
             ]
         },
         {
             "class": "Config",
             "doc_route": "1110-containers",
-            "ui_route": "1110-config-v",
+            "ui_route": "1110-config",
+            "parent": "settings",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=configTypes.ChainGroup|embedType=configTypes.Config|noSdk",
+            "sorts": "chainId+Asc",
             "members": [
                 {
                     "name": "config",
-                    "type": "configTypes.Config",
+                    "type": "types.Config",
                     "attributes": "embed",
                     "description": "jim",
                     "num": 1
@@ -544,9 +766,22 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 4
+                },
+                {
+                    "name": "items",
+                    "type": "types.Chain",
+                    "description": "jim",
+                    "num": 5,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
                 }
             ]
         },
@@ -554,9 +789,10 @@
             "class": "Wizard",
             "doc_route": "1120-containers",
             "ui_route": "1120-wizard-w",
+            "ui_icon": "Biohazard",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "itemType=types.WizError|noSdk",
+            "attributes": "wantsEnter|wantsZero",
             "members": [
                 {
                     "name": "chain",
@@ -566,9 +802,22 @@
                 },
                 {
                     "name": "updater",
-                    "type": "updater.Updater",
+                    "type": "sdk.Updater",
                     "description": "jim",
                     "num": 2
+                },
+                {
+                    "name": "items",
+                    "type": "types.WizError",
+                    "description": "jim",
+                    "num": 3,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
                 }
             ]
         }

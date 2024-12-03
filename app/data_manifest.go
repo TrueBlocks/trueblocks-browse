@@ -43,20 +43,12 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating manifests...")
 
-	opts := sdk.ChunksOptions{
-		Globals: sdk.Globals{
-			Chain:   a.getChain(),
-			Verbose: true,
-		},
-	}
-	// EXISTING_CODE
-	// EXISTING_CODE
-	if manifests, meta, err := opts.ChunksManifest(); err != nil {
+	if items, meta, err := a.pullManifests(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (manifests == nil) || (len(manifests) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no manifests found")
 		if errorChan != nil {
 			errorChan <- err
@@ -66,16 +58,28 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.manifests = types.NewManifestContainer(opts.Chain, manifests)
+		a.manifests = types.NewManifestContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
-		if err := sdk.SortChunkRecords(a.manifests.Items, a.manifests.Sorts); err != nil {
+		if err := a.manifests.Sort(); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 		a.emitLoadingMsg(messages.Loaded, "manifests")
 	}
 
 	return nil
+}
+
+func (a *App) pullManifests() (items []types.Manifest, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	opts := sdk.ChunksOptions{
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
+	}
+	return opts.ChunksManifest()
+	// EXISTING_CODE
 }
 
 // EXISTING_CODE

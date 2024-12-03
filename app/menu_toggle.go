@@ -44,7 +44,11 @@ func (a *App) ToggleAccordion(cb *menu.CallbackData) {
 	if route == "" {
 		route = "project"
 	}
-	a.emitMsg(messages.ToggleAccordion, &messages.MessageMsg{String1: route})
+	tab := a.GetTab(route)
+	a.emitMsg(messages.ToggleAccordion, &messages.MessageMsg{
+		String1: route,
+		String2: tab,
+	})
 }
 
 func (a *App) TogglePrevTab(cb *menu.CallbackData) {

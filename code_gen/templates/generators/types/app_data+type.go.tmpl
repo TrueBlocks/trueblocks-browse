@@ -1,67 +1,70 @@
 {{/*==============================================================*/}}
-
 {{ $class := .Class }}
-{{ $container := print $class "Container" }}
 {{ $routeName := .UiRouteName}}
 {{ $routeLower := toLower .UiRouteName -}}
-{{ $itemType := .ItemType}}
-{{ $itemName := .ItemName}}
+{{ $itemType := .ItemType }}
+{{ $embedType := .EmbedType }}
 {{ $members := .Members }}
-{{ $needsSdk := .Needs "sdk" }}
 
-{{ $hasSorts := .HasSorts }}
-
-{{ $hasItems := and (gt (len $itemName) 0) true }}
 {{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
 
 {{ $isHistory := eq $class "History" }}
-{{ $isStatus := eq $class "Status" }}
-{{ $isAbi := eq $class "Abi" }}
-{{ $isName := eq $class "Name" }}
-{{ $isProject := eq $class "Project" }}
-{{ $isMonitor := eq $class "Monitor" }}
-{{ $isManifest := eq $class "Manifest" }}
-{{ $isSession := eq $class "Session" }}
+{{ $noChildren := (eq .Children "") }}
 
-{{ $param1 := "wg *sync.WaitGroup, errorChan chan error" }}
-{{ $param2 := "" }}
-{{ if $isHistory }}
-	{{ $param2 = ", address base.Address" }}
-{{ end }}
-
-{{ $lockName := print (toLower $class) "Lock" }}
-
-{{ $dataName := $routeLower }}
-{{ if $isHistory }}
-	{{ $dataName = $routeLower }}
-{{ end }}
-
-{{ $newOpt := $dataName }}
-{{ if $isSession }}
-	{{ $newOpt = "[]types.Nothing{}" }}
-{{ end}}
+{{ $wantsZero := .Wants "zero" }}
 
 {{ $appData := print "a." $routeLower }}
 {{ if $isHistory }}
 	{{ $appData = $routeLower }}
 {{ end }}
 
-{{ $optionsName := print "sdk." $routeName "Options" }}
-{{ if $isSession }}
-	{{ $optionsName = print $routeName "Options" }}
+{{ $param1 := ""}}
+{{ if $isHistory }}
+	{{ $param1 = "address" }}
+{{ end }}
+
+{{ $param2 := "" }}
+{{ if $isHistory }}
+	{{ $param2 = ", errorChan" }}
+{{ end }}
+
+{{ $param3 := ""}}
+{{ if $isHistory }}
+	{{ $param3 = ", address" }}
+{{ end }}
+
+{{ $param4 := "" }}
+{{ if $isHistory }}
+	{{ $param4 = "address base.Address, errorChan chan error" }}
+{{ end }}
+
+{{ $returnType := print "items []types." $itemType }}
+{{ if $hasEmbed }}
+	{{ $returnType = print "items []types." $embedType }}
+{{ end }}
+
+{{ $noRecords := print ` err = fmt.Errorf("no ` $routeLower ` found")
+	if errorChan != nil {
+		errorChan <- err
+	}
+	return err` }}
+{{ if $wantsZero }}
+	{{ $noRecords = `  // this outcome is okay
+	a.meta = *meta
+	return nil` }}
 {{ end }}
 
 {{/*==============================================================*/}}
-// This file is auto-generated. Edit only code inside
+{{if $noChildren}}// This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 package app
 
 // EXISTING_CODE
 // EXISTING_CODE
 
-var {{$lockName}} atomic.Uint32
+var {{$routeLower}}Lock atomic.Uint32
 
-func (a *App) load{{$routeName}}({{$param1}}{{$param2}}) error {
+func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error {
 	defer a.trackPerformance("load{{$routeName}}", false)()
 	defer func() {
 		if wg != nil {
@@ -69,10 +72,10 @@ func (a *App) load{{$routeName}}({{$param1}}{{$param2}}) error {
 		}
 	}()
 
-	if !{{$lockName}}.CompareAndSwap(0, 1) {
+	if !{{$routeLower}}Lock.CompareAndSwap(0, 1) {
 		return nil
 	}
-	defer {{$lockName}}.CompareAndSwap(1, 0)
+	defer {{$routeLower}}Lock.CompareAndSwap(1, 0)
 
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -82,56 +85,45 @@ func (a *App) load{{$routeName}}({{$param1}}{{$param2}}) error {
 	}
 	updater := {{$appData}}.Updater
 	defer func() {
-{{ if $isHistory }}	history, _ = a.historyCache.Load(address)
-{{end}}		{{$appData}}.Updater = updater
-{{ if $isHistory }}	a.historyCache.Store(address, history)
-{{end}}	}()
-	logger.InfoBY("Updating needed for {{$routeLower}}...")
+{{ if $isHistory -}}
+	// HIST-HIST
+	history, _ = a.historyCache.Load(address)
+	{{$appData}}.Updater = updater
+	// HIST-HIST
+	a.historyCache.Store(address, history)
+{{else -}}
+	{{$appData}}.Updater = updater
+{{end -}}
+	}()
+	logger.InfoBY("Updating {{$routeLower}}...")
 
-{{if $needsSdk}}
-	opts := {{$optionsName}}{
-		Globals: sdk.Globals{
-			Chain:   a.getChain(),
-			Verbose: true,
-		},
-	}
-{{end}}	// EXISTING_CODE
-	// EXISTING_CODE
-{{if $needsSdk}}	if {{$dataName}}, meta, err := opts.{{$routeName}}List(); err != nil {
+	if items, meta, err := a.pull{{toPlural $class}}({{$param1}}{{$param2}}); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if ({{$dataName}} == nil) || (len({{$dataName}}) == 0) {
-		err = fmt.Errorf("no {{$dataName}} found")
-		if errorChan != nil {
-			errorChan <- err
-		}
-		return err
+	} else if (items == nil) || (len(items) == 0) {
+		{{$noRecords}}
 	} else {
-{{end}}		// EXISTING_CODE
 		// EXISTING_CODE
-{{if $needsSdk}}		a.meta = *meta
-		{{$appData}} = types.New{{$container}}(opts.Chain
-{{- if $hasItems -}}
-, {{$newOpt}}{{if $isStatus}}[0].Caches{{end}}{{if $isManifest}}[0].Chunks{{end}}
-{{- end -}}
-{{- if $hasEmbed -}}
-, &{{$dataName}}[0]
-{{- end -}}
-)
-{{end}}		// EXISTING_CODE
 		// EXISTING_CODE
-{{if $hasSorts -}}
-		if err := sdk.Sort{{$routeName}}({{$appData}}.Items, {{$appData}}.Sorts); err != nil {
+		a.meta = *meta
+		{{$appData}} = types.New{{$class}}Container(a.getChain(), items{{$param3}})
+		// EXISTING_CODE
+		// EXISTING_CODE
+		if err := {{$appData}}.Sort(); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-{{end -}}
-		a.emitLoadingMsg(messages.Loaded, "{{$dataName}}")
-{{if $needsSdk}}	}
-{{end}}
+		a.emitLoadingMsg(messages.Loaded, "{{$routeLower}}")
+	}
+
 	return nil
 }
 
+func (a *App) pull{{toPlural $class}}({{$param4}}) ({{$returnType}}, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
 // EXISTING_CODE
-// EXISTING_CODE
+// EXISTING_CODE{{end}}

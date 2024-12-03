@@ -4,7 +4,6 @@ package app
 
 // EXISTING_CODE
 import (
-	"fmt"
 	"sync"
 	"sync/atomic"
 
@@ -43,54 +42,37 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating session...")
 
-	opts := SessionOptions{
-		Globals: sdk.Globals{
-			Chain:   a.getChain(),
-			Verbose: true,
-		},
-	}
-	// EXISTING_CODE
-	// EXISTING_CODE
-	if session, meta, err := opts.SessionList(); err != nil {
+	if items, meta, err := a.pullSessions(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (session == nil) || (len(session) == 0) {
-		err = fmt.Errorf("no session found")
-		if errorChan != nil {
-			errorChan <- err
-		}
-		return err
+	} else if (items == nil) || (len(items) == 0) {
+		// this outcome is okay
+		a.meta = *meta
+		return nil
 	} else {
 		// EXISTING_CODE
-		// Oddly, the session is always up to date, so we save it...
-		ss := a.session.Session
 		// EXISTING_CODE
 		a.meta = *meta
-		a.session = types.NewSessionContainer(opts.Chain, session)
+		a.session = types.NewSessionContainer(a.getChain(), items)
 		// EXISTING_CODE
-		// ... and put it back
-		a.session.Session = ss
 		// EXISTING_CODE
+		if err := a.session.Sort(); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		a.emitLoadingMsg(messages.Loaded, "session")
 	}
 
 	return nil
 }
 
+func (a *App) pullSessions() (items []types.Session, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	meta, err = sdk.GetMetaData(namesChain)
+	return []types.Session{}, meta, err
+	// EXISTING_CODE
+}
+
 // EXISTING_CODE
-
-type SessionOptions struct {
-	Globals sdk.Globals
-	Chain   string
-}
-
-func (opts *SessionOptions) SessionList() ([]types.Session, *types.Meta, error) {
-	meta, err := sdk.GetMetaData(namesChain)
-	return []types.Session{
-		{LastChain: ""},
-	}, meta, err
-}
-
 // EXISTING_CODE

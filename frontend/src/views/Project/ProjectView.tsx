@@ -18,6 +18,10 @@ export const ProjectView = () => {
   };
   const handleModify = ModifyProject;
 
+  // eslint-disable-next-line prefer-const
+  let customTabs: string[] = [];
+  // eslint-disable-next-line prefer-const
+  let customForms: Record<string, JSX.Element> = {};
   // EXISTING_CODE
   const { info } = useAppState();
   useEffect(() => {
@@ -36,9 +40,10 @@ export const ProjectView = () => {
   });
 
   const route = "";
-  const tabs = ["project"];
+  const tabs = ["project", ...(customTabs || [])];
   const forms: ViewForm = {
     project: <FormTable data={project} groups={ProjectFormDef(table)} />,
+    ...customForms,
   };
 
   return (
@@ -49,6 +54,7 @@ export const ProjectView = () => {
       fetchFn={fetchProject}
       onEnter={handleEnter}
       modifyFn={handleModify}
+      tabs={tabs}
     >
       <DebugState u={[project.updater]} />
       <View tabs={tabs} forms={forms} searchable />

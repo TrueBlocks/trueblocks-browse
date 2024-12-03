@@ -10,9 +10,9 @@ import (
 )
 
 func (a *App) GetTab(route string) string {
-	// if len(a.session.LastTab) > 0 {
-	// 	return a.session.LastTab[route]
-	// }
+	if a.session.LastTab != nil {
+		return a.session.LastTab[route]
+	}
 	return ""
 }
 

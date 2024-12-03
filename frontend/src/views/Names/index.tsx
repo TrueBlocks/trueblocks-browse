@@ -2,4 +2,3 @@
 // of ExistingCode markers (if any).
 export * from "./NamesFormDef";
 export * from "./NamesTableDef";
-export * from "./NamesView";

@@ -5,7 +5,6 @@ package app
 // EXISTING_CODE
 import (
 	"fmt"
-	"sort"
 	"sync"
 	"sync/atomic"
 
@@ -46,20 +45,12 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating monitors...")
 
-	opts := sdk.MonitorsOptions{
-		Globals: sdk.Globals{
-			Chain:   a.getChain(),
-			Verbose: true,
-		},
-	}
-	// EXISTING_CODE
-	// EXISTING_CODE
-	if monitors, meta, err := opts.MonitorsList(); err != nil {
+	if items, meta, err := a.pullMonitors(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (monitors == nil) || (len(monitors) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no monitors found")
 		if errorChan != nil {
 			errorChan <- err
@@ -67,25 +58,33 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 		return err
 	} else {
 		// EXISTING_CODE
-		for i := 0; i < len(monitors); i++ {
-			monitors[i].Name = a.namesMap[monitors[i].Address].Name
+		for i := 0; i < len(items); i++ {
+			items[i].Name = a.namesMap[items[i].Address].Name
 		}
 		// EXISTING_CODE
 		a.meta = *meta
-		a.monitors = types.NewMonitorContainer(opts.Chain, monitors)
+		a.monitors = types.NewMonitorContainer(a.getChain(), items)
 		// EXISTING_CODE
-		// TODO: Use core's sorting mechanism (see SortChunkStats for example)
-		sort.Slice(a.monitors.Items, func(i, j int) bool {
-			if a.monitors.Items[i].NRecords == a.monitors.Items[j].NRecords {
-				return a.monitors.Items[i].Address.Hex() < a.monitors.Items[j].Address.Hex()
-			}
-			return a.monitors.Items[i].NRecords < a.monitors.Items[j].NRecords
-		})
 		// EXISTING_CODE
+		if err := a.monitors.Sort(); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		a.emitLoadingMsg(messages.Loaded, "monitors")
 	}
 
 	return nil
+}
+
+func (a *App) pullMonitors() (items []types.Monitor, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	opts := sdk.MonitorsOptions{
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
+	}
+	return opts.MonitorsList()
+	// EXISTING_CODE
 }
 
 // EXISTING_CODE

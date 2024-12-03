@@ -1,0 +1,18 @@
+{{/*==============================================================*/}}
+// This file is auto-generated. Edit only code inside
+// of ExistingCode markers (if any).
+import {
+{{- range .Structures }}
+  {{- $hasIcon := ne .UiIcon "" }}
+  {{- if $hasIcon }}
+    Icon{{ .UiIcon }},
+  {{- end }}
+{{- end }}
+} from "@tabler/icons-react";
+
+{{ range .Structures }}
+  {{- $hasIcon := ne .UiIcon "" }}
+  {{- if $hasIcon }}
+    export const {{ firstUpper .UiRouteName }}Icon = <Icon{{ .UiIcon }} />;
+  {{- end }}
+{{- end }}

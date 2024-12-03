@@ -1,5 +1,13 @@
+{{ $noParent := (eq .Parent "") }}
+{{ $noChildren := (eq .Children "") }}
+{{ $many := cond (not $noChildren) "Many" "" }}
+
+{{/*==============================================================*/}}
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
-export * from "./{{.UiRouteName}}FormDef";
-export * from "./{{.UiRouteName}}TableDef";
-export * from "./{{.UiRouteName}}View";
+{{ if $noChildren -}}
+    export * from "./{{.UiRouteName}}FormDef";
+    export * from "./{{.UiRouteName}}TableDef";
+{{ end -}}
+{{- if $noParent -}} export * from "./{{.UiRouteName}}View{{$many}}";
+{{ end -}}

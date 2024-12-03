@@ -12,7 +12,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -48,22 +47,12 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating names...")
 
-	opts := sdk.NamesOptions{
-		Globals: sdk.Globals{
-			Chain:   a.getChain(),
-			Verbose: true,
-		},
-	}
-	// EXISTING_CODE
-	names.ClearCustomNames()
-	opts.All = true
-	// EXISTING_CODE
-	if names, meta, err := opts.Names(); err != nil {
+	if items, meta, err := a.pullNames(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (names == nil) || (len(names) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no names found")
 		if errorChan != nil {
 			errorChan <- err
@@ -73,19 +62,32 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		namesMutex.Lock()
 		defer namesMutex.Unlock()
-		// EXISTING_CODE
-		a.meta = *meta
-		a.names = types.NewNameContainer(opts.Chain, names)
-		// EXISTING_CODE
-		a.namesMap = make(map[base.Address]types.Name, len(names))
-		for _, name := range names {
+		a.namesMap = make(map[base.Address]types.Name, len(items))
+		for _, name := range items {
 			a.namesMap[name.Address] = name
 		}
+		// EXISTING_CODE
+		a.meta = *meta
+		a.names = types.NewNameContainer(a.getChain(), items)
+		// EXISTING_CODE
 		// EXISTING_CODE
 		a.emitLoadingMsg(messages.Loaded, "names")
 	}
 
 	return nil
+}
+
+func (a *App) pullNames() (items []types.Name, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	opts := sdk.NamesOptions{
+		Globals: sdk.Globals{
+			Chain:   namesChain,
+			Verbose: true,
+		},
+		All: true,
+	}
+	return opts.Names()
+	// EXISTING_CODE
 }
 
 // EXISTING_CODE

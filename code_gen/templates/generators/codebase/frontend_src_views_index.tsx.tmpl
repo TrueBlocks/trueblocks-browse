@@ -1,6 +1,6 @@
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
-{{range .Structures}}export * from "./{{.UiRouteName}}/{{.UiRouteName}}View";
-{{end}}
+{{range .Structures}}{{if eq .Parent ""}}export * from "./{{.UiRouteName}}";
+{{end}}{{end}}
 
 export * from "./Icons";

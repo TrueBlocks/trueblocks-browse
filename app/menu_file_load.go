@@ -52,10 +52,10 @@ func (a *App) readFile(fn string) (bool, error) {
 
 		a.session.LastFolder, a.session.LastFile = filepath.Split(fn)
 		a.session.LastSub["/history"] = pF.Selected.Hex()
+		a.session.LastTab["/history"] = ""
 		a.saveSession()
 
-		address := a.GetSelected()
-		go a.loadHistory(nil, nil, address)
+		go a.loadHistory(nil, nil)
 
 		a.emitInfoMsg(a.getFullPath(), "file was opened")
 

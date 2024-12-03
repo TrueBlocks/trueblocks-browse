@@ -7,39 +7,56 @@ package app
 
 {{range .Structures -}}
 	{{/*==============================================================*/}}
+	{{ $class := .Class }}
 	{{ $routeName := .UiRouteName }}
-	{{ $routeLower := toLower .UiRouteName }}
+	{{- $route := toLower .UiRouteName }}
+	{{- if eq .Class "Project" }}
+		{{- $route = "" }}
+	{{- end }}
 
-	{{ $isHistory := eq .Class "History" }}
-	{{ $isProject := eq .Class "Project" }}
-	{{ $isWizard := eq .Class "Wizard" }}
+	{{ $isHistory := eq $class "History" }}
+	{{ $isProject := eq $class "Project" }}
+	{{ $isWizard := eq $class "Wizard" }}
+	{{ $noParent := (eq .Parent "") }}
+	{{ $hasChildren := (ne .Children "") }}
 
-	{{ $param1 := print "\"/" $routeLower "\"" }}
-	{{ if $isProject }}
-		{{ $param1 = "\"/\"" }}
+	{{ $wantsMulti := .Wants "multi" }}
+	{{ if $hasChildren }}
+		{{ $wantsMulti = true }}
 	{{ end }}
 
+	{{ $param1 := print "\"/" $route "\"" }}
 	{{ $param2 := ", \"\"" }}
 	{{ if $isHistory }}
 		{{ $param2 = ", address.Hex()" }}
 	{{ end }}
 
 	{{/*==============================================================*/}}
-	func (a *App) {{$routeName}}View(cb *menu.CallbackData) {
-		{{if $isHistory -}}
-			address := a.GetSelected()
-		{{else if $isWizard -}}
-			if a.isConfigured() {
-				a.wizard.State = types.WizWelcome
-				a.emitMsg(messages.Refresh, &messages.MessageMsg{
-					State: string(a.wizard.State),
-					Num1:  2, // 2 is the wizard step if needed
-				})
-			} else {
-				a.StepWizard(types.WizNext)
-			}
-		{{end -}}
-		a.Navigate({{$param1}}{{$param2}})
-	}
+	{{- if $noParent }}
+		func (a *App) {{$routeName}}View(cb *menu.CallbackData) {
+			{{- if $isHistory }}
+				address := a.GetSelected()
+			{{- else if $isWizard }}
+				if a.isConfigured() {
+					a.wizard.State = types.WizWelcome
+					a.emitMsg(messages.Refresh, &messages.MessageMsg{
+						State: string(a.wizard.State),
+						Num1:  2, // 2 is the wizard step if needed
+					})
+				} else {
+					a.StepWizard(types.WizNext)
+				}
+			{{- end }}
 
-{{end}}
+			{{- if $wantsMulti }}
+				if strings.Contains(a.GetRoute(), "/{{ $route }}") {
+					a.ToggleNextTab(cb)
+				} else {
+					a.Navigate({{$param1}}{{$param2}})
+				}
+			{{- else }}
+				a.Navigate({{$param1}}{{$param2}})
+			{{- end }}
+		}
+	{{- end }}
+{{- end }}

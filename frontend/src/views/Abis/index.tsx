@@ -2,4 +2,3 @@
 // of ExistingCode markers (if any).
 export * from "./AbisFormDef";
 export * from "./AbisTableDef";
-export * from "./AbisView";

@@ -4,6 +4,8 @@ package app
 
 // EXISTING_CODE
 import (
+	"strings"
+
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/wailsapp/wails/v2/pkg/menu"
@@ -17,47 +19,43 @@ func (a *App) ProjectView(cb *menu.CallbackData) {
 
 func (a *App) HistoryView(cb *menu.CallbackData) {
 	address := a.GetSelected()
-	a.Navigate("/history", address.Hex())
+	if strings.Contains(a.GetRoute(), "/history") {
+		a.ToggleNextTab(cb)
+	} else {
+		a.Navigate("/history", address.Hex())
+	}
 }
 
 func (a *App) MonitorsView(cb *menu.CallbackData) {
 	a.Navigate("/monitors", "")
 }
 
-func (a *App) NamesView(cb *menu.CallbackData) {
-	a.Navigate("/names", "")
+func (a *App) SharingView(cb *menu.CallbackData) {
+	if strings.Contains(a.GetRoute(), "/sharing") {
+		a.ToggleNextTab(cb)
+	} else {
+		a.Navigate("/sharing", "")
+	}
 }
 
-func (a *App) AbisView(cb *menu.CallbackData) {
-	a.Navigate("/abis", "")
-}
-
-func (a *App) IndexesView(cb *menu.CallbackData) {
-	a.Navigate("/indexes", "")
-}
-
-func (a *App) ManifestsView(cb *menu.CallbackData) {
-	a.Navigate("/manifests", "")
-}
-
-func (a *App) StatusView(cb *menu.CallbackData) {
-	a.Navigate("/status", "")
+func (a *App) UnchainedView(cb *menu.CallbackData) {
+	if strings.Contains(a.GetRoute(), "/unchained") {
+		a.ToggleNextTab(cb)
+	} else {
+		a.Navigate("/unchained", "")
+	}
 }
 
 func (a *App) SettingsView(cb *menu.CallbackData) {
-	a.Navigate("/settings", "")
+	if strings.Contains(a.GetRoute(), "/settings") {
+		a.ToggleNextTab(cb)
+	} else {
+		a.Navigate("/settings", "")
+	}
 }
 
 func (a *App) DaemonsView(cb *menu.CallbackData) {
 	a.Navigate("/daemons", "")
-}
-
-func (a *App) SessionView(cb *menu.CallbackData) {
-	a.Navigate("/session", "")
-}
-
-func (a *App) ConfigView(cb *menu.CallbackData) {
-	a.Navigate("/config", "")
 }
 
 func (a *App) WizardView(cb *menu.CallbackData) {

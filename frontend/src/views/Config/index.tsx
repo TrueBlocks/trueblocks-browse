@@ -2,4 +2,3 @@
 // of ExistingCode markers (if any).
 export * from "./ConfigFormDef";
 export * from "./ConfigTableDef";
-export * from "./ConfigView";

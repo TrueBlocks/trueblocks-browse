@@ -2,10 +2,9 @@
 // of ExistingCode markers (if any).
 
 // EXISTING_CODE
-import { useMemo } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, ViewForm, DebugState, UnderConstruction } from "@components";
-import { useNoops, useUtils } from "@hooks";
+import { View, FormTable, ViewForm, DebugState } from "@components";
+import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { HistoryTableDef, HistoryFormDef } from ".";
 // EXISTING_CODE
@@ -16,13 +15,32 @@ export const HistoryView = () => {
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
+  let customTabs: string[] = [];
+  // eslint-disable-next-line prefer-const
+  let customForms: Record<string, JSX.Element> = {};
   // EXISTING_CODE
-  const { info } = useAppState();
-  const { ShortenAddr } = useUtils();
-  const addrStr = useMemo(
-    () => (info?.address ? ShortenAddr(info.address.toString()) : ""),
-    [ShortenAddr, info?.address]
-  );
+  customTabs = [
+    "balances",
+    "incoming",
+    "outgoing",
+    "internal",
+    "charts",
+    "logs",
+    "statements",
+    "neighbors",
+    "traces",
+    "receipts",
+  ];
+  customForms["balances"] = <div>This is the balances tab</div>;
+  customForms["incoming"] = <div>This is the incoming tab</div>;
+  customForms["outgoing"] = <div>This is the outgoing tab</div>;
+  customForms["internal"] = <div>This is the internal tab</div>;
+  customForms["charts"] = <div>This is the charts tab</div>;
+  customForms["logs"] = <div>This is the logs tab</div>;
+  customForms["statements"] = <div>This is the statements tab</div>;
+  customForms["neighbors"] = <div>This is the neighbors tab</div>;
+  customForms["traces"] = <div>This is the traces tab</div>;
+  customForms["receipts"] = <div>This is the receipts tab</div>;
   // EXISTING_CODE
 
   const table = useReactTable({
@@ -32,9 +50,10 @@ export const HistoryView = () => {
   });
 
   const route = "history";
-  const tabs = ["history"];
+  const tabs = ["history", ...(customTabs || [])];
   const forms: ViewForm = {
-    history: <FormTable data={history} groups={HistoryFormDef(table, info.address)} />,
+    history: <FormTable data={history} groups={HistoryFormDef(table)} />,
+    ...customForms,
   };
 
   return (
@@ -45,9 +64,10 @@ export const HistoryView = () => {
       fetchFn={fetchHistory}
       onEnter={handleEnter}
       modifyFn={handleModify}
+      tabs={tabs}
     >
       <DebugState u={[history.updater]} />
-      <View tabs={tabs} forms={forms} />
+      <View tabs={tabs} forms={forms} searchable />
     </ViewStateProvider>
   );
 };

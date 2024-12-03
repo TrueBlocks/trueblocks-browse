@@ -5,46 +5,23 @@ import {
   ProjectIcon,
   HistoryIcon,
   MonitorsIcon,
-  NamesIcon,
-  AbisIcon,
-  IndexesIcon,
-  ManifestsIcon,
-  StatusIcon,
+  SharingIcon,
+  UnchainedIcon,
   SettingsIcon,
   DaemonsIcon,
-  SessionIcon,
-  ConfigIcon,
   WizardIcon,
   // Views
   ProjectView,
   HistoryView,
   MonitorsView,
-  NamesView,
-  AbisView,
-  IndexesView,
-  ManifestsView,
-  StatusView,
+  SharingView,
+  UnchainedView,
   SettingsView,
   DaemonsView,
-  SessionView,
-  ConfigView,
   WizardView,
 } from "@views";
 
-export type Route =
-  | ""
-  | "history"
-  | "monitors"
-  | "names"
-  | "abis"
-  | "indexes"
-  | "manifests"
-  | "status"
-  | "settings"
-  | "daemons"
-  | "session"
-  | "config"
-  | "wizard";
+export type Route = "" | "history" | "monitors" | "sharing" | "unchained" | "settings" | "daemons" | "wizard";
 
 export type RouteItem = {
   order: number;
@@ -85,39 +62,18 @@ export const routeItems: RouteItem[] = [
     component: MonitorsView,
   },
   {
-    order: 1030,
-    route: expandRoute("names"),
-    label: "Names",
-    icon: NamesIcon,
-    component: NamesView,
+    order: 1045,
+    route: expandRoute("sharing"),
+    label: "Sharing",
+    icon: SharingIcon,
+    component: SharingView,
   },
   {
-    order: 1040,
-    route: expandRoute("abis"),
-    label: "Abis",
-    icon: AbisIcon,
-    component: AbisView,
-  },
-  {
-    order: 1050,
-    route: expandRoute("indexes"),
-    label: "Indexes",
-    icon: IndexesIcon,
-    component: IndexesView,
-  },
-  {
-    order: 1060,
-    route: expandRoute("manifests"),
-    label: "Manifests",
-    icon: ManifestsIcon,
-    component: ManifestsView,
-  },
-  {
-    order: 1070,
-    route: expandRoute("status"),
-    label: "Status",
-    icon: StatusIcon,
-    component: StatusView,
+    order: 1065,
+    route: expandRoute("unchained"),
+    label: "Unchained",
+    icon: UnchainedIcon,
+    component: UnchainedView,
   },
   {
     order: 1080,
@@ -132,20 +88,6 @@ export const routeItems: RouteItem[] = [
     label: "Daemons",
     icon: DaemonsIcon,
     component: DaemonsView,
-  },
-  {
-    order: 1100,
-    route: expandRoute("session"),
-    label: "Session",
-    icon: SessionIcon,
-    component: SessionView,
-  },
-  {
-    order: 1110,
-    route: expandRoute("config"),
-    label: "Config",
-    icon: ConfigIcon,
-    component: ConfigView,
   },
   {
     order: 1120,

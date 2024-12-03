@@ -8,8 +8,8 @@ func (a *App) SetEnv(key, value string) {
 	os.Setenv(key, value)
 }
 
-func (a *App) SetRoute(route, subRoute string) {
-	a.session.SetRoute(route, subRoute)
+func (a *App) SetRoute(route, subRoute, tab string) {
+	a.session.SetRoute(route, subRoute, tab)
 	a.saveSession()
 }
 
@@ -34,7 +34,6 @@ func (a *App) SetChain(newChain string) {
 	a.indexes.Updater.SetChain(oldChain, newChain)
 	a.manifests.Updater.SetChain(oldChain, newChain)
 	a.status.Updater.SetChain(oldChain, newChain)
-	a.settings.Updater.SetChain(oldChain, newChain)
 	a.session.Updater.SetChain(oldChain, newChain)
 	a.config.Updater.SetChain(oldChain, newChain)
 	a.wizard.Updater.SetChain(oldChain, newChain)

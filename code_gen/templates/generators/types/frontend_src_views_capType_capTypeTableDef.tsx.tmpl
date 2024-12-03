@@ -1,46 +1,32 @@
-{{ $class := .Class }}
-{{ $routeName := .UiRouteName }}
-{{ $routeLower := toLower .UiRouteName }}
-{{ $itemName := .ItemName }}
-{{ $embedType := .EmbedType }}
+{{ $noChildren := (eq .Children "") }}
+{{ if $noChildren }}
+	{{/*==============================================================*/}}
+	{{ $class := .Class }}
+	{{ $routeName := .UiRouteName }}
+	{{ $routeLower := toLower .UiRouteName }}
+	{{ $fullType := .ItemFullType }}
+	{{ $embedType := .EmbedType }}
 
-{{ $hasItems := and (gt (len $itemName) 0) true }}
+	{{ $isProject := eq $class "Project" }}
 
-{{ $isSession := eq $class "Session" }}
-{{ $isConfig := eq $class "Config" }}
-{{ $isProject := eq $class "Project" }}
-{{ $isSessConf := or $isSession $isConfig }}
+	{{ $tableDef := $routeName }}
+	{{ if $isProject }}
+		{{ $tableDef = "base" }}
+	{{ end -}}
 
-{{ $tableDef := $routeName }}
-{{ if $isProject }}
-  {{ $tableDef = "base" }}
-{{ end -}}
-
-{{ $colType := print "types." $itemName }}
-{{ if $isConfig }}
-  {{ $colType = print "configtypes." $itemName }}
-{{ end }}
-
-// This file is auto-generated. Edit only code inside
-// of ExistingCode markers (if any).
-// EXISTING_CODE
-// EXISTING_CODE
-
-{{if $hasItems -}}
-const columnHelper = createColumnHelper<{{$colType}}>();
-
-export const {{$tableDef}}TableDef: CustomColumnDef<{{$colType}}, any>[] = [
-{{- else -}}
-export const Unused{{$routeName}} = () => {
-{{- end}}
+	{{/*==============================================================*/}}
+	// This file is auto-generated. Edit only code inside
+	// of ExistingCode markers (if any).
 	// EXISTING_CODE
 	// EXISTING_CODE
-{{if $hasItems -}}
-];
-{{- else -}}
-  return <div>Unused{{$routeName}}</div>;
-};
-{{- end}}
 
-// EXISTING_CODE
-// EXISTING_CODE
+	const columnHelper = createColumnHelper<{{$fullType}}>();
+
+	export const {{$tableDef}}TableDef: CustomColumnDef<{{$fullType}}, any>[] = [
+		// EXISTING_CODE
+		// EXISTING_CODE
+	];
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+{{- end }}

@@ -43,20 +43,12 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	}()
 	logger.InfoBY("Updating indexes...")
 
-	opts := sdk.ChunksOptions{
-		Globals: sdk.Globals{
-			Chain:   a.getChain(),
-			Verbose: true,
-		},
-	}
-	// EXISTING_CODE
-	// EXISTING_CODE
-	if indexes, meta, err := opts.ChunksStats(); err != nil {
+	if items, meta, err := a.pullIndexes(); err != nil {
 		if errorChan != nil {
 			errorChan <- err
 		}
 		return err
-	} else if (indexes == nil) || (len(indexes) == 0) {
+	} else if (items == nil) || (len(items) == 0) {
 		err = fmt.Errorf("no indexes found")
 		if errorChan != nil {
 			errorChan <- err
@@ -66,16 +58,28 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.indexes = types.NewIndexContainer(opts.Chain, indexes)
+		a.indexes = types.NewIndexContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
-		if err := sdk.SortChunkStats(a.indexes.Items, a.indexes.Sorts); err != nil {
+		if err := a.indexes.Sort(); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 		a.emitLoadingMsg(messages.Loaded, "indexes")
 	}
 
 	return nil
+}
+
+func (a *App) pullIndexes() (items []types.ChunkStats, meta *types.Meta, err error) {
+	// EXISTING_CODE
+	opts := sdk.ChunksOptions{
+		Globals: sdk.Globals{
+			Chain:   a.getChain(),
+			Verbose: true,
+		},
+	}
+	return opts.ChunksStats()
+	// EXISTING_CODE
 }
 
 // EXISTING_CODE

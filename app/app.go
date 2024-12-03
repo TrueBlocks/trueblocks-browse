@@ -25,7 +25,6 @@ type App struct {
 	indexes   types.IndexContainer
 	manifests types.ManifestContainer
 	status    types.StatusContainer
-	settings  types.SettingsContainer
 	session   types.SessionContainer
 	config    types.ConfigContainer
 	wizard    types.WizardContainer
@@ -54,6 +53,7 @@ func NewApp() *App {
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}
 	a.session.LastSub = make(map[string]string)
+	a.session.LastTab = make(map[string]string)
 	a.timer = NewTimer()
 
 	return a

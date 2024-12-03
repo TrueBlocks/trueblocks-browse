@@ -1,42 +1,16 @@
 {{/*==============================================================*/}}
-
 {{ $class := .Class }}
-{{ $container := print $class "Container" }}
 {{ $routeLower := toLower .UiRouteName -}}
 {{ $itemName := .ItemName}}
 {{ $itemType := .ItemType}}
 {{ $embedName := .EmbedName }}
 {{ $embedType := .EmbedType }}
 {{ $members := .Members }}
-
-{{ $hasItems := and (gt (len $itemName) 0) true }}
 {{ $hasEmbed := and (gt (len $embedName) 0) true }}
-{{ $hasSorts := .HasSorts }}
 
 {{ $isHistory := eq $class "History" }}
 {{ $isProject := eq $class "Project" }}
-{{ $isSession := eq $class "Session" }}
-{{ $isStatus := eq $class "Status" }}
-{{ $isSettings := eq $class "Settings" }}
-
-{{/*==============================================================*/}}
-
-{{ $inputType := $itemType }}
-
-{{ $items1 := "//-- remove line --" }}
-{{ if $hasItems }}
-	{{ $items1 = print "Items []" $itemType "`json:\"items\"`\n  NItems uint64 `json:\"nItems\"`" }}
-{{ end }}
-
-{{ $items2 := "//-- remove line --" }}
-{{ if $hasItems }}
-	{{ $items2 = print "  Items:   itemsIn,\n  NItems:  uint64(len(itemsIn))," }}
-{{ end }}
-
-{{ $items3 := "//-- remove line --" }}
-{{ if $hasItems }}
-	{{ $items3 = "NItems: s.NItems," }}
-{{ end }}
+{{ $noChildren := (eq .Children "") }}
 
 {{ $embed1 := "//-- remove line --" }}
 {{ if $hasEmbed }}
@@ -45,119 +19,69 @@
 
 {{ $embed2 := "//-- remove line --" }}
 {{ if $hasEmbed }}
-	{{ $embed2 = print "  " (toProper $embedName) ": *" (toLower $embedName) "," }}
+	{{ $embed2 = print "  " $embedType ": " (toPlural (toLower $embedName)) "[0].ShallowCopy()," }}
 {{ end }}
 
-{{ $sorts1 := "//-- remove line --" }}
-{{ if $hasSorts }}
-	{{ $sorts1 = print "  Sorts sdk.SortSpec `json:\"sorts\"`" }}
-{{ end }}
-
-{{ $sorts2 := "//-- remove line --" }}
-{{ if $hasSorts }}
-	{{ $sorts2 = print "  Sorts: " .SortsInstance }}
-{{ end }}
-
-{{ $param1 := "" }}
-{{ if $hasItems }}
-	{{ $param1 = print ", itemsIn []" $inputType }}
+{{ $param1 := print "itemsIn []" $itemType }}
+{{ if $hasEmbed }}
+	{{ $param1 = print (toPlural (toLower $embedName)) " []" $embedType }}
 {{ end }}
 
 {{ $param2 := "" }}
-{{ if $hasEmbed }}
-	{{ $param2 = print ", " (toLower $embedName) " *" $embedType }}
+{{ if $isHistory }}
+	{{ $param2 = ", address base.Address" }}
 {{ end }}
 
 {{ $param3 := "" }}
 {{ if $isHistory }}
-	{{ $param3 = ", address base.Address" }}
+	{{ $param3 = ", address" }}
+{{ else if $isProject }}
+	{{ $param3 = ", itemsIn" }}
 {{ end }}
 
 {{ $param4 := "" }}
-{{ if $isHistory }}
-	{{ $param4 = ", address" }}
-{{ else if $isProject }}
-	{{ $param4 = ", itemsIn" }}
-{{ end }}
-
-{{ $param5 := "" }}
 {{ if $isProject }}
-	{{ $param5 = ", itemsIn []HistoryContainer" }}
+	{{ $param4 = ", itemsIn []HistoryContainer" }}
 {{ end }}
-
-{{ $itemParam := "" }}
-{{ if $hasItems }}
-	{{ $itemParam = print "item *" $itemType }}
-{{ end }}
-
-{{ $param6 := "" }}
-{{ if $hasItems }}
-	{{ $param6 = print $itemParam "," }}
-{{ end }}
-
-{{ $init2 := "//-- remove line --" }}
-{{ if or $hasItems $hasEmbed }}
-	{{ if $isHistory }}
-		{{ $init2 = print `	Chain:   chain,
-							Address: address,` }}
-	{{ else }}
-		{{ if not (or $isSession $isStatus) }}
-			{{ $init2 = print `	Chain:   chain,` }}
-		{{ end }}
-	{{ end }}
-{{ end }}
-
-{{ $comment := "" }}
-{{ if not $hasItems }}
-	{{ $comment = "//" }}
-{{ end }}
-
-{{ $getItems := "" }}
-{{ if $hasItems }}
-	{{ $getItems = "s.Items" }}
-{{ else }}
-	{{ $getItems = "nil" }}
-{{end}}
-
-{{ $forEveryFnType := print "Every" $itemName "Fn" }}
-{{ $needsLoad := .Needs "load"}}
 
 {{/*==============================================================*/}}
-// This file is auto-generated. Edit only code inside
+{{if $noChildren}}// This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 package types
 
 // EXISTING_CODE
 // EXISTING_CODE
 
-type {{$container}} struct {
+type {{$class}}Container struct {
 	{{range $members}}
+	{{- $goType := replace .GoType "types." "" -}}
 	{{- if .IsEmbed }}
-		{{replace .GoType "types." ""}} `json:",inline"`
+		{{$goType}} `json:",inline"`
 	{{- else if .IsSimpField}}
-		{{.GoName}} {{.GoType}} {{.Tag}}
+		{{.GoName}} {{$goType}} {{.Tag}}
 	{{- end -}}
 	{{- end}}
-	{{$items1}}
-	{{$sorts1}}
+	Sorts sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func New{{$container}}(chain string{{$param1}}{{$param2}}{{$param3}}) {{$container}} {
-	ret := {{$container}}{
-		{{$items2}}
+func New{{$class}}Container(chain string, {{$param1}}{{$param2}}) {{$class}}Container {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	ret := {{$class}}Container{
+		Items: itemsIn,
+		NItems: uint64(len(itemsIn)),
 		{{$embed2}}
-		{{$sorts2}}
-		{{$init2}}
-		Updater: New{{$class}}Updater(chain{{$param4}}),
+		Sorts: {{.SortsInstance}},
+		Updater: New{{$class}}Updater(chain{{$param3}}),
  	}
 	// EXISTING_CODE
 	// EXISTING_CODE
 	return ret
 }
 
-func New{{$class}}Updater(chain string{{$param3}}{{$param5}}, resetIn ...bool) sdk.Updater {
+func New{{$class}}Updater(chain string{{$param2}}{{$param4}}, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
@@ -172,20 +96,20 @@ func New{{$class}}Updater(chain string{{$param3}}{{$param5}}, resetIn ...bool) s
 	return u
 }
 
-func (s *{{$container}}) String() string {
+func (s *{{$class}}Container) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-func (s *{{$container}}) GetItems() interface{} {
-	return {{$getItems}}
+func (s *{{$class}}Container) GetItems() interface{} {
+	return s.Items
 }
 
-func (s *{{$container}}) SetItems(items interface{}) {
-	{{$comment}} s.Items = items.([]{{$itemType}})
+func (s *{{$class}}Container) SetItems(items interface{}) {
+	s.Items = items.([]{{$itemType}})
 }
 
-func (s *{{$container}}) NeedsUpdate() bool {
+func (s *{{$class}}Container) NeedsUpdate() bool {
 	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
 		s.Updater = updater
 		return true
@@ -193,28 +117,27 @@ func (s *{{$container}}) NeedsUpdate() bool {
 	return false
 }
 
-func (s *{{$container}}) ShallowCopy() Containerer {
-	ret := &{{$container}}{ {{range $members}}
+func (s *{{$class}}Container) ShallowCopy() Containerer {
+	ret := &{{$class}}Container{ {{range $members}}
 		{{- if .IsEmbed }}
 			{{.GoName}}: s.{{.GoName}}.ShallowCopy(),
-		{{- else if .IsSimpField}}
+		{{- else if and .IsSimpField (not (eq .Name "items") ) }}
 			{{.GoName}}: s.{{.GoName}},
 		{{- end -}}
 		{{- end}}
-		{{$items3}}
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
 	return ret
 }
 
-func (s *{{$container}}) Clear() {
-	{{if $hasItems}}  s.NItems = 0
-	{{end}}	// EXISTING_CODE
+func (s *{{$class}}Container) Clear() {
+	s.NItems = 0
+	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func (s *{{$container}}) passesFilter({{$param6}}filter *Filter) (ret bool) {
+func (s *{{$class}}Container) passesFilter(item *{{$itemType}}, filter *Filter) (ret bool) {
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -224,21 +147,18 @@ func (s *{{$container}}) passesFilter({{$param6}}filter *Filter) (ret bool) {
 	return
 }
 
-func (s *{{$container}}) Accumulate({{$itemParam}}) {
-	{{if $hasItems -}}
-		s.NItems++
-	{{end -}}
+func (s *{{$class}}Container) Accumulate(item *{{$itemType}}) {
+	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func (s *{{$container}}) Finalize() {
+func (s *{{$class}}Container) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func (s *{{$container}}) CollateAndFilter(theMap *FilterMap) interface{} {
-{{- if $hasItems}}
+func (s *{{$class}}Container) CollateAndFilter(theMap *FilterMap) interface{} {
 	s.Clear()
 
 	filter, _ := theMap.Load("{{$routeLower}}") // may be empty
@@ -259,17 +179,14 @@ func (s *{{$container}}) CollateAndFilter(theMap *FilterMap) interface{} {
 		return true
 	}, nil)
 	s.Finalize()
-{{else}}
-	filtered := []Nothing{}
-{{end}}
+
 	// EXISTING_CODE
 	// EXISTING_CODE
 
 	return filtered
 }
 
-{{if $hasItems -}}
-func (s *{{$container}}) ForEveryItem(process {{$forEveryFnType}}, data any) bool {
+func (s *{{$class}}Container) ForEveryItem(process Every{{$itemName}}Fn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false
@@ -277,7 +194,6 @@ func (s *{{$container}}) ForEveryItem(process {{$forEveryFnType}}, data any) boo
 	}
 	return true
 }
-{{end}}
 
 func (s *{{$class}}Container) Sort() (err error) {
 	// EXISTING_CODE
@@ -287,3 +203,4 @@ func (s *{{$class}}Container) Sort() (err error) {
 
 // EXISTING_CODE
 // EXISTING_CODE
+{{- end }}

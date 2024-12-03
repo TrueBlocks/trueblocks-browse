@@ -2,17 +2,13 @@
 // of ExistingCode markers (if any).
 
 // EXISTING_CODE
-import { useState } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { FormTable, ViewForm, View, DebugState } from "@components";
-import { ToggleDaemon } from "@gocode/app/App";
-import { types, messages } from "@gocode/models";
+// import { ToggleDaemon } from "@gocode/app/App";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { DaemonsFormDef, Nope } from "./DaemonsFormDef";
+import { DaemonsFormDef } from "./DaemonsFormDef";
 import { DaemonsTableDef } from "./DaemonsTableDef";
-
-const empty = {} as types.Daemon;
 
 // EXISTING_CODE
 
@@ -22,20 +18,24 @@ export const DaemonsView = () => {
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
+  // eslint-disable-next-line prefer-const
+  let customTabs: string[] = [];
+  // eslint-disable-next-line prefer-const
+  let customForms: Record<string, JSX.Element> = {};
   // EXISTING_CODE
   // TODO BOGUS: The daemon state should be in the AppState
-  const [scraper] = useState<types.Daemon>(empty);
-  const [freshen] = useState<types.Daemon>(empty);
-  const [ipfs] = useState<types.Daemon>(empty);
-  const [logMessages] = useState<messages.MessageMsg[]>([]);
-  // const [scraper, setScraper] = useState<daemons.Daemon>(empty);
-  // const [freshen, setFreshen] = useState<daemons.Daemon>(empty);
-  // const [ipfs, setIpfs] = useState<daemons.Daemon>(empty);
+  // const [scraper] = useState<types.Daemon>(empty);
+  // const [freshen] = useState<types.Daemon>(empty);
+  // const [ipfs] = useState<types.Daemon>(empty);
+  // const [logMessages] = useState<messages.MessageMsg[]>([]);
+  // // const [scraper, setScraper] = useState<types.Daemon>(empty);
+  // const [freshen, setFreshen] = useState<types.Daemon>(empty);
+  // const [ipfs, setIpfs] = useState<types.Daemon>(empty);
   // const [logMessages, setLogMessages] = useState<messages.MessageMsg[]>([]);
 
-  // const updateDaemon = (daemon: string, setDaemon: Dispatch<SetStateAction<daemons.Daemon>>) => {
+  // const updateDaemon = (daemon: string, setDaemon: Dispatch<SetStateAction<types.Daemon>>) => {
   //   GetDaemon(daemon).then((json: string) => {
-  //     setDaemon(daemons.Daemon.createFrom(json));
+  //     setDaemon(types.Daemon.createFrom(json));
   //   });
   // };
 
@@ -74,9 +74,9 @@ export const DaemonsView = () => {
   //   };
   // });
 
-  const toggleDaemon = (name: string) => {
-    ToggleDaemon(name);
-  };
+  // const toggleDaemon = (name: string) => {
+  //   ToggleDaemon(name);
+  // };
 
   // const upd = sdk.Updater.createFrom({});
   // const daemons: Nope = {
@@ -96,9 +96,10 @@ export const DaemonsView = () => {
   });
 
   const route = "daemons";
-  const tabs = ["daemons"];
+  const tabs = ["daemons", ...(customTabs || [])];
   const forms: ViewForm = {
     daemons: <FormTable data={daemons} groups={DaemonsFormDef(table)} />,
+    ...customForms,
   };
 
   return (
@@ -109,6 +110,7 @@ export const DaemonsView = () => {
       fetchFn={fetchDaemons}
       onEnter={handleEnter}
       modifyFn={handleModify}
+      tabs={tabs}
     >
       <DebugState u={[daemons.updater]} />
       <View tabs={tabs} forms={forms} />

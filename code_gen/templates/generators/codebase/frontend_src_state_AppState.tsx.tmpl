@@ -2,17 +2,17 @@
 // of ExistingCode markers (if any).
 import { useState, useEffect, useContext, useCallback, createContext, ReactNode } from "react";
 import {
-{{range .Structures}}  Fetch{{.Class}},
-{{end}}  FetchAppInfo,
+{{range .Structures}}{{if (eq .Children "")}}  Fetch{{.Class}},
+{{end}}{{end}}  FetchAppInfo,
   LoadAddress,
 } from "@gocode/app/App";
 import { app, base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
 
 interface AppStateProps {
-{{- range .Structures}} {{toLower .UiRouteName}}: types.{{.Class}}Container;
+{{- range .Structures}}{{if (eq .Children "")}} {{toLower .UiRouteName}}: types.{{.Class}}Container;
   fetch{{.UiRouteName}}: (currentItem: number, itemsPerPage: number) => void;
-{{end -}}
+{{end}}{{end -}}
   info: app.AppInfo;
   loadAddress: (address: base.Address) => void;
 }
@@ -20,11 +20,11 @@ interface AppStateProps {
 const AppState = createContext<AppStateProps | undefined>(undefined);
 
 export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => {
-{{range .Structures}}  const [{{toLower .UiRouteName}}, set{{.UiRouteName}}] = useState<types.{{.Class}}Container>({} as types.{{.Class}}Container);
-{{end -}}
+{{range .Structures}}{{if (eq .Children "")}}  const [{{toLower .UiRouteName}}, set{{.UiRouteName}}] = useState<types.{{.Class}}Container>({} as types.{{.Class}}Container);
+{{end}}{{end -}}
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
 
-{{range .Structures}}    const fetch{{.UiRouteName}} = useCallback((currentItem: number, itemsPerPage: number) => {
+{{range .Structures}}{{if (eq .Children "")}}    const fetch{{.UiRouteName}} = useCallback((currentItem: number, itemsPerPage: number) => {
     // Note that this only fetches a single page after sorting and filtering (if any)
     Fetch{{.Class}}(currentItem, itemsPerPage).then((item: types.{{.Class}}Container) => {
       if (item) {
@@ -33,7 +33,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   }, []);
 
-{{end}}
+{{end}}{{end}}
   const fetchAppInfo = () => {
     FetchAppInfo().then((info) => {
       setInfo(info);
@@ -65,9 +65,9 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, [fetchStatus, fetchWizard]);
 
   const state = {
-{{range .Structures}}    {{toLower .UiRouteName}},
+{{range .Structures}}{{if (eq .Children "")}}    {{toLower .UiRouteName}},
     fetch{{.UiRouteName}},
-{{end -}}
+{{end}}{{end -}}
     info,
     loadAddress,
   };

@@ -1,71 +1,26 @@
-{{ $class := .Class }}
-{{ $routeName := .UiRouteName }}
-{{ $routeLower := toLower .UiRouteName }}
-{{ $itemName := .ItemName }}
-{{ $embedType := .EmbedType }}
+{{ $noChildren := (eq .Children "") }}
+{{ if $noChildren }}
+  {{/*==============================================================*/}}
+  {{ $class := .Class }}
+  {{ $routeName := .UiRouteName }}
+  {{ $fullType := .ItemFullType }}
+  {{ $formDef := print $routeName "FormDef" }}
 
-{{ $hasItems := and (gt (len $itemName) 0) true }}
+  {{/*==============================================================*/}}
+  // This file is auto-generated. Edit only code inside
+  // of ExistingCode markers (if any).
+  // EXISTING_CODE
+  // EXISTING_CODE
 
-{{ $isHistory := eq $class "History" }}
-{{ $isSession := eq $class "Session" }}
-{{ $isConfig := eq $class "Config" }}
-{{ $isWizard := eq $class "Wizard" }}
-{{ $isProject := eq $class "Project" }}
-{{ $isDaemon := eq $class "Daemon" }}
-
-{{ $formDef := print $routeName "FormDef" }}
-
-{{ $param1 := "" }}
-{{ if $hasItems }}
-  {{ if $isConfig }}
-    {{ $param1 = print "table: Table<configtypes." $itemName ">" }}
-  {{ else }}
-    {{ $param1 = print "table: Table<types." $itemName ">" }}
-  {{ end }}
-{{ else }}
-  {{ if $isSession }}
-    {{ $param1 = print $routeLower ": types." $class "Container" }}
-  {{ else if $isDaemon }}
-    {{ $param1 = printf "data: Nope" }}
-  {{ end }}
-{{ end }}
-
-{{ $param2 := "" }}
-{{ if $isHistory }}
-  {{ $param2 = `,
-    address: base.Address,` }}
-{{ else if $isWizard }}
-  {{ $param2 = `,
-    nItems: number,
-    stepWizard: (step: types.WizStep) => void` }}
-{{ end }}
-
-{{ $fieldGroup := print "types." $class }}
-{{ if (or $hasItems $isConfig) }}
-  {{ $fieldGroup = print "types." $class "Container"}}
-{{ else if $isDaemon }}
-  {{ $fieldGroup = print "Nope"}}
-{{ end }}
-
-{{ $leadMatter := "" }}
-{{ if $isProject }}
-  {{ $leadMatter = print "const { info } = useAppState();" }}
-{{ else if $isWizard }}
-  {{ $leadMatter = print "const { wizard } = useAppState();" }}
-{{ end }}
-
-// This file is auto-generated. Edit only code inside
-// of ExistingCode markers (if any).
-// EXISTING_CODE
-// EXISTING_CODE
-
-export const {{$formDef}} = ({{$param1}}{{$param2}}): FieldGroup<{{$fieldGroup}}>[] => {
-  {{$leadMatter}}
-  return [
+  export const {{$formDef}} = (table: Table<{{$fullType}}>): FieldGroup<types.{{$class}}Container>[] => {
     // EXISTING_CODE
     // EXISTING_CODE
-  ];
-};
+    return [
+      // EXISTING_CODE
+      // EXISTING_CODE
+    ];
+  };
 
-// EXISTING_CODE
-// EXISTING_CODE
+  // EXISTING_CODE
+  // EXISTING_CODE
+{{- end }}
