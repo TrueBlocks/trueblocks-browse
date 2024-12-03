@@ -110,6 +110,7 @@ export const DaemonsView = () => {
       fetchFn={fetchDaemons}
       onEnter={handleEnter}
       modifyFn={handleModify}
+      tabs={tabs}
     >
       <DebugState u={[daemons.updater]} />
       <View tabs={tabs} forms={forms} />

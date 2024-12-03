@@ -73,6 +73,7 @@ export const SettingsView = () => {
       fetchFn={fetchSettings}
       onEnter={handleEnter}
       modifyFn={handleModify}
+      tabs={tabs}
     >
       <DebugState u={[status.updater, config.updater, session.updater]} />
       <View tabs={tabs} forms={forms} />

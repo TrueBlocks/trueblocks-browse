@@ -1,6 +1,6 @@
 import { useState, createContext, useEffect, useContext, ReactNode } from "react";
 import { Pager } from "@components";
-import { IsShowing, SetShowing, SetFilter, GetFilter } from "@gocode/app/App";
+import { IsShowing, SetShowing, SetFilter, GetActiveTab } from "@gocode/app/App";
 import { messages, app } from "@gocode/models";
 import { Page, useKeyboardPaging } from "@hooks";
 import { Route } from "@layout";
@@ -13,14 +13,16 @@ type ClickFnType = (value: string) => void;
 interface ViewStateProps {
   route: Route;
   nItems: number;
-  headerShows: boolean | null;
-  handleCollapse: (value: string | null) => void;
+  headerShows: Record<string, boolean>;
+  handleCollapse: (tab: string, newState: string | null) => void;
   pager: Pager;
   fetchFn: FetchFnType;
   modifyFn: ModifyFnType;
   filter: string;
   updateFilter: (criteria: string) => void;
   clickFn?: ClickFnType;
+  activeTab: string;
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ViewContext = createContext<ViewStateProps | undefined>(undefined);
@@ -32,6 +34,7 @@ type ViewContextType = {
   modifyFn: ModifyFnType;
   onEnter: (page: Page) => void;
   clickFn?: ClickFnType;
+  tabs: string[];
   children: ReactNode;
 };
 
@@ -42,9 +45,11 @@ export const ViewStateProvider = ({
   modifyFn,
   onEnter,
   clickFn,
+  tabs,
   children,
 }: ViewContextType) => {
-  const [headerShows, setHeaderShows] = useState<boolean | null>(null);
+  const [headerShows, setHeaderShows] = useState<Record<string, boolean>>({});
+  const [activeTab, setActiveTab] = useState<string>(tabs[0] || ""); // Initialize with the first tab or an empty string
   const [filter, setFilter] = useState<string>("");
   // TODO: This used to be different for session and names, but those are
   // TODO: now tabs. This points to the fact that we need per-tab state.
@@ -52,10 +57,13 @@ export const ViewStateProvider = ({
   const lines = 10;
   const pager = useKeyboardPaging(nItems, lines, onEnter);
 
-  const handleCollapse = (newState: string | null) => {
+  const handleCollapse = (tab: string, newState: string | null) => {
     const isShowing = newState === "header";
-    SetShowing(route, isShowing).then(() => {
-      setHeaderShows(isShowing);
+    SetShowing(route, tab, isShowing).then(() => {
+      setHeaderShows((prev) => ({
+        ...prev,
+        [tab]: isShowing,
+      }));
     });
   };
 
@@ -67,22 +75,38 @@ export const ViewStateProvider = ({
   };
 
   useEffect(() => {
-    IsShowing(route).then((onOff) => {
-      setHeaderShows(onOff);
-    });
+    const fetchActiveTab = async () => {
+      const storedTab = await GetActiveTab(route); // Add a backend function to retrieve the active tab
+      setActiveTab(storedTab || tabs[0]); // Fallback to the first tab if no stored tab exists
+    };
 
-    GetFilter(route).then((filterData) => {
-      setFilter(filterData.criteria);
-    });
-  }, [route]);
+    fetchActiveTab();
+  }, [route, tabs]);
+
+  useEffect(() => {
+    const fetchHeaderStates = async () => {
+      const newHeaderShows: Record<string, boolean> = {};
+      for (const tab of tabs) {
+        const isShowing = await IsShowing(route, tab);
+        newHeaderShows[tab] = isShowing;
+      }
+      setHeaderShows(newHeaderShows);
+    };
+
+    fetchHeaderStates();
+  }, [route, tabs]);
 
   useEffect(() => {
     const handleAccordion = (msg: messages.MessageMsg) => {
       const cmp = route === "" ? "project" : route;
-      if (msg.string2 === "" && cmp === msg.string1) {
-        IsShowing(cmp).then((onOff) => {
-          SetShowing(cmp, !onOff).then(() => {
-            setHeaderShows(!onOff);
+      const tab = msg.string2 || ""; // Use msg.string2 as the tab if provided, or fallback to an empty string.
+      if (tab && cmp === msg.string1) {
+        IsShowing(cmp, tab).then((onOff) => {
+          SetShowing(cmp, tab, !onOff).then(() => {
+            setHeaderShows((prev) => ({
+              ...prev,
+              [tab]: !onOff,
+            }));
           });
         });
       }
@@ -122,6 +146,8 @@ export const ViewStateProvider = ({
     filter,
     updateFilter,
     clickFn,
+    activeTab,
+    setActiveTab,
   };
 
   return <ViewContext.Provider value={state}>{children}</ViewContext.Provider>;

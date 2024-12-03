@@ -64,6 +64,7 @@ export const HistoryView = () => {
       fetchFn={fetchHistory}
       onEnter={handleEnter}
       modifyFn={handleModify}
+      tabs={tabs}
     >
       <DebugState u={[history.updater]} />
       <View tabs={tabs} forms={forms} searchable />

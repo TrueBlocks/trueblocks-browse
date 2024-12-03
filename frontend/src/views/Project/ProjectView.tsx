@@ -54,6 +54,7 @@ export const ProjectView = () => {
       fetchFn={fetchProject}
       onEnter={handleEnter}
       modifyFn={handleModify}
+      tabs={tabs}
     >
       <DebugState u={[project.updater]} />
       <View tabs={tabs} forms={forms} searchable />

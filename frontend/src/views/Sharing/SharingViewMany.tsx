@@ -17,7 +17,6 @@ export const SharingView = () => {
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
-  // eslint-disable-next-line prefer-const
   let customTabs: string[] = [];
   // eslint-disable-next-line prefer-const
   let customForms: Record<string, JSX.Element> = {};
@@ -66,6 +65,7 @@ export const SharingView = () => {
       fetchFn={fetchSharing}
       onEnter={handleEnter}
       modifyFn={handleModify}
+      tabs={tabs}
     >
       <DebugState u={[names.updater, abis.updater]} />
       <View tabs={tabs} forms={forms} />

@@ -45,6 +45,7 @@ export const MonitorsView = () => {
       fetchFn={fetchMonitors}
       onEnter={handleEnter}
       modifyFn={handleModify}
+      tabs={tabs}
     >
       <DebugState u={[monitors.updater]} />
       <View tabs={tabs} forms={forms} searchable />

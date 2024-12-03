@@ -11,7 +11,7 @@ type FormTableProps<T> = {
 };
 
 export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
-  const { headerShows, handleCollapse } = useViewState();
+  const { headerShows, handleCollapse, route } = useViewState();
 
   const collapsableGroups = groups.filter((group) => isCollapsable(group) && !isButton(group));
   const nonCollapsableGroups = groups.filter((group) => !isCollapsable(group));
@@ -46,11 +46,14 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
         data-rotate={headerShows ? "true" : "false"}
         styles={style1}
         value={headerShows ? "header" : null}
-        onChange={handleCollapse}
+        onChange={(newState) => handleCollapse(route, newState)}
         chevron={null}
       >
         <Accordion.Item value="header">
-          <CustomAccordionControl isOpen={headerShows} onToggle={() => handleCollapse(headerShows ? null : "header")}>
+          <CustomAccordionControl
+            isOpen={headerShows[route]}
+            onToggle={() => handleCollapse(route, headerShows[route] ? null : "header")}
+          >
             <ButtonTray buttonGroup={buttonGroup} />
           </CustomAccordionControl>
           <Accordion.Panel>

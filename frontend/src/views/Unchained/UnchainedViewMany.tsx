@@ -65,6 +65,7 @@ export const UnchainedView = () => {
       fetchFn={fetchUnchained}
       onEnter={handleEnter}
       modifyFn={handleModify}
+      tabs={tabs}
     >
       <DebugState u={[indexes.updater, manifests.updater]} />
       <View tabs={tabs} forms={forms} />
