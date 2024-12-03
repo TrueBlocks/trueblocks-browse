@@ -76,7 +76,7 @@ export const SettingsView = () => {
       tabs={tabs}
     >
       <DebugState u={[status.updater, config.updater, session.updater]} />
-      <View tabs={tabs} forms={forms} />
+      <View forms={forms} />
     </ViewStateProvider>
   );
 };

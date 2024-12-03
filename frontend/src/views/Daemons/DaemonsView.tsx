@@ -113,7 +113,7 @@ export const DaemonsView = () => {
       tabs={tabs}
     >
       <DebugState u={[daemons.updater]} />
-      <View tabs={tabs} forms={forms} />
+      <View forms={forms} />
     </ViewStateProvider>
   );
 };

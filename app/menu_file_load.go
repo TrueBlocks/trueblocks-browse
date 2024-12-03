@@ -52,7 +52,7 @@ func (a *App) readFile(fn string) (bool, error) {
 
 		a.session.LastFolder, a.session.LastFile = filepath.Split(fn)
 		a.session.LastSub["/history"] = pF.Selected.Hex()
-		a.session.LastTab["/history"] = ""
+		a.session.LastTab["history"] = ""
 		a.saveSession()
 
 		go a.loadHistory(nil, nil)

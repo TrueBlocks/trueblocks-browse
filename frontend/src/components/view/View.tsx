@@ -8,13 +8,12 @@ import classes from "./View.module.css";
 export type ViewForm = Record<string, ReactNode>;
 
 export type ViewProps = {
-  tabs: string[];
   forms: ViewForm;
   searchable?: boolean;
 };
 
-export const View = ({ tabs, forms, searchable = false }: ViewProps) => {
-  const { route, activeTab, setActiveTab } = useViewState();
+export const View = ({ forms, searchable = false }: ViewProps) => {
+  const { route, tabs, activeTab, setActiveTab } = useViewState();
 
   return (
     <Stack className={classes.viewContainer}>

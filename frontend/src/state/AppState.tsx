@@ -1,6 +1,6 @@
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
-import { useState, useEffect, useContext, useCallback, createContext, ReactNode } from "react";
+import { useState, useEffect, useContext, useCallback, createContext, ReactNode, useRef } from "react";
 import {
   FetchProject,
   FetchHistory,
@@ -47,6 +47,7 @@ interface AppStateProps {
   fetchWizard: (currentItem: number, itemsPerPage: number) => void;
   info: app.AppInfo;
   loadAddress: (address: base.Address) => void;
+  counters: React.MutableRefObject<Record<string, number>>;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -65,6 +66,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [config, setConfig] = useState<types.ConfigContainer>({} as types.ConfigContainer);
   const [wizard, setWizard] = useState<types.WizardContainer>({} as types.WizardContainer);
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
+  const counters = useRef<Record<string, number>>({});
 
   const fetchProject = useCallback((currentItem: number, itemsPerPage: number) => {
     // Note that this only fetches a single page after sorting and filtering (if any)
@@ -204,36 +206,41 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
   }, [fetchStatus, fetchWizard]);
 
-  const state = {
-    project,
-    fetchProject,
-    history,
-    fetchHistory,
-    monitors,
-    fetchMonitors,
-    names,
-    fetchNames,
-    abis,
-    fetchAbis,
-    indexes,
-    fetchIndexes,
-    manifests,
-    fetchManifests,
-    status,
-    fetchStatus,
-    daemons,
-    fetchDaemons,
-    session,
-    fetchSession,
-    config,
-    fetchConfig,
-    wizard,
-    fetchWizard,
-    info,
-    loadAddress,
-  };
-
-  return <AppState.Provider value={state}>{children}</AppState.Provider>;
+  return (
+    <AppState.Provider
+      value={{
+        project,
+        fetchProject,
+        history,
+        fetchHistory,
+        monitors,
+        fetchMonitors,
+        names,
+        fetchNames,
+        abis,
+        fetchAbis,
+        indexes,
+        fetchIndexes,
+        manifests,
+        fetchManifests,
+        status,
+        fetchStatus,
+        daemons,
+        fetchDaemons,
+        session,
+        fetchSession,
+        config,
+        fetchConfig,
+        wizard,
+        fetchWizard,
+        info,
+        loadAddress,
+        counters,
+      }}
+    >
+      {children}
+    </AppState.Provider>
+  );
 };
 
 export const useAppState = () => {

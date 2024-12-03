@@ -67,7 +67,7 @@ export const HistoryView = () => {
       tabs={tabs}
     >
       <DebugState u={[history.updater]} />
-      <View tabs={tabs} forms={forms} searchable />
+      <View forms={forms} searchable />
     </ViewStateProvider>
   );
 };

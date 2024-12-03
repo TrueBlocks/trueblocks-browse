@@ -37,6 +37,11 @@ func (a *App) ToggleAccordion(cb *menu.CallbackData) {
 	if !a.isConfigured() {
 		return
 	}
+
+	// TODO: The concepts of View and route are intermingled. In some cases `route` has
+	// TODO: a leading `/` and in others it doesn't. This is confusing. Can we
+	// TODO: collapse these two ideas into one? It's also intermingled with SubRoute
+	// TODO: (i.e., address for history view for example) and the view's active tab.
 	route := a.GetRoute()
 	route = strings.TrimPrefix(route, "/")
 	parts := strings.Split(route, "/")
@@ -44,10 +49,10 @@ func (a *App) ToggleAccordion(cb *menu.CallbackData) {
 	if route == "" {
 		route = "project"
 	}
-	tab := a.GetTab(route)
+
 	a.emitMsg(messages.ToggleAccordion, &messages.MessageMsg{
 		String1: route,
-		String2: tab,
+		String2: a.GetActiveTab(route),
 	})
 }
 

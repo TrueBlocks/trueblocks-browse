@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { AppShell } from "@mantine/core";
 import { ViewStatus } from "@components";
-import { IsShowing, SetShowing, GetAppTitle } from "@gocode/app/App";
+import { IsShowing2, SetShowing2, GetAppTitle } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { Header, MenuPanel, ViewContainer, HelpPanel, Footer } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
@@ -33,7 +33,7 @@ export const App = () => {
 
   useEffect(() => {
     toggles.forEach(({ layout, setter }) => {
-      IsShowing(layout, "").then((show) => {
+      IsShowing2(layout).then((show) => {
         setter(show);
       });
     });
@@ -45,7 +45,7 @@ export const App = () => {
       if (toggle) {
         toggle.setter((prev) => {
           const show = !prev;
-          SetShowing(msg.string1, "", !prev);
+          SetShowing2(msg.string1, !prev);
           return show;
         });
       }

@@ -1,6 +1,6 @@
 import { useState, createContext, useEffect, useContext, ReactNode } from "react";
 import { Pager } from "@components";
-import { IsShowing, SetShowing, SetFilter, GetActiveTab } from "@gocode/app/App";
+import { IsShowing, SetShowing, SetFilter, GetActiveTab, GetFilter } from "@gocode/app/App";
 import { messages, app } from "@gocode/models";
 import { Page, useKeyboardPaging } from "@hooks";
 import { Route } from "@layout";
@@ -21,6 +21,7 @@ interface ViewStateProps {
   filter: string;
   updateFilter: (criteria: string) => void;
   clickFn?: ClickFnType;
+  tabs: string[];
   activeTab: string;
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -48,15 +49,54 @@ export const ViewStateProvider = ({
   tabs,
   children,
 }: ViewContextType) => {
+  const [activeTab, setActiveTab] = useState<string>("");
   const [headerShows, setHeaderShows] = useState<Record<string, boolean>>({});
-  const [activeTab, setActiveTab] = useState<string>(tabs[0] || ""); // Initialize with the first tab or an empty string
   const [filter, setFilter] = useState<string>("");
-  // TODO: This used to be different for session and names, but those are
-  // TODO: now tabs. This points to the fact that we need per-tab state.
-  // TODO: There are other places -- active tab, header open/close, etc.
+  // TODO: `lines` used to be different for `session` and `names`, but
+  // TODO: those are now tabs of SettingsView and SharingView. This points
+  // TODO: to the fact that we need per-tab state. There are other places
+  // TODO: where we need per-tab state as well -- activeTab, headerToggle, etc.
   const lines = 10;
   const pager = useKeyboardPaging(nItems, lines, onEnter);
 
+  // - tabs -----------------------------------------------------------
+  useEffect(() => {
+    GetActiveTab(route).then((tab) => {
+      setActiveTab(tab || tabs[0]);
+    });
+  }, [route, tabs, setActiveTab]);
+
+  // - tabs -----------------------------------------------------------
+  useEffect(() => {
+    const handleSwitchTab = (msg: messages.MessageMsg) => {
+      const { string1 } = msg;
+
+      const currentIndex = tabs.indexOf(activeTab);
+      let newTab = activeTab;
+
+      switch (string1) {
+        case "next":
+          newTab = tabs[(currentIndex + 1) % tabs.length];
+          break;
+        case "prev":
+          newTab = tabs[(currentIndex - 1 + tabs.length) % tabs.length];
+          break;
+        default:
+          break;
+      }
+
+      if (newTab !== activeTab) {
+        setActiveTab(newTab);
+      }
+    };
+
+    EventsOn(messages.Message.SWITCHTAB, handleSwitchTab);
+    return () => {
+      EventsOff(messages.Message.SWITCHTAB);
+    };
+  }, [tabs, activeTab, setActiveTab]);
+
+  // - headers -----------------------------------------------------------
   const handleCollapse = (tab: string, newState: string | null) => {
     const isShowing = newState === "header";
     SetShowing(route, tab, isShowing).then(() => {
@@ -67,22 +107,7 @@ export const ViewStateProvider = ({
     });
   };
 
-  const updateFilter = (criteria: string) => {
-    setFilter(criteria);
-    SetFilter(route, criteria).then(() => {
-      fetchFn(pager.getOffset(), pager.perPage);
-    });
-  };
-
-  useEffect(() => {
-    const fetchActiveTab = async () => {
-      const storedTab = await GetActiveTab(route); // Add a backend function to retrieve the active tab
-      setActiveTab(storedTab || tabs[0]); // Fallback to the first tab if no stored tab exists
-    };
-
-    fetchActiveTab();
-  }, [route, tabs]);
-
+  // - headers -----------------------------------------------------------
   useEffect(() => {
     const fetchHeaderStates = async () => {
       const newHeaderShows: Record<string, boolean> = {};
@@ -96,6 +121,7 @@ export const ViewStateProvider = ({
     fetchHeaderStates();
   }, [route, tabs]);
 
+  // - headers -----------------------------------------------------------
   useEffect(() => {
     const handleAccordion = (msg: messages.MessageMsg) => {
       const cmp = route === "" ? "project" : route;
@@ -119,10 +145,12 @@ export const ViewStateProvider = ({
     };
   }, [route]);
 
+  // - pagination -----------------------------------------------------------
   useEffect(() => {
     fetchFn(pager.getOffset(), pager.perPage);
   }, [pager.pageNumber, pager.perPage]);
 
+  // - pagination -----------------------------------------------------------
   useEffect(() => {
     const handleRefresh = () => {
       fetchFn(pager.getOffset(), pager.perPage);
@@ -135,6 +163,22 @@ export const ViewStateProvider = ({
     };
   }, [fetchFn, nItems, pager]);
 
+  // - filter -----------------------------------------------------------
+  useEffect(() => {
+    GetFilter(route).then((filterData) => {
+      setFilter(filterData.criteria);
+    });
+  }, [route]);
+
+  // - filter -----------------------------------------------------------
+  const updateFilter = (criteria: string) => {
+    setFilter(criteria);
+    SetFilter(route, criteria).then(() => {
+      fetchFn(pager.getOffset(), pager.perPage);
+    });
+  };
+
+  // - state -----------------------------------------------------------
   const state = {
     route,
     nItems,
@@ -146,6 +190,7 @@ export const ViewStateProvider = ({
     filter,
     updateFilter,
     clickFn,
+    tabs,
     activeTab,
     setActiveTab,
   };

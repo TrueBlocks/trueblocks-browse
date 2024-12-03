@@ -48,7 +48,7 @@ export const MonitorsView = () => {
       tabs={tabs}
     >
       <DebugState u={[monitors.updater]} />
-      <View tabs={tabs} forms={forms} searchable />
+      <View forms={forms} searchable />
     </ViewStateProvider>
   );
 };

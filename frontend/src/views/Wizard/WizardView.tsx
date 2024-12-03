@@ -56,7 +56,7 @@ export const WizardView = () => {
       tabs={tabs}
     >
       <DebugState u={[wizard.updater]} />
-      <View tabs={tabs} forms={forms} />
+      <View forms={forms} />
     </ViewStateProvider>
   );
 };

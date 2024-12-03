@@ -62,8 +62,8 @@ func (a *App) GetMenus() *menu.Menu {
 		"showHelp":      {4030, helpMenu, "Show Help", keys.CmdOrCtrl("h"), a.ToggleHelp},
 		"showFooter":    {4040, helpMenu, "Show Footer", keys.CmdOrCtrl("f"), a.ToggleFooter},
 		"showAccordion": {4050, helpMenu, "Show Accordion", keys.CmdOrCtrl("x"), a.ToggleAccordion},
-		"prevTab":       {4060, helpMenu, "Previous Tab", keys.Combo("n", keys.CmdOrCtrlKey, keys.ShiftKey), a.TogglePrevTab},
-		"nextTab":       {4070, helpMenu, "Next Tab", keys.Combo("p", keys.CmdOrCtrlKey, keys.ShiftKey), a.ToggleNextTab},
+		"prevTab":       {4060, helpMenu, "Previous Tab", keys.Combo("p", keys.CmdOrCtrlKey, keys.ShiftKey), a.TogglePrevTab},
+		"nextTab":       {4070, helpMenu, "Next Tab", keys.Combo("n", keys.CmdOrCtrlKey, keys.ShiftKey), a.ToggleNextTab},
 		// EXISTING_CODE
 	}
 

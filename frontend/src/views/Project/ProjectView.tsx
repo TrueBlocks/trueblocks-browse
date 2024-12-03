@@ -57,7 +57,7 @@ export const ProjectView = () => {
       tabs={tabs}
     >
       <DebugState u={[project.updater]} />
-      <View tabs={tabs} forms={forms} searchable />
+      <View forms={forms} searchable />
     </ViewStateProvider>
   );
 };

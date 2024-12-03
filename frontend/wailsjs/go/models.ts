@@ -457,11 +457,6 @@ export namespace sdk {
 
 export namespace types {
 	
-	export enum DaemonState {
-	    STOPPED = "Stopped",
-	    RUNNING = "Running",
-	    PAUSED = "Paused",
-	}
 	export enum WizState {
 	    WELCOME = "welcome",
 	    CONFIG = "config",

@@ -102,7 +102,7 @@
         tabs={tabs}
       >
         <DebugState u={ [{{$routeLower}}.updater]} />
-        <View tabs={tabs} forms={forms}{{if $wantsSearch}} searchable{{end}} />
+        <View forms={forms}{{if $wantsSearch}} searchable{{end}} />
       </ViewStateProvider>
     );
   };

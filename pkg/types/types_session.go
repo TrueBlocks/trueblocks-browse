@@ -138,12 +138,19 @@ func (s *Session) Load() error {
 	return nil
 }
 
+func (s *Session) SetTab(route, tab string) {
+	if s.LastTab != nil {
+		s.LastTab[route] = tab
+	}
+	_ = s.Save()
+}
+
 func (s *Session) SetRoute(route, subRoute, tab string) {
 	s.LastRoute = route
 	if len(subRoute) > 0 {
 		s.LastSub[route] = subRoute
 	}
-	if len(tab) > 0 {
+	if s.LastTab != nil {
 		s.LastTab[route] = tab
 	}
 	_ = s.Save()

@@ -68,7 +68,7 @@ export const UnchainedView = () => {
       tabs={tabs}
     >
       <DebugState u={[indexes.updater, manifests.updater]} />
-      <View tabs={tabs} forms={forms} />
+      <View forms={forms} />
     </ViewStateProvider>
   );
 };
