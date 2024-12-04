@@ -54,7 +54,7 @@ func NewApp() *App {
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}
 	a.session.LastSub = &types.StringMap{}
-	a.session.LastTab = make(map[string]string)
+	a.session.LastTab = &types.StringMap{}
 	a.timer = NewTimer()
 
 	return a
