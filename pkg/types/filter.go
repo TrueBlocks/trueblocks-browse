@@ -2,6 +2,8 @@ package types
 
 import "encoding/json"
 
+type Criteria string
+
 type Filter struct {
 	Criteria string `json:"criteria"`
 }
