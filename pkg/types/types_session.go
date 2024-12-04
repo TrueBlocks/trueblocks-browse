@@ -79,7 +79,6 @@ var defaultSession = Session{
 		Y:      0,
 		Width:  0,
 		Height: 0,
-		Title:  "Untitled App",
 	},
 	WizardStr: "welcome",
 	Toggles: Toggles{
@@ -195,6 +194,19 @@ func (s *Session) CleanWindowSize(ctx context.Context) (Window, error) {
 		}
 	}
 	return s.Window, nil
+}
+
+// Window stores the last position and title of the window
+type Window struct {
+	X      int `json:"x"`
+	Y      int `json:"y"`
+	Width  int `json:"width"`
+	Height int `json:"height"`
+}
+
+func (w *Window) String() string {
+	bytes, _ := json.Marshal(w)
+	return string(bytes)
 }
 
 type Layout struct {
@@ -327,18 +339,4 @@ func (t *Toggles) SetState(which string, onOff bool) {
 	case "ipfs":
 		t.Daemons.Ipfs = onOff
 	}
-}
-
-// Window stores the last position and title of the window
-type Window struct {
-	X      int    `json:"x"`
-	Y      int    `json:"y"`
-	Width  int    `json:"width"`
-	Height int    `json:"height"`
-	Title  string `json:"title"`
-}
-
-func (w *Window) String() string {
-	bytes, _ := json.Marshal(w)
-	return string(bytes)
 }

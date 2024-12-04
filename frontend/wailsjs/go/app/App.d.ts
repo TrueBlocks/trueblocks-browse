@@ -51,8 +51,6 @@ export function Freshen():Promise<void>;
 
 export function GetActiveTab(arg1:string):Promise<string>;
 
-export function GetAppTitle():Promise<string>;
-
 export function GetChainInfo(arg1:string):Promise<types.Chain>;
 
 export function GetChains():Promise<Array<string>>;

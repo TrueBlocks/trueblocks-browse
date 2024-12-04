@@ -90,10 +90,6 @@ export function GetActiveTab(arg1) {
   return window['go']['app']['App']['GetActiveTab'](arg1);
 }
 
-export function GetAppTitle() {
-  return window['go']['app']['App']['GetAppTitle']();
-}
-
 export function GetChainInfo(arg1) {
   return window['go']['app']['App']['GetChainInfo'](arg1);
 }

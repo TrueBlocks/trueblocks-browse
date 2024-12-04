@@ -22,7 +22,6 @@ func (a *App) initialize() bool {
 			// TODO: BOGUS a.wizard = types. NewWizzardContainer(a.getChain(), []types.WizError{})
 			a.wizard.Chain = a.getChain()
 			a.wizard.State = types.WizState(a.session.WizardStr)
-			a.session.Window.Title = "Browse by TrueBlocks"
 			logger.InfoBW("Loaded session:", a.cntWizErrs(), "errors")
 			return true
 		}

@@ -42,10 +42,6 @@ func (a *App) GetActiveTab(route string) string {
 	return ret
 }
 
-func (a *App) GetAppTitle() string {
-	return a.session.Window.Title
-}
-
 func (a *App) GetRouteAndSub() (string, string) {
 	if !a.isConfigured() {
 		return "/wizard"

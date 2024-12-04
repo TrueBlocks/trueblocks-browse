@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { AppShell } from "@mantine/core";
 import { ViewStatus } from "@components";
-import { IsLayoutOn, SetLayoutOn, GetAppTitle } from "@gocode/app/App";
+import { IsLayoutOn, SetLayoutOn } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { Header, MenuPanel, ViewContainer, HelpPanel, Footer } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
@@ -13,13 +13,7 @@ export const App = () => {
   const [showMenu, setShowMenu] = useState<boolean>(true);
   const [showHelp, setShowHelp] = useState<boolean>(true);
   const [showFooter, setShowFooter] = useState<boolean>(true);
-  const [title, setTitle] = useState<string>("");
-
-  useEffect(() => {
-    GetAppTitle().then((title) => {
-      setTitle(title);
-    });
-  }, []);
+  const [title] = useState<string>("TrueBlocks Browse");
 
   const flags = useMemo(
     () => [
