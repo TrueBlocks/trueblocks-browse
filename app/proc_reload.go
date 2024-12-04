@@ -70,7 +70,7 @@ func (a *App) Reload() {
 		}
 		// EXISTING_CODE
 	default:
-		address := a.GetSelected()
+		address := a.GetLastAddress()
 		// HIST-HIST
 		history, _ := a.historyCache.Load(address)
 		history.Updater.Reset()

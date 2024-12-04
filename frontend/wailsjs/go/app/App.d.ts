@@ -75,7 +75,7 @@ export function GetName(arg1:base.Address):Promise<string>;
 
 export function GetRoute():Promise<string>;
 
-export function GetSelected():Promise<base.Address>;
+export function GetLastAddress():Promise<base.Address>;
 
 export function GetSession():Promise<types.Session>;
 

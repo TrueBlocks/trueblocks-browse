@@ -18,7 +18,7 @@ func (a *App) ProjectView(cb *menu.CallbackData) {
 }
 
 func (a *App) HistoryView(cb *menu.CallbackData) {
-	address := a.GetSelected()
+	address := a.GetLastAddress()
 	if strings.Contains(a.GetRoute(), "/history") {
 		a.ToggleNextTab(cb)
 	} else {

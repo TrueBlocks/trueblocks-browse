@@ -12,7 +12,7 @@ import (
 
 func (a *App) FetchHistory(first, pageSize int) *types.HistoryContainer {
 	// EXISTING_CODE
-	address := a.GetSelected()
+	address := a.GetLastAddress()
 	// HIST-HIST
 	history, _ := a.historyCache.Load(address)
 	// EXISTING_CODE

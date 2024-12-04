@@ -28,7 +28,7 @@ func (a *App) getFullPath() string {
 }
 
 func (a *App) FetchAppInfo() AppInfo {
-	address := a.GetSelected()
+	address := a.GetLastAddress()
 	return AppInfo{
 		Chain:    a.getChain(),
 		Filename: a.getFullPath(),

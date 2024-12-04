@@ -138,8 +138,8 @@ export function GetRoute() {
   return window['go']['app']['App']['GetRoute']();
 }
 
-export function GetSelected() {
-  return window['go']['app']['App']['GetSelected']();
+export function GetLastAddress() {
+  return window['go']['app']['App']['GetLastAddress']();
 }
 
 export function GetSession() {

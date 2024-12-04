@@ -46,7 +46,7 @@ func (a *App) GetAppTitle() string {
 	return a.session.Window.Title
 }
 
-func (a *App) GetRouteAndSub() (string,string) {
+func (a *App) GetRouteAndSub() (string, string) {
 	if !a.isConfigured() {
 		return "/wizard"
 	}
@@ -60,7 +60,7 @@ func (a *App) GetRouteAndSub() (string,string) {
 	return route
 }
 
-func (a *App) GetSelected() base.Address {
+func (a *App) GetLastAddress() base.Address {
 	addr, _ := a.session.LastSub.Load("/history")
 	return base.HexToAddress(addr)
 }

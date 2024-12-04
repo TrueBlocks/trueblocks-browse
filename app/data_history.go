@@ -36,7 +36,7 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error) error {
 	defer historyLock.CompareAndSwap(1, 0)
 
 	// EXISTING_CODE
-	address := a.GetSelected()
+	address := a.GetLastAddress()
 	// HIST-HIST
 	history, exists := a.historyCache.Load(address)
 	if !exists {
