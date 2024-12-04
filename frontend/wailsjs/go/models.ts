@@ -2245,7 +2245,8 @@ export namespace types {
 	    lastRoute: string;
 	    // Go type: maps
 	    lastSub?: any;
-	    lastTab: {[key: string]: string};
+	    // Go type: maps
+	    lastTab?: any;
 	    window: Window;
 	    wizardStr: string;
 	    toggles: Toggles;
@@ -2261,7 +2262,7 @@ export namespace types {
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = this.convertValues(source["lastSub"], null);
-	        this.lastTab = source["lastTab"];
+	        this.lastTab = this.convertValues(source["lastTab"], null);
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);
@@ -2295,7 +2296,8 @@ export namespace types {
 	    lastRoute: string;
 	    // Go type: maps
 	    lastSub?: any;
-	    lastTab: {[key: string]: string};
+	    // Go type: maps
+	    lastTab?: any;
 	    window: Window;
 	    wizardStr: string;
 	    toggles: Toggles;
@@ -2316,7 +2318,7 @@ export namespace types {
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = this.convertValues(source["lastSub"], null);
-	        this.lastTab = source["lastTab"];
+	        this.lastTab = this.convertValues(source["lastTab"], null);
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
 	        this.toggles = this.convertValues(source["toggles"], Toggles);

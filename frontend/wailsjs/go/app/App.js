@@ -162,10 +162,6 @@ export function IsShowing(arg1, arg2) {
   return window['go']['app']['App']['IsShowing'](arg1, arg2);
 }
 
-export function IsShowing2(arg1) {
-  return window['go']['app']['App']['IsShowing2'](arg1);
-}
-
 export function LoadAddress(arg1) {
   return window['go']['app']['App']['LoadAddress'](arg1);
 }
@@ -232,10 +228,6 @@ export function SetRoute(arg1, arg2, arg3) {
 
 export function SetShowing(arg1, arg2, arg3) {
   return window['go']['app']['App']['SetShowing'](arg1, arg2, arg3);
-}
-
-export function SetShowing2(arg1, arg2) {
-  return window['go']['app']['App']['SetShowing2'](arg1, arg2);
 }
 
 export function SettingsView(arg1) {
