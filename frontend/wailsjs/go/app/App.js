@@ -86,8 +86,8 @@ export function Freshen() {
   return window['go']['app']['App']['Freshen']();
 }
 
-export function GetActiveTab(arg1) {
-  return window['go']['app']['App']['GetActiveTab'](arg1);
+export function GetLastTab(arg1) {
+  return window['go']['app']['App']['GetLastTab'](arg1);
 }
 
 export function GetChainInfo(arg1) {
@@ -238,8 +238,8 @@ export function SetLayoutOn(arg1, arg2) {
   return window['go']['app']['App']['SetLayoutOn'](arg1, arg2);
 }
 
-export function SetRoute(arg1, arg2, arg3) {
-  return window['go']['app']['App']['SetRoute'](arg1, arg2, arg3);
+export function SetLastRoute(arg1, arg2, arg3) {
+  return window['go']['app']['App']['SetLastRoute'](arg1, arg2, arg3);
 }
 
 export function SettingsView(arg1) {

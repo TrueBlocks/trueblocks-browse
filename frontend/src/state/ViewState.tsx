@@ -1,6 +1,6 @@
 import { useState, createContext, useEffect, useContext, ReactNode } from "react";
 import { Pager } from "@components";
-import { IsHeaderOn, SetHeaderOn, SetFilter, GetActiveTab, GetFilter } from "@gocode/app/App";
+import { IsHeaderOn, SetHeaderOn, SetFilter, GetLastTab, GetFilter } from "@gocode/app/App";
 import { messages, app } from "@gocode/models";
 import { Page, useKeyboardPaging } from "@hooks";
 import { Route } from "@layout";
@@ -61,7 +61,7 @@ export const ViewStateProvider = ({
 
   // - tabs -----------------------------------------------------------
   useEffect(() => {
-    GetActiveTab(route).then((tab) => {
+    GetLastTab(route).then((tab) => {
       setActiveTab(tab || tabs[0]);
     });
   }, [route, tabs, setActiveTab]);

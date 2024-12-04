@@ -14,7 +14,7 @@ func (a *App) Navigate(route, subRoute string) {
 		route, subRoute, sep = "/wizard", "", ""
 	}
 
-	a.SetRoute(route, subRoute, a.GetActiveTab(route))
+	a.SetLastRoute(route, subRoute)
 
 	logger.Info("Message sent", route, subRoute)
 	a.emitNavigateMsg(route + sep + subRoute)

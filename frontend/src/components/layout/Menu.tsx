@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { StyledNavLink } from "@components";
-import { GetLastRoute, GetLastAddress, SetRoute } from "@gocode/app/App";
+import { GetLastRoute, GetLastAddress, SetLastRoute } from "@gocode/app/App";
 import { messages, types } from "@gocode/models";
 import { routeItems, RouteItem } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
@@ -43,11 +43,11 @@ export const Menu = () => {
         const addr = address as unknown as string;
         route = route.replace(":address", addr);
         setLocation(route);
-        SetRoute("/history", addr, ""); // TODO: Put active Tab in App state so we can use it here
+        SetLastRoute("/history", addr); // TODO: Put active Tab in App state so we can use it here
       });
       setActiveRoute("/history/:address");
     } else {
-      SetRoute(route, "", ""); // TODO: Put active Tab in App state so we can use it here
+      SetLastRoute(route, ""); // TODO: Put active Tab in App state so we can use it here
       setActiveRoute(route);
     }
   };

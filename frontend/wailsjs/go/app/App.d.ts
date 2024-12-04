@@ -49,7 +49,7 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
 export function Freshen():Promise<void>;
 
-export function GetActiveTab(arg1:string):Promise<string>;
+export function GetLastTab(arg1:string):Promise<string>;
 
 export function GetChainInfo(arg1:string):Promise<types.Chain>;
 
@@ -125,7 +125,7 @@ export function SetHeaderOn(arg1:string,arg2:string,arg3:boolean):Promise<void>;
 
 export function SetLayoutOn(arg1:string,arg2:boolean):Promise<void>;
 
-export function SetRoute(arg1:string,arg2:string,arg3:string):Promise<void>;
+export function SetLastRoute(arg1:string,arg2:string,arg3:string):Promise<void>;
 
 export function SettingsView(arg1:menu.CallbackData):Promise<void>;
 

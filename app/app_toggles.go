@@ -37,7 +37,7 @@ func (a *App) TabSwitched(route, tab string) {
 	a.session.SetTab(route, tab)
 }
 
-func (a *App) GetActiveTab(route string) string {
+func (a *App) GetLastTab(route string) string {
 	ret, _ := a.session.LastTab.Load(route)
 	return ret
 }

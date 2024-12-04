@@ -52,7 +52,7 @@ func (a *App) ToggleAccordion(cb *menu.CallbackData) {
 
 	a.emitMsg(messages.ToggleAccordion, &messages.MessageMsg{
 		String1: route,
-		String2: a.GetActiveTab(route),
+		String2: a.GetLastTab(route),
 	})
 }
 
