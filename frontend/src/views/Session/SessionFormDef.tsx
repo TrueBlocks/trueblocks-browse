@@ -34,9 +34,9 @@ export const SessionFormDef = (table: Table<types.Nothing>): FieldGroup<types.Se
       components: [<SessionWindow key={"window"} />],
     },
     {
-      label: "Toggles",
+      label: "Flags",
       collapsable: false,
-      components: [<SessionToggles key={"window"} />],
+      components: [<SessionFlags key={"flags"} />],
     },
     {
       label: "Nothing",
@@ -53,7 +53,7 @@ const SessionWindow = () => {
   return <div>{`${JSON.stringify(session.window, null, 2)}`}</div>;
 };
 
-const SessionToggles = () => {
+const SessionFlags = () => {
   const { session } = useAppState();
   return <div>{`${JSON.stringify(session.toggles, null, 2)}`}</div>;
 };

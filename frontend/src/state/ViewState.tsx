@@ -1,6 +1,6 @@
 import { useState, createContext, useEffect, useContext, ReactNode } from "react";
 import { Pager } from "@components";
-import { IsShowing, SetShowing, SetFilter, GetActiveTab, GetFilter } from "@gocode/app/App";
+import { IsHeaderOn, SetHeaderOn, SetFilter, GetActiveTab, GetFilter } from "@gocode/app/App";
 import { messages, app } from "@gocode/models";
 import { Page, useKeyboardPaging } from "@hooks";
 import { Route } from "@layout";
@@ -99,7 +99,7 @@ export const ViewStateProvider = ({
   // - headers -----------------------------------------------------------
   const handleCollapse = (tab: string, newState: string | null) => {
     const isShowing = newState === "header";
-    SetShowing(route, tab, isShowing).then(() => {
+    SetHeaderOn(route, tab, isShowing).then(() => {
       setHeaderShows((prev) => ({
         ...prev,
         [tab]: isShowing,
@@ -112,7 +112,7 @@ export const ViewStateProvider = ({
     const fetchHeaderStates = async () => {
       const newHeaderShows: Record<string, boolean> = {};
       for (const tab of tabs) {
-        const isShowing = await IsShowing(route, tab);
+        const isShowing = await IsHeaderOn(route, tab);
         newHeaderShows[tab] = isShowing;
       }
       setHeaderShows(newHeaderShows);
@@ -127,8 +127,8 @@ export const ViewStateProvider = ({
       const cmp = route === "" ? "project" : route;
       const tab = msg.string2 || ""; // Use msg.string2 as the tab if provided, or fallback to an empty string.
       if (tab && cmp === msg.string1) {
-        IsShowing(cmp, tab).then((onOff) => {
-          SetShowing(cmp, tab, !onOff).then(() => {
+        IsHeaderOn(cmp, tab).then((onOff) => {
+          SetHeaderOn(cmp, tab, !onOff).then(() => {
             setHeaderShows((prev) => ({
               ...prev,
               [tab]: !onOff,

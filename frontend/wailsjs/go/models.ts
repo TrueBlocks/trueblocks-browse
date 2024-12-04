@@ -2184,6 +2184,26 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class Window {
+	    x: number;
+	    y: number;
+	    width: number;
+	    height: number;
+	    title: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Window(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.x = source["x"];
+	        this.y = source["y"];
+	        this.width = source["width"];
+	        this.height = source["height"];
+	        this.title = source["title"];
+	    }
+	}
 	export class Toggles {
 	    layout: Layout;
 	    headers: Headers;
@@ -2218,26 +2238,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class Window {
-	    x: number;
-	    y: number;
-	    width: number;
-	    height: number;
-	    title: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Window(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.x = source["x"];
-	        this.y = source["y"];
-	        this.width = source["width"];
-	        this.height = source["height"];
-	        this.title = source["title"];
-	    }
-	}
 	export class Session {
 	    lastChain: string;
 	    lastFile: string;
@@ -2247,9 +2247,9 @@ export namespace types {
 	    lastSub?: any;
 	    // Go type: maps
 	    lastTab?: any;
+	    toggles: Toggles;
 	    window: Window;
 	    wizardStr: string;
-	    toggles: Toggles;
 	
 	    static createFrom(source: any = {}) {
 	        return new Session(source);
@@ -2263,9 +2263,9 @@ export namespace types {
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = this.convertValues(source["lastSub"], null);
 	        this.lastTab = this.convertValues(source["lastTab"], null);
+	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
-	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2298,9 +2298,9 @@ export namespace types {
 	    lastSub?: any;
 	    // Go type: maps
 	    lastTab?: any;
+	    toggles: Toggles;
 	    window: Window;
 	    wizardStr: string;
-	    toggles: Toggles;
 	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
@@ -2319,9 +2319,9 @@ export namespace types {
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = this.convertValues(source["lastSub"], null);
 	        this.lastTab = this.convertValues(source["lastTab"], null);
+	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
-	        this.toggles = this.convertValues(source["toggles"], Toggles);
 	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }

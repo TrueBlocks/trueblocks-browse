@@ -158,8 +158,16 @@ export function HistoryView(arg1) {
   return window['go']['app']['App']['HistoryView'](arg1);
 }
 
-export function IsShowing(arg1, arg2) {
-  return window['go']['app']['App']['IsShowing'](arg1, arg2);
+export function IsDaemonOn(arg1) {
+  return window['go']['app']['App']['IsDaemonOn'](arg1);
+}
+
+export function IsHeaderOn(arg1, arg2) {
+  return window['go']['app']['App']['IsHeaderOn'](arg1, arg2);
+}
+
+export function IsLayoutOn(arg1) {
+  return window['go']['app']['App']['IsLayoutOn'](arg1);
 }
 
 export function LoadAddress(arg1) {
@@ -214,6 +222,10 @@ export function SetChain(arg1) {
   return window['go']['app']['App']['SetChain'](arg1);
 }
 
+export function SetDaemonOn(arg1, arg2) {
+  return window['go']['app']['App']['SetDaemonOn'](arg1, arg2);
+}
+
 export function SetEnv(arg1, arg2) {
   return window['go']['app']['App']['SetEnv'](arg1, arg2);
 }
@@ -222,12 +234,16 @@ export function SetFilter(arg1, arg2) {
   return window['go']['app']['App']['SetFilter'](arg1, arg2);
 }
 
-export function SetRoute(arg1, arg2, arg3) {
-  return window['go']['app']['App']['SetRoute'](arg1, arg2, arg3);
+export function SetHeaderOn(arg1, arg2, arg3) {
+  return window['go']['app']['App']['SetHeaderOn'](arg1, arg2, arg3);
 }
 
-export function SetShowing(arg1, arg2, arg3) {
-  return window['go']['app']['App']['SetShowing'](arg1, arg2, arg3);
+export function SetLayoutOn(arg1, arg2) {
+  return window['go']['app']['App']['SetLayoutOn'](arg1, arg2);
+}
+
+export function SetRoute(arg1, arg2, arg3) {
+  return window['go']['app']['App']['SetRoute'](arg1, arg2, arg3);
 }
 
 export function SettingsView(arg1) {

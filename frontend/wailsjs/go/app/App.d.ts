@@ -85,7 +85,11 @@ export function GetWindow():Promise<types.Window>;
 
 export function HistoryView(arg1:menu.CallbackData):Promise<void>;
 
-export function IsShowing(arg1:string,arg2:string):Promise<boolean>;
+export function IsDaemonOn(arg1:string):Promise<boolean>;
+
+export function IsHeaderOn(arg1:string,arg2:string):Promise<boolean>;
+
+export function IsLayoutOn(arg1:string):Promise<boolean>;
 
 export function LoadAddress(arg1:string):Promise<void>;
 
@@ -113,13 +117,17 @@ export function Reload():Promise<void>;
 
 export function SetChain(arg1:string):Promise<void>;
 
+export function SetDaemonOn(arg1:string,arg2:boolean):Promise<void>;
+
 export function SetEnv(arg1:string,arg2:string):Promise<void>;
 
 export function SetFilter(arg1:string,arg2:string):Promise<void>;
 
-export function SetRoute(arg1:string,arg2:string,arg3:string):Promise<void>;
+export function SetHeaderOn(arg1:string,arg2:string,arg3:boolean):Promise<void>;
 
-export function SetShowing(arg1:string,arg2:string,arg3:boolean):Promise<void>;
+export function SetLayoutOn(arg1:string,arg2:boolean):Promise<void>;
+
+export function SetRoute(arg1:string,arg2:string,arg3:string):Promise<void>;
 
 export function SettingsView(arg1:menu.CallbackData):Promise<void>;
 

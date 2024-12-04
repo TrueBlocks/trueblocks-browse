@@ -26,9 +26,9 @@ type Session struct {
 	LastRoute  string     `json:"lastRoute"`
 	LastSub    *StringMap `json:"lastSub"`
 	LastTab    *StringMap `json:"lastTab"`
+	Toggles    Toggles    `json:"toggles"`
 	Window     Window     `json:"window"`
 	WizardStr  string     `json:"wizardStr"`
-	Toggles    Toggles    `json:"toggles"`
 	Chain      string     `json:"-"`
 }
 
