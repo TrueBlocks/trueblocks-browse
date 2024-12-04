@@ -2243,7 +2243,8 @@ export namespace types {
 	    lastFile: string;
 	    lastFolder: string;
 	    lastRoute: string;
-	    lastSub: {[key: string]: string};
+	    // Go type: maps
+	    lastSub?: any;
 	    lastTab: {[key: string]: string};
 	    window: Window;
 	    wizardStr: string;
@@ -2259,7 +2260,7 @@ export namespace types {
 	        this.lastFile = source["lastFile"];
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
-	        this.lastSub = source["lastSub"];
+	        this.lastSub = this.convertValues(source["lastSub"], null);
 	        this.lastTab = source["lastTab"];
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
@@ -2292,7 +2293,8 @@ export namespace types {
 	    lastFile: string;
 	    lastFolder: string;
 	    lastRoute: string;
-	    lastSub: {[key: string]: string};
+	    // Go type: maps
+	    lastSub?: any;
 	    lastTab: {[key: string]: string};
 	    window: Window;
 	    wizardStr: string;
@@ -2313,7 +2315,7 @@ export namespace types {
 	        this.lastFile = source["lastFile"];
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
-	        this.lastSub = source["lastSub"];
+	        this.lastSub = this.convertValues(source["lastSub"], null);
 	        this.lastTab = source["lastTab"];
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];

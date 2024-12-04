@@ -18,41 +18,42 @@ type App struct {
 	dirty bool
 
 	// Containers
-	project   types.ProjectContainer
-	monitors  types.MonitorContainer
-	names     types.NameContainer
-	abis      types.AbiContainer
-	indexes   types.IndexContainer
-	manifests types.ManifestContainer
-	status    types.StatusContainer
-	session   types.SessionContainer
-	config    types.ConfigContainer
-	wizard    types.WizardContainer
-	daemons   types.DaemonContainer
+	project   types.ProjectContainer  // ProjectView
+	monitors  types.MonitorContainer  // MonitorsView
+	names     types.NameContainer     // SharingView
+	abis      types.AbiContainer      // SharingView
+	indexes   types.IndexContainer    // UnchainedView
+	manifests types.ManifestContainer // UnchainedView
+	status    types.StatusContainer   // SettingsView
+	session   types.SessionContainer  // SettingsView
+	config    types.ConfigContainer   // SettingsView
+	daemons   types.DaemonContainer   // DaemonsView
+	wizard    types.WizardContainer   // WizardView
 
 	// Memory caches
-	ensCache     *sync.Map
-	balanceCache *sync.Map
-	filterMap    *types.FilterMap
-	namesMap     map[base.Address]types.Name
 	// HIST-APP
 	historyCache *types.HistoryMap
+	filterMap    *types.FilterMap
+	namesMap     map[base.Address]types.Name
+	ensCache     *sync.Map
+	balanceCache *sync.Map
 	renderCtxs   map[base.Address][]*output.RenderCtx
 
+	// Used for performance timing only
 	timer Timer
 }
 
 func NewApp() *App {
 	a := &App{
-		ensCache:     &sync.Map{},
-		balanceCache: &sync.Map{},
-		filterMap:    &types.FilterMap{},
-		namesMap:     make(map[base.Address]types.Name),
 		// HIST-APP
 		historyCache: &types.HistoryMap{},
+		filterMap:    &types.FilterMap{},
+		namesMap:     make(map[base.Address]types.Name),
+		ensCache:     &sync.Map{},
+		balanceCache: &sync.Map{},
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}
-	a.session.LastSub = make(map[string]string)
+	a.session.LastSub = &types.StringMap{}
 	a.session.LastTab = make(map[string]string)
 	a.timer = NewTimer()
 

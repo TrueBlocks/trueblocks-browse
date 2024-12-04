@@ -39,15 +39,16 @@ func (a *App) GetRoute() string {
 	}
 
 	route := a.session.LastRoute
-	if len(a.session.LastSub) > 0 {
-		route += "/" + a.session.LastSub[route]
+	sub, _ := a.session.LastSub.Load(route)
+	if len(sub) > 0 {
+		route += "/" + sub
 	}
 
 	return route
 }
 
 func (a *App) GetSelected() base.Address {
-	addr := a.session.LastSub["/history"]
+	addr, _ := a.session.LastSub.Load("/history")
 	return base.HexToAddress(addr)
 }
 

@@ -11,19 +11,25 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+var defSub StringMap
+
+func init() {
+	defSub.Store("/history", "0xf503017d7baf7fbc0fff7492b751025c6a78179b")
+}
+
 // Session stores ephemeral things such as last window position,
 // last view, and recent file list.
 type Session struct {
-	LastChain  string            `json:"lastChain"`
-	LastFile   string            `json:"lastFile"`
-	LastFolder string            `json:"lastFolder"`
-	LastRoute  string            `json:"lastRoute"`
-	LastSub    map[string]string `json:"lastSub"`
+	LastChain  string     `json:"lastChain"`
+	LastFile   string     `json:"lastFile"`
+	LastFolder string     `json:"lastFolder"`
+	LastRoute  string     `json:"lastRoute"`
+	LastSub    *StringMap `json:"lastSub"`
 	LastTab    map[string]string `json:"lastTab"`
-	Window     Window            `json:"window"`
-	WizardStr  string            `json:"wizardStr"`
-	Toggles    Toggles           `json:"toggles"`
-	Chain      string            `json:"-"`
+	Window     Window     `json:"window"`
+	WizardStr  string     `json:"wizardStr"`
+	Toggles    Toggles    `json:"toggles"`
+	Chain      string     `json:"-"`
 }
 
 func (s Session) String() string {
@@ -66,7 +72,7 @@ var defaultSession = Session{
 	LastChain: "mainnet",
 	LastFile:  "Untitled.tbx",
 	LastRoute: "/wizard",
-	LastSub:   map[string]string{"/history": "0xf503017d7baf7fbc0fff7492b751025c6a78179b"},
+	LastSub:   &defSub,
 	LastTab:   map[string]string{},
 	Window: Window{
 		X:      0,
@@ -147,9 +153,7 @@ func (s *Session) SetTab(route, tab string) {
 
 func (s *Session) SetRoute(route, subRoute, tab string) {
 	s.LastRoute = route
-	if len(subRoute) > 0 {
-		s.LastSub[route] = subRoute
-	}
+	s.LastSub.Store(route, subRoute)
 	if s.LastTab != nil {
 		s.LastTab[route] = tab
 	}

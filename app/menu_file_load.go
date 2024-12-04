@@ -51,7 +51,7 @@ func (a *App) readFile(fn string) (bool, error) {
 		a.dirty = false
 
 		a.session.LastFolder, a.session.LastFile = filepath.Split(fn)
-		a.session.LastSub["/history"] = pF.Selected.Hex()
+		a.session.LastSub.Store("/history", pF.Selected.Hex())
 		a.session.LastTab["history"] = ""
 		a.saveSession()
 
