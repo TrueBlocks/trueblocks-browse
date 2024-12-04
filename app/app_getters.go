@@ -6,7 +6,6 @@ import (
 	"sort"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
 func (a *App) GetConfig() *types.Config {
@@ -27,29 +26,6 @@ func (a *App) GetWindow() *types.Window {
 
 func (a *App) GetEnv(key string) string {
 	return os.Getenv(key)
-}
-
-func (a *App) GetAppTitle() string {
-	return a.session.Window.Title
-}
-
-func (a *App) GetRoute() string {
-	if !a.isConfigured() {
-		return "/wizard"
-	}
-
-	route := a.session.LastRoute
-	sub, _ := a.session.LastSub.Load(route)
-	if len(sub) > 0 {
-		route += "/" + sub
-	}
-
-	return route
-}
-
-func (a *App) GetSelected() base.Address {
-	addr, _ := a.session.LastSub.Load("/history")
-	return base.HexToAddress(addr)
 }
 
 func (a *App) getChain() string {

@@ -1,6 +1,9 @@
 package app
 
-import "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+import (
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+)
 
 func (a *App) IsLayoutOn(layout string) bool {
 	return a.session.Toggles.IsOn(layout)
@@ -37,4 +40,27 @@ func (a *App) TabSwitched(route, tab string) {
 func (a *App) GetActiveTab(route string) string {
 	ret, _ := a.session.LastTab.Load(route)
 	return ret
+}
+
+func (a *App) GetAppTitle() string {
+	return a.session.Window.Title
+}
+
+func (a *App) GetRouteAndSub() (string,string) {
+	if !a.isConfigured() {
+		return "/wizard"
+	}
+
+	route := a.session.LastRoute
+	sub, _ := a.session.LastSub.Load(route)
+	if len(sub) > 0 {
+		route += "/" + sub
+	}
+
+	return route
+}
+
+func (a *App) GetSelected() base.Address {
+	addr, _ := a.session.LastSub.Load("/history")
+	return base.HexToAddress(addr)
 }
