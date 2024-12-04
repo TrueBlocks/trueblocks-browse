@@ -55,6 +55,7 @@ func NewApp() *App {
 	}
 	a.session.LastSub = &types.StringMap{}
 	a.session.LastTab = &types.StringMap{}
+	a.session.Flags = &types.BoolMap{}
 	a.timer = NewTimer()
 
 	return a

@@ -43,11 +43,11 @@ export const Menu = () => {
         const addr = address as unknown as string;
         route = route.replace(":address", addr);
         setLocation(route);
-        SetLastRoute("/history", addr); // TODO: Put active Tab in App state so we can use it here
+        SetLastRoute("/history", addr);
       });
       setActiveRoute("/history/:address");
     } else {
-      SetLastRoute(route, ""); // TODO: Put active Tab in App state so we can use it here
+      SetLastRoute(route, "");
       setActiveRoute(route);
     }
   };

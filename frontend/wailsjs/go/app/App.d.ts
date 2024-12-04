@@ -137,7 +137,7 @@ export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
 
-export function TabSwitched(arg1:string,arg2:string):Promise<void>;
+export function SetLastTab(arg1:string,arg2:string):Promise<void>;
 
 export function ToggleAccordion(arg1:menu.CallbackData):Promise<void>;
 

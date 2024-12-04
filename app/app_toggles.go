@@ -5,6 +5,11 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
+func (a *App) SetLastRoute(route, subRoute string) {
+	a.session.SetRoute(route, subRoute, tab)
+	a.saveSession()
+}
+
 func (a *App) IsLayoutOn(layout string) bool {
 	return a.session.Toggles.IsOn(layout)
 }
@@ -32,8 +37,8 @@ func (a *App) SetHeaderOn(route, tab string, onOff bool) {
 	a.saveSession()
 }
 
-func (a *App) TabSwitched(route, tab string) {
-	logger.InfoBB("TabSwitched", route, tab)
+func (a *App) SetLastTab(route, tab string) {
+	logger.InfoBB("SetLastTab", route, tab)
 	a.session.SetTab(route, tab)
 }
 

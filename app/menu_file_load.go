@@ -51,8 +51,7 @@ func (a *App) readFile(fn string) (bool, error) {
 		a.dirty = false
 
 		a.session.LastFolder, a.session.LastFile = filepath.Split(fn)
-		a.session.LastSub.Store("/history", pF.Selected.Hex())
-		a.session.LastTab.Store("history", "")
+		a.SetLastRoute("/history", pF.Selected.Hex())
 		a.saveSession()
 
 		go a.loadHistory(nil, nil)

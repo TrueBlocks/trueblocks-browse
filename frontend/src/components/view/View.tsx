@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Group, Stack, Tabs } from "@mantine/core";
 import { SearchBar, ViewTitle } from "@components";
-import { TabSwitched } from "@gocode/app/App";
+import { SetLastTab } from "@gocode/app/App";
 import { useViewState } from "@state";
 import classes from "./View.module.css";
 
@@ -30,7 +30,7 @@ export const View = ({ forms, searchable = false }: ViewProps) => {
         onChange={(newTab) => {
           if (newTab !== null) {
             setActiveTab(newTab);
-            TabSwitched(route, newTab);
+            SetLastTab(route, newTab);
           }
         }}
       >

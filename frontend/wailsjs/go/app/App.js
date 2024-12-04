@@ -262,8 +262,8 @@ export function SystemQuit(arg1) {
   return window['go']['app']['App']['SystemQuit'](arg1);
 }
 
-export function TabSwitched(arg1, arg2) {
-  return window['go']['app']['App']['TabSwitched'](arg1, arg2);
+export function SetLastTab(arg1, arg2) {
+  return window['go']['app']['App']['SetLastTab'](arg1, arg2);
 }
 
 export function ToggleAccordion(arg1) {
