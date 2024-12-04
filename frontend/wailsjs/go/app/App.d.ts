@@ -71,7 +71,7 @@ export function GetMenus():Promise<menu.Menu>;
 
 export function GetName(arg1:base.Address):Promise<string>;
 
-export function GetRoute():Promise<string>;
+export function GetLastRoute():Promise<string>;
 
 export function GetLastAddress():Promise<base.Address>;
 

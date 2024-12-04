@@ -42,7 +42,7 @@ func (a *App) ToggleAccordion(cb *menu.CallbackData) {
 	// TODO: a leading `/` and in others it doesn't. This is confusing. Can we
 	// TODO: collapse these two ideas into one? It's also intermingled with SubRoute
 	// TODO: (i.e., address for history view for example) and the view's active tab.
-	route := a.GetRoute()
+	route := a.GetLastRoute()
 	route = strings.TrimPrefix(route, "/")
 	parts := strings.Split(route, "/")
 	route = parts[0]

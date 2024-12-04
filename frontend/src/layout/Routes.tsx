@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Route as WouterRoute, Switch, useLocation } from "wouter";
-import { GetRoute } from "@gocode/app/App";
+import { GetLastRoute } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { routeItems, RouteItem } from "@layout";
 import { useAppState } from "@state";
@@ -11,7 +11,7 @@ export const Routes = () => {
   const [routes, setRoutes] = useState<RouteItem[]>([]);
 
   useEffect(() => {
-    GetRoute().then((route) => {
+    GetLastRoute().then((route) => {
       setLocation(route);
     });
   }, [setLocation]);

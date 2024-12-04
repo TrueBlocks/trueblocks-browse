@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { StyledNavLink } from "@components";
-import { GetRoute, GetLastAddress, SetRoute } from "@gocode/app/App";
+import { GetLastRoute, GetLastAddress, SetRoute } from "@gocode/app/App";
 import { messages, types } from "@gocode/models";
 import { routeItems, RouteItem } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
@@ -14,7 +14,7 @@ export const Menu = () => {
   const { wizard } = useAppState();
 
   useEffect(() => {
-    GetRoute().then((route) => {
+    GetLastRoute().then((route) => {
       if (route.startsWith("/history")) {
         setActiveRoute("/history/:address");
       } else {

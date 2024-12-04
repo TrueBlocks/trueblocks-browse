@@ -130,8 +130,8 @@ export function GetName(arg1) {
   return window['go']['app']['App']['GetName'](arg1);
 }
 
-export function GetRoute() {
-  return window['go']['app']['App']['GetRoute']();
+export function GetLastRoute() {
+  return window['go']['app']['App']['GetLastRoute']();
 }
 
 export function GetLastAddress() {

@@ -49,7 +49,7 @@ package app
 			{{- end }}
 
 			{{- if $wantsMulti }}
-				if strings.Contains(a.GetRoute(), "/{{ $route }}") {
+				if strings.Contains(a.GetLastRoute(), "/{{ $route }}") {
 					a.ToggleNextTab(cb)
 				} else {
 					a.Navigate({{$param1}}{{$param2}})

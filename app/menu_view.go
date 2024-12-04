@@ -18,10 +18,10 @@ func (a *App) ProjectView(cb *menu.CallbackData) {
 }
 
 func (a *App) HistoryView(cb *menu.CallbackData) {
-	address := a.GetLastAddress()
-	if strings.Contains(a.GetRoute(), "/history") {
+	if strings.Contains(a.GetLastRoute(), "/history") {
 		a.ToggleNextTab(cb)
 	} else {
+		address := a.GetLastAddress()
 		a.Navigate("/history", address.Hex())
 	}
 }
@@ -31,7 +31,7 @@ func (a *App) MonitorsView(cb *menu.CallbackData) {
 }
 
 func (a *App) SharingView(cb *menu.CallbackData) {
-	if strings.Contains(a.GetRoute(), "/sharing") {
+	if strings.Contains(a.GetLastRoute(), "/sharing") {
 		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("/sharing", "")
@@ -39,7 +39,7 @@ func (a *App) SharingView(cb *menu.CallbackData) {
 }
 
 func (a *App) UnchainedView(cb *menu.CallbackData) {
-	if strings.Contains(a.GetRoute(), "/unchained") {
+	if strings.Contains(a.GetLastRoute(), "/unchained") {
 		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("/unchained", "")
@@ -47,7 +47,7 @@ func (a *App) UnchainedView(cb *menu.CallbackData) {
 }
 
 func (a *App) SettingsView(cb *menu.CallbackData) {
-	if strings.Contains(a.GetRoute(), "/settings") {
+	if strings.Contains(a.GetLastRoute(), "/settings") {
 		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("/settings", "")
