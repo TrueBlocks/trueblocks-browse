@@ -11,12 +11,6 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-var defSub StringMap
-
-func init() {
-	defSub.Store("/history", "0xf503017d7baf7fbc0fff7492b751025c6a78179b")
-}
-
 // Session stores ephemeral things such as last window position,
 // last view, and recent file list.
 type Session struct {
@@ -26,7 +20,7 @@ type Session struct {
 	LastRoute  string     `json:"lastRoute"`
 	LastSub    *StringMap `json:"lastSub"`
 	LastTab    *StringMap `json:"lastTab"`
-	Toggles    Toggles    `json:"toggles"`
+	Flags      *BoolMap   `json:"flags"`
 	Window     Window     `json:"window"`
 	WizardStr  string     `json:"wizardStr"`
 	Chain      string     `json:"-"`
@@ -41,31 +35,24 @@ func (s *Session) ShallowCopy() Session {
 	return *s
 }
 
-var defLayout = Layout{
-	Header: true,
-	Menu:   true,
-	Help:   true,
-	Footer: true,
-}
+var defSub StringMap
+var defTab StringMap
+var defFlags BoolMap
 
-var defHeader = Headers{
-	Project:   false,
-	History:   true,
-	Monitors:  false,
-	Names:     false,
-	Abis:      false,
-	Indexes:   false,
-	Manifests: false,
-	Status:    true,
-	Settings:  true,
-	Daemons:   true,
-	Session:   true,
-	Config:    true,
-	Wizard:    true,
-}
+func init() {
+	defSub.Store("/history", "0xf503017d7baf7fbc0fff7492b751025c6a78179b")
 
-var defDaemons = Daemons{
-	Freshen: true,
+	defFlags.Store("header", true)
+	defFlags.Store("menu", true)
+	defFlags.Store("help", true)
+	defFlags.Store("footer", true)
+	defFlags.Store("history-history", true)
+	defFlags.Store("settings-status", true)
+	defFlags.Store("settings-session", true)
+	defFlags.Store("settings-config", true)
+	defFlags.Store("daemons", true)
+	defFlags.Store("wizard", true)
+	defFlags.Store("freshen", true)
 }
 
 var defaultSession = Session{
@@ -73,7 +60,8 @@ var defaultSession = Session{
 	LastFile:  "Untitled.tbx",
 	LastRoute: "/wizard",
 	LastSub:   &defSub,
-	LastTab:   &StringMap{},
+	LastTab:   &defTab,
+	Flags:     &defFlags,
 	Window: Window{
 		X:      0,
 		Y:      0,
@@ -81,11 +69,6 @@ var defaultSession = Session{
 		Height: 0,
 	},
 	WizardStr: "welcome",
-	Toggles: Toggles{
-		Layout:  defLayout,
-		Headers: defHeader,
-		Daemons: defDaemons,
-	},
 }
 
 // Save saves the session to the configuration folder.
@@ -143,18 +126,6 @@ func (s *Session) Load() error {
 	return nil
 }
 
-func (s *Session) SetTab(route, tab string) {
-	s.LastTab.Store(route, tab)
-	_ = s.Save()
-}
-
-func (s *Session) SetRoute(route, subRoute, tab string) {
-	s.LastRoute = route
-	s.LastSub.Store(route, subRoute)
-	s.LastTab.Store(route, tab)
-	_ = s.Save()
-}
-
 var ErrScreenNotFound = errors.New("screen not found")
 
 // CleanWindowSize ensures a valid window size. (If the app has never run before
@@ -209,134 +180,36 @@ func (w *Window) String() string {
 	return string(bytes)
 }
 
-type Layout struct {
-	Header bool `json:"header"`
-	Menu   bool `json:"menu"`
-	Help   bool `json:"help"`
-	Footer bool `json:"footer"`
+func (s *Session) GetSub(route string) string {
+	ret, _ := s.LastSub.Load(route)
+	return ret
 }
 
-type Headers struct {
-	Project   bool `json:"project"`
-	History   bool `json:"history"`
-	Monitors  bool `json:"monitors"`
-	Names     bool `json:"names"`
-	Abis      bool `json:"abis"`
-	Indexes   bool `json:"indexes"`
-	Manifests bool `json:"manifests"`
-	Status    bool `json:"status"`
-	Settings  bool `json:"settings"`
-	Daemons   bool `json:"daemons"`
-	Session   bool `json:"session"`
-	Config    bool `json:"config"`
-	Wizard    bool `json:"wizard"`
+func (s *Session) GetRouteAndSub() (string, string) {
+	return s.LastRoute, s.GetSub(s.LastRoute)
 }
 
-type Daemons struct {
-	Freshen bool `json:"freshen"`
-	Scraper bool `json:"scraper"`
-	Ipfs    bool `json:"ipfs"`
+func (s *Session) SetRouteAndSub(route, subRoute string) {
+	s.LastRoute = route
+	s.LastSub.Store(route, subRoute)
+	_ = s.Save()
 }
 
-type Toggles struct {
-	Layout  Layout  `json:"layout"`
-	Headers Headers `json:"headers"`
-	Daemons Daemons `json:"daemons"`
+func (s *Session) GetTab(route string) string {
+	tab, _ := s.LastTab.Load(route)
+	return tab
 }
 
-func (t *Toggles) IsOn(which string) bool {
-	if which == "" {
-		which = "project"
-	}
-	switch which {
-	case "header":
-		return t.Layout.Header
-	case "menu":
-		return t.Layout.Menu
-	case "help":
-		return t.Layout.Help
-	case "footer":
-		return t.Layout.Footer
-	case "project":
-		return t.Headers.Project
-	case "history":
-		return t.Headers.History
-	case "monitors":
-		return t.Headers.Monitors
-	case "names":
-		return t.Headers.Names
-	case "abis":
-		return t.Headers.Abis
-	case "indexes":
-		return t.Headers.Indexes
-	case "manifests":
-		return t.Headers.Manifests
-	case "status":
-		return t.Headers.Status
-	case "settings":
-		return t.Headers.Settings
-	case "daemons":
-		return t.Headers.Daemons
-	case "session":
-		return t.Headers.Session
-	case "config":
-		return t.Headers.Config
-	case "wizard":
-		return t.Headers.Wizard
-	case "freshen":
-		return t.Daemons.Freshen
-	case "scraper":
-		return t.Daemons.Scraper
-	case "ipfs":
-		return t.Daemons.Ipfs
-	}
-	return false
+func (s *Session) SetTab(route, tab string) {
+	s.LastTab.Store(route, tab)
+	_ = s.Save()
 }
 
-func (t *Toggles) SetState(which string, onOff bool) {
-	if which == "" {
-		which = "project"
-	}
-	switch which {
-	case "header":
-		t.Layout.Header = onOff
-	case "menu":
-		t.Layout.Menu = onOff
-	case "help":
-		t.Layout.Help = onOff
-	case "footer":
-		t.Layout.Footer = onOff
-	case "project":
-		t.Headers.Project = onOff
-	case "history":
-		t.Headers.History = onOff
-	case "monitors":
-		t.Headers.Monitors = onOff
-	case "names":
-		t.Headers.Names = onOff
-	case "abis":
-		t.Headers.Abis = onOff
-	case "indexes":
-		t.Headers.Indexes = onOff
-	case "manifests":
-		t.Headers.Manifests = onOff
-	case "status":
-		t.Headers.Status = onOff
-	case "settings":
-		t.Headers.Settings = onOff
-	case "daemons":
-		t.Headers.Daemons = onOff
-	case "session":
-		t.Headers.Session = onOff
-	case "config":
-		t.Headers.Config = onOff
-	case "wizard":
-		t.Headers.Wizard = onOff
-	case "freshen":
-		t.Daemons.Freshen = onOff
-	case "scraper":
-		t.Daemons.Scraper = onOff
-	case "ipfs":
-		t.Daemons.Ipfs = onOff
-	}
+func (s *Session) IsFlagOn(key string) bool {
+	ret, _ := s.Flags.Load(key)
+	return ret
+}
+
+func (s *Session) SetFlagOn(key string, value bool) {
+	s.Flags.Store(key, value)
 }

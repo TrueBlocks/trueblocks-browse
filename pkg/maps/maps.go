@@ -1,6 +1,9 @@
 package maps
 
-import "sync"
+import (
+	"encoding/json"
+	"sync"
+)
 
 type Map[K comparable, V any] struct {
 	internal sync.Map
@@ -34,4 +37,24 @@ func (m *Map[K, V]) Clear() {
 		m.internal.Delete(key)
 		return true
 	})
+}
+
+func (m *Map[K, V]) MarshalJSON() ([]byte, error) {
+	serialized := make(map[K]V)
+	m.Range(func(key K, value V) bool {
+		serialized[key] = value
+		return true
+	})
+	return json.Marshal(serialized)
+}
+
+func (m *Map[K, V]) UnmarshalJSON(data []byte) error {
+	deserialized := make(map[K]V)
+	if err := json.Unmarshal(data, &deserialized); err != nil {
+		return err
+	}
+	for key, value := range deserialized {
+		m.Store(key, value)
+	}
+	return nil
 }
