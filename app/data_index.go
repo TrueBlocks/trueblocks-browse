@@ -34,7 +34,7 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.indexes.NeedsUpdate() {
+	if !a.isConfigured() || !a.indexes.NeedsUpdate() {
 		return nil
 	}
 	updater := a.indexes.Updater

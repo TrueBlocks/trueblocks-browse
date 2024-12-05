@@ -36,7 +36,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.monitors.NeedsUpdate() {
+	if !a.isConfigured() || !a.monitors.NeedsUpdate() {
 		return nil
 	}
 	updater := a.monitors.Updater

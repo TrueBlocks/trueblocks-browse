@@ -33,7 +33,7 @@ func (a *App) loadDaemons(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.daemons.NeedsUpdate() {
+	if !a.isConfigured() || !a.daemons.NeedsUpdate() {
 		return nil
 	}
 	updater := a.daemons.Updater

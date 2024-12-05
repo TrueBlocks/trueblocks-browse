@@ -38,7 +38,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.names.NeedsUpdate() {
+	if !a.isConfigured() || !a.names.NeedsUpdate() {
 		return nil
 	}
 	updater := a.names.Updater

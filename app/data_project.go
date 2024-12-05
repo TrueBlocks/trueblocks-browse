@@ -34,7 +34,7 @@ func (a *App) loadProject(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.project.NeedsUpdate() {
+	if !a.isConfigured() || !a.project.NeedsUpdate() {
 		return nil
 	}
 	updater := a.project.Updater
@@ -94,7 +94,6 @@ func (a *App) pullProjects() (items []types.HistoryContainer, meta *types.Meta, 
 		return true
 	})
 	// EXISTING_CODE
-	return
 }
 
 // EXISTING_CODE

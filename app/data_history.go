@@ -47,7 +47,7 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	// EXISTING_CODE
 
-	if !history.NeedsUpdate() {
+	if !a.isConfigured() || !history.NeedsUpdate() {
 		return nil
 	}
 	updater := history.Updater

@@ -33,7 +33,7 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.wizard.NeedsUpdate() {
+	if !a.isConfigured() || !a.wizard.NeedsUpdate() {
 		return nil
 	}
 	updater := a.wizard.Updater

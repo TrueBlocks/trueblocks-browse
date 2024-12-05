@@ -34,7 +34,7 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.manifests.NeedsUpdate() {
+	if !a.isConfigured() || !a.manifests.NeedsUpdate() {
 		return nil
 	}
 	updater := a.manifests.Updater

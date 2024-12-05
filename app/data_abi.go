@@ -34,7 +34,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.abis.NeedsUpdate() {
+	if !a.isConfigured() || !a.abis.NeedsUpdate() {
 		return nil
 	}
 	updater := a.abis.Updater

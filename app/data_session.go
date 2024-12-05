@@ -33,7 +33,7 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.session.NeedsUpdate() {
+	if !a.isConfigured() || !a.session.NeedsUpdate() {
 		return nil
 	}
 	updater := a.session.Updater

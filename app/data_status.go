@@ -35,7 +35,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.status.NeedsUpdate() {
+	if !a.isConfigured() || !a.status.NeedsUpdate() {
 		return nil
 	}
 	updater := a.status.Updater
