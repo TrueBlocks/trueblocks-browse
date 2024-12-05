@@ -3,12 +3,12 @@ import { Text } from "@mantine/core";
 import { sdk } from "@gocode/models";
 import { useAppState, useViewState } from "@state";
 
-const debug = false;
+const debug = import.meta.env.VITE_DEBUG === "true";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const DebugState = ({ u }: { u: sdk.Updater[] }) => {
   const { counters } = useAppState();
-  const { route } = useViewState();
+  const { route, activeTab, headerShows } = useViewState();
 
   useEffect(() => {
     if (!counters.current[route]) {
@@ -30,6 +30,9 @@ export const DebugState = ({ u }: { u: sdk.Updater[] }) => {
       <Text>{`nItems: ${nItems}`}</Text>
       {/* <Text>{`updater: ${JSON.stringify(u, null, 2)}`}</Text> */}
       <Text>{`renderCount: ${counters.current[route]}`}</Text>
+      <Text>{`route: ${route}`}</Text>
+      <Text>{`tab: ${activeTab}`}</Text>
+      <Text>{`headerShows: ${JSON.stringify(headerShows)}`}</Text>
     </div>
   );
 };
