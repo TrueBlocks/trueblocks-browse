@@ -14,12 +14,22 @@ func (a *App) SetLayoutOn(layout string, onOff bool) {
 }
 
 func (a *App) IsHeaderOn(route, tab string) bool {
-	return a.session.IsFlagOn(route + "-" + tab)
+	key := route + "-" + tab
+	return a.session.IsFlagOn(key)
 }
 
 func (a *App) SetHeaderOn(route, tab string, onOff bool) {
-	a.session.SetFlagOn(route+"-"+tab, onOff)
+	key := route + "-" + tab
+	a.session.SetFlagOn(key, onOff)
 	a.saveSession()
+}
+
+func (a *App) ToggleHeader(route, tab string) bool {
+	key := route + "-" + tab
+	newState := !a.session.IsFlagOn(key)
+	a.session.SetFlagOn(key, newState)
+	a.saveSession()
+	return newState
 }
 
 func (a *App) IsDaemonOn(daemon string) bool {

@@ -1,6 +1,6 @@
 import { useState, createContext, useEffect, useContext, ReactNode } from "react";
 import { Pager } from "@components";
-import { IsHeaderOn, SetHeaderOn, SetFilter, GetLastTab, GetFilter } from "@gocode/app/App";
+import { IsHeaderOn, SetHeaderOn, SetFilter, GetLastTab, GetFilter, SetLastTab } from "@gocode/app/App";
 import { messages, app } from "@gocode/models";
 import { Page, useKeyboardPaging } from "@hooks";
 import { Route } from "@layout";
@@ -59,14 +59,14 @@ export const ViewStateProvider = ({
   const lines = 10;
   const pager = useKeyboardPaging(nItems, lines, onEnter);
 
-  // - tabs -----------------------------------------------------------
+  // - route/tabs -----------------------------------------------------------
   useEffect(() => {
     GetLastTab(route).then((tab) => {
       setActiveTab(tab || tabs[0]);
     });
   }, [route, tabs, setActiveTab]);
 
-  // - tabs -----------------------------------------------------------
+  // - route/tabs -----------------------------------------------------------
   useEffect(() => {
     const handleSwitchTab = (msg: messages.MessageMsg) => {
       const { string1 } = msg;
@@ -87,6 +87,7 @@ export const ViewStateProvider = ({
 
       if (newTab !== activeTab) {
         setActiveTab(newTab);
+        SetLastTab(route, newTab);
       }
     };
 
@@ -94,28 +95,32 @@ export const ViewStateProvider = ({
     return () => {
       EventsOff(messages.Message.SWITCHTAB);
     };
-  }, [tabs, activeTab, setActiveTab]);
+  }, [route, tabs, activeTab, setActiveTab]);
 
   // - headers -----------------------------------------------------------
-  const handleCollapse = (tab: string, newState: string | null) => {
+  const handleCollapse = (route: string, newState: string | null) => {
     const isShowing = newState === "header";
-    SetHeaderOn(route, tab, isShowing).then(() => {
+    const key = `${route}-${activeTab}`;
+    SetHeaderOn(route, activeTab, isShowing).then(() => {
       setHeaderShows((prev) => ({
         ...prev,
-        [tab]: isShowing,
+        [key]: isShowing,
       }));
     });
   };
 
   // - headers -----------------------------------------------------------
   useEffect(() => {
-    const fetchHeaderStates = async () => {
-      const newHeaderShows: Record<string, boolean> = {};
-      for (const tab of tabs) {
-        const isShowing = await IsHeaderOn(route, tab);
-        newHeaderShows[tab] = isShowing;
-      }
-      setHeaderShows(newHeaderShows);
+    const fetchHeaderStates = () => {
+      tabs.forEach((tab) => {
+        const key = `${route}-${tab}`;
+        IsHeaderOn(route, tab).then((isShowing) => {
+          setHeaderShows((prev) => ({
+            ...prev,
+            [key]: isShowing,
+          }));
+        });
+      });
     };
 
     fetchHeaderStates();
@@ -123,27 +128,23 @@ export const ViewStateProvider = ({
 
   // - headers -----------------------------------------------------------
   useEffect(() => {
-    const handleAccordion = (msg: messages.MessageMsg) => {
-      const cmp = route === "" ? "project" : route;
-      const tab = msg.string2 || ""; // Use msg.string2 as the tab if provided, or fallback to an empty string.
-      if (tab && cmp === msg.string1) {
-        IsHeaderOn(cmp, tab).then((onOff) => {
-          SetHeaderOn(cmp, tab, !onOff).then(() => {
-            setHeaderShows((prev) => ({
-              ...prev,
-              [tab]: !onOff,
-            }));
-          });
-        });
-      }
+    const handleAccordion = (route: string, tab: string, isShowing: boolean) => {
+      const key = `${route}-${tab}`;
+      setHeaderShows((prev) => ({
+        ...prev,
+        [key]: isShowing,
+      }));
     };
 
     const { Message } = messages;
-    EventsOn(Message.TOGGLEACCORDION, handleAccordion);
+    EventsOn(Message.TOGGLEACCORDION, (msg: { string1: string; string2: string; bool: boolean }) => {
+      handleAccordion(msg.string1, msg.string2, msg.bool);
+    });
+
     return () => {
       EventsOff(Message.TOGGLEACCORDION);
     };
-  }, [route]);
+  }, []);
 
   // - pagination -----------------------------------------------------------
   useEffect(() => {

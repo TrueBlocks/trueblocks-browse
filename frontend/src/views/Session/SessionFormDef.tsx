@@ -55,6 +55,6 @@ const SessionWindow = () => {
 
 const SessionFlags = () => {
   const { session } = useAppState();
-  return <div>{`${JSON.stringify(session.toggles, null, 2)}`}</div>;
+  return <div>{`${JSON.stringify(session.flags, null, 2)}`}</div>;
 };
 // EXISTING_CODE

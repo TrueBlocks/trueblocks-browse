@@ -141,15 +141,17 @@ export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
 
 export function ToggleAccordion(arg1:menu.CallbackData):Promise<void>;
 
+export function ToggleAppFooter(arg1:menu.CallbackData):Promise<void>;
+
+export function ToggleAppHeader(arg1:menu.CallbackData):Promise<void>;
+
+export function ToggleAppHelp(arg1:menu.CallbackData):Promise<void>;
+
+export function ToggleAppMenu(arg1:menu.CallbackData):Promise<void>;
+
 export function ToggleDaemon(arg1:string):Promise<void>;
 
-export function ToggleFooter(arg1:menu.CallbackData):Promise<void>;
-
-export function ToggleHeader(arg1:menu.CallbackData):Promise<void>;
-
-export function ToggleHelp(arg1:menu.CallbackData):Promise<void>;
-
-export function ToggleMenu(arg1:menu.CallbackData):Promise<void>;
+export function ToggleHeader(arg1:string,arg2:string):Promise<boolean>;
 
 export function ToggleNextTab(arg1:menu.CallbackData):Promise<void>;
 

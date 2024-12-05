@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Container, Fieldset, Grid, Accordion } from "@mantine/core";
+import { Text, Container, Fieldset, Grid, Accordion } from "@mantine/core";
 import { IconChevronsUp } from "@tabler/icons-react";
 import { FieldRenderer, FieldGroup, isCollapsable, isButton, ButtonTray } from "@components";
 import { useViewState } from "@state";
@@ -11,14 +11,13 @@ type FormTableProps<T> = {
 };
 
 export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
-  const { headerShows, handleCollapse, route } = useViewState();
+  const { route, activeTab, headerShows, handleCollapse } = useViewState();
 
   const collapsableGroups = groups.filter((group) => isCollapsable(group) && !isButton(group));
   const nonCollapsableGroups = groups.filter((group) => !isCollapsable(group));
   const buttonGroup = groups.find((group) => isButton(group)) || null;
 
-  if (headerShows == null) {
-    // avoids flashing
+  if (!headerShows || Object.keys(headerShows).length === 0) {
     return <></>;
   }
 
@@ -39,20 +38,23 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
       backgroundColor: "white",
     },
   };
+
+  const headerKey = `${route}-${activeTab}`;
+
   return (
     <Container styles={{ root: { minWidth: "100%" } }}>
       <Accordion
         classNames={{ chevron: classes.chevron }}
-        data-rotate={headerShows ? "true" : "false"}
+        data-rotate={headerShows[headerKey] ? "true" : "false"}
         styles={style1}
-        value={headerShows ? "header" : null}
+        value={headerShows[headerKey] ? "header" : null}
         onChange={(newState) => handleCollapse(route, newState)}
         chevron={null}
       >
         <Accordion.Item value="header">
           <CustomAccordionControl
-            isOpen={headerShows[route]}
-            onToggle={() => handleCollapse(route, headerShows[route] ? null : "header")}
+            isOpen={headerShows[headerKey]}
+            onToggle={() => handleCollapse(route, headerShows[headerKey] ? null : "header")}
           >
             <ButtonTray buttonGroup={buttonGroup} />
           </CustomAccordionControl>

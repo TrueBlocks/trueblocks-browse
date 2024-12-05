@@ -270,24 +270,28 @@ export function ToggleAccordion(arg1) {
   return window['go']['app']['App']['ToggleAccordion'](arg1);
 }
 
+export function ToggleAppFooter(arg1) {
+  return window['go']['app']['App']['ToggleAppFooter'](arg1);
+}
+
+export function ToggleAppHeader(arg1) {
+  return window['go']['app']['App']['ToggleAppHeader'](arg1);
+}
+
+export function ToggleAppHelp(arg1) {
+  return window['go']['app']['App']['ToggleAppHelp'](arg1);
+}
+
+export function ToggleAppMenu(arg1) {
+  return window['go']['app']['App']['ToggleAppMenu'](arg1);
+}
+
 export function ToggleDaemon(arg1) {
   return window['go']['app']['App']['ToggleDaemon'](arg1);
 }
 
-export function ToggleFooter(arg1) {
-  return window['go']['app']['App']['ToggleFooter'](arg1);
-}
-
-export function ToggleHeader(arg1) {
-  return window['go']['app']['App']['ToggleHeader'](arg1);
-}
-
-export function ToggleHelp(arg1) {
-  return window['go']['app']['App']['ToggleHelp'](arg1);
-}
-
-export function ToggleMenu(arg1) {
-  return window['go']['app']['App']['ToggleMenu'](arg1);
+export function ToggleHeader(arg1, arg2) {
+  return window['go']['app']['App']['ToggleHeader'](arg1, arg2);
 }
 
 export function ToggleNextTab(arg1) {

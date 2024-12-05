@@ -5,7 +5,6 @@ package app
 // EXISTING_CODE
 import (
 	"fmt"
-	"io"
 	"sync"
 	"sync/atomic"
 
@@ -73,9 +72,6 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 
 func (a *App) pullStatus() (items []types.Status, meta *types.Meta, err error) {
 	// EXISTING_CODE
-	w := logger.GetLoggerWriter()
-	logger.SetLoggerWriter(io.Discard)
-	defer logger.SetLoggerWriter(w)
 	opts := sdk.StatusOptions{
 		Globals: sdk.Globals{
 			Chain:   a.getChain(),

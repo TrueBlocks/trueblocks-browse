@@ -7,6 +7,8 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/index"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
@@ -19,6 +21,15 @@ var freshenMutex sync.Mutex
 func (a *App) Freshen() error {
 	if !a.isConfigured() {
 		return fmt.Errorf("App not configured")
+	}
+
+	// If the index is not initialized yet, we can't do anything
+	if configErr := index.IsInitialized(a.getChain(), config.ExpectedVersion()); configErr != nil {
+		if configErr == index.ErrNotInitialized {
+			return nil
+		} else {
+			return configErr
+		}
 	}
 
 	if !freshenLock.CompareAndSwap(0, 1) {

@@ -93,6 +93,7 @@ func (a *App) pullProjects() (items []types.HistoryContainer, meta *types.Meta, 
 		items = append(items, h)
 		return true
 	})
+	return
 	// EXISTING_CODE
 }
 
