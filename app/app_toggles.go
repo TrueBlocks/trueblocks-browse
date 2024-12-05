@@ -2,58 +2,46 @@ package app
 
 import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-func (a *App) SetLastRoute(route, subRoute string) {
-	a.session.SetRoute(route, subRoute, tab)
-	a.saveSession()
-}
-
 func (a *App) IsLayoutOn(layout string) bool {
-	return a.session.Toggles.IsOn(layout)
-}
-
-func (a *App) IsDaemonOn(daemon string) bool {
-	return a.session.Toggles.IsOn(daemon)
-}
-
-func (a *App) IsHeaderOn(header, tab string) bool {
-	return a.session.Toggles.IsOn(header + "-" + tab)
+	return a.session.IsFlagOn(layout)
 }
 
 func (a *App) SetLayoutOn(layout string, onOff bool) {
-	a.session.Toggles.SetState(layout, onOff)
+	a.session.SetFlagOn(layout, onOff)
 	a.saveSession()
 }
 
-func (a *App) SetDaemonOn(daemon string, onOff bool) {
-	a.session.Toggles.SetState(daemon, onOff)
-	a.saveSession()
+func (a *App) IsHeaderOn(route, tab string) bool {
+	return a.session.IsFlagOn(route + "-" + tab)
 }
 
 func (a *App) SetHeaderOn(route, tab string, onOff bool) {
-	a.session.Toggles.SetState(route+"-"+tab, onOff)
+	a.session.SetFlagOn(route+"-"+tab, onOff)
 	a.saveSession()
 }
 
-func (a *App) SetLastTab(route, tab string) {
-	logger.InfoBB("SetLastTab", route, tab)
-	a.session.SetTab(route, tab)
+func (a *App) IsDaemonOn(daemon string) bool {
+	return a.session.IsFlagOn(daemon)
 }
 
-func (a *App) GetLastTab(route string) string {
-	ret, _ := a.session.LastTab.Load(route)
-	return ret
+func (a *App) SetDaemonOn(daemon string, onOff bool) {
+	a.session.SetFlagOn(daemon, onOff)
+	a.saveSession()
 }
 
-func (a *App) GetRouteAndSub() (string, string) {
+func (a *App) SetLastRoute(route, subRoute string) {
+	a.session.SetRouteAndSub(route, subRoute)
+	a.saveSession()
+}
+
+func (a *App) GetLastRoute() string {
 	if !a.isConfigured() {
 		return "/wizard"
 	}
 
-	route := a.session.LastRoute
-	sub, _ := a.session.LastSub.Load(route)
+	route, sub := a.session.GetRouteAndSub()
 	if len(sub) > 0 {
 		route += "/" + sub
 	}
@@ -62,6 +50,13 @@ func (a *App) GetRouteAndSub() (string, string) {
 }
 
 func (a *App) GetLastAddress() base.Address {
-	addr, _ := a.session.LastSub.Load("/history")
-	return base.HexToAddress(addr)
+	return base.HexToAddress(a.session.GetSub("/history"))
+}
+
+func (a *App) SetLastTab(route, tab string) {
+	a.session.SetTab(route, tab)
+}
+
+func (a *App) GetLastTab(route string) string {
+	return a.session.GetTab(route)
 }

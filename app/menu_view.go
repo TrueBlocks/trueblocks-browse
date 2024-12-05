@@ -18,10 +18,10 @@ func (a *App) ProjectView(cb *menu.CallbackData) {
 }
 
 func (a *App) HistoryView(cb *menu.CallbackData) {
+	address := a.GetLastAddress()
 	if strings.Contains(a.GetLastRoute(), "/history") {
 		a.ToggleNextTab(cb)
 	} else {
-		address := a.GetLastAddress()
 		a.Navigate("/history", address.Hex())
 	}
 }

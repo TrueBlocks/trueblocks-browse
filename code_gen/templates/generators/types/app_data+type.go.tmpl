@@ -80,7 +80,7 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !{{$appData}}.NeedsUpdate() {
+	if !a.isConfigured() || !{{$appData}}.NeedsUpdate() {
 		return nil
 	}
 	updater := {{$appData}}.Updater

@@ -49,8 +49,6 @@ export function FileSaveAs(arg1:menu.CallbackData):Promise<void>;
 
 export function Freshen():Promise<void>;
 
-export function GetLastTab(arg1:string):Promise<string>;
-
 export function GetChainInfo(arg1:string):Promise<types.Chain>;
 
 export function GetChains():Promise<Array<string>>;
@@ -67,13 +65,15 @@ export function GetExploreUrl(arg1:string,arg2:boolean,arg3:boolean):Promise<str
 
 export function GetFilter(arg1:string):Promise<types.Filter>;
 
-export function GetMenus():Promise<menu.Menu>;
-
-export function GetName(arg1:base.Address):Promise<string>;
+export function GetLastAddress():Promise<base.Address>;
 
 export function GetLastRoute():Promise<string>;
 
-export function GetLastAddress():Promise<base.Address>;
+export function GetLastTab(arg1:string):Promise<string>;
+
+export function GetMenus():Promise<menu.Menu>;
+
+export function GetName(arg1:base.Address):Promise<string>;
 
 export function GetSession():Promise<types.Session>;
 
@@ -123,9 +123,11 @@ export function SetFilter(arg1:string,arg2:string):Promise<void>;
 
 export function SetHeaderOn(arg1:string,arg2:string,arg3:boolean):Promise<void>;
 
-export function SetLayoutOn(arg1:string,arg2:boolean):Promise<void>;
+export function SetLastRoute(arg1:string,arg2:string):Promise<void>;
 
-export function SetLastRoute(arg1:string,arg2:string,arg3:string):Promise<void>;
+export function SetLastTab(arg1:string,arg2:string):Promise<void>;
+
+export function SetLayoutOn(arg1:string,arg2:boolean):Promise<void>;
 
 export function SettingsView(arg1:menu.CallbackData):Promise<void>;
 
@@ -136,8 +138,6 @@ export function StepWizard(arg1:types.WizStep):Promise<types.WizState>;
 export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
-
-export function SetLastTab(arg1:string,arg2:string):Promise<void>;
 
 export function ToggleAccordion(arg1:menu.CallbackData):Promise<void>;
 

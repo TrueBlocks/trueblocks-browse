@@ -1174,22 +1174,6 @@ export namespace types {
 	
 	
 	
-	export class Daemons {
-	    freshen: boolean;
-	    scraper: boolean;
-	    ipfs: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new Daemons(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.freshen = source["freshen"];
-	        this.scraper = source["scraper"];
-	        this.ipfs = source["ipfs"];
-	    }
-	}
 	export class Filter {
 	    criteria: string;
 	
@@ -1203,42 +1187,6 @@ export namespace types {
 	    }
 	}
 	
-	export class Headers {
-	    project: boolean;
-	    history: boolean;
-	    monitors: boolean;
-	    names: boolean;
-	    abis: boolean;
-	    indexes: boolean;
-	    manifests: boolean;
-	    status: boolean;
-	    settings: boolean;
-	    daemons: boolean;
-	    session: boolean;
-	    config: boolean;
-	    wizard: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new Headers(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.project = source["project"];
-	        this.history = source["history"];
-	        this.monitors = source["monitors"];
-	        this.names = source["names"];
-	        this.abis = source["abis"];
-	        this.indexes = source["indexes"];
-	        this.manifests = source["manifests"];
-	        this.status = source["status"];
-	        this.settings = source["settings"];
-	        this.daemons = source["daemons"];
-	        this.session = source["session"];
-	        this.config = source["config"];
-	        this.wizard = source["wizard"];
-	    }
-	}
 	export class Statement {
 	    accountedFor: base.Address;
 	    // Go type: base
@@ -1783,24 +1731,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class Layout {
-	    header: boolean;
-	    menu: boolean;
-	    help: boolean;
-	    footer: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new Layout(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.header = source["header"];
-	        this.menu = source["menu"];
-	        this.help = source["help"];
-	        this.footer = source["footer"];
-	    }
-	}
 	
 	export class ManifestContainer {
 	    bloomsSize: number;
@@ -2189,7 +2119,6 @@ export namespace types {
 	    y: number;
 	    width: number;
 	    height: number;
-	    title: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new Window(source);
@@ -2201,42 +2130,7 @@ export namespace types {
 	        this.y = source["y"];
 	        this.width = source["width"];
 	        this.height = source["height"];
-	        this.title = source["title"];
 	    }
-	}
-	export class Toggles {
-	    layout: Layout;
-	    headers: Headers;
-	    daemons: Daemons;
-	
-	    static createFrom(source: any = {}) {
-	        return new Toggles(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.layout = this.convertValues(source["layout"], Layout);
-	        this.headers = this.convertValues(source["headers"], Headers);
-	        this.daemons = this.convertValues(source["daemons"], Daemons);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
 	}
 	export class Session {
 	    lastChain: string;
@@ -2247,7 +2141,8 @@ export namespace types {
 	    lastSub?: any;
 	    // Go type: maps
 	    lastTab?: any;
-	    toggles: Toggles;
+	    // Go type: maps
+	    flags?: any;
 	    window: Window;
 	    wizardStr: string;
 	
@@ -2263,7 +2158,7 @@ export namespace types {
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = this.convertValues(source["lastSub"], null);
 	        this.lastTab = this.convertValues(source["lastTab"], null);
-	        this.toggles = this.convertValues(source["toggles"], Toggles);
+	        this.flags = this.convertValues(source["flags"], null);
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
 	    }
@@ -2298,7 +2193,8 @@ export namespace types {
 	    lastSub?: any;
 	    // Go type: maps
 	    lastTab?: any;
-	    toggles: Toggles;
+	    // Go type: maps
+	    flags?: any;
 	    window: Window;
 	    wizardStr: string;
 	    updater: sdk.Updater;
@@ -2319,7 +2215,7 @@ export namespace types {
 	        this.lastRoute = source["lastRoute"];
 	        this.lastSub = this.convertValues(source["lastSub"], null);
 	        this.lastTab = this.convertValues(source["lastTab"], null);
-	        this.toggles = this.convertValues(source["toggles"], Toggles);
+	        this.flags = this.convertValues(source["flags"], null);
 	        this.window = this.convertValues(source["window"], Window);
 	        this.wizardStr = source["wizardStr"];
 	        this.updater = this.convertValues(source["updater"], sdk.Updater);
@@ -2430,7 +2326,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	
 	
 	
 	

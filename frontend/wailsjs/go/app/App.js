@@ -86,10 +86,6 @@ export function Freshen() {
   return window['go']['app']['App']['Freshen']();
 }
 
-export function GetLastTab(arg1) {
-  return window['go']['app']['App']['GetLastTab'](arg1);
-}
-
 export function GetChainInfo(arg1) {
   return window['go']['app']['App']['GetChainInfo'](arg1);
 }
@@ -122,20 +118,24 @@ export function GetFilter(arg1) {
   return window['go']['app']['App']['GetFilter'](arg1);
 }
 
-export function GetMenus() {
-  return window['go']['app']['App']['GetMenus']();
-}
-
-export function GetName(arg1) {
-  return window['go']['app']['App']['GetName'](arg1);
+export function GetLastAddress() {
+  return window['go']['app']['App']['GetLastAddress']();
 }
 
 export function GetLastRoute() {
   return window['go']['app']['App']['GetLastRoute']();
 }
 
-export function GetLastAddress() {
-  return window['go']['app']['App']['GetLastAddress']();
+export function GetLastTab(arg1) {
+  return window['go']['app']['App']['GetLastTab'](arg1);
+}
+
+export function GetMenus() {
+  return window['go']['app']['App']['GetMenus']();
+}
+
+export function GetName(arg1) {
+  return window['go']['app']['App']['GetName'](arg1);
 }
 
 export function GetSession() {
@@ -234,12 +234,16 @@ export function SetHeaderOn(arg1, arg2, arg3) {
   return window['go']['app']['App']['SetHeaderOn'](arg1, arg2, arg3);
 }
 
-export function SetLayoutOn(arg1, arg2) {
-  return window['go']['app']['App']['SetLayoutOn'](arg1, arg2);
+export function SetLastRoute(arg1, arg2) {
+  return window['go']['app']['App']['SetLastRoute'](arg1, arg2);
 }
 
-export function SetLastRoute(arg1, arg2, arg3) {
-  return window['go']['app']['App']['SetLastRoute'](arg1, arg2, arg3);
+export function SetLastTab(arg1, arg2) {
+  return window['go']['app']['App']['SetLastTab'](arg1, arg2);
+}
+
+export function SetLayoutOn(arg1, arg2) {
+  return window['go']['app']['App']['SetLayoutOn'](arg1, arg2);
 }
 
 export function SettingsView(arg1) {
@@ -260,10 +264,6 @@ export function SystemAbout(arg1) {
 
 export function SystemQuit(arg1) {
   return window['go']['app']['App']['SystemQuit'](arg1);
-}
-
-export function SetLastTab(arg1, arg2) {
-  return window['go']['app']['App']['SetLastTab'](arg1, arg2);
 }
 
 export function ToggleAccordion(arg1) {
