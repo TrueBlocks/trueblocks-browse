@@ -391,6 +391,7 @@
             "children": "names,abis",
             "cache_by": "range",
             "cache_type": "cacheable",
+            "attributes": "wantsEnter|wantsSearch",
             "members": [
                 {
                     "name": "chain",

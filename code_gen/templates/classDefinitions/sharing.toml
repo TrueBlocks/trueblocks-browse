@@ -5,7 +5,7 @@
     doc_route = "1045-containers"
     ui_route = "1045-sharing-4"
     ui_icon = "Tag"
-    attributes = ""
+    attributes = "wantsEnter|wantsSearch"
     children = "names,abis"
     cache_type = "cacheable"
     cache_by = "range"

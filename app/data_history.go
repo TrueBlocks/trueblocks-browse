@@ -96,9 +96,12 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) (items
 	defer a.trackPerformance("thing", false)()
 
 	txCnt := a.txCount(address)
+	expectedCnt := a.getHistoryCnt(address)
+
+	outcome := messages.Completed
 	a.emitProgressMsg(messages.Started, address, 0, 0)
 	defer func() {
-		a.emitProgressMsg(messages.Completed, address, txCnt, txCnt)
+		a.emitProgressMsg(outcome, address, txCnt, txCnt)
 	}()
 	_ = errorChan // delint
 	rCtx := a.registerCtx(address)
@@ -113,8 +116,6 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) (items
 			Chain: a.getChain(),
 		},
 	}
-
-	expectedCnt := a.getHistoryCnt(address)
 
 	// we always have a currently opened history which contains the entire history so far...
 	// HIST-HIST
@@ -160,8 +161,8 @@ func (a *App) thing(address base.Address, freq int, errorChan chan error) (items
 
 	_, meta, err = opts.Export() // blocks until forever loop above finishes
 	if err != nil {
-		logger.InfoBM("thing: error in Export")
-		a.emitProgressMsg(messages.Canceled, address, txCnt, txCnt)
+		logger.InfoBM("opts.Export was canceled", err)
+		outcome = messages.Canceled
 		return history.Items, meta, err
 	}
 

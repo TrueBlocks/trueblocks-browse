@@ -69,7 +69,7 @@ export const SharingView = () => {
       tabs={tabs}
     >
       <DebugState u={[names.updater, abis.updater]} />
-      <View forms={forms} />
+      <View forms={forms} searchable />
     </ViewStateProvider>
   );
 };
