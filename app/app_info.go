@@ -28,12 +28,11 @@ func (a *App) getFullPath() string {
 }
 
 func (a *App) FetchAppInfo() AppInfo {
-	address := a.GetLastAddress()
 	return AppInfo{
 		Chain:    a.getChain(),
 		Filename: a.getFullPath(),
 		Dirty:    a.dirty,
 		Meta:     a.meta,
-		Address:  address,
+		Address:  a.GetLastAddress(),
 	}
 }

@@ -8,7 +8,7 @@
 {{ $members := .Members }}
 {{ $hasEmbed := and (gt (len $embedName) 0) true }}
 
-{{ $isHistory := eq $class "History" }}
+{{ $isHistory := or (eq $class "History") (eq .Parent "history") }}
 {{ $isProject := eq $class "Project" }}
 {{ $noChildren := (eq .Children "") }}
 
