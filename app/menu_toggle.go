@@ -33,7 +33,7 @@ func (a *App) ToggleAppFooter(cb *menu.CallbackData) {
 	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) ToggleAccordion(cb *menu.CallbackData) {
+func (a *App) ToggleViewHeader(cb *menu.CallbackData) {
 	if !a.isConfigured() {
 		return
 	}
@@ -43,7 +43,7 @@ func (a *App) ToggleAccordion(cb *menu.CallbackData) {
 	tab := a.GetLastTab(route)
 	newState := a.ToggleHeader(route, tab)
 
-	a.emitMsg(messages.ToggleAccordion, &messages.MessageMsg{
+	a.emitMsg(messages.ToggleHeader, &messages.MessageMsg{
 		String1: route,
 		String2: tab,
 		Bool:    newState,

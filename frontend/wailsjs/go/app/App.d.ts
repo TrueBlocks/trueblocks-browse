@@ -141,8 +141,6 @@ export function SystemAbout(arg1:menu.CallbackData):Promise<void>;
 
 export function SystemQuit(arg1:menu.CallbackData):Promise<void>;
 
-export function ToggleAccordion(arg1:menu.CallbackData):Promise<void>;
-
 export function ToggleAppFooter(arg1:menu.CallbackData):Promise<void>;
 
 export function ToggleAppHeader(arg1:menu.CallbackData):Promise<void>;
@@ -158,6 +156,8 @@ export function ToggleHeader(arg1:string,arg2:string):Promise<boolean>;
 export function ToggleNextTab(arg1:menu.CallbackData):Promise<void>;
 
 export function TogglePrevTab(arg1:menu.CallbackData):Promise<void>;
+
+export function ToggleViewHeader(arg1:menu.CallbackData):Promise<void>;
 
 export function UnchainedView(arg1:menu.CallbackData):Promise<void>;
 

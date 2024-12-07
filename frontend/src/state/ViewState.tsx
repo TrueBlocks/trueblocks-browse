@@ -130,12 +130,12 @@ export const ViewStateProvider = ({
     };
 
     const { Message } = messages;
-    EventsOn(Message.TOGGLEACCORDION, (msg: { string1: string; string2: string; bool: boolean }) => {
+    EventsOn(Message.TOGGLEHEADER, (msg: { string1: string; string2: string; bool: boolean }) => {
       handleAccordion(msg.string1, msg.string2, msg.bool);
     });
 
     return () => {
-      EventsOff(Message.TOGGLEACCORDION);
+      EventsOff(Message.TOGGLEHEADER);
     };
   }, []);
 

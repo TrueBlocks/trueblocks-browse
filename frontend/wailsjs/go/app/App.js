@@ -270,10 +270,6 @@ export function SystemQuit(arg1) {
   return window['go']['app']['App']['SystemQuit'](arg1);
 }
 
-export function ToggleAccordion(arg1) {
-  return window['go']['app']['App']['ToggleAccordion'](arg1);
-}
-
 export function ToggleAppFooter(arg1) {
   return window['go']['app']['App']['ToggleAppFooter'](arg1);
 }
@@ -304,6 +300,10 @@ export function ToggleNextTab(arg1) {
 
 export function TogglePrevTab(arg1) {
   return window['go']['app']['App']['TogglePrevTab'](arg1);
+}
+
+export function ToggleViewHeader(arg1) {
+  return window['go']['app']['App']['ToggleViewHeader'](arg1);
 }
 
 export function UnchainedView(arg1) {

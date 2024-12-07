@@ -333,7 +333,7 @@ export namespace messages {
 	    INFO = "Info",
 	    SWITCHTAB = "SwitchTab",
 	    TOGGLELAYOUT = "ToggleLayout",
-	    TOGGLEACCORDION = "ToggleAccordion",
+	    TOGGLEHEADER = "ToggleHeader",
 	    NAVIGATE = "Navigate",
 	    REFRESH = "Refresh",
 	}
@@ -457,6 +457,11 @@ export namespace sdk {
 
 export namespace types {
 	
+	export enum DaemonState {
+	    STOPPED = "Stopped",
+	    RUNNING = "Running",
+	    PAUSED = "Paused",
+	}
 	export enum WizState {
 	    WELCOME = "welcome",
 	    CONFIG = "config",
@@ -470,11 +475,6 @@ export namespace types {
 	    PREVIOUS = "Previous",
 	    NEXT = "Next",
 	    FINISH = "Finish",
-	}
-	export enum DaemonState {
-	    STOPPED = "Stopped",
-	    RUNNING = "Running",
-	    PAUSED = "Paused",
 	}
 	export class Parameter {
 	    components?: Parameter[];
