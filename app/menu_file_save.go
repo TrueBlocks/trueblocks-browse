@@ -13,8 +13,8 @@ func (a *App) saveFileDialog() (bool, error) {
 	}
 
 	fn, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
-		DefaultDirectory:           a.session.GetFolder(),
-		DefaultFilename:            a.session.GetFile(),
+		DefaultDirectory:           a.getFolder(),
+		DefaultFilename:            a.getFile(),
 		Title:                      "Save File",
 		CanCreateDirectories:       true,
 		ShowHiddenFiles:            false,
@@ -50,8 +50,8 @@ func (a *App) writeFile(fn string) (bool, error) {
 	}
 	a.dirty = false
 	folder, file := filepath.Split(fn)
-	a.session.SetFolder(folder)
-	a.session.SetFile(file)
+	a.setFolder(folder)
+	a.setFile(file)
 	a.saveSession()
 	return true, nil
 }

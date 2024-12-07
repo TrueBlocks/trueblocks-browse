@@ -15,16 +15,8 @@ type AppInfo struct {
 	Address  base.Address `json:"address"`
 }
 
-func (a *App) getFolder() string {
-	return a.session.GetFolder()
-}
-
-func (a *App) getFilename() string {
-	return a.session.GetFile()
-}
-
 func (a *App) getFullPath() string {
-	return filepath.Join(a.getFolder(), a.getFilename())
+	return filepath.Join(a.getFolder(), a.getFile())
 }
 
 func (a *App) FetchAppInfo() AppInfo {

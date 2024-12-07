@@ -30,11 +30,6 @@
     {{ $param1 = ", loadAddress" }}
   {{end}}
 
-  {{ $route := $routeLower }}
-  {{ if $isProject }}
-    {{ $route = "" }}
-  {{ end }}
-
   {{ $handleEnter := `const handleEnter = enterNoop;` }}
   {{ if $wantsEnter }}
     {{ $handleEnter = print `const handleEnter = (page: Page) => {
@@ -84,9 +79,8 @@
       getCoreRowModel: getCoreRowModel(),
     });
 
-  const route = "{{$route}}";
-    const tabs = ["{{$routeLower}}", ...(customTabs || [])];
-    const forms: ViewForm = {
+  const tabs = ["{{$routeLower}}", ...(customTabs || [])];
+  const forms: ViewForm = {
       {{$routeLower}}: <FormTable data={ {{$routeLower}} } groups={ {{$routeName}}FormDef(table)} />,
       ...customForms,
     };
@@ -94,7 +88,6 @@
     return (
       <ViewStateProvider
         // do not remove - delint
-        route={route}
         nItems={ {{$routeLower}}.nItems}
         fetchFn={ {{$fetchFn}}}
         onEnter={handleEnter}

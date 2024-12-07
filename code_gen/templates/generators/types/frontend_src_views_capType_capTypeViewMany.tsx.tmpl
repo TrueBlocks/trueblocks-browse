@@ -70,7 +70,6 @@
 
   {{ apply $childTabs "const {{.}}Table = useReactTable({\ndata: {{.}}?.items || [],\ncolumns: {{firstUpper .}}TableDef,\ngetCoreRowModel: getCoreRowModel(),\n});\n" "\n" }}
 
-  const route = "{{$routeLower}}";
   const tabs = [{{ apply $childTabs "\"{{.}}\"" "," }}, ...(customTabs || [])];
   const forms: ViewForm = {
     {{ apply $childTabs "{{.}}: <FormTable data={ {{.}} } groups={ {{firstUpper .}}FormDef({{.}}Table)} />" "," }},
@@ -84,7 +83,6 @@
   return (
   <ViewStateProvider
     // do not remove - delint
-    route={route}
     nItems={ {{index $childTabs 0}}.nItems}
     fetchFn={ fetch{{$routeName}}}
     onEnter={handleEnter}

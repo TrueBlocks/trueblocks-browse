@@ -1,8 +1,6 @@
 package app
 
 import (
-	"strings"
-
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
@@ -38,14 +36,14 @@ func (a *App) ToggleViewHeader(cb *menu.CallbackData) {
 		return
 	}
 
-	route := a.session.GetRoute()
-	route = strings.Trim(route, "/")
-	tab := a.GetLastTab(route)
-	newState := a.ToggleHeader(route, tab)
+	key := a.GetRawRoute() + "-" + a.GetLastTab()
+	newState := !a.session.IsFlagOn(key)
+	a.session.SetFlagOn(key, newState)
+	a.saveSession()
 
 	a.emitMsg(messages.ToggleHeader, &messages.MessageMsg{
-		String1: route,
-		String2: tab,
+		String1: a.GetRawRoute(),
+		String2: a.GetLastTab(),
 		Bool:    newState,
 	})
 }

@@ -21,7 +21,7 @@ func (a *App) initialize() bool {
 			// we serialize the wizard state in a session string
 			// TODO: BOGUS a.wizard = types. NewWizzardContainer(a.getChain(), []types.WizError{})
 			a.wizard.Chain = a.getChain()
-			a.wizard.State = types.WizState(a.session.GetWizardStr())
+			a.wizard.State = types.WizState(a.wizardStr())
 			logger.InfoBW("Loaded session:", a.cntWizErrs(), "errors")
 			return true
 		}
@@ -39,7 +39,7 @@ func (a *App) initialize() bool {
 			a.addWizErr(WizReasonChainNotConfigured, types.WizConfig, err)
 			return false
 		} else {
-			a.session.SetChain(chain)
+			a.setChain(chain)
 			logger.InfoBW("Loaded config", a.cntWizErrs(), "errors")
 			return true
 		}
@@ -49,7 +49,7 @@ func (a *App) initialize() bool {
 	// The rest depends on the rpc...
 	initRpc := func() bool {
 		os.Setenv("TB_NO_PROVIDER_CHECK", "true")
-		if err := rpc.PingRpc(a.config.Chains[a.session.GetChain()].RpcProvider); err != nil {
+		if err := rpc.PingRpc(a.config.Chains[a.getChain()].RpcProvider); err != nil {
 			wErr := fmt.Errorf("%w: %v", ErrLoadingRpc, err)
 			a.addWizErr(WizReasonFailedRpcPing, types.WizRpc, wErr)
 			os.Unsetenv("TB_NO_PROVIDER_CHECK")
@@ -103,18 +103,16 @@ func (a *App) initialize() bool {
 
 	prepareWindow := func() bool { // window size and placement depends on session file
 		ret := false // do not collapse...we position the window below on both error and not
-		var err error
-		var window types.Window
-		if window, err = a.session.CleanWindowSize(a.ctx); err != nil {
+		if window, err := a.cleanWindow(a.ctx); err != nil {
 			wErr := fmt.Errorf("%w: %v", ErrWindowSize, err)
 			a.addWizErr(WizReasonFailedPrepareWindow, types.WizRpc, wErr)
 		} else {
-			a.session.SetWindow(window)
+			a.setWindow(window)
 			logger.InfoBW("Window size set...")
 			ret = true
 		}
-		runtime.WindowSetPosition(a.ctx, a.session.GetWindow().X, a.session.GetWindow().Y)
-		runtime.WindowSetSize(a.ctx, a.session.GetWindow().Width, a.session.GetWindow().Height)
+		runtime.WindowSetPosition(a.ctx, a.getWindow().X, a.getWindow().Y)
+		runtime.WindowSetSize(a.ctx, a.getWindow().Width, a.getWindow().Height)
 		return ret
 	}
 	_ = prepareWindow()

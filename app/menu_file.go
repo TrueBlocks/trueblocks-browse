@@ -25,7 +25,7 @@ func (a *App) FileOpen(cb *menu.CallbackData) {
 	}
 
 	if fn, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
-		DefaultDirectory:           a.session.GetFolder(),
+		DefaultDirectory:           a.getFolder(),
 		DefaultFilename:            "",
 		Title:                      "Open File",
 		CanCreateDirectories:       true,

@@ -8,10 +8,9 @@ package app
 func (a *App) Reload() {
 	defer a.trackPerformance("Reload", false)()
 
-	route, _ := a.session.GetRouteAndSub()
-	logger.InfoG("Reloading", route, "...")
+	logger.InfoG("Reloading", a.GetRawRoute(), "...")
 
-	switch route {
+	switch a.GetRawRoute() {
 		{{- range .Structures }}
 			{{- if ne .Class "History" }}
 				{{- $hasChildren := ne .Children "" }}

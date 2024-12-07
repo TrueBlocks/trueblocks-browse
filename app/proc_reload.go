@@ -13,21 +13,20 @@ import (
 func (a *App) Reload() {
 	defer a.trackPerformance("Reload", false)()
 
-	route := a.session.GetRoute()
-	logger.InfoG("Reloading", route, "...")
+	logger.InfoG("Reloading", a.GetRawRoute(), "...")
 
-	switch route {
-	case "/":
+	switch a.GetRawRoute() {
+	case "", "project":
 		a.project.Updater.Reset()
 		if err := a.loadProject(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/monitors":
+	case "monitors":
 		a.monitors.Updater.Reset()
 		if err := a.loadMonitors(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/sharing":
+	case "sharing":
 		a.names.Updater.Reset()
 		if err := a.loadNames(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
@@ -36,7 +35,7 @@ func (a *App) Reload() {
 		if err := a.loadAbis(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/unchained":
+	case "unchained":
 		a.indexes.Updater.Reset()
 		if err := a.loadIndexes(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
@@ -45,7 +44,7 @@ func (a *App) Reload() {
 		if err := a.loadManifests(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/settings":
+	case "settings":
 		a.status.Updater.Reset()
 		if err := a.loadStatus(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
@@ -58,12 +57,12 @@ func (a *App) Reload() {
 		if err := a.loadSession(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/daemons":
+	case "daemons":
 		a.daemons.Updater.Reset()
 		if err := a.loadDaemons(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/wizard":
+	case "wizard":
 		a.wizard.Updater.Reset()
 		if err := a.loadWizard(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)

@@ -9,7 +9,7 @@ import (
 )
 
 func (a *App) newFile() {
-	a.session.SetFile("Untitled.tbx")
+	a.setFile("Untitled.tbx")
 	a.saveSession()
 
 	address := base.HexToAddress("0x3836b0e02b4a613ba1d15834e6d77f409099d8f8")
@@ -51,8 +51,8 @@ func (a *App) readFile(fn string) (bool, error) {
 		a.dirty = false
 
 		folder, file := filepath.Split(fn)
-		a.session.SetFolder(folder)
-		a.session.SetFile(file)
+		a.setFolder(folder)
+		a.setFile(file)
 		a.SetLastRoute("/history", pF.Selected.Hex())
 		a.saveSession()
 

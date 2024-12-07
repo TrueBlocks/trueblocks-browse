@@ -11,9 +11,9 @@ func (a *App) saveSession() {
 		w.X, w.Y = runtime.WindowGetPosition(a.ctx)
 		w.Width, w.Height = runtime.WindowGetSize(a.ctx)
 		w.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
-		a.session.SetWindow(w)
+		a.setWindow(w)
 	}
-	// we serialize the wizard state in a session string
-	a.session.SetWizardStr(string(a.wizard.State))
-	_ = a.session.Save()
+	// we serialize the wizard state in a string
+	a.setWizardStr(string(a.wizard.State))
+	a.session.Save()
 }

@@ -26,14 +26,6 @@ func (a *App) SetHeaderOn(route, tab string, onOff bool) {
 	a.saveSession()
 }
 
-func (a *App) ToggleHeader(route, tab string) bool {
-	key := route + "-" + tab
-	newState := !a.session.IsFlagOn(key)
-	a.session.SetFlagOn(key, newState)
-	a.saveSession()
-	return newState
-}
-
 func (a *App) IsDaemonOn(daemon string) bool {
 	return a.session.IsFlagOn(daemon)
 }
@@ -58,8 +50,7 @@ func (a *App) GetLastRoute() string {
 		return "/wizard"
 	}
 
-	route := a.session.GetRoute()
-	addr := a.session.GetAddress()
+	route, addr := a.session.GetRoute(), a.session.GetAddress()
 	if len(addr) > 0 {
 		route += "/" + addr
 	}
@@ -75,6 +66,7 @@ func (a *App) SetLastTab(route, tab string) {
 	a.session.SetTab(route, tab)
 }
 
-func (a *App) GetLastTab(route string) string {
+func (a *App) GetLastTab() string {
+	route := a.GetRawRoute()
 	return a.session.GetTab(route)
 }

@@ -12,25 +12,12 @@ func (a *App) GetConfig() *types.Config {
 	return &a.config.Config
 }
 
-func (a *App) GetSession() *types.Session {
-	return &a.session.Session
-}
-
 func (a *App) GetContext() context.Context {
 	return a.ctx
 }
 
-func (a *App) GetWindow() *types.Window {
-	w := a.session.GetWindow()
-	return &w
-}
-
 func (a *App) GetEnv(key string) string {
 	return os.Getenv(key)
-}
-
-func (a *App) getChain() string {
-	return a.session.GetChain()
 }
 
 func (a *App) GetChains() []string {

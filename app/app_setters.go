@@ -11,14 +11,14 @@ func (a *App) SetEnv(key, value string) {
 func (a *App) SetChain(newChain string) {
 	defer a.trackPerformance("SetChain", false)()
 
-	oldChain := a.session.GetChain()
+	oldChain := a.getChain()
 	if len(newChain) == 0 || newChain == oldChain {
 		return
 	}
 
 	a.emitInfoMsg("Switching to chain", newChain)
 
-	a.session.SetChain(newChain)
+	a.setChain(newChain)
 	a.saveSession()
 
 	a.CancelAllContexts()

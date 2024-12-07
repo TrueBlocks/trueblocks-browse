@@ -7,9 +7,9 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
-func (a *App) emitNavigateMsg(route string) {
+func (a *App) emitNavigateMsg(location string) {
 	messages.EmitMessage(a.ctx, messages.Navigate, &messages.MessageMsg{
-		String1: route,
+		String1: location,
 	})
 }
 
