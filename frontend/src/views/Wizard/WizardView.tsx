@@ -37,7 +37,6 @@ export const WizardView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const route = "wizard";
   const tabs = ["wizard", ...(customTabs || [])];
   const forms: ViewForm = {
     wizard: <FormTable data={wizard} groups={WizardFormDef(table)} />,
@@ -47,7 +46,6 @@ export const WizardView = () => {
   return (
     <ViewStateProvider
       // do not remove - delint
-      route={route}
       nItems={wizard.nItems}
       fetchFn={fetchWizard}
       onEnter={handleEnter}

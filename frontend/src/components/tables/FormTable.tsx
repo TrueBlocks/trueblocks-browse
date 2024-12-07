@@ -3,6 +3,7 @@ import { Text, Container, Fieldset, Grid, Accordion } from "@mantine/core";
 import { IconChevronsUp } from "@tabler/icons-react";
 import { FieldRenderer, FieldGroup, isCollapsable, isButton, ButtonTray } from "@components";
 import { useViewState } from "@state";
+import { useViewRoute } from "../../hooks";
 import classes from "./FormTable.module.css";
 
 type FormTableProps<T> = {
@@ -11,7 +12,8 @@ type FormTableProps<T> = {
 };
 
 export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
-  const { route, activeTab, headerShows, handleCollapse } = useViewState();
+  const { activeTab, headerShows, handleCollapse } = useViewState();
+  const route = useViewRoute();
 
   const collapsableGroups = groups.filter((group) => isCollapsable(group) && !isButton(group));
   const nonCollapsableGroups = groups.filter((group) => !isCollapsable(group));

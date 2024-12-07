@@ -52,7 +52,6 @@ export const SettingsView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const route = "settings";
   const tabs = ["status", "config", "session", ...(customTabs || [])];
   const forms: ViewForm = {
     status: <FormTable data={status} groups={StatusFormDef(statusTable)} />,
@@ -68,7 +67,6 @@ export const SettingsView = () => {
   return (
     <ViewStateProvider
       // do not remove - delint
-      route={route}
       nItems={status.nItems}
       fetchFn={fetchSettings}
       onEnter={handleEnter}

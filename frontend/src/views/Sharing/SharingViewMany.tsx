@@ -17,7 +17,6 @@ export const SharingView = () => {
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
-  // eslint-disable-next-line prefer-const
   let customTabs: string[] = [];
   // eslint-disable-next-line prefer-const
   let customForms: Record<string, JSX.Element> = {};
@@ -46,7 +45,6 @@ export const SharingView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const route = "sharing";
   const tabs = ["names", "abis", ...(customTabs || [])];
   const forms: ViewForm = {
     names: <FormTable data={names} groups={NamesFormDef(namesTable)} />,
@@ -61,7 +59,6 @@ export const SharingView = () => {
   return (
     <ViewStateProvider
       // do not remove - delint
-      route={route}
       nItems={names.nItems}
       fetchFn={fetchSharing}
       onEnter={handleEnter}

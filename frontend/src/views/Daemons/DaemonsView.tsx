@@ -95,7 +95,6 @@ export const DaemonsView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const route = "daemons";
   const tabs = ["daemons", ...(customTabs || [])];
   const forms: ViewForm = {
     daemons: <FormTable data={daemons} groups={DaemonsFormDef(table)} />,
@@ -105,7 +104,6 @@ export const DaemonsView = () => {
   return (
     <ViewStateProvider
       // do not remove - delint
-      route={route}
       nItems={daemons.nItems}
       fetchFn={fetchDaemons}
       onEnter={handleEnter}

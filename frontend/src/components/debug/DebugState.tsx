@@ -2,13 +2,15 @@ import { useEffect } from "react";
 import { Text } from "@mantine/core";
 import { sdk } from "@gocode/models";
 import { useAppState, useViewState } from "@state";
+import { useViewRoute } from "../../hooks";
 
 const debug = import.meta.env.VITE_DEBUG === "true";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const DebugState = ({ u }: { u: sdk.Updater[] }) => {
   const { counters } = useAppState();
-  const { route, activeTab, headerShows } = useViewState();
+  const { activeTab, headerShows } = useViewState();
+  const route = useViewRoute();
 
   useEffect(() => {
     if (!counters.current[route]) {

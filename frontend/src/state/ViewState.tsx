@@ -1,9 +1,9 @@
 import { useState, createContext, useEffect, useContext, ReactNode } from "react";
 import { Pager } from "@components";
-import { IsHeaderOn, SetHeaderOn, SetFilter, GetLastTab, GetFilter, SetLastTab } from "@gocode/app/App";
+import { IsHeaderOn, SetHeaderOn, GetLastTab, SetLastTab } from "@gocode/app/App";
 import { messages, app } from "@gocode/models";
 import { Page, useKeyboardPaging } from "@hooks";
-import { Route } from "@layout";
+import { useViewRoute } from "@hooks";
 import { EventsOn, EventsOff } from "@runtime";
 
 type ModifyFnType = (arg1: app.ModifyData) => Promise<void>;
@@ -11,7 +11,6 @@ type FetchFnType = (selected: number, perPage: number) => void;
 type ClickFnType = (value: string) => void;
 
 interface ViewStateProps {
-  route: Route;
   nItems: number;
   headerShows: Record<string, boolean>;
   handleCollapse: (tab: string, newState: string | null) => void;
@@ -27,7 +26,6 @@ interface ViewStateProps {
 const ViewContext = createContext<ViewStateProps | undefined>(undefined);
 
 type ViewContextType = {
-  route: Route;
   nItems: number;
   fetchFn: FetchFnType;
   modifyFn: ModifyFnType;
@@ -37,16 +35,8 @@ type ViewContextType = {
   children: ReactNode;
 };
 
-export const ViewStateProvider = ({
-  route,
-  nItems,
-  fetchFn,
-  modifyFn,
-  onEnter,
-  clickFn,
-  tabs,
-  children,
-}: ViewContextType) => {
+export const ViewStateProvider = ({ nItems, fetchFn, modifyFn, onEnter, clickFn, tabs, children }: ViewContextType) => {
+  const route = useViewRoute();
   const [activeTab, setActiveTab] = useState<string>("");
   const [headerShows, setHeaderShows] = useState<Record<string, boolean>>({});
   const lines = 10;
@@ -54,7 +44,7 @@ export const ViewStateProvider = ({
 
   // - route/tabs -----------------------------------------------------------
   useEffect(() => {
-    GetLastTab(route).then((tab) => {
+    GetLastTab().then((tab) => {
       setActiveTab(tab || tabs[0]);
     });
   }, [route, tabs, setActiveTab]);
@@ -159,7 +149,6 @@ export const ViewStateProvider = ({
 
   // - state -----------------------------------------------------------
   const state = {
-    route,
     nItems,
     headerShows,
     handleCollapse,

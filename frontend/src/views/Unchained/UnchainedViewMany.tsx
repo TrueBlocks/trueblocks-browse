@@ -45,7 +45,6 @@ export const UnchainedView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const route = "unchained";
   const tabs = ["indexes", "manifests", ...(customTabs || [])];
   const forms: ViewForm = {
     indexes: <FormTable data={indexes} groups={IndexesFormDef(indexesTable)} />,
@@ -60,7 +59,6 @@ export const UnchainedView = () => {
   return (
     <ViewStateProvider
       // do not remove - delint
-      route={route}
       nItems={indexes.nItems}
       fetchFn={fetchUnchained}
       onEnter={handleEnter}

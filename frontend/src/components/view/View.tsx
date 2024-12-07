@@ -3,6 +3,7 @@ import { Group, Stack, Tabs } from "@mantine/core";
 import { SearchBar, ViewTitle } from "@components";
 import { SetLastTab } from "@gocode/app/App";
 import { useViewState } from "@state";
+import { useViewRoute } from "../../hooks";
 import classes from "./View.module.css";
 
 export type ViewForm = Record<string, ReactNode>;
@@ -13,7 +14,8 @@ export type ViewProps = {
 };
 
 export const View = ({ forms, searchable = false }: ViewProps) => {
-  const { route, tabs, activeTab, setActiveTab } = useViewState();
+  const { tabs, activeTab, setActiveTab } = useViewState();
+  const route = useViewRoute();
 
   return (
     <Stack className={classes.viewContainer}>

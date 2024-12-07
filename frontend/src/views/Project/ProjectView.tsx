@@ -39,7 +39,6 @@ export const ProjectView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const route = "";
   const tabs = ["project", ...(customTabs || [])];
   const forms: ViewForm = {
     project: <FormTable data={project} groups={ProjectFormDef(table)} />,
@@ -49,7 +48,6 @@ export const ProjectView = () => {
   return (
     <ViewStateProvider
       // do not remove - delint
-      route={route}
       nItems={project.nItems}
       fetchFn={fetchProject}
       onEnter={handleEnter}

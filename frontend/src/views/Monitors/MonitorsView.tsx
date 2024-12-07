@@ -30,7 +30,6 @@ export const MonitorsView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const route = "monitors";
   const tabs = ["monitors", ...(customTabs || [])];
   const forms: ViewForm = {
     monitors: <FormTable data={monitors} groups={MonitorsFormDef(table)} />,
@@ -40,7 +39,6 @@ export const MonitorsView = () => {
   return (
     <ViewStateProvider
       // do not remove - delint
-      route={route}
       nItems={monitors.nItems}
       fetchFn={fetchMonitors}
       onEnter={handleEnter}

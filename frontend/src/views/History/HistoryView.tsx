@@ -15,7 +15,6 @@ export const HistoryView = () => {
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
-  // eslint-disable-next-line prefer-const
   let customTabs: string[] = [];
   // eslint-disable-next-line prefer-const
   let customForms: Record<string, JSX.Element> = {};
@@ -50,7 +49,6 @@ export const HistoryView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const route = "history";
   const tabs = ["history", ...(customTabs || [])];
   const forms: ViewForm = {
     history: <FormTable data={history} groups={HistoryFormDef(table)} />,
@@ -60,7 +58,6 @@ export const HistoryView = () => {
   return (
     <ViewStateProvider
       // do not remove - delint
-      route={route}
       nItems={history.nItems}
       fetchFn={fetchHistory}
       onEnter={handleEnter}
