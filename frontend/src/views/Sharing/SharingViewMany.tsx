@@ -17,6 +17,7 @@ export const SharingView = () => {
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
+  // eslint-disable-next-line prefer-const
   let customTabs: string[] = [];
   // eslint-disable-next-line prefer-const
   let customForms: Record<string, JSX.Element> = {};

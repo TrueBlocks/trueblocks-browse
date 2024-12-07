@@ -126,8 +126,8 @@ export function GetLastRoute() {
   return window['go']['app']['App']['GetLastRoute']();
 }
 
-export function GetLastTab(arg1) {
-  return window['go']['app']['App']['GetLastTab'](arg1);
+export function GetLastTab() {
+  return window['go']['app']['App']['GetLastTab']();
 }
 
 export function GetMenus() {
@@ -142,16 +142,8 @@ export function GetRawRoute() {
   return window['go']['app']['App']['GetRawRoute']();
 }
 
-export function GetSession() {
-  return window['go']['app']['App']['GetSession']();
-}
-
 export function GetState(arg1) {
   return window['go']['app']['App']['GetState'](arg1);
-}
-
-export function GetWindow() {
-  return window['go']['app']['App']['GetWindow']();
 }
 
 export function HistoryView(arg1) {
@@ -288,10 +280,6 @@ export function ToggleAppMenu(arg1) {
 
 export function ToggleDaemon(arg1) {
   return window['go']['app']['App']['ToggleDaemon'](arg1);
-}
-
-export function ToggleHeader(arg1, arg2) {
-  return window['go']['app']['App']['ToggleHeader'](arg1, arg2);
 }
 
 export function ToggleNextTab(arg1) {

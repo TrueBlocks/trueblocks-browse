@@ -69,7 +69,7 @@ export function GetLastAddress():Promise<base.Address>;
 
 export function GetLastRoute():Promise<string>;
 
-export function GetLastTab(arg1:string):Promise<string>;
+export function GetLastTab():Promise<string>;
 
 export function GetMenus():Promise<menu.Menu>;
 
@@ -77,11 +77,7 @@ export function GetName(arg1:base.Address):Promise<string>;
 
 export function GetRawRoute():Promise<string>;
 
-export function GetSession():Promise<types.Session>;
-
 export function GetState(arg1:string):Promise<string>;
-
-export function GetWindow():Promise<types.Window>;
 
 export function HistoryView(arg1:menu.CallbackData):Promise<void>;
 
@@ -150,8 +146,6 @@ export function ToggleAppHelp(arg1:menu.CallbackData):Promise<void>;
 export function ToggleAppMenu(arg1:menu.CallbackData):Promise<void>;
 
 export function ToggleDaemon(arg1:string):Promise<void>;
-
-export function ToggleHeader(arg1:string,arg2:string):Promise<boolean>;
 
 export function ToggleNextTab(arg1:menu.CallbackData):Promise<void>;
 

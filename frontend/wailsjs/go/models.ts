@@ -2114,7 +2114,6 @@ export namespace types {
 		    return a;
 		}
 	}
-	
 	export class SessionContainer {
 	    chain: string;
 	    items: Nothing[];
