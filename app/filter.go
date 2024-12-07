@@ -2,20 +2,18 @@ package app
 
 import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-func (a *App) GetFilter(route string) types.Filter {
-	if ret, exists := a.filterMap.Load(route); exists {
-		return ret
+func (a *App) GetFilter() *types.Filter {
+	if ret, exists := a.filterMap.Load(a.GetRawRoute()); exists {
+		return &ret
 	}
-	return types.Filter{}
+	return &types.Filter{}
 }
 
-func (a *App) SetFilter(route, criteria string) {
+func (a *App) SetFilter(criteria string) {
 	filter := types.Filter{
 		Criteria: criteria,
 	}
-	logger.InfoBM(route, filter)
-	a.filterMap.Store(route, filter)
+	a.filterMap.Store(a.GetRawRoute(), filter)
 }

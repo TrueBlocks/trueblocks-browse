@@ -6,6 +6,7 @@ package types
 import (
 	"encoding/json"
 
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -121,10 +122,10 @@ func (s *SessionContainer) Finalize() {
 	// EXISTING_CODE
 }
 
-func (s *SessionContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *SessionContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	filter, _ := theMap.Load("session") // may be empty
+	logger.InfoBM("CollateAndFilter:", filter.String())
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *Nothing, data any) bool {
 			s.Accumulate(item)
@@ -135,7 +136,7 @@ func (s *SessionContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	}
 	filtered := []Nothing{}
 	s.ForEveryItem(func(item *Nothing, data any) bool {
-		if s.passesFilter(item, &filter) {
+		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
 		}

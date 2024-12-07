@@ -18,8 +18,6 @@ interface ViewStateProps {
   pager: Pager;
   fetchFn: FetchFnType;
   modifyFn: ModifyFnType;
-  filter: string;
-  updateFilter: (criteria: string) => void;
   clickFn?: ClickFnType;
   tabs: string[];
   activeTab: string;
@@ -51,11 +49,6 @@ export const ViewStateProvider = ({
 }: ViewContextType) => {
   const [activeTab, setActiveTab] = useState<string>("");
   const [headerShows, setHeaderShows] = useState<Record<string, boolean>>({});
-  const [filter, setFilter] = useState<string>("");
-  // TODO: `lines` used to be different for `session` and `names`, but
-  // TODO: those are now tabs of SettingsView and SharingView. This points
-  // TODO: to the fact that we need per-tab state. There are other places
-  // TODO: where we need per-tab state as well -- activeTab, headerToggle, etc.
   const lines = 10;
   const pager = useKeyboardPaging(nItems, lines, onEnter);
 
@@ -164,21 +157,6 @@ export const ViewStateProvider = ({
     };
   }, [fetchFn, nItems, pager]);
 
-  // - filter -----------------------------------------------------------
-  useEffect(() => {
-    GetFilter(route).then((filterData) => {
-      setFilter(filterData.criteria);
-    });
-  }, [route]);
-
-  // - filter -----------------------------------------------------------
-  const updateFilter = (criteria: string) => {
-    setFilter(criteria);
-    SetFilter(route, criteria).then(() => {
-      fetchFn(pager.getOffset(), pager.perPage);
-    });
-  };
-
   // - state -----------------------------------------------------------
   const state = {
     route,
@@ -188,8 +166,6 @@ export const ViewStateProvider = ({
     pager,
     fetchFn,
     modifyFn,
-    filter,
-    updateFilter,
     clickFn,
     tabs,
     activeTab,

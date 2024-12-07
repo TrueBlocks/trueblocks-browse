@@ -14,7 +14,7 @@ func (a *App) FetchIndex(first, pageSize int) *types.IndexContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	filtered := a.indexes.CollateAndFilter(a.filterMap).([]types.ChunkStats)
+	filtered := a.indexes.CollateAndFilter(a.GetFilter()).([]types.ChunkStats)
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.indexes.ShallowCopy().(*types.IndexContainer)

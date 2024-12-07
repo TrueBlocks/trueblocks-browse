@@ -9,6 +9,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -140,10 +141,10 @@ func (s *ConfigContainer) Finalize() {
 	// EXISTING_CODE
 }
 
-func (s *ConfigContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *ConfigContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	filter, _ := theMap.Load("config") // may be empty
+	logger.InfoBM("CollateAndFilter:", filter.String())
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *Chain, data any) bool {
 			s.Accumulate(item)
@@ -154,7 +155,7 @@ func (s *ConfigContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	}
 	filtered := []Chain{}
 	s.ForEveryItem(func(item *Chain, data any) bool {
-		if s.passesFilter(item, &filter) {
+		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
 		}

@@ -114,8 +114,8 @@ export function GetExploreUrl(arg1, arg2, arg3) {
   return window['go']['app']['App']['GetExploreUrl'](arg1, arg2, arg3);
 }
 
-export function GetFilter(arg1) {
-  return window['go']['app']['App']['GetFilter'](arg1);
+export function GetFilter() {
+  return window['go']['app']['App']['GetFilter']();
 }
 
 export function GetLastAddress() {
@@ -136,6 +136,10 @@ export function GetMenus() {
 
 export function GetName(arg1) {
   return window['go']['app']['App']['GetName'](arg1);
+}
+
+export function GetRawRoute() {
+  return window['go']['app']['App']['GetRawRoute']();
 }
 
 export function GetSession() {
@@ -226,8 +230,8 @@ export function SetEnv(arg1, arg2) {
   return window['go']['app']['App']['SetEnv'](arg1, arg2);
 }
 
-export function SetFilter(arg1, arg2) {
-  return window['go']['app']['App']['SetFilter'](arg1, arg2);
+export function SetFilter(arg1) {
+  return window['go']['app']['App']['SetFilter'](arg1);
 }
 
 export function SetHeaderOn(arg1, arg2, arg3) {

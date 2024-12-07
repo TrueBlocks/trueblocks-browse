@@ -14,7 +14,7 @@ func (a *App) FetchMonitor(first, pageSize int) *types.MonitorContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	filtered := a.monitors.CollateAndFilter(a.filterMap).([]types.Monitor)
+	filtered := a.monitors.CollateAndFilter(a.GetFilter()).([]types.Monitor)
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.monitors.ShallowCopy().(*types.MonitorContainer)

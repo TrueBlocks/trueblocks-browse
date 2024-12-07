@@ -1,6 +1,8 @@
 package app
 
 import (
+	"strings"
+
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
@@ -44,6 +46,10 @@ func (a *App) SetDaemonOn(daemon string, onOff bool) {
 func (a *App) SetLastRoute(route, subRoute string) {
 	a.session.SetRouteAndSub(route, subRoute)
 	a.saveSession()
+}
+
+func (a *App) GetRawRoute() string {
+	return strings.Trim(a.session.LastRoute, "/")
 }
 
 func (a *App) GetLastRoute() string {

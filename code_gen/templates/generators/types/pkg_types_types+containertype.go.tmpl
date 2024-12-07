@@ -8,7 +8,8 @@
 {{ $members := .Members }}
 {{ $hasEmbed := and (gt (len $embedName) 0) true }}
 
-{{ $isHistory := or (eq $class "History") (eq .Parent "history") }}
+{{ $parent := .Parent }}
+{{ $isHistory := or (eq $class "History") (eq $parent "history") }}
 {{ $isProject := eq $class "Project" }}
 {{ $noChildren := (eq .Children "") }}
 
@@ -158,10 +159,10 @@ func (s *{{$class}}Container) Finalize() {
 	// EXISTING_CODE
 }
 
-func (s *{{$class}}Container) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *{{$class}}Container) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	filter, _ := theMap.Load("{{$routeLower}}") // may be empty
+	logger.InfoBM("CollateAndFilter:", filter.String())
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *{{$itemType}}, data any) bool {
 			s.Accumulate(item)
@@ -172,7 +173,7 @@ func (s *{{$class}}Container) CollateAndFilter(theMap *FilterMap) interface{} {
 	}
 	filtered := []{{$itemType}}{}
 	s.ForEveryItem(func(item *{{$itemType}}, data any) bool {
-		if s.passesFilter(item, &filter) {
+		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
 		}

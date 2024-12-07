@@ -17,7 +17,7 @@ func (a *App) FetchHistory(first, pageSize int) *types.HistoryContainer {
 	history, _ := a.historyCache.Load(address)
 	// EXISTING_CODE
 
-	filtered := history.CollateAndFilter(a.filterMap).([]types.Transaction)
+	filtered := history.CollateAndFilter(a.GetFilter()).([]types.Transaction)
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := history.ShallowCopy().(*types.HistoryContainer)

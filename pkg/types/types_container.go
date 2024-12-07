@@ -3,7 +3,7 @@ package types
 type Containerer interface {
 	String() string
 	ShallowCopy() Containerer
-	CollateAndFilter(theMap *FilterMap) interface{}
+	CollateAndFilter(filter *Filter) interface{}
 	NeedsUpdate() bool
 	GetItems() interface{}
 	SetItems(items interface{})

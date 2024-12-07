@@ -14,7 +14,7 @@ func (a *App) FetchSession(first, pageSize int) *types.SessionContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	filtered := a.session.CollateAndFilter(a.filterMap).([]types.Nothing)
+	filtered := a.session.CollateAndFilter(a.GetFilter()).([]types.Nothing)
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.session.ShallowCopy().(*types.SessionContainer)

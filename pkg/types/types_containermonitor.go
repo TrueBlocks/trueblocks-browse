@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -158,10 +159,10 @@ func (s *MonitorContainer) Finalize() {
 	// EXISTING_CODE
 }
 
-func (s *MonitorContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *MonitorContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	filter, _ := theMap.Load("monitors") // may be empty
+	logger.InfoBM("CollateAndFilter:", filter.String())
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *Monitor, data any) bool {
 			s.Accumulate(item)
@@ -172,7 +173,7 @@ func (s *MonitorContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	}
 	filtered := []Monitor{}
 	s.ForEveryItem(func(item *Monitor, data any) bool {
-		if s.passesFilter(item, &filter) {
+		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
 		}

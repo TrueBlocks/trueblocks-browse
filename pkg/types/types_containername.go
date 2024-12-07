@@ -11,6 +11,7 @@ import (
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/names"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
@@ -187,10 +188,10 @@ func (s *NameContainer) Finalize() {
 	// EXISTING_CODE
 }
 
-func (s *NameContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *NameContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	filter, _ := theMap.Load("names") // may be empty
+	logger.InfoBM("CollateAndFilter:", filter.String())
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *Name, data any) bool {
 			s.Accumulate(item)
@@ -201,7 +202,7 @@ func (s *NameContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	}
 	filtered := []Name{}
 	s.ForEveryItem(func(item *Name, data any) bool {
-		if s.passesFilter(item, &filter) {
+		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
 		}

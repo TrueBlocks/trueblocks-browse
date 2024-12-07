@@ -14,7 +14,7 @@ func (a *App) FetchManifest(first, pageSize int) *types.ManifestContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	filtered := a.manifests.CollateAndFilter(a.filterMap).([]types.ChunkRecord)
+	filtered := a.manifests.CollateAndFilter(a.GetFilter()).([]types.ChunkRecord)
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.manifests.ShallowCopy().(*types.ManifestContainer)

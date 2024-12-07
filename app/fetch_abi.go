@@ -14,7 +14,7 @@ func (a *App) FetchAbi(first, pageSize int) *types.AbiContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	filtered := a.abis.CollateAndFilter(a.filterMap).([]types.Abi)
+	filtered := a.abis.CollateAndFilter(a.GetFilter()).([]types.Abi)
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.abis.ShallowCopy().(*types.AbiContainer)

@@ -14,7 +14,7 @@ func (a *App) FetchStatus(first, pageSize int) *types.StatusContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	filtered := a.status.CollateAndFilter(a.filterMap).([]types.CacheItem)
+	filtered := a.status.CollateAndFilter(a.GetFilter()).([]types.CacheItem)
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.status.ShallowCopy().(*types.StatusContainer)

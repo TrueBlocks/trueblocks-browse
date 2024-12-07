@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -121,10 +122,10 @@ func (s *WizardContainer) Finalize() {
 	// EXISTING_CODE
 }
 
-func (s *WizardContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *WizardContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	filter, _ := theMap.Load("wizard") // may be empty
+	logger.InfoBM("CollateAndFilter:", filter.String())
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *WizError, data any) bool {
 			s.Accumulate(item)
@@ -135,7 +136,7 @@ func (s *WizardContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	}
 	filtered := []WizError{}
 	s.ForEveryItem(func(item *WizError, data any) bool {
-		if s.passesFilter(item, &filter) {
+		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
 		}

@@ -63,7 +63,7 @@ export function GetEnv(arg1:string):Promise<string>;
 
 export function GetExploreUrl(arg1:string,arg2:boolean,arg3:boolean):Promise<string>;
 
-export function GetFilter(arg1:string):Promise<types.Filter>;
+export function GetFilter():Promise<types.Filter>;
 
 export function GetLastAddress():Promise<base.Address>;
 
@@ -74,6 +74,8 @@ export function GetLastTab(arg1:string):Promise<string>;
 export function GetMenus():Promise<menu.Menu>;
 
 export function GetName(arg1:base.Address):Promise<string>;
+
+export function GetRawRoute():Promise<string>;
 
 export function GetSession():Promise<types.Session>;
 
@@ -119,7 +121,7 @@ export function SetDaemonOn(arg1:string,arg2:boolean):Promise<void>;
 
 export function SetEnv(arg1:string,arg2:string):Promise<void>;
 
-export function SetFilter(arg1:string,arg2:string):Promise<void>;
+export function SetFilter(arg1:string):Promise<void>;
 
 export function SetHeaderOn(arg1:string,arg2:string,arg3:boolean):Promise<void>;
 

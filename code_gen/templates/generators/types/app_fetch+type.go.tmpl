@@ -20,7 +20,7 @@ func (a *App) Fetch{{$class}}(first, pageSize int) *types.{{$container}} {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	filtered := {{$dataName}}.CollateAndFilter(a.filterMap).([]{{$fullType}})
+	filtered := {{$dataName}}.CollateAndFilter(a.GetFilter()).([]{{$fullType}})
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := {{$dataName}}.ShallowCopy().(*types.{{$container}})
