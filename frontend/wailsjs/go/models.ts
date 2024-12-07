@@ -457,11 +457,6 @@ export namespace sdk {
 
 export namespace types {
 	
-	export enum DaemonState {
-	    STOPPED = "Stopped",
-	    RUNNING = "Running",
-	    PAUSED = "Paused",
-	}
 	export enum WizState {
 	    WELCOME = "welcome",
 	    CONFIG = "config",
@@ -475,6 +470,11 @@ export namespace types {
 	    PREVIOUS = "Previous",
 	    NEXT = "Next",
 	    FINISH = "Finish",
+	}
+	export enum DaemonState {
+	    STOPPED = "Stopped",
+	    RUNNING = "Running",
+	    PAUSED = "Paused",
 	}
 	export class Parameter {
 	    components?: Parameter[];
@@ -2114,87 +2114,11 @@ export namespace types {
 		    return a;
 		}
 	}
-	export class Window {
-	    x: number;
-	    y: number;
-	    width: number;
-	    height: number;
 	
-	    static createFrom(source: any = {}) {
-	        return new Window(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.x = source["x"];
-	        this.y = source["y"];
-	        this.width = source["width"];
-	        this.height = source["height"];
-	    }
-	}
-	export class Session {
-	    lastChain: string;
-	    lastFile: string;
-	    lastFolder: string;
-	    lastRoute: string;
-	    lastAddress: string;
-	    // Go type: maps
-	    lastTab?: any;
-	    // Go type: maps
-	    flags?: any;
-	    window: Window;
-	    wizardStr: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Session(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.lastChain = source["lastChain"];
-	        this.lastFile = source["lastFile"];
-	        this.lastFolder = source["lastFolder"];
-	        this.lastRoute = source["lastRoute"];
-	        this.lastAddress = source["lastAddress"];
-	        this.lastTab = this.convertValues(source["lastTab"], null);
-	        this.flags = this.convertValues(source["flags"], null);
-	        this.window = this.convertValues(source["window"], Window);
-	        this.wizardStr = source["wizardStr"];
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
 	export class SessionContainer {
 	    chain: string;
 	    items: Nothing[];
 	    nItems: number;
-	    lastChain: string;
-	    lastFile: string;
-	    lastFolder: string;
-	    lastRoute: string;
-	    lastAddress: string;
-	    // Go type: maps
-	    lastTab?: any;
-	    // Go type: maps
-	    flags?: any;
-	    window: Window;
-	    wizardStr: string;
 	    updater: sdk.Updater;
 	    sorts: sdk.SortSpec;
 	
@@ -2207,15 +2131,6 @@ export namespace types {
 	        this.chain = source["chain"];
 	        this.items = this.convertValues(source["items"], Nothing);
 	        this.nItems = source["nItems"];
-	        this.lastChain = source["lastChain"];
-	        this.lastFile = source["lastFile"];
-	        this.lastFolder = source["lastFolder"];
-	        this.lastRoute = source["lastRoute"];
-	        this.lastAddress = source["lastAddress"];
-	        this.lastTab = this.convertValues(source["lastTab"], null);
-	        this.flags = this.convertValues(source["flags"], null);
-	        this.window = this.convertValues(source["window"], Window);
-	        this.wizardStr = source["wizardStr"];
 	        this.updater = this.convertValues(source["updater"], sdk.Updater);
 	        this.sorts = this.convertValues(source["sorts"], sdk.SortSpec);
 	    }
@@ -2328,7 +2243,24 @@ export namespace types {
 	
 	
 	
+	export class Window {
+	    x: number;
+	    y: number;
+	    width: number;
+	    height: number;
 	
+	    static createFrom(source: any = {}) {
+	        return new Window(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.x = source["x"];
+	        this.y = source["y"];
+	        this.width = source["width"];
+	        this.height = source["height"];
+	    }
+	}
 	export class WizError {
 	    index: number;
 	    state: WizState;

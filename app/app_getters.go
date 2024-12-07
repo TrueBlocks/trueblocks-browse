@@ -21,7 +21,8 @@ func (a *App) GetContext() context.Context {
 }
 
 func (a *App) GetWindow() *types.Window {
-	return &a.session.Window
+	w := a.session.GetWindow()
+	return &w
 }
 
 func (a *App) GetEnv(key string) string {
@@ -29,7 +30,7 @@ func (a *App) GetEnv(key string) string {
 }
 
 func (a *App) getChain() string {
-	return a.session.LastChain
+	return a.session.GetChain()
 }
 
 func (a *App) GetChains() []string {

@@ -38,7 +38,7 @@ func (a *App) ToggleViewHeader(cb *menu.CallbackData) {
 		return
 	}
 
-	route, _ := a.session.GetRouteAndAddress()
+	route := a.session.GetRoute()
 	route = strings.Trim(route, "/")
 	tab := a.GetLastTab(route)
 	newState := a.ToggleHeader(route, tab)

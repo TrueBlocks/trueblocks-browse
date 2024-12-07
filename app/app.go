@@ -53,8 +53,7 @@ func NewApp() *App {
 		balanceCache: &sync.Map{},
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}
-	a.session.LastTab = &types.StringMap{}
-	a.session.Flags = &types.BoolMap{}
+	a.session.Session = types.NewSession()
 	a.timer = NewTimer()
 
 	return a

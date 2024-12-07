@@ -4,7 +4,7 @@
 import { Table } from "@tanstack/react-table";
 import { FieldGroup, EditButton, DataTable } from "@components";
 import { types } from "@gocode/models";
-import { useAppState } from "@state";
+import { GetChain, GetFile, GetFolder, GetRoute, GetAddress } from "@gocode/types/SessionContainer";
 // EXISTING_CODE
 
 export const SessionFormDef = (table: Table<types.Nothing>): FieldGroup<types.SessionContainer>[] => {
@@ -17,11 +17,11 @@ export const SessionFormDef = (table: Table<types.Nothing>): FieldGroup<types.Se
       colSpan: 6,
       collapsable: false,
       fields: [
-        { label: "lastChain", type: "text", accessor: "lastChain" },
-        { label: "lastFile", type: "text", accessor: "lastFile" },
-        { label: "lastFolder", type: "text", accessor: "lastFolder" },
-        { label: "lastRoute", type: "text", accessor: "lastRoute" },
-        // { label: "lastSub", type: "text", accessor: "lastSub" },
+        { label: "lastChain", type: "text", getter: () => GetChain() },
+        { label: "lastFile", type: "text", getter: () => GetFile() },
+        { label: "lastFolder", type: "text", getter: () => GetFolder() },
+        { label: "lastRoute", type: "text", getter: () => GetRoute() },
+        { label: "lastAddress", type: "text", getter: () => GetAddress() },
       ],
     },
     {
@@ -49,12 +49,12 @@ export const SessionFormDef = (table: Table<types.Nothing>): FieldGroup<types.Se
 
 // EXISTING_CODE
 const SessionWindow = () => {
-  const { session } = useAppState();
-  return <div>{`${JSON.stringify(session.window, null, 2)}`}</div>;
+  // const { session } = useAppState();
+  return <div>CANNOT</div>; // {`${JSON.stringify(session.window, null, 2)}`}</div>;
 };
 
 const SessionFlags = () => {
-  const { session } = useAppState();
-  return <div>{`${JSON.stringify(session.flags, null, 2)}`}</div>;
+  // const { session } = useAppState();
+  return <div>CANNOT</div>; //  <div>{`${JSON.stringify(session.flags, null, 2)}`}</div>;
 };
 // EXISTING_CODE

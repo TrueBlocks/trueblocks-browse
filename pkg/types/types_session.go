@@ -14,16 +14,19 @@ import (
 // Session stores ephemeral things such as last window position,
 // last view, and recent file list.
 type Session struct {
-	LastChain   string     `json:"lastChain"`
-	LastFile    string     `json:"lastFile"`
-	LastFolder  string     `json:"lastFolder"`
-	LastRoute   string     `json:"lastRoute"`
-	LastAddress string     `json:"lastAddress"`
-	LastTab     *StringMap `json:"lastTab"`
-	Flags       *BoolMap   `json:"flags"`
-	Window      Window     `json:"window"`
-	WizardStr   string     `json:"wizardStr"`
-	Chain       string     `json:"-"`
+	lastChain   string
+	lastFile    string
+	lastFolder  string
+	lastRoute   string
+	lastAddress string
+	lastTab     *StringMap
+	flags       *BoolMap
+	window      Window
+	wizardStr   string
+}
+
+func NewSession() Session {
+	return defaultSession
 }
 
 func (s Session) String() string {
@@ -35,7 +38,86 @@ func (s *Session) ShallowCopy() Session {
 	return *s
 }
 
-var defTab StringMap
+func (s *Session) GetChain() string {
+	return s.lastChain
+}
+
+func (s *Session) GetFile() string {
+	return s.lastFile
+}
+
+func (s *Session) GetFolder() string {
+	return s.lastFolder
+}
+
+func (s *Session) GetRoute() string {
+	return s.lastRoute
+}
+
+func (s *Session) GetAddress() string {
+	return s.lastAddress
+}
+
+func (s *Session) GetTab(route string) string {
+	ret, _ := s.lastTab.Load(route)
+	return ret
+}
+
+func (s *Session) IsFlagOn(key string) bool {
+	ret, _ := s.flags.Load(key)
+	return ret
+}
+
+func (s *Session) GetWindow() Window {
+	return s.window
+}
+
+func (s *Session) GetWizardStr() string {
+	return s.wizardStr
+}
+
+func (s *Session) SetChain(chain string) {
+	s.lastChain = chain
+}
+
+func (s *Session) SetFile(file string) {
+	s.lastFile = file
+}
+
+func (s *Session) SetFolder(folder string) {
+	s.lastFolder = folder
+}
+
+func (s *Session) SetRoute(route string) {
+	s.lastRoute = route
+	if route == "" {
+		s.lastRoute = "project"
+	}
+	_ = s.Save()
+}
+
+func (s *Session) SetAddress(address string) {
+	s.lastAddress = address
+	_ = s.Save()
+}
+
+func (s *Session) SetTab(route, tab string) {
+	s.lastTab.Store(route, tab)
+	_ = s.Save()
+}
+
+func (s *Session) SetFlagOn(key string, value bool) {
+	s.flags.Store(key, value)
+}
+
+func (s *Session) SetWindow(window Window) {
+	s.window = window
+}
+
+func (s *Session) SetWizardStr(wizStr string) {
+	s.wizardStr = wizStr
+}
+
 var defFlags BoolMap
 
 func init() {
@@ -43,6 +125,7 @@ func init() {
 	defFlags.Store("menu", true)
 	defFlags.Store("help", true)
 	defFlags.Store("footer", true)
+	defFlags.Store("project", true)
 	defFlags.Store("history-history", true)
 	defFlags.Store("settings-status", true)
 	defFlags.Store("settings-session", true)
@@ -53,19 +136,19 @@ func init() {
 }
 
 var defaultSession = Session{
-	LastChain:   "mainnet",
-	LastFile:    "Untitled.tbx",
-	LastRoute:   "/wizard",
-	LastAddress: "0xf503017d7baf7fbc0fff7492b751025c6a78179b",
-	LastTab:     &defTab,
-	Flags:       &defFlags,
-	Window: Window{
+	lastChain:   "mainnet",
+	lastFile:    "Untitled.tbx",
+	lastRoute:   "/wizard",
+	lastAddress: "0xf503017d7baf7fbc0fff7492b751025c6a78179b",
+	lastTab:     &StringMap{},
+	flags:       &defFlags,
+	window: Window{
 		X:      0,
 		Y:      0,
 		Width:  0,
 		Height: 0,
 	},
-	WizardStr: "welcome",
+	wizardStr: "welcome",
 }
 
 // Save saves the session to the configuration folder.
@@ -91,14 +174,14 @@ func (s *Session) Load() error {
 			*s = defaultSession
 		} else {
 			// Ensure a valid file (if for example the user edited it)
-			if s.WizardStr == "finished" && s.LastRoute == "/wizard" {
-				s.LastRoute = "/"
+			if s.wizardStr == "finished" && s.lastRoute == "/wizard" {
+				s.lastRoute = "/"
 			}
-			if s.LastChain == "" {
-				s.LastChain = "mainnet"
+			if s.lastChain == "" {
+				s.lastChain = "mainnet"
 			}
-			if s.LastFile == "" {
-				s.LastFile = "Untitled.tbx"
+			if s.lastFile == "" {
+				s.lastFile = "Untitled.tbx"
 			}
 		}
 		_ = s.Save() // creates the session file if it doesn't already exist
@@ -130,8 +213,8 @@ var ErrScreenNotFound = errors.New("screen not found")
 // always returns a valid window size, but it may also return an error.
 func (s *Session) CleanWindowSize(ctx context.Context) (Window, error) {
 	// Any window size other than 0,0 is already okay.
-	if s.Window.Width != 0 && s.Window.Height != 0 {
-		return s.Window, nil
+	if s.window.Width != 0 && s.window.Height != 0 {
+		return s.window, nil
 	}
 
 	ret := Window{X: 30, Y: 30, Width: 1024, Height: 768}
@@ -155,13 +238,13 @@ func (s *Session) CleanWindowSize(ctx context.Context) (Window, error) {
 		}
 		if fullScreen != nil {
 			// We found the screen, so we can set a reasonable window size.
-			s.Window.X = fullScreen.Width / 6
-			s.Window.Y = fullScreen.Width / 6
-			s.Window.Width = (5 * fullScreen.Width) / 6
-			s.Window.Height = (5 * fullScreen.Width) / 6
+			s.window.X = fullScreen.Width / 6
+			s.window.Y = fullScreen.Width / 6
+			s.window.Width = (5 * fullScreen.Width) / 6
+			s.window.Height = (5 * fullScreen.Width) / 6
 		}
 	}
-	return s.Window, nil
+	return s.window, nil
 }
 
 // Window stores the last position and title of the window
@@ -177,35 +260,56 @@ func (w *Window) String() string {
 	return string(bytes)
 }
 
-func (s *Session) GetAddress(route string) string {
-	return s.LastAddress
+func (s *Session) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		LastChain   string     `json:"lastChain"`
+		LastFile    string     `json:"lastFile"`
+		LastFolder  string     `json:"lastFolder"`
+		LastRoute   string     `json:"lastRoute"`
+		LastAddress string     `json:"lastAddress"`
+		LastTab     *StringMap `json:"lastTab"`
+		Flags       *BoolMap   `json:"flags"`
+		Window      Window     `json:"window"`
+		WizardStr   string     `json:"wizardStr"`
+	}{
+		LastChain:   s.lastChain,
+		LastFile:    s.lastFile,
+		LastFolder:  s.lastFolder,
+		LastRoute:   s.lastRoute,
+		LastAddress: s.lastAddress,
+		LastTab:     s.lastTab,
+		Flags:       s.flags,
+		Window:      s.window,
+		WizardStr:   s.wizardStr,
+	})
 }
 
-func (s *Session) GetRouteAndAddress() (string, string) {
-	return s.LastRoute, s.LastAddress
-}
+func (s *Session) UnmarshalJSON(data []byte) error {
+	aux := &struct {
+		LastChain   string     `json:"lastChain"`
+		LastFile    string     `json:"lastFile"`
+		LastFolder  string     `json:"lastFolder"`
+		LastRoute   string     `json:"lastRoute"`
+		LastAddress string     `json:"lastAddress"`
+		LastTab     *StringMap `json:"lastTab"`
+		Flags       *BoolMap   `json:"flags"`
+		Window      Window     `json:"window"`
+		WizardStr   string     `json:"wizardStr"`
+	}{}
 
-func (s *Session) SetRouteAndAddress(route, address string) {
-	s.LastRoute = route
-	s.LastAddress = address
-	_ = s.Save()
-}
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
 
-func (s *Session) GetTab(route string) string {
-	tab, _ := s.LastTab.Load(route)
-	return tab
-}
+	s.lastChain = aux.LastChain
+	s.lastFile = aux.LastFile
+	s.lastFolder = aux.LastFolder
+	s.lastRoute = aux.LastRoute
+	s.lastAddress = aux.LastAddress
+	s.lastTab = aux.LastTab
+	s.flags = aux.Flags
+	s.window = aux.Window
+	s.wizardStr = aux.WizardStr
 
-func (s *Session) SetTab(route, tab string) {
-	s.LastTab.Store(route, tab)
-	_ = s.Save()
-}
-
-func (s *Session) IsFlagOn(key string) bool {
-	ret, _ := s.Flags.Load(key)
-	return ret
-}
-
-func (s *Session) SetFlagOn(key string, value bool) {
-	s.Flags.Store(key, value)
+	return nil
 }

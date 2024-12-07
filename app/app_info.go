@@ -16,11 +16,11 @@ type AppInfo struct {
 }
 
 func (a *App) getFolder() string {
-	return a.session.LastFolder
+	return a.session.GetFolder()
 }
 
 func (a *App) getFilename() string {
-	return a.session.LastFile
+	return a.session.GetFile()
 }
 
 func (a *App) getFullPath() string {
