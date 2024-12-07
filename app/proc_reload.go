@@ -13,7 +13,7 @@ import (
 func (a *App) Reload() {
 	defer a.trackPerformance("Reload", false)()
 
-	route, _ := a.session.GetRouteAndSub()
+	route, _ := a.session.GetRouteAndAddress()
 	logger.InfoG("Reloading", route, "...")
 
 	switch route {

@@ -4,18 +4,18 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
-func (a *App) Navigate(route, subRoute string) {
+func (a *App) Navigate(route, address string) {
 	sep := ""
-	if len(subRoute) > 0 {
+	if len(address) > 0 {
 		sep = "/"
 	}
 
 	if route != "/wizard" && !a.isConfigured() {
-		route, subRoute, sep = "/wizard", "", ""
+		route, address, sep = "/wizard", "", ""
 	}
 
-	a.SetLastRoute(route, subRoute)
+	a.SetLastRoute(route, address)
 
-	logger.Info("Message sent", route, subRoute)
-	a.emitNavigateMsg(route + sep + subRoute)
+	logger.Info("Message sent", route, address)
+	a.emitNavigateMsg(route + sep + address)
 }

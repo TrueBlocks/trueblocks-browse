@@ -14,16 +14,16 @@ import (
 // Session stores ephemeral things such as last window position,
 // last view, and recent file list.
 type Session struct {
-	LastChain  string     `json:"lastChain"`
-	LastFile   string     `json:"lastFile"`
-	LastFolder string     `json:"lastFolder"`
-	LastRoute  string     `json:"lastRoute"`
-	LastSub    *StringMap `json:"lastSub"`
-	LastTab    *StringMap `json:"lastTab"`
-	Flags      *BoolMap   `json:"flags"`
-	Window     Window     `json:"window"`
-	WizardStr  string     `json:"wizardStr"`
-	Chain      string     `json:"-"`
+	LastChain   string     `json:"lastChain"`
+	LastFile    string     `json:"lastFile"`
+	LastFolder  string     `json:"lastFolder"`
+	LastRoute   string     `json:"lastRoute"`
+	LastAddress string     `json:"lastAddress"`
+	LastTab     *StringMap `json:"lastTab"`
+	Flags       *BoolMap   `json:"flags"`
+	Window      Window     `json:"window"`
+	WizardStr   string     `json:"wizardStr"`
+	Chain       string     `json:"-"`
 }
 
 func (s Session) String() string {
@@ -35,13 +35,10 @@ func (s *Session) ShallowCopy() Session {
 	return *s
 }
 
-var defSub StringMap
 var defTab StringMap
 var defFlags BoolMap
 
 func init() {
-	defSub.Store("/history", "0xf503017d7baf7fbc0fff7492b751025c6a78179b")
-
 	defFlags.Store("header", true)
 	defFlags.Store("menu", true)
 	defFlags.Store("help", true)
@@ -56,12 +53,12 @@ func init() {
 }
 
 var defaultSession = Session{
-	LastChain: "mainnet",
-	LastFile:  "Untitled.tbx",
-	LastRoute: "/wizard",
-	LastSub:   &defSub,
-	LastTab:   &defTab,
-	Flags:     &defFlags,
+	LastChain:   "mainnet",
+	LastFile:    "Untitled.tbx",
+	LastRoute:   "/wizard",
+	LastAddress: "0xf503017d7baf7fbc0fff7492b751025c6a78179b",
+	LastTab:     &defTab,
+	Flags:       &defFlags,
 	Window: Window{
 		X:      0,
 		Y:      0,
@@ -180,18 +177,17 @@ func (w *Window) String() string {
 	return string(bytes)
 }
 
-func (s *Session) GetSub(route string) string {
-	ret, _ := s.LastSub.Load(route)
-	return ret
+func (s *Session) GetAddress(route string) string {
+	return s.LastAddress
 }
 
-func (s *Session) GetRouteAndSub() (string, string) {
-	return s.LastRoute, s.GetSub(s.LastRoute)
+func (s *Session) GetRouteAndAddress() (string, string) {
+	return s.LastRoute, s.LastAddress
 }
 
-func (s *Session) SetRouteAndSub(route, subRoute string) {
+func (s *Session) SetRouteAndAddress(route, address string) {
 	s.LastRoute = route
-	s.LastSub.Store(route, subRoute)
+	s.LastAddress = address
 	_ = s.Save()
 }
 

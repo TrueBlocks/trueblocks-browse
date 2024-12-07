@@ -43,8 +43,8 @@ func (a *App) SetDaemonOn(daemon string, onOff bool) {
 	a.saveSession()
 }
 
-func (a *App) SetLastRoute(route, subRoute string) {
-	a.session.SetRouteAndSub(route, subRoute)
+func (a *App) SetLastRoute(route, address string) {
+	a.session.SetRouteAndAddress(route, address)
 	a.saveSession()
 }
 
@@ -57,16 +57,16 @@ func (a *App) GetLastRoute() string {
 		return "/wizard"
 	}
 
-	route, sub := a.session.GetRouteAndSub()
-	if len(sub) > 0 {
-		route += "/" + sub
+	route, addr := a.session.GetRouteAndAddress()
+	if len(addr) > 0 {
+		route += "/" + addr
 	}
 
 	return route
 }
 
 func (a *App) GetLastAddress() base.Address {
-	return base.HexToAddress(a.session.GetSub("/history"))
+	return base.HexToAddress(a.session.GetAddress("/history"))
 }
 
 func (a *App) SetLastTab(route, tab string) {

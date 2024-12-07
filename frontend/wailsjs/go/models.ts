@@ -2137,8 +2137,7 @@ export namespace types {
 	    lastFile: string;
 	    lastFolder: string;
 	    lastRoute: string;
-	    // Go type: maps
-	    lastSub?: any;
+	    lastAddress: string;
 	    // Go type: maps
 	    lastTab?: any;
 	    // Go type: maps
@@ -2156,7 +2155,7 @@ export namespace types {
 	        this.lastFile = source["lastFile"];
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
-	        this.lastSub = this.convertValues(source["lastSub"], null);
+	        this.lastAddress = source["lastAddress"];
 	        this.lastTab = this.convertValues(source["lastTab"], null);
 	        this.flags = this.convertValues(source["flags"], null);
 	        this.window = this.convertValues(source["window"], Window);
@@ -2189,8 +2188,7 @@ export namespace types {
 	    lastFile: string;
 	    lastFolder: string;
 	    lastRoute: string;
-	    // Go type: maps
-	    lastSub?: any;
+	    lastAddress: string;
 	    // Go type: maps
 	    lastTab?: any;
 	    // Go type: maps
@@ -2213,7 +2211,7 @@ export namespace types {
 	        this.lastFile = source["lastFile"];
 	        this.lastFolder = source["lastFolder"];
 	        this.lastRoute = source["lastRoute"];
-	        this.lastSub = this.convertValues(source["lastSub"], null);
+	        this.lastAddress = source["lastAddress"];
 	        this.lastTab = this.convertValues(source["lastTab"], null);
 	        this.flags = this.convertValues(source["flags"], null);
 	        this.window = this.convertValues(source["window"], Window);
