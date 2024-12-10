@@ -35,7 +35,6 @@ func main() {
 			&types.Config{},
 			&editors.Name{},
 			&types.Daemon{},
-			&types.SessionContainer{},
 		},
 		EnumBind: []interface{}{
 			types.AllDaemonStates,

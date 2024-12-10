@@ -22,6 +22,14 @@ export function FetchAppInfo() {
   return window['go']['app']['App']['FetchAppInfo']();
 }
 
+export function FetchBalance(arg1, arg2) {
+  return window['go']['app']['App']['FetchBalance'](arg1, arg2);
+}
+
+export function FetchChart(arg1, arg2) {
+  return window['go']['app']['App']['FetchChart'](arg1, arg2);
+}
+
 export function FetchConfig(arg1, arg2) {
   return window['go']['app']['App']['FetchConfig'](arg1, arg2);
 }
@@ -30,12 +38,20 @@ export function FetchDaemon(arg1, arg2) {
   return window['go']['app']['App']['FetchDaemon'](arg1, arg2);
 }
 
-export function FetchHistory(arg1, arg2) {
-  return window['go']['app']['App']['FetchHistory'](arg1, arg2);
+export function FetchIncoming(arg1, arg2) {
+  return window['go']['app']['App']['FetchIncoming'](arg1, arg2);
 }
 
 export function FetchIndex(arg1, arg2) {
   return window['go']['app']['App']['FetchIndex'](arg1, arg2);
+}
+
+export function FetchInternal(arg1, arg2) {
+  return window['go']['app']['App']['FetchInternal'](arg1, arg2);
+}
+
+export function FetchLog(arg1, arg2) {
+  return window['go']['app']['App']['FetchLog'](arg1, arg2);
 }
 
 export function FetchManifest(arg1, arg2) {
@@ -50,16 +66,44 @@ export function FetchName(arg1, arg2) {
   return window['go']['app']['App']['FetchName'](arg1, arg2);
 }
 
+export function FetchNeighbor(arg1, arg2) {
+  return window['go']['app']['App']['FetchNeighbor'](arg1, arg2);
+}
+
+export function FetchOutgoing(arg1, arg2) {
+  return window['go']['app']['App']['FetchOutgoing'](arg1, arg2);
+}
+
+export function FetchPin(arg1, arg2) {
+  return window['go']['app']['App']['FetchPin'](arg1, arg2);
+}
+
 export function FetchProject(arg1, arg2) {
   return window['go']['app']['App']['FetchProject'](arg1, arg2);
+}
+
+export function FetchReceipt(arg1, arg2) {
+  return window['go']['app']['App']['FetchReceipt'](arg1, arg2);
 }
 
 export function FetchSession(arg1, arg2) {
   return window['go']['app']['App']['FetchSession'](arg1, arg2);
 }
 
+export function FetchStatement(arg1, arg2) {
+  return window['go']['app']['App']['FetchStatement'](arg1, arg2);
+}
+
 export function FetchStatus(arg1, arg2) {
   return window['go']['app']['App']['FetchStatus'](arg1, arg2);
+}
+
+export function FetchTrace(arg1, arg2) {
+  return window['go']['app']['App']['FetchTrace'](arg1, arg2);
+}
+
+export function FetchUpload(arg1, arg2) {
+  return window['go']['app']['App']['FetchUpload'](arg1, arg2);
 }
 
 export function FetchWizard(arg1, arg2) {
@@ -118,6 +162,10 @@ export function GetFilter() {
   return window['go']['app']['App']['GetFilter']();
 }
 
+export function GetHistoryContainer() {
+  return window['go']['app']['App']['GetHistoryContainer']();
+}
+
 export function GetLastAddress() {
   return window['go']['app']['App']['GetLastAddress']();
 }
@@ -138,12 +186,12 @@ export function GetName(arg1) {
   return window['go']['app']['App']['GetName'](arg1);
 }
 
-export function GetRawRoute() {
-  return window['go']['app']['App']['GetRawRoute']();
-}
-
 export function GetState(arg1) {
   return window['go']['app']['App']['GetState'](arg1);
+}
+
+export function GetTabs() {
+  return window['go']['app']['App']['GetTabs']();
 }
 
 export function HistoryView(arg1) {
@@ -154,8 +202,8 @@ export function IsDaemonOn(arg1) {
   return window['go']['app']['App']['IsDaemonOn'](arg1);
 }
 
-export function IsHeaderOn(arg1, arg2) {
-  return window['go']['app']['App']['IsHeaderOn'](arg1, arg2);
+export function IsHeaderOn(arg1) {
+  return window['go']['app']['App']['IsHeaderOn'](arg1);
 }
 
 export function IsLayoutOn(arg1) {
@@ -198,8 +246,8 @@ export function MonitorsView(arg1) {
   return window['go']['app']['App']['MonitorsView'](arg1);
 }
 
-export function Navigate(arg1, arg2) {
-  return window['go']['app']['App']['Navigate'](arg1, arg2);
+export function Navigate(arg1) {
+  return window['go']['app']['App']['Navigate'](arg1);
 }
 
 export function ProjectView(arg1) {
@@ -226,12 +274,16 @@ export function SetFilter(arg1) {
   return window['go']['app']['App']['SetFilter'](arg1);
 }
 
-export function SetHeaderOn(arg1, arg2, arg3) {
-  return window['go']['app']['App']['SetHeaderOn'](arg1, arg2, arg3);
+export function SetHeaderOn(arg1, arg2) {
+  return window['go']['app']['App']['SetHeaderOn'](arg1, arg2);
 }
 
-export function SetLastRoute(arg1, arg2) {
-  return window['go']['app']['App']['SetLastRoute'](arg1, arg2);
+export function SetLastAddress(arg1) {
+  return window['go']['app']['App']['SetLastAddress'](arg1);
+}
+
+export function SetLastRoute(arg1) {
+  return window['go']['app']['App']['SetLastRoute'](arg1);
 }
 
 export function SetLastTab(arg1, arg2) {
