@@ -162,7 +162,7 @@ func (s *{{$class}}Container) Finalize() {
 func (s *{{$class}}Container) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	logger.InfoBM("CollateAndFilter:", filter.String())
+	// logger.InfoBM("CollateAndFilter:", filter.String())
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *{{$itemType}}, data any) bool {
 			s.Accumulate(item)

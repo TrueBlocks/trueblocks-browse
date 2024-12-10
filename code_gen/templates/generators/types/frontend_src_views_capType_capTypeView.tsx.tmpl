@@ -66,23 +66,14 @@
     {{$handleEnter -}}
     {{$handleModify}}
 
-    // eslint-disable-next-line prefer-const
-    let customTabs: string[] = [];
-    // eslint-disable-next-line prefer-const
-    let customForms: Record<string, JSX.Element> = {};
-    // EXISTING_CODE
-    // EXISTING_CODE
-
   const table = useReactTable({
       data: {{$routeLower}}?.items || [],
       columns: {{$routeName}}TableDef,
       getCoreRowModel: getCoreRowModel(),
     });
 
-  const tabs = ["{{$routeLower}}", ...(customTabs || [])];
-  const forms: ViewForm = {
-      {{$routeLower}}: <FormTable data={ {{$routeLower}} } groups={ {{$routeName}}FormDef(table)} />,
-      ...customForms,
+  const tabItems: ViewForm = {
+      {{$routeLower}}: <TabItem tabName="{{$routeLower}}" data={ {{$routeLower}} } groups={ {{$routeName}}FormDef(table)} />,
     };
 
     return (
@@ -92,10 +83,9 @@
         fetchFn={ {{$fetchFn}}}
         onEnter={handleEnter}
         modifyFn={handleModify}{{$clickFn}}
-        tabs={tabs}
       >
         <DebugState u={ [{{$routeLower}}.updater]} />
-        <View forms={forms}{{if $wantsSearch}} searchable{{end}} />
+        <View tabItems={tabItems}{{if $wantsSearch}} searchable{{end}} />
       </ViewStateProvider>
     );
   };

@@ -1,5 +1,6 @@
 name    ,type             ,strDefault ,attributes ,upgrades ,docOrder ,description
 chain   ,string           ,           ,           ,         ,         ,jim
+state   ,types.WizState   ,           ,           ,         ,         ,jim
 updater ,sdk.Updater      ,           ,           ,         ,         ,jim
 items   ,[]types.WizError ,           ,           ,         ,         ,jim
 nItems  ,uint64           ,           ,           ,         ,         ,jim

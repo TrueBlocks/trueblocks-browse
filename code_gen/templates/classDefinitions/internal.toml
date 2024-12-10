@@ -1,0 +1,9 @@
+[settings]
+    class = "Internal"
+    doc_route = "1014-containers"
+    ui_route = "1014-internals"
+    ui_icon = "Cpu"
+    attributes = ""
+    parent = "history"
+    cache_type = "cacheable"
+    cache_by = "range"

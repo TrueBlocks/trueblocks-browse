@@ -1,9 +1,9 @@
 [settings]
-    class = "Index"
-    doc_route = "1051-containers"
-    ui_route = "1051-indexes"
+    class = "Pin"
+    doc_route = "1053-containers"
+    ui_route = "1053-pins"
+    ui_icon = "Pin"
     attributes = ""
     parent = "unchained"
-    sorts = "range+Dec"
     cache_type = "cacheable"
     cache_by = "range"

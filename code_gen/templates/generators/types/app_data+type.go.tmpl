@@ -9,6 +9,7 @@
 {{ $hasEmbed := and (gt (len .EmbedName) 0) true }}
 
 {{ $isHistory := eq $class "History" }}
+{{ $historyChild := eq .Parent "history" }}
 {{ $noChildren := (eq .Children "") }}
 
 {{ $wantsZero := .Wants "zero" }}
@@ -29,8 +30,8 @@
 {{ end }}
 
 {{ $param3 := ""}}
-{{ if $isHistory }}
-	{{ $param3 = ", address" }}
+{{ if $historyChild }}
+	{{ $param3 = ", a.GetLastAddress()" }}
 {{ end }}
 
 {{ $param4 := "" }}
@@ -123,6 +124,7 @@ func (a *App) load{{$routeName}}(wg *sync.WaitGroup, errorChan chan error) error
 func (a *App) pull{{toPlural $class}}({{$param4}}) ({{$returnType}}, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

@@ -1,0 +1,9 @@
+[settings]
+    class = "Receipt"
+    doc_route = "1020-containers"
+    ui_route = "1020-receipts"
+    ui_icon = "Receipt"
+    attributes = ""
+    parent = "history"
+    cache_type = "cacheable"
+    cache_by = "range"

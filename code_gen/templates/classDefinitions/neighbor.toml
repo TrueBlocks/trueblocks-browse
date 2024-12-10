@@ -1,0 +1,9 @@
+[settings]
+    class = "Neighbor"
+    doc_route = "1018-containers"
+    ui_route = "1018-neighbors"
+    ui_icon = "Users"
+    attributes = ""
+    parent = "history"
+    cache_type = "cacheable"
+    cache_by = "range"

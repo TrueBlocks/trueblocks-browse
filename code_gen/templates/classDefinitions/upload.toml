@@ -1,9 +1,9 @@
 [settings]
-    class = "Index"
-    doc_route = "1051-containers"
-    ui_route = "1051-indexes"
+    class = "Upload"
+    doc_route = "1054-containers"
+    ui_route = "1054-uploads"
+    ui_icon = "Upload"
     attributes = ""
     parent = "unchained"
-    sorts = "range+Dec"
     cache_type = "cacheable"
     cache_by = "range"

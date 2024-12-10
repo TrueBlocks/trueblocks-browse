@@ -84,7 +84,8 @@
             "class": "History",
             "doc_route": "1010-containers",
             "ui_route": "1010-history-2",
-            "ui_icon": "BuildingMonument",
+            "ui_icon": "History",
+            "children": "balances,incoming,outgoing,internals,charts,logs,statements,neighbors,traces,receipts",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "wantsSearch|wantsZero|wantsMulti",
@@ -159,9 +160,789 @@
             ]
         },
         {
-            "class": "Monitor",
+            "class": "Balance",
+            "doc_route": "1011-containers",
+            "ui_route": "1011-balances",
+            "ui_icon": "Scale",
+            "parent": "history",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "address",
+                    "type": "address",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nTotal",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "balance",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "nLogs",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nTokens",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "nErrors",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.Transaction",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
+                }
+            ]
+        },
+        {
+            "class": "Incoming",
+            "doc_route": "1012-containers",
+            "ui_route": "1012-incoming",
+            "ui_icon": "ArrowDownCircle",
+            "parent": "history",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "address",
+                    "type": "address",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nTotal",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "balance",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "nLogs",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nTokens",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "nErrors",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.Transaction",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
+                }
+            ]
+        },
+        {
+            "class": "Outgoing",
+            "doc_route": "1013-containers",
+            "ui_route": "1013-outgoing",
+            "ui_icon": "ArrowUpCircle",
+            "parent": "history",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "address",
+                    "type": "address",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nTotal",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "balance",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "nLogs",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nTokens",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "nErrors",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.Transaction",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
+                }
+            ]
+        },
+        {
+            "class": "Internal",
+            "doc_route": "1014-containers",
+            "ui_route": "1014-internals",
+            "ui_icon": "Cpu",
+            "parent": "history",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "address",
+                    "type": "address",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nTotal",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "balance",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "nLogs",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nTokens",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "nErrors",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.Transaction",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
+                }
+            ]
+        },
+        {
+            "class": "Chart",
+            "doc_route": "1015-containers",
+            "ui_route": "1015-charts",
+            "ui_icon": "ChartBar",
+            "parent": "history",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "address",
+                    "type": "address",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nTotal",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "balance",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "nLogs",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nTokens",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "nErrors",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.Transaction",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
+                }
+            ]
+        },
+        {
+            "class": "Log",
+            "doc_route": "1016-containers",
+            "ui_route": "1016-logs",
+            "ui_icon": "FileText",
+            "parent": "history",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "address",
+                    "type": "address",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nTotal",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "balance",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "nLogs",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nTokens",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "nErrors",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.Transaction",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
+                }
+            ]
+        },
+        {
+            "class": "Statement",
+            "doc_route": "1017-containers",
+            "ui_route": "1017-statements",
+            "ui_icon": "FileInvoice",
+            "parent": "history",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "address",
+                    "type": "address",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nTotal",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "balance",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "nLogs",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nTokens",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "nErrors",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.Transaction",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
+                }
+            ]
+        },
+        {
+            "class": "Neighbor",
+            "doc_route": "1018-containers",
+            "ui_route": "1018-neighbors",
+            "ui_icon": "Users",
+            "parent": "history",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "address",
+                    "type": "address",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nTotal",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "balance",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "nLogs",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nTokens",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "nErrors",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.Transaction",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
+                }
+            ]
+        },
+        {
+            "class": "Trace",
+            "doc_route": "1019-containers",
+            "ui_route": "1019-traces",
+            "ui_icon": "Activity",
+            "parent": "history",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "address",
+                    "type": "address",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nTotal",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "balance",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "nLogs",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nTokens",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "nErrors",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.Transaction",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
+                }
+            ]
+        },
+        {
+            "class": "Receipt",
             "doc_route": "1020-containers",
-            "ui_route": "1020-monitors-3",
+            "ui_route": "1020-receipts",
+            "ui_icon": "Receipt",
+            "parent": "history",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "address",
+                    "type": "address",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "nTotal",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 3
+                },
+                {
+                    "name": "balance",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 4
+                },
+                {
+                    "name": "nLogs",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 5
+                },
+                {
+                    "name": "nTokens",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 6
+                },
+                {
+                    "name": "nErrors",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 7
+                },
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 8
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 9
+                },
+                {
+                    "name": "items",
+                    "type": "types.Transaction",
+                    "description": "jim",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 11
+                }
+            ]
+        },
+        {
+            "class": "Monitor",
+            "doc_route": "1025-containers",
+            "ui_route": "1025-monitors-3",
             "ui_icon": "DeviceDesktop",
             "cache_by": "range",
             "cache_type": "cacheable",
@@ -385,13 +1166,13 @@
         },
         {
             "class": "Sharing",
-            "doc_route": "1045-containers",
-            "ui_route": "1045-sharing-4",
-            "ui_icon": "Tag",
-            "children": "names,abis",
+            "doc_route": "1050-containers",
+            "ui_route": "1050-sharing-4",
+            "ui_icon": "Share",
+            "children": "names,abis,pins,uploads",
             "cache_by": "range",
             "cache_type": "cacheable",
-            "attributes": "wantsEnter|wantsSearch",
+            "attributes": "wantsSearch",
             "members": [
                 {
                     "name": "chain",
@@ -422,8 +1203,8 @@
         },
         {
             "class": "Index",
-            "doc_route": "1050-containers",
-            "ui_route": "1050-indexes",
+            "doc_route": "1051-containers",
+            "ui_route": "1051-indexes",
             "parent": "unchained",
             "cache_by": "range",
             "cache_type": "cacheable",
@@ -465,8 +1246,8 @@
         },
         {
             "class": "Manifest",
-            "doc_route": "1060-containers",
-            "ui_route": "1060-manifests",
+            "doc_route": "1052-containers",
+            "ui_route": "1052-manifests",
             "parent": "unchained",
             "cache_by": "range",
             "cache_type": "cacheable",
@@ -525,11 +1306,83 @@
             ]
         },
         {
+            "class": "Pin",
+            "doc_route": "1053-containers",
+            "ui_route": "1053-pins",
+            "ui_icon": "Pin",
+            "parent": "unchained",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "items",
+                    "type": "types.CacheItem",
+                    "description": "jim",
+                    "num": 3,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
+                }
+            ]
+        },
+        {
+            "class": "Upload",
+            "doc_route": "1054-containers",
+            "ui_route": "1054-uploads",
+            "ui_icon": "Upload",
+            "parent": "unchained",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "items",
+                    "type": "types.CacheItem",
+                    "description": "jim",
+                    "num": 3,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
+                }
+            ]
+        },
+        {
             "class": "Unchained",
             "doc_route": "1065-containers",
             "ui_route": "1065-unchained-5",
-            "ui_icon": "Archive",
-            "children": "indexes,manifests",
+            "ui_icon": "LinkOff",
+            "children": "indexes,manifests,pins,uploads",
             "cache_by": "range",
             "cache_type": "cacheable",
             "members": [
@@ -790,7 +1643,7 @@
             "class": "Wizard",
             "doc_route": "1120-containers",
             "ui_route": "1120-wizard-w",
-            "ui_icon": "Biohazard",
+            "ui_icon": "Wand",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "wantsEnter|wantsZero",
@@ -802,23 +1655,29 @@
                     "num": 1
                 },
                 {
+                    "name": "state",
+                    "type": "types.WizState",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
                     "name": "updater",
                     "type": "sdk.Updater",
                     "description": "jim",
-                    "num": 2
+                    "num": 3
                 },
                 {
                     "name": "items",
                     "type": "types.WizError",
                     "description": "jim",
-                    "num": 3,
+                    "num": 4,
                     "isArray": true
                 },
                 {
                     "name": "nItems",
                     "type": "uint64",
                     "description": "jim",
-                    "num": 4
+                    "num": 5
                 }
             ]
         }
