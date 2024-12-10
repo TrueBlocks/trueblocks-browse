@@ -57,7 +57,7 @@ func (a *App) loadStatements(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.statements = types.NewStatementContainer(a.getChain(), items, a.GetLastAddress())
+		a.statements = types.NewStatementContainer(a.getChain(), items, a.getLastAddress())
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := a.statements.Sort(); err != nil {

@@ -57,7 +57,7 @@ func (a *App) loadLogs(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.logs = types.NewLogContainer(a.getChain(), items, a.GetLastAddress())
+		a.logs = types.NewLogContainer(a.getChain(), items, a.getLastAddress())
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := a.logs.Sort(); err != nil {

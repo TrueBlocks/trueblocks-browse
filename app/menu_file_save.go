@@ -45,7 +45,7 @@ func (a *App) saveFileDialog() (bool, error) {
 }
 
 func (a *App) writeFile(fn string) (bool, error) {
-	if err := a.project.Save(fn, a.GetLastAddress()); err != nil {
+	if err := a.project.Save(fn, a.getLastAddress()); err != nil {
 		return false, fmt.Errorf("%w: %v", ErrProjectNotSaved, err)
 	}
 	a.dirty = false

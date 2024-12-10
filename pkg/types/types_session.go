@@ -11,6 +11,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+// --------------------------------------------
 // Session stores ephemeral things such as last window position,
 // last view, and recent file list.
 type Session struct {
@@ -25,6 +26,7 @@ type Session struct {
 	WizardStr   string     `json:"wizardStr"`
 }
 
+// --------------------------------------------
 func NewSession() Session {
 	return defaultSession
 }
@@ -38,86 +40,90 @@ func (s *Session) ShallowCopy() Session {
 	return *s
 }
 
+// --------------------------------------------
 func (s *Session) GetChain() string {
 	return s.LastChain
-}
-
-func (s *Session) GetFile() string {
-	return s.LastFile
-}
-
-func (s *Session) GetFolder() string {
-	return s.LastFolder
-}
-
-func (s *Session) GetRoute() string {
-	return s.LastRoute
-}
-
-func (s *Session) GetAddress() string {
-	return s.LastAddress
-}
-
-func (s *Session) GetTab(route string) string {
-	ret, _ := s.LastTab.Load(route)
-	return ret
-}
-
-func (s *Session) IsFlagOn(key string) bool {
-	ret, _ := s.Flags.Load(key)
-	return ret
-}
-
-func (s *Session) GetWindow() Window {
-	return s.Window
-}
-
-func (s *Session) GetWizardStr() string {
-	return s.WizardStr
 }
 
 func (s *Session) SetChain(chain string) {
 	s.LastChain = chain
 }
 
+// --------------------------------------------
+func (s *Session) GetFile() string {
+	return s.LastFile
+}
+
 func (s *Session) SetFile(file string) {
 	s.LastFile = file
+}
+
+// --------------------------------------------
+func (s *Session) GetFolder() string {
+	return s.LastFolder
 }
 
 func (s *Session) SetFolder(folder string) {
 	s.LastFolder = folder
 }
 
+// --------------------------------------------
+func (s *Session) GetRoute() string {
+	return s.LastRoute
+}
+
 func (s *Session) SetRoute(route string) {
 	s.LastRoute = route
-	if route == "" {
-		s.LastRoute = "project"
-	}
-	_ = s.Save(context.TODO())
+}
+
+// --------------------------------------------
+func (s *Session) GetAddress() string {
+	return s.LastAddress
 }
 
 func (s *Session) SetAddress(address string) {
 	s.LastAddress = address
-	_ = s.Save(context.TODO())
+}
+
+// --------------------------------------------
+func (s *Session) GetTab(route string) string {
+	ret, _ := s.LastTab.Load(route)
+	return ret
 }
 
 func (s *Session) SetTab(route, tab string) {
 	s.LastTab.Store(route, tab)
-	_ = s.Save(context.TODO())
+}
+
+// --------------------------------------------
+func (s *Session) IsFlagOn(key string) bool {
+	ret, _ := s.Flags.Load(key)
+	return ret
 }
 
 func (s *Session) SetFlagOn(key string, value bool) {
 	s.Flags.Store(key, value)
 }
 
+// --------------------------------------------
+func (s *Session) GetWindow() Window {
+	return s.Window
+}
+
 func (s *Session) SetWindow(window Window) {
 	s.Window = window
+}
+
+// --------------------------------------------
+func (s *Session) GetWizardStr() string {
+	return s.WizardStr
 }
 
 func (s *Session) SetWizardStr(wizStr string) {
 	s.WizardStr = wizStr
 }
 
+// --------------------------------------------
 var defFlags BoolMap
 
 func init() {
@@ -151,16 +157,15 @@ var defaultSession = Session{
 	WizardStr: "welcome",
 }
 
+// --------------------------------------------
 // Save saves the session to the configuration folder.
 func (s *Session) Save(ctx context.Context) error {
-	if ctx != context.TODO() {
-		var w Window
-		w.X, w.Y = runtime.WindowGetPosition(ctx)
-		w.Width, w.Height = runtime.WindowGetSize(ctx)
-		// TODO: This is a hack to account for the menu bar - not sure why it's needed
-		w.Y += 38
-		s.SetWindow(w)
-	}
+	var w Window
+	w.X, w.Y = runtime.WindowGetPosition(ctx)
+	w.Width, w.Height = runtime.WindowGetSize(ctx)
+	// TODO: This is a hack to account for the menu bar - not sure why it's needed
+	w.Y += 38
+	s.SetWindow(w)
 
 	if fn, err := utils.GetConfigFn("browse", "session.json"); err != nil {
 		return err
@@ -172,11 +177,12 @@ func (s *Session) Save(ctx context.Context) error {
 	}
 }
 
+// --------------------------------------------
 var ErrLoadingSession = errors.New("error loading session")
 
 // Load loads the session from the configuration folder. If the file contains
 // data, we return true. False otherwise.
-func (s *Session) Load() error {
+func (s *Session) Load(ctx context.Context) error {
 	loaded := false
 	defer func() {
 		if !loaded {
@@ -193,7 +199,7 @@ func (s *Session) Load() error {
 				s.LastFile = "Untitled.tbx"
 			}
 		}
-		_ = s.Save(context.TODO()) // creates the session file if it doesn't already exist
+		_ = s.Save(ctx) // creates the session file if it doesn't already exist
 	}()
 
 	fn, err := utils.GetConfigFn("browse", "session.json")
@@ -215,6 +221,7 @@ func (s *Session) Load() error {
 	return nil
 }
 
+// --------------------------------------------
 var ErrScreenNotFound = errors.New("screen not found")
 
 // CleanWindowSize ensures a valid window size. (If the app has never run before
@@ -228,7 +235,7 @@ func (s *Session) CleanWindowSize(ctx context.Context) (Window, error) {
 
 	ret := Window{X: 30, Y: 30, Width: 1024, Height: 768}
 	defer func() {
-		_ = s.Save(context.TODO())
+		_ = s.Save(ctx)
 	}()
 
 	if screens, err := runtime.ScreenGetAll(ctx); err != nil {
@@ -256,6 +263,7 @@ func (s *Session) CleanWindowSize(ctx context.Context) (Window, error) {
 	return s.Window, nil
 }
 
+// --------------------------------------------
 // Window stores the last position and title of the window
 type Window struct {
 	X      int `json:"x"`

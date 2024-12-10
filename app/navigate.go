@@ -5,6 +5,6 @@ func (a *App) Navigate(route string) {
 		route = "wizard"
 	}
 
-	a.SetLastRoute(route)
+	a.setLastRoute(route)
 	a.emitNavigateMsg(route)
 }

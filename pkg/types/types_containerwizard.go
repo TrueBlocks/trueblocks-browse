@@ -104,7 +104,6 @@ func (s *WizardContainer) passesFilter(item *WizError, filter *Filter) (ret bool
 	if filter.HasCriteria() {
 		ret = false
 		// EXISTING_CODE
-		_ = item
 		// EXISTING_CODE
 	}
 	return

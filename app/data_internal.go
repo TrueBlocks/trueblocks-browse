@@ -57,7 +57,7 @@ func (a *App) loadInternals(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.internals = types.NewInternalContainer(a.getChain(), items, a.GetLastAddress())
+		a.internals = types.NewInternalContainer(a.getChain(), items, a.getLastAddress())
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := a.internals.Sort(); err != nil {

@@ -57,7 +57,7 @@ func (a *App) loadTraces(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.traces = types.NewTraceContainer(a.getChain(), items, a.GetLastAddress())
+		a.traces = types.NewTraceContainer(a.getChain(), items, a.getLastAddress())
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := a.traces.Sort(); err != nil {

@@ -17,9 +17,13 @@ func (a *App) GetTabs() []string {
 		"wizard":    {"wizard"},
 	}
 
-	route := a.GetLastRoute()
+	route := a.getLastRoute()
 	if tab, ok := tabMap[route]; ok {
 		return tab
 	}
 	return []string{"no-name"}
+}
+
+func (a *App) getTabs() []string {
+	return a.GetTabs()
 }

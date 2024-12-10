@@ -7,7 +7,7 @@ const debug = import.meta.env.VITE_DEBUG === "true";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const DebugState = ({ u }: { u: sdk.Updater[] }) => {
-  const { counters, route, info } = useAppState();
+  const { counters, route, activeTab, info } = useAppState();
   const { nItems } = useViewState();
 
   useEffect(() => {
@@ -25,9 +25,9 @@ export const DebugState = ({ u }: { u: sdk.Updater[] }) => {
     <div>
       <Text>{`info.Address: ${info.address}`}</Text>
       <Text>{`nItems: ${nItems}`}</Text>
-      {/* <Text>{`updater: ${JSON.stringify(u, null, 2)}`}</Text> */}
       <Text>{`renderCount: ${counters.current[route]}`}</Text>
       <Text>{`route: ${route}`}</Text>
+      <Text>{`activeTab: ${activeTab}`}</Text>
     </div>
   );
 };

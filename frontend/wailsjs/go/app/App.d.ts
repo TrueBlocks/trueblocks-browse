@@ -91,9 +91,9 @@ export function GetHistoryContainer():Promise<types.HistoryContainer>;
 
 export function GetLastAddress():Promise<base.Address>;
 
-export function GetLastRoute():Promise<string>;
+export function GetLastRoute1():Promise<string>;
 
-export function GetLastTab():Promise<string>;
+export function GetLastTab(arg1:string):Promise<string>;
 
 export function GetMenus():Promise<menu.Menu>;
 
@@ -107,7 +107,7 @@ export function HistoryView(arg1:menu.CallbackData):Promise<void>;
 
 export function IsDaemonOn(arg1:string):Promise<boolean>;
 
-export function IsHeaderOn(arg1:string):Promise<boolean>;
+export function IsHeaderOn(arg1:string,arg2:string):Promise<boolean>;
 
 export function IsLayoutOn(arg1:string):Promise<boolean>;
 
@@ -143,7 +143,7 @@ export function SetEnv(arg1:string,arg2:string):Promise<void>;
 
 export function SetFilter(arg1:string):Promise<void>;
 
-export function SetHeaderOn(arg1:string,arg2:boolean):Promise<void>;
+export function SetHeaderOn(arg1:string,arg2:string,arg3:boolean):Promise<void>;
 
 export function SetLastAddress(arg1:string):Promise<void>;
 

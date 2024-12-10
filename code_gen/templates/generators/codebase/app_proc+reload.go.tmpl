@@ -8,8 +8,8 @@ package app
 func (a *App) Reload() {
 	defer a.trackPerformance("Reload", false)()
 
-	logger.InfoG("Reloading", a.GetLastRoute(), "...")
-	switch a.GetLastRoute() {
+	logger.InfoG("Reloading", a.getLastRoute(), "...")
+	switch a.getLastRoute() {
 		{{- range .Structures }}
 			{{- $hasChildren := ne .Children "" }}
 			{{- $hasParent := ne .Parent "" }}

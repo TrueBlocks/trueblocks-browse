@@ -57,7 +57,7 @@ func (a *App) loadNeighbors(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.neighbors = types.NewNeighborContainer(a.getChain(), items, a.GetLastAddress())
+		a.neighbors = types.NewNeighborContainer(a.getChain(), items, a.getLastAddress())
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := a.neighbors.Sort(); err != nil {

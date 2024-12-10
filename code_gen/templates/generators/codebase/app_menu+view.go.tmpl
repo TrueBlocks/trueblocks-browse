@@ -20,11 +20,6 @@ package app
 	{{ $noParent := (eq .Parent "") }}
 	{{ $hasChildren := (ne .Children "") }}
 
-	{{ $wantsMulti := .Wants "multi" }}
-	{{ if $hasChildren }}
-		{{ $wantsMulti = true }}
-	{{ end }}
-
 	{{ $param1 := print "\"/" $route "\"" }}
 
 	{{/*==============================================================*/}}
@@ -42,15 +37,11 @@ package app
 				}
 			{{- end }}
 
-			{{- if $wantsMulti }}
-				if strings.Contains(a.GetLastRoute(), "{{ $route }}") {
-					a.ToggleNextTab(cb)
-				} else {
-					a.Navigate("{{$route}}")
-				}
-			{{- else }}
+			if a.getLastRoute() == "{{ $route }}" {
+				a.ToggleNextTab(cb)
+			} else {
 				a.Navigate("{{$route}}")
-			{{- end }}
+			}
 		}
 	{{- end }}
 {{- end }}

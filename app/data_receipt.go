@@ -57,7 +57,7 @@ func (a *App) loadReceipts(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.receipts = types.NewReceiptContainer(a.getChain(), items, a.GetLastAddress())
+		a.receipts = types.NewReceiptContainer(a.getChain(), items, a.getLastAddress())
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := a.receipts.Sort(); err != nil {

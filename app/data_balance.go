@@ -61,7 +61,7 @@ func (a *App) loadBalances(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.balances = types.NewBalanceContainer(a.getChain(), items, a.GetLastAddress())
+		a.balances = types.NewBalanceContainer(a.getChain(), items, a.getLastAddress())
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := a.balances.Sort(); err != nil {
@@ -96,7 +96,7 @@ func (a *App) loadHistory(wg *sync.WaitGroup, errorChan chan error) error {
 	}
 	defer historyLock.CompareAndSwap(1, 0)
 
-	address := a.GetLastAddress()
+	address := a.getLastAddress()
 	// HIST-HIST
 	history, exists := a.historyCache.Load(address)
 	if !exists {
@@ -258,8 +258,8 @@ func (a *App) goToAddress(address base.Address) {
 	}
 
 	a.cancelContext(address)
-	a.SetLastRoute("history")
-	a.SetLastAddress(address.Hex())
+	a.setLastRoute("history")
+	a.setLastAddress(address.Hex())
 	// HIST-HIST
 	history, exists := a.historyCache.Load(address)
 	if exists {
@@ -268,7 +268,7 @@ func (a *App) goToAddress(address base.Address) {
 		a.historyCache.Store(address, history)
 	}
 	// go a.loadHistory(nil, nil)
-	a.emitNavigateMsg(a.GetLastRoute())
+	a.emitNavigateMsg(a.getLastRoute())
 }
 
 func (a *App) LoadAddress(addrOrEns string) {

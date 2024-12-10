@@ -57,7 +57,7 @@ func (a *App) loadCharts(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.charts = types.NewChartContainer(a.getChain(), items, a.GetLastAddress())
+		a.charts = types.NewChartContainer(a.getChain(), items, a.getLastAddress())
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := a.charts.Sort(); err != nil {

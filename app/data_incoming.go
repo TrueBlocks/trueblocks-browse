@@ -57,7 +57,7 @@ func (a *App) loadIncoming(wg *sync.WaitGroup, errorChan chan error) error {
 		// EXISTING_CODE
 		// EXISTING_CODE
 		a.meta = *meta
-		a.incoming = types.NewIncomingContainer(a.getChain(), items, a.GetLastAddress())
+		a.incoming = types.NewIncomingContainer(a.getChain(), items, a.getLastAddress())
 		// EXISTING_CODE
 		// EXISTING_CODE
 		if err := a.incoming.Sort(); err != nil {

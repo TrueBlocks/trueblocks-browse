@@ -53,8 +53,8 @@ func (a *App) readFile(fn string) (bool, error) {
 		folder, file := filepath.Split(fn)
 		a.setFolder(folder)
 		a.setFile(file)
-		a.SetLastRoute("history")
-		a.SetLastAddress(pF.Selected.Hex())
+		a.setLastRoute("history")
+		a.setLastAddress(pF.Selected.Hex())
 		a.saveSessionFile()
 
 		// go a.loadHistory(nil, nil)

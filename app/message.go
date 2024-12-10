@@ -10,7 +10,7 @@ import (
 func (a *App) emitNavigateMsg(route string) {
 	messages.EmitMessage(a.ctx, messages.Navigate, &messages.MessageMsg{
 		String1: route,
-		String2: a.GetLastTab(),
+		String2: a.getLastTab(route),
 	})
 }
 

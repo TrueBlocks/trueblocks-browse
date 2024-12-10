@@ -25,6 +25,6 @@ func (a *App) FetchAppInfo() AppInfo {
 		Filename: a.getFullPath(),
 		Dirty:    a.dirty,
 		Meta:     a.meta,
-		Address:  a.GetLastAddress(),
+		Address:  a.getLastAddress(),
 	}
 }

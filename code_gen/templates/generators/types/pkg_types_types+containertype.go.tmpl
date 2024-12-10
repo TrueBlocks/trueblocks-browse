@@ -139,6 +139,7 @@ func (s *{{$class}}Container) Clear() {
 }
 
 func (s *{{$class}}Container) passesFilter(item *{{$itemType}}, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false

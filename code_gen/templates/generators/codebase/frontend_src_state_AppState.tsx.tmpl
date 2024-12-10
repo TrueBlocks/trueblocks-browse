@@ -42,7 +42,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   useEffect(() => {
     GetLastRoute().then((lastRoute) => {
       setRoute(lastRoute);
-      GetLastTab().then((lastTab) => {
+      GetLastTab(lastRoute).then((lastTab) => {
         setActiveTab(lastTab);
       });
     });
@@ -62,16 +62,16 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
   }, [setLocation]);
 
-  const tabChanged = (newVal: string) => {
-    SetLastTab(route, newVal).then(() => {
-      setActiveTab(newVal);
+  const tabChanged = (newTab: string) => {
+    SetLastTab(route, newTab).then(() => {
+      setActiveTab(newTab);
     });
   };
 
-  const routeChanged = (newVal: string) => {
-    SetLastRoute(newVal).then(() => {
-      setRoute(newVal);
-      GetLastTab().then((lastTab) => {
+  const routeChanged = (newRoute: string) => {
+    SetLastRoute(newRoute).then(() => {
+      setRoute(newRoute);
+      GetLastTab(newRoute).then((lastTab) => {
         tabChanged(lastTab);
       });
     });

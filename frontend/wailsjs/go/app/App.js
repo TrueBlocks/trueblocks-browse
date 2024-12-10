@@ -170,12 +170,12 @@ export function GetLastAddress() {
   return window['go']['app']['App']['GetLastAddress']();
 }
 
-export function GetLastRoute() {
-  return window['go']['app']['App']['GetLastRoute']();
+export function GetLastRoute1() {
+  return window['go']['app']['App']['GetLastRoute1']();
 }
 
-export function GetLastTab() {
-  return window['go']['app']['App']['GetLastTab']();
+export function GetLastTab(arg1) {
+  return window['go']['app']['App']['GetLastTab'](arg1);
 }
 
 export function GetMenus() {
@@ -202,8 +202,8 @@ export function IsDaemonOn(arg1) {
   return window['go']['app']['App']['IsDaemonOn'](arg1);
 }
 
-export function IsHeaderOn(arg1) {
-  return window['go']['app']['App']['IsHeaderOn'](arg1);
+export function IsHeaderOn(arg1, arg2) {
+  return window['go']['app']['App']['IsHeaderOn'](arg1, arg2);
 }
 
 export function IsLayoutOn(arg1) {
@@ -274,8 +274,8 @@ export function SetFilter(arg1) {
   return window['go']['app']['App']['SetFilter'](arg1);
 }
 
-export function SetHeaderOn(arg1, arg2) {
-  return window['go']['app']['App']['SetHeaderOn'](arg1, arg2);
+export function SetHeaderOn(arg1, arg2, arg3) {
+  return window['go']['app']['App']['SetHeaderOn'](arg1, arg2, arg3);
 }
 
 export function SetLastAddress(arg1) {
