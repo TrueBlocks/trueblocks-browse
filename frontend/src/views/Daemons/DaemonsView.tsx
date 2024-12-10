@@ -3,7 +3,7 @@
 
 // EXISTING_CODE
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { FormTable, ViewForm, View, DebugState } from "@components";
+import { TabItem, ViewForm, View, DebugState } from "@components";
 // import { ToggleDaemon } from "@gocode/app/App";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
@@ -18,87 +18,14 @@ export const DaemonsView = () => {
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
-  // eslint-disable-next-line prefer-const
-  let customTabs: string[] = [];
-  // eslint-disable-next-line prefer-const
-  let customForms: Record<string, JSX.Element> = {};
-  // EXISTING_CODE
-  // TODO BOGUS: The daemon state should be in the AppState
-  // const [scraper] = useState<types.Daemon>(empty);
-  // const [freshen] = useState<types.Daemon>(empty);
-  // const [ipfs] = useState<types.Daemon>(empty);
-  // const [logMessages] = useState<messages.MessageMsg[]>([]);
-  // // const [scraper, setScraper] = useState<types.Daemon>(empty);
-  // const [freshen, setFreshen] = useState<types.Daemon>(empty);
-  // const [ipfs, setIpfs] = useState<types.Daemon>(empty);
-  // const [logMessages, setLogMessages] = useState<messages.MessageMsg[]>([]);
-
-  // const updateDaemon = (daemon: string, setDaemon: Dispatch<SetStateAction<types.Daemon>>) => {
-  //   GetDaemon(daemon).then((json: string) => {
-  //     setDaemon(types.Daemon.createFrom(json));
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   updateDaemon("scraper", setScraper);
-  //   updateDaemon("freshen", setFreshen);
-  //   updateDaemon("ipfs", setIpfs);
-  // }, []);
-
-  // const handleMessage = (msg: messages.MessageMsg) => {
-  //   if (msg.num1 != 1) return; // ignore non-daemon refreshes here
-  //   switch (msg.name) {
-  //     case "scraper":
-  //       updateDaemon("scraper", setScraper);
-  //       break;
-  //     case "freshen":
-  //       updateDaemon("freshen", setFreshen);
-  //       break;
-  //     case "ipfs":
-  //       updateDaemon("ipfs", setIpfs);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  //   setLogMessages((prev) => {
-  //     const newLogs = [...prev, msg];
-  //     return newLogs.length > 8 ? newLogs.slice(-8) : newLogs;
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   const { Message } = messages;
-  //   EventsOn(Message.REFRESH, handleMessage);
-  //   return () => {
-  //     EventsOff(Message.REFRESH);
-  //   };
-  // });
-
-  // const toggleDaemon = (name: string) => {
-  //   ToggleDaemon(name);
-  // };
-
-  // const upd = sdk.Updater.createFrom({});
-  // const daemons: Nope = {
-  //   toggleDaemon,
-  //   scraper,
-  //   freshen,
-  //   ipfs,
-  //   logMessages,
-  //   updater: upd,
-  // };
-  // EXISTING_CODE
-
   const table = useReactTable({
     data: daemons?.items || [],
     columns: DaemonsTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const tabs = ["daemons", ...(customTabs || [])];
-  const forms: ViewForm = {
-    daemons: <FormTable data={daemons} groups={DaemonsFormDef(table)} />,
-    ...customForms,
+  const tabItems: ViewForm = {
+    daemons: <TabItem tabName="daemons" data={daemons} groups={DaemonsFormDef(table)} />,
   };
 
   return (
@@ -108,13 +35,70 @@ export const DaemonsView = () => {
       fetchFn={fetchDaemons}
       onEnter={handleEnter}
       modifyFn={handleModify}
-      tabs={tabs}
     >
       <DebugState u={[daemons.updater]} />
-      <View forms={forms} />
+      <View tabItems={tabItems} />
     </ViewStateProvider>
   );
 };
 
 // EXISTING_CODE
+// TODO BOGUS: The daemon state should be in the AppState
+// const [scraper] = useState<types.Daemon>(empty);
+// const [freshen] = useState<types.Daemon>(empty);
+// const [ipfs] = useState<types.Daemon>(empty);
+// const [logMessages] = useState<messages.MessageMsg[]>([]);
+// // const [scraper, setScraper] = useState<types.Daemon>(empty);
+// const [freshen, setFreshen] = useState<types.Daemon>(empty);
+// const [ipfs, setIpfs] = useState<types.Daemon>(empty);
+// const [logMessages, setLogMessages] = useState<messages.MessageMsg[]>([]);
+// const updateDaemon = (daemon: string, setDaemon: Dispatch<SetStateAction<types.Daemon>>) => {
+//   GetDaemon(daemon).then((json: string) => {
+//     setDaemon(types.Daemon.createFrom(json));
+//   });
+// };
+// useEffect(() => {
+//   updateDaemon("scraper", setScraper);
+//   updateDaemon("freshen", setFreshen);
+//   updateDaemon("ipfs", setIpfs);
+// }, []);
+// const handleMessage = (msg: messages.MessageMsg) => {
+//   if (msg.num1 != 1) return; // ignore non-daemon refreshes here
+//   switch (msg.name) {
+//     case "scraper":
+//       updateDaemon("scraper", setScraper);
+//       break;
+//     case "freshen":
+//       updateDaemon("freshen", setFreshen);
+//       break;
+//     case "ipfs":
+//       updateDaemon("ipfs", setIpfs);
+//       break;
+//     default:
+//       break;
+//   }
+//   setLogMessages((prev) => {
+//     const newLogs = [...prev, msg];
+//     return newLogs.length > 8 ? newLogs.slice(-8) : newLogs;
+//   });
+// };
+// useEffect(() => {
+//   const { Message } = messages;
+//   EventsOn(Message.REFRESH, handleMessage);
+//   return () => {
+//     EventsOff(Message.REFRESH);
+//   };
+// });
+// const toggleDaemon = (name: string) => {
+//   ToggleDaemon(name);
+// };
+// const upd = sdk.Updater.createFrom({});
+// const daemons: Nope = {
+//   toggleDaemon,
+//   scraper,
+//   freshen,
+//   ipfs,
+//   logMessages,
+//   updater: upd,
+// };
 // EXISTING_CODE

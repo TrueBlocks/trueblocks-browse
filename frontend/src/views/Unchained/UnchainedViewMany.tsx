@@ -6,31 +6,28 @@ import { useCallback } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { DebugState, FormTable, View, ViewForm } from "../../components";
+import { DebugState, TabItem, View, ViewForm } from "../../components";
 import { IndexesFormDef, IndexesTableDef } from "../Indexes";
 import { ManifestsFormDef, ManifestsTableDef } from "../Manifests";
+import { PinsFormDef, PinsTableDef } from "../Pins";
+import { UploadsFormDef, UploadsTableDef } from "../Uploads";
 
 // EXISTING_CODE
 
 export const UnchainedView = () => {
-  const { indexes, fetchIndexes, manifests, fetchManifests } = useAppState();
+  const { indexes, fetchIndexes, manifests, fetchManifests, pins, fetchPins, uploads, fetchUploads } = useAppState();
   const { enterNoop, modifyNoop } = useNoops();
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
-
-  // eslint-disable-next-line prefer-const
-  let customTabs: string[] = [];
-  // eslint-disable-next-line prefer-const
-  let customForms: Record<string, JSX.Element> = {};
-  // EXISTING_CODE
-  // EXISTING_CODE
 
   const fetchUnchained = useCallback(
     (currentItem: number, itemsPerPage: number) => {
       fetchIndexes(currentItem, itemsPerPage);
       fetchManifests(currentItem, itemsPerPage);
+      fetchPins(currentItem, itemsPerPage);
+      fetchUploads(currentItem, itemsPerPage);
     },
-    [fetchIndexes, fetchManifests]
+    [fetchIndexes, fetchManifests, fetchPins, fetchUploads]
   );
 
   const indexesTable = useReactTable({
@@ -45,11 +42,23 @@ export const UnchainedView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const tabs = ["indexes", "manifests", ...(customTabs || [])];
-  const forms: ViewForm = {
-    indexes: <FormTable data={indexes} groups={IndexesFormDef(indexesTable)} />,
-    manifests: <FormTable data={manifests} groups={ManifestsFormDef(manifestsTable)} />,
-    ...customForms,
+  const pinsTable = useReactTable({
+    data: pins?.items || [],
+    columns: PinsTableDef,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  const uploadsTable = useReactTable({
+    data: uploads?.items || [],
+    columns: UploadsTableDef,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  const tabItems: ViewForm = {
+    indexes: <TabItem tabName="indexes" data={indexes} groups={IndexesFormDef(indexesTable)} />,
+    manifests: <TabItem tabName="manifests" data={manifests} groups={ManifestsFormDef(manifestsTable)} />,
+    pins: <TabItem tabName="pins" data={pins} groups={PinsFormDef(pinsTable)} />,
+    uploads: <TabItem tabName="uploads" data={uploads} groups={UploadsFormDef(uploadsTable)} />,
   };
 
   // if (!(status?.items?.length > 0)) {
@@ -63,10 +72,9 @@ export const UnchainedView = () => {
       fetchFn={fetchUnchained}
       onEnter={handleEnter}
       modifyFn={handleModify}
-      tabs={tabs}
     >
-      <DebugState u={[indexes.updater, manifests.updater]} />
-      <View forms={forms} />
+      <DebugState u={[indexes.updater, manifests.updater, pins.updater, uploads.updater]} />
+      <View tabItems={tabItems} />
     </ViewStateProvider>
   );
 };

@@ -3,7 +3,7 @@
 
 // EXISTING_CODE
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, ViewForm, DebugState } from "@components";
+import { View, TabItem, ViewForm, DebugState } from "@components";
 import { ModifyMonitor } from "@gocode/app/App";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
@@ -17,23 +17,14 @@ export const MonitorsView = () => {
   };
   const handleModify = ModifyMonitor;
 
-  // eslint-disable-next-line prefer-const
-  let customTabs: string[] = [];
-  // eslint-disable-next-line prefer-const
-  let customForms: Record<string, JSX.Element> = {};
-  // EXISTING_CODE
-  // EXISTING_CODE
-
   const table = useReactTable({
     data: monitors?.items || [],
     columns: MonitorsTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const tabs = ["monitors", ...(customTabs || [])];
-  const forms: ViewForm = {
-    monitors: <FormTable data={monitors} groups={MonitorsFormDef(table)} />,
-    ...customForms,
+  const tabItems: ViewForm = {
+    monitors: <TabItem tabName="monitors" data={monitors} groups={MonitorsFormDef(table)} />,
   };
 
   return (
@@ -43,10 +34,9 @@ export const MonitorsView = () => {
       fetchFn={fetchMonitors}
       onEnter={handleEnter}
       modifyFn={handleModify}
-      tabs={tabs}
     >
       <DebugState u={[monitors.updater]} />
-      <View forms={forms} searchable />
+      <View tabItems={tabItems} searchable />
     </ViewStateProvider>
   );
 };

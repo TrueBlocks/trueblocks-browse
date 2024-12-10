@@ -3,7 +3,7 @@
 
 // EXISTING_CODE
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, ViewForm, DebugState } from "@components";
+import { View, TabItem, ViewForm, DebugState } from "@components";
 import { StepWizard } from "@gocode/app/App";
 import { types } from "@gocode/models";
 import { useNoops } from "@hooks";
@@ -19,17 +19,11 @@ export const WizardView = () => {
   };
   const handleModify = modifyNoop;
 
-  // eslint-disable-next-line prefer-const
-  let customTabs: string[] = [];
-  // eslint-disable-next-line prefer-const
-  let customForms: Record<string, JSX.Element> = {};
-  // EXISTING_CODE
   const stepWizard = (step: string) => {
     StepWizard(step as types.WizStep).then(() => {
       fetchWizard(0, 100);
     });
   };
-  // EXISTING_CODE
 
   const table = useReactTable({
     data: wizard?.items || [],
@@ -37,10 +31,8 @@ export const WizardView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const tabs = ["wizard", ...(customTabs || [])];
-  const forms: ViewForm = {
-    wizard: <FormTable data={wizard} groups={WizardFormDef(table)} />,
-    ...customForms,
+  const tabItems: ViewForm = {
+    wizard: <TabItem tabName="wizard" data={wizard} groups={WizardFormDef(table)} />,
   };
 
   return (
@@ -51,10 +43,9 @@ export const WizardView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
       clickFn={stepWizard}
-      tabs={tabs}
     >
       <DebugState u={[wizard.updater]} />
-      <View forms={forms} />
+      <View tabItems={tabItems} />
     </ViewStateProvider>
   );
 };

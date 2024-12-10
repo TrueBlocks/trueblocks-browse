@@ -4,34 +4,29 @@
 // EXISTING_CODE
 import { useCallback } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { DebugState, FormTable, View, ViewForm } from "@components";
+import { DebugState, TabItem, View, ViewForm } from "@components";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { AbisFormDef, AbisTableDef } from "../Abis";
 import { NamesFormDef, NamesTableDef } from "../Names";
+import { PinsFormDef, PinsTableDef } from "../Pins";
+import { UploadsFormDef, UploadsTableDef } from "../Uploads";
 // EXISTING_CODE
 
 export const SharingView = () => {
-  const { names, fetchNames, abis, fetchAbis } = useAppState();
+  const { names, fetchNames, abis, fetchAbis, pins, fetchPins, uploads, fetchUploads } = useAppState();
   const { enterNoop, modifyNoop } = useNoops();
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
-
-  // eslint-disable-next-line prefer-const
-  let customTabs: string[] = [];
-  // eslint-disable-next-line prefer-const
-  let customForms: Record<string, JSX.Element> = {};
-  // EXISTING_CODE
-  customTabs = ["pin", "upload"];
-  customForms["pin"] = <div>This is a custom tab</div>;
-  // EXISTING_CODE
 
   const fetchSharing = useCallback(
     (currentItem: number, itemsPerPage: number) => {
       fetchNames(currentItem, itemsPerPage);
       fetchAbis(currentItem, itemsPerPage);
+      fetchPins(currentItem, itemsPerPage);
+      fetchUploads(currentItem, itemsPerPage);
     },
-    [fetchNames, fetchAbis]
+    [fetchNames, fetchAbis, fetchPins, fetchUploads]
   );
 
   const namesTable = useReactTable({
@@ -46,11 +41,23 @@ export const SharingView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const tabs = ["names", "abis", ...(customTabs || [])];
-  const forms: ViewForm = {
-    names: <FormTable data={names} groups={NamesFormDef(namesTable)} />,
-    abis: <FormTable data={abis} groups={AbisFormDef(abisTable)} />,
-    ...customForms,
+  const pinsTable = useReactTable({
+    data: pins?.items || [],
+    columns: PinsTableDef,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  const uploadsTable = useReactTable({
+    data: uploads?.items || [],
+    columns: UploadsTableDef,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  const tabItems: ViewForm = {
+    names: <TabItem tabName="names" data={names} groups={NamesFormDef(namesTable)} />,
+    abis: <TabItem tabName="abis" data={abis} groups={AbisFormDef(abisTable)} />,
+    pins: <TabItem tabName="pins" data={pins} groups={PinsFormDef(pinsTable)} />,
+    uploads: <TabItem tabName="uploads" data={uploads} groups={UploadsFormDef(uploadsTable)} />,
   };
 
   // if (!(status?.items?.length > 0)) {
@@ -64,10 +71,9 @@ export const SharingView = () => {
       fetchFn={fetchSharing}
       onEnter={handleEnter}
       modifyFn={handleModify}
-      tabs={tabs}
     >
-      <DebugState u={[names.updater, abis.updater]} />
-      <View forms={forms} searchable />
+      <DebugState u={[names.updater, abis.updater, pins.updater, uploads.updater]} />
+      <View tabItems={tabItems} searchable />
     </ViewStateProvider>
   );
 };

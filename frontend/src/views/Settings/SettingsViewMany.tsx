@@ -4,7 +4,7 @@
 // EXISTING_CODE
 import { useCallback } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { DebugState, FormTable, View, ViewForm } from "@components";
+import { DebugState, TabItem, View, ViewForm } from "@components";
 import { useNoops } from "@hooks";
 import { ViewStateProvider, useAppState } from "@state";
 import { ConfigFormDef, ConfigTableDef } from "../Config";
@@ -17,13 +17,6 @@ export const SettingsView = () => {
   const { enterNoop, modifyNoop } = useNoops();
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
-
-  // eslint-disable-next-line prefer-const
-  let customTabs: string[] = [];
-  // eslint-disable-next-line prefer-const
-  let customForms: Record<string, JSX.Element> = {};
-  // EXISTING_CODE
-  // EXISTING_CODE
 
   const fetchSettings = useCallback(
     (currentItem: number, itemsPerPage: number) => {
@@ -52,12 +45,10 @@ export const SettingsView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const tabs = ["status", "config", "session", ...(customTabs || [])];
-  const forms: ViewForm = {
-    status: <FormTable data={status} groups={StatusFormDef(statusTable)} />,
-    config: <FormTable data={config} groups={ConfigFormDef(configTable)} />,
-    session: <FormTable data={session} groups={SessionFormDef(sessionTable)} />,
-    ...customForms,
+  const tabItems: ViewForm = {
+    status: <TabItem tabName="status" data={status} groups={StatusFormDef(statusTable)} />,
+    config: <TabItem tabName="config" data={config} groups={ConfigFormDef(configTable)} />,
+    session: <TabItem tabName="session" data={session} groups={SessionFormDef(sessionTable)} />,
   };
 
   // if (!(status?.items?.length > 0)) {
@@ -71,10 +62,9 @@ export const SettingsView = () => {
       fetchFn={fetchSettings}
       onEnter={handleEnter}
       modifyFn={handleModify}
-      tabs={tabs}
     >
       <DebugState u={[status.updater, config.updater, session.updater]} />
-      <View forms={forms} />
+      <View tabItems={tabItems} />
     </ViewStateProvider>
   );
 };
