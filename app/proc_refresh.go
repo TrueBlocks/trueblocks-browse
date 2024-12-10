@@ -51,9 +51,9 @@ func (a *App) Freshen() error {
 	_ = a.loadNames(nil, errorChan)
 
 	// The rest of the data is independant of each other and may be loaded in parallel
-	wg.Add(11)
+	wg.Add(10)
 	go a.loadProject(&wg, errorChan)
-	go a.loadHistory(&wg, errorChan)
+	// go a.loadHistory(&wg, errorChan)
 	go a.loadMonitors(&wg, errorChan)
 	go a.loadAbis(&wg, errorChan)
 	go a.loadIndexes(&wg, errorChan)

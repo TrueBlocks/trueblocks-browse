@@ -13,12 +13,52 @@ import (
 func (a *App) Reload() {
 	defer a.trackPerformance("Reload", false)()
 
-	logger.InfoG("Reloading", a.GetRawRoute(), "...")
-
-	switch a.GetRawRoute() {
+	logger.InfoG("Reloading", a.GetLastRoute(), "...")
+	switch a.GetLastRoute() {
 	case "", "project":
 		a.project.Updater.Reset()
 		if err := a.loadProject(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+	case "history":
+		a.balances.Updater.Reset()
+		if err := a.loadBalances(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.incoming.Updater.Reset()
+		if err := a.loadIncoming(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.outgoing.Updater.Reset()
+		if err := a.loadOutgoing(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.internals.Updater.Reset()
+		if err := a.loadInternals(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.charts.Updater.Reset()
+		if err := a.loadCharts(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.logs.Updater.Reset()
+		if err := a.loadLogs(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.statements.Updater.Reset()
+		if err := a.loadStatements(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.neighbors.Updater.Reset()
+		if err := a.loadNeighbors(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.traces.Updater.Reset()
+		if err := a.loadTraces(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.receipts.Updater.Reset()
+		if err := a.loadReceipts(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 	case "monitors":
@@ -35,6 +75,14 @@ func (a *App) Reload() {
 		if err := a.loadAbis(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
+		a.pins.Updater.Reset()
+		if err := a.loadPins(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.uploads.Updater.Reset()
+		if err := a.loadUploads(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 	case "unchained":
 		a.indexes.Updater.Reset()
 		if err := a.loadIndexes(nil, nil); err != nil {
@@ -42,6 +90,14 @@ func (a *App) Reload() {
 		}
 		a.manifests.Updater.Reset()
 		if err := a.loadManifests(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.pins.Updater.Reset()
+		if err := a.loadPins(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.uploads.Updater.Reset()
+		if err := a.loadUploads(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 	case "settings":
