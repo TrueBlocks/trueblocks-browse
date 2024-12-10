@@ -24,7 +24,7 @@ export const TabItem = <T,>({ tabName, data, groups }: TabItemProps<T>) => {
 
   // ------------------- Header State -------------------
   useEffect(() => {
-    IsHeaderOn(tabName).then((isShowing) => {
+    IsHeaderOn(route, tabName).then((isShowing) => {
       setHeaderShows(isShowing);
     });
   });
@@ -45,7 +45,7 @@ export const TabItem = <T,>({ tabName, data, groups }: TabItemProps<T>) => {
   });
 
   const headerChanged = (route: string, isShowing: boolean) => {
-    SetHeaderOn(tabName, isShowing);
+    SetHeaderOn(route, tabName, isShowing);
     setHeaderShows(isShowing);
   };
 

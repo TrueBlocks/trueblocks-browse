@@ -119,8 +119,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [config, setConfig] = useState<types.ConfigContainer>({} as types.ConfigContainer);
   const [wizard, setWizard] = useState<types.WizardContainer>({} as types.WizardContainer);
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
-  const [route, setRoute] = useState<string>("project");
-  const [activeTab, setActiveTab] = useState<string>("project");
+  const [route, setRoute] = useState<string>("unset");
+  const [activeTab, setActiveTab] = useState<string>("unset");
   const [, setLocation] = useLocation();
   const counters = useRef<Record<string, number>>({});
 
@@ -128,11 +128,14 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   useEffect(() => {
     GetLastRoute().then((lastRoute) => {
       setRoute(lastRoute);
-      GetLastTab().then((lastTab) => {
-        setActiveTab(lastTab);
-      });
     });
   }, []);
+
+  useEffect(() => {
+    GetLastTab(route).then((lastTab) => {
+      setActiveTab(lastTab);
+    });
+  }, [route]);
 
   useEffect(() => {
     const handleNavigation = (msg: messages.MessageMsg) => {
@@ -148,18 +151,15 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
   }, [setLocation]);
 
-  const tabChanged = (newVal: string) => {
-    SetLastTab(route, newVal).then(() => {
-      setActiveTab(newVal);
+  const tabChanged = (newTab: string) => {
+    SetLastTab(route, newTab).then(() => {
+      setActiveTab(newTab);
     });
   };
 
-  const routeChanged = (newVal: string) => {
-    SetLastRoute(newVal).then(() => {
-      setRoute(newVal);
-      GetLastTab().then((lastTab) => {
-        tabChanged(lastTab);
-      });
+  const routeChanged = (newRoute: string) => {
+    SetLastRoute(newRoute).then(() => {
+      setRoute(newRoute);
     });
   };
 

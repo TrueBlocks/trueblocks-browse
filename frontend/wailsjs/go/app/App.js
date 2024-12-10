@@ -170,8 +170,8 @@ export function GetLastAddress() {
   return window['go']['app']['App']['GetLastAddress']();
 }
 
-export function GetLastRoute1() {
-  return window['go']['app']['App']['GetLastRoute1']();
+export function GetLastRoute() {
+  return window['go']['app']['App']['GetLastRoute']();
 }
 
 export function GetLastTab(arg1) {

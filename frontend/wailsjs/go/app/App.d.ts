@@ -91,7 +91,7 @@ export function GetHistoryContainer():Promise<types.HistoryContainer>;
 
 export function GetLastAddress():Promise<base.Address>;
 
-export function GetLastRoute1():Promise<string>;
+export function GetLastRoute():Promise<string>;
 
 export function GetLastTab(arg1:string):Promise<string>;
 
