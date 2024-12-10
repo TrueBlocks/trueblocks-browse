@@ -74,8 +74,8 @@ func (a *App) pullStatus() (items []types.Status, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	opts := sdk.StatusOptions{
 		Globals: sdk.Globals{
-			Chain:   a.getChain(),
-			Verbose: true,
+			Chain: a.getChain(),
+			// Verbose: true,
 		},
 	}
 	items, meta, err = opts.StatusAll()
