@@ -119,7 +119,6 @@ func (s *PinContainer) Finalize() {
 func (s *PinContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	// logger.InfoBM("CollateAndFilter:", filter.String())
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *CacheItem, data any) bool {
 			s.Accumulate(item)

@@ -17,8 +17,6 @@ func (a *App) GetTabs() []string {
 	}
 
 	route := a.GetLastRoute()
-	logger.InfoBB("tabs", tabMap, route)
-	logger.InfoBB("GetTabs", route, "tabMap:", tabMap[route])
 	if tab, ok := tabMap[route]; ok {
 		return tab
 	}

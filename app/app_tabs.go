@@ -3,7 +3,6 @@
 package app
 
 // JIMMY_JAM
-import "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 
 // JIMMY_JAM
 
@@ -20,8 +19,6 @@ func (a *App) GetTabs() []string {
 	}
 
 	route := a.GetLastRoute()
-	logger.InfoBB("tabs", tabMap, route)
-	logger.InfoBB("GetTabs", route, "tabMap:", tabMap[route])
 	if tab, ok := tabMap[route]; ok {
 		return tab
 	}

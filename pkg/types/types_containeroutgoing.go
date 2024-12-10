@@ -136,7 +136,6 @@ func (s *OutgoingContainer) Finalize() {
 func (s *OutgoingContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	// logger.InfoBM("CollateAndFilter:", filter.String())
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *Transaction, data any) bool {
 			s.Accumulate(item)

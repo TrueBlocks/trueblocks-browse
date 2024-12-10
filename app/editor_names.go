@@ -26,7 +26,6 @@ func (a *App) LoadName(addr string) editors.Name {
 }
 
 // func (a *App) SaveName(name editors.Name) error {
-// 	logger.Info("Setting name", name.String())
 // 	if name.Name == "Error" {
 // 		return fmt.Errorf("not implemented")
 // 	}
