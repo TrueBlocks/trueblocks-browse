@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import { Title } from "@mantine/core";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useLocation } from "wouter";
 import { CloseButton } from "@components";
 import { messages } from "@gocode/models";
 import { useViewName } from "@hooks";
@@ -16,27 +15,27 @@ const helpFiles = import.meta.glob("/src/assets/help/*.md", { query: "?raw", imp
   () => Promise<string>
 >;
 
-export function Help(): JSX.Element {
-  const { wizard } = useAppState();
-  const [location] = useLocation();
+export const Help = (): JSX.Element => {
+  const { wizard, route, activeTab } = useAppState();
   const [markdown, setMarkdown] = useState<string>("Loading...");
   const [error, setError] = useState<boolean>(false);
-  const viewName = useViewName();
 
   const onClose = useCallback(() => {
     EventsEmit(messages.Message.TOGGLELAYOUT, { string1: "help" });
   }, []);
 
   useEffect(() => {
-    const baseRoute = location.split("/")[1];
-    const helpFileName: string =
-      baseRoute === "wizard" ? `wizard-${String(wizard.state)}.md` : `${baseRoute === "" ? "project" : baseRoute}.md`;
-    const filePath = Object.keys(helpFiles).find((key) => key.endsWith(`/help/${helpFileName}`));
-
+    const fn =
+      route === "wizard"
+        ? `${route}-${wizard.state}.md`
+        : activeTab || activeTab === route
+          ? `${route}-${activeTab}.md`
+          : `${route}.md`;
+    const filePath = Object.keys(helpFiles).find((key) => key.endsWith(`/help/${fn}`));
     const loadMarkdown = async (): Promise<void> => {
       if (!filePath) {
         setError(true);
-        setMarkdown("Sorry, the help file could not be found.");
+        setMarkdown("Sorry, the help file could not be found. File: " + fn);
         return;
       }
       try {
@@ -49,15 +48,15 @@ export function Help(): JSX.Element {
     };
 
     loadMarkdown();
-  }, [location, wizard]);
+  }, [wizard, route, activeTab]);
 
   return (
     <div className={classes.helpPanel}>
       <CloseButton onClose={onClose} />
       <Title order={4} className={classes.header}>
-        {viewName}
+        {useViewName()}
       </Title>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{error ? markdown : markdown}</ReactMarkdown>
     </div>
   );
-}
+};

@@ -2,15 +2,13 @@ import { useEffect } from "react";
 import { Text } from "@mantine/core";
 import { sdk } from "@gocode/models";
 import { useAppState, useViewState } from "@state";
-import { useViewRoute } from "../../hooks";
 
 const debug = import.meta.env.VITE_DEBUG === "true";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const DebugState = ({ u }: { u: sdk.Updater[] }) => {
-  const { counters } = useAppState();
-  const { activeTab, headerShows } = useViewState();
-  const route = useViewRoute();
+  const { counters, route, info } = useAppState();
+  const { nItems } = useViewState();
 
   useEffect(() => {
     if (!counters.current[route]) {
@@ -18,9 +16,6 @@ export const DebugState = ({ u }: { u: sdk.Updater[] }) => {
     }
     counters.current[route] += 1;
   });
-
-  const { info } = useAppState();
-  const { nItems } = useViewState();
 
   if (!debug) {
     return null;
@@ -33,8 +28,6 @@ export const DebugState = ({ u }: { u: sdk.Updater[] }) => {
       {/* <Text>{`updater: ${JSON.stringify(u, null, 2)}`}</Text> */}
       <Text>{`renderCount: ${counters.current[route]}`}</Text>
       <Text>{`route: ${route}`}</Text>
-      <Text>{`tab: ${activeTab}`}</Text>
-      <Text>{`headerShows: ${JSON.stringify(headerShows)}`}</Text>
     </div>
   );
 };

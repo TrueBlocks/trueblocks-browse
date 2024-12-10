@@ -1,9 +1,7 @@
-import { useState, createContext, useEffect, useContext, ReactNode } from "react";
+import { createContext, useEffect, useContext, ReactNode } from "react";
 import { Pager } from "@components";
-import { IsHeaderOn, SetHeaderOn, GetLastTab, SetLastTab } from "@gocode/app/App";
 import { messages, app } from "@gocode/models";
 import { Page, useKeyboardPaging } from "@hooks";
-import { useViewRoute } from "@hooks";
 import { EventsOn, EventsOff } from "@runtime";
 
 type ModifyFnType = (arg1: app.ModifyData) => Promise<void>;
@@ -12,15 +10,10 @@ type ClickFnType = (value: string) => void;
 
 interface ViewStateProps {
   nItems: number;
-  headerShows: Record<string, boolean>;
-  handleCollapse: (tab: string, newState: string | null) => void;
   pager: Pager;
   fetchFn: FetchFnType;
   modifyFn: ModifyFnType;
   clickFn?: ClickFnType;
-  tabs: string[];
-  activeTab: string;
-  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ViewContext = createContext<ViewStateProps | undefined>(undefined);
@@ -31,103 +24,12 @@ type ViewContextType = {
   modifyFn: ModifyFnType;
   onEnter: (page: Page) => void;
   clickFn?: ClickFnType;
-  tabs: string[];
   children: ReactNode;
 };
 
-export const ViewStateProvider = ({ nItems, fetchFn, modifyFn, onEnter, clickFn, tabs, children }: ViewContextType) => {
-  const route = useViewRoute();
-  const [activeTab, setActiveTab] = useState<string>("");
-  const [headerShows, setHeaderShows] = useState<Record<string, boolean>>({});
+export const ViewStateProvider = ({ nItems, fetchFn, modifyFn, onEnter, clickFn, children }: ViewContextType) => {
   const lines = 10;
   const pager = useKeyboardPaging(nItems, lines, onEnter);
-
-  // - route/tabs -----------------------------------------------------------
-  useEffect(() => {
-    GetLastTab().then((tab) => {
-      setActiveTab(tab || tabs[0]);
-    });
-  }, [route, tabs, setActiveTab]);
-
-  // - route/tabs -----------------------------------------------------------
-  useEffect(() => {
-    const handleSwitchTab = (msg: messages.MessageMsg) => {
-      const { string1 } = msg;
-
-      const currentIndex = tabs.indexOf(activeTab);
-      let newTab = activeTab;
-
-      switch (string1) {
-        case "next":
-          newTab = tabs[(currentIndex + 1) % tabs.length];
-          break;
-        case "prev":
-          newTab = tabs[(currentIndex - 1 + tabs.length) % tabs.length];
-          break;
-        default:
-          break;
-      }
-
-      if (newTab !== activeTab) {
-        setActiveTab(newTab);
-        SetLastTab(route, newTab);
-      }
-    };
-
-    EventsOn(messages.Message.SWITCHTAB, handleSwitchTab);
-    return () => {
-      EventsOff(messages.Message.SWITCHTAB);
-    };
-  }, [route, tabs, activeTab, setActiveTab]);
-
-  // - headers -----------------------------------------------------------
-  const handleCollapse = (route: string, newState: string | null) => {
-    const isShowing = newState === "header";
-    const key = `${route}-${activeTab}`;
-    SetHeaderOn(route, activeTab, isShowing).then(() => {
-      setHeaderShows((prev) => ({
-        ...prev,
-        [key]: isShowing,
-      }));
-    });
-  };
-
-  // - headers -----------------------------------------------------------
-  useEffect(() => {
-    const fetchHeaderStates = () => {
-      tabs.forEach((tab) => {
-        const key = `${route}-${tab}`;
-        IsHeaderOn(route, tab).then((isShowing) => {
-          setHeaderShows((prev) => ({
-            ...prev,
-            [key]: isShowing,
-          }));
-        });
-      });
-    };
-
-    fetchHeaderStates();
-  }, [route, tabs]);
-
-  // - headers -----------------------------------------------------------
-  useEffect(() => {
-    const handleAccordion = (route: string, tab: string, isShowing: boolean) => {
-      const key = `${route}-${tab}`;
-      setHeaderShows((prev) => ({
-        ...prev,
-        [key]: isShowing,
-      }));
-    };
-
-    const { Message } = messages;
-    EventsOn(Message.TOGGLEHEADER, (msg: { string1: string; string2: string; bool: boolean }) => {
-      handleAccordion(msg.string1, msg.string2, msg.bool);
-    });
-
-    return () => {
-      EventsOff(Message.TOGGLEHEADER);
-    };
-  }, []);
 
   // - pagination -----------------------------------------------------------
   useEffect(() => {
@@ -150,15 +52,10 @@ export const ViewStateProvider = ({ nItems, fetchFn, modifyFn, onEnter, clickFn,
   // - state -----------------------------------------------------------
   const state = {
     nItems,
-    headerShows,
-    handleCollapse,
-    pager,
     fetchFn,
     modifyFn,
     clickFn,
-    tabs,
-    activeTab,
-    setActiveTab,
+    pager,
   };
 
   return <ViewContext.Provider value={state}>{children}</ViewContext.Provider>;

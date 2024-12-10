@@ -1,21 +1,26 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Group, Stack, Tabs } from "@mantine/core";
 import { SearchBar, ViewTitle } from "@components";
-import { SetLastTab } from "@gocode/app/App";
-import { useViewState } from "@state";
-import { useViewRoute } from "../../hooks";
+import { useAppState, useViewState } from "@state";
+import { GetTabs } from "@gocode/app/App";
 import classes from "./View.module.css";
 
 export type ViewForm = Record<string, ReactNode>;
 
 export type ViewProps = {
-  forms: ViewForm;
+  tabItems: ViewForm;
   searchable?: boolean;
 };
 
-export const View = ({ forms, searchable = false }: ViewProps) => {
-  const { tabs, activeTab, setActiveTab } = useViewState();
-  const route = useViewRoute();
+export const View = ({ tabItems, searchable = false }: ViewProps) => {
+  const { activeTab, tabChanged } = useAppState();
+  const [tabs, setTabs] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    GetTabs().then((tts) => {
+      setTabs(tts);
+    });
+  }, []);
 
   return (
     <Stack className={classes.viewContainer}>
@@ -27,25 +32,17 @@ export const View = ({ forms, searchable = false }: ViewProps) => {
           </div>
         )}
       </Group>
-      <Tabs
-        value={activeTab}
-        onChange={(newTab) => {
-          if (newTab !== null) {
-            setActiveTab(newTab);
-            SetLastTab(route, newTab);
-          }
-        }}
-      >
+      <Tabs value={activeTab} onChange={(newVal) => tabChanged(newVal || "")}>
         <Tabs.List>
-          {tabs?.map((tab) => (
+          {tabs?.map((tab: string) => (
             <Tabs.Tab key={tab} className={classes.tab} value={tab}>
               {toProperCase(tab)}
             </Tabs.Tab>
           ))}
         </Tabs.List>
-        {tabs?.map((tab) => (
+        {tabs?.map((tab: string) => (
           <Tabs.Panel key={tab} value={tab}>
-            {forms ? forms[tab] : null}
+            {tabItems[tab]}
           </Tabs.Panel>
         ))}
       </Tabs>

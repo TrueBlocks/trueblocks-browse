@@ -1,27 +1,53 @@
-import { ReactNode } from "react";
-import { Text, Container, Fieldset, Grid, Accordion } from "@mantine/core";
+import { ReactNode, useEffect, useState } from "react";
+import { Container, Fieldset, Grid, Accordion } from "@mantine/core";
 import { IconChevronsUp } from "@tabler/icons-react";
 import { FieldRenderer, FieldGroup, isCollapsable, isButton, ButtonTray } from "@components";
-import { useViewState } from "@state";
-import { useViewRoute } from "../../hooks";
-import classes from "./FormTable.module.css";
+import { IsHeaderOn, SetHeaderOn } from "@gocode/app/App";
+import { messages } from "@gocode/models";
+import { EventsOff, EventsOn } from "@runtime";
+import { useAppState } from "@state";
+import classes from "./TabItem.module.css";
 
-type FormTableProps<T> = {
+type TabItemProps<T> = {
+  tabName: string;
   data: Partial<T>;
   groups: FieldGroup<T>[];
 };
 
-export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
-  const { activeTab, headerShows, handleCollapse } = useViewState();
-  const route = useViewRoute();
+export const TabItem = <T,>({ tabName, data, groups }: TabItemProps<T>) => {
+  const { route } = useAppState();
 
   const collapsableGroups = groups.filter((group) => isCollapsable(group) && !isButton(group));
   const nonCollapsableGroups = groups.filter((group) => !isCollapsable(group));
   const buttonGroup = groups.find((group) => isButton(group)) || null;
+  const [headerShows, setHeaderShows] = useState<boolean>(false);
 
-  if (!headerShows || Object.keys(headerShows).length === 0) {
-    return <></>;
-  }
+  // ------------------- Header State -------------------
+  useEffect(() => {
+    IsHeaderOn(tabName).then((isShowing) => {
+      setHeaderShows(isShowing);
+    });
+  });
+
+  useEffect(() => {
+    const handleToggleHeader = (msg: messages.MessageMsg) => {
+      const { string2: tab, bool: isShowing } = msg;
+      if (tab === tabName) {
+        setHeaderShows(isShowing);
+      }
+    };
+
+    const { Message } = messages;
+    EventsOn(Message.TOGGLEHEADER, handleToggleHeader);
+    return () => {
+      EventsOff(Message.TOGGLEHEADER);
+    };
+  });
+
+  const headerChanged = (route: string, isShowing: boolean) => {
+    SetHeaderOn(tabName, isShowing);
+    setHeaderShows(isShowing);
+  };
 
   // TODO: This is pretty dumb
   const style1 = {
@@ -41,23 +67,18 @@ export const FormTable = <T,>({ data, groups }: FormTableProps<T>) => {
     },
   };
 
-  const headerKey = `${route}-${activeTab}`;
-
   return (
     <Container styles={{ root: { minWidth: "100%" } }}>
       <Accordion
         classNames={{ chevron: classes.chevron }}
-        data-rotate={headerShows[headerKey] ? "true" : "false"}
+        data-rotate={headerShows ? "true" : "false"}
         styles={style1}
-        value={headerShows[headerKey] ? "header" : null}
-        onChange={(newState) => handleCollapse(route, newState)}
+        value={headerShows ? "header" : null}
+        onChange={(newState) => headerChanged(route, newState === "header")}
         chevron={null}
       >
         <Accordion.Item value="header">
-          <CustomAccordionControl
-            isOpen={headerShows[headerKey]}
-            onToggle={() => handleCollapse(route, headerShows[headerKey] ? null : "header")}
-          >
+          <CustomAccordionControl isOpen={headerShows} onToggle={() => headerChanged(route, !headerShows)}>
             <ButtonTray buttonGroup={buttonGroup} />
           </CustomAccordionControl>
           <Accordion.Panel>
