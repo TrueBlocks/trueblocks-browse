@@ -30,6 +30,17 @@
     {{ $param1 = ", loadAddress" }}
   {{end}}
 
+  {{ $customCode := "//-- remove line --" }}
+  {{ if $isWizard }}
+    {{ $customCode = `
+  const stepWizard = (step: string) => {
+    StepWizard(step as types.WizStep).then(() => {
+      fetchWizard(0, 100);
+    });
+  };
+`}}
+  {{ end }}
+
   {{ $handleEnter := `const handleEnter = enterNoop;` }}
   {{ if $wantsEnter }}
     {{ $handleEnter = print `const handleEnter = (page: Page) => {
@@ -65,14 +76,15 @@
     {{$noops -}}
     {{$handleEnter -}}
     {{$handleModify}}
+    {{$customCode}}
 
-  const table = useReactTable({
+    const table = useReactTable({
       data: {{$routeLower}}?.items || [],
       columns: {{$routeName}}TableDef,
       getCoreRowModel: getCoreRowModel(),
     });
 
-  const tabItems: ViewForm = {
+    const tabItems: ViewForm = {
       {{$routeLower}}: <TabItem tabName="{{$routeLower}}" data={ {{$routeLower}} } groups={ {{$routeName}}FormDef(table)} />,
     };
 

@@ -2,9 +2,8 @@
 // of ExistingCode markers (if any).
 package app
 
-// JIMMY_JAM
-
-// JIMMY_JAM
+// EXISTING_CODE
+// EXISTING_CODE
 
 func (a *App) GetTabs() []string {
 	tabMap := map[string][]string{
