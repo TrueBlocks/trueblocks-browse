@@ -73,7 +73,7 @@ func (a *App) Freshen() error {
 		}
 	}
 
-	go a.loadStatus(&wg, nil)
+	go a.loadStatus(nil, nil)
 
 	if len(errors) > 0 {
 		for _, err := range errors {
