@@ -14,59 +14,58 @@ import (
 // EXISTING_CODE
 
 func (a *App) ProjectView(cb *menu.CallbackData) {
-	a.Navigate("/", "")
+	a.Navigate("project")
 }
 
 func (a *App) HistoryView(cb *menu.CallbackData) {
-	address := a.GetLastAddress()
-	if strings.Contains(a.GetLastRoute(), "/history") {
+	if strings.Contains(a.GetLastRoute(), "history") {
 		a.ToggleNextTab(cb)
 	} else {
-		a.Navigate("/history", address.Hex())
+		a.Navigate("history")
 	}
 }
 
 func (a *App) MonitorsView(cb *menu.CallbackData) {
-	a.Navigate("/monitors", "")
+	a.Navigate("monitors")
 }
 
 func (a *App) SharingView(cb *menu.CallbackData) {
-	if strings.Contains(a.GetLastRoute(), "/sharing") {
+	if strings.Contains(a.GetLastRoute(), "sharing") {
 		a.ToggleNextTab(cb)
 	} else {
-		a.Navigate("/sharing", "")
+		a.Navigate("sharing")
 	}
 }
 
 func (a *App) UnchainedView(cb *menu.CallbackData) {
-	if strings.Contains(a.GetLastRoute(), "/unchained") {
+	if strings.Contains(a.GetLastRoute(), "unchained") {
 		a.ToggleNextTab(cb)
 	} else {
-		a.Navigate("/unchained", "")
+		a.Navigate("unchained")
 	}
 }
 
 func (a *App) SettingsView(cb *menu.CallbackData) {
-	if strings.Contains(a.GetLastRoute(), "/settings") {
+	if strings.Contains(a.GetLastRoute(), "settings") {
 		a.ToggleNextTab(cb)
 	} else {
-		a.Navigate("/settings", "")
+		a.Navigate("settings")
 	}
 }
 
 func (a *App) DaemonsView(cb *menu.CallbackData) {
-	a.Navigate("/daemons", "")
+	a.Navigate("daemons")
 }
 
 func (a *App) WizardView(cb *menu.CallbackData) {
 	if a.isConfigured() {
-		a.wizard.State = types.WizWelcome
+		a.setWizState(types.WizWelcome)
 		a.emitMsg(messages.Refresh, &messages.MessageMsg{
-			State: string(a.wizard.State),
+			State: string(a.getWizState()),
 			Num1:  2, // 2 is the wizard step if needed
 		})
 	} else {
 		a.StepWizard(types.WizNext)
 	}
-	a.Navigate("/wizard", "")
+	a.Navigate("wizard")
 }

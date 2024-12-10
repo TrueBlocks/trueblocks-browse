@@ -79,8 +79,9 @@ func (a *App) pullAbis() (items []types.Abi, meta *types.Meta, err error) {
 			Cache:   true,
 		},
 	}
-	return opts.AbisList()
+	items, meta, err = opts.AbisList()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

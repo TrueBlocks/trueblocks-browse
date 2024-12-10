@@ -89,8 +89,9 @@ func (a *App) pullNames() (items []types.Name, meta *types.Meta, err error) {
 		},
 		All: true,
 	}
-	return opts.Names()
+	items, meta, err = opts.Names()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

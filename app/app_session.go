@@ -4,71 +4,20 @@ import (
 	"context"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
 func (a *App) IsLayoutOn(layout string) bool {
 	return a.session.IsFlagOn(layout)
 }
 
-func (a *App) SetLayoutOn(layout string, onOff bool) {
-	a.session.SetFlagOn(layout, onOff)
-	a.saveSession()
-}
-
-func (a *App) IsHeaderOn(route, tab string) bool {
-	key := route + "-" + tab
+func (a *App) IsHeaderOn(tab string) bool {
+	key := a.GetLastRoute() + "-" + tab
 	return a.session.IsFlagOn(key)
-}
-
-func (a *App) SetHeaderOn(route, tab string, onOff bool) {
-	key := route + "-" + tab
-	a.session.SetFlagOn(key, onOff)
-	a.saveSession()
 }
 
 func (a *App) IsDaemonOn(daemon string) bool {
 	return a.session.IsFlagOn(daemon)
-}
-
-func (a *App) SetDaemonOn(daemon string, onOff bool) {
-	a.session.SetFlagOn(daemon, onOff)
-	a.saveSession()
-}
-
-func (a *App) SetLastRoute(route, address string) {
-	a.session.SetRoute(route)
-	a.session.SetAddress(address)
-	a.saveSession()
-}
-
-func (a *App) GetRawRoute() string {
-	return strings.Trim(a.session.GetRoute(), "/")
-}
-
-func (a *App) GetLastRoute() string {
-	if !a.isConfigured() {
-		return "/wizard"
-	}
-
-	route, addr := a.session.GetRoute(), a.session.GetAddress()
-	if len(addr) > 0 {
-		route += "/" + addr
-	}
-
-	return route
-}
-
-func (a *App) GetLastAddress() base.Address {
-	return base.HexToAddress(a.session.GetAddress())
-}
-
-func (a *App) SetLastTab(route, tab string) {
-	a.session.SetTab(route, tab)
-}
-
-func (a *App) GetLastTab() string {
-	route := a.GetRawRoute()
-	return a.session.GetTab(route)
 }
 
 func (a *App) getChain() string {
@@ -115,15 +64,55 @@ func (a *App) setWizardStr(wizStr string) {
 	a.session.SetWizardStr(wizStr)
 }
 
-func (a *App) saveSession() {
-	if !isTesting {
-		var w types.Window
-		w.X, w.Y = runtime.WindowGetPosition(a.ctx)
-		w.Width, w.Height = runtime.WindowGetSize(a.ctx)
-		w.Y += 38 // TODO: This is a hack to account for the menu bar - not sure why it's needed
-		a.setWindow(w)
-	}
-	// we serialize the wizard state in a string
-	a.setWizardStr(string(a.wizard.State))
-	a.session.Save()
+// ------ access for the front end
+func (a *App) SetLayoutOn(layout string, onOff bool) {
+	a.session.SetFlagOn(layout, onOff)
+	a.saveSessionFile()
+}
+
+func (a *App) SetHeaderOn(tab string, onOff bool) {
+	key := a.GetLastRoute() + "-" + tab
+	a.session.SetFlagOn(key, onOff)
+	a.saveSessionFile()
+}
+
+func (a *App) SetDaemonOn(daemon string, onOff bool) {
+	a.session.SetFlagOn(daemon, onOff)
+	a.saveSessionFile()
+}
+
+func (a *App) SetLastRoute(route string) {
+	a.session.SetRoute(route)
+	a.saveSessionFile()
+}
+
+func (a *App) SetLastAddress(address string) {
+	a.session.SetAddress(address)
+	a.saveSessionFile()
+}
+
+func (a *App) SetLastTab(route, tab string) {
+	a.session.SetTab(route, tab)
+	a.saveSessionFile()
+}
+
+func (a *App) GetLastRoute() string {
+	return a.session.GetRoute()
+}
+
+func (a *App) GetLastTab() string {
+	return a.session.GetTab(a.GetLastRoute())
+}
+
+func (a *App) GetLastAddress() base.Address {
+	return base.HexToAddress(a.session.GetAddress())
+}
+
+func (a *App) loadSessionFile() error {
+	return a.session.Load()
+}
+
+func (a *App) saveSessionFile() {
+	a.setWizardStr(a.getWizState().String())
+	a.session.Save(a.ctx)
 }

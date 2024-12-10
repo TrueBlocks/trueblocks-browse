@@ -78,8 +78,9 @@ func (a *App) pullManifests() (items []types.Manifest, meta *types.Meta, err err
 			Verbose: true,
 		},
 	}
-	return opts.ChunksManifest()
+	items, meta, err = opts.ChunksManifest()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

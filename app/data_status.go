@@ -78,8 +78,9 @@ func (a *App) pullStatus() (items []types.Status, meta *types.Meta, err error) {
 			Verbose: true,
 		},
 	}
-	return opts.StatusAll()
+	items, meta, err = opts.StatusAll()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

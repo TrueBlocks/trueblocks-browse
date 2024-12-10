@@ -71,8 +71,9 @@ func (a *App) pullWizards() (items []types.WizError, meta *types.Meta, err error
 	// EXISTING_CODE
 	meta, err = sdk.GetMetaData(namesChain)
 	// TODO: We've been called to check status, do wizard checks here
-	return []types.WizError{}, meta, err
+	items = []types.WizError{}
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

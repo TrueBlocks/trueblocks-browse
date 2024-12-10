@@ -78,8 +78,9 @@ func (a *App) pullIndexes() (items []types.ChunkStats, meta *types.Meta, err err
 			Verbose: true,
 		},
 	}
-	return opts.ChunksStats()
+	items, meta, err = opts.ChunksStats()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

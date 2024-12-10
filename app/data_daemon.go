@@ -71,8 +71,9 @@ func (a *App) pullDaemons() (items []types.Daemon, meta *types.Meta, err error) 
 	// EXISTING_CODE
 	meta, err = sdk.GetMetaData(namesChain)
 	// TODO: We've been called to update the status of the daemons. Do so here.
-	return []types.Daemon{}, meta, err
+	items = []types.Daemon{}
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

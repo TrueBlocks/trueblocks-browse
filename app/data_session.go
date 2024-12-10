@@ -70,8 +70,9 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 func (a *App) pullSessions() (items []types.Session, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	meta, err = sdk.GetMetaData(namesChain)
-	return []types.Session{}, meta, err
+	items = []types.Session{}
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

@@ -78,8 +78,9 @@ func (a *App) pullConfigs() (items []types.Config, meta *types.Meta, err error) 
 			Verbose: true,
 		},
 	}
-	return opts.ConfigDump()
+	items, meta, err = opts.ConfigDump()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

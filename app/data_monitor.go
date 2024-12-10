@@ -83,8 +83,9 @@ func (a *App) pullMonitors() (items []types.Monitor, meta *types.Meta, err error
 			Verbose: true,
 		},
 	}
-	return opts.MonitorsList()
+	items, meta, err = opts.MonitorsList()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE
