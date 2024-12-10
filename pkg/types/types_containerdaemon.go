@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
@@ -128,7 +127,6 @@ func (s *DaemonContainer) Finalize() {
 func (s *DaemonContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	logger.InfoBM("CollateAndFilter:", filter.String())
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *Nothing, data any) bool {
 			s.Accumulate(item)

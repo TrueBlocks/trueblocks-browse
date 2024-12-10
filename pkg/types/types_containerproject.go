@@ -8,7 +8,6 @@ import (
 	"sort"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -142,7 +141,6 @@ func (s *ProjectContainer) Finalize() {
 func (s *ProjectContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	logger.InfoBM("CollateAndFilter:", filter.String())
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *HistoryContainer, data any) bool {
 			s.Accumulate(item)

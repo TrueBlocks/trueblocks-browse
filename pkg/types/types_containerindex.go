@@ -6,7 +6,6 @@ package types
 import (
 	"encoding/json"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -147,7 +146,6 @@ func (s *IndexContainer) Finalize() {
 func (s *IndexContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	logger.InfoBM("CollateAndFilter:", filter.String())
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *ChunkStats, data any) bool {
 			s.Accumulate(item)

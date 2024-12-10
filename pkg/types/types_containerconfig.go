@@ -9,7 +9,6 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
@@ -144,7 +143,6 @@ func (s *ConfigContainer) Finalize() {
 func (s *ConfigContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	logger.InfoBM("CollateAndFilter:", filter.String())
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *Chain, data any) bool {
 			s.Accumulate(item)
@@ -186,7 +184,6 @@ func (s *ConfigContainer) Sort() (err error) {
 }
 
 // EXISTING_CODE
-
 func (s *ConfigContainer) IsValidChain(chain string) (string, error) {
 	for _, ch := range s.Chains {
 		if ch.Chain == chain {
