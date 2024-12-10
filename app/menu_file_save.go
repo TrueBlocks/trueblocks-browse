@@ -52,6 +52,6 @@ func (a *App) writeFile(fn string) (bool, error) {
 	folder, file := filepath.Split(fn)
 	a.setFolder(folder)
 	a.setFile(file)
-	a.saveSession()
+	a.saveSessionFile()
 	return true, nil
 }

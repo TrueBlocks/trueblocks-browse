@@ -14,14 +14,14 @@ import (
 
 func (a *App) initialize() bool {
 	initSession := func() bool {
-		if err := a.session.Load(); err != nil {
+		if err := a.loadSessionFile(); err != nil {
 			a.addWizErr(WizReasonNoSession, types.WizConfig, err)
 			return false
 		} else {
 			// we serialize the wizard state in a session string
 			// TODO: BOGUS a.wizard = types. NewWizzardContainer(a.getChain(), []types.WizError{})
-			a.wizard.Chain = a.getChain()
-			a.wizard.State = types.WizState(a.wizardStr())
+			a.setWizChain(a.getChain())
+			a.setWizState(types.WizState(a.wizardStr()))
 			logger.InfoBW("Loaded session:", a.cntWizErrs(), "errors")
 			return true
 		}
@@ -120,7 +120,7 @@ func (a *App) initialize() bool {
 	// returns true if there are no errors...
 	if a.cntWizErrs() > 0 {
 		// ...goes to wizard mode and returns false otherwise
-		a.setWizardState(types.WizWelcome)
+		a.setWizState(types.WizWelcome)
 		return false
 	}
 

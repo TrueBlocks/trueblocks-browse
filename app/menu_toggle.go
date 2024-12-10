@@ -36,24 +36,40 @@ func (a *App) ToggleViewHeader(cb *menu.CallbackData) {
 		return
 	}
 
-	key := a.GetRawRoute() + "-" + a.GetLastTab()
+	key := a.GetLastRoute() + "-" + a.GetLastTab()
 	newState := !a.session.IsFlagOn(key)
 	a.session.SetFlagOn(key, newState)
-	a.saveSession()
+	a.saveSessionFile()
 
 	a.emitMsg(messages.ToggleHeader, &messages.MessageMsg{
-		String1: a.GetRawRoute(),
+		String1: a.GetLastRoute(),
 		String2: a.GetLastTab(),
 		Bool:    newState,
 	})
 }
 
 func (a *App) TogglePrevTab(cb *menu.CallbackData) {
-	which := "prev"
-	a.emitMsg(messages.SwitchTab, &messages.MessageMsg{String1: which})
+	tabs := a.GetTabs()
+	for i, tab := range tabs {
+		if tab == a.GetLastTab() {
+			prev := tabs[(i-1+len(tabs))%len(tabs)]
+			a.SetLastTab(a.GetLastRoute(), prev)
+			a.emitMsg(messages.Navigate, &messages.MessageMsg{String1: a.GetLastRoute(), String2: prev})
+			return
+		}
+	}
+	// should never happen
 }
 
 func (a *App) ToggleNextTab(cb *menu.CallbackData) {
-	which := "next"
-	a.emitMsg(messages.SwitchTab, &messages.MessageMsg{String1: which})
+	tabs := a.GetTabs()
+	for i, tab := range tabs {
+		if tab == a.GetLastTab() {
+			next := tabs[(i+1)%len(tabs)]
+			a.SetLastTab(a.GetLastRoute(), next)
+			a.emitMsg(messages.Navigate, &messages.MessageMsg{String1: a.GetLastRoute(), String2: next})
+			return
+		}
+	}
+	// should never happen
 }

@@ -18,17 +18,29 @@ type App struct {
 	dirty bool
 
 	// Containers
-	project   types.ProjectContainer  // ProjectView
-	monitors  types.MonitorContainer  // MonitorsView
-	names     types.NameContainer     // SharingView
-	abis      types.AbiContainer      // SharingView
-	indexes   types.IndexContainer    // UnchainedView
-	manifests types.ManifestContainer // UnchainedView
-	status    types.StatusContainer   // SettingsView
-	session   types.SessionContainer  // SettingsView
-	config    types.ConfigContainer   // SettingsView
-	daemons   types.DaemonContainer   // DaemonsView
-	wizard    types.WizardContainer   // WizardView
+	project    types.ProjectContainer   // ProjectView
+	balances   types.BalanceContainer   // BalancesView
+	charts     types.ChartContainer     // ChartsView
+	incoming   types.IncomingContainer  // IncomingView
+	internals  types.InternalContainer  // InternalView
+	logs       types.LogContainer       // LogView
+	neighbors  types.NeighborContainer  // NeighborsView
+	outgoing   types.OutgoingContainer  // OutgoingView
+	receipts   types.ReceiptContainer   // ReceiptsView
+	statements types.StatementContainer // StatementsView
+	traces     types.TraceContainer     // TracesView
+	pins       types.PinContainer       // PinsView
+	uploads    types.UploadContainer    // UploadView
+	monitors   types.MonitorContainer   // MonitorsView
+	names      types.NameContainer      // SharingView
+	abis       types.AbiContainer       // SharingView
+	indexes    types.IndexContainer     // UnchainedView
+	manifests  types.ManifestContainer  // UnchainedView
+	status     types.StatusContainer    // SettingsView
+	session    types.SessionContainer   // SettingsView
+	config     types.ConfigContainer    // SettingsView
+	daemons    types.DaemonContainer    // DaemonsView
+	wizard     types.WizardContainer    // WizardView
 
 	// Memory caches
 	// HIST-APP
@@ -87,7 +99,7 @@ func (a *App) DomReady(ctx context.Context) {
 
 		// ...show any error (if there are any)...
 		a.emitWizErrs()
-		a.setWizardState(types.WizWelcome)
+		a.setWizState(types.WizWelcome)
 		logger.Info("There were errors during initialization...")
 
 	} else {
@@ -106,7 +118,7 @@ func (a *App) DomReady(ctx context.Context) {
 
 // Shutdown is called by Wails when the app is closed
 func (a *App) Shutdown(ctx context.Context) {
-	a.saveSession()
+	a.saveSessionFile()
 }
 
 /*
@@ -135,3 +147,7 @@ Merge: Combines data from multiple containers or sources for comprehensive analy
 Annotate: Adds metadata or notes to items, providing context for future reference.
 This structure provides flexibility for handling data while keeping future expansions in mind. Let me know if there’s anything else you’d like to adjust or explore further!
 */
+
+func (a *App) GetHistoryContainer() types.HistoryContainer {
+	return types.HistoryContainer{}
+}

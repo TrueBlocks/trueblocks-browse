@@ -19,7 +19,7 @@ func (a *App) SetChain(newChain string) {
 	a.emitInfoMsg("Switching to chain", newChain)
 
 	a.setChain(newChain)
-	a.saveSession()
+	a.saveSessionFile()
 
 	a.CancelAllContexts()
 	a.project.Updater.SetChain(oldChain, newChain)
