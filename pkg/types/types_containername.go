@@ -131,6 +131,7 @@ func (s *NameContainer) Clear() {
 }
 
 func (s *NameContainer) passesFilter(item *Name, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false

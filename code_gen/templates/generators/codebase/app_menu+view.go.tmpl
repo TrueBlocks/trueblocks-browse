@@ -35,13 +35,14 @@ package app
 				} else {
 					a.StepWizard(types.WizNext)
 				}
-			{{- end }}
-
-			if a.getLastRoute() == "{{ $route }}" {
-				a.ToggleNextTab(cb)
-			} else {
 				a.Navigate("{{$route}}")
-			}
+			{{- else }}
+				if a.getLastRoute() == "{{ $route }}" {
+					a.ToggleNextTab(cb)
+				} else {
+					a.Navigate("{{$route}}")
+				}
+			{{- end }}
 		}
 	{{- end }}
 {{- end }}

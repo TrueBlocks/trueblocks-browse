@@ -79,7 +79,11 @@ func (a *App) setLastRoute(route string) {
 
 // --------------------------------------------
 func (a *App) getLastTab(route string) string {
-	return a.session.GetTab(route)
+	ret := a.session.GetTab(route)
+	if ret == "" {
+		ret = a.GetTabs()[0]
+	}
+	return ret
 }
 
 func (a *App) setLastTab(route, tab string) {

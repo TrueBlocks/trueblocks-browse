@@ -113,6 +113,7 @@ func (s *OutgoingContainer) Clear() {
 }
 
 func (s *OutgoingContainer) passesFilter(item *Transaction, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false

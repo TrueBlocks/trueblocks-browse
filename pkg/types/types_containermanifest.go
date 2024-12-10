@@ -113,6 +113,7 @@ func (s *ManifestContainer) Clear() {
 }
 
 func (s *ManifestContainer) passesFilter(item *ChunkRecord, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false

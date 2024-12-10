@@ -4,8 +4,6 @@ package app
 
 // EXISTING_CODE
 import (
-	"strings"
-
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/wailsapp/wails/v2/pkg/menu"
@@ -14,7 +12,7 @@ import (
 // EXISTING_CODE
 
 func (a *App) ProjectView(cb *menu.CallbackData) {
-	if strings.Contains(a.getLastRoute(), "project") {
+	if a.getLastRoute() == "project" {
 		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("project")
@@ -22,7 +20,7 @@ func (a *App) ProjectView(cb *menu.CallbackData) {
 }
 
 func (a *App) HistoryView(cb *menu.CallbackData) {
-	if strings.Contains(a.getLastRoute(), "history") {
+	if a.getLastRoute() == "history" {
 		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("history")
@@ -30,7 +28,7 @@ func (a *App) HistoryView(cb *menu.CallbackData) {
 }
 
 func (a *App) MonitorsView(cb *menu.CallbackData) {
-	if strings.Contains(a.getLastRoute(), "monitors") {
+	if a.getLastRoute() == "monitors" {
 		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("monitors")
@@ -38,7 +36,7 @@ func (a *App) MonitorsView(cb *menu.CallbackData) {
 }
 
 func (a *App) SharingView(cb *menu.CallbackData) {
-	if strings.Contains(a.getLastRoute(), "sharing") {
+	if a.getLastRoute() == "sharing" {
 		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("sharing")
@@ -46,7 +44,7 @@ func (a *App) SharingView(cb *menu.CallbackData) {
 }
 
 func (a *App) UnchainedView(cb *menu.CallbackData) {
-	if strings.Contains(a.getLastRoute(), "unchained") {
+	if a.getLastRoute() == "unchained" {
 		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("unchained")
@@ -54,7 +52,7 @@ func (a *App) UnchainedView(cb *menu.CallbackData) {
 }
 
 func (a *App) SettingsView(cb *menu.CallbackData) {
-	if strings.Contains(a.getLastRoute(), "settings") {
+	if a.getLastRoute() == "settings" {
 		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("settings")
@@ -62,7 +60,7 @@ func (a *App) SettingsView(cb *menu.CallbackData) {
 }
 
 func (a *App) DaemonsView(cb *menu.CallbackData) {
-	if strings.Contains(a.getLastRoute(), "daemons") {
+	if a.getLastRoute() == "daemons" {
 		a.ToggleNextTab(cb)
 	} else {
 		a.Navigate("daemons")

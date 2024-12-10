@@ -118,6 +118,7 @@ func (s *MonitorContainer) Clear() {
 }
 
 func (s *MonitorContainer) passesFilter(item *Monitor, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false

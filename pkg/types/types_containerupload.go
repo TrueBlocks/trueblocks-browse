@@ -96,6 +96,7 @@ func (s *UploadContainer) Clear() {
 }
 
 func (s *UploadContainer) passesFilter(item *CacheItem, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false

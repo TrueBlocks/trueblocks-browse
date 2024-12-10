@@ -160,12 +160,14 @@ var defaultSession = Session{
 // --------------------------------------------
 // Save saves the session to the configuration folder.
 func (s *Session) Save(ctx context.Context) error {
-	var w Window
-	w.X, w.Y = runtime.WindowGetPosition(ctx)
-	w.Width, w.Height = runtime.WindowGetSize(ctx)
-	// TODO: This is a hack to account for the menu bar - not sure why it's needed
-	w.Y += 38
-	s.SetWindow(w)
+	if ctx != context.TODO() {
+		var w Window
+		w.X, w.Y = runtime.WindowGetPosition(ctx)
+		w.Width, w.Height = runtime.WindowGetSize(ctx)
+		// TODO: This is a hack to account for the menu bar - not sure why it's needed
+		w.Y += 38
+		s.SetWindow(w)
+	}
 
 	if fn, err := utils.GetConfigFn("browse", "session.json"); err != nil {
 		return err
@@ -199,7 +201,7 @@ func (s *Session) Load(ctx context.Context) error {
 				s.LastFile = "Untitled.tbx"
 			}
 		}
-		_ = s.Save(ctx) // creates the session file if it doesn't already exist
+		_ = s.Save(context.TODO()) // creates the session file if it doesn't already exist
 	}()
 
 	fn, err := utils.GetConfigFn("browse", "session.json")
@@ -235,7 +237,7 @@ func (s *Session) CleanWindowSize(ctx context.Context) (Window, error) {
 
 	ret := Window{X: 30, Y: 30, Width: 1024, Height: 768}
 	defer func() {
-		_ = s.Save(ctx)
+		_ = s.Save(context.TODO())
 	}()
 
 	if screens, err := runtime.ScreenGetAll(ctx); err != nil {

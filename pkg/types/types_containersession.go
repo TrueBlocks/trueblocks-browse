@@ -101,6 +101,7 @@ func (s *SessionContainer) Clear() {
 }
 
 func (s *SessionContainer) passesFilter(item *Nothing, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false

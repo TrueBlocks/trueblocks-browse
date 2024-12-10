@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Group, Stack, Tabs } from "@mantine/core";
 import { SearchBar, ViewTitle } from "@components";
-import { useAppState, useViewState } from "@state";
+import { useAppState } from "@state";
 import { GetTabs } from "@gocode/app/App";
 import classes from "./View.module.css";
 

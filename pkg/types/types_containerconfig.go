@@ -120,6 +120,7 @@ func (s *ConfigContainer) Clear() {
 }
 
 func (s *ConfigContainer) passesFilter(item *Chain, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false

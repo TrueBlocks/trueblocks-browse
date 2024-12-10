@@ -108,6 +108,7 @@ func (s *StatusContainer) Clear() {
 }
 
 func (s *StatusContainer) passesFilter(item *CacheItem, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false

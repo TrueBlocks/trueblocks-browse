@@ -118,6 +118,7 @@ func (s *ProjectContainer) Clear() {
 }
 
 func (s *ProjectContainer) passesFilter(item *HistoryContainer, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false

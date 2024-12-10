@@ -15,7 +15,6 @@ func (a *App) Reload() {
 
 	logger.InfoG("Reloading", a.getLastRoute(), "...")
 	switch a.getLastRoute() {
-
 	case "", "project":
 		a.project.Updater.Reset()
 		if err := a.loadProject(nil, nil); err != nil {

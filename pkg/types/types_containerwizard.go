@@ -100,6 +100,7 @@ func (s *WizardContainer) Clear() {
 }
 
 func (s *WizardContainer) passesFilter(item *WizError, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false

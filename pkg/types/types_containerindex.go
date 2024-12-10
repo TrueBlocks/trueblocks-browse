@@ -108,6 +108,7 @@ func (s *IndexContainer) Clear() {
 }
 
 func (s *IndexContainer) passesFilter(item *ChunkStats, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
