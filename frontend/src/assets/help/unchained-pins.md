@@ -1,1 +1,1 @@
-Unchained Pins
+The Unchained Index Pins pages allows you to pin any chunks that have been produced by your scraper to an IPFS pinning service (or a FileCoin server). This is useful if you want to ensure that your data is always available on the IPFS network, even if your scraper goes down. You can pin individual chunks, or you can pin all of the chunks that have been produced by a particular scraper. You can also unpin chunks that have been pinned in the past. This page is only available to users who have a pinning service configured in their settings.

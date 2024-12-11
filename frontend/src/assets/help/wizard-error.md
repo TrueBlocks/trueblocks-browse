@@ -1,1 +1,1 @@
-The Wizard Error View displays when there's been some sort of error
+The Wizard Error page appears when there's some sort of error in your configuration. Most likely this is due to your RPC server being down, misconfigured, or unreachable. You will not be able to proceed past this page until the error is resolved.

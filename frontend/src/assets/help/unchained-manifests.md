@@ -1,5 +1,7 @@
-The Manifests view displays a list of all manifests in the system. The list can be filtered by name, and the manifests can be viewed, edited, or deleted.
+The Manifests view displays a list of the manifests found on the Unchained Index smart contract for your configured publisher (TrueBlocks by default).
+
+The list can be filtered by name, and the manifests may be viewed, edited, or deleted.
 
 #### Sharing
 
-Abis are a naturally shareable item. Everyone in teh community needs Abis. You may choose to share by pressing the share button.
+Once pinned, the manifest records and maintains the list of IPFS hashes that were created during pinning. This file can be published to the Unchained Index smart contract so that you (or anyone else) may access it.

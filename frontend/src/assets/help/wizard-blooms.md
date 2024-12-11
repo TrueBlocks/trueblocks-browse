@@ -1,1 +1,3 @@
-The Wizard Blooms View looks at the bloom filters
+The Wizard Blooms page is the third page of the Wizard. This page is where the system requires you to download the Unchained Index bloom filters. You will not be able to proceed past this page until the download is completed sucessfully. The system requires the entire Bloom filter set before proceeding. The download is about 4GB and should take no longer than a few minutes (depending on the speed of your Internet connection).
+
+Once downloaded you may proceed to the next page. The next page gives you a chance to (a) download the Unchained Index chunks, (b) instruct the program to download the chunks when they are needed, or (c) agree to allow the chunks to be built from scratch.
