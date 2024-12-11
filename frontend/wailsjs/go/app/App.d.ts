@@ -81,6 +81,8 @@ export function GetContext():Promise<context.Context>;
 
 export function GetDaemon(arg1:string):Promise<string>;
 
+export function GetDaemonOn(arg1:string):Promise<boolean>;
+
 export function GetEnv(arg1:string):Promise<string>;
 
 export function GetExploreUrl(arg1:string,arg2:boolean,arg3:boolean):Promise<string>;
@@ -97,6 +99,8 @@ export function GetLastRoute():Promise<string>;
 
 export function GetLastTab(arg1:string):Promise<string>;
 
+export function GetLayoutOn(arg1:string):Promise<boolean>;
+
 export function GetMenus():Promise<menu.Menu>;
 
 export function GetName(arg1:base.Address):Promise<string>;
@@ -106,10 +110,6 @@ export function GetState(arg1:string):Promise<string>;
 export function GetTabs():Promise<Array<string>>;
 
 export function HistoryView(arg1:menu.CallbackData):Promise<void>;
-
-export function GetDaemonOn(arg1:string):Promise<boolean>;
-
-export function GetLayoutOn(arg1:string):Promise<boolean>;
 
 export function LoadAddress(arg1:string):Promise<void>;
 

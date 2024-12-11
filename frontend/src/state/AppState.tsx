@@ -32,6 +32,8 @@ import {
   SetLastRoute,
   GetLastTab,
   SetLastTab,
+  GetHeaderOn,
+  SetHeaderOn,
 } from "@gocode/app/App";
 import { app, base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
@@ -90,6 +92,8 @@ interface AppStateProps {
   routeChanged: (newVal: string) => void;
   activeTab: string;
   tabChanged: (newVal: string) => void;
+  headerOn: boolean;
+  headerOnChanged: (newVal: boolean) => void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -121,6 +125,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
   const [route, setRoute] = useState<string>("unset");
   const [activeTab, setActiveTab] = useState<string>("unset");
+  const [headerOn, setHeaderOn] = useState<boolean>(false);
   const [, setLocation] = useLocation();
   const counters = useRef<Record<string, number>>({});
 
@@ -131,11 +136,35 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   }, []);
 
+  const routeChanged = (newRoute: string) => {
+    SetLastRoute(newRoute).then(() => {
+      setRoute(newRoute);
+    });
+  };
+
   useEffect(() => {
     GetLastTab(route).then((lastTab) => {
       setActiveTab(lastTab);
     });
   }, [route]);
+
+  const tabChanged = (newTab: string) => {
+    SetLastTab(route, newTab).then(() => {
+      setActiveTab(newTab);
+    });
+  };
+
+  useEffect(() => {
+    GetHeaderOn(route, activeTab).then((isShowing) => {
+      setHeaderOn(isShowing);
+    });
+  }, [route, activeTab]);
+
+  const headerOnChanged = (isShowing: boolean) => {
+    SetHeaderOn(route, activeTab, isShowing).then(() => {
+      setHeaderOn(isShowing);
+    });
+  };
 
   useEffect(() => {
     const handleNavigation = (msg: messages.MessageMsg) => {
@@ -151,17 +180,17 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
   }, [setLocation]);
 
-  const tabChanged = (newTab: string) => {
-    SetLastTab(route, newTab).then(() => {
-      setActiveTab(newTab);
-    });
-  };
+  useEffect(() => {
+    const handleHeader = (msg: messages.MessageMsg) => {
+      setHeaderOn(msg.bool);
+    };
 
-  const routeChanged = (newRoute: string) => {
-    SetLastRoute(newRoute).then(() => {
-      setRoute(newRoute);
-    });
-  };
+    const { Message } = messages;
+    EventsOn(Message.TOGGLEHEADER, handleHeader);
+    return () => {
+      EventsOff(Message.TOGGLEHEADER);
+    };
+  }, [setLocation]);
 
   // ------------------- Data Fetches -------------------
   const fetchProject = useCallback((currentItem: number, itemsPerPage: number) => {
@@ -411,6 +440,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
         routeChanged,
         activeTab,
         tabChanged,
+        headerOn,
+        headerOnChanged,
       }}
     >
       {children}

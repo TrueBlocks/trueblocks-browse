@@ -150,6 +150,10 @@ export function GetDaemon(arg1) {
   return window['go']['app']['App']['GetDaemon'](arg1);
 }
 
+export function GetDaemonOn(arg1) {
+  return window['go']['app']['App']['GetDaemonOn'](arg1);
+}
+
 export function GetEnv(arg1) {
   return window['go']['app']['App']['GetEnv'](arg1);
 }
@@ -182,6 +186,10 @@ export function GetLastTab(arg1) {
   return window['go']['app']['App']['GetLastTab'](arg1);
 }
 
+export function GetLayoutOn(arg1) {
+  return window['go']['app']['App']['GetLayoutOn'](arg1);
+}
+
 export function GetMenus() {
   return window['go']['app']['App']['GetMenus']();
 }
@@ -200,14 +208,6 @@ export function GetTabs() {
 
 export function HistoryView(arg1) {
   return window['go']['app']['App']['HistoryView'](arg1);
-}
-
-export function GetDaemonOn(arg1) {
-  return window['go']['app']['App']['GetDaemonOn'](arg1);
-}
-
-export function GetLayoutOn(arg1) {
-  return window['go']['app']['App']['GetLayoutOn'](arg1);
 }
 
 export function LoadAddress(arg1) {

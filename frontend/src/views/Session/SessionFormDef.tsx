@@ -14,8 +14,6 @@ export const SessionFormDef = (table: Table<types.Nothing>): FieldGroup<types.Se
     // EXISTING_CODE
     {
       label: "Last",
-      colSpan: 6,
-      collapsable: false,
       fields: [
         { label: "lastChain", type: "text", accessor: "lastChain" },
         { label: "lastFile", type: "text", accessor: "lastFile" },
@@ -23,10 +21,6 @@ export const SessionFormDef = (table: Table<types.Nothing>): FieldGroup<types.Se
         { label: "lastRoute", type: "text", accessor: "lastRoute" },
         { label: "lastAddress", type: "text", accessor: "lastAddress" },
       ],
-    },
-    {
-      label: "Buttons",
-      buttons: [<EditButton key={"add"} value={"https://trueblocks.io"} />],
     },
     {
       label: "Window",
@@ -39,10 +33,14 @@ export const SessionFormDef = (table: Table<types.Nothing>): FieldGroup<types.Se
       components: [<SessionFlags key={"flags"} />],
     },
     {
-      label: "Nothing",
-      collapsable: false,
-      components: [<DataTable<types.Nothing> key={"dataTable"} table={table} loading={false} />],
+      label: "Buttons",
+      buttons: [<EditButton key={"add"} value={"https://trueblocks.io"} />],
     },
+    // {
+    //   label: "Nothing",
+    //   collapsable: false,
+    //   components: [<DataTable<types.Nothing> key={"dataTable"} table={table} loading={false} />],
+    // },
     // EXISTING_CODE
   ];
 };

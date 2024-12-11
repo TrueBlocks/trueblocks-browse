@@ -37,15 +37,20 @@ func (a *App) ToggleViewHeader(cb *menu.CallbackData) {
 		return
 	}
 
+	tabs := a.getTabs()
 	route := a.getLastRoute()
 	tab := a.getLastTab(route)
-	newState := !a.GetHeaderOn(route, tab)
-	a.SetHeaderOn(route, tab, newState)
-	a.emitMsg(messages.ToggleHeader, &messages.MessageMsg{
-		String1: route,
-		String2: tab,
-		Bool:    newState,
-	})
+	for _, t := range tabs {
+		if t == tab {
+			isOn := a.GetHeaderOn(route, tab)
+			a.SetHeaderOn(route, tab, !isOn)
+			a.emitMsg(messages.ToggleHeader, &messages.MessageMsg{
+				String1: route,
+				String2: tab,
+				Bool:    !isOn,
+			})
+		}
+	}
 }
 
 func (a *App) TogglePrevTab(cb *menu.CallbackData) {
