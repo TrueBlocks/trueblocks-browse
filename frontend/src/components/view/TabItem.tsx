@@ -17,30 +17,32 @@ export const TabItem = <T,>({ data, groups }: TabItemProps<T>) => {
   const nonCollapsableGroups = useMemo(() => groups.filter((group) => !isCollapsable(group)), [groups]);
   const buttonGroup = useMemo(() => groups.find((group) => isButton(group)) || null, [groups]);
 
-  // TODO: This is pretty dumb
-  const style1 = {
-    root: {
-      paddingRight: "0px",
-      paddingLeft: "0px",
-      marginBottom: "-50px",
-      marginTop: "-50px",
-    },
-  };
-  const style2 = {
-    root: {
-      paddingRight: "12px",
-      paddingLeft: "12px",
-      marginTop: "40px",
-      backgroundColor: "white",
-    },
+  const renderGroups = (groups: FieldGroup<T>[], data: Partial<T>, withLegend: boolean = false) => {
+    return groups.map((group, gIndex) => (
+      <Grid.Col key={group.label + gIndex} span={group.colSpan ?? 12}>
+        <Fieldset
+          legend={withLegend ? group.label : undefined} // Add legend only if specified
+          bg="white"
+          className={classes.fieldSet}
+        >
+          {group.fields?.map((fld, fIndex) => (
+            <FieldRenderer key={String(fld.accessor) + fIndex} field={fld} data={data} />
+          ))}
+          {group.components?.map((cmp, cmpIndex) => <div key={cmpIndex}>{cmp}</div>)}
+        </Fieldset>
+      </Grid.Col>
+    ));
   };
 
   return (
     <Container styles={{ root: { minWidth: "100%" } }}>
       <Accordion
-        classNames={{ chevron: classes.chevron }}
+        classNames={{
+          chevron: classes.chevron,
+          root: classes.rootStyle,
+          control: classes.controlStyle,
+        }}
         data-rotate={headerOn ? "true" : "false"}
-        styles={style1}
         value={headerOn ? "header" : null}
         onChange={(newState) => headerOnChanged(newState === "header")}
         chevron={null}
@@ -50,35 +52,11 @@ export const TabItem = <T,>({ data, groups }: TabItemProps<T>) => {
             <ButtonTray buttonGroup={buttonGroup} />
           </CustomAccordionControl>
           <Accordion.Panel>
-            <Grid>
-              {collapsableGroups.map((group, gIndex) => {
-                return (
-                  <Grid.Col key={group.label + gIndex} span={group.colSpan ?? 12}>
-                    <Fieldset bg="white" className={classes.fieldSet}>
-                      {group.fields?.map((fld, fIndex) => (
-                        <FieldRenderer key={String(fld.accessor) + fIndex} field={fld} data={data} />
-                      ))}
-                      {group.components?.map((cmp, gIndex) => <div key={gIndex}>{cmp}</div>)}
-                    </Fieldset>
-                  </Grid.Col>
-                );
-              })}
-            </Grid>
+            <Grid>{renderGroups(collapsableGroups, data)}</Grid>
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
-      <Grid styles={style2}>
-        {nonCollapsableGroups.map((group, gIndex) => (
-          <Grid.Col key={group.label + gIndex} span={group.colSpan ?? 12}>
-            <Fieldset legend={group.label} bg="white" className={classes.fieldSet}>
-              {group.fields?.map((fld, fIndex) => (
-                <FieldRenderer key={String(fld.accessor) + fIndex} field={fld} data={data} />
-              ))}
-              {group.components?.map((cmp, gIndex) => <div key={gIndex}>{cmp}</div>)}
-            </Fieldset>
-          </Grid.Col>
-        ))}
-      </Grid>
+      <Grid className={classes.groupStyles}>{renderGroups(nonCollapsableGroups, data, true)}</Grid>
     </Container>
   );
 };
