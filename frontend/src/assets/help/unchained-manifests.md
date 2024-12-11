@@ -1,3 +1,5 @@
+#### unchained-manifests.md
+
 The Manifests view displays a list of the manifests found on the Unchained Index smart contract for your configured publisher (TrueBlocks by default).
 
 The list can be filtered by name, and the manifests may be viewed, edited, or deleted.

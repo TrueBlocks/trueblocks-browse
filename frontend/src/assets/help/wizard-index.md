@@ -1,3 +1,5 @@
+#### wizard-index.md
+
 The Wizard Index page checks your local computer's hard drive for a downloaded copy of chunks from the Unchained Index.
 
 This process may take several minutes (or more than an hour depending on your Internet connection).

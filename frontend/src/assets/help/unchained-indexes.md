@@ -1,3 +1,5 @@
+#### unchained-indexes.md
+
 The Unchained Index Indexes view displays a list of all index portions in your local database.
 
 The list includes the index name, the collection name, the keys, and the options. The view also provides the ability to create a new index, drop an existing index, and view the index details.

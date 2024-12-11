@@ -1,3 +1,5 @@
+#### wizard-rpc.md
+
 The wizard RPC page checks your configuration's RPC endpoint.
 
 If the RPC is not configured, you will be asked for a valid RPC endpoint. This may be any valid EVM RPC, but we strongly suggest that you run your own node. The speed difference is quite significant. If you cannot get your own node, the next best solution is a dedicated RPC service such as BlockJoy or Infura's for-pay service.

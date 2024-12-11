@@ -1,1 +1,3 @@
+#### history-balances.md
+
 The History Balances view displays the history of the application. This includes the history of the application's monitors, the history of the application's checks, and the history of the application's notifications. The History view also allows you to view the details of each history item.
