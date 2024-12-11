@@ -24,7 +24,7 @@ export const MonitorsView = () => {
   });
 
   const tabItems: ViewForm = {
-    monitors: <TabItem tabName="monitors" data={monitors} groups={MonitorsFormDef(table)} />,
+    monitors: <TabItem data={monitors} groups={MonitorsFormDef(table)} />,
   };
 
   return (

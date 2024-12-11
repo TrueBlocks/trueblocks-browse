@@ -54,10 +54,10 @@ export const SharingView = () => {
   });
 
   const tabItems: ViewForm = {
-    names: <TabItem tabName="names" data={names} groups={NamesFormDef(namesTable)} />,
-    abis: <TabItem tabName="abis" data={abis} groups={AbisFormDef(abisTable)} />,
-    pins: <TabItem tabName="pins" data={pins} groups={PinsFormDef(pinsTable)} />,
-    uploads: <TabItem tabName="uploads" data={uploads} groups={UploadsFormDef(uploadsTable)} />,
+    names: <TabItem data={names} groups={NamesFormDef(namesTable)} />,
+    abis: <TabItem data={abis} groups={AbisFormDef(abisTable)} />,
+    pins: <TabItem data={pins} groups={PinsFormDef(pinsTable)} />,
+    uploads: <TabItem data={uploads} groups={UploadsFormDef(uploadsTable)} />,
   };
 
   // if (!(status?.items?.length > 0)) {

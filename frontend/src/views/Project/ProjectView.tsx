@@ -24,7 +24,7 @@ export const ProjectView = () => {
   });
 
   const tabItems: ViewForm = {
-    project: <TabItem tabName="project" data={project} groups={ProjectFormDef(table)} />,
+    project: <TabItem data={project} groups={ProjectFormDef(table)} />,
   };
 
   return (

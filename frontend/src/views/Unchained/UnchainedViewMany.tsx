@@ -55,10 +55,10 @@ export const UnchainedView = () => {
   });
 
   const tabItems: ViewForm = {
-    indexes: <TabItem tabName="indexes" data={indexes} groups={IndexesFormDef(indexesTable)} />,
-    manifests: <TabItem tabName="manifests" data={manifests} groups={ManifestsFormDef(manifestsTable)} />,
-    pins: <TabItem tabName="pins" data={pins} groups={PinsFormDef(pinsTable)} />,
-    uploads: <TabItem tabName="uploads" data={uploads} groups={UploadsFormDef(uploadsTable)} />,
+    indexes: <TabItem data={indexes} groups={IndexesFormDef(indexesTable)} />,
+    manifests: <TabItem data={manifests} groups={ManifestsFormDef(manifestsTable)} />,
+    pins: <TabItem data={pins} groups={PinsFormDef(pinsTable)} />,
+    uploads: <TabItem data={uploads} groups={UploadsFormDef(uploadsTable)} />,
   };
 
   // if (!(status?.items?.length > 0)) {

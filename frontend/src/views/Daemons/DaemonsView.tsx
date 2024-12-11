@@ -25,7 +25,7 @@ export const DaemonsView = () => {
   });
 
   const tabItems: ViewForm = {
-    daemons: <TabItem tabName="daemons" data={daemons} groups={DaemonsFormDef(table)} />,
+    daemons: <TabItem data={daemons} groups={DaemonsFormDef(table)} />,
   };
 
   return (

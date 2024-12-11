@@ -64,7 +64,7 @@
   {{ apply $childTabs "const {{.}}Table = useReactTable({\ndata: {{.}}?.items || [],\ncolumns: {{firstUpper .}}TableDef,\ngetCoreRowModel: getCoreRowModel(),\n});\n" "\n" }}
 
   const tabItems: ViewForm = {
-    {{ apply $childTabs "{{.}}: <TabItem tabName=\"{{.}}\" data={ {{.}} } groups={ {{firstUpper .}}FormDef({{.}}Table)} />" "," }},
+    {{ apply $childTabs "{{.}}: <TabItem data={ {{.}} } groups={ {{firstUpper .}}FormDef({{.}}Table)} />" "," }},
   };
 
   // if (!(status?.items?.length > 0)) {

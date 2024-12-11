@@ -32,7 +32,7 @@ export const WizardView = () => {
   });
 
   const tabItems: ViewForm = {
-    wizard: <TabItem tabName="wizard" data={wizard} groups={WizardFormDef(table)} />,
+    wizard: <TabItem data={wizard} groups={WizardFormDef(table)} />,
   };
 
   return (

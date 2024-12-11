@@ -135,16 +135,16 @@ export const HistoryView = () => {
   });
 
   const tabItems: ViewForm = {
-    balances: <TabItem tabName="balances" data={balances} groups={BalancesFormDef(balancesTable)} />,
-    incoming: <TabItem tabName="incoming" data={incoming} groups={IncomingFormDef(incomingTable)} />,
-    outgoing: <TabItem tabName="outgoing" data={outgoing} groups={OutgoingFormDef(outgoingTable)} />,
-    internals: <TabItem tabName="internals" data={internals} groups={InternalsFormDef(internalsTable)} />,
-    charts: <TabItem tabName="charts" data={charts} groups={ChartsFormDef(chartsTable)} />,
-    logs: <TabItem tabName="logs" data={logs} groups={LogsFormDef(logsTable)} />,
-    statements: <TabItem tabName="statements" data={statements} groups={StatementsFormDef(statementsTable)} />,
-    neighbors: <TabItem tabName="neighbors" data={neighbors} groups={NeighborsFormDef(neighborsTable)} />,
-    traces: <TabItem tabName="traces" data={traces} groups={TracesFormDef(tracesTable)} />,
-    receipts: <TabItem tabName="receipts" data={receipts} groups={ReceiptsFormDef(receiptsTable)} />,
+    balances: <TabItem data={balances} groups={BalancesFormDef(balancesTable)} />,
+    incoming: <TabItem data={incoming} groups={IncomingFormDef(incomingTable)} />,
+    outgoing: <TabItem data={outgoing} groups={OutgoingFormDef(outgoingTable)} />,
+    internals: <TabItem data={internals} groups={InternalsFormDef(internalsTable)} />,
+    charts: <TabItem data={charts} groups={ChartsFormDef(chartsTable)} />,
+    logs: <TabItem data={logs} groups={LogsFormDef(logsTable)} />,
+    statements: <TabItem data={statements} groups={StatementsFormDef(statementsTable)} />,
+    neighbors: <TabItem data={neighbors} groups={NeighborsFormDef(neighborsTable)} />,
+    traces: <TabItem data={traces} groups={TracesFormDef(tracesTable)} />,
+    receipts: <TabItem data={receipts} groups={ReceiptsFormDef(receiptsTable)} />,
   };
 
   // if (!(status?.items?.length > 0)) {

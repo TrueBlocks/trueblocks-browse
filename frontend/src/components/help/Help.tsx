@@ -25,12 +25,7 @@ export const Help = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    const fn =
-      route === "wizard"
-        ? `${route}-${wizard.state}.md`
-        : activeTab || activeTab === route
-          ? `${route}-${activeTab}.md`
-          : `${route}.md`;
+    const fn = route === "wizard" ? `${route}-${wizard.state}.md` : `${route}-${activeTab}.md`;
     const filePath = Object.keys(helpFiles).find((key) => key.endsWith(`/help/${fn}`));
     const loadMarkdown = async (): Promise<void> => {
       if (!filePath) {

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { Container, Fieldset, Grid, Accordion } from "@mantine/core";
 import { IconChevronsUp } from "@tabler/icons-react";
 import { FieldRenderer, FieldGroup, isCollapsable, isButton, ButtonTray } from "@components";
@@ -9,30 +9,29 @@ import { useAppState } from "@state";
 import classes from "./TabItem.module.css";
 
 type TabItemProps<T> = {
-  tabName: string;
   data: Partial<T>;
   groups: FieldGroup<T>[];
 };
 
-export const TabItem = <T,>({ tabName, data, groups }: TabItemProps<T>) => {
-  const { route } = useAppState();
-
-  const collapsableGroups = groups.filter((group) => isCollapsable(group) && !isButton(group));
-  const nonCollapsableGroups = groups.filter((group) => !isCollapsable(group));
-  const buttonGroup = groups.find((group) => isButton(group)) || null;
+export const TabItem = <T,>({ data, groups }: TabItemProps<T>) => {
+  const { route, activeTab } = useAppState();
   const [headerShows, setHeaderShows] = useState<boolean>(false);
+
+  const collapsableGroups = useMemo(() => groups.filter((group) => isCollapsable(group) && !isButton(group)), [groups]);
+  const nonCollapsableGroups = useMemo(() => groups.filter((group) => !isCollapsable(group)), [groups]);
+  const buttonGroup = useMemo(() => groups.find((group) => isButton(group)) || null, [groups]);
 
   // ------------------- Header State -------------------
   useEffect(() => {
-    IsHeaderOn(route, tabName).then((isShowing) => {
+    IsHeaderOn(route, activeTab).then((isShowing) => {
       setHeaderShows(isShowing);
     });
-  });
+  }, [route, activeTab]);
 
   useEffect(() => {
     const handleToggleHeader = (msg: messages.MessageMsg) => {
-      const { string2: tab, bool: isShowing } = msg;
-      if (tab === tabName) {
+      const { string1: r, string2: t, bool: isShowing } = msg;
+      if (route === r && activeTab === t) {
         setHeaderShows(isShowing);
       }
     };
@@ -42,11 +41,12 @@ export const TabItem = <T,>({ tabName, data, groups }: TabItemProps<T>) => {
     return () => {
       EventsOff(Message.TOGGLEHEADER);
     };
-  });
+  }, [route, activeTab]);
 
-  const headerChanged = (route: string, isShowing: boolean) => {
-    SetHeaderOn(route, tabName, isShowing);
-    setHeaderShows(isShowing);
+  const headerChanged = (isShowing: boolean) => {
+    SetHeaderOn(route, activeTab, isShowing).then(() => {
+      setHeaderShows(isShowing);
+    });
   };
 
   // TODO: This is pretty dumb
@@ -74,11 +74,11 @@ export const TabItem = <T,>({ tabName, data, groups }: TabItemProps<T>) => {
         data-rotate={headerShows ? "true" : "false"}
         styles={style1}
         value={headerShows ? "header" : null}
-        onChange={(newState) => headerChanged(route, newState === "header")}
+        onChange={(newState) => headerChanged(newState === "header")}
         chevron={null}
       >
         <Accordion.Item value="header">
-          <CustomAccordionControl isOpen={headerShows} onToggle={() => headerChanged(route, !headerShows)}>
+          <CustomAccordionControl isOpen={headerShows} onToggle={() => headerChanged(!headerShows)}>
             <ButtonTray buttonGroup={buttonGroup} />
           </CustomAccordionControl>
           <Accordion.Panel>

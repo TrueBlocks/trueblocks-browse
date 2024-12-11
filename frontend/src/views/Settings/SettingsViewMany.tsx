@@ -46,9 +46,9 @@ export const SettingsView = () => {
   });
 
   const tabItems: ViewForm = {
-    status: <TabItem tabName="status" data={status} groups={StatusFormDef(statusTable)} />,
-    config: <TabItem tabName="config" data={config} groups={ConfigFormDef(configTable)} />,
-    session: <TabItem tabName="session" data={session} groups={SessionFormDef(sessionTable)} />,
+    status: <TabItem data={status} groups={StatusFormDef(statusTable)} />,
+    config: <TabItem data={config} groups={ConfigFormDef(configTable)} />,
+    session: <TabItem data={session} groups={SessionFormDef(sessionTable)} />,
   };
 
   // if (!(status?.items?.length > 0)) {
