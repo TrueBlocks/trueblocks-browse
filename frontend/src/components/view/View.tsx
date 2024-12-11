@@ -1,8 +1,8 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Group, Stack, Tabs } from "@mantine/core";
 import { SearchBar, ViewTitle } from "@components";
-import { useAppState } from "@state";
 import { GetTabs } from "@gocode/app/App";
+import { useAppState } from "@state";
 import classes from "./View.module.css";
 
 export type ViewForm = Record<string, ReactNode>;

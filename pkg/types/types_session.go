@@ -131,14 +131,18 @@ func init() {
 	defFlags.Store("menu", true)
 	defFlags.Store("help", true)
 	defFlags.Store("footer", true)
-	defFlags.Store("project", true)
-	defFlags.Store("history-history", true)
+
+	defFlags.Store("freshen", true)
+
+	defFlags.Store("project-project", true)
+	defFlags.Store("history-balances", true)
+	defFlags.Store("sharing-names", true)
+	defFlags.Store("sharing-abis", true)
 	defFlags.Store("settings-status", true)
 	defFlags.Store("settings-session", true)
 	defFlags.Store("settings-config", true)
-	defFlags.Store("daemons", true)
-	defFlags.Store("wizard", true)
-	defFlags.Store("freshen", true)
+	defFlags.Store("daemons-daemons", true)
+	defFlags.Store("wizard-wizard", true)
 }
 
 var defaultSession = Session{
