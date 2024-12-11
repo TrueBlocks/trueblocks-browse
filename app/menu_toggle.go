@@ -61,10 +61,7 @@ func (a *App) TogglePrevTab(cb *menu.CallbackData) {
 		if t == tab {
 			newTab := tabs[(i-1+len(tabs))%len(tabs)]
 			a.setLastTab(route, newTab)
-			a.emitMsg(messages.Navigate, &messages.MessageMsg{
-				String1: route,
-				String2: newTab,
-			})
+			a.emitNavigateMsg(route, newTab)
 			return
 		}
 	}
@@ -80,10 +77,7 @@ func (a *App) ToggleNextTab(cb *menu.CallbackData) {
 		if t == tab {
 			newTab := tabs[(i+1)%len(tabs)]
 			a.setLastTab(route, newTab)
-			a.emitMsg(messages.Navigate, &messages.MessageMsg{
-				String1: route,
-				String2: newTab,
-			})
+			a.emitNavigateMsg(route, newTab)
 			return
 		}
 	}

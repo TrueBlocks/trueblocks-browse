@@ -7,10 +7,10 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
-func (a *App) emitNavigateMsg(route string) {
+func (a *App) emitNavigateMsg(route, tab string) {
 	messages.EmitMessage(a.ctx, messages.Navigate, &messages.MessageMsg{
 		String1: route,
-		String2: a.getLastTab(route),
+		String2: tab,
 	})
 }
 

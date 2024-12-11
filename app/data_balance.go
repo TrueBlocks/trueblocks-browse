@@ -268,7 +268,7 @@ func (a *App) goToAddress(address base.Address) {
 		a.historyCache.Store(address, history)
 	}
 	// go a.loadHistory(nil, nil)
-	a.emitNavigateMsg(a.getLastRoute())
+	a.emitNavigateMsg(a.getLastRoute(), a.getLastTab(a.getLastRoute()))
 }
 
 func (a *App) LoadAddress(addrOrEns string) {

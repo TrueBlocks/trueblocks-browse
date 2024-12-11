@@ -23,7 +23,7 @@ func (a *App) newFile() {
 	a.historyCache.Store(address, history)
 	a.project = types.NewProjectContainer(a.getChain(), []types.HistoryContainer{history})
 
-	a.emitNavigateMsg("project")
+	a.emitNavigateMsg("project", a.getLastTab("project"))
 	a.emitInfoMsg(a.getFullPath(), "new file created")
 }
 

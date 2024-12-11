@@ -6,5 +6,5 @@ func (a *App) Navigate(route string) {
 	}
 
 	a.setLastRoute(route)
-	a.emitNavigateMsg(route)
+	a.emitNavigateMsg(route, a.getLastTab(route))
 }
