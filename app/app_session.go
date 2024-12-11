@@ -35,7 +35,7 @@ func (a *App) SetLastAddress(address string) {
 }
 
 // --------------------------------------------
-func (a *App) IsLayoutOn(layout string) bool {
+func (a *App) GetLayoutOn(layout string) bool {
 	return a.session.IsFlagOn(layout)
 }
 
@@ -45,7 +45,7 @@ func (a *App) SetLayoutOn(layout string, onOff bool) {
 }
 
 // --------------------------------------------
-func (a *App) IsHeaderOn(route, tab string) bool {
+func (a *App) GetHeaderOn(route, tab string) bool {
 	key := route + "-" + tab
 	return a.session.IsFlagOn(key)
 }
@@ -57,7 +57,7 @@ func (a *App) SetHeaderOn(route, tab string, onOff bool) {
 }
 
 // --------------------------------------------
-func (a *App) IsDaemonOn(daemon string) bool {
+func (a *App) GetDaemonOn(daemon string) bool {
 	return a.session.IsFlagOn(daemon)
 }
 

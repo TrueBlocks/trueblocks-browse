@@ -162,6 +162,10 @@ export function GetFilter() {
   return window['go']['app']['App']['GetFilter']();
 }
 
+export function GetHeaderOn(arg1, arg2) {
+  return window['go']['app']['App']['GetHeaderOn'](arg1, arg2);
+}
+
 export function GetHistoryContainer() {
   return window['go']['app']['App']['GetHistoryContainer']();
 }
@@ -198,16 +202,12 @@ export function HistoryView(arg1) {
   return window['go']['app']['App']['HistoryView'](arg1);
 }
 
-export function IsDaemonOn(arg1) {
-  return window['go']['app']['App']['IsDaemonOn'](arg1);
+export function GetDaemonOn(arg1) {
+  return window['go']['app']['App']['GetDaemonOn'](arg1);
 }
 
-export function IsHeaderOn(arg1, arg2) {
-  return window['go']['app']['App']['IsHeaderOn'](arg1, arg2);
-}
-
-export function IsLayoutOn(arg1) {
-  return window['go']['app']['App']['IsLayoutOn'](arg1);
+export function GetLayoutOn(arg1) {
+  return window['go']['app']['App']['GetLayoutOn'](arg1);
 }
 
 export function LoadAddress(arg1) {

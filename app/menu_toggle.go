@@ -39,7 +39,7 @@ func (a *App) ToggleViewHeader(cb *menu.CallbackData) {
 
 	route := a.getLastRoute()
 	tab := a.getLastTab(route)
-	newState := !a.IsHeaderOn(route, tab)
+	newState := !a.GetHeaderOn(route, tab)
 	a.SetHeaderOn(route, tab, newState)
 	a.emitMsg(messages.ToggleHeader, &messages.MessageMsg{
 		String1: route,

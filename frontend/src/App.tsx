@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { AppShell } from "@mantine/core";
 import { ViewStatus } from "@components";
-import { IsLayoutOn, SetLayoutOn } from "@gocode/app/App";
+import { GetLayoutOn, SetLayoutOn } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { Header, MenuPanel, ViewContainer, HelpPanel, Footer } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
@@ -27,7 +27,7 @@ export const App = () => {
 
   useEffect(() => {
     flags.forEach(({ layout, setter }) => {
-      IsLayoutOn(layout).then((show) => {
+      GetLayoutOn(layout).then((show) => {
         setter(show);
       });
     });

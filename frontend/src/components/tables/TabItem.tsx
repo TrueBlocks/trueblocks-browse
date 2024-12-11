@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useMemo, useState } from "react";
 import { Container, Fieldset, Grid, Accordion } from "@mantine/core";
 import { IconChevronsUp } from "@tabler/icons-react";
 import { FieldRenderer, FieldGroup, isCollapsable, isButton, ButtonTray } from "@components";
-import { IsHeaderOn, SetHeaderOn } from "@gocode/app/App";
+import { GetHeaderOn, Logger, SetHeaderOn } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
 import { useAppState } from "@state";
@@ -23,7 +23,8 @@ export const TabItem = <T,>({ data, groups }: TabItemProps<T>) => {
 
   // ------------------- Header State -------------------
   useEffect(() => {
-    IsHeaderOn(route, activeTab).then((isShowing) => {
+    GetHeaderOn(route, activeTab).then((isShowing) => {
+      // Logger(["useEffect:", route, activeTab, String(isShowing)]);
       setHeaderShows(isShowing);
     });
   }, [route, activeTab]);
@@ -31,6 +32,7 @@ export const TabItem = <T,>({ data, groups }: TabItemProps<T>) => {
   useEffect(() => {
     const handleToggleHeader = (msg: messages.MessageMsg) => {
       const { string1: r, string2: t, bool: isShowing } = msg;
+      // Logger(["handleToggleHeader:", route, r, activeTab, t, String(isShowing)]);
       if (route === r && activeTab === t) {
         setHeaderShows(isShowing);
       }
@@ -44,6 +46,7 @@ export const TabItem = <T,>({ data, groups }: TabItemProps<T>) => {
   }, [route, activeTab]);
 
   const headerChanged = (isShowing: boolean) => {
+    // Logger(["headerChanged:", route, activeTab, String(isShowing)]);
     SetHeaderOn(route, activeTab, isShowing).then(() => {
       setHeaderShows(isShowing);
     });

@@ -87,6 +87,8 @@ export function GetExploreUrl(arg1:string,arg2:boolean,arg3:boolean):Promise<str
 
 export function GetFilter():Promise<types.Filter>;
 
+export function GetHeaderOn(arg1:string,arg2:string):Promise<boolean>;
+
 export function GetHistoryContainer():Promise<types.HistoryContainer>;
 
 export function GetLastAddress():Promise<base.Address>;
@@ -105,11 +107,9 @@ export function GetTabs():Promise<Array<string>>;
 
 export function HistoryView(arg1:menu.CallbackData):Promise<void>;
 
-export function IsDaemonOn(arg1:string):Promise<boolean>;
+export function GetDaemonOn(arg1:string):Promise<boolean>;
 
-export function IsHeaderOn(arg1:string,arg2:string):Promise<boolean>;
-
-export function IsLayoutOn(arg1:string):Promise<boolean>;
+export function GetLayoutOn(arg1:string):Promise<boolean>;
 
 export function LoadAddress(arg1:string):Promise<void>;
 
