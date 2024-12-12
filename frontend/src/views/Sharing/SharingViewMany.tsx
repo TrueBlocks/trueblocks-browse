@@ -2,12 +2,12 @@
 // of ExistingCode markers (if any).
 
 // EXISTING_CODE
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { DebugState, TabItem, View, ViewForm } from "@components";
+import { types } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { base, types } from "../../../wailsjs/go/models";
 import { AbisFormDef, AbisTableDef } from "../Abis";
 import { NamesFormDef, NamesTableDef } from "../Names";
 import { UploadsFormDef, UploadsTableDef } from "../Uploads";
@@ -15,9 +15,16 @@ import { UploadsFormDef, UploadsTableDef } from "../Uploads";
 
 export const SharingView = () => {
   const { names, fetchNames, abis, fetchAbis, uploads, fetchUploads } = useAppState();
+  const [editor, setEditor] = useState<types.Name>(types.Name.createFrom({}));
   const { enterNoop, modifyNoop } = useNoops();
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
+
+  useEffect(() => {
+    if (names?.items?.length > 0) {
+      setEditor(names.items[0]);
+    }
+  }, [names]);
 
   const fetchSharing = useCallback(
     (currentItem: number, itemsPerPage: number) => {
@@ -46,21 +53,8 @@ export const SharingView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const e =
-    names?.items?.length > 0
-      ? names.items[0]
-      : types.Name.createFrom({
-          address: "0xf503017d7baf7fbc0fff7492b751025c6a78179b" as unknown as base.Address,
-          name: "string;",
-          tags: "string;",
-          source: "string;",
-          symbol: "string;",
-          decimals: 12,
-          deleted: false,
-        });
-
   const tabItems: ViewForm = {
-    names: <TabItem data={names} groups={NamesFormDef(e, namesTable)} />,
+    names: <TabItem data={names} groups={NamesFormDef(editor, namesTable)} />,
     abis: <TabItem data={abis} groups={AbisFormDef(abisTable)} />,
     uploads: <TabItem data={uploads} groups={UploadsFormDef(uploadsTable)} />,
   };

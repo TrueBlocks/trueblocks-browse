@@ -6,20 +6,21 @@ import { DataTable, FieldGroup, CleanButton, PublishButton, AddButton, NameEdito
 import { types } from "@gocode/models";
 // EXISTING_CODE
 
-export const NamesFormDef = (name: types.Name, table: Table<types.Name>): FieldGroup<types.NameContainer>[] => {
+export const NamesFormDef = (editable: types.Name, table: Table<types.Name>): FieldGroup<types.NameContainer>[] => {
   // EXISTING_CODE
-  // const nameEditor = <NameEditor key={"editor"} />;
   // EXISTING_CODE
   return [
     // EXISTING_CODE
     {
-      label: "Editor",
+      label: "",
       collapsable: false,
-      components: [<NameEditor key={"nameEditor"} source={name} onCancel={() => {}} />],
+      disabled: editable.name === "",
+      components: [<NameEditor key={"nameEditor"} source={editable} onCancel={() => {}} />],
     },
     {
       label: "Name Data",
       colSpan: 6,
+      disabled: editable.name !== "",
       fields: [
         { label: "nNames", type: "int", accessor: "nItems" },
         { label: "nContracts", type: "int", accessor: "nContracts" },
