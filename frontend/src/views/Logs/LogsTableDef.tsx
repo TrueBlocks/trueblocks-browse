@@ -1,9 +1,9 @@
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
-// EXISTING_CODE
 import { createColumnHelper } from "@tanstack/react-table";
-import { types } from "@gocode/models";
 import { CustomColumnDef } from "@components";
+import { types } from "@gocode/models";
+// EXISTING_CODE
 // EXISTING_CODE
 
 const columnHelper = createColumnHelper<types.Transaction>();

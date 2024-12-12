@@ -2,7 +2,7 @@
 // of ExistingCode markers (if any).
 // EXISTING_CODE
 import { Table } from "@tanstack/react-table";
-import { FieldGroup, EditButton, DataTable } from "@components";
+import { FieldGroup, EditButton } from "@components";
 import { types } from "@gocode/models";
 import { useAppState } from "@state";
 // EXISTING_CODE

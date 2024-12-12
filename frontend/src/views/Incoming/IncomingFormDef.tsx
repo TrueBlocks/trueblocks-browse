@@ -2,8 +2,8 @@
 // of ExistingCode markers (if any).
 // EXISTING_CODE
 import { Table } from "@tanstack/react-table";
-import { types } from "@gocode/models";
 import { FieldGroup } from "@components";
+import { types } from "@gocode/models";
 // EXISTING_CODE
 
 export const IncomingFormDef = (table: Table<types.Transaction>): FieldGroup<types.IncomingContainer>[] => {

@@ -2,15 +2,21 @@
 // of ExistingCode markers (if any).
 // EXISTING_CODE
 import { Table } from "@tanstack/react-table";
-import { DataTable, FieldGroup, CleanButton, PublishButton, AddButton } from "@components";
+import { DataTable, FieldGroup, CleanButton, PublishButton, AddButton, NameEditor } from "@components";
 import { types } from "@gocode/models";
 // EXISTING_CODE
 
-export const NamesFormDef = (table: Table<types.Name>): FieldGroup<types.NameContainer>[] => {
+export const NamesFormDef = (name: types.Name, table: Table<types.Name>): FieldGroup<types.NameContainer>[] => {
   // EXISTING_CODE
+  // const nameEditor = <NameEditor key={"editor"} />;
   // EXISTING_CODE
   return [
     // EXISTING_CODE
+    {
+      label: "Editor",
+      collapsable: false,
+      components: [<NameEditor key={"nameEditor"} source={name} onCancel={() => {}} />],
+    },
     {
       label: "Name Data",
       colSpan: 6,
