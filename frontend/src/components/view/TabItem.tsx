@@ -11,7 +11,7 @@ type TabItemProps<T> = {
 };
 
 export const TabItem = <T,>({ data, groups }: TabItemProps<T>) => {
-  const { headerOn, headerOnChanged } = useAppState();
+  const { route, activeTab, headerOn, headerOnChanged } = useAppState();
 
   const collapsableGroups = useMemo(() => groups.filter((group) => isCollapsable(group) && !isButton(group)), [groups]);
   const nonCollapsableGroups = useMemo(() => groups.filter((group) => !isCollapsable(group)), [groups]);
@@ -20,11 +20,7 @@ export const TabItem = <T,>({ data, groups }: TabItemProps<T>) => {
   const renderGroups = (groups: FieldGroup<T>[], data: Partial<T>, withLegend: boolean = false) => {
     return groups.map((group, gIndex) => (
       <Grid.Col key={group.label + gIndex} span={group.colSpan ?? 12}>
-        <Fieldset
-          legend={withLegend ? group.label : undefined} // Add legend only if specified
-          bg="white"
-          className={classes.fieldSet}
-        >
+        <Fieldset legend={withLegend ? group.label : undefined} bg="white" className={classes.fieldSet}>
           {group.fields?.map((fld, fIndex) => (
             <FieldRenderer key={String(fld.accessor) + fIndex} field={fld} data={data} />
           ))}
@@ -37,18 +33,18 @@ export const TabItem = <T,>({ data, groups }: TabItemProps<T>) => {
   return (
     <Container styles={{ root: { minWidth: "100%" } }}>
       <Accordion
+        key={`${route}-${activeTab}`}
         classNames={{
-          chevron: classes.chevron,
           root: classes.rootStyle,
-          control: classes.controlStyle,
         }}
         data-rotate={headerOn ? "true" : "false"}
         value={headerOn ? "header" : null}
-        onChange={(newState) => headerOnChanged(newState === "header")}
-        chevron={null}
+        onChange={(newState) => {
+          headerOnChanged(newState === "header");
+        }}
       >
         <Accordion.Item value="header">
-          <CustomAccordionControl isOpen={headerOn} onToggle={() => headerOnChanged(!headerOn)}>
+          <CustomAccordionControl>
             <ButtonTray buttonGroup={buttonGroup} />
           </CustomAccordionControl>
           <Accordion.Panel>
@@ -62,34 +58,18 @@ export const TabItem = <T,>({ data, groups }: TabItemProps<T>) => {
 };
 
 type CustomAccordionControlProps = {
-  isOpen: boolean;
-  onToggle: () => void;
   children: ReactNode;
 };
 
-export const CustomAccordionControl = ({ isOpen, onToggle, children }: CustomAccordionControlProps) => {
+export const CustomAccordionControl = ({ children }: CustomAccordionControlProps) => {
+  const { headerOn, headerOnChanged } = useAppState();
+
   return (
-    <div
-      onClick={onToggle}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-end",
-        gap: "8px",
-        cursor: "pointer",
-        padding: "10px",
-      }}
-      role="button"
-      tabIndex={0}
-    >
+    <div onClick={() => headerOnChanged(!headerOn)} className={classes.controlContainer} role="button" tabIndex={0}>
       {children}
-      <IconChevronsUp
-        className={`${classes.icon} ${classes.chevron} ${classes.buttonIcon}`}
-        data-rotate={isOpen ? "true" : "false"}
-        style={{
-          paddingBottom: "2px",
-        }}
-      />
+      <div className={classes.chevronWrapper}>
+        <IconChevronsUp className={`${classes.chevronIcon}`} data-rotate={headerOn ? "true" : "false"} />
+      </div>
     </div>
   );
 };

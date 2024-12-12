@@ -190,7 +190,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     return () => {
       EventsOff(Message.TOGGLEHEADER);
     };
-  }, [setLocation]);
+  }, []);
 
   // ------------------- Data Fetches -------------------
   const fetchProject = useCallback((currentItem: number, itemsPerPage: number) => {
