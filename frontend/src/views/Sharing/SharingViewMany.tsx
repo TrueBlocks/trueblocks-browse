@@ -14,7 +14,7 @@ import { UploadsFormDef, UploadsTableDef } from "../Uploads";
 // EXISTING_CODE
 
 export const SharingView = () => {
-  const { names, fetchNames, abis, fetchAbis, pins, fetchPins, uploads, fetchUploads } = useAppState();
+  const { names, fetchNames, abis, fetchAbis, uploads, fetchUploads } = useAppState();
   const { enterNoop, modifyNoop } = useNoops();
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
@@ -23,10 +23,9 @@ export const SharingView = () => {
     (currentItem: number, itemsPerPage: number) => {
       fetchNames(currentItem, itemsPerPage);
       fetchAbis(currentItem, itemsPerPage);
-      fetchPins(currentItem, itemsPerPage);
       fetchUploads(currentItem, itemsPerPage);
     },
-    [fetchNames, fetchAbis, fetchPins, fetchUploads]
+    [fetchNames, fetchAbis, fetchUploads]
   );
 
   const namesTable = useReactTable({
@@ -41,12 +40,6 @@ export const SharingView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const pinsTable = useReactTable({
-    data: pins?.items || [],
-    columns: PinsTableDef,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
   const uploadsTable = useReactTable({
     data: uploads?.items || [],
     columns: UploadsTableDef,
@@ -56,7 +49,6 @@ export const SharingView = () => {
   const tabItems: ViewForm = {
     names: <TabItem data={names} groups={NamesFormDef(namesTable)} />,
     abis: <TabItem data={abis} groups={AbisFormDef(abisTable)} />,
-    pins: <TabItem data={pins} groups={PinsFormDef(pinsTable)} />,
     uploads: <TabItem data={uploads} groups={UploadsFormDef(uploadsTable)} />,
   };
 
@@ -72,7 +64,7 @@ export const SharingView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={[names.updater, abis.updater, pins.updater, uploads.updater]} />
+      <DebugState u={[names.updater, abis.updater, uploads.updater]} />
       <View tabItems={tabItems} searchable />
     </ViewStateProvider>
   );

@@ -3,7 +3,7 @@
 // EXISTING_CODE
 import { createColumnHelper } from "@tanstack/react-table";
 import { types } from "@gocode/models";
-import { CustomColumnDef, Formatter } from "../../components";
+import { CustomColumnDef, Formatter } from "@components";
 // EXISTING_CODE
 
 const columnHelper = createColumnHelper<types.Chain>();

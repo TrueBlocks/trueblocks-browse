@@ -47,6 +47,8 @@ export function FetchPin(arg1:number,arg2:number):Promise<types.PinContainer>;
 
 export function FetchProject(arg1:number,arg2:number):Promise<types.ProjectContainer>;
 
+export function FetchPublish(arg1:number,arg2:number):Promise<types.PublishContainer>;
+
 export function FetchReceipt(arg1:number,arg2:number):Promise<types.ReceiptContainer>;
 
 export function FetchSession(arg1:number,arg2:number):Promise<types.SessionContainer>;

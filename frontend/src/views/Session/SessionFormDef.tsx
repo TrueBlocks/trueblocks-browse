@@ -4,7 +4,7 @@
 import { Table } from "@tanstack/react-table";
 import { FieldGroup, EditButton, DataTable } from "@components";
 import { types } from "@gocode/models";
-import { useAppState } from "../../state";
+import { useAppState } from "@state";
 // EXISTING_CODE
 
 export const SessionFormDef = (table: Table<types.Nothing>): FieldGroup<types.SessionContainer>[] => {

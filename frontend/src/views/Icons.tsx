@@ -17,6 +17,7 @@ import {
   IconShare,
   IconPin,
   IconUpload,
+  IconBroadcast,
   IconLinkOff,
   IconSettings,
   IconServer,
@@ -39,6 +40,7 @@ export const MonitorsIcon = <IconDeviceDesktop />;
 export const SharingIcon = <IconShare />;
 export const PinsIcon = <IconPin />;
 export const UploadsIcon = <IconUpload />;
+export const PublishIcon = <IconBroadcast />;
 export const UnchainedIcon = <IconLinkOff />;
 export const SettingsIcon = <IconSettings />;
 export const DaemonsIcon = <IconServer />;

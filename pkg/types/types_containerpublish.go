@@ -6,44 +6,40 @@ package types
 import (
 	"encoding/json"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/walk"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
 )
 
 // EXISTING_CODE
 
-type SessionContainer struct {
-	Chain   string    `json:"chain"`
-	Items   []Nothing `json:"items"`
-	NItems  uint64    `json:"nItems"`
-	Session `json:",inline"`
+type PublishContainer struct {
+	Chain   string       `json:"chain"`
+	Items   []CacheItem  `json:"items"`
+	NItems  uint64       `json:"nItems"`
 	Updater sdk.Updater  `json:"updater"`
 	Sorts   sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func NewSessionContainer(chain string, session []Session) SessionContainer {
+func NewPublishContainer(chain string, itemsIn []CacheItem) PublishContainer {
 	// EXISTING_CODE
-	itemsIn := []Nothing{}
 	// EXISTING_CODE
-	ret := SessionContainer{
-		Items:   itemsIn,
-		NItems:  uint64(len(itemsIn)),
-		Session: session[0].ShallowCopy(),
+	ret := PublishContainer{
+		Items:  itemsIn,
+		NItems: uint64(len(itemsIn)),
 		Sorts: sdk.SortSpec{
 			Fields: []string{},
 			Order:  []sdk.SortOrder{},
 		},
-		Updater: NewSessionUpdater(chain),
+		Updater: NewPublishUpdater(chain),
 	}
 	// EXISTING_CODE
-	ret.Chain = chain
 	// EXISTING_CODE
 	return ret
 }
 
-func NewSessionUpdater(chain string, resetIn ...bool) sdk.Updater {
+func NewPublishUpdater(chain string, resetIn ...bool) sdk.Updater {
 	reset := false
 	if len(resetIn) > 0 {
 		reset = resetIn[0]
@@ -51,30 +47,30 @@ func NewSessionUpdater(chain string, resetIn ...bool) sdk.Updater {
 
 	// EXISTING_CODE
 	items := []sdk.UpdaterItem{
-		{Path: utils.MustGetConfigFn("browse", "session.json"), Type: sdk.File},
+		{Path: walk.GetRootPathFromCacheType(chain, walk.Index_Bloom), Type: sdk.Folder},
 	}
 	// EXISTING_CODE
-	u, _ := sdk.NewUpdater("session", items)
+	u, _ := sdk.NewUpdater("publish", items)
 	if reset {
 		u.Reset()
 	}
 	return u
 }
 
-func (s *SessionContainer) String() string {
+func (s *PublishContainer) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
 
-func (s *SessionContainer) GetItems() interface{} {
+func (s *PublishContainer) GetItems() interface{} {
 	return s.Items
 }
 
-func (s *SessionContainer) SetItems(items interface{}) {
-	s.Items = items.([]Nothing)
+func (s *PublishContainer) SetItems(items interface{}) {
+	s.Items = items.([]CacheItem)
 }
 
-func (s *SessionContainer) NeedsUpdate() bool {
+func (s *PublishContainer) NeedsUpdate() bool {
 	if updater, reload, _ := s.Updater.NeedsUpdate(); reload {
 		s.Updater = updater
 		return true
@@ -82,11 +78,10 @@ func (s *SessionContainer) NeedsUpdate() bool {
 	return false
 }
 
-func (s *SessionContainer) ShallowCopy() Containerer {
-	ret := &SessionContainer{
+func (s *PublishContainer) ShallowCopy() Containerer {
+	ret := &PublishContainer{
 		Chain:   s.Chain,
 		NItems:  s.NItems,
-		Session: s.Session.ShallowCopy(),
 		Updater: s.Updater,
 		// EXISTING_CODE
 		// EXISTING_CODE
@@ -94,13 +89,13 @@ func (s *SessionContainer) ShallowCopy() Containerer {
 	return ret
 }
 
-func (s *SessionContainer) Clear() {
+func (s *PublishContainer) Clear() {
 	s.NItems = 0
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func (s *SessionContainer) passesFilter(item *Nothing, filter *Filter) (ret bool) {
+func (s *PublishContainer) passesFilter(item *CacheItem, filter *Filter) (ret bool) {
 	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
@@ -111,30 +106,30 @@ func (s *SessionContainer) passesFilter(item *Nothing, filter *Filter) (ret bool
 	return
 }
 
-func (s *SessionContainer) Accumulate(item *Nothing) {
+func (s *PublishContainer) Accumulate(item *CacheItem) {
 	s.NItems++
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func (s *SessionContainer) Finalize() {
+func (s *PublishContainer) Finalize() {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func (s *SessionContainer) CollateAndFilter(filter *Filter) interface{} {
+func (s *PublishContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
 	if !filter.HasCriteria() {
-		s.ForEveryItem(func(item *Nothing, data any) bool {
+		s.ForEveryItem(func(item *CacheItem, data any) bool {
 			s.Accumulate(item)
 			return true
 		}, nil)
 		s.Finalize()
 		return s.Items
 	}
-	filtered := []Nothing{}
-	s.ForEveryItem(func(item *Nothing, data any) bool {
+	filtered := []CacheItem{}
+	s.ForEveryItem(func(item *CacheItem, data any) bool {
 		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
@@ -149,7 +144,7 @@ func (s *SessionContainer) CollateAndFilter(filter *Filter) interface{} {
 	return filtered
 }
 
-func (s *SessionContainer) ForEveryItem(process EveryNothingFn, data any) bool {
+func (s *PublishContainer) ForEveryItem(process EveryCacheItemFn, data any) bool {
 	for i := 0; i < len(s.Items); i++ {
 		if !process(&s.Items[i], data) {
 			return false
@@ -158,9 +153,8 @@ func (s *SessionContainer) ForEveryItem(process EveryNothingFn, data any) bool {
 	return true
 }
 
-func (s *SessionContainer) Sort() (err error) {
+func (s *PublishContainer) Sort() (err error) {
 	// EXISTING_CODE
-	// TODO: Sorting?
 	// EXISTING_CODE
 	return
 }

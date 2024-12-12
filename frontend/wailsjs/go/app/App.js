@@ -82,6 +82,10 @@ export function FetchProject(arg1, arg2) {
   return window['go']['app']['App']['FetchProject'](arg1, arg2);
 }
 
+export function FetchPublish(arg1, arg2) {
+  return window['go']['app']['App']['FetchPublish'](arg1, arg2);
+}
+
 export function FetchReceipt(arg1, arg2) {
   return window['go']['app']['App']['FetchReceipt'](arg1, arg2);
 }

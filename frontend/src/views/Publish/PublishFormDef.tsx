@@ -6,7 +6,7 @@ import { types } from "@gocode/models";
 import { FieldGroup } from "@components";
 // EXISTING_CODE
 
-export const IncomingFormDef = (table: Table<types.Transaction>): FieldGroup<types.IncomingContainer>[] => {
+export const PublishFormDef = (table: Table<types.CacheItem>): FieldGroup<types.PublishContainer>[] => {
   // EXISTING_CODE
   // EXISTING_CODE
   return [

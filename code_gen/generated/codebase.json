@@ -1169,7 +1169,7 @@
             "doc_route": "1050-containers",
             "ui_route": "1050-sharing-4",
             "ui_icon": "Share",
-            "children": "names,abis,pins,uploads",
+            "children": "names,abis,uploads",
             "cache_by": "range",
             "cache_type": "cacheable",
             "attributes": "wantsSearch",
@@ -1346,6 +1346,42 @@
             "doc_route": "1054-containers",
             "ui_route": "1054-uploads",
             "ui_icon": "Upload",
+            "parent": "sharing",
+            "cache_by": "range",
+            "cache_type": "cacheable",
+            "members": [
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "description": "jim",
+                    "num": 1
+                },
+                {
+                    "name": "updater",
+                    "type": "sdk.Updater",
+                    "description": "jim",
+                    "num": 2
+                },
+                {
+                    "name": "items",
+                    "type": "types.CacheItem",
+                    "description": "jim",
+                    "num": 3,
+                    "isArray": true
+                },
+                {
+                    "name": "nItems",
+                    "type": "uint64",
+                    "description": "jim",
+                    "num": 4
+                }
+            ]
+        },
+        {
+            "class": "Publish",
+            "doc_route": "1058-containers",
+            "ui_route": "1058-publish",
+            "ui_icon": "Broadcast",
             "parent": "unchained",
             "cache_by": "range",
             "cache_type": "cacheable",
@@ -1382,7 +1418,7 @@
             "doc_route": "1065-containers",
             "ui_route": "1065-unchained-5",
             "ui_icon": "LinkOff",
-            "children": "indexes,manifests,pins,uploads",
+            "children": "indexes,manifests,pins,publish",
             "cache_by": "range",
             "cache_type": "cacheable",
             "members": [

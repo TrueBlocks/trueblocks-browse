@@ -4,6 +4,6 @@
     ui_route = "1054-uploads"
     ui_icon = "Upload"
     attributes = ""
-    parent = "unchained"
+    parent = "sharing"
     cache_type = "cacheable"
     cache_by = "range"

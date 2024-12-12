@@ -1,0 +1,9 @@
+[settings]
+    class = "Publish"
+    doc_route = "1058-containers"
+    ui_route = "1058-publish"
+    ui_icon = "Broadcast"
+    attributes = ""
+    parent = "unchained"
+    cache_type = "cacheable"
+    cache_by = "range"

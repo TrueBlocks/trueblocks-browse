@@ -4,9 +4,9 @@
 // EXISTING_CODE
 import { useCallback } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { DebugState, TabItem, View, ViewForm } from "@components";
 import { useNoops } from "@hooks";
-import { DebugState, TabItem, View, ViewForm } from "../../components";
-import { useAppState, ViewStateProvider } from "../../state";
+import { useAppState, ViewStateProvider } from "@state";
 import { BalancesFormDef, BalancesTableDef } from "../Balances";
 import { ChartsFormDef, ChartsTableDef } from "../Charts";
 import { IncomingFormDef, IncomingTableDef } from "../Incoming";
@@ -181,19 +181,14 @@ export const HistoryView = () => {
 // EXISTING_CODE
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
-// // EXISTING_CODE
 // import { Table } from "@tanstack/react-table";
 // import { ExploreButton, ExportButton, DataTable, FieldGroup, GoogleButton } from "@components";
 // import { types } from "@gocode/models";
-// import { useAppState } from "../../state";
-// // EXISTING_CODE
+// import { useAppState } from "@state";
 
 // export const HistoryFormDef = (table: Table<types.Transaction>): FieldGroup<types.HistoryContainer>[] => {
-//   // EXISTING_CODE
 //   const { info } = useAppState();
-//   // EXISTING_CODE
 //   return [
-//     // EXISTING_CODE
 //     {
 //       label: "DalleDress",
 //       colSpan: 2,
@@ -231,24 +226,18 @@ export const HistoryView = () => {
 //       collapsable: false,
 //       components: [<DataTable<types.Transaction> key={"dataTable"} table={table} loading={false} />],
 //     },
-//     // EXISTING_CODE
 //   ];
 // };
 
-// // EXISTING_CODE
-// // EXISTING_CODE
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
-// // EXISTING_CODE
 // import { createColumnHelper } from "@tanstack/react-table";
 // import { CustomColumnDef, Formatter } from "@components";
 // import { types } from "@gocode/models";
-// // EXISTING_CODE
 
 // const columnHelper = createColumnHelper<types.Transaction>();
 
 // export const HistoryTableDef: CustomColumnDef<types.Transaction, any>[] = [
-//   // EXISTING_CODE
 //   columnHelper.accessor("blockNumber", {
 //     header: () => "TxId",
 //     cell: (info) => {
@@ -299,21 +288,16 @@ export const HistoryView = () => {
 //     cell: (info) => <Formatter type="text" value={info.renderValue()} />,
 //     meta: { className: "medium center cell" },
 //   }),
-//   // EXISTING_CODE
 // ];
 
-// // EXISTING_CODE
-// // EXISTING_CODE
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
 
-// // EXISTING_CODE
 // import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 // import { View, FormTable, ViewForm, DebugState } from "@components";
 // import { useNoops } from "@hooks";
 // import { useAppState, ViewStateProvider } from "@state";
 // import { HistoryTableDef, HistoryFormDef } from ".";
-// // EXISTING_CODE
 
 // export const HistoryView = () => {
 //   const { history, fetchHistory } = useAppState();
@@ -325,7 +309,6 @@ export const HistoryView = () => {
 //   let customTabs: string[] = [];
 //   // eslint-disable-next-line prefer-const
 //   let customForms: Record<string, JSX.Element> = {};
-//   // EXISTING_CODE
 //   customTabs = [
 //     "balances",
 //     "incoming",
@@ -348,7 +331,6 @@ export const HistoryView = () => {
 //   customForms["neighbors"] = <div>This is the neighbors tab</div>;
 //   customForms["traces"] = <div>This is the traces tab</div>;
 //   customForms["receipts"] = <div>This is the receipts tab</div>;
-//   // EXISTING_CODE
 
 //   const table = useReactTable({
 //     data: history?.items || [],
@@ -377,6 +359,4 @@ export const HistoryView = () => {
 //   );
 // };
 
-// // EXISTING_CODE
-// // EXISTING_CODE
 // EXISTING_CODE

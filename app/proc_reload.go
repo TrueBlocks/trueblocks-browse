@@ -75,10 +75,6 @@ func (a *App) Reload() {
 		if err := a.loadAbis(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-		a.pins.Updater.Reset()
-		if err := a.loadPins(nil, nil); err != nil {
-			a.emitErrorMsg(err, nil)
-		}
 		a.uploads.Updater.Reset()
 		if err := a.loadUploads(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
@@ -96,8 +92,8 @@ func (a *App) Reload() {
 		if err := a.loadPins(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-		a.uploads.Updater.Reset()
-		if err := a.loadUploads(nil, nil); err != nil {
+		a.publish.Updater.Reset()
+		if err := a.loadPublish(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 	case "settings":

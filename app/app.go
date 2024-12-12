@@ -18,29 +18,30 @@ type App struct {
 	dirty bool
 
 	// Containers
-	project    types.ProjectContainer   // ProjectView
-	balances   types.BalanceContainer   // BalancesView
-	charts     types.ChartContainer     // ChartsView
-	incoming   types.IncomingContainer  // IncomingView
-	internals  types.InternalContainer  // InternalView
-	logs       types.LogContainer       // LogView
-	neighbors  types.NeighborContainer  // NeighborsView
-	outgoing   types.OutgoingContainer  // OutgoingView
-	receipts   types.ReceiptContainer   // ReceiptsView
-	statements types.StatementContainer // StatementsView
-	traces     types.TraceContainer     // TracesView
-	pins       types.PinContainer       // PinsView
-	uploads    types.UploadContainer    // UploadView
-	monitors   types.MonitorContainer   // MonitorsView
-	names      types.NameContainer      // SharingView
+	project    types.ProjectContainer   // ProjectView  -------------------------
+	balances   types.BalanceContainer   // HistoryView  -------------------------
+	incoming   types.IncomingContainer  // HistoryView
+	outgoing   types.OutgoingContainer  // HistoryView
+	internals  types.InternalContainer  // HistoryView
+	charts     types.ChartContainer     // HistoryView
+	logs       types.LogContainer       // HistoryView
+	statements types.StatementContainer // HistoryView
+	neighbors  types.NeighborContainer  // HistoryView
+	traces     types.TraceContainer     // HistoryView
+	receipts   types.ReceiptContainer   // HistoryView
+	monitors   types.MonitorContainer   // MonitorsView -------------------------
+	names      types.NameContainer      // SharingView  -------------------------
 	abis       types.AbiContainer       // SharingView
-	indexes    types.IndexContainer     // UnchainedView
+	uploads    types.UploadContainer    // SharingView
+	indexes    types.IndexContainer     // UnchainedView -------------------------
 	manifests  types.ManifestContainer  // UnchainedView
-	status     types.StatusContainer    // SettingsView
+	pins       types.PinContainer       // UnchainedView
+	publish    types.PublishContainer   // UnchainedView
+	status     types.StatusContainer    // SettingsView  -------------------------
 	session    types.SessionContainer   // SettingsView
 	config     types.ConfigContainer    // SettingsView
-	daemons    types.DaemonContainer    // DaemonsView
-	wizard     types.WizardContainer    // WizardView
+	daemons    types.DaemonContainer    // DaemonsView   -------------------------
+	wizard     types.WizardContainer    // WizardView    -------------------------
 
 	// Memory caches
 	// HIST-APP

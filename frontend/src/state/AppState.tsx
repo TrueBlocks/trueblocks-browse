@@ -21,6 +21,7 @@ import {
   FetchManifest,
   FetchPin,
   FetchUpload,
+  FetchPublish,
   FetchStatus,
   FetchDaemon,
   FetchSession,
@@ -75,6 +76,8 @@ interface AppStateProps {
   fetchPins: (currentItem: number, itemsPerPage: number) => void;
   uploads: types.UploadContainer;
   fetchUploads: (currentItem: number, itemsPerPage: number) => void;
+  publish: types.PublishContainer;
+  fetchPublish: (currentItem: number, itemsPerPage: number) => void;
   status: types.StatusContainer;
   fetchStatus: (currentItem: number, itemsPerPage: number) => void;
   daemons: types.DaemonContainer;
@@ -117,6 +120,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [manifests, setManifests] = useState<types.ManifestContainer>({} as types.ManifestContainer);
   const [pins, setPins] = useState<types.PinContainer>({} as types.PinContainer);
   const [uploads, setUploads] = useState<types.UploadContainer>({} as types.UploadContainer);
+  const [publish, setPublish] = useState<types.PublishContainer>({} as types.PublishContainer);
   const [status, setStatus] = useState<types.StatusContainer>({} as types.StatusContainer);
   const [daemons, setDaemons] = useState<types.DaemonContainer>({} as types.DaemonContainer);
   const [session, setSession] = useState<types.SessionContainer>({} as types.SessionContainer);
@@ -319,6 +323,13 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
   }, []);
 
+  const fetchPublish = useCallback((currentItem: number, itemsPerPage: number) => {
+    // Note that this only fetches a single page after sorting and filtering (if any)
+    FetchPublish(currentItem, itemsPerPage).then((item: types.PublishContainer) => {
+      setPublish(item);
+    });
+  }, []);
+
   const fetchStatus = useCallback((currentItem: number, itemsPerPage: number) => {
     // Note that this only fetches a single page after sorting and filtering (if any)
     FetchStatus(currentItem, itemsPerPage).then((item: types.StatusContainer) => {
@@ -423,6 +434,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
         fetchPins,
         uploads,
         fetchUploads,
+        publish,
+        fetchPublish,
         status,
         fetchStatus,
         daemons,

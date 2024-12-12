@@ -27,10 +27,10 @@ type ConfigContainer struct {
 	// EXISTING_CODE
 }
 
-func NewConfigContainer(chain string, configs []Config) ConfigContainer {
+func NewConfigContainer(chain string, config []Config) ConfigContainer {
 	// EXISTING_CODE
 	itemsIn := []Chain{}
-	for _, chain := range configs[0].Chains {
+	for _, chain := range config[0].Chains {
 		chOut := func(chIn configTypes.ChainGroup) Chain {
 			return Chain{
 				Chain:          chIn.Chain,
@@ -48,7 +48,7 @@ func NewConfigContainer(chain string, configs []Config) ConfigContainer {
 	ret := ConfigContainer{
 		Items:  itemsIn,
 		NItems: uint64(len(itemsIn)),
-		Config: configs[0].ShallowCopy(),
+		Config: config[0].ShallowCopy(),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"chainId"},
 			Order:  []sdk.SortOrder{sdk.Asc},

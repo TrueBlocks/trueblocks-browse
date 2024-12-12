@@ -2,8 +2,8 @@
 // of ExistingCode markers (if any).
 // EXISTING_CODE
 import { Table } from "@tanstack/react-table";
-import { types } from "../../../wailsjs/go/models";
-import { FieldGroup } from "../../components";
+import { FieldGroup } from "@components";
+import { types } from "@gocode/models";
 // EXISTING_CODE
 
 export const BalancesFormDef = (table: Table<types.Transaction>): FieldGroup<types.BalanceContainer>[] => {

@@ -4,18 +4,18 @@
 // EXISTING_CODE
 import { useCallback } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { DebugState, TabItem, View, ViewForm } from "@components";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { DebugState, TabItem, View, ViewForm } from "../../components";
 import { IndexesFormDef, IndexesTableDef } from "../Indexes";
 import { ManifestsFormDef, ManifestsTableDef } from "../Manifests";
 import { PinsFormDef, PinsTableDef } from "../Pins";
-import { UploadsFormDef, UploadsTableDef } from "../Uploads";
+import { PublishFormDef, PublishTableDef } from "../Publish";
 
 // EXISTING_CODE
 
 export const UnchainedView = () => {
-  const { indexes, fetchIndexes, manifests, fetchManifests, pins, fetchPins, uploads, fetchUploads } = useAppState();
+  const { indexes, fetchIndexes, manifests, fetchManifests, pins, fetchPins, publish, fetchPublish } = useAppState();
   const { enterNoop, modifyNoop } = useNoops();
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
@@ -25,9 +25,9 @@ export const UnchainedView = () => {
       fetchIndexes(currentItem, itemsPerPage);
       fetchManifests(currentItem, itemsPerPage);
       fetchPins(currentItem, itemsPerPage);
-      fetchUploads(currentItem, itemsPerPage);
+      fetchPublish(currentItem, itemsPerPage);
     },
-    [fetchIndexes, fetchManifests, fetchPins, fetchUploads]
+    [fetchIndexes, fetchManifests, fetchPins, fetchPublish]
   );
 
   const indexesTable = useReactTable({
@@ -48,9 +48,9 @@ export const UnchainedView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const uploadsTable = useReactTable({
-    data: uploads?.items || [],
-    columns: UploadsTableDef,
+  const publishTable = useReactTable({
+    data: publish?.items || [],
+    columns: PublishTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -58,7 +58,7 @@ export const UnchainedView = () => {
     indexes: <TabItem data={indexes} groups={IndexesFormDef(indexesTable)} />,
     manifests: <TabItem data={manifests} groups={ManifestsFormDef(manifestsTable)} />,
     pins: <TabItem data={pins} groups={PinsFormDef(pinsTable)} />,
-    uploads: <TabItem data={uploads} groups={UploadsFormDef(uploadsTable)} />,
+    publish: <TabItem data={publish} groups={PublishFormDef(publishTable)} />,
   };
 
   // if (!(status?.items?.length > 0)) {
@@ -73,7 +73,7 @@ export const UnchainedView = () => {
       onEnter={handleEnter}
       modifyFn={handleModify}
     >
-      <DebugState u={[indexes.updater, manifests.updater, pins.updater, uploads.updater]} />
+      <DebugState u={[indexes.updater, manifests.updater, pins.updater, publish.updater]} />
       <View tabItems={tabItems} />
     </ViewStateProvider>
   );

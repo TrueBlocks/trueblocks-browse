@@ -4,6 +4,6 @@
     ui_route = "1050-sharing-4"
     ui_icon = "Share"
     attributes = "wantsSearch"
-    children = "names,abis,pins,uploads"
+    children = "names,abis,uploads"
     cache_type = "cacheable"
     cache_by = "range"
