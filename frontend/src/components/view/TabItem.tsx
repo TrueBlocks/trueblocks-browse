@@ -1,7 +1,7 @@
 import { ReactNode, useMemo } from "react";
 import { Container, Fieldset, Grid, Accordion } from "@mantine/core";
 import { IconChevronsUp } from "@tabler/icons-react";
-import { FieldRenderer, FieldGroup, isCollapsable, isButton, ButtonTray } from "@components";
+import { FieldRenderer, FieldGroup, isCollapsable, isButton, ButtonTray, isDisabled } from "@components";
 import { useAppState } from "@state";
 import classes from "./TabItem.module.css";
 
@@ -13,9 +13,15 @@ type TabItemProps<T> = {
 export const TabItem = <T,>({ data, groups }: TabItemProps<T>) => {
   const { route, activeTab, headerOn, headerOnChanged } = useAppState();
 
-  const collapsableGroups = useMemo(() => groups.filter((group) => isCollapsable(group) && !isButton(group)), [groups]);
-  const nonCollapsableGroups = useMemo(() => groups.filter((group) => !isCollapsable(group)), [groups]);
-  const buttonGroup = useMemo(() => groups.find((group) => isButton(group)) || null, [groups]);
+  const collapsableGroups = useMemo(
+    () => groups.filter((group) => !isDisabled(group) && isCollapsable(group) && !isButton(group)),
+    [groups]
+  );
+  const nonCollapsableGroups = useMemo(
+    () => groups.filter((group) => !isDisabled(group) && !isCollapsable(group)),
+    [groups]
+  );
+  const buttonGroup = useMemo(() => groups.find((group) => !isDisabled(group) && isButton(group)) || null, [groups]);
 
   const renderGroups = (groups: FieldGroup<T>[], data: Partial<T>, withLegend: boolean = false) => {
     return groups.map((group, gIndex) => (

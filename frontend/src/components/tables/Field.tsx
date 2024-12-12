@@ -20,6 +20,11 @@ export type FieldGroup<T> = {
   components?: ReactNode[];
   buttons?: ReactNode[];
   collapsable?: boolean;
+  disabled?: boolean;
+};
+
+export const isDisabled = <T,>(group: FieldGroup<T>): boolean => {
+  return group.disabled ?? false;
 };
 
 export const isCollapsable = <T,>(group: FieldGroup<T>): boolean => {
