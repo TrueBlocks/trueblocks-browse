@@ -5,7 +5,6 @@ import {base} from '../models';
 import {types} from '../models';
 import {app} from '../models';
 import {context} from '../models';
-import {editors} from '../models';
 
 export function CancelAllContexts():Promise<void>;
 
@@ -117,7 +116,7 @@ export function LoadAddress(arg1:string):Promise<void>;
 
 export function LoadDalleImage(arg1:base.Address):Promise<boolean>;
 
-export function LoadName(arg1:string):Promise<editors.Name>;
+export function LoadName(arg1:string):Promise<types.Name>;
 
 export function Logger(arg1:Array<string>):Promise<void>;
 
@@ -136,6 +135,8 @@ export function Navigate(arg1:string):Promise<void>;
 export function ProjectView(arg1:menu.CallbackData):Promise<void>;
 
 export function Reload():Promise<void>;
+
+export function SaveName(arg1:types.Name):Promise<void>;
 
 export function SetChain(arg1:string):Promise<void>;
 

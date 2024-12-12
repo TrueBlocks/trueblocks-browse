@@ -290,35 +290,6 @@ export namespace configtypes {
 
 }
 
-export namespace editors {
-	
-	export class Name {
-	    address: string;
-	    name: string;
-	    tags: string;
-	    source: string;
-	    symbol: string;
-	    decimals: number;
-	    deleted?: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new Name(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.address = source["address"];
-	        this.name = source["name"];
-	        this.tags = source["tags"];
-	        this.source = source["source"];
-	        this.symbol = source["symbol"];
-	        this.decimals = source["decimals"];
-	        this.deleted = source["deleted"];
-	    }
-	}
-
-}
-
 export namespace messages {
 	
 	export enum Message {

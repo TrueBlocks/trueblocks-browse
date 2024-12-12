@@ -262,6 +262,10 @@ export function Reload() {
   return window['go']['app']['App']['Reload']();
 }
 
+export function SaveName(arg1) {
+  return window['go']['app']['App']['SaveName'](arg1);
+}
+
 export function SetChain(arg1) {
   return window['go']['app']['App']['SetChain'](arg1);
 }
