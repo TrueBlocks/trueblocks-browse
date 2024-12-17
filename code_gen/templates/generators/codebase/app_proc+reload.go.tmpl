@@ -8,33 +8,29 @@ package app
 func (a *App) Reload() {
 	defer a.trackPerformance("Reload", false)()
 
-	route := a.session.LastRoute
-	logger.InfoG("Reloading", route, "...")
-
-	switch route {
+	logger.InfoG("Reloading", a.getLastRoute(), "...")
+	switch a.getLastRoute() {
 		{{- range .Structures }}
-			{{- if ne .Class "History" }}
-				{{- $hasChildren := ne .Children "" }}
-				{{- $hasParent := ne .Parent "" }}
-				{{- $route := toLower .UiRouteName }}
-				{{- if eq .Class "Project" }}
-					{{- $route = "" }}
+			{{- $hasChildren := ne .Children "" }}
+			{{- $hasParent := ne .Parent "" }}
+			{{- $route := toLower .UiRouteName }}
+			{{- if eq .Class "Project" }}
+				{{- $route = "\", \"project" }}
+			{{- end }}
+			{{- if $hasChildren }}
+				case "{{$route}}":
+				{{- range .ChildTabs }}
+					a.{{toLower .}}.Updater.Reset()
+					if err := a.load{{firstUpper .}}(nil, nil); err != nil {
+						a.emitErrorMsg(err, nil)
+					}
 				{{- end }}
-				{{- if $hasChildren }}
-					case "/{{$route}}":
-						{{- range .ChildTabs }}
-							a.{{toLower .}}.Updater.Reset()
-							if err := a.load{{firstUpper .}}(nil, nil); err != nil {
-								a.emitErrorMsg(err, nil)
-							}
-						{{- end }}
-				{{- else if not $hasParent }}
-					case "/{{$route}}":
-						a.{{toLower .UiRouteName}}.Updater.Reset()
-						if err := a.load{{.UiRouteName}}(nil, nil); err != nil {
-							a.emitErrorMsg(err, nil)
-						}
-					{{- end }}
+			{{- else if not $hasParent }}
+				case "{{$route}}":
+					a.{{toLower .UiRouteName}}.Updater.Reset()
+					if err := a.load{{.UiRouteName}}(nil, nil); err != nil {
+						a.emitErrorMsg(err, nil)
+					}
 			{{- end }}
 		{{- end }}
 	// EXISTING_CODE

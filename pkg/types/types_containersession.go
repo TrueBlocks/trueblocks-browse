@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
@@ -23,14 +23,14 @@ type SessionContainer struct {
 	// EXISTING_CODE
 }
 
-func NewSessionContainer(chain string, sessions []Session) SessionContainer {
+func NewSessionContainer(chain string, session []Session) SessionContainer {
 	// EXISTING_CODE
 	itemsIn := []Nothing{}
 	// EXISTING_CODE
 	ret := SessionContainer{
 		Items:   itemsIn,
 		NItems:  uint64(len(itemsIn)),
-		Session: sessions[0].ShallowCopy(),
+		Session: session[0].ShallowCopy(),
 		Sorts: sdk.SortSpec{
 			Fields: []string{},
 			Order:  []sdk.SortOrder{},
@@ -101,6 +101,7 @@ func (s *SessionContainer) Clear() {
 }
 
 func (s *SessionContainer) passesFilter(item *Nothing, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -121,10 +122,9 @@ func (s *SessionContainer) Finalize() {
 	// EXISTING_CODE
 }
 
-func (s *SessionContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *SessionContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	filter, _ := theMap.Load("session") // may be empty
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *Nothing, data any) bool {
 			s.Accumulate(item)
@@ -135,7 +135,7 @@ func (s *SessionContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	}
 	filtered := []Nothing{}
 	s.ForEveryItem(func(item *Nothing, data any) bool {
-		if s.passesFilter(item, &filter) {
+		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
 		}

@@ -2,35 +2,37 @@
 // of ExistingCode markers (if any).
 
 // EXISTING_CODE
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { DebugState, FormTable, View, ViewForm } from "@components";
+import { DebugState, TabItem, View, ViewForm } from "@components";
+import { types } from "@gocode/models";
 import { useNoops } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
 import { AbisFormDef, AbisTableDef } from "../Abis";
 import { NamesFormDef, NamesTableDef } from "../Names";
+import { UploadsFormDef, UploadsTableDef } from "../Uploads";
 // EXISTING_CODE
 
 export const SharingView = () => {
-  const { names, fetchNames, abis, fetchAbis } = useAppState();
+  const { names, fetchNames, abis, fetchAbis, uploads, fetchUploads } = useAppState();
+  const [editor, setEditor] = useState<types.Name>(types.Name.createFrom({}));
   const { enterNoop, modifyNoop } = useNoops();
   const handleEnter = enterNoop;
   const handleModify = modifyNoop;
 
-  let customTabs: string[] = [];
-  // eslint-disable-next-line prefer-const
-  let customForms: Record<string, JSX.Element> = {};
-  // EXISTING_CODE
-  customTabs = ["pin", "upload"];
-  customForms["pin"] = <div>This is a custom tab</div>;
-  // EXISTING_CODE
+  useEffect(() => {
+    if (names?.items?.length > 0) {
+      setEditor(names.items[0]);
+    }
+  }, [names]);
 
   const fetchSharing = useCallback(
     (currentItem: number, itemsPerPage: number) => {
       fetchNames(currentItem, itemsPerPage);
       fetchAbis(currentItem, itemsPerPage);
+      fetchUploads(currentItem, itemsPerPage);
     },
-    [fetchNames, fetchAbis]
+    [fetchNames, fetchAbis, fetchUploads]
   );
 
   const namesTable = useReactTable({
@@ -45,12 +47,16 @@ export const SharingView = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const route = "sharing";
-  const tabs = ["names", "abis", ...(customTabs || [])];
-  const forms: ViewForm = {
-    names: <FormTable data={names} groups={NamesFormDef(namesTable)} />,
-    abis: <FormTable data={abis} groups={AbisFormDef(abisTable)} />,
-    ...customForms,
+  const uploadsTable = useReactTable({
+    data: uploads?.items || [],
+    columns: UploadsTableDef,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  const tabItems: ViewForm = {
+    names: <TabItem data={names} groups={NamesFormDef(editor, namesTable)} />,
+    abis: <TabItem data={abis} groups={AbisFormDef(abisTable)} />,
+    uploads: <TabItem data={uploads} groups={UploadsFormDef(uploadsTable)} />,
   };
 
   // if (!(status?.items?.length > 0)) {
@@ -60,15 +66,13 @@ export const SharingView = () => {
   return (
     <ViewStateProvider
       // do not remove - delint
-      route={route}
       nItems={names.nItems}
       fetchFn={fetchSharing}
       onEnter={handleEnter}
       modifyFn={handleModify}
-      tabs={tabs}
     >
-      <DebugState u={[names.updater, abis.updater]} />
-      <View tabs={tabs} forms={forms} />
+      <DebugState u={[names.updater, abis.updater, uploads.updater]} />
+      <View tabItems={tabItems} searchable />
     </ViewStateProvider>
   );
 };

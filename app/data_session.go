@@ -10,7 +10,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
@@ -33,7 +33,7 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.session.NeedsUpdate() {
+	if !a.isConfigured() || !a.session.NeedsUpdate() {
 		return nil
 	}
 	updater := a.session.Updater
@@ -70,8 +70,9 @@ func (a *App) loadSession(wg *sync.WaitGroup, errorChan chan error) error {
 func (a *App) pullSessions() (items []types.Session, meta *types.Meta, err error) {
 	// EXISTING_CODE
 	meta, err = sdk.GetMetaData(namesChain)
-	return []types.Session{}, meta, err
+	items = []types.Session{}
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

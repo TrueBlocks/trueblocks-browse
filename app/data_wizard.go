@@ -10,7 +10,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
@@ -33,7 +33,7 @@ func (a *App) loadWizard(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.wizard.NeedsUpdate() {
+	if !a.isConfigured() || !a.wizard.NeedsUpdate() {
 		return nil
 	}
 	updater := a.wizard.Updater
@@ -71,8 +71,9 @@ func (a *App) pullWizards() (items []types.WizError, meta *types.Meta, err error
 	// EXISTING_CODE
 	meta, err = sdk.GetMetaData(namesChain)
 	// TODO: We've been called to check status, do wizard checks here
-	return []types.WizError{}, meta, err
+	items = []types.WizError{}
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

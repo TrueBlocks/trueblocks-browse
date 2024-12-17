@@ -1,0 +1,9 @@
+[settings]
+    class = "Statement"
+    doc_route = "1017-containers"
+    ui_route = "1017-statements"
+    ui_icon = "FileInvoice"
+    attributes = ""
+    parent = "history"
+    cache_type = "cacheable"
+    cache_by = "range"

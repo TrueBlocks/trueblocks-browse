@@ -4,8 +4,6 @@ package app
 
 // EXISTING_CODE
 import (
-	"strings"
-
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/wailsapp/wails/v2/pkg/menu"
@@ -14,59 +12,70 @@ import (
 // EXISTING_CODE
 
 func (a *App) ProjectView(cb *menu.CallbackData) {
-	a.Navigate("/", "")
+	if a.getLastRoute() == "project" {
+		a.ToggleNextTab(cb)
+	} else {
+		a.Navigate("project")
+	}
 }
 
 func (a *App) HistoryView(cb *menu.CallbackData) {
-	address := a.GetSelected()
-	if strings.Contains(a.GetRoute(), "/history") {
+	if a.getLastRoute() == "history" {
 		a.ToggleNextTab(cb)
 	} else {
-		a.Navigate("/history", address.Hex())
+		a.Navigate("history")
 	}
 }
 
 func (a *App) MonitorsView(cb *menu.CallbackData) {
-	a.Navigate("/monitors", "")
+	if a.getLastRoute() == "monitors" {
+		a.ToggleNextTab(cb)
+	} else {
+		a.Navigate("monitors")
+	}
 }
 
 func (a *App) SharingView(cb *menu.CallbackData) {
-	if strings.Contains(a.GetRoute(), "/sharing") {
+	if a.getLastRoute() == "sharing" {
 		a.ToggleNextTab(cb)
 	} else {
-		a.Navigate("/sharing", "")
+		a.Navigate("sharing")
 	}
 }
 
 func (a *App) UnchainedView(cb *menu.CallbackData) {
-	if strings.Contains(a.GetRoute(), "/unchained") {
+	if a.getLastRoute() == "unchained" {
 		a.ToggleNextTab(cb)
 	} else {
-		a.Navigate("/unchained", "")
+		a.Navigate("unchained")
 	}
 }
 
 func (a *App) SettingsView(cb *menu.CallbackData) {
-	if strings.Contains(a.GetRoute(), "/settings") {
+	if a.getLastRoute() == "settings" {
 		a.ToggleNextTab(cb)
 	} else {
-		a.Navigate("/settings", "")
+		a.Navigate("settings")
 	}
 }
 
 func (a *App) DaemonsView(cb *menu.CallbackData) {
-	a.Navigate("/daemons", "")
+	if a.getLastRoute() == "daemons" {
+		a.ToggleNextTab(cb)
+	} else {
+		a.Navigate("daemons")
+	}
 }
 
 func (a *App) WizardView(cb *menu.CallbackData) {
 	if a.isConfigured() {
-		a.wizard.State = types.WizWelcome
+		a.setWizState(types.WizWelcome)
 		a.emitMsg(messages.Refresh, &messages.MessageMsg{
-			State: string(a.wizard.State),
+			State: string(a.getWizState()),
 			Num1:  2, // 2 is the wizard step if needed
 		})
 	} else {
 		a.StepWizard(types.WizNext)
 	}
-	a.Navigate("/wizard", "")
+	a.Navigate("wizard")
 }

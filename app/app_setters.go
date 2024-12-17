@@ -8,23 +8,18 @@ func (a *App) SetEnv(key, value string) {
 	os.Setenv(key, value)
 }
 
-func (a *App) SetRoute(route, subRoute, tab string) {
-	a.session.SetRoute(route, subRoute, tab)
-	a.saveSession()
-}
-
 func (a *App) SetChain(newChain string) {
 	defer a.trackPerformance("SetChain", false)()
 
-	oldChain := a.session.LastChain
+	oldChain := a.getChain()
 	if len(newChain) == 0 || newChain == oldChain {
 		return
 	}
 
 	a.emitInfoMsg("Switching to chain", newChain)
 
-	a.session.LastChain = newChain
-	a.saveSession()
+	a.setChain(newChain)
+	a.saveSessionFile()
 
 	a.CancelAllContexts()
 	a.project.Updater.SetChain(oldChain, newChain)

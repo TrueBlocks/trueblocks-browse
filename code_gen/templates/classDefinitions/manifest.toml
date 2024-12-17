@@ -1,9 +1,7 @@
 [settings]
     class = "Manifest"
-    # doc_group = "20-Routes"
-    # doc_descr = "block data as returned from the RPC (with slight enhancements)"
-    doc_route = "1060-containers"
-    ui_route = "1060-manifests"
+    doc_route = "1052-containers"
+    ui_route = "1052-manifests"
     attributes = ""
     parent = "unchained"
     sorts = "range+Dec"

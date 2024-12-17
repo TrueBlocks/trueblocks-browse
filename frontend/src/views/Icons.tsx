@@ -2,20 +2,46 @@
 // of ExistingCode markers (if any).
 import {
   IconHome,
-  IconBuildingMonument,
+  IconHistory,
+  IconScale,
+  IconArrowDownCircle,
+  IconArrowUpCircle,
+  IconCpu,
+  IconChartBar,
+  IconFileText,
+  IconFileInvoice,
+  IconUsers,
+  IconActivity,
+  IconReceipt,
   IconDeviceDesktop,
-  IconTag,
-  IconArchive,
+  IconShare,
+  IconPin,
+  IconUpload,
+  IconBroadcast,
+  IconLinkOff,
   IconSettings,
   IconServer,
-  IconBiohazard,
+  IconWand,
 } from "@tabler/icons-react";
 
 export const ProjectIcon = <IconHome />;
-export const HistoryIcon = <IconBuildingMonument />;
+export const HistoryIcon = <IconHistory />;
+export const BalancesIcon = <IconScale />;
+export const IncomingIcon = <IconArrowDownCircle />;
+export const OutgoingIcon = <IconArrowUpCircle />;
+export const InternalsIcon = <IconCpu />;
+export const ChartsIcon = <IconChartBar />;
+export const LogsIcon = <IconFileText />;
+export const StatementsIcon = <IconFileInvoice />;
+export const NeighborsIcon = <IconUsers />;
+export const TracesIcon = <IconActivity />;
+export const ReceiptsIcon = <IconReceipt />;
 export const MonitorsIcon = <IconDeviceDesktop />;
-export const SharingIcon = <IconTag />;
-export const UnchainedIcon = <IconArchive />;
+export const SharingIcon = <IconShare />;
+export const PinsIcon = <IconPin />;
+export const UploadsIcon = <IconUpload />;
+export const PublishIcon = <IconBroadcast />;
+export const UnchainedIcon = <IconLinkOff />;
 export const SettingsIcon = <IconSettings />;
 export const DaemonsIcon = <IconServer />;
-export const WizardIcon = <IconBiohazard />;
+export const WizardIcon = <IconWand />;

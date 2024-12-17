@@ -8,13 +8,7 @@ import {
   {{end}}{{end}}} from "@views";
 
 export type Route ={{range .Structures}}{{if eq .Parent ""}}
-{{ $class := .Class }}
-{{ $isProject := eq $class "Project" }}
-{{ $route := toLower .UiRouteName }}
-{{ if $isProject }}
-  {{ $route = "" }}
-{{end}}
-  | "{{$route}}"
+  | "{{toLower .UiRouteName}}"
 {{end}}{{end -}};
 
 export type RouteItem = {
@@ -25,20 +19,10 @@ export type RouteItem = {
   component: React.ComponentType;
 };
 
-const expandRoute = (r: Route): string => {
-  if (r === "history") {
-    return "/" + r + "/:address";
-  }
-
-  return "/" + r;
-};
-
 export const routeItems: RouteItem[] = [
 {{range .Structures}}{{if (eq .Parent "")}}  {
-{{ $class := .Class }}
-{{ $isProject := eq $class "Project" }}
     order: {{.UiRouteNum}},
-    route: expandRoute("{{if not $isProject}}{{toLower .UiRouteName}}{{end}}"),
+    route: "{{toLower .UiRouteName}}",
     label: "{{.UiRouteName}}",
     icon: {{.UiRouteName}}Icon,
     component: {{.UiRouteName}}View,

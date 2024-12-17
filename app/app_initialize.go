@@ -14,15 +14,14 @@ import (
 
 func (a *App) initialize() bool {
 	initSession := func() bool {
-		if err := a.session.Load(); err != nil {
+		if err := a.loadSessionFile(); err != nil {
 			a.addWizErr(WizReasonNoSession, types.WizConfig, err)
 			return false
 		} else {
 			// we serialize the wizard state in a session string
 			// TODO: BOGUS a.wizard = types. NewWizzardContainer(a.getChain(), []types.WizError{})
-			a.wizard.Chain = a.getChain()
-			a.wizard.State = types.WizState(a.session.WizardStr)
-			a.session.Window.Title = "Browse by TrueBlocks"
+			a.setWizChain(a.getChain())
+			a.setWizState(types.WizState(a.wizardStr()))
 			logger.InfoBW("Loaded session:", a.cntWizErrs(), "errors")
 			return true
 		}
@@ -36,10 +35,11 @@ func (a *App) initialize() bool {
 		if err := a.loadConfig(nil, nil); err != nil {
 			a.addWizErr(WizReasonNoConfig, types.WizConfig, err)
 			return false
-		} else if a.session.LastChain, err = a.config.IsValidChain(a.getChain()); err != nil {
+		} else if chain, err := a.config.IsValidChain(a.getChain()); err != nil {
 			a.addWizErr(WizReasonChainNotConfigured, types.WizConfig, err)
 			return false
 		} else {
+			a.setChain(chain)
 			logger.InfoBW("Loaded config", a.cntWizErrs(), "errors")
 			return true
 		}
@@ -49,7 +49,7 @@ func (a *App) initialize() bool {
 	// The rest depends on the rpc...
 	initRpc := func() bool {
 		os.Setenv("TB_NO_PROVIDER_CHECK", "true")
-		if err := rpc.PingRpc(a.config.Chains[a.session.LastChain].RpcProvider); err != nil {
+		if err := rpc.PingRpc(a.config.Chains[a.getChain()].RpcProvider); err != nil {
 			wErr := fmt.Errorf("%w: %v", ErrLoadingRpc, err)
 			a.addWizErr(WizReasonFailedRpcPing, types.WizRpc, wErr)
 			os.Unsetenv("TB_NO_PROVIDER_CHECK")
@@ -103,16 +103,16 @@ func (a *App) initialize() bool {
 
 	prepareWindow := func() bool { // window size and placement depends on session file
 		ret := false // do not collapse...we position the window below on both error and not
-		var err error
-		if a.session.Window, err = a.session.CleanWindowSize(a.ctx); err != nil {
+		if window, err := a.cleanWindow(a.ctx); err != nil {
 			wErr := fmt.Errorf("%w: %v", ErrWindowSize, err)
 			a.addWizErr(WizReasonFailedPrepareWindow, types.WizRpc, wErr)
 		} else {
+			a.setWindow(window)
 			logger.InfoBW("Window size set...")
 			ret = true
 		}
-		runtime.WindowSetPosition(a.ctx, a.session.Window.X, a.session.Window.Y)
-		runtime.WindowSetSize(a.ctx, a.session.Window.Width, a.session.Window.Height)
+		runtime.WindowSetPosition(a.ctx, a.getWindow().X, a.getWindow().Y)
+		runtime.WindowSetSize(a.ctx, a.getWindow().Width, a.getWindow().Height)
 		return ret
 	}
 	_ = prepareWindow()
@@ -120,7 +120,7 @@ func (a *App) initialize() bool {
 	// returns true if there are no errors...
 	if a.cntWizErrs() > 0 {
 		// ...goes to wizard mode and returns false otherwise
-		a.setWizardState(types.WizWelcome)
+		a.setWizState(types.WizWelcome)
 		return false
 	}
 

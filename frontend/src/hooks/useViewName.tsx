@@ -1,10 +1,9 @@
-import { useLocation } from "wouter";
+import { useMemo } from "react";
+import { useAppState } from "@state";
 
-export function useViewName(): string {
-  const [location] = useLocation();
-
-  const baseRoute = location.split("/")[1] || "";
-  const viewName = baseRoute === "" ? "Project View" : `${baseRoute.charAt(0).toUpperCase()}${baseRoute.slice(1)} View`;
-
-  return viewName;
-}
+export const useViewName = (): string => {
+  const { route } = useAppState();
+  return useMemo(() => {
+    return `${route[0].toUpperCase()}${route.slice(1)} View`;
+  }, [route]);
+};

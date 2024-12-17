@@ -1,7 +1,5 @@
 [settings]
 	class = "Config"
-	# doc_group = "20-Routes"
-	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "1110-containers"
 	ui_route = "1110-config"
 	attributes = ""

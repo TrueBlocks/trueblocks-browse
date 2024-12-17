@@ -2,9 +2,7 @@ package messages
 
 import (
 	"context"
-	"os"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -22,9 +20,8 @@ const (
 	Warn  Message = "Warn"
 	Info  Message = "Info"
 
-	SwitchTab       Message = "SwitchTab"
-	ToggleLayout    Message = "ToggleLayout"
-	ToggleAccordion Message = "ToggleAccordion"
+	ToggleLayout Message = "ToggleLayout"
+	ToggleHeader Message = "ToggleHeader"
 
 	Navigate Message = "Navigate"
 	Refresh  Message = "Refresh"
@@ -45,24 +42,13 @@ var AllMessages = []struct {
 	{Warn, "WARNING"},
 	{Info, "INFO"},
 
-	{SwitchTab, "SWITCHTAB"},
 	{ToggleLayout, "TOGGLELAYOUT"},
-	{ToggleAccordion, "TOGGLEACCORDION"},
+	{ToggleHeader, "TOGGLEHEADER"},
 
 	{Navigate, "NAVIGATE"},
 	{Refresh, "REFRESH"},
 }
 
 func EmitMessage(ctx context.Context, msg Message, data *MessageMsg) {
-	if isTesting {
-		logger.Info("EmitMessage", "msg", string(msg), "data", data)
-	} else {
-		runtime.EventsEmit(ctx, string(msg), data)
-	}
-}
-
-var isTesting bool
-
-func init() {
-	isTesting = os.Getenv("TB_TEST_MODE") == "true"
+	runtime.EventsEmit(ctx, string(msg), data)
 }

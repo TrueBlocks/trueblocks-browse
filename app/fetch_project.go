@@ -14,7 +14,7 @@ func (a *App) FetchProject(first, pageSize int) *types.ProjectContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	filtered := a.project.CollateAndFilter(a.filterMap).([]types.HistoryContainer)
+	filtered := a.project.CollateAndFilter(a.GetFilter()).([]types.HistoryContainer)
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.project.ShallowCopy().(*types.ProjectContainer)

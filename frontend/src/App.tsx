@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { AppShell } from "@mantine/core";
 import { ViewStatus } from "@components";
-import { IsShowing, SetShowing, GetAppTitle } from "@gocode/app/App";
+import { GetLayoutOn, SetLayoutOn } from "@gocode/app/App";
 import { messages } from "@gocode/models";
 import { Header, MenuPanel, ViewContainer, HelpPanel, Footer } from "@layout";
 import { EventsOn, EventsOff } from "@runtime";
@@ -13,15 +13,9 @@ export const App = () => {
   const [showMenu, setShowMenu] = useState<boolean>(true);
   const [showHelp, setShowHelp] = useState<boolean>(true);
   const [showFooter, setShowFooter] = useState<boolean>(true);
-  const [title, setTitle] = useState<string>("");
+  const [title] = useState<string>("TrueBlocks Browse");
 
-  useEffect(() => {
-    GetAppTitle().then((title) => {
-      setTitle(title);
-    });
-  }, []);
-
-  const toggles = useMemo(
+  const flags = useMemo(
     () => [
       { layout: "header", setter: setShowHeader },
       { layout: "menu", setter: setShowMenu },
@@ -32,20 +26,20 @@ export const App = () => {
   );
 
   useEffect(() => {
-    toggles.forEach(({ layout, setter }) => {
-      IsShowing(layout, "").then((show) => {
+    flags.forEach(({ layout, setter }) => {
+      GetLayoutOn(layout).then((show) => {
         setter(show);
       });
     });
-  }, [toggles]);
+  }, [flags]);
 
   useEffect(() => {
     const handleToggleLayout = (msg: messages.MessageMsg) => {
-      const toggle = toggles.find((t) => t.layout === msg.string1);
+      const toggle = flags.find((t) => t.layout === msg.string1);
       if (toggle) {
         toggle.setter((prev) => {
           const show = !prev;
-          SetShowing(msg.string1, "", !prev);
+          SetLayoutOn(msg.string1, !prev);
           return show;
         });
       }
@@ -55,7 +49,7 @@ export const App = () => {
     return () => {
       EventsOff(messages.Message.TOGGLELAYOUT);
     };
-  }, [toggles]);
+  }, [flags]);
 
   return (
     <AppStateProvider>

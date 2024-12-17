@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
@@ -110,6 +110,7 @@ func (s *AbiContainer) Clear() {
 }
 
 func (s *AbiContainer) passesFilter(item *Abi, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -130,10 +131,9 @@ func (s *AbiContainer) Finalize() {
 	// EXISTING_CODE
 }
 
-func (s *AbiContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *AbiContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	filter, _ := theMap.Load("abis") // may be empty
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *Abi, data any) bool {
 			s.Accumulate(item)
@@ -144,7 +144,7 @@ func (s *AbiContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	}
 	filtered := []Abi{}
 	s.ForEveryItem(func(item *Abi, data any) bool {
-		if s.passesFilter(item, &filter) {
+		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
 		}

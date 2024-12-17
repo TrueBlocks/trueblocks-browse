@@ -2,13 +2,12 @@
 // of ExistingCode markers (if any).
 
 // EXISTING_CODE
-import { useEffect } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { View, FormTable, ViewForm, DebugState } from "@components";
+import { View, TabItem, ViewForm, DebugState } from "@components";
 import { ModifyProject } from "@gocode/app/App";
 import { Page } from "@hooks";
 import { useAppState, ViewStateProvider } from "@state";
-import { ProjectTableDefNoDelete, ProjectTableDef as tmpProjectTableDef, ProjectFormDef } from ".";
+import { ProjectFormDef, ProjectTableDef } from ".";
 // EXISTING_CODE
 
 export const ProjectView = () => {
@@ -18,46 +17,26 @@ export const ProjectView = () => {
   };
   const handleModify = ModifyProject;
 
-  // eslint-disable-next-line prefer-const
-  let customTabs: string[] = [];
-  // eslint-disable-next-line prefer-const
-  let customForms: Record<string, JSX.Element> = {};
-  // EXISTING_CODE
-  const { info } = useAppState();
-  useEffect(() => {
-    fetchProject(0, 100);
-  }, [info.filename, fetchProject]);
-  let ProjectTableDef = tmpProjectTableDef;
-  if (project?.nItems <= 2) {
-    ProjectTableDef = ProjectTableDefNoDelete;
-  }
-  // EXISTING_CODE
-
   const table = useReactTable({
     data: project?.items || [],
     columns: ProjectTableDef,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const route = "";
-  const tabs = ["project", ...(customTabs || [])];
-  const forms: ViewForm = {
-    project: <FormTable data={project} groups={ProjectFormDef(table)} />,
-    ...customForms,
+  const tabItems: ViewForm = {
+    project: <TabItem data={project} groups={ProjectFormDef(table)} />,
   };
 
   return (
     <ViewStateProvider
       // do not remove - delint
-      route={route}
       nItems={project.nItems}
       fetchFn={fetchProject}
       onEnter={handleEnter}
       modifyFn={handleModify}
-      tabs={tabs}
     >
       <DebugState u={[project.updater]} />
-      <View tabs={tabs} forms={forms} searchable />
+      <View tabItems={tabItems} searchable />
     </ViewStateProvider>
   );
 };

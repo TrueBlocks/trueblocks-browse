@@ -8,7 +8,8 @@
 {{ $members := .Members }}
 {{ $hasEmbed := and (gt (len $embedName) 0) true }}
 
-{{ $isHistory := eq $class "History" }}
+{{ $parent := .Parent }}
+{{ $isHistory := or (eq $class "History") (eq $parent "history") }}
 {{ $isProject := eq $class "Project" }}
 {{ $noChildren := (eq .Children "") }}
 
@@ -138,6 +139,7 @@ func (s *{{$class}}Container) Clear() {
 }
 
 func (s *{{$class}}Container) passesFilter(item *{{$itemType}}, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -158,10 +160,9 @@ func (s *{{$class}}Container) Finalize() {
 	// EXISTING_CODE
 }
 
-func (s *{{$class}}Container) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *{{$class}}Container) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	filter, _ := theMap.Load("{{$routeLower}}") // may be empty
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *{{$itemType}}, data any) bool {
 			s.Accumulate(item)
@@ -172,7 +173,7 @@ func (s *{{$class}}Container) CollateAndFilter(theMap *FilterMap) interface{} {
 	}
 	filtered := []{{$itemType}}{}
 	s.ForEveryItem(func(item *{{$itemType}}, data any) bool {
-		if s.passesFilter(item, &filter) {
+		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
 		}

@@ -57,13 +57,13 @@ func (a *App) GetMenus() *menu.Menu {
 		"wizard":    {inc(), viewMenu, "Wizard", keys.CmdOrCtrl("w"), a.WizardView},
 
 		// EXISTING_CODE
-		"showHeader":    {4010, helpMenu, "Show Header", keys.CmdOrCtrl("e"), a.ToggleHeader},
-		"showMenu":      {4020, helpMenu, "Show Menu", keys.CmdOrCtrl("m"), a.ToggleMenu},
-		"showHelp":      {4030, helpMenu, "Show Help", keys.CmdOrCtrl("h"), a.ToggleHelp},
-		"showFooter":    {4040, helpMenu, "Show Footer", keys.CmdOrCtrl("f"), a.ToggleFooter},
-		"showAccordion": {4050, helpMenu, "Show Accordion", keys.CmdOrCtrl("x"), a.ToggleAccordion},
-		"prevTab":       {4060, helpMenu, "Previous Tab", keys.Combo("n", keys.CmdOrCtrlKey, keys.ShiftKey), a.TogglePrevTab},
-		"nextTab":       {4070, helpMenu, "Next Tab", keys.Combo("p", keys.CmdOrCtrlKey, keys.ShiftKey), a.ToggleNextTab},
+		"showHeader":    {4010, helpMenu, "Show Header", keys.CmdOrCtrl("e"), a.ToggleAppHeader},
+		"showMenu":      {4020, helpMenu, "Show Menu", keys.CmdOrCtrl("m"), a.ToggleAppMenu},
+		"showHelp":      {4030, helpMenu, "Show Help", keys.CmdOrCtrl("h"), a.ToggleAppHelp},
+		"showFooter":    {4040, helpMenu, "Show Footer", keys.CmdOrCtrl("f"), a.ToggleAppFooter},
+		"showAccordion": {4050, helpMenu, "Show Accordion", keys.CmdOrCtrl("x"), a.ToggleViewHeader},
+		"prevTab":       {4060, helpMenu, "Previous Tab", keys.Combo("p", keys.CmdOrCtrlKey, keys.ShiftKey), a.TogglePrevTab},
+		"nextTab":       {4070, helpMenu, "Next Tab", keys.Combo("n", keys.CmdOrCtrlKey, keys.ShiftKey), a.ToggleNextTab},
 		// EXISTING_CODE
 	}
 

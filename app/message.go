@@ -7,9 +7,10 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
-func (a *App) emitNavigateMsg(route string) {
+func (a *App) emitNavigateMsg(route, tab string) {
 	messages.EmitMessage(a.ctx, messages.Navigate, &messages.MessageMsg{
 		String1: route,
+		String2: tab,
 	})
 }
 
@@ -48,13 +49,13 @@ func (a *App) emitLoadingMsg(typ messages.Message, str string) {
 	messages.EmitMessage(a.ctx, typ, &msg)
 }
 
-func (a *App) emitProgressMsg(typ messages.Message, address base.Address, n1, n2 int) {
-	messages.EmitMessage(a.ctx, typ, &messages.MessageMsg{
-		Address: address,
-		Num1:    n1,
-		Num2:    n2,
-	})
-}
+// func (a *App) emitProgressMsg(typ messages.Message, address base.Address, n1, n2 int) {
+// 	messages.EmitMessage(a.ctx, typ, &messages.MessageMsg{
+// 		Address: address,
+// 		Num1:    n1,
+// 		Num2:    n2,
+// 	})
+// }
 
 func (a *App) emitMsg(typ messages.Message, val *messages.MessageMsg) {
 	messages.EmitMessage(a.ctx, typ, val)

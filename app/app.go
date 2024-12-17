@@ -18,42 +18,55 @@ type App struct {
 	dirty bool
 
 	// Containers
-	project   types.ProjectContainer
-	monitors  types.MonitorContainer
-	names     types.NameContainer
-	abis      types.AbiContainer
-	indexes   types.IndexContainer
-	manifests types.ManifestContainer
-	status    types.StatusContainer
-	session   types.SessionContainer
-	config    types.ConfigContainer
-	wizard    types.WizardContainer
-	daemons   types.DaemonContainer
+	project    types.ProjectContainer   // ProjectView  -------------------------
+	balances   types.BalanceContainer   // HistoryView  -------------------------
+	incoming   types.IncomingContainer  // HistoryView
+	outgoing   types.OutgoingContainer  // HistoryView
+	internals  types.InternalContainer  // HistoryView
+	charts     types.ChartContainer     // HistoryView
+	logs       types.LogContainer       // HistoryView
+	statements types.StatementContainer // HistoryView
+	neighbors  types.NeighborContainer  // HistoryView
+	traces     types.TraceContainer     // HistoryView
+	receipts   types.ReceiptContainer   // HistoryView
+	monitors   types.MonitorContainer   // MonitorsView -------------------------
+	names      types.NameContainer      // SharingView  -------------------------
+	abis       types.AbiContainer       // SharingView
+	uploads    types.UploadContainer    // SharingView
+	indexes    types.IndexContainer     // UnchainedView -------------------------
+	manifests  types.ManifestContainer  // UnchainedView
+	pins       types.PinContainer       // UnchainedView
+	publish    types.PublishContainer   // UnchainedView
+	status     types.StatusContainer    // SettingsView  -------------------------
+	session    types.SessionContainer   // SettingsView
+	config     types.ConfigContainer    // SettingsView
+	daemons    types.DaemonContainer    // DaemonsView   -------------------------
+	wizard     types.WizardContainer    // WizardView    -------------------------
 
 	// Memory caches
-	ensCache     *sync.Map
-	balanceCache *sync.Map
-	filterMap    *types.FilterMap
-	namesMap     map[base.Address]types.Name
 	// HIST-APP
 	historyCache *types.HistoryMap
+	filterMap    *types.FilterMap
+	namesMap     map[base.Address]types.Name
+	ensCache     *sync.Map
+	balanceCache *sync.Map
 	renderCtxs   map[base.Address][]*output.RenderCtx
 
+	// Used for performance timing only
 	timer Timer
 }
 
 func NewApp() *App {
 	a := &App{
-		ensCache:     &sync.Map{},
-		balanceCache: &sync.Map{},
-		filterMap:    &types.FilterMap{},
-		namesMap:     make(map[base.Address]types.Name),
 		// HIST-APP
 		historyCache: &types.HistoryMap{},
+		filterMap:    &types.FilterMap{},
+		namesMap:     make(map[base.Address]types.Name),
+		ensCache:     &sync.Map{},
+		balanceCache: &sync.Map{},
 		renderCtxs:   make(map[base.Address][]*output.RenderCtx),
 	}
-	a.session.LastSub = make(map[string]string)
-	a.session.LastTab = make(map[string]string)
+	a.session.Session = types.NewSession()
 	a.timer = NewTimer()
 
 	return a
@@ -87,7 +100,7 @@ func (a *App) DomReady(ctx context.Context) {
 
 		// ...show any error (if there are any)...
 		a.emitWizErrs()
-		a.setWizardState(types.WizWelcome)
+		a.setWizState(types.WizWelcome)
 		logger.Info("There were errors during initialization...")
 
 	} else {
@@ -106,7 +119,7 @@ func (a *App) DomReady(ctx context.Context) {
 
 // Shutdown is called by Wails when the app is closed
 func (a *App) Shutdown(ctx context.Context) {
-	a.saveSession()
+	a.saveSessionFile()
 }
 
 /*
@@ -135,3 +148,7 @@ Merge: Combines data from multiple containers or sources for comprehensive analy
 Annotate: Adds metadata or notes to items, providing context for future reference.
 This structure provides flexibility for handling data while keeping future expansions in mind. Let me know if there’s anything else you’d like to adjust or explore further!
 */
+
+func (a *App) GetHistoryContainer() types.HistoryContainer {
+	return types.HistoryContainer{}
+}

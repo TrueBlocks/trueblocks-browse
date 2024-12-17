@@ -18,7 +18,7 @@ func (a *App) shouldSaveDialog() bool {
 
 	} else if response.save {
 		// saveFileDialog sends messages since it is called from FileSave, etc.
-		if strings.HasPrefix(a.getFilename(), "Untitled.") {
+		if strings.HasPrefix(a.getFile(), "Untitled.") {
 			if saved, err := a.saveFileDialog(); err != nil || !saved {
 				// there was an error or the user told us not to save.
 				// in both bases, messages have been sent. do not proceed.

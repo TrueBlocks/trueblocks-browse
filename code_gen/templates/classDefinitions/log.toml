@@ -1,0 +1,9 @@
+[settings]
+    class = "Log"
+    doc_route = "1016-containers"
+    ui_route = "1016-logs"
+    ui_icon = "FileText"
+    attributes = ""
+    parent = "history"
+    cache_type = "cacheable"
+    cache_by = "range"

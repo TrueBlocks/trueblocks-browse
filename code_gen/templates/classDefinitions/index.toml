@@ -1,9 +1,7 @@
 [settings]
     class = "Index"
-    # doc_group = "20-Routes"
-    # doc_descr = "block data as returned from the RPC (with slight enhancements)"
-    doc_route = "1050-containers"
-    ui_route = "1050-indexes"
+    doc_route = "1051-containers"
+    ui_route = "1051-indexes"
     attributes = ""
     parent = "unchained"
     sorts = "range+Dec"

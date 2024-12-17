@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"time"
 
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
@@ -16,10 +16,10 @@ type WizardContainer struct {
 	Chain   string       `json:"chain"`
 	Items   []WizError   `json:"items"`
 	NItems  uint64       `json:"nItems"`
+	State   WizState     `json:"state"`
 	Updater sdk.Updater  `json:"updater"`
 	Sorts   sdk.SortSpec `json:"sorts"`
 	// EXISTING_CODE
-	State WizState `json:"state"`
 	// EXISTING_CODE
 }
 
@@ -85,9 +85,9 @@ func (s *WizardContainer) ShallowCopy() Containerer {
 	ret := &WizardContainer{
 		Chain:   s.Chain,
 		NItems:  s.NItems,
+		State:   s.State,
 		Updater: s.Updater,
 		// EXISTING_CODE
-		State: s.State,
 		// EXISTING_CODE
 	}
 	return ret
@@ -100,11 +100,11 @@ func (s *WizardContainer) Clear() {
 }
 
 func (s *WizardContainer) passesFilter(item *WizError, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
 		// EXISTING_CODE
-		_ = item
 		// EXISTING_CODE
 	}
 	return
@@ -121,10 +121,9 @@ func (s *WizardContainer) Finalize() {
 	// EXISTING_CODE
 }
 
-func (s *WizardContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *WizardContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	filter, _ := theMap.Load("wizard") // may be empty
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *WizError, data any) bool {
 			s.Accumulate(item)
@@ -135,7 +134,7 @@ func (s *WizardContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	}
 	filtered := []WizError{}
 	s.ForEveryItem(func(item *WizError, data any) bool {
-		if s.passesFilter(item, &filter) {
+		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
 		}
@@ -166,4 +165,20 @@ func (s *WizardContainer) Sort() (err error) {
 }
 
 // EXISTING_CODE
+func (s *WizardContainer) GetWizChain() string {
+	return s.Chain
+}
+
+func (s *WizardContainer) GetWizState() WizState {
+	return s.State
+}
+
+func (s *WizardContainer) SetWizChain(chain string) {
+	s.Chain = chain
+}
+
+func (s *WizardContainer) SetWizState(state WizState) {
+	s.State = state
+}
+
 // EXISTING_CODE

@@ -1,10 +1,9 @@
 [settings]
 	class = "History"
-	# doc_group = "20-Routes"
-	# doc_descr = "block data as returned from the RPC (with slight enhancements)"
 	doc_route = "1010-containers"
 	ui_route = "1010-history-2"
-	ui_icon = "BuildingMonument"
+	ui_icon = "History"
 	attributes = "wantsSearch|wantsZero|wantsMulti"
+	children = "balances,incoming,outgoing,internals,charts,logs,statements,neighbors,traces,receipts"
 	cache_type = "cacheable"
 	cache_by = "range"

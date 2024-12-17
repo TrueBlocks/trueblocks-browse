@@ -11,7 +11,7 @@ package app
 	{{ $routeName := .UiRouteName }}
 	{{- $route := toLower .UiRouteName }}
 	{{- if eq .Class "Project" }}
-		{{- $route = "" }}
+		{{- $route = "project" }}
 	{{- end }}
 
 	{{ $isHistory := eq $class "History" }}
@@ -20,42 +20,28 @@ package app
 	{{ $noParent := (eq .Parent "") }}
 	{{ $hasChildren := (ne .Children "") }}
 
-	{{ $wantsMulti := .Wants "multi" }}
-	{{ if $hasChildren }}
-		{{ $wantsMulti = true }}
-	{{ end }}
-
 	{{ $param1 := print "\"/" $route "\"" }}
-	{{ $param2 := ", \"\"" }}
-	{{ if $isHistory }}
-		{{ $param2 = ", address.Hex()" }}
-	{{ end }}
 
 	{{/*==============================================================*/}}
 	{{- if $noParent }}
 		func (a *App) {{$routeName}}View(cb *menu.CallbackData) {
-			{{- if $isHistory }}
-				address := a.GetSelected()
-			{{- else if $isWizard }}
+			{{- if $isWizard }}
 				if a.isConfigured() {
-					a.wizard.State = types.WizWelcome
+					a.setWizState(types.WizWelcome)
 					a.emitMsg(messages.Refresh, &messages.MessageMsg{
-						State: string(a.wizard.State),
+						State: string(a.getWizState()),
 						Num1:  2, // 2 is the wizard step if needed
 					})
 				} else {
 					a.StepWizard(types.WizNext)
 				}
-			{{- end }}
-
-			{{- if $wantsMulti }}
-				if strings.Contains(a.GetRoute(), "/{{ $route }}") {
+				a.Navigate("{{$route}}")
+			{{- else }}
+				if a.getLastRoute() == "{{ $route }}" {
 					a.ToggleNextTab(cb)
 				} else {
-					a.Navigate({{$param1}}{{$param2}})
+					a.Navigate("{{$route}}")
 				}
-			{{- else }}
-				a.Navigate({{$param1}}{{$param2}})
 			{{- end }}
 		}
 	{{- end }}

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Table, Title, Box, Alert } from "@mantine/core";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
-import { useViewState } from "@state";
+import { useAppState, useViewState } from "@state";
 import { CustomMeta, Paginator } from "./";
 
 interface DataTableProps<T> {
@@ -60,7 +60,8 @@ function TableHeader<T>({ table }: TablePartProps<T>) {
 }
 
 function TableBody<T>({ table, selectedRow }: TablePartProps<T>) {
-  const { pager, route } = useViewState();
+  const { pager } = useViewState();
+  const { route } = useAppState();
   const [isWizard] = useState(route === "wizard");
 
   const inner = table.getRowModel().rows.map((row, rowIndex) => {

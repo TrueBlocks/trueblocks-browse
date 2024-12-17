@@ -1,0 +1,9 @@
+[settings]
+    class = "Balance"
+    doc_route = "1011-containers"
+    ui_route = "1011-balances"
+    ui_icon = "Scale"
+    attributes = ""
+    parent = "history"
+    cache_type = "cacheable"
+    cache_by = "range"

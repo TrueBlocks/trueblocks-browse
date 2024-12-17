@@ -1,0 +1,9 @@
+[settings]
+    class = "Trace"
+    doc_route = "1019-containers"
+    ui_route = "1019-traces"
+    ui_icon = "Activity"
+    attributes = ""
+    parent = "history"
+    cache_type = "cacheable"
+    cache_by = "range"

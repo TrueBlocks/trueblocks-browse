@@ -13,21 +13,60 @@ import (
 func (a *App) Reload() {
 	defer a.trackPerformance("Reload", false)()
 
-	route := a.session.LastRoute
-	logger.InfoG("Reloading", route, "...")
-
-	switch route {
-	case "/":
+	logger.InfoG("Reloading", a.getLastRoute(), "...")
+	switch a.getLastRoute() {
+	case "", "project":
 		a.project.Updater.Reset()
 		if err := a.loadProject(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/monitors":
+	case "history":
+		a.balances.Updater.Reset()
+		if err := a.loadBalances(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.incoming.Updater.Reset()
+		if err := a.loadIncoming(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.outgoing.Updater.Reset()
+		if err := a.loadOutgoing(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.internals.Updater.Reset()
+		if err := a.loadInternals(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.charts.Updater.Reset()
+		if err := a.loadCharts(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.logs.Updater.Reset()
+		if err := a.loadLogs(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.statements.Updater.Reset()
+		if err := a.loadStatements(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.neighbors.Updater.Reset()
+		if err := a.loadNeighbors(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.traces.Updater.Reset()
+		if err := a.loadTraces(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.receipts.Updater.Reset()
+		if err := a.loadReceipts(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+	case "monitors":
 		a.monitors.Updater.Reset()
 		if err := a.loadMonitors(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/sharing":
+	case "sharing":
 		a.names.Updater.Reset()
 		if err := a.loadNames(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
@@ -36,7 +75,11 @@ func (a *App) Reload() {
 		if err := a.loadAbis(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/unchained":
+		a.uploads.Updater.Reset()
+		if err := a.loadUploads(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+	case "unchained":
 		a.indexes.Updater.Reset()
 		if err := a.loadIndexes(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
@@ -45,7 +88,15 @@ func (a *App) Reload() {
 		if err := a.loadManifests(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/settings":
+		a.pins.Updater.Reset()
+		if err := a.loadPins(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+		a.publish.Updater.Reset()
+		if err := a.loadPublish(nil, nil); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
+	case "settings":
 		a.status.Updater.Reset()
 		if err := a.loadStatus(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
@@ -58,19 +109,19 @@ func (a *App) Reload() {
 		if err := a.loadSession(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/daemons":
+	case "daemons":
 		a.daemons.Updater.Reset()
 		if err := a.loadDaemons(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
-	case "/wizard":
+	case "wizard":
 		a.wizard.Updater.Reset()
 		if err := a.loadWizard(nil, nil); err != nil {
 			a.emitErrorMsg(err, nil)
 		}
 		// EXISTING_CODE
 	default:
-		address := a.GetSelected()
+		address := a.getLastAddress()
 		// HIST-HIST
 		history, _ := a.historyCache.Load(address)
 		history.Updater.Reset()

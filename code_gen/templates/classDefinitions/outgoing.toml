@@ -1,0 +1,9 @@
+[settings]
+    class = "Outgoing"
+    doc_route = "1013-containers"
+    ui_route = "1013-outgoing"
+    ui_icon = "ArrowUpCircle"
+    attributes = ""
+    parent = "history"
+    cache_type = "cacheable"
+    cache_by = "range"

@@ -7,47 +7,55 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/index"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 var freshenLock atomic.Uint32
-var freshenMutex sync.Mutex
 
 // Freshen when the app starts and then later by the daemons to instruct the backend and
 // by extension the frontend to update. We protect against updating too fast... Note
 // that this routine is called as a goroutine.
 func (a *App) Freshen() error {
-	if !a.isConfigured() {
-		return fmt.Errorf("App not configured")
-	}
-
 	if !freshenLock.CompareAndSwap(0, 1) {
 		return nil // it's okay to skip a refresh if one is already in progress
 	}
 	defer freshenLock.CompareAndSwap(1, 0)
 
-	freshenMutex.Lock()
-	defer freshenMutex.Unlock()
+	if !a.isConfigured() {
+		return fmt.Errorf("App not configured")
+	}
+
+	// If the index is not initialized yet, we can't do anything
+	if configErr := index.IsInitialized(a.getChain(), config.ExpectedVersion()); configErr != nil {
+		if configErr == index.ErrNotInitialized {
+			return nil
+		} else {
+			return configErr
+		}
+	}
 
 	logger.InfoBB("")
 	logger.InfoBB("--------------------- Freshen in ---------------------", time.Now().Format("15:04:05"))
 	defer logger.InfoBB("--------------------- Freshen out ---------------------", time.Now().Format("15:04:05"))
 
+	nRoutines := 9
 	wg := sync.WaitGroup{}
-	errorChan := make(chan error, 5) // Buffered channel to hold up to 5 errors (one from each goroutine)
+	errorChan := make(chan error, nRoutines*2) // Buffered channel to hold up to 5 errors (one from each goroutine)
 
 	// Always make sure names are loaded. We need them throughout (put any errors in the errorChan).
 	_ = a.loadNames(nil, errorChan)
 
 	// The rest of the data is independant of each other and may be loaded in parallel
-	wg.Add(11)
+	wg.Add(nRoutines)
 	go a.loadProject(&wg, errorChan)
-	go a.loadHistory(&wg, errorChan)
+	// go a.loadHistory(&wg, errorChan)
 	go a.loadMonitors(&wg, errorChan)
 	go a.loadAbis(&wg, errorChan)
 	go a.loadIndexes(&wg, errorChan)
 	go a.loadManifests(&wg, errorChan)
-	go a.loadStatus(&wg, errorChan)
+	// go a.loadStatus(&wg, errorChan)
 	go a.loadSession(&wg, errorChan)
 	go a.loadConfig(&wg, errorChan)
 	go a.loadDaemons(&wg, errorChan)
@@ -65,20 +73,21 @@ func (a *App) Freshen() error {
 		}
 	}
 
+	go a.loadStatus(nil, nil)
+
 	if len(errors) > 0 {
-		// Handle errors, e.g., wait 1/2 second between each error message
 		for _, err := range errors {
 			a.emitErrorMsg(err, nil)
-			time.Sleep(500 * time.Millisecond)
 		}
-	} else {
-		a.emitMsg(messages.Refresh, &messages.MessageMsg{
-			Name:    a.daemons.FreshenController.Name,
-			String1: "Refresh...",
-			String2: a.daemons.FreshenController.Color,
-			Num1:    1, // 1 means daemon if we need it
-		})
 	}
+
+	a.emitMsg(messages.Refresh, &messages.MessageMsg{
+		Name:    a.daemons.FreshenController.Name,
+		String1: "Refresh...",
+		String2: a.daemons.FreshenController.Color,
+		Num1:    1, // 1 means daemon if we need it
+		Bool:    len(errors) == 0,
+	})
 
 	return nil
 }

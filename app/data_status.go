@@ -5,14 +5,13 @@ package app
 // EXISTING_CODE
 import (
 	"fmt"
-	"io"
 	"sync"
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
@@ -35,7 +34,7 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.status.NeedsUpdate() {
+	if !a.isConfigured() || !a.status.NeedsUpdate() {
 		return nil
 	}
 	updater := a.status.Updater
@@ -73,17 +72,15 @@ func (a *App) loadStatus(wg *sync.WaitGroup, errorChan chan error) error {
 
 func (a *App) pullStatus() (items []types.Status, meta *types.Meta, err error) {
 	// EXISTING_CODE
-	w := logger.GetLoggerWriter()
-	logger.SetLoggerWriter(io.Discard)
-	defer logger.SetLoggerWriter(w)
 	opts := sdk.StatusOptions{
 		Globals: sdk.Globals{
-			Chain:   a.getChain(),
-			Verbose: true,
+			Chain: a.getChain(),
+			// Verbose: true,
 		},
 	}
-	return opts.StatusAll()
+	items, meta, err = opts.StatusAll()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

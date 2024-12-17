@@ -1,13 +1,12 @@
 package app
 
 import (
-	"strings"
-
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
 
-func (a *App) ToggleHeader(cb *menu.CallbackData) {
+func (a *App) ToggleAppHeader(cb *menu.CallbackData) {
 	if !a.isConfigured() {
 		return
 	}
@@ -15,17 +14,17 @@ func (a *App) ToggleHeader(cb *menu.CallbackData) {
 	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) ToggleMenu(cb *menu.CallbackData) {
+func (a *App) ToggleAppMenu(cb *menu.CallbackData) {
 	which := "menu"
 	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) ToggleHelp(cb *menu.CallbackData) {
+func (a *App) ToggleAppHelp(cb *menu.CallbackData) {
 	which := "help"
 	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) ToggleFooter(cb *menu.CallbackData) {
+func (a *App) ToggleAppFooter(cb *menu.CallbackData) {
 	if !a.isConfigured() {
 		return
 	}
@@ -33,30 +32,55 @@ func (a *App) ToggleFooter(cb *menu.CallbackData) {
 	a.emitMsg(messages.ToggleLayout, &messages.MessageMsg{String1: which})
 }
 
-func (a *App) ToggleAccordion(cb *menu.CallbackData) {
+func (a *App) ToggleViewHeader(cb *menu.CallbackData) {
 	if !a.isConfigured() {
 		return
 	}
-	route := a.GetRoute()
-	route = strings.TrimPrefix(route, "/")
-	parts := strings.Split(route, "/")
-	route = parts[0]
-	if route == "" {
-		route = "project"
+
+	tabs := a.getTabs()
+	route := a.getLastRoute()
+	tab := a.getLastTab(route)
+	for _, t := range tabs {
+		if t == tab {
+			isOn := a.GetHeaderOn(route, tab)
+			a.SetHeaderOn(route, tab, !isOn)
+			a.emitMsg(messages.ToggleHeader, &messages.MessageMsg{
+				String1: route,
+				String2: tab,
+				Bool:    !isOn,
+			})
+		}
 	}
-	tab := a.GetTab(route)
-	a.emitMsg(messages.ToggleAccordion, &messages.MessageMsg{
-		String1: route,
-		String2: tab,
-	})
 }
 
 func (a *App) TogglePrevTab(cb *menu.CallbackData) {
-	which := "prev"
-	a.emitMsg(messages.SwitchTab, &messages.MessageMsg{String1: which})
+	tabs := a.getTabs()
+	route := a.getLastRoute()
+	tab := a.getLastTab(route)
+	for i, t := range tabs {
+		if t == tab {
+			newTab := tabs[(i-1+len(tabs))%len(tabs)]
+			a.setLastTab(route, newTab)
+			a.emitNavigateMsg(route, newTab)
+			return
+		}
+	}
+	logger.Error("TogglePrevTab: should never happen")
+	// should never happen
 }
 
 func (a *App) ToggleNextTab(cb *menu.CallbackData) {
-	which := "next"
-	a.emitMsg(messages.SwitchTab, &messages.MessageMsg{String1: which})
+	tabs := a.getTabs()
+	route := a.getLastRoute()
+	tab := a.getLastTab(route)
+	for i, t := range tabs {
+		if t == tab {
+			newTab := tabs[(i+1)%len(tabs)]
+			a.setLastTab(route, newTab)
+			a.emitNavigateMsg(route, newTab)
+			return
+		}
+	}
+	logger.Error("TogglePrevTab: should never happen")
+	// should never happen
 }

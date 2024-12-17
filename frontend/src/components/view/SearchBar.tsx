@@ -1,27 +1,28 @@
 import { useState, useRef, useEffect } from "react";
 import { TextInput, Group } from "@mantine/core";
 import { useHotkeys } from "react-hotkeys-hook";
+import { GetFilter, SetFilter } from "@gocode/app/App";
 import { useViewState } from "@state";
 
 export const SearchBar = () => {
-  const { filter, updateFilter } = useViewState();
-  const [localFilter, setLocalFilter] = useState(filter);
+  const { fetchFn, pager } = useViewState();
+  const [filter, setFilter] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const updateLocalFilter = (value: string) => {
-    setLocalFilter(value);
-  };
+  useEffect(() => {
+    GetFilter().then((filterData) => {
+      setFilter(filterData.criteria);
+    });
+  }, []);
 
   const handleSearch = () => {
-    const trimmedFilter = localFilter.trim();
-    updateFilter(trimmedFilter);
-    setLocalFilter(trimmedFilter);
+    const criteria = filter.trim();
+    setFilter(criteria);
+    SetFilter(criteria).then(() => {
+      fetchFn(pager.getOffset(), pager.perPage);
+    });
     inputRef.current?.blur();
   };
-
-  useEffect(() => {
-    setLocalFilter(filter);
-  }, [filter]);
 
   useHotkeys("mod+shift+f", (e: KeyboardEvent) => {
     e.preventDefault();
@@ -32,8 +33,8 @@ export const SearchBar = () => {
     <Group style={{ justifyContent: "flex-end", gap: "8px" }}>
       <TextInput
         ref={inputRef}
-        value={localFilter}
-        onChange={(e) => updateLocalFilter(e.currentTarget.value)}
+        value={filter}
+        onChange={(e) => setFilter(e.currentTarget.value)}
         placeholder="Search..."
         onKeyDown={(e) => {
           if (e.key === "Enter") {

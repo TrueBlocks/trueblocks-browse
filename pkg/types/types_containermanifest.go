@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
@@ -113,6 +113,7 @@ func (s *ManifestContainer) Clear() {
 }
 
 func (s *ManifestContainer) passesFilter(item *ChunkRecord, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -137,10 +138,9 @@ func (s *ManifestContainer) Finalize() {
 	// EXISTING_CODE
 }
 
-func (s *ManifestContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *ManifestContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	filter, _ := theMap.Load("manifests") // may be empty
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *ChunkRecord, data any) bool {
 			s.Accumulate(item)
@@ -151,7 +151,7 @@ func (s *ManifestContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	}
 	filtered := []ChunkRecord{}
 	s.ForEveryItem(func(item *ChunkRecord, data any) bool {
-		if s.passesFilter(item, &filter) {
+		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
 		}

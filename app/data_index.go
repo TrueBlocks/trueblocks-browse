@@ -11,7 +11,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
@@ -34,7 +34,7 @@ func (a *App) loadIndexes(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.indexes.NeedsUpdate() {
+	if !a.isConfigured() || !a.indexes.NeedsUpdate() {
 		return nil
 	}
 	updater := a.indexes.Updater
@@ -78,8 +78,9 @@ func (a *App) pullIndexes() (items []types.ChunkStats, meta *types.Meta, err err
 			Verbose: true,
 		},
 	}
-	return opts.ChunksStats()
+	items, meta, err = opts.ChunksStats()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

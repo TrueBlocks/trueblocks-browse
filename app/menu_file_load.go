@@ -9,8 +9,8 @@ import (
 )
 
 func (a *App) newFile() {
-	a.session.LastFile = "Untitled.tbx"
-	a.saveSession()
+	a.setFile("Untitled.tbx")
+	a.saveSessionFile()
 
 	address := base.HexToAddress("0x3836b0e02b4a613ba1d15834e6d77f409099d8f8")
 	history := types.NewHistoryContainer(a.getChain(), []types.Transaction{}, address)
@@ -23,7 +23,7 @@ func (a *App) newFile() {
 	a.historyCache.Store(address, history)
 	a.project = types.NewProjectContainer(a.getChain(), []types.HistoryContainer{history})
 
-	a.emitNavigateMsg("/")
+	a.emitNavigateMsg("project", a.getLastTab("project"))
 	a.emitInfoMsg(a.getFullPath(), "new file created")
 }
 
@@ -50,12 +50,13 @@ func (a *App) readFile(fn string) (bool, error) {
 		a.project = types.NewProjectContainer(a.getChain(), histories)
 		a.dirty = false
 
-		a.session.LastFolder, a.session.LastFile = filepath.Split(fn)
-		a.session.LastSub["/history"] = pF.Selected.Hex()
-		a.session.LastTab["/history"] = ""
-		a.saveSession()
+		folder, file := filepath.Split(fn)
+		a.setFolder(folder)
+		a.setFile(file)
+		a.setLastAddress(pF.Selected.Hex())
+		a.saveSessionFile()
 
-		go a.loadHistory(nil, nil)
+		// go a.loadHistory(nil, nil)
 
 		a.emitInfoMsg(a.getFullPath(), "file was opened")
 

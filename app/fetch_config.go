@@ -14,7 +14,7 @@ func (a *App) FetchConfig(first, pageSize int) *types.ConfigContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	filtered := a.config.CollateAndFilter(a.filterMap).([]types.Chain)
+	filtered := a.config.CollateAndFilter(a.GetFilter()).([]types.Chain)
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.config.ShallowCopy().(*types.ConfigContainer)

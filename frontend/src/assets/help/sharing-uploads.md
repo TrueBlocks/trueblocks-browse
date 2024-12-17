@@ -1,0 +1,3 @@
+#### sharing-uploads.md
+
+The Sharing Upload view allows you to share any Address Names or Abis your system may have encountered (or created). This page allows you to pick and choose which addresses you want to share. It will share all the Abi files your system has (this is okay related to privacy since Abis contain no private information.)

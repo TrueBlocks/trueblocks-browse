@@ -5,7 +5,7 @@ import { Stack, Group } from "@mantine/core";
 import { Table } from "@tanstack/react-table";
 import { DataTable, EditButton, FieldGroup } from "@components";
 import { types } from "@gocode/models";
-import { useAppState } from "../../state";
+import { useAppState } from "@state";
 // EXISTING_CODE
 
 export const ConfigFormDef = (table: Table<types.Chain>): FieldGroup<types.ConfigContainer>[] => {

@@ -1,0 +1,9 @@
+[settings]
+    class = "Chart"
+    doc_route = "1015-containers"
+    ui_route = "1015-charts"
+    ui_icon = "ChartBar"
+    attributes = ""
+    parent = "history"
+    cache_type = "cacheable"
+    cache_by = "range"

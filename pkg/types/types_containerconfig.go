@@ -10,7 +10,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	configTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/configtypes"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
@@ -27,10 +27,10 @@ type ConfigContainer struct {
 	// EXISTING_CODE
 }
 
-func NewConfigContainer(chain string, configs []Config) ConfigContainer {
+func NewConfigContainer(chain string, config []Config) ConfigContainer {
 	// EXISTING_CODE
 	itemsIn := []Chain{}
-	for _, chain := range configs[0].Chains {
+	for _, chain := range config[0].Chains {
 		chOut := func(chIn configTypes.ChainGroup) Chain {
 			return Chain{
 				Chain:          chIn.Chain,
@@ -48,7 +48,7 @@ func NewConfigContainer(chain string, configs []Config) ConfigContainer {
 	ret := ConfigContainer{
 		Items:  itemsIn,
 		NItems: uint64(len(itemsIn)),
-		Config: configs[0].ShallowCopy(),
+		Config: config[0].ShallowCopy(),
 		Sorts: sdk.SortSpec{
 			Fields: []string{"chainId"},
 			Order:  []sdk.SortOrder{sdk.Asc},
@@ -120,6 +120,7 @@ func (s *ConfigContainer) Clear() {
 }
 
 func (s *ConfigContainer) passesFilter(item *Chain, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -140,10 +141,9 @@ func (s *ConfigContainer) Finalize() {
 	// EXISTING_CODE
 }
 
-func (s *ConfigContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *ConfigContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	filter, _ := theMap.Load("config") // may be empty
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *Chain, data any) bool {
 			s.Accumulate(item)
@@ -154,7 +154,7 @@ func (s *ConfigContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	}
 	filtered := []Chain{}
 	s.ForEveryItem(func(item *Chain, data any) bool {
-		if s.passesFilter(item, &filter) {
+		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
 		}
@@ -185,7 +185,6 @@ func (s *ConfigContainer) Sort() (err error) {
 }
 
 // EXISTING_CODE
-
 func (s *ConfigContainer) IsValidChain(chain string) (string, error) {
 	for _, ch := range s.Chains {
 		if ch.Chain == chain {

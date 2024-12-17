@@ -1,0 +1,9 @@
+[settings]
+    class = "Incoming"
+    doc_route = "1012-containers"
+    ui_route = "1012-incoming"
+    ui_icon = "ArrowDownCircle"
+    attributes = ""
+    parent = "history"
+    cache_type = "cacheable"
+    cache_by = "range"

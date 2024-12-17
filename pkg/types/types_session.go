@@ -11,22 +11,27 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+// --------------------------------------------
 // Session stores ephemeral things such as last window position,
 // last view, and recent file list.
 type Session struct {
-	LastChain  string            `json:"lastChain"`
-	LastFile   string            `json:"lastFile"`
-	LastFolder string            `json:"lastFolder"`
-	LastRoute  string            `json:"lastRoute"`
-	LastSub    map[string]string `json:"lastSub"`
-	LastTab    map[string]string `json:"lastTab"`
-	Window     Window            `json:"window"`
-	WizardStr  string            `json:"wizardStr"`
-	Toggles    Toggles           `json:"toggles"`
-	Chain      string            `json:"-"`
+	LastChain   string     `json:"lastChain"`
+	LastFile    string     `json:"lastFile"`
+	LastFolder  string     `json:"lastFolder"`
+	LastRoute   string     `json:"lastRoute"`
+	LastAddress string     `json:"lastAddress"`
+	LastTab     *StringMap `json:"lastTab"`
+	Flags       *BoolMap   `json:"flags"`
+	Window      Window     `json:"window"`
+	WizardStr   string     `json:"wizardStr"`
 }
 
-func (s Session) String() string {
+// --------------------------------------------
+func NewSession() Session {
+	return defaultSession
+}
+
+func (s *Session) String() string {
 	bytes, _ := json.Marshal(s)
 	return string(bytes)
 }
@@ -35,56 +40,139 @@ func (s *Session) ShallowCopy() Session {
 	return *s
 }
 
-var defLayout = Layout{
-	Header: true,
-	Menu:   true,
-	Help:   true,
-	Footer: true,
+// --------------------------------------------
+func (s *Session) GetChain() string {
+	return s.LastChain
 }
 
-var defHeader = Headers{
-	Project:   false,
-	History:   true,
-	Monitors:  false,
-	Names:     false,
-	Abis:      false,
-	Indexes:   false,
-	Manifests: false,
-	Status:    true,
-	Settings:  true,
-	Daemons:   true,
-	Session:   true,
-	Config:    true,
-	Wizard:    true,
+func (s *Session) SetChain(chain string) {
+	s.LastChain = chain
 }
 
-var defDaemons = Daemons{
-	Freshen: true,
+// --------------------------------------------
+func (s *Session) GetFile() string {
+	return s.LastFile
+}
+
+func (s *Session) SetFile(file string) {
+	s.LastFile = file
+}
+
+// --------------------------------------------
+func (s *Session) GetFolder() string {
+	return s.LastFolder
+}
+
+func (s *Session) SetFolder(folder string) {
+	s.LastFolder = folder
+}
+
+// --------------------------------------------
+func (s *Session) GetRoute() string {
+	return s.LastRoute
+}
+
+func (s *Session) SetRoute(route string) {
+	s.LastRoute = route
+}
+
+// --------------------------------------------
+func (s *Session) GetAddress() string {
+	return s.LastAddress
+}
+
+func (s *Session) SetAddress(address string) {
+	s.LastAddress = address
+}
+
+// --------------------------------------------
+func (s *Session) GetTab(route string) string {
+	ret, _ := s.LastTab.Load(route)
+	return ret
+}
+
+func (s *Session) SetTab(route, tab string) {
+	s.LastTab.Store(route, tab)
+}
+
+// --------------------------------------------
+func (s *Session) IsFlagOn(key string) bool {
+	ret, _ := s.Flags.Load(key)
+	return ret
+}
+
+func (s *Session) SetFlagOn(key string, value bool) {
+	s.Flags.Store(key, value)
+}
+
+// --------------------------------------------
+func (s *Session) GetWindow() Window {
+	return s.Window
+}
+
+func (s *Session) SetWindow(window Window) {
+	s.Window = window
+}
+
+// --------------------------------------------
+func (s *Session) GetWizardStr() string {
+	return s.WizardStr
+}
+
+func (s *Session) SetWizardStr(wizStr string) {
+	s.WizardStr = wizStr
+}
+
+// --------------------------------------------
+var defFlags BoolMap
+
+func init() {
+	defFlags.Store("header", true)
+	defFlags.Store("menu", true)
+	defFlags.Store("help", true)
+	defFlags.Store("footer", true)
+
+	defFlags.Store("freshen", true)
+
+	defFlags.Store("project-project", true)
+	defFlags.Store("history-balances", true)
+	defFlags.Store("sharing-names", true)
+	defFlags.Store("sharing-abis", true)
+	defFlags.Store("settings-status", true)
+	defFlags.Store("settings-session", true)
+	defFlags.Store("settings-config", true)
+	defFlags.Store("daemons-daemons", true)
+	defFlags.Store("wizard-wizard", true)
 }
 
 var defaultSession = Session{
-	LastChain: "mainnet",
-	LastFile:  "Untitled.tbx",
-	LastRoute: "/wizard",
-	LastSub:   map[string]string{"/history": "0xf503017d7baf7fbc0fff7492b751025c6a78179b"},
-	LastTab:   map[string]string{},
+	LastChain:   "mainnet",
+	LastFile:    "Untitled.tbx",
+	LastRoute:   "wizard",
+	LastAddress: "0xf503017d7baf7fbc0fff7492b751025c6a78179b",
+	LastTab:     &StringMap{},
+	Flags:       &defFlags,
 	Window: Window{
 		X:      0,
 		Y:      0,
 		Width:  0,
 		Height: 0,
-		Title:  "Untitled App",
 	},
 	WizardStr: "welcome",
-	Toggles: Toggles{
-		Layout:  defLayout,
-		Headers: defHeader,
-		Daemons: defDaemons,
-	},
 }
 
+// --------------------------------------------
 // Save saves the session to the configuration folder.
-func (s *Session) Save() error {
+func (s *Session) Save(ctx context.Context) error {
+	if ctx != context.TODO() {
+		var w Window
+		w.X, w.Y = runtime.WindowGetPosition(ctx)
+		w.Width, w.Height = runtime.WindowGetSize(ctx)
+		// TODO: This is a hack to account for the menu bar - not sure why it's needed
+		w.Y += 38
+		s.SetWindow(w)
+	}
+
 	if fn, err := utils.GetConfigFn("browse", "session.json"); err != nil {
 		return err
 	} else {
@@ -95,19 +183,20 @@ func (s *Session) Save() error {
 	}
 }
 
+// --------------------------------------------
 var ErrLoadingSession = errors.New("error loading session")
 
 // Load loads the session from the configuration folder. If the file contains
 // data, we return true. False otherwise.
-func (s *Session) Load() error {
+func (s *Session) Load(ctx context.Context) error {
 	loaded := false
 	defer func() {
 		if !loaded {
 			*s = defaultSession
 		} else {
 			// Ensure a valid file (if for example the user edited it)
-			if s.WizardStr == "finished" && s.LastRoute == "/wizard" {
-				s.LastRoute = "/"
+			if s.WizardStr == "finished" && s.LastRoute == "wizard" {
+				s.LastRoute = "project"
 			}
 			if s.LastChain == "" {
 				s.LastChain = "mainnet"
@@ -116,7 +205,7 @@ func (s *Session) Load() error {
 				s.LastFile = "Untitled.tbx"
 			}
 		}
-		_ = s.Save() // creates the session file if it doesn't already exist
+		_ = s.Save(context.TODO()) // creates the session file if it doesn't already exist
 	}()
 
 	fn, err := utils.GetConfigFn("browse", "session.json")
@@ -138,17 +227,7 @@ func (s *Session) Load() error {
 	return nil
 }
 
-func (s *Session) SetRoute(route, subRoute, tab string) {
-	s.LastRoute = route
-	if len(subRoute) > 0 {
-		s.LastSub[route] = subRoute
-	}
-	if len(tab) > 0 {
-		s.LastTab[route] = tab
-	}
-	_ = s.Save()
-}
-
+// --------------------------------------------
 var ErrScreenNotFound = errors.New("screen not found")
 
 // CleanWindowSize ensures a valid window size. (If the app has never run before
@@ -162,7 +241,7 @@ func (s *Session) CleanWindowSize(ctx context.Context) (Window, error) {
 
 	ret := Window{X: 30, Y: 30, Width: 1024, Height: 768}
 	defer func() {
-		_ = s.Save()
+		_ = s.Save(context.TODO())
 	}()
 
 	if screens, err := runtime.ScreenGetAll(ctx); err != nil {
@@ -190,145 +269,13 @@ func (s *Session) CleanWindowSize(ctx context.Context) (Window, error) {
 	return s.Window, nil
 }
 
-type Layout struct {
-	Header bool `json:"header"`
-	Menu   bool `json:"menu"`
-	Help   bool `json:"help"`
-	Footer bool `json:"footer"`
-}
-
-type Headers struct {
-	Project   bool `json:"project"`
-	History   bool `json:"history"`
-	Monitors  bool `json:"monitors"`
-	Names     bool `json:"names"`
-	Abis      bool `json:"abis"`
-	Indexes   bool `json:"indexes"`
-	Manifests bool `json:"manifests"`
-	Status    bool `json:"status"`
-	Settings  bool `json:"settings"`
-	Daemons   bool `json:"daemons"`
-	Session   bool `json:"session"`
-	Config    bool `json:"config"`
-	Wizard    bool `json:"wizard"`
-}
-
-type Daemons struct {
-	Freshen bool `json:"freshen"`
-	Scraper bool `json:"scraper"`
-	Ipfs    bool `json:"ipfs"`
-}
-
-type Toggles struct {
-	Layout  Layout  `json:"layout"`
-	Headers Headers `json:"headers"`
-	Daemons Daemons `json:"daemons"`
-}
-
-func (t *Toggles) IsOn(which string) bool {
-	if which == "" {
-		which = "project"
-	}
-	switch which {
-	case "header":
-		return t.Layout.Header
-	case "menu":
-		return t.Layout.Menu
-	case "help":
-		return t.Layout.Help
-	case "footer":
-		return t.Layout.Footer
-	case "project":
-		return t.Headers.Project
-	case "history":
-		return t.Headers.History
-	case "monitors":
-		return t.Headers.Monitors
-	case "names":
-		return t.Headers.Names
-	case "abis":
-		return t.Headers.Abis
-	case "indexes":
-		return t.Headers.Indexes
-	case "manifests":
-		return t.Headers.Manifests
-	case "status":
-		return t.Headers.Status
-	case "settings":
-		return t.Headers.Settings
-	case "daemons":
-		return t.Headers.Daemons
-	case "session":
-		return t.Headers.Session
-	case "config":
-		return t.Headers.Config
-	case "wizard":
-		return t.Headers.Wizard
-	case "freshen":
-		return t.Daemons.Freshen
-	case "scraper":
-		return t.Daemons.Scraper
-	case "ipfs":
-		return t.Daemons.Ipfs
-	}
-	return false
-}
-
-func (t *Toggles) SetState(which string, onOff bool) {
-	if which == "" {
-		which = "project"
-	}
-	switch which {
-	case "header":
-		t.Layout.Header = onOff
-	case "menu":
-		t.Layout.Menu = onOff
-	case "help":
-		t.Layout.Help = onOff
-	case "footer":
-		t.Layout.Footer = onOff
-	case "project":
-		t.Headers.Project = onOff
-	case "history":
-		t.Headers.History = onOff
-	case "monitors":
-		t.Headers.Monitors = onOff
-	case "names":
-		t.Headers.Names = onOff
-	case "abis":
-		t.Headers.Abis = onOff
-	case "indexes":
-		t.Headers.Indexes = onOff
-	case "manifests":
-		t.Headers.Manifests = onOff
-	case "status":
-		t.Headers.Status = onOff
-	case "settings":
-		t.Headers.Settings = onOff
-	case "daemons":
-		t.Headers.Daemons = onOff
-	case "session":
-		t.Headers.Session = onOff
-	case "config":
-		t.Headers.Config = onOff
-	case "wizard":
-		t.Headers.Wizard = onOff
-	case "freshen":
-		t.Daemons.Freshen = onOff
-	case "scraper":
-		t.Daemons.Scraper = onOff
-	case "ipfs":
-		t.Daemons.Ipfs = onOff
-	}
-}
-
+// --------------------------------------------
 // Window stores the last position and title of the window
 type Window struct {
-	X      int    `json:"x"`
-	Y      int    `json:"y"`
-	Width  int    `json:"width"`
-	Height int    `json:"height"`
-	Title  string `json:"title"`
+	X      int `json:"x"`
+	Y      int `json:"y"`
+	Width  int `json:"width"`
+	Height int `json:"height"`
 }
 
 func (w *Window) String() string {

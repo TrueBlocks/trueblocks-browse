@@ -11,7 +11,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
@@ -34,7 +34,7 @@ func (a *App) loadManifests(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.manifests.NeedsUpdate() {
+	if !a.isConfigured() || !a.manifests.NeedsUpdate() {
 		return nil
 	}
 	updater := a.manifests.Updater
@@ -78,8 +78,9 @@ func (a *App) pullManifests() (items []types.Manifest, meta *types.Meta, err err
 			Verbose: true,
 		},
 	}
-	return opts.ChunksManifest()
+	items, meta, err = opts.ChunksManifest()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

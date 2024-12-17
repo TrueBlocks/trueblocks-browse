@@ -1,0 +1,3 @@
+#### sharing-pins.md
+
+THe Sharing Pin view allows you to push your names and/or Abis to your IPFS gateway. This page allows you to pick and choose which names and Abis you want to share. It will share all the Abi files your system has (this is okay related to privacy since Abis contain no private information.)

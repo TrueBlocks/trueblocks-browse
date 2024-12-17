@@ -22,6 +22,14 @@ export function FetchAppInfo() {
   return window['go']['app']['App']['FetchAppInfo']();
 }
 
+export function FetchBalance(arg1, arg2) {
+  return window['go']['app']['App']['FetchBalance'](arg1, arg2);
+}
+
+export function FetchChart(arg1, arg2) {
+  return window['go']['app']['App']['FetchChart'](arg1, arg2);
+}
+
 export function FetchConfig(arg1, arg2) {
   return window['go']['app']['App']['FetchConfig'](arg1, arg2);
 }
@@ -30,12 +38,20 @@ export function FetchDaemon(arg1, arg2) {
   return window['go']['app']['App']['FetchDaemon'](arg1, arg2);
 }
 
-export function FetchHistory(arg1, arg2) {
-  return window['go']['app']['App']['FetchHistory'](arg1, arg2);
+export function FetchIncoming(arg1, arg2) {
+  return window['go']['app']['App']['FetchIncoming'](arg1, arg2);
 }
 
 export function FetchIndex(arg1, arg2) {
   return window['go']['app']['App']['FetchIndex'](arg1, arg2);
+}
+
+export function FetchInternal(arg1, arg2) {
+  return window['go']['app']['App']['FetchInternal'](arg1, arg2);
+}
+
+export function FetchLog(arg1, arg2) {
+  return window['go']['app']['App']['FetchLog'](arg1, arg2);
 }
 
 export function FetchManifest(arg1, arg2) {
@@ -50,16 +66,48 @@ export function FetchName(arg1, arg2) {
   return window['go']['app']['App']['FetchName'](arg1, arg2);
 }
 
+export function FetchNeighbor(arg1, arg2) {
+  return window['go']['app']['App']['FetchNeighbor'](arg1, arg2);
+}
+
+export function FetchOutgoing(arg1, arg2) {
+  return window['go']['app']['App']['FetchOutgoing'](arg1, arg2);
+}
+
+export function FetchPin(arg1, arg2) {
+  return window['go']['app']['App']['FetchPin'](arg1, arg2);
+}
+
 export function FetchProject(arg1, arg2) {
   return window['go']['app']['App']['FetchProject'](arg1, arg2);
+}
+
+export function FetchPublish(arg1, arg2) {
+  return window['go']['app']['App']['FetchPublish'](arg1, arg2);
+}
+
+export function FetchReceipt(arg1, arg2) {
+  return window['go']['app']['App']['FetchReceipt'](arg1, arg2);
 }
 
 export function FetchSession(arg1, arg2) {
   return window['go']['app']['App']['FetchSession'](arg1, arg2);
 }
 
+export function FetchStatement(arg1, arg2) {
+  return window['go']['app']['App']['FetchStatement'](arg1, arg2);
+}
+
 export function FetchStatus(arg1, arg2) {
   return window['go']['app']['App']['FetchStatus'](arg1, arg2);
+}
+
+export function FetchTrace(arg1, arg2) {
+  return window['go']['app']['App']['FetchTrace'](arg1, arg2);
+}
+
+export function FetchUpload(arg1, arg2) {
+  return window['go']['app']['App']['FetchUpload'](arg1, arg2);
 }
 
 export function FetchWizard(arg1, arg2) {
@@ -86,14 +134,6 @@ export function Freshen() {
   return window['go']['app']['App']['Freshen']();
 }
 
-export function GetActiveTab(arg1) {
-  return window['go']['app']['App']['GetActiveTab'](arg1);
-}
-
-export function GetAppTitle() {
-  return window['go']['app']['App']['GetAppTitle']();
-}
-
 export function GetChainInfo(arg1) {
   return window['go']['app']['App']['GetChainInfo'](arg1);
 }
@@ -114,6 +154,10 @@ export function GetDaemon(arg1) {
   return window['go']['app']['App']['GetDaemon'](arg1);
 }
 
+export function GetDaemonOn(arg1) {
+  return window['go']['app']['App']['GetDaemonOn'](arg1);
+}
+
 export function GetEnv(arg1) {
   return window['go']['app']['App']['GetEnv'](arg1);
 }
@@ -122,8 +166,32 @@ export function GetExploreUrl(arg1, arg2, arg3) {
   return window['go']['app']['App']['GetExploreUrl'](arg1, arg2, arg3);
 }
 
-export function GetFilter(arg1) {
-  return window['go']['app']['App']['GetFilter'](arg1);
+export function GetFilter() {
+  return window['go']['app']['App']['GetFilter']();
+}
+
+export function GetHeaderOn(arg1, arg2) {
+  return window['go']['app']['App']['GetHeaderOn'](arg1, arg2);
+}
+
+export function GetHistoryContainer() {
+  return window['go']['app']['App']['GetHistoryContainer']();
+}
+
+export function GetLastAddress() {
+  return window['go']['app']['App']['GetLastAddress']();
+}
+
+export function GetLastRoute() {
+  return window['go']['app']['App']['GetLastRoute']();
+}
+
+export function GetLastTab(arg1) {
+  return window['go']['app']['App']['GetLastTab'](arg1);
+}
+
+export function GetLayoutOn(arg1) {
+  return window['go']['app']['App']['GetLayoutOn'](arg1);
 }
 
 export function GetMenus() {
@@ -134,32 +202,16 @@ export function GetName(arg1) {
   return window['go']['app']['App']['GetName'](arg1);
 }
 
-export function GetRoute() {
-  return window['go']['app']['App']['GetRoute']();
-}
-
-export function GetSelected() {
-  return window['go']['app']['App']['GetSelected']();
-}
-
-export function GetSession() {
-  return window['go']['app']['App']['GetSession']();
-}
-
 export function GetState(arg1) {
   return window['go']['app']['App']['GetState'](arg1);
 }
 
-export function GetWindow() {
-  return window['go']['app']['App']['GetWindow']();
+export function GetTabs() {
+  return window['go']['app']['App']['GetTabs']();
 }
 
 export function HistoryView(arg1) {
   return window['go']['app']['App']['HistoryView'](arg1);
-}
-
-export function IsShowing(arg1, arg2) {
-  return window['go']['app']['App']['IsShowing'](arg1, arg2);
 }
 
 export function LoadAddress(arg1) {
@@ -198,8 +250,8 @@ export function MonitorsView(arg1) {
   return window['go']['app']['App']['MonitorsView'](arg1);
 }
 
-export function Navigate(arg1, arg2) {
-  return window['go']['app']['App']['Navigate'](arg1, arg2);
+export function Navigate(arg1) {
+  return window['go']['app']['App']['Navigate'](arg1);
 }
 
 export function ProjectView(arg1) {
@@ -210,24 +262,44 @@ export function Reload() {
   return window['go']['app']['App']['Reload']();
 }
 
+export function SaveName(arg1) {
+  return window['go']['app']['App']['SaveName'](arg1);
+}
+
 export function SetChain(arg1) {
   return window['go']['app']['App']['SetChain'](arg1);
+}
+
+export function SetDaemonOn(arg1, arg2) {
+  return window['go']['app']['App']['SetDaemonOn'](arg1, arg2);
 }
 
 export function SetEnv(arg1, arg2) {
   return window['go']['app']['App']['SetEnv'](arg1, arg2);
 }
 
-export function SetFilter(arg1, arg2) {
-  return window['go']['app']['App']['SetFilter'](arg1, arg2);
+export function SetFilter(arg1) {
+  return window['go']['app']['App']['SetFilter'](arg1);
 }
 
-export function SetRoute(arg1, arg2) {
-  return window['go']['app']['App']['SetRoute'](arg1, arg2);
+export function SetHeaderOn(arg1, arg2, arg3) {
+  return window['go']['app']['App']['SetHeaderOn'](arg1, arg2, arg3);
 }
 
-export function SetShowing(arg1, arg2, arg3) {
-  return window['go']['app']['App']['SetShowing'](arg1, arg2, arg3);
+export function SetLastAddress(arg1) {
+  return window['go']['app']['App']['SetLastAddress'](arg1);
+}
+
+export function SetLastRoute(arg1) {
+  return window['go']['app']['App']['SetLastRoute'](arg1);
+}
+
+export function SetLastTab(arg1, arg2) {
+  return window['go']['app']['App']['SetLastTab'](arg1, arg2);
+}
+
+export function SetLayoutOn(arg1, arg2) {
+  return window['go']['app']['App']['SetLayoutOn'](arg1, arg2);
 }
 
 export function SettingsView(arg1) {
@@ -250,32 +322,24 @@ export function SystemQuit(arg1) {
   return window['go']['app']['App']['SystemQuit'](arg1);
 }
 
-export function TabSwitched(arg1, arg2) {
-  return window['go']['app']['App']['TabSwitched'](arg1, arg2);
+export function ToggleAppFooter(arg1) {
+  return window['go']['app']['App']['ToggleAppFooter'](arg1);
 }
 
-export function ToggleAccordion(arg1) {
-  return window['go']['app']['App']['ToggleAccordion'](arg1);
+export function ToggleAppHeader(arg1) {
+  return window['go']['app']['App']['ToggleAppHeader'](arg1);
+}
+
+export function ToggleAppHelp(arg1) {
+  return window['go']['app']['App']['ToggleAppHelp'](arg1);
+}
+
+export function ToggleAppMenu(arg1) {
+  return window['go']['app']['App']['ToggleAppMenu'](arg1);
 }
 
 export function ToggleDaemon(arg1) {
   return window['go']['app']['App']['ToggleDaemon'](arg1);
-}
-
-export function ToggleFooter(arg1) {
-  return window['go']['app']['App']['ToggleFooter'](arg1);
-}
-
-export function ToggleHeader(arg1) {
-  return window['go']['app']['App']['ToggleHeader'](arg1);
-}
-
-export function ToggleHelp(arg1) {
-  return window['go']['app']['App']['ToggleHelp'](arg1);
-}
-
-export function ToggleMenu(arg1) {
-  return window['go']['app']['App']['ToggleMenu'](arg1);
 }
 
 export function ToggleNextTab(arg1) {
@@ -284,6 +348,10 @@ export function ToggleNextTab(arg1) {
 
 export function TogglePrevTab(arg1) {
   return window['go']['app']['App']['TogglePrevTab'](arg1);
+}
+
+export function ToggleViewHeader(arg1) {
+  return window['go']['app']['App']['ToggleViewHeader'](arg1);
 }
 
 export function UnchainedView(arg1) {

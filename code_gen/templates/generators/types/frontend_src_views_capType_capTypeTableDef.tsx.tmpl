@@ -9,11 +9,6 @@
 
 	{{ $isProject := eq $class "Project" }}
 
-	{{ $tableDef := $routeName }}
-	{{ if $isProject }}
-		{{ $tableDef = "base" }}
-	{{ end -}}
-
 	{{/*==============================================================*/}}
 	// This file is auto-generated. Edit only code inside
 	// of ExistingCode markers (if any).
@@ -22,7 +17,7 @@
 
 	const columnHelper = createColumnHelper<{{$fullType}}>();
 
-	export const {{$tableDef}}TableDef: CustomColumnDef<{{$fullType}}, any>[] = [
+	export const {{$routeName}}TableDef: CustomColumnDef<{{$fullType}}, any>[] = [
 		// EXISTING_CODE
 		// EXISTING_CODE
 	];

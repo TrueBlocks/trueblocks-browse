@@ -11,7 +11,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 var monitorMutex sync.Mutex
@@ -36,7 +36,7 @@ func (a *App) loadMonitors(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.monitors.NeedsUpdate() {
+	if !a.isConfigured() || !a.monitors.NeedsUpdate() {
 		return nil
 	}
 	updater := a.monitors.Updater
@@ -83,8 +83,9 @@ func (a *App) pullMonitors() (items []types.Monitor, meta *types.Meta, err error
 			Verbose: true,
 		},
 	}
-	return opts.MonitorsList()
+	items, meta, err = opts.MonitorsList()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

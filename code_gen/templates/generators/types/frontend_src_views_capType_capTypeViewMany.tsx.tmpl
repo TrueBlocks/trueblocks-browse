@@ -55,13 +55,6 @@
   {{$handleEnter -}}
   {{$handleModify}}
 
-  // eslint-disable-next-line prefer-const
-  let customTabs: string[] = [];
-  // eslint-disable-next-line prefer-const
-  let customForms: Record<string, JSX.Element> = {};
-  // EXISTING_CODE
-  // EXISTING_CODE
-
   const fetch{{$routeName}} = useCallback(
   (currentItem: number, itemsPerPage: number) => {
     {{ apply $childTabs "fetch{{firstUpper .}}(currentItem, itemsPerPage);" "\n" }}
@@ -70,11 +63,8 @@
 
   {{ apply $childTabs "const {{.}}Table = useReactTable({\ndata: {{.}}?.items || [],\ncolumns: {{firstUpper .}}TableDef,\ngetCoreRowModel: getCoreRowModel(),\n});\n" "\n" }}
 
-  const route = "{{$routeLower}}";
-  const tabs = [{{ apply $childTabs "\"{{.}}\"" "," }}, ...(customTabs || [])];
-  const forms: ViewForm = {
-    {{ apply $childTabs "{{.}}: <FormTable data={ {{.}} } groups={ {{firstUpper .}}FormDef({{.}}Table)} />" "," }},
-    ...customForms,
+  const tabItems: ViewForm = {
+    {{ apply $childTabs "{{.}}: <TabItem data={ {{.}} } groups={ {{firstUpper .}}FormDef({{.}}Table)} />" "," }},
   };
 
   // if (!(status?.items?.length > 0)) {
@@ -84,15 +74,13 @@
   return (
   <ViewStateProvider
     // do not remove - delint
-    route={route}
     nItems={ {{index $childTabs 0}}.nItems}
     fetchFn={ fetch{{$routeName}}}
     onEnter={handleEnter}
     modifyFn={handleModify}
-    tabs={tabs}
   >
   <DebugState u={ [{{apply $childTabs "{{.}}.updater" ","}}]} />
-  <View tabs={tabs} forms={forms}{{if $wantsSearch}} searchable{{end}} />
+  <View tabItems={tabItems}{{if $wantsSearch}} searchable{{end}} />
   </ViewStateProvider>
   );
   };

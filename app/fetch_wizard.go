@@ -14,7 +14,7 @@ func (a *App) FetchWizard(first, pageSize int) *types.WizardContainer {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	filtered := a.wizard.CollateAndFilter(a.filterMap).([]types.WizError)
+	filtered := a.wizard.CollateAndFilter(a.GetFilter()).([]types.WizError)
 	first = base.Max(0, base.Min(first, len(filtered)-1))
 	last := base.Min(len(filtered), first+pageSize)
 	copy, _ := a.wizard.ShallowCopy().(*types.WizardContainer)

@@ -2,8 +2,8 @@
 // of ExistingCode markers (if any).
 // EXISTING_CODE
 import { createColumnHelper } from "@tanstack/react-table";
+import { CustomColumnDef, Formatter } from "@components";
 import { types } from "@gocode/models";
-import { CustomColumnDef, Formatter } from "../../components";
 // EXISTING_CODE
 
 const columnHelper = createColumnHelper<types.Chain>();

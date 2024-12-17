@@ -1,10 +1,17 @@
 // This file is auto-generated. Edit only code inside
 // of ExistingCode markers (if any).
-import { useState, useEffect, useContext, useCallback, createContext, ReactNode } from "react";
+import { useState, useEffect, useContext, useCallback, createContext, ReactNode, useRef } from "react";
+import { useLocation } from "wouter";
 import {
 {{range .Structures}}{{if (eq .Children "")}}  Fetch{{.Class}},
 {{end}}{{end}}  FetchAppInfo,
   LoadAddress,
+  GetLastRoute,
+  SetLastRoute,
+  GetLastTab,
+  SetLastTab,
+  GetHeaderOn,
+  SetHeaderOn,
 } from "@gocode/app/App";
 import { app, base, messages, types } from "@gocode/models";
 import { EventsOff, EventsOn } from "@runtime";
@@ -15,6 +22,13 @@ interface AppStateProps {
 {{end}}{{end -}}
   info: app.AppInfo;
   loadAddress: (address: base.Address) => void;
+  counters: React.MutableRefObject<Record<string, number>>;
+  route: string;
+  routeChanged: (newVal: string) => void;
+  activeTab: string;
+  tabChanged: (newVal: string) => void;
+  headerOn: boolean;
+  headerOnChanged: (newVal: boolean) => void;
 }
 
 const AppState = createContext<AppStateProps | undefined>(undefined);
@@ -23,27 +37,94 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
 {{range .Structures}}{{if (eq .Children "")}}  const [{{toLower .UiRouteName}}, set{{.UiRouteName}}] = useState<types.{{.Class}}Container>({} as types.{{.Class}}Container);
 {{end}}{{end -}}
   const [info, setInfo] = useState<app.AppInfo>({} as app.AppInfo);
+  const [route, setRoute] = useState<string>("unset");
+  const [activeTab, setActiveTab] = useState<string>("unset");
+  const [headerOn, setHeaderOn] = useState<boolean>(false);
+  const [, setLocation] = useLocation();
+  const counters = useRef<Record<string, number>>({});
 
+  // ------------------- Route/Tab State -------------------
+  useEffect(() => {
+    GetLastRoute().then((lastRoute) => {
+      setRoute(lastRoute);
+    });
+  }, []);
+
+  const routeChanged = (newRoute: string) => {
+    SetLastRoute(newRoute).then(() => {
+      setRoute(newRoute);
+    });
+  };
+
+  useEffect(() => {
+    GetLastTab(route).then((lastTab) => {
+      setActiveTab(lastTab);
+    });
+  }, [route]);
+
+  const tabChanged = (newTab: string) => {
+    SetLastTab(route, newTab).then(() => {
+      setActiveTab(newTab);
+    });
+  };
+
+  useEffect(() => {
+    GetHeaderOn(route, activeTab).then((isShowing) => {
+      setHeaderOn(isShowing);
+    });
+  }, [route, activeTab]);
+
+  const headerOnChanged = (isShowing: boolean) => {
+    SetHeaderOn(route, activeTab, isShowing).then(() => {
+      setHeaderOn(isShowing);
+    });
+  };
+
+  useEffect(() => {
+    const handleNavigation = (msg: messages.MessageMsg) => {
+      setLocation("/" + msg.string1);
+      setRoute(msg.string1);
+      setActiveTab(msg.string2);
+    };
+
+    const { Message } = messages;
+    EventsOn(Message.NAVIGATE, handleNavigation);
+    return () => {
+      EventsOff(Message.NAVIGATE);
+    };
+  }, [setLocation]);
+
+  useEffect(() => {
+    const handleHeader = (msg: messages.MessageMsg) => {
+      setHeaderOn(msg.bool);
+    };
+
+    const { Message } = messages;
+    EventsOn(Message.TOGGLEHEADER, handleHeader);
+    return () => {
+      EventsOff(Message.TOGGLEHEADER);
+    };
+  }, []);
+
+  // ------------------- Data Fetches -------------------
 {{range .Structures}}{{if (eq .Children "")}}    const fetch{{.UiRouteName}} = useCallback((currentItem: number, itemsPerPage: number) => {
     // Note that this only fetches a single page after sorting and filtering (if any)
     Fetch{{.Class}}(currentItem, itemsPerPage).then((item: types.{{.Class}}Container) => {
-      if (item) {
-        set{{.UiRouteName}}(item);
-      }
+      set{{.UiRouteName}}(item);
     });
   }, []);
 
 {{end}}{{end}}
-  const fetchAppInfo = () => {
-    FetchAppInfo().then((info) => {
-      setInfo(info);
-    });
-  };
-
   const loadAddress = (address: base.Address) => {
     const addressStr = address as unknown as string;
     LoadAddress(addressStr).then(() => {
       info.address = address;
+      setInfo(info);
+    });
+  };
+
+  const fetchAppInfo = () => {
+    FetchAppInfo().then((info) => {
       setInfo(info);
     });
   };
@@ -64,15 +145,26 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
   }, [fetchStatus, fetchWizard]);
 
-  const state = {
-{{range .Structures}}{{if (eq .Children "")}}    {{toLower .UiRouteName}},
+  return (
+    <AppState.Provider
+      value={ {
+ {{range .Structures}}{{if (eq .Children "")}}    {{toLower .UiRouteName}},
     fetch{{.UiRouteName}},
 {{end}}{{end -}}
-    info,
-    loadAddress,
-  };
-
-  return <AppState.Provider value={state}>{children}</AppState.Provider>;
+        info,
+        loadAddress,
+        counters,
+        route,
+        routeChanged,
+        activeTab,
+        tabChanged,
+        headerOn,
+        headerOnChanged,
+      } }
+    >
+      {children}
+    </AppState.Provider>
+  );
 };
 
 export const useAppState = () => {

@@ -11,7 +11,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
@@ -34,7 +34,7 @@ func (a *App) loadConfig(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.config.NeedsUpdate() {
+	if !a.isConfigured() || !a.config.NeedsUpdate() {
 		return nil
 	}
 	updater := a.config.Updater
@@ -78,8 +78,9 @@ func (a *App) pullConfigs() (items []types.Config, meta *types.Meta, err error) 
 			Verbose: true,
 		},
 	}
-	return opts.ConfigDump()
+	items, meta, err = opts.ConfigDump()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

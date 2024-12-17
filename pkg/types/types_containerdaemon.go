@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"time"
 
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
@@ -104,6 +104,7 @@ func (s *DaemonContainer) Clear() {
 }
 
 func (s *DaemonContainer) passesFilter(item *Nothing, filter *Filter) (ret bool) {
+	_ = item // linter
 	ret = true
 	if filter.HasCriteria() {
 		ret = false
@@ -124,10 +125,9 @@ func (s *DaemonContainer) Finalize() {
 	// EXISTING_CODE
 }
 
-func (s *DaemonContainer) CollateAndFilter(theMap *FilterMap) interface{} {
+func (s *DaemonContainer) CollateAndFilter(filter *Filter) interface{} {
 	s.Clear()
 
-	filter, _ := theMap.Load("daemons") // may be empty
 	if !filter.HasCriteria() {
 		s.ForEveryItem(func(item *Nothing, data any) bool {
 			s.Accumulate(item)
@@ -138,7 +138,7 @@ func (s *DaemonContainer) CollateAndFilter(theMap *FilterMap) interface{} {
 	}
 	filtered := []Nothing{}
 	s.ForEveryItem(func(item *Nothing, data any) bool {
-		if s.passesFilter(item, &filter) {
+		if s.passesFilter(item, filter) {
 			s.Accumulate(item)
 			filtered = append(filtered, *item)
 		}

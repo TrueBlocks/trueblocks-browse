@@ -6,11 +6,19 @@ import (
 )
 
 func (a *App) isConfigured() bool {
-	return a.wizard.State == types.WizFinished
+	return a.getWizState() == types.WizFinished
 }
 
-func (a *App) setWizardState(state types.WizState) {
-	a.wizard.State = state
+func (a *App) getWizState() types.WizState {
+	return a.wizard.GetWizState()
+}
+
+func (a *App) setWizChain(chain string) {
+	a.wizard.SetWizChain(chain)
+}
+
+func (a *App) setWizState(state types.WizState) {
+	a.wizard.SetWizState(state)
 }
 
 func (a *App) addWizErr(reason string, state types.WizState, err error) {
@@ -45,40 +53,40 @@ var stateOrder = []types.WizState{
 func (a *App) StepWizard(step types.WizStep) types.WizState {
 	defer func() {
 		if a.isConfigured() {
-			a.Navigate("/", "")
+			a.Navigate("project")
 		}
 		a.emitMsg(messages.Refresh, &messages.MessageMsg{
-			State: a.wizard.State.String(),
+			State: a.getWizState().String(),
 			Num1:  2, // 2 is the wizard step if needed
 		})
 	}()
 
 	switch step {
 	case types.WizFirst:
-		a.wizard.State = types.WizWelcome
+		a.setWizState(types.WizWelcome)
 
 	case types.WizPrevious:
 		for i := range stateOrder {
-			if stateOrder[i] == a.wizard.State && i > 0 {
-				a.wizard.State = stateOrder[i-1]
+			if stateOrder[i] == a.getWizState() && i > 0 {
+				a.setWizState(stateOrder[i-1])
 				break
 			}
 		}
 
 	case types.WizNext:
 		for i := range stateOrder {
-			if stateOrder[i] == a.wizard.State && i < len(stateOrder)-1 {
-				a.wizard.State = stateOrder[i+1]
+			if stateOrder[i] == a.getWizState() && i < len(stateOrder)-1 {
+				a.setWizState(stateOrder[i+1])
 				break
 			}
 		}
 
 	case types.WizFinish:
-		a.wizard.State = types.WizFinished
+		a.setWizState(types.WizFinished)
 	}
 
-	a.saveSession()
-	return a.wizard.State
+	a.saveSessionFile()
+	return a.getWizState()
 }
 
 const (

@@ -1,20 +1,26 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Group, Stack, Tabs } from "@mantine/core";
 import { SearchBar, ViewTitle } from "@components";
-import { TabSwitched } from "@gocode/app/App";
-import { useViewState } from "@state";
+import { GetTabs } from "@gocode/app/App";
+import { useAppState } from "@state";
 import classes from "./View.module.css";
 
 export type ViewForm = Record<string, ReactNode>;
 
 export type ViewProps = {
-  tabs: string[];
-  forms: ViewForm;
+  tabItems: ViewForm;
   searchable?: boolean;
 };
 
-export const View = ({ tabs, forms, searchable = false }: ViewProps) => {
-  const { route, activeTab, setActiveTab } = useViewState();
+export const View = ({ tabItems, searchable = false }: ViewProps) => {
+  const { activeTab, tabChanged } = useAppState();
+  const [tabs, setTabs] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    GetTabs().then((tts) => {
+      setTabs(tts);
+    });
+  }, []);
 
   return (
     <Stack className={classes.viewContainer}>
@@ -26,25 +32,17 @@ export const View = ({ tabs, forms, searchable = false }: ViewProps) => {
           </div>
         )}
       </Group>
-      <Tabs
-        value={activeTab}
-        onChange={(newTab) => {
-          if (newTab !== null) {
-            setActiveTab(newTab);
-            TabSwitched(route, newTab);
-          }
-        }}
-      >
+      <Tabs value={activeTab} onChange={(newVal) => tabChanged(newVal || "")}>
         <Tabs.List>
-          {tabs?.map((tab) => (
+          {tabs?.map((tab: string) => (
             <Tabs.Tab key={tab} className={classes.tab} value={tab}>
               {toProperCase(tab)}
             </Tabs.Tab>
           ))}
         </Tabs.List>
-        {tabs?.map((tab) => (
+        {tabs?.map((tab: string) => (
           <Tabs.Panel key={tab} value={tab}>
-            {forms ? forms[tab] : null}
+            {tabItems[tab]}
           </Tabs.Panel>
         ))}
       </Tabs>

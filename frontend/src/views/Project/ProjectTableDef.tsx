@@ -15,12 +15,12 @@ import {
   GoogleButton,
   CopyButton,
 } from "@components";
-import { base, types } from "@gocode/models";
+import { types } from "@gocode/models";
 // EXISTING_CODE
 
 const columnHelper = createColumnHelper<types.HistoryContainer>();
 
-export const baseTableDef: CustomColumnDef<types.HistoryContainer, any>[] = [
+export const ProjectTableDef: CustomColumnDef<types.HistoryContainer, any>[] = [
   // EXISTING_CODE
   columnHelper.accessor("address", {
     header: () => "Dalle",
@@ -45,50 +45,27 @@ export const baseTableDef: CustomColumnDef<types.HistoryContainer, any>[] = [
     cell: (info) => <Formatter type="ether" value={info.renderValue()} />,
     meta: { className: "medium cell" },
   }),
-  // EXISTING_CODE
-];
-
-// EXISTING_CODE
-const defButtons = (address: base.Address | undefined) => {
-  return (
-    <Group wrap="nowrap">
-      <ExploreButton value={address} />
-      <DalleButton value={address} />
-      <GoogleButton value={address} />
-      <ViewButton value={address} />
-      <ExportButton value={address} />
-      <CopyButton value={address} />
-      <EditButton value={address} />
-    </Group>
-  );
-};
-
-export const ProjectTableDef: CustomColumnDef<types.HistoryContainer, any>[] = [
-  ...baseTableDef,
   columnHelper.accessor("address", {
     header: () => " ",
     cell: (info) => {
       const { address } = info.row.original;
       return (
         <Group wrap="nowrap">
-          {defButtons(address)}
+          <ExploreButton value={address} />
+          <DalleButton value={address} />
+          <GoogleButton value={address} />
+          <ViewButton value={address} />
+          <ExportButton value={address} />
+          <CopyButton value={address} />
+          <EditButton value={address} />
           <CrudButton value={address} />
         </Group>
       );
     },
     meta: { className: "wide cell" },
   }),
+  // EXISTING_CODE
 ];
 
-export const ProjectTableDefNoDelete: CustomColumnDef<types.HistoryContainer, any>[] = [
-  ...baseTableDef,
-  columnHelper.accessor("address", {
-    header: () => " ",
-    cell: (info) => {
-      const { address } = info.row.original;
-      return <Group wrap="nowrap">{defButtons(address)}</Group>;
-    },
-    meta: { className: "wide cell" },
-  }),
-];
+// EXISTING_CODE
 // EXISTING_CODE

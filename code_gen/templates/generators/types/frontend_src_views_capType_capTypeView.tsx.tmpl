@@ -30,9 +30,15 @@
     {{ $param1 = ", loadAddress" }}
   {{end}}
 
-  {{ $route := $routeLower }}
-  {{ if $isProject }}
-    {{ $route = "" }}
+  {{ $customCode := "//-- remove line --" }}
+  {{ if $isWizard }}
+    {{ $customCode = `
+  const stepWizard = (step: string) => {
+    StepWizard(step as types.WizStep).then(() => {
+      fetchWizard(0, 100);
+    });
+  };
+`}}
   {{ end }}
 
   {{ $handleEnter := `const handleEnter = enterNoop;` }}
@@ -70,39 +76,28 @@
     {{$noops -}}
     {{$handleEnter -}}
     {{$handleModify}}
+    {{$customCode}}
 
-    // eslint-disable-next-line prefer-const
-    let customTabs: string[] = [];
-    // eslint-disable-next-line prefer-const
-    let customForms: Record<string, JSX.Element> = {};
-    // EXISTING_CODE
-    // EXISTING_CODE
-
-  const table = useReactTable({
+    const table = useReactTable({
       data: {{$routeLower}}?.items || [],
       columns: {{$routeName}}TableDef,
       getCoreRowModel: getCoreRowModel(),
     });
 
-  const route = "{{$route}}";
-    const tabs = ["{{$routeLower}}", ...(customTabs || [])];
-    const forms: ViewForm = {
-      {{$routeLower}}: <FormTable data={ {{$routeLower}} } groups={ {{$routeName}}FormDef(table)} />,
-      ...customForms,
+    const tabItems: ViewForm = {
+      {{$routeLower}}: <TabItem data={ {{$routeLower}} } groups={ {{$routeName}}FormDef(table)} />,
     };
 
     return (
       <ViewStateProvider
         // do not remove - delint
-        route={route}
         nItems={ {{$routeLower}}.nItems}
         fetchFn={ {{$fetchFn}}}
         onEnter={handleEnter}
         modifyFn={handleModify}{{$clickFn}}
-        tabs={tabs}
       >
         <DebugState u={ [{{$routeLower}}.updater]} />
-        <View tabs={tabs} forms={forms}{{if $wantsSearch}} searchable{{end}} />
+        <View tabItems={tabItems}{{if $wantsSearch}} searchable{{end}} />
       </ViewStateProvider>
     );
   };

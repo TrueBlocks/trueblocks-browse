@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 func (a *App) GetExploreUrl(term string, google, dalle bool) string {

@@ -11,7 +11,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/messages"
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
@@ -34,7 +34,7 @@ func (a *App) loadAbis(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.abis.NeedsUpdate() {
+	if !a.isConfigured() || !a.abis.NeedsUpdate() {
 		return nil
 	}
 	updater := a.abis.Updater
@@ -79,8 +79,9 @@ func (a *App) pullAbis() (items []types.Abi, meta *types.Meta, err error) {
 			Cache:   true,
 		},
 	}
-	return opts.AbisList()
+	items, meta, err = opts.AbisList()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

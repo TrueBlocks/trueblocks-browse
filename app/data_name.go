@@ -12,7 +12,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 var namesMutex sync.Mutex
@@ -38,7 +38,7 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	if !a.names.NeedsUpdate() {
+	if !a.isConfigured() || !a.names.NeedsUpdate() {
 		return nil
 	}
 	updater := a.names.Updater
@@ -71,6 +71,9 @@ func (a *App) loadNames(wg *sync.WaitGroup, errorChan chan error) error {
 		a.names = types.NewNameContainer(a.getChain(), items)
 		// EXISTING_CODE
 		// EXISTING_CODE
+		if err := a.names.Sort(); err != nil {
+			a.emitErrorMsg(err, nil)
+		}
 		a.emitLoadingMsg(messages.Loaded, "names")
 	}
 
@@ -86,8 +89,9 @@ func (a *App) pullNames() (items []types.Name, meta *types.Meta, err error) {
 		},
 		All: true,
 	}
-	return opts.Names()
+	items, meta, err = opts.Names()
 	// EXISTING_CODE
+	return
 }
 
 // EXISTING_CODE

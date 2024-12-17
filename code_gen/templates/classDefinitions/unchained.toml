@@ -1,11 +1,9 @@
 [settings]
     class = "Unchained"
-    # doc_group = "20-Routes"
-    # doc_descr = "block data as returned from the RPC (with slight enhancements)"
     doc_route = "1065-containers"
     ui_route = "1065-unchained-5"
-    ui_icon = "Archive"
+    ui_icon = "LinkOff"
     attributes = ""
-    children = "indexes,manifests"
+    children = "indexes,manifests,pins,publish"
     cache_type = "cacheable"
     cache_by = "range"

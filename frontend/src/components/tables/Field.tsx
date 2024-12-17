@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Flex, Text } from "@mantine/core";
 import { CellType, Formatter } from "@components";
 import classes from "./Field.module.css";
@@ -9,7 +9,8 @@ type BaseField = {
 
 type Field<T> = BaseField & {
   type: CellType;
-  accessor: keyof T;
+  accessor?: keyof T;
+  getter?: () => Promise<any>;
 };
 
 export type FieldGroup<T> = {
@@ -19,6 +20,11 @@ export type FieldGroup<T> = {
   components?: ReactNode[];
   buttons?: ReactNode[];
   collapsable?: boolean;
+  disabled?: boolean;
+};
+
+export const isDisabled = <T,>(group: FieldGroup<T>): boolean => {
+  return group.disabled ?? false;
 };
 
 export const isCollapsable = <T,>(group: FieldGroup<T>): boolean => {
@@ -35,13 +41,23 @@ type FieldRendererProps<T> = {
 };
 
 export const FieldRenderer = <T,>({ field, data }: FieldRendererProps<T>) => {
+  const [value, setValue] = useState<any>(null);
+
+  useEffect(() => {
+    if (field.getter) {
+      field.getter().then(setValue);
+    } else if (field.accessor) {
+      setValue(data?.[field.accessor]);
+    }
+  }, [field, data]);
+
   const label = field.label ? <Text className={classes.fieldPrompt}>{field.label}</Text> : <></>;
-  const value = <Formatter type={field.type} value={data?.[field.accessor]} />;
+  const formattedValue = <Formatter type={field.type} value={value} />;
 
   return (
     <Flex gap="md" align="center">
       {label}
-      {value}
+      {formattedValue}
     </Flex>
   );
 };
