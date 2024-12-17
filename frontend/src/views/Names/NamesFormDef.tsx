@@ -8,19 +8,20 @@ import { types } from "@gocode/models";
 
 export const NamesFormDef = (editable: types.Name, table: Table<types.Name>): FieldGroup<types.NameContainer>[] => {
   // EXISTING_CODE
+  const hasEditor = (editable.address as unknown as string) !== undefined;
   // EXISTING_CODE
   return [
     // EXISTING_CODE
     {
-      label: "",
+      label: "Edit Name",
       collapsable: false,
-      disabled: editable.name === "",
+      disabled: !hasEditor,
       components: [<NameEditor key={"nameEditor"} source={editable} onCancel={() => {}} />],
     },
     {
       label: "Name Data",
       colSpan: 6,
-      disabled: editable.name !== "",
+      disabled: hasEditor,
       fields: [
         { label: "nNames", type: "int", accessor: "nItems" },
         { label: "nContracts", type: "int", accessor: "nContracts" },
@@ -32,6 +33,7 @@ export const NamesFormDef = (editable: types.Name, table: Table<types.Name>): Fi
     {
       label: "Database Parts",
       colSpan: 6,
+      disabled: hasEditor,
       fields: [
         { label: "sizeOnDisc", type: "bytes", accessor: "sizeOnDisc" },
         { label: "nCustom", type: "int", accessor: "nCustom" },

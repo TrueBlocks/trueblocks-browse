@@ -9,7 +9,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	coreConfig "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	coreMonitor "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/monitor"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE

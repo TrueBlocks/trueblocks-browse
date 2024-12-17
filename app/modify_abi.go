@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/TrueBlocks/trueblocks-browse/pkg/types"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 func (a *App) ModifyAbi(modData *ModifyData) error {

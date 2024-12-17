@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 func (a *App) getBalance(address base.Address) string {

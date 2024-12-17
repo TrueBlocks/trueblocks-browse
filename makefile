@@ -9,7 +9,7 @@ lint:
 	@cd frontend && yarn lint && cd -
 
 update:
-	@go get github.com/TrueBlocks/trueblocks-sdk/v3@latest
+	@go get github.com/TrueBlocks/trueblocks-sdk/v4@latest
 	@go get github.com/TrueBlocks/trueblocks-core/src/apps/chifra@latest
 
 open:
@@ -25,4 +25,3 @@ generate:
 generate-go:
 	@echo building goMaker...
 	@cd ~/Development/trueblocks-core/build ; make -j 12 goMaker ; cd - && TB_GENERATOR_FILTER=go.tmpl goMaker
-

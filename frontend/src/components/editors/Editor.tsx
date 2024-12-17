@@ -67,31 +67,29 @@ export const Editor = <T extends object>({ source, fields, saveData, onCancel, l
   };
 
   return (
-    <FieldsetWrapper legend={legend}>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Grid>
-          {fields.map((field) => {
-            return (
-              <Grid.Col span={6} key={String(field.name)}>
-                <TextInput
-                  label={field.label}
-                  placeholder={field.placeholder || `Enter ${String(field.name)}`}
-                  {...form.getInputProps(field.name)}
-                  {...field.inputProps}
-                />
-              </Grid.Col>
-            );
-          })}
-        </Grid>
-        <Group justify="flex-end" mt="md">
-          <Button variant="default" onClick={onCancel} disabled={saving}>
-            Cancel
-          </Button>
-          <Button type="submit" disabled={saving}>
-            {saving ? <Loader size="sm" /> : "Submit"}
-          </Button>
-        </Group>
-      </form>
-    </FieldsetWrapper>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
+      <Grid>
+        {fields.map((field) => {
+          return (
+            <Grid.Col span={6} key={String(field.name)}>
+              <TextInput
+                label={field.label}
+                placeholder={field.placeholder || `Enter ${String(field.name)}`}
+                {...form.getInputProps(field.name)}
+                {...field.inputProps}
+              />
+            </Grid.Col>
+          );
+        })}
+      </Grid>
+      <Group justify="flex-end" mt="md">
+        <Button variant="default" onClick={onCancel} disabled={saving}>
+          Cancel
+        </Button>
+        <Button type="submit" disabled={saving}>
+          {saving ? <Loader size="sm" /> : "Submit"}
+        </Button>
+      </Group>
+    </form>
   );
 };

@@ -1,6 +1,6 @@
 import { ReactNode, useMemo } from "react";
 import { Container, Fieldset, Grid, Accordion } from "@mantine/core";
-import { IconChevronsUp } from "@tabler/icons-react";
+import { IconChevronsDown } from "@tabler/icons-react";
 import { FieldRenderer, FieldGroup, isCollapsable, isButton, ButtonTray, isDisabled } from "@components";
 import { useAppState } from "@state";
 import classes from "./TabItem.module.css";
@@ -18,7 +18,7 @@ export const TabItem = <T,>({ data, groups }: TabItemProps<T>) => {
     [groups]
   );
   const nonCollapsableGroups = useMemo(
-    () => groups.filter((group) => !isDisabled(group) && !isCollapsable(group)),
+    () => groups.filter((group) => !isDisabled(group) && !isCollapsable(group) && !isButton(group)),
     [groups]
   );
   const buttonGroup = useMemo(() => groups.find((group) => !isDisabled(group) && isButton(group)) || null, [groups]);
@@ -63,18 +63,14 @@ export const TabItem = <T,>({ data, groups }: TabItemProps<T>) => {
   );
 };
 
-type CustomAccordionControlProps = {
-  children: ReactNode;
-};
-
-export const CustomAccordionControl = ({ children }: CustomAccordionControlProps) => {
+export const CustomAccordionControl = ({ children }: { children: ReactNode }) => {
   const { headerOn, headerOnChanged } = useAppState();
 
   return (
     <div onClick={() => headerOnChanged(!headerOn)} className={classes.controlContainer} role="button" tabIndex={0}>
       {children}
       <div className={classes.chevronWrapper}>
-        <IconChevronsUp className={`${classes.chevronIcon}`} data-rotate={headerOn ? "true" : "false"} />
+        <IconChevronsDown className={`${classes.chevronIcon}`} data-rotate={headerOn ? "true" : "false"} />
       </div>
     </div>
   );

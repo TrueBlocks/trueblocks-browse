@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"time"
 
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v3"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v4"
 )
 
 // EXISTING_CODE
